@@ -153,25 +153,31 @@ body.present .shell__main { background: #e7e9eb; }
 .toc__ch-num { flex: none; min-width: 18px; font-weight: 700; color: var(--emerson-grey); font-variant-numeric: tabular-nums; font-size: 11px; }
 .toc__ch-title { flex: 1; font-weight: 600; }
 .toc__ch.is-workshop .toc__ch-title { font-style: italic; }
-.toc__ch-caret { flex: none; color: var(--emerson-grey); transition: transform .15s ease; }
-.toc__ch[open] .toc__ch-caret { transform: rotate(90deg); }
 .toc__ch.is-current > .toc__ch-btn .toc__ch-title { color: var(--emerson-blue); }
 
-.toc__ch-open {
-  display: block; margin: 2px 12px 6px 8px; padding: 5px 9px;
-  font-size: 11px; font-weight: 700; color: var(--accent); text-decoration: none;
-  background: color-mix(in srgb, var(--emerson-blue) 6%, #fff);
-  border: 1px solid var(--rail-line); border-radius: 5px;
+/* Carets are the expand / collapse control. Clicking the name itself
+   navigates to that day / chapter / module's intro card instead. */
+.toc__ch-caret, .toc__mod-caret {
+  flex: none; margin-left: auto; color: var(--emerson-grey); transition: transform .15s ease;
 }
-.toc__ch-open:hover { border-color: var(--accent); }
+.toc__sec-caret, .toc__ch-caret, .toc__mod-caret {
+  padding: 2px 5px; border-radius: 4px; cursor: pointer;
+}
+.toc__sec-caret:hover, .toc__ch-caret:hover, .toc__mod-caret:hover {
+  background: #dfe1e3; color: var(--emerson-charcoal);
+}
+.toc__ch[open] > .toc__ch-btn .toc__ch-caret,
+.toc__mod[open] > .toc__mod-btn .toc__mod-caret { transform: rotate(90deg); }
 
-.toc__mods { list-style: none; margin: 0; padding: 0 0 6px; }
-.toc__mod > a {
-  display: flex; align-items: baseline; gap: 8px; padding: 5px 12px 5px 30px;
-  text-decoration: none; color: var(--ink); font-size: 12px;
+.toc__mods { margin: 0; padding: 0 0 6px; }
+.toc__mod > .toc__mod-btn {
+  width: 100%; display: flex; align-items: baseline; gap: 8px; padding: 5px 12px 5px 30px;
+  cursor: pointer; list-style: none; color: var(--ink); font-size: 12px;
 }
-.toc__mod > a:hover { background: #ebedee; }
-.toc__mod.is-current > a { background: #e4edf5; box-shadow: inset 3px 0 0 var(--accent); font-weight: 700; }
+.toc__mod > .toc__mod-btn::-webkit-details-marker { display: none; }
+.toc__mod > .toc__mod-btn:hover { background: #ebedee; }
+.toc__mod.is-current > .toc__mod-btn { background: #e4edf5; box-shadow: inset 3px 0 0 var(--accent); font-weight: 700; }
+.toc__mod.is-current > .toc__mod-btn .toc__mod-title { color: var(--emerson-blue); }
 .toc__mod-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--rail-line); margin-top: 5px; }
 .toc__mod.is-ready .toc__mod-dot { background: var(--emerson-green); }
 .toc__mod.is-done  .toc__mod-dot { background: var(--emerson-blue); }

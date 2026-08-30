@@ -12,14 +12,30 @@ the key concepts.
 
 ---
 
-## Template 1 — module intro card
+## Template 1 — intro cards (day / chapter / module)
 
-**Rendered by the course shell, not a deck slide.** See `course/course.css`
-`.ov` (centre card: eyebrow `.ov__kicker`, bold `.ov__title`, `.ov__objective`
-paragraph, `.ov__start` button) and `.ctx` (right rail: `.ctx__concepts` key
-concepts panel). A module with `status: "ready"`, an `objective`, and
-`keyConcepts` in `course.json` gets this automatically. Do not build a slide
-that duplicates it.
+**Rendered by the course shell, not deck slides.** Three tiers, one visual
+family — eyebrow `.ov__kicker`, bold `.ov__title`, `.ov__rule`, an
+`.ov__objective` lead paragraph, an `.ov__start` button, and (day/chapter) an
+`.ov__list` of what is inside as navigable `.ov__row` links.
+
+- **Day intro** — `renderDay()` in `course/course.js`, `.ov--day`. Hash
+  `#<day.id>`. Kicker "Day N of M", the day `subtitle` as the lead, a Chapters
+  list. Context rail shows "Day overview"; no key-concepts panel.
+- **Chapter intro** — `renderChapter()`, `.ov--chapter`. Hash `#<ch.id>`.
+  Kicker "Day N · <day> · Chapter K", the chapter `summary` as the lead, the
+  chapter `objectives` under "By the end of this chapter", a Modules list
+  (outline modules tagged). Context rail shows "Chapter summary".
+- **Module intro** — `renderOverview()`. A module with `status: "ready"`, an
+  `objective`, and `keyConcepts` in `course.json` gets this automatically; the
+  `.ctx` right rail carries the key concepts. Do not build a slide that
+  duplicates it.
+
+Every day and chapter therefore has a landing card. Clicking the name in the
+TOC (or in the home overview) opens it; the caret beside the name is the
+expand / collapse control. Modules are collapsible the same way. Day and
+chapter cards are also real stops in the Prev / Next sequence — paging forward
+lands on each one before its first module.
 
 ---
 

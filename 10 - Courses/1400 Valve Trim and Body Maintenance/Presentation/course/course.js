@@ -7,6 +7,7 @@
 
   var C = null;
   var MODS = [];                 // flat list of every module in course order
+  var SPINE = [];                // linear nav stops: bookend / day / chapter / module cards
   var DAYS_BY_ID = {};           // day.id  -> day   (day-intro cards)
   var CHS_BY_ID = {};            // ch.id   -> chapter (chapter-intro cards)
   var STORE_KEY = null;          // set in boot(): "ew<course.code>.progress"
@@ -26,6 +27,18 @@
   function byId(id) { return document.getElementById(id); }
   function h(html) { var t = document.createElement("template"); t.innerHTML = html.trim(); return t.content.firstChild; }
   function esc(s) { return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+  /* A <summary> in the TOC navigates to its section's intro card on click.
+     Clicking the caret (or clicking while already on that hash) falls through
+     to the native expand / collapse instead. */
+  function navOnSummary(summary, hash, caretSel) {
+    summary.addEventListener("click", function (e) {
+      if (caretSel && e.target.closest(caretSel)) return;      // caret = toggle
+      if (location.hash === hash) return;                       // already here = toggle
+      e.preventDefault();
+      location.hash = hash;
+    });
+  }
 
   if (window.EW_COURSE) { boot(window.EW_COURSE); }
   else {
@@ -64,6 +77,20 @@
       day.chapters.forEach(function (ch) { CHS_BY_ID[ch.id] = ch; });
     });
 
+    // --- linear spine: every stop the Prev / Next buttons walk through, in
+    //     order. Day and chapter intro cards are real stops, not side pages. ---
+    if (C.moduleZero) SPINE.push({ t: "bookend", mod: C.moduleZero, hash: "#" + C.moduleZero.id });
+    C.days.forEach(function (day) {
+      SPINE.push({ t: "day", day: day, hash: "#" + day.id });
+      day.chapters.forEach(function (ch) {
+        SPINE.push({ t: "chapter", ch: ch, hash: "#" + ch.id });
+        (ch.modules || []).forEach(function (m) {
+          SPINE.push({ t: "module", mod: m, hash: "#" + m.id });
+        });
+      });
+    });
+    if (C.wrapUp) SPINE.push({ t: "bookend", mod: C.wrapUp, hash: "#" + C.wrapUp.id });
+
     buildToc();
     wireChrome();
     wireLibrary();
@@ -101,47 +128,52 @@
 
     C.days.forEach(function (day) {
       var sec = h('<details class="toc__sec toc__day" id="tocsec-' + day.id + '"></details>');
-      sec.appendChild(h(
+      var daySum = h(
         '<summary class="toc__sec-hd toc__day-hd">' +
           '<span class="toc__day-num">Day ' + day.num + '</span>' +
           '<span class="toc__day-title">' + esc(day.title) + '</span>' +
-          '<span class="toc__sec-caret">▸</span>' +
-        '</summary>'));
+          '<span class="toc__sec-caret" title="Expand / collapse">▸</span>' +
+        '</summary>');
+      navOnSummary(daySum, "#" + day.id, ".toc__sec-caret");
+      sec.appendChild(daySum);
       var dayBody = h('<div class="toc__sec-body"></div>');
-      dayBody.appendChild(h('<a class="toc__sec-open" href="#' + day.id + '">Open Day ' + day.num + ' →</a>'));
 
       day.chapters.forEach(function (ch) {
         var det = h('<details class="toc__ch' + (ch.workshop ? " is-workshop" : "") + '" id="toc-' + ch.id + '"></details>');
-        det.appendChild(h(
+        var chSum = h(
           '<summary class="toc__ch-btn">' +
             '<span class="toc__ch-num">' + ch.num + '</span>' +
             '<span class="toc__ch-title">' + esc(ch.title) + '</span>' +
-            '<span class="toc__ch-caret">▸</span>' +
-          '</summary>'));
+            '<span class="toc__ch-caret" title="Expand / collapse">▸</span>' +
+          '</summary>');
+        navOnSummary(chSum, "#" + ch.id, ".toc__ch-caret");
+        det.appendChild(chSum);
 
-        det.appendChild(h('<a class="toc__ch-open" href="#' + ch.id + '">Open chapter ' + ch.num + ' →</a>'));
-
-        var ul = h('<ul class="toc__mods"></ul>');
+        var modWrap = h('<div class="toc__mods"></div>');
         (ch.modules || []).forEach(function (m) {
           var ready = m.status === "ready";
-          var li = h('<li class="toc__mod ' + (ready ? "is-ready" : "") + '" id="tocm-' + m.id + '"></li>');
-          li.appendChild(h('<a href="#' + m.id + '">' +
+          var hasPages = m._pages && m._pages.length;
+          var md = h('<details class="toc__mod ' + (ready ? "is-ready" : "") + '" id="tocm-' + m.id + '"></details>');
+          var mdSum = h('<summary class="toc__mod-btn">' +
             '<span class="toc__mod-dot"></span>' +
             '<span class="toc__mod-title">' + esc(m.title) + '</span>' +
             (ready ? "" : '<span class="toc__mod-tag">outline</span>') +
-            '</a>'));
-          if (m._pages && m._pages.length) {
-            var pl = h('<ul class="toc__pagelist" hidden></ul>');
+            (hasPages ? '<span class="toc__mod-caret" title="Expand / collapse">▸</span>' : "") +
+            '</summary>');
+          navOnSummary(mdSum, "#" + m.id, ".toc__mod-caret");
+          md.appendChild(mdSum);
+          if (hasPages) {
+            var pl = h('<ul class="toc__pagelist"></ul>');
             m._pages.forEach(function (pg, i) {
               pl.appendChild(h('<li id="tocp-' + m.id + '-' + i + '"><a href="#' + m.id + '/' + i + '">' +
                 esc(slideTitle(pg) || ("Page " + (i + 1))) + '</a></li>'));
             });
             if (m._check) pl.appendChild(h('<li id="tocp-' + m.id + '-check"><a href="#' + m.id + '/check">✓ Check your knowledge</a></li>'));
-            li.appendChild(pl);
+            md.appendChild(pl);
           }
-          ul.appendChild(li);
+          modWrap.appendChild(md);
         });
-        det.appendChild(ul);
+        det.appendChild(modWrap);
         dayBody.appendChild(det);
       });
       sec.appendChild(dayBody);
@@ -177,14 +209,31 @@
     if (key === "chk") return "#" + mod.id + "/check";
     return "#" + mod.id + "/" + key.slice(1);
   }
+  function spineIndex(route) {
+    for (var i = 0; i < SPINE.length; i++) {
+      var s = SPINE[i];
+      if (route.view === "day" && s.t === "day" && s.day === route.day) return i;
+      if (route.view === "chapter" && s.t === "chapter" && s.ch === route.ch) return i;
+      if (route.mod && s.mod === route.mod) return i;
+    }
+    return -1;
+  }
   function neighbour(route, dir) {
-    var mi = MODS.indexOf(route.mod), seq = seqOf(route.mod), si = seq.indexOf(stepKey(route));
-    var ni = si + dir;
-    if (ni >= 0 && ni < seq.length) return hrefFor(route.mod, seq[ni]);
-    var tgt = MODS[mi + dir];
+    // within a module (or bookend): step through overview / pages / check first
+    if (route.mod) {
+      var seq = seqOf(route.mod), si = seq.indexOf(stepKey(route)), ni = si + dir;
+      if (ni >= 0 && ni < seq.length) return hrefFor(route.mod, seq[ni]);
+    }
+    // otherwise cross to the adjacent spine stop
+    var idx = spineIndex(route);
+    if (idx < 0) return null;
+    var tgt = SPINE[idx + dir];
     if (!tgt) return null;
-    if (dir > 0) return "#" + tgt.id;
-    var t = seqOf(tgt); return hrefFor(tgt, t[t.length - 1]);
+    if (tgt.t === "day" || tgt.t === "chapter") return tgt.hash;
+    // module or bookend: enter at the overview going forward, at the last step going back
+    if (dir > 0) return "#" + tgt.mod.id;
+    var t = seqOf(tgt.mod);
+    return hrefFor(tgt.mod, t[t.length - 1]);
   }
 
   /* ---------- render ----------------------------------------- */
@@ -277,17 +326,16 @@
   function ctxConceptsBlock() {
     return el.ctxConcepts && el.ctxConcepts.closest(".ctx__block");
   }
-  function tierNav(prev, next, nextLabel) {
+  function tierNav(prev, next) {
     el.btnPrev.disabled = !prev; el.btnNext.disabled = !next;
     el.btnPrev.onclick = function () { if (prev) location.hash = prev; };
     el.btnNext.onclick = function () { if (next) location.hash = next; };
-    el.btnNext.textContent = (nextLabel || "Next") + " ▶";
     el.btnPrev.textContent = "◀ Previous";
+    el.btnNext.textContent = "Next ▶";
   }
 
   function renderDay(day) {
     tierCardShell();
-    var di = C.days.indexOf(day);
     el.hdDay.textContent = "Day " + day.num + " · " + day.title;
     el.crumbs.innerHTML = 'Day ' + day.num + ' · <b>' + esc(day.title) + '</b>';
     var chs = (day.chapters || []).map(function (ch) {
@@ -309,8 +357,9 @@
     el.ctxObj.textContent = day.subtitle || "";
     ctxObjLabel("Day overview");
     var db = ctxConceptsBlock(); if (db) db.hidden = true;
-    tierNav(di > 0 ? "#" + C.days[di - 1].id : (C.moduleZero ? "#" + C.moduleZero.id : ""),
-            first ? "#" + first : "", "First chapter");
+    var dr = { view: "day", day: day };
+    tierNav(neighbour(dr, -1), neighbour(dr, +1));
+    el.pos.textContent = "Day intro";
     var secEl = byId("tocsec-" + day.id);
     if (secEl) { secEl.classList.add("is-current"); secEl.open = true; }
     el.ftRight.textContent = "Day " + day.num + " of " + C.days.length;
@@ -346,7 +395,9 @@
     el.ctxObj.textContent = ch.summary || "";
     ctxObjLabel("Chapter summary");
     var cb = ctxConceptsBlock(); if (cb) cb.hidden = true;
-    tierNav("#" + day.id, first ? "#" + first : "", "First module");
+    var cr = { view: "chapter", ch: ch };
+    tierNav(neighbour(cr, -1), neighbour(cr, +1));
+    el.pos.textContent = "Chapter intro";
     // open this day + chapter in the rail
     var secEl = byId("tocsec-" + day.id); if (secEl) { secEl.classList.add("is-current"); secEl.open = true; }
     var cEl = byId("toc-" + ch.id); if (cEl) { cEl.classList.add("is-current"); cEl.open = true; }
@@ -485,11 +536,7 @@
     var pi = seq.indexOf(cur);
     el.pos.textContent = cur === "ov" ? "Overview" : cur === "chk" ? "Check" : "Page " + pi + " of " + m._pages.length;
 
-    var prev = neighbour(route, -1), next = neighbour(route, +1);
-    el.btnPrev.disabled = !prev; el.btnNext.disabled = !next;
-    el.btnPrev.onclick = function () { if (prev) location.hash = prev; };
-    el.btnNext.onclick = function () { if (next) location.hash = next; };
-    el.btnNext.textContent = (next && next.indexOf("/") === -1 && cur !== "ov") ? "Next module ▶" : "Next ▶";
+    tierNav(neighbour(route, -1), neighbour(route, +1));
   }
 
   /* ---------- TOC sync + progress -------------------------- */
@@ -505,7 +552,7 @@
       var mEl = byId("tocm-" + m.id);
       if (mEl) {
         mEl.classList.add("is-current");
-        var pl = mEl.querySelector(".toc__pagelist"); if (pl) pl.hidden = false;
+        if (mEl.tagName === "DETAILS") mEl.open = true;   // reveal this module's slides
       }
       var key = route.view === "page" ? "tocp-" + m.id + "-" + route.page
         : route.view === "check" ? "tocp-" + m.id + "-check" : null;

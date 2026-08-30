@@ -757,8 +757,9 @@
 
 /* -- Template card treatment ----------------------------------------
    Templates drop the full-width PowerPoint title rule for a restrained
-   heading in the module-intro-card visual family. Two heading options are
-   under review (.hd-a / .hd-b); one becomes the course-wide default. */
+   heading in the module-intro-card visual family: semibold, held to a
+   modest size, with a short blue accent tick beneath it that echoes the
+   intro card's .ov__rule. This is the course-wide slide-heading standard. */
 .slide--tmpl-diagram::after,
 .slide--tmpl-table::after,
 .slide--tmpl-compare::after { display: none; }
@@ -773,15 +774,13 @@
   padding-bottom: 0;
   line-height: 1.1;
   color: var(--emerson-blue);
-}
-
-/* Option A - structured: semibold, restrained size, short accent tick. */
-.hd-a .slide-title {
   font-weight: 600;
   font-size: 2.7cqw;
   letter-spacing: -0.005em;
 }
-.hd-a .slide-title::after {
+.slide--tmpl-diagram .slide-title::after,
+.slide--tmpl-table .slide-title::after,
+.slide--tmpl-compare .slide-title::after {
   content: "";
   position: absolute;
   left: 0;
@@ -789,13 +788,6 @@
   width: 4.5cqw;
   height: 0.3cqh;
   background: var(--emerson-blue);
-}
-
-/* Option B - modern: medium weight, a little larger, no rule, just air. */
-.hd-b .slide-title {
-  font-weight: 500;
-  font-size: 2.95cqw;
-  letter-spacing: 0.004em;
 }
 
 /* ---------- 8. Print / export -------------------------------------- */

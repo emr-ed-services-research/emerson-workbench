@@ -61,6 +61,22 @@ control integration?
 
 **Status:** open.
 
+## Chapter 1 module structure (course 1400)
+
+**Question:** Chapter 1 ("Control Valve Specifications for Maintenance")
+currently has proper modules in `course.json` (Reading the P&ID; ASME
+Pressure / Temperature Class; ANSI/FCI Seat Leakage Classes), but its slide
+content still reads as a flat list of individual slides sitting under the
+chapter rather than genuine module groupings the way Chapter 2 does. Should
+Chapter 1's content be reworked into real module-shaped teaching units, or is
+its lighter structure acceptable because it is a short specifications primer?
+
+- Raised 2026-08-30 during the day/chapter intro-card navigation work.
+- Flagged by Franz as a **content decision to revisit later**, not a
+  navigation bug — the nav now treats every tier consistently regardless.
+
+**Status:** open — deferred, revisit after the Day 1 four-part redesign pass.
+
 ## Add new questions below
 
 - _..._

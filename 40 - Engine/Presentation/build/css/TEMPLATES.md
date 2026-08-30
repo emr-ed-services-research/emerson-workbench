@@ -31,8 +31,11 @@ family — eyebrow `.ov__kicker`, bold `.ov__title`, `.ov__rule`, an
   `.ctx` right rail carries the key concepts. Do not build a slide that
   duplicates it.
 
-Every day and chapter therefore has a landing card a presenter can open from
-the TOC ("Open Day N →" / "Open chapter K →") or from the home overview.
+Every day and chapter therefore has a landing card. Clicking the name in the
+TOC (or in the home overview) opens it; the caret beside the name is the
+expand / collapse control. Modules are collapsible the same way. Day and
+chapter cards are also real stops in the Prev / Next sequence — paging forward
+lands on each one before its first module.
 
 ---
 
