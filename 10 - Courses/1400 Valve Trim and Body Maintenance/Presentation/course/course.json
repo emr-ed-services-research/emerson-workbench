@@ -198,9 +198,19 @@
               ],
               "pages": [68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79], "check": [73, 80]
             },
-            { "id": "ch2-m7", "num": 7, "title": "Reassembly & Gaskets", "status": "outline",
-              "objective": "Reassemble the valve body and select and locate the correct gaskets.",
-              "pages": [81, 82, 83, 84, 85], "check": [86] }
+            {
+              "id": "ch2-m7", "num": 7, "title": "Reassembly & Gaskets",
+              "status": "ready", "visual": true,
+              "objective": "Reassemble an easy-e valve body with the right new gaskets in the right places, and torque the bonnet down by the correct method.",
+              "keyConcepts": [
+                { "t": "A disturbed gasket is a dead gasket: any time a gasketed joint is opened, that gasket is replaced on reassembly, never reused. easy-e uses three kinds — thin graphite flat sheet for the bonnet and seat-ring joints, a metal shim to set stack height, and a spiral-wound gasket in the trim.", "pages": [82] },
+                { "t": "The spiral-wound gasket is a live element: it stays springy as the trim heats, expands and contracts, so it keeps the seat-ring gasket loaded and sealed through thermal cycling. The flat-sheet gaskets only seal a static joint.", "pages": [82, 85] },
+                { "t": "The stack from the bottom up: seat ring on its gasket, then the cage, then the spiral-wound gasket and shim on top of the cage, then the bonnet gasket, then the bonnet. Bolting the bonnet down is one torque path that loads the seat-ring gasket, the spiral-wound gasket, and the body-to-bonnet joint together.", "pages": [83] },
+                { "t": "The bonnet is never pulled straight to final torque. Clean the stud threads, lubricate the bolting, align the match marks, then tighten the nuts crosswise in progressive steps — tightening one nut relaxes its neighbour, so you work round the pattern several times, stepping the torque up each round, until every nut holds the table value and the joint is sealed.", "pages": [84] },
+                { "t": "Bonnet studs and nuts are a rated part: use only the material on the valve's serial card — the wrong grade can be overstressed in service — and install each stud so its grade and maker's mark stay visible. Table torque values assume the specified lubricant (lithium-based grease); a dry or differently-lubed joint gives the wrong clamp load.", "pages": [84] }
+              ],
+              "pages": [81, 82, 83, 84, 85], "check": [86]
+            }
           ]
         },
 

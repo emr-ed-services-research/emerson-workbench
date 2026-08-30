@@ -20,7 +20,7 @@ Templates: `40 - Engine/Presentation/build/css/TEMPLATES.md`.
 | --- | --- | --- |
 | Module 0 — Before We Start | ready | not needed (bookend) |
 | **Day 1 · Ch 1** — Control Valve Specifications | ready | **done** — template rebuild, then 3 thin modules consolidated into one ("Reading a Valve's Specifications") |
-| **Day 1 · Ch 2** — Fisher Easy-E Valve Maintenance | m1–4 ready, m5–7 outline | **modules 1–3 four-part done** (see below). **Module 4 Stage 2 done** (context authored, `status: ready`); its Stage 3 slide pass not started. Modules 5–7 still `outline`. |
+| **Day 1 · Ch 2** — Fisher Easy-E Valve Maintenance | **all 7 modules `ready`** | **modules 1–3 four-part done** (see below). **Modules 4–7 Stage 2 done** (context authored 2026-08-31); their Stage 3 slide passes are the next block of work. |
 | Day 1 · Ch 3 — Sliding-Stem S&D Actuator Maintenance | outline | not started |
 | Day 1 · Ch 4 — Sliding-Stem Piston Actuator Maintenance | outline | not started |
 | Day 1 · Ch 14 — Workshop 1: Sliding Stem | outline | not started |
@@ -92,12 +92,16 @@ Sequencing is fixed: finish Ch 2 modules 4–7, then the Pipeline Console. No
 Day 1 Ch 3/4, no second course, no console work until Ch 2 is done. Rework
 requests in this window are treated as pipeline QA (working rule 3).
 
+**Stage 2 for modules 4–7 is complete (2026-08-31).** All seven Ch 2 modules
+are `status: ready`. Next block: the Stage 3 four-part slide passes for
+modules 4–7 (option 1 — all Stage 2 first, then the slide passes as a block).
+
 | Module | Stage 2 (context) | Stage 3 (slide pass) |
 | --- | --- | --- |
 | 4 · Body Disassembly & Seal Replacement | **done** — objective + 6 key concepts, sourced from the ET (D100398X012) and ED (D100390X012) manuals; `pages` [56–61]; `status: ready` | not started |
 | 5 · Valve Lapping | **done** — objective + 6 key concepts, sourced from the ET / ED / EZ manuals' Lapping Metal Seats sections and the CVH; `pages` [62–66], `check` [67]; `status: ready` | not started |
 | 6 · Packing Replacement & Adjustment | **done** — objective + 6 key concepts (removal + the five packing types' distinct compression methods), sourced from the ET manual's Packing Maintenance section (step 13 + Table 4) and the deck; `pages` [68–72, 74–79], `check` [73, 80]; `status: ready` | not started |
-| 7 · Reassembly & Gaskets | not started | not started |
+| 7 · Reassembly & Gaskets | **done** — objective + 5 key concepts (new gaskets every time, spiral-wound as a spring, gasket locations, crosswise-progressive bonnet torque, rated bolting), sourced from the ET manual's Assembly section + bonnet-bolting note + Table 3; `pages` [81–85], `check` [86]; `status: ready` | not started |
 
 ### Module 4 — Stage 3 to-do
 
@@ -136,6 +140,19 @@ requests in this window are treated as pipeline QA (working rule 3).
   dropped in. Concepts 5–6 are on the deck + the ET manual's cross-reference
   until then; the Stage 3 pass on slides 76–79 should be checked against the
   real manuals once available.
+
+### Module 7 — Stage 3 to-do
+
+- **Slide 81** ("Assembly") is an image-only opener (the body text is a garbled
+  PPTX extraction artifact, "essolid") — drop or fold in the Stage 3 pass, like
+  slides 55 / 62 / 68.
+- **Slide 85** ("Spiral Wound Gasket Types") carries an `ole-fallback` ribbon —
+  a rasterised embedded object. Re-source from the CVH or a gasket figure if the
+  raster is poor.
+- Slide 83 ("Gasket Locations") is a labelled sectional — `.slide--tmpl-diagram`
+  candidate. Slide 82 is a gasket-type list → could pair with 85 as a figure row.
+- CYK 86 is mistitled "Check Your Knowledge 1" (should follow the Ch 2 series —
+  4? 7?); fix the label in the Stage 3 pass.
 
 ## Out of scope until Chapter 2 is finished
 
