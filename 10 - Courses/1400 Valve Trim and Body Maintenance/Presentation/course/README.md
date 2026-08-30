@@ -16,6 +16,13 @@ while the learner moves around the course.
 
 Open **`course/index.html`**.
 
+> [!note] Shared runtime
+> As of 2026-08-30, `index.html`, `course.css` and `course.js` are **assembled
+> from [[Engine|40 - Engine]]** by `build-course.ps1` — do not hand-edit them
+> here. Everything course-specific is in `course.json` (`course.code` / `title`
+> / `footer`, `slidePrefix`, `library`, the day/chapter/module tree).
+> `course-data.js` is regenerated from `course.json`.
+
 ## Status: proof — Day 1, Chapter 2, Modules 1–3
 
 The frame, the day-based navigation, the context panel with position tracking,

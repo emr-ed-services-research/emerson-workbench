@@ -14,6 +14,14 @@ The HTML presentation artifact for **1400 Valve Trim and Body Maintenance** —
 all **418 slides** converted from the source deck against the Emerson design
 system. Method: [[1400 Presentation]] §4–§5.
 
+> [!note] Shared runtime
+> As of 2026-08-30, `css/emerson-workbench.css`, `css/tokens.css`,
+> `css/TEMPLATES.md`, `assets/slides.js`, `assets/brand/` and `index.html` are
+> **assembled from [[Engine|40 - Engine]]** by `build-course.ps1` — do not
+> hand-edit them here. `_engine-lock.json` records which engine version placed
+> them. The generator scripts also moved to `40 - Engine/generator/`; only
+> `_generator/PROTECTED.txt` and this README stay per-course.
+
 ## How to present
 
 Open **`index.html`** in a browser (Chrome/Edge). It reads `manifest.js` and

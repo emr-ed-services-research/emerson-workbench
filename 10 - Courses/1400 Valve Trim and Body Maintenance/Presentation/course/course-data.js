@@ -5,6 +5,7 @@ window.EW_COURSE = {
     "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential"
   },
   "slideBase": "../build/slides/",
+  "slidePrefix": "1400-",
 
   "library": {
     "base": "../../../../20 - Source Library/",

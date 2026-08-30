@@ -10,8 +10,9 @@ desktop.ini
 .obsidian/workspace-mobile.json
 .obsidian/cache
 
-# ── Generator safety snapshots (local recovery only, can be large) ──
+# ── Safety snapshots (local recovery only) ─────────────────────────
 **/_generator/_snapshots/
+**/Presentation/build/_engine-snapshots/
 
 # ── Large binaries ─────────────────────────────────────────────────
 # The source .pptx is the MASTER input and is NOT reproducible. Back it up

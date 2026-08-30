@@ -11,11 +11,18 @@ updated: 2026-08-29
 # Course Porting Pipeline
 
 > [!note] Status
-> **Draft for review — not adopted.** Consolidates the 1400 course-engine
-> architecture review (2026-08-29). This is the proposed repeatable process for
-> bringing any PowerPoint course into the Workbench; it belongs under
-> [[Roadmap]] Stage 2. Open decisions are listed at the end and mirrored into
-> [[Open Questions]].
+> **In progress.** Consolidates the 1400 course-engine architecture review
+> (2026-08-29). Repeatable process for bringing any PowerPoint course into the
+> Workbench; belongs under [[Roadmap]] Stage 2.
+>
+> - **Step 1 done (2026-08-30):** `git init` + `.gitignore`; the generator guard
+>   (`generate.ps1` refuses to overwrite `PROTECTED.txt` slides without `-Force`).
+> - **Step 2 done (2026-08-30):** engine extracted to [[Engine|40 - Engine]];
+>   `build-course.ps1` assembles a course's `Presentation/` from it; the three
+>   de-coupling fixes applied (slide prefix, shell title, colour tokens) plus
+>   per-course localStorage namespacing. Verified in-browser for 1400.
+>
+> Open decisions at the end; mirror into [[Open Questions]].
 
 ## Purpose
 
@@ -248,23 +255,39 @@ Then: the 16:9 figure-box tuning pass, `course-data.js` regenerated from
 
 ## Recommended sequence
 
-| # | Action | Effort |
-| --- | --- | --- |
-| 1 | `git init` + generator guard | ½ day |
-| 2 | Extract the engine + the 3 de-coupling fixes | 1–2 days |
-| 3 | Prove Template 2 on Chapter 2 slide 27; decide the data-single-source split | 1 day + a decision |
-| 4 | Write `verify.ps1` (render + validate) | 1 day |
-| 5 | Pipeline exists → run "converge Chapter 2", "finish Ch3 / Ch4 / WS1", then port course #2 as the real test | ongoing |
+| # | Action | Effort | Status |
+| --- | --- | --- | --- |
+| 1 | `git init` + generator guard | ½ day | **done 2026-08-30** |
+| 2 | Extract the engine + the 3 de-coupling fixes | 1–2 days | **done 2026-08-30** |
+| 3 | Prove Template 2 on Chapter 2 slide 27; decide the data-single-source split | 1 day + a decision | next |
+| 4 | Write `verify.ps1` (render + validate) | 1 day | |
+| 5 | Pipeline exists → run "converge Chapter 2", "finish Ch3 / Ch4 / WS1", then port course #2 as the real test | ongoing | |
 
 Steps 1–4 are roughly one week. They are the difference between "we redesigned
 one course by hand with Claude's help" and "we have a way to do this."
+
+### Step 2 as built
+
+- Engine at **`40 - Engine/`** (peer to `10 - Courses/`), with `Presentation/`
+  mirroring a course's tree so relative paths resolve identically both places.
+- **`build-course.ps1`** assembles a course's `Presentation/` from the engine.
+  Per-course files untouched; `_engine-lock.json` records what was placed;
+  hand-edited targets are skipped without `-Force`; a snapshot precedes any
+  first assembly or forced run.
+- De-coupling: `slidePrefix` in `course.json` (fallback `code + "-"`); shell
+  title + header from `course.json` at runtime; the EMERSON palette in one
+  `tokens.css` imported by both stylesheets; `localStorage` keys namespaced
+  `ew<code>.*`.
+- Still coupled (deferred): the generator scripts (`1400` + absolute paths
+  throughout), the standalone deck runner's three "1400" strings, the
+  copyright-year token. Tracked in [[Engine]] "Known not-yet-decoupled".
 
 ## Open decisions
 
 Mirror into [[Open Questions]] once reviewed.
 
-- **Engine location** — `Presentation/_engine/` at the vault root, a new
-  `40 - Engine/` peer to `10 - Courses/`, or another scheme.
+- ~~**Engine location**~~ — resolved 2026-08-30: `40 - Engine/`, peer to
+  `10 - Courses/`; courses assembled from it by `build-course.ps1`.
 - **Data layer scope** — which tables / values move to a data layer versus stay
   in HTML behind a lint check.
 - **Generator future** — retire it from authored chapters (recommended) versus
