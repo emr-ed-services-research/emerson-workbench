@@ -619,51 +619,79 @@
    All templates carry the standard slide title + chrome; none use .slide-body,
    so nothing is stripped in visual mode. */
 
-/* -- Template 2: labelled diagram card ------------------------------ */
+/* -- Template 2: labelled diagram card ------------------------------
+   Follows the Control Valve Handbook's callout convention: on-image markers
+   sit OUTSIDE the image in a left gutter, each with a thin leader line
+   pointing in at the part. They are small reference numbers - visibly
+   smaller than the numbered circles in the list, where the labels live.
+   A slide whose image already carries its own callouts (e.g. a figure
+   lifted from the Handbook) adds `is-sourced` on the <article> and no
+   .tmpl-marker elements; the .tmpl-fig then uses the full left area. */
 .slide--tmpl-diagram .tmpl-fig {
   position: absolute;
-  left: 3.5cqw; top: 19.5cqh; width: 45cqw; bottom: 9cqh;
+  left: 12cqw; top: 19.5cqh; width: 36cqw; bottom: 9cqh;   /* image box; gutter to its left */
 }
+.slide--tmpl-diagram.is-sourced .tmpl-fig { left: 4cqw; width: 44cqw; }
 .slide--tmpl-diagram .tmpl-fig > img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
   object-fit: contain;
 }
-.slide--tmpl-diagram .tmpl-marker {   /* inline left/top % place it on its point */
+/* on-image marker - inline style sets  top:<y% of the fig box>  and
+   --lead:<cqw from the marker to the part>                                 */
+.slide--tmpl-diagram .tmpl-marker {
   position: absolute;
-  width: 3.3cqw; height: 3.3cqw;
-  margin: -1.65cqw 0 0 -1.65cqw;
+  left: -7cqw;                      /* outside the image, in the gutter */
+  width: 1.9cqw; height: 1.9cqw;
+  margin-top: -0.95cqw;
   border-radius: 50%;
-  background: var(--emerson-blue);
+  background: var(--emerson-charcoal);
   color: var(--emerson-white);
-  font: 700 1.85cqw/1 var(--font-body);
+  font: 700 1.05cqw/1 var(--font-body);
   display: grid; place-items: center;
-  border: 0.22cqw solid var(--emerson-white);
+  z-index: 3;
+}
+.slide--tmpl-diagram .tmpl-marker::after {   /* thin leader toward the part */
+  content: "";
+  position: absolute;
+  left: 100%; top: 50%;
+  width: var(--lead, 6cqw);
+  height: max(1px, 0.12cqh);
+  background: var(--emerson-charcoal);
+  transform: translateY(-50%);
 }
 .slide--tmpl-diagram .tmpl-list {
   position: absolute;
-  left: 52cqw; right: 3.5cqw; top: 19.5cqh; bottom: 9cqh;
+  left: 53cqw; right: 3.5cqw; top: 19.5cqh; bottom: 9cqh;
   margin: 0; padding: 0;
   list-style: none;
   counter-reset: tmpl;
-  display: flex; flex-direction: column; justify-content: center; gap: 2cqh;
+  display: flex; flex-direction: column; justify-content: center; gap: 1.7cqh;
 }
 .slide--tmpl-diagram .tmpl-list li {
   counter-increment: tmpl;
   position: relative;
-  padding-left: 5cqw;
-  font-size: 2.15cqw; line-height: 1.3;
+  padding-left: 4.6cqw;
+  font-size: 2.05cqw; line-height: 1.3;
   color: var(--body-text);
 }
 .slide--tmpl-diagram .tmpl-list li::before {
   content: counter(tmpl);
-  position: absolute; left: 0; top: -0.2cqh;
-  width: 3.3cqw; height: 3.3cqw;
+  position: absolute; left: 0; top: -0.1cqh;
+  width: 3cqw; height: 3cqw;
   border-radius: 50%;
   background: var(--emerson-blue);
   color: var(--emerson-white);
-  font: 700 1.85cqw/1 var(--font-body);
+  font: 700 1.7cqw/1 var(--font-body);
   display: grid; place-items: center;
+}
+/* source attribution for a figure lifted from the Source Library - always shown */
+.tmpl-source {
+  position: absolute;
+  left: 4cqw; bottom: 2.4cqh;
+  margin: 0;
+  font: italic 1.2cqw/1.3 var(--font-body);
+  color: var(--emerson-grey);
 }
 
 /* -- Template 3 + 4: table cards ---------------------------------- */

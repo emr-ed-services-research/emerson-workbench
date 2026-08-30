@@ -25,32 +25,42 @@ that duplicates it.
 
 ## Template 2 — labelled diagram card  `.slide--tmpl-diagram`
 
-A figure on the left with small numbered markers placed on it, paired with an
-ordered list of the same numbers on the right. Replaces free-floating
-text-labels-over-image.
+Follows the Control Valve Handbook callout convention. A figure with an ordered
+list of labels beside it. On-image markers sit **outside** the image in a left
+gutter, each with a thin leader line pointing in at the part; they are small
+reference numbers, visibly smaller than the numbered circles in the list, where
+the labels live.
 
 ```html
 <article class="slide slide--tmpl-diagram" data-slide="14" data-deck="1400">
   <h1 class="slide-title">Control Valve Assembly</h1>
   <figure class="tmpl-fig">
     <img src="../assets/img/imageNN.png" alt="…">
-    <span class="tmpl-marker" style="left:52%;top:18%">1</span>
-    <span class="tmpl-marker" style="left:46%;top:63%">2</span>
-    <span class="tmpl-marker" style="left:55%;top:78%">3</span>
+    <span class="tmpl-marker" style="top:16%;--lead:14cqw">1</span>
+    <span class="tmpl-marker" style="top:60%;--lead:8cqw">2</span>
+    <span class="tmpl-marker" style="top:82%;--lead:11cqw">3</span>
   </figure>
   <ol class="tmpl-list">
-    <li>Actuator — supplies the force and travel</li>
-    <li>Bonnet — closes the body, holds the packing</li>
-    <li>Valve body — the pressure boundary, between the flanges</li>
+    <li>Actuator</li>
+    <li>Bonnet</li>
+    <li>Valve body</li>
   </ol>
   <div class="slide-chrome">…</div>
 </article>
 ```
 
-- `.tmpl-marker` `left`/`top` are percentages of the `.tmpl-fig` box; the marker
-  is centred on that point.
-- Marker order must match list order — the list auto-numbers with a CSS counter.
-- Keep to ~3–6 callouts.
+- Each `.tmpl-marker` sits in the gutter at a fixed left; the inline style sets
+  `top` (percent of the `.tmpl-fig` box) and `--lead` (the leader length in
+  `cqw`, i.e. how far right the part is from the marker).
+- Marker order must match list order — the list auto-numbers.
+- Keep to ~3–7 callouts. The list is where the detail lives: a list item is the
+  part name plus, if useful, a short functional tag (`Cage — guides the plug`),
+  never a full sentence an instructor would read aloud. A list mirroring a
+  Handbook figure's own callouts uses that figure's bare labels.
+- **If the image already carries its own callouts** — e.g. a figure lifted from
+  the Handbook — add `is-sourced` on the `<article>`, drop the `.tmpl-marker`
+  elements, make the `.tmpl-list` mirror the figure's own numbering, and
+  attribute the source in a `<div class="slide-textbox">` bottom caption.
 
 ---
 

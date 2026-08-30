@@ -1,0 +1,7 @@
+﻿Figures lifted from the Source Library for use in the 1400 course slides.
+Emerson first-party publications, reused in Emerson Educational Services training.
+
+cvh6-fig1-3-globe-valve-components.png
+  Control Valve Handbook, Sixth Edition (D101881X012), Figure 1.3
+  "Sliding-Stem Control Valve" - exploded major-components view, callouts 1-11.
+  Cropped from page 18 (300 dpi render). Used on slide 27.
