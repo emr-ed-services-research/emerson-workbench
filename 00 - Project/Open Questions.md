@@ -75,7 +75,12 @@ its lighter structure acceptable because it is a short specifications primer?
 - Flagged by Franz as a **content decision to revisit later**, not a
   navigation bug — the nav now treats every tier consistently regardless.
 
-**Status:** open — deferred, revisit after the Day 1 four-part redesign pass.
+**Decided (2026-08-31):** the three modules were consolidated into one —
+"Reading a Valve's Specifications" (slides 13, 14, 16, 19 + a two-part check).
+Franz's rule: no modules of only one or two slides. Commit `0ccc636`. See the
+`1400-module-boundaries` memory.
+
+**Status:** resolved.
 
 ## Add new questions below
 
