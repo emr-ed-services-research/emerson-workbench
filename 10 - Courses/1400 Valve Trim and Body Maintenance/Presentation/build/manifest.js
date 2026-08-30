@@ -317,7 +317,7 @@ window.EW_MANIFEST = [
     {
         "n":  36,
         "file":  "1400-036.html",
-        "family":  "two-col",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Guiding the Plug: Cage or Retainer",
         "hasNotes":  false,
@@ -326,7 +326,7 @@ window.EW_MANIFEST = [
     {
         "n":  37,
         "file":  "1400-037.html",
-        "family":  "two-col",
+        "family":  "tmpl-diagram",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Cage Guided Valve",
         "hasNotes":  true,
@@ -335,7 +335,7 @@ window.EW_MANIFEST = [
     {
         "n":  38,
         "file":  "1400-038.html",
-        "family":  "two-col",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Post Guided Valve",
         "hasNotes":  false,
@@ -344,7 +344,7 @@ window.EW_MANIFEST = [
     {
         "n":  39,
         "file":  "1400-039.html",
-        "family":  "one-col",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Inherent Flow Characteristic",
         "hasNotes":  false,
@@ -353,7 +353,7 @@ window.EW_MANIFEST = [
     {
         "n":  40,
         "file":  "1400-040.html",
-        "family":  "title-only",
+        "family":  "tmpl-compare",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Cage-Characterised Flow",
         "hasNotes":  false,
@@ -380,7 +380,7 @@ window.EW_MANIFEST = [
     {
         "n":  43,
         "file":  "1400-043.html",
-        "family":  "title-only",
+        "family":  "tmpl-diagram",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Formed (Contoured) Plug",
         "hasNotes":  false,

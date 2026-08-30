@@ -15,3 +15,12 @@ plug-unbalanced-head.png / plug-balanced-head.png
   Deck images image44 / image45 (Fisher plug photos) cropped to the plug head so
   the distinguishing feature reads at slide size: solid face (unbalanced) vs drilled
   balance passages (balanced). Used on slide 30. 2026-08-30.
+
+flow-curve.png / flow-cages.png
+  Deck image64 (Fisher 'Flow Characteristics' figure) split into its two halves: the
+  Cv-vs-travel curve chart (slide 39) and the three characterised cages (slide 40).
+  2026-08-30.
+
+cage-plug-assembly.png
+  Deck image60 (Fisher balanced plug in a cage) cropped to drop the bare stem so
+  the plug + cage fill the frame. Used on slide 37. 2026-08-30.
