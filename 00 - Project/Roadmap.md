@@ -3,7 +3,7 @@ title: Roadmap
 type: reference
 tags:
   - project
-updated: 2026-08-28
+updated: 2026-08-31
 ---
 
 # Roadmap
@@ -59,6 +59,14 @@ Chapter 2, Modules 1–3. See
 
 Depends on resolving: [[Open Questions#Rendering stack]],
 [[Open Questions#Source-change propagation]].
+
+**Near-term sequencing ([[System Architecture]], 2026-08-31):** the course
+shell ("Workshop") is structurally locked in. Finish course 1400 chapter 2's
+remaining modules under the existing pipeline conventions — no further
+structural changes — then build the **Pipeline Console** (a UI for running
+course conversions) as the next major phase. Cartridge / Workshop separation is
+deferred until after that. Rework requests while finishing chapter 2 are treated
+as pipeline QA, not one-off slide fixes.
 
 ## Stage 3 — Process Control Integration
 

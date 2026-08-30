@@ -66,6 +66,19 @@ first surfaced them.
    a recreation. This check is owed **before spending time iterating on an
    existing hand-drawn figure too**, not only when first authoring a slide.
 
+3. **A fix discovered during course work is a pipeline question first.** When a
+   slide needs reworking, decide whether it is a one-time content correction or
+   a gap the pipeline's rules, templates, or checklist should have caught. If it
+   is a gap, codify it — here, in the pre-send checklist, or in
+   [[System Architecture]] — *before or alongside* fixing the slide; the slide
+   fix is then the first instance of the codified rule, not an isolated patch.
+   This is why rules 1 and 2 exist: both started as slide fixes that were
+   actually pipeline gaps. [[System Architecture]] carries the four-layer model
+   (Workbench / Workshop / Cartridge / Pipeline Console) this separation comes
+   from, and the current directive: finish chapter 2's remaining modules under
+   the existing conventions — no new structural or console work — then scope the
+   Pipeline Console.
+
 ## Where we are (2026-08-29)
 
 - **1400 fully converted** — all 418 slides on the component-extraction model
