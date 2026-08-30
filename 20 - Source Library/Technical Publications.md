@@ -140,27 +140,37 @@ assembly. ENVIRO-SEAL bellows seal bonnet. Parts.
 The easy-e instruction manuals (ES / ED / ET / EZ) hand off to these two
 dedicated manuals for the two live-loaded packing systems — adjustment is by
 spring geometry, not flange torque, and the procedure lives only in these docs.
-**Both are referenced by [[1400 — Course Home|1400]] Chapter 2 Module 6 (Packing
-Replacement & Adjustment) and are not yet in the library — the PDFs need to be
-added to `20 - Source Library/Technical Publications/`.**
+Both are used by [[1400 — Course Home|1400]] Chapter 2 Module 6 (Packing
+Replacement & Adjustment). HIGH-SEAL is the higher pressure/temperature version
+of ENVIRO-SEAL; the two are set by *different* methods.
 
 ### Fisher ENVIRO-SEAL Packing System for Sliding-Stem Valves
-`D101642X012` · **not held — needs to be obtained**
+`d101642x012.pdf` · D101642X012 · July 2017 · 12 pp
 
-Belleville-spring-loaded stem packing in PTFE, graphite ULF, and duplex
-(PTFE set over a graphite set) arrangements. Adjusted by the **spring-flat
-method**: hand-tighten, tighten until the Belleville washers go flat, then back
-off — 1/4 turn for graphite, 1/2 turn for PTFE. Not lubricated. The easy-e valve
-manuals point here for all ENVIRO-SEAL packing work.
+Belleville (coned-disk) spring-loaded stem packing for 3/8"–2" stems, in
+**double PTFE**, **single graphite ULF**, or **duplex** arrangements (7 springs
+for PTFE/duplex, 9 for graphite ULF). **Tightening Procedures:** anti-seize the
+studs and nuts (threads *and* nut faces), hand-tighten, then tighten alternately
+and evenly — flange kept parallel — until the Belleville springs are 100% flat
+(a sharp jump in nut torque). Then back each nut off to the 85% "target load":
+**1/2 turn for PTFE or duplex, 1/4 turn for graphite ULF**. For graphite ULF,
+Table 7 torque values are an alternative (no back-off). Also carries the
+**20/20 rule** for judging a used packing bore (usable if < 20% pitted and no
+pit deeper than 0.020 in) and the brake-hone cleaning method.
 
-### Fisher HIGH-SEAL Live-Loaded Packing System
-`D101453X012` · **not held — needs to be obtained**
+### Fisher HIGH-SEAL ULF Live-Loaded Packing System
+`53688016.pdf` · D101453X012 · July 2017 · 12 pp
 
-Belleville spring assembly with carbon guide bushings, composite graphite and
-graphite-laminate rings, and PTFE washers. Set by **geometry, not torque**:
-hand-tighten, align the bottom of the travel scale with the indicator disk, then
-tighten to the maximum-compression mark. Not lubricated. The easy-e valve
-manuals point here for all HIGH-SEAL packing work.
+The higher pressure/temperature companion to ENVIRO-SEAL — a long-travel
+Belleville spring pack with a **load scale** (zero / minimum / maximum spring
+load lines) matched to the stem size. **Installation:** anti-seize and
+hand-tighten the nuts; loosen the load-scale mounting screws and align the
+bottom edge of the scale with the indicator disk while the springs are
+uncompressed; then tighten the nuts alternately and evenly — flange parallel —
+until the indicator disk reaches the **maximum-compression line**. No
+retightening for the life of the packing unless the indicator drifts toward the
+minimum line. (Filename `53688016` is the Emerson media number; document is
+D101453X012.)
 
 ## Rotary valve bodies
 

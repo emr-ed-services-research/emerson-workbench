@@ -134,12 +134,13 @@ modules 4–7 (option 1 — all Stage 2 first, then the slide passes as a block)
   (spring-loaded PTFE → follower bottoms on bonnet; jam PTFE → min torque; jam
   graphite → max then back to min; HIGH-SEAL → scale-to-indicator, max mark;
   ENVIRO-SEAL → spring-flat) plus a figure row of the five stacks.
-- **Source-library gap:** the HIGH-SEAL (D101453X012) and ENVIRO-SEAL
-  (D101642X012) packing-system manuals are referenced but **not held** — added
-  as catalogue stubs in [[Technical Publications]], PDFs still need to be
-  dropped in. Concepts 5–6 are on the deck + the ET manual's cross-reference
-  until then; the Stage 3 pass on slides 76–79 should be checked against the
-  real manuals once available.
+- **Source manuals now held** (2026-08-31): HIGH-SEAL (`53688016.pdf` =
+  D101453X012) and ENVIRO-SEAL (`d101642x012.pdf` = D101642X012) are in
+  [[Technical Publications]]. Concepts 5–6 were checked and refined against the
+  actual Tightening Procedures — HIGH-SEAL uses a load scale to the
+  maximum-compression line; ENVIRO-SEAL uses the springs-100%-flat-then-back-off
+  method (1/2 turn PTFE/duplex, 1/4 turn graphite ULF). Slides 76–79 in the
+  Stage 3 pass can be built straight from these manuals' figures.
 
 ### Module 7 — Stage 3 to-do
 
