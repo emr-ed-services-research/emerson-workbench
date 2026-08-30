@@ -149,12 +149,12 @@ window.EW_COURSE = {
               "status": "ready", "visual": true,
               "objective": "Match the easy-e valve types (ES / ED / ET / EZ) to their seals and shutoff classes, and select the right stem packing for the service.",
               "keyConcepts": [
-                { "t": "The easy-e family: ES (unbalanced, cage-guided, metal seat, Class IV); ED (balanced, cage-guided, graphite piston seal, Class II); ET (balanced, cage-guided, PTFE soft seat, Class V); EZ (unbalanced, post-guided, metal seat, Class IV). Class VI on any of them needs a soft/PTFE seat.", "pages": [45, 46] },
+                { "t": "The easy-e family: ES (unbalanced, cage-guided, metal seat, Class IV); ED (balanced, cage-guided, graphite piston seal, Class II); ET (balanced, cage-guided, PTFE soft seat, Class V); EZ (unbalanced, post-guided, metal seat, Class IV). Class VI on any of them needs a soft/PTFE seat.", "pages": [46] },
                 { "t": "Piston-seal choice follows temperature: graphite piston rings for high temperature (ED); two-piece or spring-loaded PTFE for lower temperature (ET).", "pages": [47] },
                 { "t": "Packing seals along the stem, inside the packing box; the packing flange and nuts set its compression.", "pages": [51] },
                 { "t": "Stem packing by service — PTFE: low friction, below ~450 °F, spring-loaded or jam. Graphite: high temperature, high friction, jam or high-seal live-loaded. ENVIRO-SEAL: live-loaded for fugitive-emission limits, in PTFE, graphite ULF, or duplex.", "pages": [52] }
               ],
-              "pages": [45, 46, 47, 51, 52]
+              "pages": [46, 47, 51, 52]
             },
             { "id": "ch2-m4", "num": 4, "title": "Body Disassembly & Seal Replacement", "status": "outline",
               "objective": "Disassemble an easy-e valve body and replace the balanced-plug piston seal (ED graphite, ET two-piece and spring-loaded).",

@@ -9,17 +9,55 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 51 | ppt slides/slide51.xml | layout: 2 Column with Logo | family: .slide--two-col -->
-  <!-- ch2 proof pass: this slide is the packing-box intro. The list of packing types moved to the
-       consolidated packing-comparison slide 52 (was 52/53/54). -->
-  <article class="slide slide--hd slide--two-col" data-slide="51" data-deck="1400" data-review="ch2-proof-pass">
-    <div class="review-ribbon">ch2-proof-pass: intro only; types moved to slide 52</div>
+  <!-- Slide 51 | ppt slides/slide51.xml | layout: figure row | family: .slide--tmpl-figrow -->
+  <!-- ch2 four-part pass. The packing-box intro. The deck photo (image77) has burned-in yellow
+       arrows and margin labels; the Fisher EZ manual plain-bonnet sectional (Figure 11,
+       D100401X012) is clean but carries the manual's parts-list key numbers. Redrawn here as a
+       simple labelled cross-section - the level of detail this "what is a packing box" slide
+       needs; the detailed part stack-ups belong to the disassembly modules. -->
+  <article class="slide slide--tmpl-figrow" data-slide="51" data-deck="1400" data-review="ch2-callout-pass">
+    <div class="review-ribbon">ch2 pass: packing box redrawn as SVG</div>
     <h1 class="slide-title">Packing</h1>
-    <div class="slide-body"><ul><li style="font-size:2.02cqw">Seals along the valve stem</li><li style="font-size:2.02cqw">Located in the packing box</li><li style="font-size:2.02cqw">Packing flange and nuts set the compression</li></ul></div>
-    <figure class="slide-figure" style="left:38.188%;top:18.137%;width:58.286%;height:59.261%"><img src="../assets/img/image77.png" alt="Picture 3"></figure>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <svg viewBox="0 0 640 380" role="img" aria-label="Cross-section of a valve bonnet packing box: the stem passes through a stack of packing rings held in a bored recess, compressed by a packing flange and two flange nuts" font-family="Arial, Helvetica, sans-serif">
+          <!-- bonnet body, sectioned -->
+          <path d="M118 356 L118 176 Q118 156 138 156 L206 156 L206 316 L250 316 L250 156 L318 156 Q338 156 338 176 L338 356 Z"
+                fill="#dcdee0" stroke="#3F4040" stroke-width="2"/>
+          <!-- stem -->
+          <rect x="219" y="14" width="18" height="342" fill="#b7bbbe" stroke="#3F4040" stroke-width="1.6"/>
+          <!-- packing: two chevron (V-ring) stacks either side of the stem -->
+          <g fill="#efe9db" stroke="#9c927a" stroke-width="1.2">
+            <path d="M206 172 l13 10 l0 12 l-13 -10 Z M206 194 l13 10 l0 12 l-13 -10 Z M206 216 l13 10 l0 12 l-13 -10 Z M206 238 l13 10 l0 12 l-13 -10 Z M206 260 l13 10 l0 12 l-13 -10 Z M206 282 l13 10 l0 12 l-13 -10 Z"/>
+            <path d="M250 172 l-13 10 l0 12 l13 -10 Z M250 194 l-13 10 l0 12 l13 -10 Z M250 216 l-13 10 l0 12 l13 -10 Z M250 238 l-13 10 l0 12 l13 -10 Z M250 260 l-13 10 l0 12 l13 -10 Z M250 282 l-13 10 l0 12 l13 -10 Z"/>
+          </g>
+          <!-- packing follower -->
+          <rect x="203" y="150" width="50" height="14" fill="#c7cacc" stroke="#3F4040" stroke-width="1.5"/>
+          <!-- packing flange -->
+          <rect x="178" y="120" width="100" height="26" fill="#cdd0d2" stroke="#3F4040" stroke-width="2"/>
+          <!-- studs + flange nuts -->
+          <g fill="#9a9ea1" stroke="#3F4040" stroke-width="1">
+            <rect x="185" y="92" width="10" height="70"/><rect x="261" y="92" width="10" height="70"/>
+          </g>
+          <path d="M174 98 l16 -9 l16 9 l0 18 l-16 9 l-16 -9 Z" fill="#b7bbbe" stroke="#3F4040" stroke-width="1.6"/>
+          <path d="M250 98 l16 -9 l16 9 l0 18 l-16 9 l-16 -9 Z" fill="#b7bbbe" stroke="#3F4040" stroke-width="1.6"/>
+          <!-- leaders + labels -->
+          <g stroke="#3F4040" stroke-width="1.4" fill="#3F4040">
+            <path d="M282 104 H392" fill="none"/><circle cx="282" cy="104" r="3.2"/>
+            <path d="M244 224 H392" fill="none"/><circle cx="244" cy="224" r="3.2"/>
+            <path d="M339 332 H392" fill="none"/><circle cx="339" cy="332" r="3.2"/>
+          </g>
+          <g font-size="19" font-weight="700" fill="#3F4040">
+            <text x="400" y="110">Packing flange &amp; nuts</text>
+            <text x="400" y="230">Packing</text>
+            <text x="400" y="338">Packing box</text>
+          </g>
+        </svg>
+      </figure>
+    </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">51</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
-  
+
 </main>
 </body>
 </html>

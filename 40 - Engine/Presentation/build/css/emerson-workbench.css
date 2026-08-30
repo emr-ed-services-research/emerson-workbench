@@ -793,15 +793,22 @@
 .slide--tmpl-figrow .tmpl-cell:only-child > svg { flex: 1; width: 100%; height: 100%; }
 
 /* has-lead: a table (or short text block) above the figure row - e.g. a
-   reference table with the items it tabulates shown beneath it. */
-.slide--tmpl-figrow.has-lead .tmpl-lead {
+   reference table with the items it tabulates shown beneath it. Flow layout
+   (not fixed offsets) so the row starts wherever the table actually ends -
+   the table's rendered height differs between the 4:3 deck and 16:9 shell. */
+.slide--tmpl-figrow.has-lead .tmpl-stack {
   position: absolute;
-  left: 5.6cqw; right: 5.6cqw; top: 16cqh;
-  display: flex; justify-content: center;
+  left: 5.6cqw; right: 5.6cqw; top: 16cqh; bottom: 8cqh;
+  display: flex; flex-direction: column; gap: 3.5cqh;
+}
+.slide--tmpl-figrow.has-lead .tmpl-lead {
+  flex: none; display: flex; justify-content: center;
 }
 .slide--tmpl-figrow.has-lead .tmpl-lead .tmpl-table { max-width: 74cqw; }
-.slide--tmpl-figrow.has-lead .tmpl-row { top: 40cqh; bottom: 7cqh; align-items: flex-start; }
-.slide--tmpl-figrow.has-lead .tmpl-cell > img { max-height: 34cqh; }
+.slide--tmpl-figrow.has-lead .tmpl-row {
+  position: static; flex: 1; min-height: 0;
+  left: auto; right: auto; top: auto; bottom: auto;
+}
 .slide--tmpl-figrow .tmpl-cell figcaption {
   flex: none; text-align: center; line-height: 1.3;
   font-size: 1.9cqw; color: var(--body-text);

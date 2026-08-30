@@ -407,7 +407,7 @@ window.EW_MANIFEST = [
     {
         "n":  46,
         "file":  "1400-046.html",
-        "family":  "one-col",
+        "family":  "tmpl-table",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Fisher™ easy-e™ Valves",
         "hasNotes":  false,
@@ -416,7 +416,7 @@ window.EW_MANIFEST = [
     {
         "n":  47,
         "file":  "1400-047.html",
-        "family":  "one-col",
+        "family":  "tmpl-compare",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "easy-e Piston Seals",
         "hasNotes":  false,
@@ -452,7 +452,7 @@ window.EW_MANIFEST = [
     {
         "n":  51,
         "file":  "1400-051.html",
-        "family":  "two-col",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Packing",
         "hasNotes":  false,
@@ -461,7 +461,7 @@ window.EW_MANIFEST = [
     {
         "n":  52,
         "file":  "1400-052.html",
-        "family":  "two-col",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "easy-e Stem Packing",
         "hasNotes":  false,

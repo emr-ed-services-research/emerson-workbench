@@ -182,6 +182,16 @@ line** (e.g. a flow direction) — never a sentence an instructor would read
 aloud; that belongs in the context pane. `.tmpl-note` also works inside
 `.slide--tmpl-diagram`.
 
+### `.slide--tmpl-figrow.has-lead`
+
+A reference table above the figure row — the table plus the items it
+tabulates, shown together (slides 40, 52). Wrap the `<div class="tmpl-lead">`
+(holding one `<table class="tmpl-table">`) and the `<div class="tmpl-row">` in
+a single `<div class="tmpl-stack">`. The stack is a flow column, so the row
+starts wherever the table actually ends — the table renders a different height
+in the 4:3 deck vs the 16:9 shell, and fixed offsets collide in one or the
+other. Always check both.
+
 ### `.slide--tmpl-diagram.is-wide`
 
 For a detailed sectional / cutaway that needs room: a bigger figure
