@@ -24,3 +24,8 @@ flow-curve.png / flow-cages.png
 cage-plug-assembly.png
   Deck image60 (Fisher balanced plug in a cage) cropped to drop the bare stem so
   the plug + cage fill the frame. Used on slide 37. 2026-08-30.
+
+cage-quick-opening.png / cage-linear.png / cage-equal-pct.png
+  The three cages from deck image64, split into one image each (labels dropped).
+  Shown in a row beneath the table on slide 40. 2026-08-30.
+(slide 39 flow-curve.png is superseded by an inline SVG redraw; file retained.)

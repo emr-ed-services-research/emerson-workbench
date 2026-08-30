@@ -9,15 +9,15 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 40 | ppt slides/slide40-42.xml | layout: comparison table card | family: .slide--tmpl-compare -->
+  <!-- Slide 40 | ppt slides/slide40-42.xml | layout: figure row with lead table | family: .slide--tmpl-figrow has-lead -->
   <!-- ch2 four-part pass. Slides 40 (quick-opening), 41 (linear), 42 (equal percentage) were one
        near-identical slide each; consolidated to this comparison. 41 / 42 stay dropped from the
-       module flow (files retained for the standalone deck). image64 split (assets/sourced/): the
-       three cage windows shown here beside the table; the curve chart is on slide 39. -->
-  <article class="slide slide--tmpl-compare" data-slide="40" data-deck="1400" data-review="ch2-callout-pass">
-    <div class="review-ribbon">ch2 pass: tmpl-compare; 40+41+42 consolidated</div>
+       module flow. Layout reworked: the reference table centred on top, the three characterised
+       cages in a row beneath it, one under each. Cages split from deck image64 (assets/sourced/). -->
+  <article class="slide slide--tmpl-figrow has-lead" data-slide="40" data-deck="1400" data-review="ch2-callout-pass">
+    <div class="review-ribbon">ch2 pass: table + cage row</div>
     <h1 class="slide-title">Cage-Characterised Flow</h1>
-    <div class="tmpl-wrap">
+    <div class="tmpl-lead">
       <table class="tmpl-table" data-ref="flow-characteristics">
         <thead><tr><th>Characteristic</th><th>Cage window</th><th>Typical service</th></tr></thead>
         <tbody>
@@ -27,10 +27,20 @@
         </tbody>
       </table>
     </div>
-    <figure class="tmpl-aside">
-      <img src="../assets/sourced/flow-cages.png" alt="Three Fisher cages with quick-opening, linear and equal-percentage window shapes">
-      <figcaption>The window shape cut into the cage sets the characteristic.</figcaption>
-    </figure>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <img src="../assets/sourced/cage-quick-opening.png" alt="Cage with square-edge windows">
+        <figcaption><b>Quick-opening</b>square-edge windows</figcaption>
+      </figure>
+      <figure class="tmpl-cell">
+        <img src="../assets/sourced/cage-linear.png" alt="Cage with pear-shaped windows">
+        <figcaption><b>Linear</b>pear-shaped windows</figcaption>
+      </figure>
+      <figure class="tmpl-cell">
+        <img src="../assets/sourced/cage-equal-pct.png" alt="Cage with offset pear-shaped windows">
+        <figcaption><b>Equal percentage</b>offset pear-shaped windows</figcaption>
+      </figure>
+    </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">40</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
 
