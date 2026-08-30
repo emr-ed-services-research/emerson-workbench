@@ -81,36 +81,19 @@ window.EW_COURSE = {
           ],
           "modules": [
             {
-              "id": "ch1-m1", "num": 1, "title": "Reading the P&ID",
+              "id": "ch1-m1", "num": 1, "title": "Reading a Valve's Specifications",
               "status": "ready", "visual": true,
-              "objective": "Use a P&ID to scope work on a control valve — find the valve, its tag, and its immediate connections.",
+              "objective": "Read a control valve's duty from its paperwork — locate the valve and its work scope on the P&ID, read the ASME pressure/temperature class off the nameplate, and state the shutoff its ANSI/FCI seat-leakage class allows.",
               "keyConcepts": [
                 { "t": "A P&ID is the map of the process. Before touching a valve, use it to scope the job — the control valve and its immediate connections, staying between the flanges, not the whole loop.", "pages": [13] },
-                { "t": "On the P&ID the control valve is one tagged symbol; on the bench it is an assembly — actuator on top, then the bonnet, then the valve body between the pipe flanges.", "pages": [14] }
-              ],
-              "pages": [13, 14]
-            },
-            {
-              "id": "ch1-m2", "num": 2, "title": "ASME Pressure / Temperature Class",
-              "status": "ready", "visual": true,
-              "objective": "Read a valve body's ASME class and explain how its pressure rating changes with service temperature.",
-              "keyConcepts": [
+                { "t": "On the P&ID the control valve is one tagged symbol; on the bench it is an assembly — actuator on top, then the bonnet, then the valve body between the pipe flanges.", "pages": [14] },
                 { "t": "A valve body's pressure rating is not a single number — it falls as temperature rises. The ASME class (150, 300, 600, 900, 1500) names a rating curve, not a fixed pressure.", "pages": [16] },
-                { "t": "The pressure–temperature table (ASME B16.34) gives the working pressure for a class, body material, and service temperature — read the class and material off the nameplate, then look up the temperature and watch the number drop down the column.", "pages": [16] }
-              ],
-              "pages": [16],
-              "check": [18]
-            },
-            {
-              "id": "ch1-m3", "num": 3, "title": "ANSI/FCI Seat Leakage Classes",
-              "status": "ready", "visual": true,
-              "objective": "Distinguish ANSI/FCI seat-leakage classes I through VI and what each allows.",
-              "keyConcepts": [
+                { "t": "The pressure–temperature table (ASME B16.34) gives the working pressure for a class, body material, and service temperature — read the class and material off the nameplate, then look up the temperature and watch the number drop down the column.", "pages": [16] },
                 { "t": "\"Shut off\" is not zero flow. ANSI/FCI 70-2 (harmonised with IEC 60534-4) defines six seat-leakage classes and the factory leak-tests the valve to one of them. Class I means no test was done.", "pages": [19] },
                 { "t": "The classes tighten by roughly a factor of ten — Class II is 0.5% of rated capacity, III is 0.1%, IV is 0.01%; Class V and VI are tiny measured amounts (ml/min) that depend on port size. Higher class = tighter, and harder to achieve and hold.", "pages": [19] }
               ],
-              "pages": [19],
-              "check": [25]
+              "pages": [13, 14, 16, 19],
+              "check": [18, 25]
             }
           ]
         },
