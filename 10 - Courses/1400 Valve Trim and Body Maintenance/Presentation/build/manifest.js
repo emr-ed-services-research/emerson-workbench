@@ -236,9 +236,9 @@ window.EW_MANIFEST = [
     {
         "n":  27,
         "file":  "1400-027.html",
-        "family":  "title-only",
+        "family":  "tmpl-diagram",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
-        "title":  "Globe Body - Major Components",
+        "title":  "Globe Valve - Major Components",
         "hasNotes":  false,
         "review":  ""
     },
