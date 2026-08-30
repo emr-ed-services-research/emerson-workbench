@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem -Recurse -File \"C:\\\\Users\\\\E1552882\\\\Documents-Local\\\\Projects\\\\EmersonWorkbench\" -Force | ForEach-Object { $_.FullName.Replace\\(\"C:\\\\Users\\\\E1552882\\\\Documents-Local\\\\Projects\\\\EmersonWorkbench\\\\\", \"\"\\) } | Sort-Object)"
+    ]
+  },
+  "spinnerTipsEnabled": false
+}

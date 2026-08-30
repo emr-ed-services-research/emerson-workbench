@@ -1,0 +1,42 @@
+# ── OS / editor cruft ───────────────────────────────────────────────
+Thumbs.db
+desktop.ini
+.DS_Store
+*.tmp
+*~
+
+# ── Obsidian per-user UI state (the rest of .obsidian/ is tracked) ──
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+.obsidian/cache
+
+# ── Generator safety snapshots (local recovery only, can be large) ──
+**/_generator/_snapshots/
+
+# ── Large binaries ─────────────────────────────────────────────────
+# The source .pptx is the MASTER input and is NOT reproducible. Back it up
+# outside git (or move it to Git LFS). It is ignored here only to keep the
+# repo lean — "ignored" does not mean "safe to lose".
+10 - Courses/*/Source Deck/*.pptx
+10 - Courses/*/Source Deck/*.ppt
+
+# Extracted slide media (~160 MB) — regenerable from the .pptx via
+# extract-media.ps1. Track separately or via Git LFS if it must be versioned.
+10 - Courses/*/Presentation/build/assets/img/
+
+# Source Library reference PDFs (~680 MB) — static inputs. Back up
+# separately or use Git LFS.
+20 - Source Library/**/*.pdf
+20 - Source Library/**/*.docx
+20 - Source Library/**/*.lnk
+
+# Historic Educational Services archive — browse-only, unverified, ~140 files
+# in deeply-nested folders (some exceed the Windows path limit). The catalogue
+# note "Historic Educational Services Training Content.md" one level up stays
+# tracked; the archive contents themselves do not need versioning.
+20 - Source Library/Historic Educational Services Training Content/
+
+# ── Stray artifact ─────────────────────────────────────────────────
+# invalid 20-byte file at the vault root from an aborted regen; the real
+# course data is 10 - Courses/.../Presentation/course/course-data.js
+/course-data.js
