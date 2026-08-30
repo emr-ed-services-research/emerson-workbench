@@ -627,11 +627,19 @@
    A slide whose image already carries its own callouts (e.g. a figure
    lifted from the Handbook) adds `is-sourced` on the <article> and no
    .tmpl-marker elements; the .tmpl-fig then uses the full left area. */
+/* The fig box takes the image's OWN aspect ratio (--fig-ar, set per slide).
+   Width is in cqw and height derives from it, so the box is a fixed shape
+   regardless of the canvas ratio - a marker at top:X% always lands on the
+   same point on the image. */
 .slide--tmpl-diagram .tmpl-fig {
   position: absolute;
-  left: 12cqw; top: 19.5cqh; width: 36cqw; bottom: 9cqh;   /* image box; gutter to its left */
+  left: 13cqw;
+  top: 54cqh;
+  transform: translateY(-50%);
+  width: 17cqw;
+  aspect-ratio: var(--fig-ar, 0.6);
 }
-.slide--tmpl-diagram.is-sourced .tmpl-fig { left: 4cqw; width: 44cqw; }
+.slide--tmpl-diagram.is-sourced .tmpl-fig { left: 7cqw; width: 26cqw; }
 .slide--tmpl-diagram .tmpl-fig > img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -662,11 +670,11 @@
 }
 .slide--tmpl-diagram .tmpl-list {
   position: absolute;
-  left: 53cqw; right: 3.5cqw; top: 19.5cqh; bottom: 9cqh;
+  left: 53cqw; right: 5.6cqw; top: 17cqh; bottom: 8cqh;
   margin: 0; padding: 0;
   list-style: none;
   counter-reset: tmpl;
-  display: flex; flex-direction: column; justify-content: center; gap: 1.7cqh;
+  display: flex; flex-direction: column; justify-content: center; gap: 1.6cqh;
 }
 .slide--tmpl-diagram .tmpl-list li {
   counter-increment: tmpl;
@@ -688,7 +696,7 @@
 /* source attribution for a figure lifted from the Source Library - always shown */
 .tmpl-source {
   position: absolute;
-  left: 4cqw; bottom: 2.4cqh;
+  left: 6cqw; bottom: 4.4cqh;
   margin: 0;
   font: italic 1.2cqw/1.3 var(--font-body);
   color: var(--emerson-grey);
@@ -698,7 +706,7 @@
 .slide--tmpl-table .tmpl-wrap,
 .slide--tmpl-compare .tmpl-wrap {
   position: absolute;
-  left: 3.5cqw; right: 3.5cqw; top: 18.5cqh; bottom: 7.5cqh;
+  left: 5.6cqw; right: 5.6cqw; top: 16cqh; bottom: 7cqh;
   overflow: auto;
 }
 .slide--tmpl-compare .tmpl-wrap { right: 39cqw; }
@@ -736,7 +744,7 @@
 }
 .slide--tmpl-compare .tmpl-aside {
   position: absolute;
-  right: 3.5cqw; width: 32cqw; top: 18.5cqh; bottom: 7.5cqh;
+  right: 5.6cqw; width: 31cqw; top: 16cqh; bottom: 7cqh;
   margin: 0;
   display: flex; flex-direction: column; justify-content: center; gap: 1.2cqh;
 }
@@ -745,6 +753,50 @@
 }
 .slide--tmpl-compare .tmpl-aside figcaption {
   font-size: 1.3cqw; color: var(--emerson-grey); line-height: 1.35;
+}
+
+/* -- Template card treatment: the shell intro-card visual language ---
+   Templates drop the full-width PowerPoint title rule for a larger bold
+   title with a short accent rule under it, and a faint inset card frame -
+   so a template slide reads like the module intro card, not a raw slide. */
+.slide--tmpl-diagram::after,
+.slide--tmpl-table::after,
+.slide--tmpl-compare::after { display: none; }
+
+.slide--tmpl-diagram::before,
+.slide--tmpl-table::before,
+.slide--tmpl-compare::before {
+  content: "";
+  position: absolute;
+  inset: 3.2cqh 2.6cqw;
+  border: max(1px, 0.12cqh) solid color-mix(in srgb, var(--emerson-blue) 16%, #fff);
+  border-radius: 0.9cqw;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.slide--tmpl-diagram .slide-title,
+.slide--tmpl-table .slide-title,
+.slide--tmpl-compare .slide-title {
+  top: 6cqh;
+  left: 5.6cqw; right: 5.6cqw;
+  height: auto;
+  align-items: flex-start;
+  padding-bottom: 0;
+  font-weight: 700;
+  font-size: 3.7cqw;
+  line-height: 1.08;
+}
+.slide--tmpl-diagram .slide-title::after,
+.slide--tmpl-table .slide-title::after,
+.slide--tmpl-compare .slide-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(100% + 1.5cqh);
+  width: 6cqw;
+  height: 0.45cqh;
+  background: var(--emerson-blue);
 }
 
 /* ---------- 8. Print / export -------------------------------------- */
