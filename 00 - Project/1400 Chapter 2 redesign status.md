@@ -95,7 +95,7 @@ requests in this window are treated as pipeline QA (working rule 3).
 | Module | Stage 2 (context) | Stage 3 (slide pass) |
 | --- | --- | --- |
 | 4 · Body Disassembly & Seal Replacement | **done** — objective + 6 key concepts, sourced from the ET (D100398X012) and ED (D100390X012) manuals; `pages` [56–61]; `status: ready` | not started |
-| 5 · Valve Lapping | not started | not started |
+| 5 · Valve Lapping | **done** — objective + 6 key concepts, sourced from the ET / ED / EZ manuals' Lapping Metal Seats sections and the CVH; `pages` [62–66], `check` [67]; `status: ready` | not started |
 | 6 · Packing Replacement & Adjustment | not started | not started |
 | 7 · Reassembly & Gaskets | not started | not started |
 
@@ -107,6 +107,16 @@ requests in this window are treated as pipeline QA (working rule 3).
   module 4's `pages`.
 - Slides 56–61 are photo-heavy 2-column / 3-photo PowerPoint layouts — candidates
   for `.slide--tmpl-figrow` (procedure-step photo rows) once the pass runs.
+
+### Module 5 — Stage 3 to-do
+
+- **Slide 62** is a section opener whose point is to establish that lapping is a
+  documented tech-manual procedure, not an improvised one. Keep it, but it is
+  weak (two images, no text, one shared with the old slide 55) — needs a proper
+  treatment in the Stage 3 pass, e.g. a real reference to the manual section.
+- Slides 64/65 are procedure steps in 2-column / 3-photo layouts — `figrow`
+  candidates. Slide 63 (lap-line diagram) is a `.slide--tmpl-diagram` candidate.
+  Slide 66 (plug/cage damage) is a two-photo comparison.
 
 ## Out of scope until Chapter 2 is finished
 
