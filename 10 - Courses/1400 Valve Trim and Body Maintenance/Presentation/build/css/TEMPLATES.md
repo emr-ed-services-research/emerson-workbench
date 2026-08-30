@@ -12,6 +12,20 @@ the key concepts.
 
 ---
 
+## Standard slide heading — `.slide--hd`
+
+The course-wide heading treatment: the full-width PowerPoint title rule is
+dropped for a restrained heading — semibold, `2.7cqw`, tight tracking, in
+Emerson Blue, with a short blue accent tick beneath it (echoing the intro
+card's `.ov__rule`). The four card templates get it automatically; any other
+slide opts in with `class="slide slide--hd …"` on the `<article>`.
+
+Applied to every non-divider slide in Chapters 1 and 2 (2026-08-30). New
+chapters get `.slide--hd` on each slide as they are converted; it will become
+the default once the whole deck is on it.
+
+---
+
 ## Template 1 — intro cards (day / chapter / module)
 
 **Rendered by the course shell, not deck slides.** Three tiers, one visual
