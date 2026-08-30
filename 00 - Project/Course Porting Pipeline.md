@@ -171,7 +171,20 @@ day / chapter / module hierarchy never changes). Run per module.
    seen and compared together.
 4. **Hierarchy + polish.** Keep day / chapter / module exactly as they are. Every
    resulting slide, however much it consolidates, gets the same clean visual
-   treatment and context-pane parity as the rest of the course.
+   treatment and context-pane parity as the rest of the course. This part ends
+   with a **browser verification stage** (below) — the one point in the pass
+   where slides are actually rendered in Chrome.
+
+**Where browser rendering belongs.** Parts 1–3 and every drafting decision along
+the way — template selection, content and caption writing, callout `top` /
+`--lead` starting values, general layout — are done by **reasoning about the
+markup and CSS**, not by opening Chrome. Browser rendering is reserved for the
+verification stage at the end of Part 4, run once per slide, where the thing
+being checked is genuinely visual and cannot be read off the source: real
+proportions, whether a callout leader lands on its exact part, layout collisions
+and clipping, and the slide held against the module-intro card's polish bar.
+Concentrating browser use there keeps the bulk of the pass fast and spends the
+render cost where it earns its keep.
 
 **Ground rules:**
 
@@ -190,9 +203,13 @@ day / chapter / module hierarchy never changes). Run per module.
 - Dropped-but-retained slides keep their files (for the standalone deck) and
   carry a `data-review` ribbon naming the pass.
 
-**Pre-send checklist — every redesigned slide passes all six before Franz sees
-it.** This is the visual quality gate made concrete. Rework rounds spent on
-these are the assistant's failure, not review feedback.
+**Part 4 browser verification stage — the pre-send checklist.** Every redesigned
+slide is rendered in Chrome once, at the end of its pass, and passes all six
+checks before Franz sees it. This is the visual quality gate made concrete, and
+it is the *only* stage that opens a browser. Rework rounds spent on these are the
+assistant's failure, not review feedback. Item 4 (template fit) is a
+markup-reasoning check that should already be settled going in; the render
+confirms it rather than discovers it.
 
 1. **Image quality.** Sharp at slide size? A low-resolution raster, a screenshot,
    or an image with baked-in arrows / labels / JPEG noise does **not** ship as-is
