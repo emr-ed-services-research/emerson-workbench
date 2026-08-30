@@ -9,52 +9,31 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 51 | ppt slides/slide51.xml | layout: figure row | family: .slide--tmpl-figrow -->
+  <!-- Slide 51 | ppt slides/slide51.xml | layout: labelled diagram card | family: .slide--tmpl-diagram is-sourced -->
   <!-- ch2 four-part pass. The packing-box intro. The deck photo (image77) has burned-in yellow
-       arrows and margin labels; the Fisher EZ manual plain-bonnet sectional (Figure 11,
-       D100401X012) is clean but carries the manual's parts-list key numbers. Redrawn here as a
-       simple labelled cross-section - the level of detail this "what is a packing box" slide
-       needs; the detailed part stack-ups belong to the disassembly modules. -->
-  <article class="slide slide--tmpl-figrow" data-slide="51" data-deck="1400" data-review="ch2-callout-pass">
-    <div class="review-ribbon">ch2 pass: packing box redrawn as SVG</div>
+       arrows and margin labels.
+       2026-08-31: an earlier hand-drawn SVG cross-section was replaced (review: the bonnet-wall
+       proportions were wrong and a recreation is not worth hand-tuning when a sourced figure
+       exists). Control Valve Handbook 6th ed. Figure 1.6 "Bonnet Assembly" is a clean cutaway
+       showing the stem, the packing, the packing box (the bored recess), and the bonnet in
+       correct proportion, with the Handbook's own callouts 1-4. Used with the is-sourced variant,
+       same as slide 27: the .tmpl-list mirrors the figure's numbering 1-for-1. The stray label
+       column ("2. Packing / 3. Packing Box / 4. Valve Stem") is cropped / whited out.
+       Emerson first-party publication, reused in an Emerson Educational Services course.
+       Provenance: assets/sourced/SOURCES.txt. -->
+  <article class="slide slide--tmpl-diagram is-sourced" data-slide="51" data-deck="1400" data-review="ch2-sourced-diagram">
+    <div class="review-ribbon">ch2: Handbook Fig 1.6 (packing box)</div>
     <h1 class="slide-title">Packing</h1>
-    <div class="tmpl-row">
-      <figure class="tmpl-cell">
-        <svg viewBox="0 0 640 380" role="img" aria-label="Cross-section of a valve bonnet packing box: the stem passes through a stack of packing rings held in a bored recess, compressed by a packing flange and two flange nuts" font-family="Arial, Helvetica, sans-serif">
-          <!-- bonnet body, sectioned -->
-          <path d="M118 356 L118 176 Q118 156 138 156 L206 156 L206 316 L250 316 L250 156 L318 156 Q338 156 338 176 L338 356 Z"
-                fill="#dcdee0" stroke="#3F4040" stroke-width="2"/>
-          <!-- stem -->
-          <rect x="219" y="14" width="18" height="342" fill="#b7bbbe" stroke="#3F4040" stroke-width="1.6"/>
-          <!-- packing: two chevron (V-ring) stacks either side of the stem -->
-          <g fill="#efe9db" stroke="#9c927a" stroke-width="1.2">
-            <path d="M206 172 l13 10 l0 12 l-13 -10 Z M206 194 l13 10 l0 12 l-13 -10 Z M206 216 l13 10 l0 12 l-13 -10 Z M206 238 l13 10 l0 12 l-13 -10 Z M206 260 l13 10 l0 12 l-13 -10 Z M206 282 l13 10 l0 12 l-13 -10 Z"/>
-            <path d="M250 172 l-13 10 l0 12 l13 -10 Z M250 194 l-13 10 l0 12 l13 -10 Z M250 216 l-13 10 l0 12 l13 -10 Z M250 238 l-13 10 l0 12 l13 -10 Z M250 260 l-13 10 l0 12 l13 -10 Z M250 282 l-13 10 l0 12 l13 -10 Z"/>
-          </g>
-          <!-- packing follower -->
-          <rect x="203" y="150" width="50" height="14" fill="#c7cacc" stroke="#3F4040" stroke-width="1.5"/>
-          <!-- packing flange -->
-          <rect x="178" y="120" width="100" height="26" fill="#cdd0d2" stroke="#3F4040" stroke-width="2"/>
-          <!-- studs + flange nuts -->
-          <g fill="#9a9ea1" stroke="#3F4040" stroke-width="1">
-            <rect x="185" y="92" width="10" height="70"/><rect x="261" y="92" width="10" height="70"/>
-          </g>
-          <path d="M174 98 l16 -9 l16 9 l0 18 l-16 9 l-16 -9 Z" fill="#b7bbbe" stroke="#3F4040" stroke-width="1.6"/>
-          <path d="M250 98 l16 -9 l16 9 l0 18 l-16 9 l-16 -9 Z" fill="#b7bbbe" stroke="#3F4040" stroke-width="1.6"/>
-          <!-- leaders + labels -->
-          <g stroke="#3F4040" stroke-width="1.4" fill="#3F4040">
-            <path d="M282 104 H392" fill="none"/><circle cx="282" cy="104" r="3.2"/>
-            <path d="M244 224 H392" fill="none"/><circle cx="244" cy="224" r="3.2"/>
-            <path d="M339 332 H392" fill="none"/><circle cx="339" cy="332" r="3.2"/>
-          </g>
-          <g font-size="19" font-weight="700" fill="#3F4040">
-            <text x="400" y="110">Packing flange &amp; nuts</text>
-            <text x="400" y="230">Packing</text>
-            <text x="400" y="338">Packing box</text>
-          </g>
-        </svg>
-      </figure>
-    </div>
+    <figure class="tmpl-fig" style="--fig-ar:0.933; width:35cqw; left:7cqw; top:56cqh">
+      <img src="../assets/sourced/cvh6-fig1-6-bonnet-packing-box.png" alt="Cutaway of a valve bonnet assembly with numbered callouts: the bonnet casting, the stem packing, the packing box (the bored recess in the bonnet that holds the packing), and the valve stem running down the centre toward the plug">
+    </figure>
+    <ol class="tmpl-list">
+      <li>Bonnet</li>
+      <li>Packing</li>
+      <li>Packing box &mdash; the bored recess it sits in (packing bore)</li>
+      <li>Valve stem</li>
+    </ol>
+    <p class="tmpl-source">Control Valve Handbook, 6th ed. &mdash; Fig. 1.6</p>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">51</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
 

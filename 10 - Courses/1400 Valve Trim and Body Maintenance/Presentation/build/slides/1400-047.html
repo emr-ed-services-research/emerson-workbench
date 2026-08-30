@@ -9,16 +9,20 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 47 | ppt slides/slide47-49.xml | layout: comparison table card | family: .slide--tmpl-compare -->
-  <!-- ch2 four-part pass. Slides 47 (ED graphite seal), 48 (ET two-piece PTFE) and 49 (ET
-       spring-loaded PTFE) each repeated the family table with one seal image; consolidated here
-       into a single piston-seal comparison. 48 / 49 stay dropped from the module flow. image76
-       (spring-loaded PTFE seal detail, its own labels) kept as the paired illustration.
-       data-ref="easy-e-piston-seals" - single copy, restructured. -->
-  <article class="slide slide--tmpl-compare" data-slide="47" data-deck="1400" data-review="ch2-callout-pass">
-    <div class="review-ribbon">ch2 pass: tmpl-compare; 47+48+49 consolidated</div>
+  <!-- Slide 47 | ppt slides/slide47-49.xml | layout: figure row with lead table | family: .slide--tmpl-figrow has-lead -->
+  <!-- ch2 four-part pass, re-laid 2026-08-31. Was .slide--tmpl-compare with a small floating
+       aside image (review: "image small, hard to read; table + diagram not well structured").
+       Rebuilt on the same has-lead pattern as slide 52 (Stem Packing) for module consistency:
+       the seal-by-temperature table on top, the seal shown beneath it. image76 (the deck's
+       compound spring-loaded-PTFE figure - labelled detail + a locator sectional joined by an
+       arrow) is split into its two panels in assets/sourced/ (see SOURCES.txt), shown as the
+       two figure cells. Slides 48 / 49 stay dropped from the module flow.
+       data-ref="easy-e-piston-seals" - single copy. -->
+  <article class="slide slide--tmpl-figrow has-lead" data-slide="47" data-deck="1400" data-review="ch2-callout-pass">
+    <div class="review-ribbon">ch2 pass: table + seal figures; 47+48+49 consolidated</div>
     <h1 class="slide-title">easy-e Piston Seals</h1>
-    <div class="tmpl-wrap">
+    <div class="tmpl-stack">
+    <div class="tmpl-lead">
       <table class="tmpl-table" data-ref="easy-e-piston-seals">
         <thead><tr><th>Piston seal</th><th>Valve</th><th>Temperature</th></tr></thead>
         <tbody>
@@ -28,10 +32,17 @@
         </tbody>
       </table>
     </div>
-    <figure class="tmpl-aside">
-      <img src="../assets/img/image76.png" alt="Detail of a spring-loaded PTFE piston seal: seal retainer ring, metal backup ring, spring-loaded PTFE ring, spring">
-      <figcaption>Temperature up &rarr; graphite; temperature down &rarr; PTFE.</figcaption>
-    </figure>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <img src="../assets/sourced/piston-seal-spring-loaded-detail.png" alt="Cross-section of a spring-loaded PTFE piston seal stacked in the plug groove: seal retainer ring, metal backup ring, spring-loaded PTFE ring, and the spring beneath it">
+        <figcaption><b>Spring-loaded PTFE</b>retainer &middot; backup &middot; PTFE &middot; spring</figcaption>
+      </figure>
+      <figure class="tmpl-cell">
+        <img src="../assets/sourced/piston-seal-location.png" alt="Sectional view of a balanced plug inside its cage, the piston (cage) seal ringed at the plug's outer diameter where it rides against the cage bore">
+        <figcaption><b>Where it sits</b>plug OD, against the cage bore</figcaption>
+      </figure>
+    </div>
+    </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">47</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
 

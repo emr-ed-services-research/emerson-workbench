@@ -29,3 +29,20 @@ cage-quick-opening.png / cage-linear.png / cage-equal-pct.png
   The three cages from deck image64, split into one image each (labels dropped).
   Shown in a row beneath the table on slide 40. 2026-08-30.
 (slide 39 flow-curve.png is superseded by an inline SVG redraw; file retained.)
+
+piston-seal-spring-loaded-detail.png / piston-seal-location.png
+  Deck image76 (Fisher spring-loaded-PTFE piston-seal figure) split into its two
+  panels: the labelled seal stack-up (retainer / metal backup / PTFE ring / spring)
+  and the sectional showing where the piston seal rides on the balanced plug OD,
+  against the cage bore. White margins trimmed (6 px pad). Shown as the two figure
+  cells on slide 47. 2026-08-31.
+
+cvh6-fig1-6-bonnet-packing-box.png
+  Control Valve Handbook, Sixth Edition (D101881X012), Figure 1.6 "Bonnet Assembly"
+  - a rendered cutaway of a bonnet showing the stem, the packing, the packing box
+  (the bored recess), and the bonnet, in correct proportion, with the Handbook's
+  own callouts 1-4. Cropped from page 19 (500 dpi render), page rect approx
+  x 404-960, y 1846-2442; the stray label column ("2. Packing / 3. Packing Box /
+  4. Valve Stem") whited out top-right. Final 556x596 (AR 0.933). Used on slide 51
+  with the is-sourced diagram variant (as slide 27). Replaces an earlier
+  hand-drawn SVG whose bonnet-wall proportions were wrong. 2026-08-31.
