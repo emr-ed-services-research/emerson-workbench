@@ -175,12 +175,51 @@ day / chapter / module hierarchy never changes). Run per module.
 
 **Ground rules:**
 
-- No pixel-level re-cropping or diagram extraction from source PDFs in place.
-  Flag those as specific follow-up recommendations.
+- Re-cropping a deck image to its teaching subject, splitting a composite figure
+  into its parts, and redrawing a weak low-resolution raster as a clean SVG are
+  **part of this pass** — not deferred follow-ups. (The original "no pixel-level
+  re-cropping" rule applied only to the first Chapter 2 proof pass.) The one
+  thing still flagged as a follow-up: pulling a single diagram out of a dense
+  multi-callout engineering drawing where it would need real retouching (erasing
+  crossing leader lines, rebuilding labels).
+- Derived / redrawn images go in the course's tracked
+  `Presentation/build/assets/sourced/` with a line in that folder's
+  `SOURCES.txt`. The raw PPTX extracts in `assets/img/` are gitignored.
 - Where a slide's image and its key-concept text do not match, fix the framing
   or reorder — do not leave them out of sync.
 - Dropped-but-retained slides keep their files (for the standalone deck) and
   carry a `data-review` ribbon naming the pass.
+
+**Pre-send checklist — every redesigned slide passes all six before Franz sees
+it.** This is the visual quality gate made concrete. Rework rounds spent on
+these are the assistant's failure, not review feedback.
+
+1. **Image quality.** Sharp at slide size? A low-resolution raster, a screenshot,
+   or an image with baked-in arrows / labels / JPEG noise does **not** ship as-is
+   — re-crop from a higher-resolution render, lift a cleaner version from a
+   manual, or redraw it as an SVG.
+2. **No text over imagery.** Captions, notes and the callout list each sit in
+   their own space. Nothing but a deliberate on-image marker overlaps a figure.
+   Re-check this in the 16:9 shell, where a fixed-size figure takes more of the
+   vertical space than in 4:3.
+3. **Callout accuracy.** Zoom every render to 2× and confirm each leader line
+   *terminates on the exact part it names* — not "near", not "in the right
+   region". Nudge the marker `top` / `--lead` and re-render until every one lands.
+4. **Template fit.** 2–4 things compared side by side → horizontal `figrow`
+   (`.slide--tmpl-figrow`). A reference table plus the items it tabulates →
+   table with the items in a row beneath it (`.has-lead`). One diagram with
+   parts to name → `.slide--tmpl-diagram`. Never a vertical stack of images in
+   an aside.
+5. **Both aspect ratios.** Render the slide standalone (4:3) **and** in the
+   course shell (16:9, `?embed=1&visual=1`); check for collisions and clipping
+   in each.
+6. **Polish bar.** Hold it against the module-intro card: centred where it should
+   be, balanced whitespace, no oversized element, heading in the standard
+   `.slide--hd` treatment. If it looks weaker than the intro card, it is not done.
+
+**What still legitimately goes to Franz** (judgement, not layout bugs): disputed
+technical claims (flag, do not resolve); genuinely ambiguous "which image teaches
+this concept best"; and keep-vs-drop calls on borderline slides.
 
 Inputs: the existing slide fragments plus the relevant Source Library documents.
 Outputs: revised slide fragments and updated context-pane text where framing or
