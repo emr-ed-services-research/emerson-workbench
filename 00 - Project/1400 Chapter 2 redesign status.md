@@ -37,7 +37,7 @@ concepts; floating PowerPoint text boxes became figure captions or callouts.
 
 | Module | Slides reworked | Commits |
 | --- | --- | --- |
-| **1 · Valve Bodies, Plugs & Seating** | 27 (Handbook Fig 1.3), 28/29/30/34/35 (figrow), 31/32 (diagram + leader callouts) | `9938ce6`, `bf56629` |
+| **1 · Valve Bodies, Plugs & Seating** | 27 (Handbook Fig 1.3), 28/29/30/34/35 (figrow), 31/32 (diagram + leader callouts) | `9938ce6`, `bf56629`; 34 shutoff ranking resolved _(pending commit)_ |
 | **2 · Plug Guiding, Cages & Flow Characteristics** | 36/38 (figrow), 37/43 (diagram + callouts), 39 (SVG curve), 40 (table + cage row) | `23fc1f7`, `f99eee0` |
 | **3 · easy-e Trim Seals & Packing** | 45 (dropped, merged into 46), 46 (tmpl-table), 47 (figrow + lead table — re-laid from tmpl-compare), 51 (is-sourced diagram — Handbook Fig 1.6 cutaway, replaced a hand-drawn SVG), 52 (table + packing row) | `5eb04cc`, _(47 / 51 revision pending commit)_ |
 
@@ -78,8 +78,8 @@ in that folder's `SOURCES.txt`:
 
 | Slide | Item |
 | --- | --- |
-| 34 | **`NEEDS VERIFY`** — the radius-tip vs standard-tip *shutoff ranking* does not fully match Franz's hands-on experience. Captions state only the undisputed facts (chamfer + lap vs knife-edge + no lap); the ranking waits on a check against the Fisher ET manual seating detail (D100398X012). |
-| 34 | Plug-tip close-ups (image51 / image52) have crude blue arrows burned in — could be cleaned. |
+| 34 | ~~`NEEDS VERIFY` — radius vs standard shutoff ranking~~ **Resolved 2026-08-31.** Checked against the Fisher ET manual (D100398X012, Table 2 + note 2): Class V metal shutoff on the easy-e uses a *radiused-seat plug + wide-bevel seat ring*; standard metal seating is Class IV — so the radius/wide-bevel arrangement is Fisher's tighter metal option, but via a *rounded* surface on a *narrow line*, not a knife edge (the photos confirm a rounded edge). "knife-edge" and "tightest shutoff / never lapped" removed from the captions; the ranking is now a one-line `tmpl-note` (Class V vs IV) and the field trade-off (narrow line seals tighter while true, but tolerates damage poorly and is re-machined not field-lapped) is in the context pane. `course.json` + `course-data.js` key concept updated. |
+| 34 | Plug-tip close-ups (image51 / image52) have crude blue arrows burned in — could be cleaned. Still open. |
 | 38, 43 | The Fisher EZ manual sectional (Figure 11 plain bonnet / Figure 12, D100401X012) is clean line-art but carries the manual's parts-list key numbers; lifting it would need real image editing. Current figures are adequate. |
 | 46 | ET piston-seal cell reads "PTFE with Nitrile Backup" — reflects the ET manual's "two-piece PTFE seal ring with elastomeric backup ring"; left as reviewed, flag if a cleaner wording is wanted (needs sync across 4 `data-ref` copies). |
 | 47 | Only the spring-loaded PTFE seal is shown (no graphite / two-piece image exists in the deck); the table carries all three. The `piston-seal-location.png` panel keeps the source figure's diagonal locator arrow running off its top-left corner — reads as a link to the detail panel, could be painted out if it bothers. |
