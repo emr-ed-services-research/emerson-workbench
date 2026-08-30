@@ -22,6 +22,8 @@ course.
 40 - Engine/
   README.md              this file
   build-course.ps1        assembles a course's Presentation/ from Presentation/ below
+  verify.ps1              integrity checks for a course (JSON, page refs, tag balance,
+                          manifest / title drift, CSS, engine-lock, data-ref drift lint)
   generator/              PPT → HTML conversion tooling (run manually, not assembled)
     generate.ps1  extract-media.ps1  compare.ps1  export-orig.ps1  README.md
   Presentation/           the shared runtime — MIRRORS a course's Presentation/ tree
@@ -73,6 +75,20 @@ before any first assembly or forced run.
 
 **Edit the engine, then re-assemble — never hand-edit the shared files inside a
 course.**
+
+## Checking a course
+
+```powershell
+.\verify.ps1 -Course "1400 Valve Trim and Body Maintenance"
+```
+
+Runs: `course.json` JSON validity; every `keyConcepts` page ref is inside its
+module's `pages`; slide-HTML tag balance; `manifest.js` parse + title-vs-`<h1>`
+drift; CSS brace balance; engine-lock drift (assembled files still match the
+engine); and the **reference-data drift lint** — every `<table data-ref="…">`
+grouped by ref, normalised cell text compared, any ref that appears with
+different content across files fails. Exit 1 on any FAIL. Render checks (headless
+Chrome of rebuilt slides) are not in it yet.
 
 ## Course-specific configuration
 

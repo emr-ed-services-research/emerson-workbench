@@ -21,6 +21,10 @@ updated: 2026-08-29
 >   `build-course.ps1` assembles a course's `Presentation/` from it; the three
 >   de-coupling fixes applied (slide prefix, shell title, colour tokens) plus
 >   per-course localStorage namespacing. Verified in-browser for 1400.
+> - **Step 3 done (2026-08-30):** Chapter 2 slide 27 → `.slide--tmpl-diagram`
+>   (Template 2 proven with a second consumer); data single-sourcing resolved
+>   (lint now via `data-ref` + `40 - Engine/verify.ps1`, data layer as a named
+>   later stage). `verify.ps1` runs 0 FAIL for 1400.
 >
 > Open decisions at the end; mirror into [[Open Questions]].
 
@@ -215,31 +219,32 @@ Then: the 16:9 figure-box tuning pass, `course-data.js` regenerated from
    only bulk-converts not-yet-touched chapters.** ~half a day. Turns Stage 0
    from a foundation risk into a fenced hazard.
 
-### Needed for Stage 3 to be clean — decide before scaling
+### Needed for Stage 3 to be clean
 
-4. **Data single-sourcing decision.** Slide *values* (leakage numbers, spec
-   tables) currently live only in HTML and are duplicated — the ANSI/FCI figures
-   exist in three unsynced places (table, retained cartoons, key-concept prose);
-   the ES/ED/ET/EZ table is physically copied four times. Two viable answers:
-   - **Data layer** — reference values move to `course.json` or a sibling
-     `course-data/*.json`; tables render from them; corrections propagate. More
-     upfront work; matches the [[Roadmap]] Stage 2 "shared source content" goal.
-   - **Lint + convention** — values stay in HTML; a check flags when the same
-     labelled table / number appears in more than one file with different
-     content. Cheaper; catches drift but does not single-source.
-   - *Lean:* data layer for genuine recurring reference tables (leakage classes,
-     ASME P/T, the easy-e matrix), lint for everything else.
-5. **Template library as a real set.** Four templates, one consumer each. Before
-   Stage 3 runs on another chapter: **convert Chapter 2 slide 27 to the labelled
-   diagram card** — the slide that motivated inventing that template, still
-   unconverted; it is the real test of "chapter-agnostic." Then adopt the rule:
-   a new slide shape gets a new template, never one-off HTML.
+4. ~~**Data single-sourcing decision.**~~ Resolved 2026-08-30: **lint now, data
+   layer as a named stage** (below). `verify.ps1` has a reference-data drift
+   lint — every `<table data-ref="…">` is grouped by ref and its normalised cell
+   text compared; a ref appearing with different content across files fails the
+   check. Every reference table in Chapters 1–2 is tagged
+   (`ansi-fci-leakage`, `asme-b1634-a216-wcc`, `easy-e-matrix`,
+   `easy-e-piston-seals`, `easy-e-packing`, `flow-characteristics`).
+5. ~~**Template library as a real set.**~~ Done 2026-08-30: Chapter 2 slide 27
+   converted to `.slide--tmpl-diagram` — a second, independent consumer of the
+   same engine component that Chapter 1 slide 14 uses. Rule adopted: a new slide
+   shape gets a new template, never one-off HTML.
 6. **`data-review` vocabulary → controlled set**, surfaced in `manifest.js` and
    `conversion-report.csv` so the deck runner's review mode and the pipeline's
-   own reporting see the same flags. (Currently forked:
-   `svg-rebuilt`, `ole-fallback`, `ch2-proof-pass`, `ch2-proof-pass-verify`,
-   `ch2-followup-redraw`, `ch1-proof-pass`, `ch1-proof-pass-verify`,
-   `ch1-template-rebuild`, `ch1-followup-redraw`.)
+   own reporting see the same flags. (Still forked.)
+
+### The reference-data layer — a named later stage
+
+Do this *after* the first full course is ported (Ch3 / Ch4 / WS1 authored) so
+its scope is known. Reference tables move to a sibling `course-data/*.json` with
+a schema; `build-course.ps1` (or a render helper) builds the HTML table from the
+JSON so a correction propagates to every slide that shows it. This is the
+concrete first step of the [[Roadmap]] Stage 2 "shared source content" goal and
+the data source Bench Notes / Bench Book generation will read. Until then the
+`data-ref` tags + `verify.ps1` lint keep the copies honest.
 
 ### Can follow — cleanup, not blockers
 
@@ -259,8 +264,8 @@ Then: the 16:9 figure-box tuning pass, `course-data.js` regenerated from
 | --- | --- | --- | --- |
 | 1 | `git init` + generator guard | ½ day | **done 2026-08-30** |
 | 2 | Extract the engine + the 3 de-coupling fixes | 1–2 days | **done 2026-08-30** |
-| 3 | Prove Template 2 on Chapter 2 slide 27; decide the data-single-source split | 1 day + a decision | next |
-| 4 | Write `verify.ps1` (render + validate) | 1 day | |
+| 3 | Prove Template 2 on Chapter 2 slide 27; decide the data-single-source split | 1 day + a decision | **done 2026-08-30** |
+| 4 | `verify.ps1` — validate now; add render checks | 1 day | validate done; render checks pending |
 | 5 | Pipeline exists → run "converge Chapter 2", "finish Ch3 / Ch4 / WS1", then port course #2 as the real test | ongoing | |
 
 Steps 1–4 are roughly one week. They are the difference between "we redesigned

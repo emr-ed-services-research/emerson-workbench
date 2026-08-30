@@ -112,7 +112,7 @@ window.EW_MANIFEST = [
         "file":  "1400-013.html",
         "family":  "title-only",
         "section":  "Ch 1 - Important Control Valve Specifications for Maintenance",
-        "title":  "Piping and Instrumentation Diagram (P\u0026ID)",
+        "title":  "Piping and Instrumentation Diagram (P&ID)",
         "hasNotes":  false,
         "review":  ""
     },
@@ -139,7 +139,7 @@ window.EW_MANIFEST = [
         "file":  "1400-016.html",
         "family":  "tmpl-table",
         "section":  "Ch 1 - Important Control Valve Specifications for Maintenance",
-        "title":  "Pressure / Temperature Rating (A216 WCC)",
+        "title":  "Pressure / Temperature Rating — A216 WCC (ASME B16.34)",
         "hasNotes":  false,
         "review":  ""
     },
@@ -175,7 +175,7 @@ window.EW_MANIFEST = [
         "file":  "1400-020.html",
         "family":  "title-text-content",
         "section":  "Ch 1 - Important Control Valve Specifications for Maintenance",
-        "title":  "Class II Shutoff",
+        "title":  "What “Shut Off” Really Means",
         "hasNotes":  false,
         "review":  "ole-fallback"
     },
@@ -238,7 +238,7 @@ window.EW_MANIFEST = [
         "file":  "1400-027.html",
         "family":  "tmpl-diagram",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
-        "title":  "Globe Valve - Major Components",
+        "title":  "Globe Valve — Major Components",
         "hasNotes":  false,
         "review":  ""
     },
@@ -292,7 +292,7 @@ window.EW_MANIFEST = [
         "file":  "1400-033.html",
         "family":  "one-col",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
-        "title":  "Check Your Knowledge 2: Plugs",
+        "title":  "Check Your Knowledge 2: Shutoff Class",
         "hasNotes":  false,
         "review":  ""
     },
@@ -319,7 +319,7 @@ window.EW_MANIFEST = [
         "file":  "1400-036.html",
         "family":  "two-col",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
-        "title":  "Cage / Seat Ring Retainer",
+        "title":  "Guiding the Plug: Cage or Retainer",
         "hasNotes":  false,
         "review":  ""
     },
@@ -346,7 +346,7 @@ window.EW_MANIFEST = [
         "file":  "1400-039.html",
         "family":  "one-col",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
-        "title":  "Flow Characteristic with Cage",
+        "title":  "Inherent Flow Characteristic",
         "hasNotes":  false,
         "review":  ""
     },
@@ -355,7 +355,7 @@ window.EW_MANIFEST = [
         "file":  "1400-040.html",
         "family":  "title-only",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
-        "title":  "Quick-Opening Cage",
+        "title":  "Cage-Characterised Flow",
         "hasNotes":  false,
         "review":  ""
     },
@@ -382,7 +382,7 @@ window.EW_MANIFEST = [
         "file":  "1400-043.html",
         "family":  "title-only",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
-        "title":  "Formed Plug Characterization",
+        "title":  "Formed (Contoured) Plug",
         "hasNotes":  false,
         "review":  ""
     },
@@ -418,7 +418,7 @@ window.EW_MANIFEST = [
         "file":  "1400-047.html",
         "family":  "one-col",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
-        "title":  "ED Graphite Seal Ring",
+        "title":  "easy-e Piston Seals",
         "hasNotes":  false,
         "review":  ""
     },
@@ -463,7 +463,7 @@ window.EW_MANIFEST = [
         "file":  "1400-052.html",
         "family":  "two-col",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
-        "title":  "PTFE Packing",
+        "title":  "easy-e Stem Packing",
         "hasNotes":  false,
         "review":  ""
     },
