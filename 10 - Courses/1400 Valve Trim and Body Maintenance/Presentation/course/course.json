@@ -156,9 +156,20 @@
               ],
               "pages": [46, 47, 51, 52]
             },
-            { "id": "ch2-m4", "num": 4, "title": "Body Disassembly & Seal Replacement", "status": "outline",
-              "objective": "Disassemble an easy-e valve body and replace the balanced-plug piston seal (ED graphite, ET two-piece and spring-loaded).",
-              "pages": [55, 56, 57, 58, 59, 60, 61] },
+            {
+              "id": "ch2-m4", "num": 4, "title": "Body Disassembly & Seal Replacement",
+              "status": "ready", "visual": true,
+              "objective": "Disassemble an easy-e valve body safely, decide which trim parts can be reused, and replace the balanced-plug piston seal in its three easy-e forms — ED graphite ring, ET two-piece PTFE, and ET spring-loaded PTFE.",
+              "keyConcepts": [
+                { "t": "Disassembly runs to a set order and is never rushed: isolate, depressurise both sides, drain, lock out. Pull the actuator, back off the packing-flange nuts, then loosen the body-to-bonnet nuts about 1/8 in and break the gasket joint by rocking or prying — a stuck bonnet is never freed by pulling with anything that can store and release energy. Match-mark actuator-to-bonnet and bonnet-to-body first so orientation and flow direction go back the same way; fit a stem locknut so the plug and stem cannot drop out of the lifting bonnet; lift from the far side.", "pages": [56] },
+                { "t": "Unbalanced plugs (ES, EZ) carry no piston seal, so their maintenance is minimal: verify the seating surface — lap minor defects, machine or replace gouges; a sound plug is reusable — and check the stem, polishing light thread defects and replacing it for gouges. Never put a new plug on an old stem: refitting needs a fresh pin hole, which weakens the stem enough to fail in service. A used plug on a new stem is fine. Stem surface damage also destroys new packing.", "pages": [57] },
+                { "t": "Balanced plugs seal at the plug OD against the cage bore. easy-e uses three seals: ED's graphite piston ring for high temperature, ET's two-piece PTFE with an elastomer backup ring, and ET's optional spring-loaded PTFE. The PTFE seals are pressure-assisted — the open (spring) side must face the process pressure, so the orientation flips with flow direction (open side down for flow-down, up for flow-up). Take the exact orientation from the manual figure for that seal.", "pages": [58] },
+                { "t": "The ED graphite piston ring is brittle and installs in pieces — two ideally, never more than three. A new ring comes whole: compress it into an oval in a smooth- or taped-jaw vise until it snaps on both sides; if one side goes first, keep squeezing rather than cutting the other. Fit the pieces in the plug groove with the broken ends matched — the mating fracture faces form the seal.", "pages": [59] },
+                { "t": "Both ET PTFE seals are stretched on slowly — PTFE needs time to cold-flow, so no sharp jerks — with silicone-base lubricant. The two-piece seal is a closed ring: cut it off, fit the backup ring then the seal; it looks loose in the groove until the cage squeezes it home. The spring-loaded seal on smaller plugs (5-3/8 in port or less) comes off and on with its spiral retaining clip and is reusable; on larger plugs it is cut off.", "pages": [60, 61] },
+                { "t": "Reinstalling the plug is where a new seal gets ruined: lower it so the seal ring meets the cage's entrance chamfer squarely and enters evenly all the way round, never cocked. Inspect the plug groove and the cage bore for scratches first — a nick in either leaks past any new seal.", "pages": [60, 61] }
+              ],
+              "pages": [56, 57, 58, 59, 60, 61]
+            },
             { "id": "ch2-m5", "num": 5, "title": "Valve Lapping", "status": "outline",
               "objective": "Lap a metal-seated valve and recognise plug and cage damage.",
               "pages": [62, 63, 64, 65, 66], "check": [67] },

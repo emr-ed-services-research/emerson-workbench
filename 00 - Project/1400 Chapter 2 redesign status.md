@@ -20,7 +20,7 @@ Templates: `40 - Engine/Presentation/build/css/TEMPLATES.md`.
 | --- | --- | --- |
 | Module 0 — Before We Start | ready | not needed (bookend) |
 | **Day 1 · Ch 1** — Control Valve Specifications | ready | **done** — template rebuild, then 3 thin modules consolidated into one ("Reading a Valve's Specifications") |
-| **Day 1 · Ch 2** — Fisher Easy-E Valve Maintenance | ready | **modules 1–3 done** (see below). Modules 4–7 are `outline` only — separate authoring task, **not** in scope. |
+| **Day 1 · Ch 2** — Fisher Easy-E Valve Maintenance | m1–4 ready, m5–7 outline | **modules 1–3 four-part done** (see below). **Module 4 Stage 2 done** (context authored, `status: ready`); its Stage 3 slide pass not started. Modules 5–7 still `outline`. |
 | Day 1 · Ch 3 — Sliding-Stem S&D Actuator Maintenance | outline | not started |
 | Day 1 · Ch 4 — Sliding-Stem Piston Actuator Maintenance | outline | not started |
 | Day 1 · Ch 14 — Workshop 1: Sliding Stem | outline | not started |
@@ -86,16 +86,30 @@ in that folder's `SOURCES.txt`:
 | 51 | Uses Control Valve Handbook Fig 1.6 (generic bonnet cutaway). Fine for a "what is a packing box" slide. If a Fisher easy-e-specific packing-box sectional is wanted later, the ES/EAS and ET/EZ instruction manuals (D100398X012, D100401X012) have one, but they carry the manuals' parts-list key numbers. |
 | 48–50, 53–54 | Out-of-flow deck files still on the pre-pass PowerPoint markup. A deck-hygiene pass could bring them onto the templates; low priority (they are not in any module). |
 
-## Explicitly out of scope for this pass
+## Current work — finishing Chapter 2 (per [[System Architecture]] directive)
 
-- Chapter 2 modules 4–7 (Body Disassembly, Lapping, Packing Replacement,
-  Reassembly) — still `outline`; need Stage 2 context authoring first.
+Sequencing is fixed: finish Ch 2 modules 4–7, then the Pipeline Console. No
+Day 1 Ch 3/4, no second course, no console work until Ch 2 is done. Rework
+requests in this window are treated as pipeline QA (working rule 3).
+
+| Module | Stage 2 (context) | Stage 3 (slide pass) |
+| --- | --- | --- |
+| 4 · Body Disassembly & Seal Replacement | **done** — objective + 6 key concepts, sourced from the ET (D100398X012) and ED (D100390X012) manuals; `pages` [56–61]; `status: ready` | not started |
+| 5 · Valve Lapping | not started | not started |
+| 6 · Packing Replacement & Adjustment | not started | not started |
+| 7 · Reassembly & Gaskets | not started | not started |
+
+### Module 4 — Stage 3 to-do
+
+- **Slide 55** ("Fisher Easy-E Valve Maintenance") is a modules-4–7 roadmap that
+  duplicates the chapter-intro card — drop it in the Stage 3 pass (`data-review`
+  ribbon, retained for the standalone deck). It has already been removed from
+  module 4's `pages`.
+- Slides 56–61 are photo-heavy 2-column / 3-photo PowerPoint layouts — candidates
+  for `.slide--tmpl-figrow` (procedure-step photo rows) once the pass runs.
+
+## Out of scope until Chapter 2 is finished
+
 - Day 1 Chapters 3, 4, Workshop 1 — still `outline`.
 - Days 2 and 3.
-
-## What's next (Franz's call)
-
-1. Stage 2 authoring for Ch 2 modules 4–7, then their Stage 3 pass; **or**
-2. Stage 2 + Stage 3 for Day 1 Chapters 3 / 4 / Workshop 1; **or**
-3. Address the follow-ups above; **or**
-4. Move to a second course to prove the pipeline end to end.
+- Pipeline Console / Cartridge separation — deferred by [[System Architecture]].
