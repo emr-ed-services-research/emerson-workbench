@@ -148,3 +148,42 @@ should be seen and compared together (e.g. the six seat-leakage classes).
 ```
 
 With `.tmpl-aside` present, `.tmpl-wrap` narrows automatically to leave room.
+
+---
+
+## Template 5 — figure row  `.slide--tmpl-figrow`
+
+2–4 captioned figures side by side (add `is-grid` for a 2×2 grid), for
+comparing valve or trim styles that are *shown*, not tabulated. Each
+`<figure class="tmpl-cell">` holds one `<img>` and a `<figcaption>` — a bold
+name line plus a short functional tag on the next line. No on-image markers:
+if a single figure needs its parts called out, that slide is a
+`.slide--tmpl-diagram` instead.
+
+```html
+<article class="slide slide--tmpl-figrow" data-slide="28" data-deck="1400">
+  <h1 class="slide-title">Valve Bodies — Globe vs Angle</h1>
+  <div class="tmpl-row">
+    <figure class="tmpl-cell">
+      <img src="…" alt="…">
+      <figcaption><b>Globe body</b>flow straight through</figcaption>
+    </figure>
+    <figure class="tmpl-cell">
+      <img src="…" alt="…">
+      <figcaption><b>Angle body</b>flow turns 90°</figcaption>
+    </figure>
+  </div>
+  <div class="slide-chrome">…</div>
+</article>
+```
+
+An optional `<p class="tmpl-note">` under the row carries **one short spec
+line** (e.g. a flow direction) — never a sentence an instructor would read
+aloud; that belongs in the context pane. `.tmpl-note` also works inside
+`.slide--tmpl-diagram`.
+
+### `.slide--tmpl-diagram.is-wide`
+
+For a detailed sectional / cutaway that needs room: a bigger figure
+(`31cqw`), markers still in the left gutter with longer leader lines
+reaching in to the internal trim, list slid right. Used on slides 31 / 32.

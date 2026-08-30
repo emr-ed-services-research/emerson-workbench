@@ -10,3 +10,8 @@ cvh6-fig1-3-globe-valve-components.png
   carries the labels). Page rect x 315-858, y 1222-2210 of the 2200x3400
   render; 34 px white pad. Final 601x1056 (AR 0.569). Used on slide 27.
   (Re-cropped 2026-08-29: earlier crops clipped the body's right flange.)
+
+plug-unbalanced-head.png / plug-balanced-head.png
+  Deck images image44 / image45 (Fisher plug photos) cropped to the plug head so
+  the distinguishing feature reads at slide size: solid face (unbalanced) vs drilled
+  balance passages (balanced). Used on slide 30. 2026-08-30.

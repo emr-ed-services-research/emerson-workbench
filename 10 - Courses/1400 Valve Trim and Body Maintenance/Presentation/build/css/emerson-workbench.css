@@ -640,6 +640,11 @@
   aspect-ratio: var(--fig-ar, 0.6);
 }
 .slide--tmpl-diagram.is-sourced .tmpl-fig { left: 7cqw; width: 26cqw; }
+/* is-wide: a detailed sectional / cutaway that needs room. Bigger figure,
+   markers still in the left gutter, list slides right. */
+.slide--tmpl-diagram.is-wide .tmpl-fig { left: 9cqw; width: 31cqw; }
+.slide--tmpl-diagram.is-wide .tmpl-marker { left: -6.5cqw; }
+.slide--tmpl-diagram.is-wide .tmpl-list { left: 47cqw; }
 .slide--tmpl-diagram .tmpl-fig > img {
   position: absolute; inset: 0;
   width: 100%; height: 100%;
@@ -755,6 +760,48 @@
   font-size: 1.3cqw; color: var(--emerson-grey); line-height: 1.35;
 }
 
+/* -- Template 5: figure row  .slide--tmpl-figrow -------------------
+   2-4 captioned figures side by side (or a 2x2 grid with `is-grid`),
+   for comparing valve / trim styles that are shown, not tabulated.
+   Each <figure class="tmpl-cell"> holds one image and a <figcaption>
+   (the part name + a short functional tag). An optional
+   <p class="tmpl-note"> carries one line of teaching emphasis under
+   the row. No on-image markers - if a single figure needs parts
+   called out, that slide is a .slide--tmpl-diagram instead. */
+.slide--tmpl-figrow .tmpl-row {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 17cqh; bottom: 12cqh;
+  display: flex; gap: 3cqw; align-items: stretch;
+}
+.slide--tmpl-figrow.is-grid .tmpl-row {
+  flex-wrap: wrap; gap: 2cqh 3cqw;
+}
+.slide--tmpl-figrow .tmpl-cell {
+  flex: 1 1 0; min-width: 0; margin: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1.6cqh;
+}
+.slide--tmpl-figrow.is-grid .tmpl-cell { flex-basis: calc(50% - 1.5cqw); }
+.slide--tmpl-figrow .tmpl-cell > img {
+  width: 100%; flex: 0 1 auto; min-height: 0; max-height: 100%; object-fit: contain;
+}
+.slide--tmpl-figrow .tmpl-cell figcaption {
+  flex: none; text-align: center; line-height: 1.3;
+  font-size: 1.9cqw; color: var(--body-text);
+}
+.slide--tmpl-figrow .tmpl-cell figcaption b {
+  display: block; color: var(--emerson-blue); font-weight: 700;
+  font-size: 2.05cqw; margin-bottom: 0.3cqh;
+}
+.slide--tmpl-figrow .tmpl-note,
+.slide--tmpl-diagram .tmpl-note {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; bottom: 6cqh; margin: 0;
+  font-size: 1.7cqw; line-height: 1.35; color: var(--emerson-charcoal);
+  padding-left: 2cqw; border-left: 0.35cqw solid var(--emerson-cyan);
+}
+.slide--tmpl-diagram .tmpl-note { right: 47cqw; }
+
 /* -- Standard slide heading ----------------------------------------
    The course-wide slide-heading treatment. The full-width PowerPoint
    title rule is dropped for a restrained heading — semibold, held to a
@@ -764,12 +811,14 @@
 .slide--hd::after,
 .slide--tmpl-diagram::after,
 .slide--tmpl-table::after,
-.slide--tmpl-compare::after { display: none; }
+.slide--tmpl-compare::after,
+.slide--tmpl-figrow::after { display: none; }
 
 .slide--hd .slide-title,
 .slide--tmpl-diagram .slide-title,
 .slide--tmpl-table .slide-title,
-.slide--tmpl-compare .slide-title {
+.slide--tmpl-compare .slide-title,
+.slide--tmpl-figrow .slide-title {
   top: 6cqh;
   left: 5.6cqw; right: 5.6cqw;
   height: auto;
@@ -785,7 +834,8 @@
 .slide--hd .slide-title::after,
 .slide--tmpl-diagram .slide-title::after,
 .slide--tmpl-table .slide-title::after,
-.slide--tmpl-compare .slide-title::after {
+.slide--tmpl-compare .slide-title::after,
+.slide--tmpl-figrow .slide-title::after {
   content: "";
   position: absolute;
   left: 0;

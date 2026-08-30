@@ -245,7 +245,7 @@ window.EW_MANIFEST = [
     {
         "n":  28,
         "file":  "1400-028.html",
-        "family":  "title-only",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Valve Bodies – Globe vs Angle",
         "hasNotes":  false,
@@ -254,7 +254,7 @@ window.EW_MANIFEST = [
     {
         "n":  29,
         "file":  "1400-029.html",
-        "family":  "title-only",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "PDTC vs. PDTO Globe Valves",
         "hasNotes":  false,
@@ -263,7 +263,7 @@ window.EW_MANIFEST = [
     {
         "n":  30,
         "file":  "1400-030.html",
-        "family":  "two-col",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Valve Plugs",
         "hasNotes":  false,
@@ -272,7 +272,7 @@ window.EW_MANIFEST = [
     {
         "n":  31,
         "file":  "1400-031.html",
-        "family":  "two-col",
+        "family":  "tmpl-diagram",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Unbalanced Plug",
         "hasNotes":  false,
@@ -281,7 +281,7 @@ window.EW_MANIFEST = [
     {
         "n":  32,
         "file":  "1400-032.html",
-        "family":  "two-col",
+        "family":  "tmpl-diagram",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Balanced Plug",
         "hasNotes":  false,
@@ -299,7 +299,7 @@ window.EW_MANIFEST = [
     {
         "n":  34,
         "file":  "1400-034.html",
-        "family":  "title-only",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Standard vs. Radius Plug",
         "hasNotes":  false,
@@ -308,7 +308,7 @@ window.EW_MANIFEST = [
     {
         "n":  35,
         "file":  "1400-035.html",
-        "family":  "title-only",
+        "family":  "tmpl-figrow",
         "section":  "Ch 2 - Fisher Easy-E Valve Maintenance",
         "title":  "Seat Ring",
         "hasNotes":  false,
