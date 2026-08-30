@@ -7,6 +7,8 @@
 
   var C = null;
   var MODS = [];                 // flat list of every module in course order
+  var DAYS_BY_ID = {};           // day.id  -> day   (day-intro cards)
+  var CHS_BY_ID = {};            // ch.id   -> chapter (chapter-intro cards)
   var STORE_KEY = null;          // set in boot(): "ew<course.code>.progress"
   var progress = { seen: {}, done: {} };
 
@@ -57,6 +59,11 @@
     });
     if (C.wrapUp) { C.wrapUp._kind = "wrap"; C.wrapUp._pages = C.wrapUp.pages || []; MODS.push(C.wrapUp); }
 
+    C.days.forEach(function (day) {
+      DAYS_BY_ID[day.id] = day;
+      day.chapters.forEach(function (ch) { CHS_BY_ID[ch.id] = ch; });
+    });
+
     buildToc();
     wireChrome();
     wireLibrary();
@@ -101,6 +108,7 @@
           '<span class="toc__sec-caret">▸</span>' +
         '</summary>'));
       var dayBody = h('<div class="toc__sec-body"></div>');
+      dayBody.appendChild(h('<a class="toc__sec-open" href="#' + day.id + '">Open Day ' + day.num + ' →</a>'));
 
       day.chapters.forEach(function (ch) {
         var det = h('<details class="toc__ch' + (ch.workshop ? " is-workshop" : "") + '" id="toc-' + ch.id + '"></details>');
@@ -110,6 +118,8 @@
             '<span class="toc__ch-title">' + esc(ch.title) + '</span>' +
             '<span class="toc__ch-caret">▸</span>' +
           '</summary>'));
+
+        det.appendChild(h('<a class="toc__ch-open" href="#' + ch.id + '">Open chapter ' + ch.num + ' →</a>'));
 
         var ul = h('<ul class="toc__mods"></ul>');
         (ch.modules || []).forEach(function (m) {
@@ -146,6 +156,8 @@
     var raw = (location.hash || "").replace(/^#/, "");
     if (!raw) return { view: "home" };
     var parts = raw.split("/");
+    if (DAYS_BY_ID[parts[0]]) return { view: "day", day: DAYS_BY_ID[parts[0]] };
+    if (CHS_BY_ID[parts[0]]) return { view: "chapter", ch: CHS_BY_ID[parts[0]] };
     var m = MODS.filter(function (x) { return x.id === parts[0]; })[0];
     if (!m) return { view: "home" };
     if (parts[1] === "check" && m._check) return { view: "check", mod: m };
@@ -180,6 +192,8 @@
     var route = parseHash();
     document.body.classList.toggle("view-home", route.view === "home");
     if (route.view === "home") return renderHome();
+    if (route.view === "day") return renderDay(route.day);
+    if (route.view === "chapter") return renderChapter(route.ch);
 
     var m = route.mod;
     markProgress(route);
@@ -219,11 +233,11 @@
     var first = MODS.filter(function (m) { return m.status === "ready"; })[0] || MODS[1] || MODS[0];
     var daysHtml = C.days.map(function (day) {
       var chs = day.chapters.map(function (ch) {
-        return '<a href="#' + (ch.modules[0] || {}).id + '" class="home__ch">' +
+        return '<a href="#' + ch.id + '" class="home__ch">' +
           '<span class="n">' + ch.num + '</span><span>' + esc(ch.title) + '</span></a>';
       }).join("");
       return '<div class="home__day">' +
-        '<div class="home__day-hd"><span>Day ' + day.num + '</span> ' + esc(day.title) + '</div>' +
+        '<a class="home__day-hd" href="#' + day.id + '"><span>Day ' + day.num + '</span> ' + esc(day.title) + '</a>' +
         '<div class="home__day-sub">' + esc(day.subtitle || "") + '</div>' + chs + '</div>';
     }).join("");
 
@@ -243,6 +257,102 @@
     el.ctxConcepts.innerHTML = "";
     el.ctxCheckWrap.hidden = true;
     renderProgress();
+  }
+
+  function tierCardShell() {
+    el.stageNav.style.display = "";
+    el.card.className = "stage__card";
+    document.body.classList.remove("page-view");
+    document.querySelectorAll(".toc__sec,.toc__ch,.toc__mod,.toc__pagelist li").forEach(function (x) { x.classList.remove("is-current"); });
+    el.ctxConcepts.innerHTML = "";
+    el.ctxCheckWrap.hidden = true;
+    el.dots.innerHTML = "";
+    el.pos.textContent = "";
+  }
+  function ctxObjLabel(text) {
+    var blk = el.ctxObj && el.ctxObj.closest(".ctx__block");
+    var h = blk && blk.querySelector("h4");
+    if (h) h.textContent = text;
+  }
+  function ctxConceptsBlock() {
+    return el.ctxConcepts && el.ctxConcepts.closest(".ctx__block");
+  }
+  function tierNav(prev, next, nextLabel) {
+    el.btnPrev.disabled = !prev; el.btnNext.disabled = !next;
+    el.btnPrev.onclick = function () { if (prev) location.hash = prev; };
+    el.btnNext.onclick = function () { if (next) location.hash = next; };
+    el.btnNext.textContent = (nextLabel || "Next") + " ▶";
+    el.btnPrev.textContent = "◀ Previous";
+  }
+
+  function renderDay(day) {
+    tierCardShell();
+    var di = C.days.indexOf(day);
+    el.hdDay.textContent = "Day " + day.num + " · " + day.title;
+    el.crumbs.innerHTML = 'Day ' + day.num + ' · <b>' + esc(day.title) + '</b>';
+    var chs = (day.chapters || []).map(function (ch) {
+      return '<a class="ov__row" href="#' + ch.id + '"><span class="n">' + ch.num + '</span>' +
+        '<span>' + esc(ch.title) + '</span></a>';
+    }).join("");
+    var first = (day.chapters[0] || {}).id;
+    el.card.innerHTML =
+      '<div class="ov ov--tier ov--day">' +
+        '<div class="ov__kicker">Day ' + day.num + ' of ' + C.days.length + '</div>' +
+        '<h1 class="ov__title">' + esc(day.title) + '</h1>' +
+        '<div class="ov__rule"></div>' +
+        (day.subtitle ? '<p class="ov__objective">' + esc(day.subtitle) + '</p>' : "") +
+        (first ? '<button class="ov__start" onclick="location.hash=\'#' + first + '\'">Start Day ' + day.num + ' →</button>' : "") +
+        '<div class="ov__list"><h4>Chapters</h4>' + chs + '</div>' +
+      '</div>';
+    el.ctxHere.textContent = "Day " + day.num;
+    el.ctxMod.textContent = day.title;
+    el.ctxObj.textContent = day.subtitle || "";
+    ctxObjLabel("Day overview");
+    var db = ctxConceptsBlock(); if (db) db.hidden = true;
+    tierNav(di > 0 ? "#" + C.days[di - 1].id : (C.moduleZero ? "#" + C.moduleZero.id : ""),
+            first ? "#" + first : "", "First chapter");
+    var secEl = byId("tocsec-" + day.id);
+    if (secEl) { secEl.classList.add("is-current"); secEl.open = true; }
+    el.ftRight.textContent = "Day " + day.num + " of " + C.days.length;
+    renderProgress(day);
+    scrollTop();
+  }
+
+  function renderChapter(ch) {
+    tierCardShell();
+    var day = ch._day;
+    el.hdDay.textContent = "Day " + day.num + " · " + day.title;
+    el.crumbs.innerHTML = 'Day ' + day.num + ' · <b>' + esc(day.title) + '</b>' +
+      '<span class="sep">›</span>Chapter ' + ch.num + ' · <b>' + esc(ch.title) + '</b>';
+    var objs = (ch.objectives || []).map(function (o) { return '<li>' + esc(o) + '</li>'; }).join("");
+    var mods = (ch.modules || []).map(function (m) {
+      return '<a class="ov__row" href="#' + m.id + '"><span class="n">' + (m.num || "•") + '</span>' +
+        '<span>' + esc(m.title) + '</span>' +
+        (m.status === "ready" ? "" : '<span class="ov__row-tag">outline</span>') + '</a>';
+    }).join("");
+    var first = (ch.modules[0] || {}).id;
+    el.card.innerHTML =
+      '<div class="ov ov--tier ov--chapter">' +
+        '<div class="ov__kicker">Day ' + day.num + ' · ' + esc(day.title) + ' · Chapter ' + ch.num + '</div>' +
+        '<h1 class="ov__title">' + esc(ch.title) + '</h1>' +
+        '<div class="ov__rule"></div>' +
+        (ch.summary ? '<p class="ov__objective">' + esc(ch.summary) + '</p>' : "") +
+        (objs ? '<div class="ov__list"><h4>By the end of this chapter</h4><ul class="ov__objlist">' + objs + '</ul></div>' : "") +
+        (first ? '<button class="ov__start" onclick="location.hash=\'#' + first + '\'">Start chapter →</button>' : "") +
+        '<div class="ov__list"><h4>Modules</h4>' + mods + '</div>' +
+      '</div>';
+    el.ctxHere.textContent = "Day " + day.num + " · Chapter " + ch.num;
+    el.ctxMod.textContent = ch.title;
+    el.ctxObj.textContent = ch.summary || "";
+    ctxObjLabel("Chapter summary");
+    var cb = ctxConceptsBlock(); if (cb) cb.hidden = true;
+    tierNav("#" + day.id, first ? "#" + first : "", "First module");
+    // open this day + chapter in the rail
+    var secEl = byId("tocsec-" + day.id); if (secEl) { secEl.classList.add("is-current"); secEl.open = true; }
+    var cEl = byId("toc-" + ch.id); if (cEl) { cEl.classList.add("is-current"); cEl.open = true; }
+    el.ftRight.textContent = "Day " + day.num + "  ·  Chapter " + ch.num;
+    renderProgress(day);
+    scrollTop();
   }
 
   function renderBookend(route) {
@@ -269,7 +379,9 @@
     el.ctxHere.textContent = m._kind === "m0" ? "Before we start" : "End of course";
     el.ctxMod.textContent = m.title;
     el.ctxObj.textContent = m.summary || "";
+    ctxObjLabel("Overview");
     el.ctxConcepts.innerHTML = "";
+    var bkc = ctxConceptsBlock(); if (bkc) bkc.hidden = true;
     el.ctxCheckWrap.hidden = true;
     renderNav(route);
     syncToc(route);
@@ -328,6 +440,8 @@
 
   /* ---------- right rail: context ---------------------------- */
   function renderContext(m, route) {
+    ctxObjLabel("Module objective");
+    var kcb = ctxConceptsBlock(); if (kcb) kcb.hidden = false;
     el.ctxHere.textContent = "Day " + m._day.num + " · " + m._day.title + (m.num ? "   ·   Module " + m.num : "");
     el.ctxMod.textContent = m.title;
     el.ctxObj.textContent = m.objective || m._ch.summary || "";

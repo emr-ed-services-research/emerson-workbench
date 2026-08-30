@@ -4,4 +4,9 @@ Emerson first-party publications, reused in Emerson Educational Services trainin
 cvh6-fig1-3-globe-valve-components.png
   Control Valve Handbook, Sixth Edition (D101881X012), Figure 1.3
   "Sliding-Stem Control Valve" - exploded major-components view, callouts 1-11.
-  Cropped from page 18 (300 dpi render). Used on slide 27.
+  Cropped from page 18 (400 dpi render): the diagram only - callout circles
+  1-11, the exploded trim stack, and the full body incl. BOTH end flanges.
+  The figure's own text-label column is whited out (the slide's .tmpl-list
+  carries the labels). Page rect x 315-858, y 1222-2210 of the 2200x3400
+  render; 34 px white pad. Final 601x1056 (AR 0.569). Used on slide 27.
+  (Re-cropped 2026-08-29: earlier crops clipped the body's right flange.)

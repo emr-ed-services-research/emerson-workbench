@@ -157,6 +157,14 @@ body.present .shell__main { background: #e7e9eb; }
 .toc__ch[open] .toc__ch-caret { transform: rotate(90deg); }
 .toc__ch.is-current > .toc__ch-btn .toc__ch-title { color: var(--emerson-blue); }
 
+.toc__ch-open {
+  display: block; margin: 2px 12px 6px 8px; padding: 5px 9px;
+  font-size: 11px; font-weight: 700; color: var(--accent); text-decoration: none;
+  background: color-mix(in srgb, var(--emerson-blue) 6%, #fff);
+  border: 1px solid var(--rail-line); border-radius: 5px;
+}
+.toc__ch-open:hover { border-color: var(--accent); }
+
 .toc__mods { list-style: none; margin: 0; padding: 0 0 6px; }
 .toc__mod > a {
   display: flex; align-items: baseline; gap: 8px; padding: 5px 12px 5px 30px;
@@ -231,6 +239,30 @@ body.page-view .page__frame { width: 100%; height: 100%; aspect-ratio: auto; }
   border-radius: 6px; font-size: 12.5px; color: #6b5b1e;
 }
 
+/* -- day / chapter intro cards: same family as the module overview,
+   scoped one and two levels up. They add a navigable list of what is
+   inside (chapters, or modules). -- */
+.ov--tier .ov__list { margin-top: 22px; }
+.ov--tier .ov__list h4 {
+  margin: 0 0 8px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 700;
+}
+.ov__objlist { margin: 0 0 4px; padding-left: 20px; font-size: 13.5px; line-height: 1.6; }
+.ov__row {
+  display: flex; align-items: baseline; gap: 10px; padding: 8px 10px;
+  text-decoration: none; color: var(--ink); font-size: 13.5px;
+  border: 1px solid var(--rail-line); border-radius: 6px; margin-bottom: 6px;
+}
+.ov__row:hover { border-color: var(--accent); background: color-mix(in srgb, var(--emerson-blue) 5%, #fff); }
+.ov__row .n {
+  flex: none; min-width: 2ch; text-align: right; font-weight: 700;
+  color: var(--emerson-grey); font-variant-numeric: tabular-nums;
+}
+.ov__row-tag {
+  flex: none; margin-left: auto; font-size: 9px; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--emerson-grey); border: 1px solid var(--rail-line); border-radius: 3px; padding: 0 4px;
+}
+
 /* -- home -- */
 .home__m0 {
   display: block; margin: 4px 0 6px; padding: 12px 14px; text-decoration: none; color: var(--ink);
@@ -240,7 +272,8 @@ body.page-view .page__frame { width: 100%; height: 100%; aspect-ratio: auto; }
 .home__m0 b { color: var(--emerson-blue); }
 .home__days { margin-top: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .home__day { border: 1px solid var(--rail-line); border-radius: 8px; padding: 12px 14px; }
-.home__day-hd { font-weight: 800; color: var(--emerson-blue); font-size: 15px; }
+.home__day-hd { display: block; font-weight: 800; color: var(--emerson-blue); font-size: 15px; text-decoration: none; }
+.home__day-hd:hover { text-decoration: underline; }
 .home__day-hd span {
   font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
   background: color-mix(in srgb, var(--emerson-blue) 12%, #fff); border-radius: 3px; padding: 1px 5px; margin-right: 6px;

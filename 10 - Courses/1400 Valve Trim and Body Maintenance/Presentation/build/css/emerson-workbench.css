@@ -755,25 +755,13 @@
   font-size: 1.3cqw; color: var(--emerson-grey); line-height: 1.35;
 }
 
-/* -- Template card treatment: the shell intro-card visual language ---
-   Templates drop the full-width PowerPoint title rule for a larger bold
-   title with a short accent rule under it, and a faint inset card frame -
-   so a template slide reads like the module intro card, not a raw slide. */
+/* -- Template card treatment ----------------------------------------
+   Templates drop the full-width PowerPoint title rule for a restrained
+   heading in the module-intro-card visual family. Two heading options are
+   under review (.hd-a / .hd-b); one becomes the course-wide default. */
 .slide--tmpl-diagram::after,
 .slide--tmpl-table::after,
 .slide--tmpl-compare::after { display: none; }
-
-.slide--tmpl-diagram::before,
-.slide--tmpl-table::before,
-.slide--tmpl-compare::before {
-  content: "";
-  position: absolute;
-  inset: 3.2cqh 2.6cqw;
-  border: max(1px, 0.12cqh) solid color-mix(in srgb, var(--emerson-blue) 16%, #fff);
-  border-radius: 0.9cqw;
-  pointer-events: none;
-  z-index: 0;
-}
 
 .slide--tmpl-diagram .slide-title,
 .slide--tmpl-table .slide-title,
@@ -783,20 +771,31 @@
   height: auto;
   align-items: flex-start;
   padding-bottom: 0;
-  font-weight: 700;
-  font-size: 3.7cqw;
-  line-height: 1.08;
+  line-height: 1.1;
+  color: var(--emerson-blue);
 }
-.slide--tmpl-diagram .slide-title::after,
-.slide--tmpl-table .slide-title::after,
-.slide--tmpl-compare .slide-title::after {
+
+/* Option A - structured: semibold, restrained size, short accent tick. */
+.hd-a .slide-title {
+  font-weight: 600;
+  font-size: 2.7cqw;
+  letter-spacing: -0.005em;
+}
+.hd-a .slide-title::after {
   content: "";
   position: absolute;
   left: 0;
-  top: calc(100% + 1.5cqh);
-  width: 6cqw;
-  height: 0.45cqh;
+  top: calc(100% + 1.25cqh);
+  width: 4.5cqw;
+  height: 0.3cqh;
   background: var(--emerson-blue);
+}
+
+/* Option B - modern: medium weight, a little larger, no rule, just air. */
+.hd-b .slide-title {
+  font-weight: 500;
+  font-size: 2.95cqw;
+  letter-spacing: 0.004em;
 }
 
 /* ---------- 8. Print / export -------------------------------------- */
