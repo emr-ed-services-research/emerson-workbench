@@ -184,9 +184,20 @@
               ],
               "pages": [62, 63, 64, 65, 66], "check": [67]
             },
-            { "id": "ch2-m6", "num": 6, "title": "Packing Replacement & Adjustment", "status": "outline",
-              "objective": "Remove and install PTFE, graphite, high-seal, and ENVIRO-SEAL packing, and set the correct compression.",
-              "pages": [68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79], "check": [73, 80] },
+            {
+              "id": "ch2-m6", "num": 6, "title": "Packing Replacement & Adjustment",
+              "status": "ready", "visual": true,
+              "objective": "Remove and rebuild a valve's stem packing — spring-loaded and jam PTFE, jam graphite, HIGH-SEAL, and ENVIRO-SEAL — and set each one to its own correct compression method.",
+              "keyConcepts": [
+                { "t": "Best practice is to pull the bonnet and push the old packing out the top with a non-marring rod — never work it out from below or gouge the packing bore. Then inspect the stem threads and the bore for burrs and scratches; light-sand what you can, replace what you cannot. A nick in the bore or on the stem leaks past new packing or cuts it on installation.", "pages": [68, 69] },
+                { "t": "Build the stack one ring at a time, seating each with the packing follower (a smooth pipe over the stem). Orientation matters: the male and female end adaptors face the right way and the lantern ring lines up with the lubricator / leak-off port. Which arrangement — single or double, and the ring count — comes from the valve manual for that stem diameter.", "pages": [70, 71] },
+                { "t": "PTFE has two adjustment methods. Spring-loaded single V-ring is live-loaded: tighten the flange nuts evenly until the follower shoulder bottoms on the bonnet and the spring is compressed — the spring then holds the load. Jam (multi-ring) PTFE is torque-set: lubricate the studs and nut faces, tighten alternately to the minimum table torque with the follower clear of the bonnet, and leave the flange level and square to the stem.", "pages": [70, 72] },
+                { "t": "Graphite rings (die-formed ribbon and braided filament, with a sacrificial zinc washer under each ribbon ring) go in one at a time, follower-seated, keeping air out of the box. Adjustment is two-step: torque to the maximum table value to crush the rings into the box, then back the nuts off and retighten to the minimum — this seats the packing without leaving it over-tight for running friction.", "pages": [74, 75] },
+                { "t": "HIGH-SEAL is live-loaded on a Belleville spring stack with carbon guide bushings and graphite rings — it holds constant load as the packing relaxes, so it is set by geometry, not torque: lubricate studs, nuts and the top of the spring pack, hand-tighten, align the bottom of the travel scale with the indicator disk, then tighten to the maximum-compression mark. The procedure is in a dedicated manual (D101453X012).", "pages": [76, 77] },
+                { "t": "ENVIRO-SEAL is Belleville-loaded packing in PTFE, graphite ULF, or duplex (a PTFE set over a graphite set for a wide temperature span). It is adjusted by the spring-flat method: lube studs, nuts and flange, hand-tighten, tighten until the Belleville washers go flat, then back off — 1/4 turn for graphite, 1/2 turn for PTFE. HIGH-SEAL and ENVIRO-SEAL packing is never lubricated. The procedure is in a dedicated manual (D101642X012).", "pages": [78, 79] }
+              ],
+              "pages": [68, 69, 70, 71, 72, 74, 75, 76, 77, 78, 79], "check": [73, 80]
+            },
             { "id": "ch2-m7", "num": 7, "title": "Reassembly & Gaskets", "status": "outline",
               "objective": "Reassemble the valve body and select and locate the correct gaskets.",
               "pages": [81, 82, 83, 84, 85], "check": [86] }

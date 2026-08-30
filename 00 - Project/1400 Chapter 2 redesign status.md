@@ -96,7 +96,7 @@ requests in this window are treated as pipeline QA (working rule 3).
 | --- | --- | --- |
 | 4 · Body Disassembly & Seal Replacement | **done** — objective + 6 key concepts, sourced from the ET (D100398X012) and ED (D100390X012) manuals; `pages` [56–61]; `status: ready` | not started |
 | 5 · Valve Lapping | **done** — objective + 6 key concepts, sourced from the ET / ED / EZ manuals' Lapping Metal Seats sections and the CVH; `pages` [62–66], `check` [67]; `status: ready` | not started |
-| 6 · Packing Replacement & Adjustment | not started | not started |
+| 6 · Packing Replacement & Adjustment | **done** — objective + 6 key concepts (removal + the five packing types' distinct compression methods), sourced from the ET manual's Packing Maintenance section (step 13 + Table 4) and the deck; `pages` [68–72, 74–79], `check` [73, 80]; `status: ready` | not started |
 | 7 · Reassembly & Gaskets | not started | not started |
 
 ### Module 4 — Stage 3 to-do
@@ -117,6 +117,25 @@ requests in this window are treated as pipeline QA (working rule 3).
 - Slides 64/65 are procedure steps in 2-column / 3-photo layouts — `figrow`
   candidates. Slide 63 (lap-line diagram) is a `.slide--tmpl-diagram` candidate.
   Slide 66 (plug/cage damage) is a two-photo comparison.
+
+### Module 6 — Stage 3 to-do
+
+- **Slide 68** is a tech-pub reminder (same as slide 62) — its point is that
+  packing work is done to the tech manual, not from memory. Keep it, but give it
+  a real treatment (an actual pointer to the packing manual section, not just a
+  bare image).
+- **Big consolidation target.** 11 content slides cover 5 packing types as
+  near-identical "components" + "compression" pairs. Stage 3 should collapse this
+  to roughly: one comparison table of the five adjustment methods
+  (spring-loaded PTFE → follower bottoms on bonnet; jam PTFE → min torque; jam
+  graphite → max then back to min; HIGH-SEAL → scale-to-indicator, max mark;
+  ENVIRO-SEAL → spring-flat) plus a figure row of the five stacks.
+- **Source-library gap:** the HIGH-SEAL (D101453X012) and ENVIRO-SEAL
+  (D101642X012) packing-system manuals are referenced but **not held** — added
+  as catalogue stubs in [[Technical Publications]], PDFs still need to be
+  dropped in. Concepts 5–6 are on the deck + the ET manual's cross-reference
+  until then; the Stage 3 pass on slides 76–79 should be checked against the
+  real manuals once available.
 
 ## Out of scope until Chapter 2 is finished
 

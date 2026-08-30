@@ -4,7 +4,7 @@ type: source
 source_type: publication
 tags:
   - source-library
-updated: 2026-08-29
+updated: 2026-08-31
 ---
 
 # Technical Publications
@@ -134,6 +134,33 @@ otherwise hard-to-handle fluids in chemical and hydrocarbon service.
 **Maintenance:** packing lubrication and maintenance, replacing packing, trim
 maintenance, disassembly, lapping metal seats on plain and extension bonnets,
 assembly. ENVIRO-SEAL bellows seal bonnet. Parts.
+
+## Sliding-stem packing systems
+
+The easy-e instruction manuals (ES / ED / ET / EZ) hand off to these two
+dedicated manuals for the two live-loaded packing systems — adjustment is by
+spring geometry, not flange torque, and the procedure lives only in these docs.
+**Both are referenced by [[1400 — Course Home|1400]] Chapter 2 Module 6 (Packing
+Replacement & Adjustment) and are not yet in the library — the PDFs need to be
+added to `20 - Source Library/Technical Publications/`.**
+
+### Fisher ENVIRO-SEAL Packing System for Sliding-Stem Valves
+`D101642X012` · **not held — needs to be obtained**
+
+Belleville-spring-loaded stem packing in PTFE, graphite ULF, and duplex
+(PTFE set over a graphite set) arrangements. Adjusted by the **spring-flat
+method**: hand-tighten, tighten until the Belleville washers go flat, then back
+off — 1/4 turn for graphite, 1/2 turn for PTFE. Not lubricated. The easy-e valve
+manuals point here for all ENVIRO-SEAL packing work.
+
+### Fisher HIGH-SEAL Live-Loaded Packing System
+`D101453X012` · **not held — needs to be obtained**
+
+Belleville spring assembly with carbon guide bushings, composite graphite and
+graphite-laminate rings, and PTFE washers. Set by **geometry, not torque**:
+hand-tighten, align the bottom of the travel scale with the indicator disk, then
+tighten to the maximum-compression mark. Not lubricated. The easy-e valve
+manuals point here for all HIGH-SEAL packing work.
 
 ## Rotary valve bodies
 
