@@ -5,7 +5,7 @@ tags:
   - project
   - pipeline
   - stage-2
-updated: 2026-08-29
+updated: 2026-08-31
 ---
 
 # Course Porting Pipeline
@@ -38,6 +38,33 @@ four-part slide pass → verify → publish.**
 from what worked there and what forked. The goal of writing it down is to stop
 re-deriving the process per course and to make the engine a shared asset instead
 of a thing that gets copied.
+
+## Working rules (every stage, every course)
+
+Cross-cutting rules that came out of the 1400 work. They apply at **every stage
+and to every course** — not scoped to a chapter, a module, or the stage that
+first surfaced them.
+
+1. **Browser rendering is a discrete verification step, never a drafting aid.**
+   Wherever the pipeline produces or edits HTML / CSS / SVG — a Stage 0
+   hand-fix, the Stage 3 slide pass, Stage 4 tuning — every decision about
+   structure, template choice, content, wording, and layout (including callout
+   `top` / `--lead` starting values) is made by **reasoning about the markup and
+   the design system**. Chrome is opened only to verify a finished artifact, and
+   only for what genuinely cannot be read from source: real proportions, whether
+   a callout leader lands on its exact part, layout collisions and clipping, and
+   the slide against the module-intro polish bar. Stage 3 runs this as its
+   Part 4 verification stage, once per slide; Stage 4 runs the same checks
+   headless across the whole deck. Reaching for the browser mid-draft is the
+   failure this rule exists to stop.
+
+2. **Look for a sourced figure before drawing or hand-tuning one.** Whenever a
+   slide carries a diagram or image, check the Control Valve Handbook (its
+   component figures *and* its section 3.4, not only the Fisher instruction
+   manuals) for a cleaner existing version of the same thing. Prefer the sourced
+   figure — cropped, attributed in `SOURCES.txt`, `.is-sourced` treatment — over
+   a recreation. This check is owed **before spending time iterating on an
+   existing hand-drawn figure too**, not only when first authoring a slide.
 
 ## Where we are (2026-08-29)
 
@@ -160,10 +187,11 @@ day / chapter / module hierarchy never changes). Run per module.
    fuller view for when the broader concept is actually introduced.
 2. **Source cross-reference.** For each module, check the relevant Handbook
    chapter and the applicable Fisher manuals — for correctness *and* framing.
-   Pull in clearer diagrams where the source has them; fix wording that does not
-   quite say the right thing once checked against the real source. Any claim that
-   cannot be confirmed against source material is **flagged explicitly as
-   unresolved**, not guessed.
+   Per working rule 2, look for a cleaner sourced version of every diagram
+   before recreating or hand-tuning one; fix wording that does not quite say the
+   right thing once checked against the real source. Any claim that cannot be
+   confirmed against source material is **flagged explicitly as unresolved**,
+   not guessed.
 3. **Consolidate artificially split slides.** Where one idea has been spread
    across many near-identical slides (one slide per leakage class, per flow
    characteristic, per packing type), combine them into one well-designed slide
@@ -172,19 +200,11 @@ day / chapter / module hierarchy never changes). Run per module.
 4. **Hierarchy + polish.** Keep day / chapter / module exactly as they are. Every
    resulting slide, however much it consolidates, gets the same clean visual
    treatment and context-pane parity as the rest of the course. This part ends
-   with a **browser verification stage** (below) — the one point in the pass
-   where slides are actually rendered in Chrome.
+   with the **browser verification stage** (below).
 
-**Where browser rendering belongs.** Parts 1–3 and every drafting decision along
-the way — template selection, content and caption writing, callout `top` /
-`--lead` starting values, general layout — are done by **reasoning about the
-markup and CSS**, not by opening Chrome. Browser rendering is reserved for the
-verification stage at the end of Part 4, run once per slide, where the thing
-being checked is genuinely visual and cannot be read off the source: real
-proportions, whether a callout leader lands on its exact part, layout collisions
-and clipping, and the slide held against the module-intro card's polish bar.
-Concentrating browser use there keeps the bulk of the pass fast and spends the
-render cost where it earns its keep.
+Parts 1–3 and every drafting decision in Part 4 are markup reasoning, not
+browser work — per working rule 1. The Part 4 verification stage is where this
+pass renders, once per slide.
 
 **Ground rules:**
 
@@ -205,11 +225,11 @@ render cost where it earns its keep.
 
 **Part 4 browser verification stage — the pre-send checklist.** Every redesigned
 slide is rendered in Chrome once, at the end of its pass, and passes all six
-checks before Franz sees it. This is the visual quality gate made concrete, and
-it is the *only* stage that opens a browser. Rework rounds spent on these are the
-assistant's failure, not review feedback. Item 4 (template fit) is a
-markup-reasoning check that should already be settled going in; the render
-confirms it rather than discovers it.
+checks before Franz sees it. This is the visual quality gate made concrete and
+the point in the four-part pass where working rule 1's render happens. Rework
+rounds spent on these are the assistant's failure, not review feedback. Item 4
+(template fit) is a markup-reasoning check that should already be settled going
+in; the render confirms it rather than discovers it.
 
 1. **Image quality.** Sharp at slide size? A low-resolution raster, a screenshot,
    or an image with baked-in arrows / labels / JPEG noise does **not** ship as-is
@@ -248,7 +268,9 @@ HTML for a shape a template covers) and the data-single-sourcing decision.
 
 ### Stage 4 — Verify & publish
 
-One `verify.ps1` that folds in the checks currently run by hand each pass:
+One `verify.ps1` that folds in the checks currently run by hand each pass. This
+is working rule 1's whole-deck render — the same checks the Stage 3 Part 4 gate
+runs per slide, re-run across every slide and shell module at publish time:
 
 - headless-Chrome render of every rebuilt slide and every shell module;
 - HTML tag-balance on changed slides;
