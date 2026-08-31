@@ -1,0 +1,20 @@
+[
+  { "name": "Front matter", "from": 1, "to": 11 },
+  { "name": "Ch 1 - Important Control Valve Specifications for Maintenance", "from": 12, "to": 25 },
+  { "name": "Ch 2 - Fisher Easy-E Valve Maintenance", "from": 26, "to": 86 },
+  { "name": "Ch 3 - Fisher Sliding Stem Spring & Diaphragm Actuator Maintenance", "from": 87, "to": 126 },
+  { "name": "Ch 4 - Fisher Sliding Stem Piston Actuator Maintenance", "from": 127, "to": 145 },
+  { "name": "Ch 5 - Fisher Butterfly Valve Maintenance", "from": 146, "to": 183 },
+  { "name": "Ch 6 - Fisher Vee-Ball Valve Maintenance", "from": 184, "to": 213 },
+  { "name": "Ch 7 - Fisher Eccentric Plug Valve Maintenance", "from": 214, "to": 235 },
+  { "name": "Ch 8 - Fisher Rotary Valve Packing Maintenance", "from": 236, "to": 246 },
+  { "name": "Ch 9 - Fisher Rotary Actuator Maintenance", "from": 247, "to": 290 },
+  { "name": "Ch 10 - Basics of Positioner Operation", "from": 291, "to": 307 },
+  { "name": "Ch 11 - FIELDVUE Digital Valve Controller", "from": 308, "to": 345 },
+  { "name": "Ch 12 - Connecting to Device using ValveLink Mobile", "from": 346, "to": 357 },
+  { "name": "Ch 13 - FIELDVUE DVC6200 Configuration & Calibration", "from": 358, "to": 388 },
+  { "name": "Ch 14 - Workshop 1: Sliding Stem", "from": 389, "to": 395 },
+  { "name": "Ch 15 - Workshop 2: Rotary", "from": 396, "to": 403 },
+  { "name": "Ch 16 - Workshop 3: FIELDVUE DVC6200", "from": 404, "to": 409 },
+  { "name": "Conclusion & back matter", "from": 410, "to": 418 }
+]

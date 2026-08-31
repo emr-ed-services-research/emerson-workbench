@@ -1,17 +1,31 @@
 # Pre-pass: extract every media file from the pptx.
 #  assets/img/imageNNN.{png,jpg}  - slide media (EMF/WMF/WDP converted to PNG)
 #  assets/brand/                  - curated brand assets (logos, cover art)
-# Emits tmp/media-map.json : { 'image33.emf' : 'image33.png', ... }
+# Emits <tmp>/media-map.json : { 'image33.emf' : 'image33.png', ... }
+#
+# Usage:  .\extract-media.ps1 -Course "1400 Valve Trim and Body Maintenance"
+param(
+  [Parameter(Mandatory = $true)] [string] $Course,
+  [string] $SourcePptx,
+  [string] $TmpDir
+)
 $ErrorActionPreference = 'Stop'
-$src   = "C:\Users\E1552882\Documents-Local\Projects\EmersonWorkbench\10 - Courses\1400 Valve Trim and Body Maintenance\Source Deck\1400 Valve Trim & Body Maintenance.pptx"
-$build = "C:\Users\E1552882\Documents-Local\Projects\EmersonWorkbench\10 - Courses\1400 Valve Trim and Body Maintenance\Presentation\build"
+. "$PSScriptRoot\_paths.ps1"
+$P = Resolve-CoursePaths -Course $Course -SourcePptx $SourcePptx -TmpDir $TmpDir
+
+$src   = $P.Src
+$build = $P.Build
 $img   = Join-Path $build 'assets\img'
 $brand = Join-Path $build 'assets\brand'
-$tmp   = "C:\Users\E1552882\.claude\jobs\ae752d36\tmp"
+$tmp   = $P.Tmp
+
+Write-Host "course : $($P.Course)"
+Write-Host "deck   : $src"
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 Add-Type -AssemblyName System.Drawing
 
+New-Item -ItemType Directory -Force $tmp | Out-Null
 foreach ($d in $img, $brand) {
   if (Test-Path $d) { Get-ChildItem $d -File | ForEach-Object { [System.IO.File]::Delete($_.FullName) } }
   New-Item -ItemType Directory -Force $d | Out-Null
@@ -91,16 +105,23 @@ foreach ($e in $mediaEntries) {
 }
 
 # --- curated brand assets ---
+# By convention the Emerson decks carry the corporate logo / cover art as
+# ppt/media/image1..4. A deck that does not is not an error - the brand/ folder
+# just stays as whatever build-course.ps1 placed there from the engine.
 function Pull($name, $dest) {
   $en = $zip.Entries | Where-Object { $_.FullName -eq "ppt/media/$name" }
+  if (-not $en) { throw "no ppt/media/$name in this deck" }
   $p = Join-Path $tmp ("b_" + $name)
   [System.IO.Compression.ZipFileExtensions]::ExtractToFile($en, $p, $true); return $p
 }
-[System.IO.File]::Copy((Pull 'image1.png'), (Join-Path $brand 'logo-emerson-corp-2c.png'), $true)   # blue standard
-[System.IO.File]::Copy((Pull 'image3.png'), (Join-Path $brand 'logo-emerson-corp-2c-white.png'), $true) # white
-Resize-To (Pull 'image2.jpeg') (Join-Path $brand 'cover-photo.jpeg') 900 $false                    # cover photo
-KnockGrey (Pull 'image4.jpg') (Join-Path $brand 'cover-iacet-badge.png')                           # accreditation badge
-Resize-To (Join-Path $brand 'cover-iacet-badge.png') (Join-Path $brand 'cover-iacet-badge.png') 360 $true
+try {
+  [System.IO.File]::Copy((Pull 'image1.png'), (Join-Path $brand 'logo-emerson-corp-2c.png'), $true)   # blue standard
+  [System.IO.File]::Copy((Pull 'image3.png'), (Join-Path $brand 'logo-emerson-corp-2c-white.png'), $true) # white
+  Resize-To (Pull 'image2.jpeg') (Join-Path $brand 'cover-photo.jpeg') 900 $false                    # cover photo
+  KnockGrey (Pull 'image4.jpg') (Join-Path $brand 'cover-iacet-badge.png')                           # accreditation badge
+  Resize-To (Join-Path $brand 'cover-iacet-badge.png') (Join-Path $brand 'cover-iacet-badge.png') 360 $true
+}
+catch { Write-Warning "brand assets: $($_.Exception.Message) - brand/ left as-is, curate by hand" }
 $zip.Dispose()
 
 $map | ConvertTo-Json -Compress | Out-File -Encoding utf8 (Join-Path $tmp 'media-map.json')

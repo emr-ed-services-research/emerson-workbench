@@ -1,18 +1,36 @@
 # ============================================================================
-#  generate.ps1  -  convert all 418 slides of the 1400 deck to HTML
+#  generate.ps1  -  convert every slide of a course deck to HTML
 #  against emerson-workbench.css.  Run extract-media.ps1 first.
 #
-#  GUARDED (2026-08-29): this script rewrites EVERY slides/1400-*.html from the
+#  Usage:  .\generate.ps1 -Course "1400 Valve Trim and Body Maintenance"
+#          .\generate.ps1 -Course "<name>" -DryRun    # write to <tmp>/dryrun/ only
+#          .\generate.ps1 -Course "<name>" -Force     # regen hand-owned slides
+#
+#  GUARDED (2026-08-29): this script rewrites EVERY <prefix>-*.html from the
 #  .pptx. Slides listed in _generator/PROTECTED.txt have been hand-authored
 #  since conversion and will NOT be regenerated without -Force (which snapshots
 #  the current slides + manifest first). See 00 - Project/Course Porting Pipeline.md.
 # ============================================================================
-param([switch]$Force)
+param(
+  [Parameter(Mandatory = $true)] [string] $Course,
+  [string] $SourcePptx,
+  [string] $TmpDir,
+  [switch] $Force,
+  [switch] $DryRun
+)
 $ErrorActionPreference = 'Stop'
-$src   = "C:\Users\E1552882\Documents-Local\Projects\EmersonWorkbench\10 - Courses\1400 Valve Trim and Body Maintenance\Source Deck\1400 Valve Trim & Body Maintenance.pptx"
-$build = "C:\Users\E1552882\Documents-Local\Projects\EmersonWorkbench\10 - Courses\1400 Valve Trim and Body Maintenance\Presentation\build"
-$slidesDir = Join-Path $build 'slides'
-$tmp   = "C:\Users\E1552882\.claude\jobs\ae752d36\tmp"
+. "$PSScriptRoot\_paths.ps1"
+$P = Resolve-CoursePaths -Course $Course -SourcePptx $SourcePptx -TmpDir $TmpDir
+
+$src         = $P.Src
+$build       = $P.Build
+$slidesDir   = $P.SlidesDir
+$tmp         = $P.Tmp
+$slidePrefix = $P.SlidePrefix
+$deckId      = $P.DeckId
+
+Write-Host "course : $($P.Course)   prefix: $slidePrefix   deck id: $deckId"
+if ($DryRun) { Write-Host "DRY RUN - output goes to <tmp>/dryrun/, real slides untouched" -ForegroundColor Cyan }
 
 # --- REGENERATION GUARD ------------------------------------------------------
 $protFile = Join-Path $build '_generator\PROTECTED.txt'
@@ -34,7 +52,7 @@ function Save-SlideSnapshot {
   $dst = Join-Path $snapRoot $stamp
   New-Item -ItemType Directory -Force (Join-Path $dst 'slides') | Out-Null
   if (Test-Path $slidesDir) {
-    Get-ChildItem $slidesDir -Filter '1400-*.html' | Copy-Item -Destination (Join-Path $dst 'slides')
+    Get-ChildItem $slidesDir -Filter "$slidePrefix*.html" | Copy-Item -Destination (Join-Path $dst 'slides')
   }
   foreach ($f in 'manifest.json', 'manifest.js', 'conversion-report.csv') {
     $p = Join-Path $build $f
@@ -46,7 +64,7 @@ function Save-SlideSnapshot {
   return $dst
 }
 
-if ($protected.Count -gt 0 -and -not $Force) {
+if ($protected.Count -gt 0 -and -not $Force -and -not $DryRun) {
   Write-Host ''
   Write-Warning "REGENERATION BLOCKED - $($protected.Count) hand-owned slides would be overwritten."
   Write-Host ''
@@ -58,7 +76,7 @@ if ($protected.Count -gt 0 -and -not $Force) {
   Write-Host '  See 00 - Project/Course Porting Pipeline.md.'
   Write-Host ''
   Write-Host '  To regenerate everything anyway (a snapshot is saved first):'
-  Write-Host '      .\generate.ps1 -Force'
+  Write-Host "      .\generate.ps1 -Course `"$Course`" -Force"
   Write-Host ''
   exit 1
 }
@@ -75,8 +93,19 @@ if ($Force -and $protected.Count -gt 0) {
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $mediaMap = Get-Content (Join-Path $tmp 'media-map.json') -Raw | ConvertFrom-Json
 
-if (Test-Path $slidesDir) { Get-ChildItem $slidesDir -Filter '1400-*.html' | ForEach-Object { [System.IO.File]::Delete($_.FullName) } }
-New-Item -ItemType Directory -Force $slidesDir | Out-Null
+# On a dry run, everything is written under <tmp>/dryrun/ instead of the course
+# build/ - so the output can be inspected and diffed without touching the real
+# slides or the guard-protected hand work.
+if ($DryRun) {
+  $outBuild  = Join-Path $tmp 'dryrun'
+  $outSlides = Join-Path $outBuild 'slides'
+}
+else {
+  $outBuild  = $build
+  $outSlides = $slidesDir
+}
+if (Test-Path $outSlides) { Get-ChildItem $outSlides -Filter "$slidePrefix*.html" | ForEach-Object { [System.IO.File]::Delete($_.FullName) } }
+New-Item -ItemType Directory -Force $outSlides | Out-Null
 
 $zip = [System.IO.Compression.ZipFile]::OpenRead($src)
 $ENTRIES = @{}; foreach ($e in $zip.Entries) { $ENTRIES[$e.FullName] = $e }
@@ -174,17 +203,13 @@ function LayoutPh($layoutFile) {
 }
 
 # ---- section map (by presentation order) ------------------------------
-$SECTIONS = @(
- @('Front matter', 1, 11), @('Ch 1 - Important Control Valve Specifications for Maintenance', 12, 25),
- @('Ch 2 - Fisher Easy-E Valve Maintenance', 26, 86), @('Ch 3 - Fisher Sliding Stem Spring & Diaphragm Actuator Maintenance', 87, 126),
- @('Ch 4 - Fisher Sliding Stem Piston Actuator Maintenance', 127, 145), @('Ch 5 - Fisher Butterfly Valve Maintenance', 146, 183),
- @('Ch 6 - Fisher Vee-Ball Valve Maintenance', 184, 213), @('Ch 7 - Fisher Eccentric Plug Valve Maintenance', 214, 235),
- @('Ch 8 - Fisher Rotary Valve Packing Maintenance', 236, 246), @('Ch 9 - Fisher Rotary Actuator Maintenance', 247, 290),
- @('Ch 10 - Basics of Positioner Operation', 291, 307), @('Ch 11 - FIELDVUE Digital Valve Controller', 308, 345),
- @('Ch 12 - Connecting to Device using ValveLink Mobile', 346, 357), @('Ch 13 - FIELDVUE DVC6200 Configuration & Calibration', 358, 388),
- @('Ch 14 - Workshop 1: Sliding Stem', 389, 395), @('Ch 15 - Workshop 2: Rotary', 396, 403),
- @('Ch 16 - Workshop 3: FIELDVUE DVC6200', 404, 409), @('Conclusion & back matter', 410, 418)
-)
+# From <course>/Source Deck/sections.json, loaded by _paths.ps1. Optional: a
+# brand-new course has none, and the manifest 'section' fields stay blank until
+# Stage 1 cuts the teaching arc.
+$SECTIONS = $P.Sections
+if (-not $SECTIONS -or $SECTIONS.Count -eq 0) {
+  Write-Warning "no $($P.SectionsFile) - manifest 'section' fields will be blank"
+}
 function SectionOf($n) { foreach ($s in $SECTIONS) { if ($n -ge $s[1] -and $n -le $s[2]) { return $s[0] } }; return '' }
 
 # ---- text-body extraction --------------------------------------------
@@ -543,7 +568,7 @@ foreach ($sPath in $order) {
       $hl = $node.SelectSingleNode('.//p:cNvPr/a:hlinkClick', $NS)
       if ($hl -and $hl.GetAttribute('action') -like '*hlinksldjump*') {
         $lid = $hl.GetAttribute('id', 'http://schemas.openxmlformats.org/officeDocument/2006/relationships')
-        if ($rmap.ContainsKey($lid)) { $tn = [regex]::Match($rmap[$lid], 'slide(\d+)\.xml').Groups[1].Value; if ($tn) { $link = "1400-$('{0:D3}' -f [int]$tn).html" } }
+        if ($rmap.ContainsKey($lid)) { $tn = [regex]::Match($rmap[$lid], 'slide(\d+)\.xml').Groups[1].Value; if ($tn) { $link = "$slidePrefix$('{0:D3}' -f [int]$tn).html" } }
       }
       $figures += @{ style = (BoxStyle $b); src = "../assets/img/$asset"; alt = (Esc $alt); rot = $b.rot; link = $link; est = $b.est }
       continue
@@ -760,33 +785,33 @@ foreach ($sPath in $order) {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1400 &middot; Slide $pnum &mdash; $(Esc $title3)</title>
+<title>$deckId &middot; Slide $pnum &mdash; $(Esc $title3)</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
   <!-- Slide $ord | ppt $sPath | layout: $layoutName | family: .slide--$fam -->
-  <article class="slide slide--$fam" data-slide="$ord" data-deck="1400"$( if($flags){" data-review=""$flags"""} )>
+  <article class="slide slide--$fam" data-slide="$ord" data-deck="$deckId"$( if($flags){" data-review=""$flags"""} )>
 $( if($flags){"    <div class=""review-ribbon"">$flags</div>`n"} )$( if($vecSvg){"    $vecSvg`n"} )$($inner.ToString())  </article>
   $notesHtml
 </main>
 </body>
 </html>
 "@
-  [System.IO.File]::WriteAllText((Join-Path $slidesDir "1400-$pnum.html"), $page, (New-Object System.Text.UTF8Encoding($false)))
+  [System.IO.File]::WriteAllText((Join-Path $outSlides "$slidePrefix$pnum.html"), $page, (New-Object System.Text.UTF8Encoding($false)))
 
-  $manifest += [ordered]@{ n = $ord; file = "1400-$pnum.html"; family = $fam; section = (SectionOf $ord); title = $title3; hasNotes = [bool]$notesHtml; review = $flags }
+  $manifest += [ordered]@{ n = $ord; file = "$slidePrefix$pnum.html"; family = $fam; section = (SectionOf $ord); title = $title3; hasNotes = [bool]$notesHtml; review = $flags }
   $report += [pscustomobject]@{ ord = $ord; slide = "slide$num"; family = $fam; layout = $layoutName; figures = $figures.Count; tables = $tables.Count; ole = $oleCount; freeText = $freeText.Count; titleLen = $title3.Length; notes = [bool]$notesHtml; flags = $flags }
 }
 $zip.Dispose()
 
 $mjson = ($manifest | ConvertTo-Json -Depth 4)
-$mjson | Out-File -Encoding utf8 (Join-Path $build 'manifest.json')
-("window.EW_MANIFEST = " + $mjson + ";") | Out-File -Encoding utf8 (Join-Path $build 'manifest.js')
-$report | Export-Csv -NoTypeInformation -Encoding utf8 (Join-Path $build 'conversion-report.csv')
+$mjson | Out-File -Encoding utf8 (Join-Path $outBuild 'manifest.json')
+("window.EW_MANIFEST = " + $mjson + ";") | Out-File -Encoding utf8 (Join-Path $outBuild 'manifest.js')
+$report | Export-Csv -NoTypeInformation -Encoding utf8 (Join-Path $outBuild 'conversion-report.csv')
 
-Write-Output ("slides written : " + $report.Count)
+Write-Output ("slides written : " + $report.Count + $(if ($DryRun) { "   -> $outBuild (dry run)" } else { "" }))
 Write-Output ("families:")
 $report | Group-Object family | Sort-Object Count -Descending | ForEach-Object { "  {0,4}  {1}" -f $_.Count, $_.Name }
 Write-Output ("with OLE/review flags : " + ($report | Where-Object { $_.flags } ).Count)

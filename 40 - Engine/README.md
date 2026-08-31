@@ -25,7 +25,7 @@ course.
   verify.ps1              integrity checks for a course (JSON, page refs, tag balance,
                           manifest / title drift, CSS, engine-lock, data-ref drift lint)
   generator/              PPT → HTML conversion tooling (run manually, not assembled)
-    generate.ps1  extract-media.ps1  compare.ps1  export-orig.ps1  README.md
+    _paths.ps1  generate.ps1  extract-media.ps1  compare.ps1  export-orig.ps1  README.md
   Presentation/           the shared runtime — MIRRORS a course's Presentation/ tree
     build/
       index.html          standalone deck runner
@@ -104,13 +104,14 @@ A course's `course/course.json` carries everything specific:
 
 ## Known not-yet-decoupled
 
-- **`generator/*.ps1`** still have `1400` and absolute paths hardcoded
-  throughout (section map, `data-deck`, filename prefix, `$src`/`$build`). They
-  work for 1400 as-is; parameterising them (`-Course`) is a separate task before
-  a second course is converted. See [[Course Porting Pipeline]] open decisions.
 - **`build/index.html`** (the standalone deck runner) still shows "1400 …" in
   three places. Lower priority — it is the standalone viewer, not the shell.
 - **`--copyright-line`** in `emerson-workbench.css` has the year baked in.
+
+Resolved 2026-08-31: `generator/*.ps1` are course-parameterised — `-Course
+"<name>"` resolves the deck, build path, slide prefix, deck id and section map
+through `generator/_paths.ps1`. Section ranges live per-course in
+`Source Deck/sections.json`.
 
 ## Related
 

@@ -11,9 +11,12 @@
 #         "#" starts a comment. Extend this list as more chapters are authored.
 
 12-25     # Chapter 1 - Control Valve Specifications: template rebuild + four-part pass (2026-08-29)
-26-54     # Chapter 2 - Fisher Easy-E: divider + modules 1-3, four-part pass (2026-08-29)
+26-86     # Chapter 2 - Fisher Easy-E: full chapter, all 7 modules, four-part pass complete (2026-08-31)
 
 # NOT protected - still generator-owned, safe to regenerate:
 #   1-11      front matter / Module 0
-#   55-86     Chapter 2 modules 4-7   (outline only, not yet authored)
 #   87-418    Chapters 3-16 + workshops + back matter   (outline only)
+#
+# Slides 26, 67, 73 and 80 (the Ch 2 divider and the check-your-knowledge
+# slides) still match generator output, but are inside the protected range
+# because the whole authored chapter is hand-owned per the pipeline rule.

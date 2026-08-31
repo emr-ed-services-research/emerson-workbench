@@ -165,17 +165,22 @@ De-coupling fixes required first (all small):
 
 ### Stage 0 — Bulk convert
 
-Already built and reliable. `extract-media.ps1` unpacks and rasterises media;
-`generate.ps1` walks each slide's shape tree, classifies the layout family,
-extracts title / body / figures / tables / notes / hyperlinks / CYK reveals,
-rebuilds native vector artwork as SVG, and writes one HTML file per slide plus
-the manifest and a conversion report. Two conversion flags are emitted:
-`svg-rebuilt` (dense diagram auto-rebuilt) and `ole-fallback` (embedded object,
-PowerPoint's fallback image rasterised).
+Already built and reliable, and course-parameterised (2026-08-31):
+`extract-media.ps1 -Course "<name>"` unpacks and rasterises media;
+`generate.ps1 -Course "<name>"` walks each slide's shape tree, classifies the
+layout family, extracts title / body / figures / tables / notes / hyperlinks /
+CYK reveals, rebuilds native vector artwork as SVG, and writes one HTML file per
+slide plus the manifest and a conversion report. Two conversion flags are
+emitted: `svg-rebuilt` (dense diagram auto-rebuilt) and `ole-fallback` (embedded
+object, PowerPoint's fallback image rasterised). Everything — deck path, slide
+prefix, deck id, the section map — resolves from the course name through
+`generator/_paths.ps1`; per-course chapter ranges live in
+`<course>/Source Deck/sections.json`. `generate.ps1 -DryRun` writes to a scratch
+dir for previewing a conversion without touching the real slides.
 
-**Its one defect: it is a one-shot.** Re-running it rewrites every `slides/*.html`
-from the `.pptx` with no knowledge of downstream hand work. See *Infrastructure
-prerequisites → generator guard*.
+**Its one defect: it is a one-shot.** Re-running it rewrites every
+`slides/<prefix>*.html` from the `.pptx` with no knowledge of downstream hand
+work — which is what the regeneration guard (below) fences off.
 
 ### Stage 1 — Cut the teaching arc
 
@@ -413,9 +418,11 @@ one course by hand with Claude's help" and "we have a way to do this."
   title + header from `course.json` at runtime; the EMERSON palette in one
   `tokens.css` imported by both stylesheets; `localStorage` keys namespaced
   `ew<code>.*`.
-- Still coupled (deferred): the generator scripts (`1400` + absolute paths
-  throughout), the standalone deck runner's three "1400" strings, the
-  copyright-year token. Tracked in [[Engine]] "Known not-yet-decoupled".
+- Generator scripts course-parameterised 2026-08-31 (`-Course`, via
+  `generator/_paths.ps1`; section map in `Source Deck/sections.json`). Still
+  coupled (deferred): the standalone deck runner's three "1400" strings and the
+  `emerson-workbench.css` copyright-year token. Tracked in [[Engine]] "Known
+  not-yet-decoupled".
 
 ## Open decisions
 
@@ -426,7 +433,9 @@ Mirror into [[Open Questions]] once reviewed.
 - **Data layer scope** — which tables / values move to a data layer versus stay
   in HTML behind a lint check.
 - **Generator future** — retire it from authored chapters (recommended) versus
-  invest in a merge-aware / patch-overlay rebuild.
+  invest in a merge-aware / patch-overlay rebuild. (Parameterisation done; this
+  is the deeper question of the one-shot rebuild model. The `PROTECTED.txt`
+  guard now covers 1400 Chapters 1–2.)
 - **Stage 1 scaffolding** — does the teaching-arc cut get a proposing script, or
   stay fully manual.
 - **Bench Notes / Bench Book** — this pipeline covers the *presentation*

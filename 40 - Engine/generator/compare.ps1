@@ -1,11 +1,24 @@
-# Build side-by-side comparison sheets: original (left) vs converted (right)
+# Build side-by-side comparison sheets: original (left) vs converted (right).
+# Needs <tmp>/orig/sNNN.png (from export-orig.ps1) and <tmp>/mine/sNNN.png
+# (rendered from the converted HTML).
+#
+# Usage:  .\compare.ps1 -Course "1400 Valve Trim and Body Maintenance" -Slides 15,20,45,81
+param(
+  [Parameter(Mandatory = $true)] [string] $Course,
+  [Parameter(Mandatory = $true)] [int[]]  $Slides,
+  [string] $TmpDir
+)
+$ErrorActionPreference = 'Stop'
+. "$PSScriptRoot\_paths.ps1"
+$P = Resolve-CoursePaths -Course $Course -TmpDir $TmpDir
+
 Add-Type -AssemblyName System.Drawing
-$orig = "C:\Users\E1552882\.claude\jobs\ae752d36\tmp\orig"
-$mine = "C:\Users\E1552882\.claude\jobs\ae752d36\tmp\mine"
-$outDir = "C:\Users\E1552882\.claude\jobs\ae752d36\tmp\cmp"
+$orig = Join-Path $P.Tmp 'orig'
+$mine = Join-Path $P.Tmp 'mine'
+$outDir = Join-Path $P.Tmp 'cmp'
 New-Item -ItemType Directory -Force $outDir | Out-Null
 
-$flagged = 15,20,21,22,23,24,45,46,81,85,89,97,104,112,125,129,259,284,294,295,297,298,299,300,301,304,305,306,312,325,326,416,417
+$flagged = $Slides
 $perSheet = 4
 $tileW = 620; $tileH = 480; $gap = 10; $labelH = 22
 

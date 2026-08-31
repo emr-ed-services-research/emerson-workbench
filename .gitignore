@@ -14,6 +14,9 @@ desktop.ini
 **/_generator/_snapshots/
 **/Presentation/build/_engine-snapshots/
 
+# ── Generator scratch (media-map.json, spot-check PNGs) ────────────
+**/Presentation/build/_generator/tmp/
+
 # ── Large binaries ─────────────────────────────────────────────────
 # The source .pptx is the MASTER input and is NOT reproducible. Back it up
 # outside git (or move it to Git LFS). It is ignored here only to keep the

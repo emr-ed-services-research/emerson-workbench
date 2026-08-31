@@ -287,7 +287,7 @@ Phased so a genuinely useful console exists early, before the hardest parts.
 
 | # | Phase | Delivers | Needs |
 | --- | --- | --- | --- |
-| 0 | **Generator `-Course`** | `generator/*.ps1` parameterised — `1400`, section map, and absolute paths become arguments. Prerequisite work in the engine, not the console repo. | — |
+| 0 | ~~**Generator `-Course`**~~ | Done 2026-08-31. `generator/*.ps1` take `-Course "<name>"` and resolve everything through `generator/_paths.ps1`; section map moved to `Source Deck/sections.json`; `generate.ps1 -DryRun` added; the `PROTECTED.txt` guard extended to 1400 Ch 1–2. | — |
 | 1 | **Shell + state machine** | Electron skeleton; project/slot data model; persistence; vault wiring; load a project and see slots; hand-set stage states to exercise the `locked → armed → … → closed` logic. No AI, no scripts. | Node.js (done) |
 | 2 | **Script stages (0 and 4)** | Stage 0 and Stage 4 switches fully wired: spawn `pwsh`, stream output into the instrument cluster, parse pass/fail, evaluate loop-close. Two real working switches. | Phase 0 |
 | 3 | **Agent SDK integration** | Claude Code spawned headless in the vault; messages streamed to the cluster; **Stage 2** wired end to end (bounded, per-module, `verify.ps1`-checkable). | — |
@@ -305,13 +305,13 @@ live status — worth having even before the AI stages are wired.
 
 1. ~~**Node.js**~~ — installed 2026-08-31 (temporary elevated admin access).
    Toolchain prerequisite cleared.
-2. **Generator not course-parameterised.** `generator/*.ps1` still hardcode
-   `1400`, the section map, and absolute paths ([[Engine]] "Known
-   not-yet-decoupled"). Stage 0 cannot run a second course until `-Course` is
-   added. **Confirmed onto the critical path** — Phase 0 in §7, built now while
-   already in the generator code, not deferred to whenever a second course
-   appears. The multi-slot design would otherwise be a console that looks
-   multi-course but silently works for one.
+2. ~~**Generator not course-parameterised.**~~ Done 2026-08-31 (Phase 0).
+   `generator/*.ps1` take `-Course "<name>"` and resolve the deck, build path,
+   slide prefix, deck id and section map through `generator/_paths.ps1`;
+   per-course chapter ranges live in `<course>/Source Deck/sections.json`;
+   `generate.ps1 -DryRun` previews a conversion into a scratch dir. Verified:
+   re-running against 1400 reproduces the committed output byte-for-byte, and
+   the regeneration guard (now covering 1400 Chapters 1–2) still blocks.
 3. **Headless-Chrome render checks do not exist yet.** `verify.ps1` step 4 is
    still pending ([[Course Porting Pipeline]] recommended sequence, step 4).
    Stage 3 and Stage 4 loop-close both depend on building them.
