@@ -246,6 +246,16 @@ slide content still reads as a flat list rather than a module-shaped teaching
 unit the way Chapter 2 does. Flagged by Franz as a content decision to revisit
 later, not a nav bug. Tracked in [[Open Questions#Chapter 1 module structure (course 1400)]].
 
+### manifest.js title drift (Chapter 2)
+
+`verify.ps1` reports ~14 warnings where `manifest.js` still carries the
+generator-era slide title and the slide `<h1>` has the reworked one (e.g. slide
+71 manifest "Jam-style PTFE Packing" vs `<h1>` "PTFE Packing Sets"). Warn-level,
+not a failure — the manifest titles feed the standalone deck runner's list, not
+the shell. Fixed by the pipeline's "regenerate `manifest.js` titles from the
+`<h1>`s" cleanup step ([[Course Porting Pipeline]] cleanup item 7), or by a
+guarded `generate.ps1 -Force` once every Chapter 2 slide is hand-owned.
+
 ### Burned-in blue arrows on deck photos
 
 Several deck photos carry crude blue arrows burned into the raster — slide 34

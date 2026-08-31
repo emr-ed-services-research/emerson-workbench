@@ -288,8 +288,8 @@ Phased so a genuinely useful console exists early, before the hardest parts.
 | # | Phase | Delivers | Needs |
 | --- | --- | --- | --- |
 | 0 | ~~**Generator `-Course`**~~ | Done 2026-08-31. `generator/*.ps1` take `-Course "<name>"` and resolve everything through `generator/_paths.ps1`; section map moved to `Source Deck/sections.json`; `generate.ps1 -DryRun` added; the `PROTECTED.txt` guard extended to 1400 Ch 1–2. | — |
-| 1 | **Shell + state machine** | Electron skeleton; project/slot data model; persistence; vault wiring; load a project and see slots; hand-set stage states to exercise the `locked → armed → … → closed` logic. No AI, no scripts. | Node.js (done) |
-| 2 | **Script stages (0 and 4)** | Stage 0 and Stage 4 switches fully wired: spawn `pwsh`, stream output into the instrument cluster, parse pass/fail, evaluate loop-close. Two real working switches. | Phase 0 |
+| 1 | ~~**Shell + state machine**~~ | Done 2026-08-31. Electron app; project/slot model + `~/.emerson-pipeline-console/` persistence; control-loop state machine (`locked → armed → running → checking → flagged\|closed\|failed`, re-fire reverts downstream); slots + switch rack + dev panel. 10 tests. | Node.js (done) |
+| 2 | ~~**Script stages (0 and 4)**~~ | Done 2026-08-31. `pwsh-runner` streams `powershell.exe` line by line; `runStage0` (extract-media + generate, opt-in `-Force`), `runStage4` (`verify.ps1`); pure loop-close evaluators return closed/flagged/failed; live instrument cluster (phase, counts, log tail, outcome). Verified against 1400. 19 tests. | Phase 0 |
 | 3 | **Agent SDK integration** | Claude Code spawned headless in the vault; messages streamed to the cluster; **Stage 2** wired end to end (bounded, per-module, `verify.ps1`-checkable). | — |
 | 4 | **Stage 1** | reuses the Phase 3 Agent SDK machinery: fire → agent cuts the arc → structural check → per-module approve/flag rack. | Phase 3 |
 | 5 | **Stage 3 + light rack + batch review** | per-slide light grid; checklist parsing; flag panel; flag collation; re-run-flagged as one batch. The hardest surface. | headless-Chrome render checks built (`verify.ps1` step 4) |
