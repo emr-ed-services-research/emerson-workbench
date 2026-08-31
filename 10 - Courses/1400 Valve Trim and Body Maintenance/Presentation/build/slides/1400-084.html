@@ -3,22 +3,49 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1400 &middot; Slide 084 &mdash; Body Maintenance - Assembly</title>
+<title>1400 &middot; Slide 084 &mdash; Bonnet Reassembly</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 84 | ppt slides/slide84.xml | layout: 2 Column with Logo | family: .slide--two-col -->
-  <article class="slide slide--two-col" data-slide="84" data-deck="1400">
-    <h1 class="slide-title">Body Maintenance - Assembly</h1>
-    <div class="slide-body"><ul><li style="font-size:1.768cqw">Install bonnet; align match marks</li><li style="font-size:1.768cqw">Cross tighten bonnet bolts</li><li style="font-size:1.768cqw">Torque to specification from table</li></ul></div>
-    <figure class="slide-figure" style="left:58.361%;top:21.544%;width:31.086%;height:40.283%"><img src="../assets/img/image146.png" alt="Picture 2"></figure>
-    <figure class="slide-figure" style="left:5.939%;top:33.748%;width:40.315%;height:36.531%"><img src="../assets/img/image147.png" alt="Picture 4"></figure>
-    <figure class="slide-figure" style="left:3.44%;top:65.686%;width:69.122%;height:26.471%"><img src="../assets/img/image148.png" alt="Picture 7"></figure>
+  <!-- Slide 84 | ppt slides/slide84.xml | layout: figure row | family: .slide--tmpl-figrow -->
+  <!-- ch2 four-part pass 2026-08-31. Was .slide--two-col: three bullets (install bonnet / align
+       match marks / cross-tighten / torque to table) plus a torque-value table (image148) and
+       assembly photos. The bullets are module 7 key concepts 4-5; the torque values are a
+       lookup that belongs in the manual, not the slide. Rebuilt as two cells: torquing the
+       bonnet (image147) and a crosswise-order diagram. The method - clean, lube, match-marks,
+       progressive rounds - is in the tmpl-note. -->
+  <article class="slide slide--tmpl-figrow" data-slide="84" data-deck="1400" data-review="ch2-callout-pass">
+    <div class="review-ribbon">ch2 pass: figrow; bullets + torque table to method</div>
+    <h1 class="slide-title">Bonnet Reassembly</h1>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <img src="../assets/img/image147.png" alt="A technician torquing a bonnet nut on a reassembled valve with a torque wrench">
+        <figcaption><b>Torque the bonnet</b>to the manual's table value for the valve</figcaption>
+      </figure>
+      <figure class="tmpl-cell">
+        <svg viewBox="0 0 400 380" role="img" font-family="Arial, Helvetica, sans-serif"
+             aria-label="Top view of a square bonnet flange with four corner bolts, numbered 1, 2, 3, 4 in a crosswise tightening order: bolt 1 top-left, bolt 2 diagonally opposite at bottom-right, then bolt 3 top-right and bolt 4 at bottom-left.">
+          <rect x="60" y="40" width="280" height="280" rx="16" fill="#dfe2e3" stroke="#3F4040" stroke-width="2.4"/>
+          <rect x="150" y="130" width="100" height="100" rx="8" fill="#c7cacc" stroke="#3F4040" stroke-width="2"/>
+          <circle cx="200" cy="180" r="20" fill="#b7bbbe" stroke="#3F4040" stroke-width="1.8"/>
+          <g fill="#9a9ea1" stroke="#3F4040" stroke-width="1.6">
+            <circle cx="108" cy="88" r="24"/><circle cx="292" cy="272" r="24"/>
+            <circle cx="292" cy="88" r="24"/><circle cx="108" cy="272" r="24"/>
+          </g>
+          <g fill="#004B8D" font-size="30" font-weight="700" text-anchor="middle">
+            <text x="108" y="98">1</text><text x="292" y="282">2</text>
+            <text x="292" y="98">3</text><text x="108" y="282">4</text>
+          </g>
+        </svg>
+        <figcaption><b>Crosswise order</b>1&rarr;2&rarr;3&rarr;4, opposite bolts in turn</figcaption>
+      </figure>
+    </div>
+    <p class="tmpl-note">Clean and lube the studs, align the match marks, and step the torque up over several rounds.</p>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">84</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
-  
+
 </main>
 </body>
 </html>

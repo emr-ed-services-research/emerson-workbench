@@ -160,8 +160,14 @@ of the slide empty and reads as sparse — this happened on 1400 slides 47, 57
 and 72 and each moved off the template. If the table is the content, use plain
 `.slide--tmpl-table`; a short table there can be vertically centred and its
 font bumped with inline `style` on the `.tmpl-wrap` / `<table>` so it fills the
-slide (slide 72). If the images carry real teaching weight, use
+slide (slides 72, 82). If the images carry real teaching weight, use
 `.slide--tmpl-figrow.has-lead` (table over a photo row).
+
+To centre a short table and make it fill the width, put
+`style="display:flex; flex-direction:column; justify-content:center"` on
+`.tmpl-wrap`, and — because a `width:100%` table does **not** stretch in that
+flex column on its own — give the `<table>` explicit column widths via a
+`<colgroup>` plus `table-layout:fixed` (slides 72, 82).
 
 ---
 
@@ -203,7 +209,7 @@ uneven. Before placing deck photos in a row, crop them to within ~±15% AR of
 each other (a top/bottom or left/right trim, saved to `assets/sourced/` with a
 `SOURCES.txt` line — this is part of the Stage 3 pass). Keep each `<figcaption>`
 tag to a **single line** so a slightly taller cell's caption still clears the
-`.slide-chrome` logo. Seen and fixed on slides 34, 56, 57, 58.
+`.slide-chrome` logo. Seen and fixed on 1400 slides 34, 56, 57, 58.
 
 ### `.slide--tmpl-figrow.has-lead`
 

@@ -101,7 +101,7 @@ modules 4–7 (option 1 — all Stage 2 first, then the slide passes as a block)
 | 4 · Body Disassembly & Seal Replacement | **done** — objective + 6 key concepts, sourced from the ET (D100398X012) and ED (D100390X012) manuals; `status: ready` | **done** — 7 slides → 3 in-flow: 56 Disassembly (figrow), 57 Inspect Plug & Stem (figrow), 58 Replacing the Piston Seal (figrow+lead, 58+59+60+61 consolidated). 55/59/60/61 dropped-retained. `pages` [56, 57, 58]. |
 | 5 · Valve Lapping | **done** — objective + 6 key concepts, sourced from the ET / ED / EZ manuals' Lapping Metal Seats sections and the CVH; `status: ready` | **done** — 5 slides → 4 in-flow: 62 Valve Lapping (lap-line-on-plug photo + manual pointer; 63 merged in), 64 Set Up the Lap, 65 Lap & Check, 66 Damage from Bad Practice — all figrow. `pages` [62, 64, 65, 66]. |
 | 6 · Packing Replacement & Adjustment | **done** — objective + 6 key concepts (removal + the five packing types' distinct compression methods), sourced from the ET / HIGH-SEAL / ENVIRO-SEAL manuals and the deck; `status: ready` | **done** — 11 slides → 3 in-flow: 68 Removing the Old Packing (68+69), 70 Building the Stack (ET Fig 4, is-sourced; 70+71+74), 72 Setting the Compression (5-method table; 72+75+76+77+78+79). `pages` [68, 70, 72], `check` [73, 80]. |
-| 7 · Reassembly & Gaskets | **done** — objective + 5 key concepts (new gaskets every time, spiral-wound as a spring, gasket locations, crosswise-progressive bonnet torque, rated bolting), sourced from the ET manual's Assembly section + bonnet-bolting note + Table 3; `pages` [81–85], `check` [86]; `status: ready` | not started |
+| 7 · Reassembly & Gaskets | **done** — objective + 5 key concepts, sourced from the ET manual's Assembly section + bonnet-bolting note + Table 3; `status: ready` | **done** — 5 slides → 3 in-flow: 82 Gaskets (3-type table; 82+85), 83 Where the Gaskets Go (image143 + caption), 84 Bonnet Reassembly (torque photo + crosswise-order SVG). `pages` [82, 83, 84], `check` [86] (retitled "Bonnet Torque"). 81/85 dropped. |
 
 ### Module 4 — Stage 3 done (2026-08-31)
 
@@ -157,18 +157,33 @@ the pre-send checklist (Image-quality item) and working rule 2.
 69 / 71 / 74 / 75 / 76 / 77 / 78 / 79 dropped-retained. New sourced asset:
 `packing-stack-ptfe.png` (ET Fig 4 crop). Verified 4:3 and 16:9.
 
-### Module 7 — Stage 3 to-do
+### Module 7 — Stage 3 done (2026-08-31)
 
-- **Slide 81** ("Assembly") is an image-only opener (the body text is a garbled
-  PPTX extraction artifact, "essolid") — drop or fold in the Stage 3 pass, like
-  slides 55 / 62 / 68.
-- **Slide 85** ("Spiral Wound Gasket Types") carries an `ole-fallback` ribbon —
-  a rasterised embedded object. Re-source from the CVH or a gasket figure if the
-  raster is poor.
-- Slide 83 ("Gasket Locations") is a labelled sectional — `.slide--tmpl-diagram`
-  candidate. Slide 82 is a gasket-type list → could pair with 85 as a figure row.
-- CYK 86 is mistitled "Check Your Knowledge 1" (should follow the Ch 2 series —
-  4? 7?); fix the label in the Stage 3 pass.
+5 content slides → 3 in-flow + CYK.
+
+- **82 Gaskets** (82+85): the 3-type table (flat sheet / metal shim / spiral
+  wound) with the "acts as a spring" point in the spiral-wound row. The three
+  deck gasket photos are rings shot at wildly different angles (AR 3.6 / 1.5 / 4)
+  and don't row cleanly, so it's a table. `colgroup` widths + `table-layout:
+  fixed` + font-bump + `flex-direction:column; justify-content:center` on
+  `.tmpl-wrap` (the `.tmpl-table` doesn't stretch to full width in a plain flex
+  container — needs the colgroup).
+- **83 Where the Gaskets Go**: image143 (trim sectional) for context, the gasket
+  stack order in the caption, the one-torque-path point in the note.
+- **84 Bonnet Reassembly**: image147 (torquing the bonnet) + a small SVG of the
+  4-bolt crosswise tightening order (1→2→3→4). Torque *values* dropped — a
+  manual lookup, not slide content.
+
+81 / 85 dropped-retained (their old `data-review` conversion flags —
+`svg-rebuilt`, `ole-fallback` — folded into the drop ribbon). CYK 86 retitled
+"Check Your Knowledge: Bonnet Torque" (was mislabelled "1").
+
+## Chapter 2 Stage 3 — complete (2026-08-31)
+
+All seven modules have had their four-part slide pass. In-flow slide counts:
+m1 8, m2 6, m3 4, m4 3, m5 4, m6 3, m7 3 — plus the CYK slides. Chapter 2 is
+done; next is whatever [[System Architecture]] sequences after it (the Pipeline
+Console).
 
 ## Out of scope until Chapter 2 is finished
 

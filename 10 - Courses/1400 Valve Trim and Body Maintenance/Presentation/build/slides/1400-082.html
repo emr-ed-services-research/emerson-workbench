@@ -9,20 +9,31 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 82 | ppt slides/slide82.xml | layout: Title Only | family: .slide--title-only -->
-  <article class="slide slide--title-only" data-slide="82" data-deck="1400">
+  <!-- Slide 82 | ppt slides/slide82-85.xml | layout: data table card | family: .slide--tmpl-table -->
+  <!-- ch2 four-part pass 2026-08-31. Was .slide--title-only with 5 small gasket photos and three
+       floating text blocks (flat sheet / metal shim / spiral wound). The three gasket photos are
+       rings shot at very different angles (AR 3.6 / 1.5 / 4) - do not row cleanly - so this is a
+       table: type, where it goes, what it does. The spiral-wound "acts as a spring" point (old
+       slide 85, "Spiral Wound Gasket Types", an ole-fallback raster) is folded in as the last
+       row. Old 85 dropped-retained. Table centred + font-bumped inline so it fills the slide
+       (see TEMPLATES.md Template 4 note). -->
+  <article class="slide slide--tmpl-table" data-slide="82" data-deck="1400" data-review="ch2-callout-pass">
+    <div class="review-ribbon">ch2 pass: gasket table; 82+85</div>
     <h1 class="slide-title">Gaskets</h1>
-    <figure class="slide-figure" style="left:7.47%;top:21.489%;width:31.974%;height:12.417%"><img src="../assets/img/image138.png" alt="Picture 3"></figure>
-    <figure class="slide-figure" style="left:58.69%;top:23.364%;width:33.924%;height:8.614%"><img src="../assets/img/image139.png" alt="Picture 2"></figure>
-    <figure class="slide-figure" style="left:7.47%;top:35.276%;width:31.974%;height:29.015%"><img src="../assets/img/image140.png" alt="Picture 7"></figure>
-    <figure class="slide-figure" style="left:7.47%;top:65.751%;width:31.974%;height:11.516%"><img src="../assets/img/image141.png" alt="Picture 4"></figure>
-    <figure class="slide-figure" style="left:59.581%;top:61.011%;width:32.141%;height:18.454%"><img src="../assets/img/image142.png" alt="Picture 6"></figure>
-    <div class="slide-textbox" style="left:39.794%;top:21.839%;width:20.469%;height:16.235%;font-size:2.525cqw"><p>Flat Sheet</p><p>Thin sheet graphite material</p><p>Bonnet Gaskets</p><p>Seat ring gaskets</p></div>
-    <div class="slide-textbox" style="left:42.814%;top:46.202%;width:15.876%;height:5.346%;font-size:2.525cqw"><p>Metal Shim</p></div>
-    <div class="slide-textbox" style="left:39.794%;top:63.37%;width:22.727%;height:16.235%;font-size:2.525cqw"><p>Spiral Wound</p><p>Maintain seal</p><p>Expansion and contraction</p><p>Acts as spring</p></div>
+    <div class="tmpl-wrap" style="display:flex; flex-direction:column; justify-content:center">
+      <table class="tmpl-table" style="font-size:1.95cqw; table-layout:fixed">
+        <colgroup><col style="width:20%"><col style="width:24%"><col style="width:56%"></colgroup>
+        <thead><tr><th>Gasket</th><th>Where</th><th>What it does</th></tr></thead>
+        <tbody>
+          <tr><td>Flat sheet<br><span style="color:#6b6f72">thin graphite</span></td><td>bonnet joint, seat-ring joint</td><td>seals a static joint &mdash; a fresh one every time the joint is opened</td></tr>
+          <tr><td>Metal shim</td><td>on top of the cage</td><td>sets the trim stack height so the bolting load lands right</td></tr>
+          <tr><td>Spiral wound</td><td>in the trim stack</td><td><b>acts as a spring</b> &mdash; stays springy through heat, expansion and contraction, so it keeps the seat-ring gasket loaded and sealed</td></tr>
+        </tbody>
+      </table>
+    </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">82</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
-  
+
 </main>
 </body>
 </html>
