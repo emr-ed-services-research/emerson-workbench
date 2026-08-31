@@ -29,9 +29,12 @@ updated: 2026-08-31
 >   and the Stage 3 four-part pass. Three cross-cutting working rules (below)
 >   were codified from its rework requests. Next phase is the Pipeline Console —
 >   see [[System Architecture]].
-> - **Step 4 partial:** `verify.ps1` validates structure (JSON, page refs, tag
->   balance, CSS, engine-lock, `data-ref` drift). Headless-Chrome render checks
->   are still run by hand at the Stage 3 Part 4 gate — not yet in `verify.ps1`.
+> - **Step 4 done (2026-08-31):** `verify.ps1` validates structure (JSON, page
+>   refs, tag balance, CSS, engine-lock, `data-ref` drift) **and** renders every
+>   slide in headless Chrome (section 7, via `40 - Engine/render/`) — load-clean,
+>   broken-image, and clipping checks in both 4:3 and the 16:9 shell. Warn-only
+>   until proven; the finished Chapters 1–2 render clean. The judgement items
+>   (callout accuracy, geometry, polish bar) still belong to the reviewer.
 >
 > Open decisions at the end; mirror into [[Open Questions]].
 
@@ -400,7 +403,7 @@ the data source Bench Notes / Bench Book generation will read. Until then the
 | 1 | `git init` + generator guard | ½ day | **done 2026-08-30** |
 | 2 | Extract the engine + the 3 de-coupling fixes | 1–2 days | **done 2026-08-30** |
 | 3 | Prove Template 2 on Chapter 2 slide 27; decide the data-single-source split | 1 day + a decision | **done 2026-08-30** |
-| 4 | `verify.ps1` — validate now; add render checks | 1 day | validate done; render checks pending |
+| 4 | `verify.ps1` — validate now; add render checks | 1 day | **done 2026-08-31** — structure checks + headless-Chrome render (section 7, `40 - Engine/render/`), warn-only |
 | 5 | Pipeline exists → run "converge Chapter 2", "finish Ch3 / Ch4 / WS1", then port course #2 as the real test | ongoing | |
 
 Steps 1–4 are roughly one week. They are the difference between "we redesigned

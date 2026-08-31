@@ -40,6 +40,10 @@ desktop.ini
 # tracked; the archive contents themselves do not need versioning.
 20 - Source Library/Historic Educational Services Training Content/
 
+# ── Render-check Node deps (regenerable: npm --prefix "40 - Engine/render" install) ──
+40 - Engine/render/node_modules/
+40 - Engine/render/baseline.txt
+
 # ── Stray artifact ─────────────────────────────────────────────────
 # invalid 20-byte file at the vault root from an aborted regen; the real
 # course data is 10 - Courses/.../Presentation/course/course-data.js

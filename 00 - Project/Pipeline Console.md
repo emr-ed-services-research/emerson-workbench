@@ -12,12 +12,13 @@ updated: 2026-08-31
 # Pipeline Console — Scoping Document
 
 > [!note] Status
-> **Phases 0–4 done; Phase 5 (Stage 3) is next but blocked.** Layer 4 of the
-> [[System Architecture]] four-layer model. Written 2026-08-31, the day 1400
-> Chapter 2 closed and console work began. Stages 0, 1, 2 and 4 all run end to
-> end with live status and human review gates; Stage 1 and Stage 2 were both
-> verified against real 1400 chapters. Phase 5 needs the headless-Chrome render
-> checks (`verify.ps1` step 4, §8.3) built first. Build proceeds per §7.
+> **Phases 0–4 done; render checks (the Phase 5 prerequisite) done; Phase 5
+> (Stage 3) is next.** Layer 4 of the [[System Architecture]] four-layer model.
+> Written 2026-08-31, the day 1400 Chapter 2 closed and console work began.
+> Stages 0, 1, 2 and 4 all run end to end with live status and human review
+> gates; Stage 1 and Stage 2 were both verified against real 1400 chapters. The
+> headless-Chrome render checks (`verify.ps1` section 7, §8.3) are built and
+> warn-only. Build proceeds per §7.
 
 Related: [[System Architecture]] (the four layers) · [[Course Porting Pipeline]]
 (the five stages this console runs) · [[Engine]] (the scripts it drives).
@@ -306,7 +307,7 @@ Phased so a genuinely useful console exists early, before the hardest parts.
 | 2 | ~~**Script stages (0 and 4)**~~ | Done 2026-08-31. `pwsh-runner` streams `powershell.exe` line by line; `runStage0` (extract-media + generate, opt-in `-Force`), `runStage4` (`verify.ps1`); pure loop-close evaluators return closed/flagged/failed; live instrument cluster (phase, counts, log tail, outcome). Verified against 1400. 19 tests. | Phase 0 |
 | 3 | ~~**Agent SDK integration**~~ | Done 2026-08-31. `@anthropic-ai/claude-agent-sdk` (ESM, dynamic-import) spawned headless in the vault, session streamed to the cluster; **Stage 2** wired end to end — agent authors the target chapter's outline modules, then `verify.ps1`, then per-module scoring; loop closes only when a human approves every module in the review rack. Verified against 1400 ch12 ($0.64, 42 turns). 30 tests. | — |
 | 4 | ~~**Stage 1**~~ | Done 2026-08-31. Reuses the Phase 3 Agent SDK machinery, scoped to one target chapter: fire → agent cuts the chapter into modules on its own judgement (inherited skeleton treated as a proposal) → pure structural check (coverage gaps/overlaps, ≥3-slide modules, page order, objective stubs, soft CYK notes) → per-module arc-review rack. `canCloseReview` makes **both** gates block — every module approved **and** the machine check green or its issues explicitly accepted; approvals alone never close past a red check (also retro-fixed Stage 2). Stage 0's regeneration-guard decline is now a no-op that undoes its own fire instead of cascade-locking. Also fixed a Phase 3 bug where the agent's `MEMORY_DIR` path never resolved. Verified end to end against 1400 ch3 (5→6 modules; 1-slide Deadband flagged, accepted as an exception). 48 tests. | Phase 3 |
-| 5 | **Stage 3 + light rack + batch review** | per-slide light grid; checklist parsing; flag panel; flag collation; re-run-flagged as one batch. The hardest surface. | headless-Chrome render checks built (`verify.ps1` step 4) |
+| 5 | **Stage 3 + light rack + batch review** | per-slide light grid; checklist parsing; flag panel; flag collation; re-run-flagged as one batch. The hardest surface. | ~~render checks~~ done — `render-check.mjs --json --slides` |
 | 6 | **Visual pass** | chosen direction (A) taken from wireframe to the finished control-surface aesthetic | direction approved |
 | 7 | **Multi-project hardening** | several live slots; pause/resume; survive the app being killed mid-run; run-lane / queue behaviour | — |
 
@@ -326,9 +327,13 @@ live status — worth having even before the AI stages are wired.
    `generate.ps1 -DryRun` previews a conversion into a scratch dir. Verified:
    re-running against 1400 reproduces the committed output byte-for-byte, and
    the regeneration guard (now covering 1400 Chapters 1–2) still blocks.
-3. **Headless-Chrome render checks do not exist yet.** `verify.ps1` step 4 is
-   still pending ([[Course Porting Pipeline]] recommended sequence, step 4).
-   Stage 3 and Stage 4 loop-close both depend on building them.
+3. ~~**Headless-Chrome render checks do not exist yet.**~~ Done 2026-08-31.
+   `verify.ps1` section 7 runs `40 - Engine/render/render-check.mjs`
+   (`puppeteer-core` against the installed Chrome): every slide rendered in both
+   4:3 and the 16:9 shell, checked for load-clean / broken-image / clipping.
+   Warn-only for now; the finished 1400 Chapters 1–2 render clean (baseline in
+   `render/README.md`). `--json --slides N,M` mode is built for the Phase 5
+   Stage 3 per-module calls. Stage 4 picks it up through `verify.ps1` already.
 4. ~~**Agent SDK auth**~~ — resolved: reuse the Claude Code subscription auth
    (§2, §9).
 

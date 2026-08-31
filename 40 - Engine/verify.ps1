@@ -9,8 +9,8 @@
 #  Usage:  .\verify.ps1 -Course "1400 Valve Trim and Body Maintenance"
 #
 #  Exit code 0 = all pass (warnings allowed), 1 = one or more FAIL.
-#  Render checks (headless Chrome of every rebuilt slide) are NOT here yet -
-#  see [[Course Porting Pipeline]] step 4.
+#  Step 4 (headless-Chrome render of every rebuilt slide) runs via
+#  render/render-check.mjs - warn-only for now, see render/README.md.
 # ============================================================================
 param(
   [Parameter(Mandatory = $true)] [string] $Course
@@ -152,6 +152,28 @@ foreach ($ref in ($refGroups.Keys | Sort-Object)) {
     Fail "$ref : $($distinct.Count) DIFFERENT versions across $($rows.Count) files:"
     foreach ($g in $distinct) { Write-Host "         [$(($g.Group.file) -join ', ')]" -ForegroundColor Red }
   }
+}
+
+# ---- 7. slide render  (headless Chrome, warn-only) ----------------
+Section "slide render  (headless Chrome)"
+$renderMjs = Join-Path $engineRoot 'render\render-check.mjs'
+if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
+  Warn "node not found - render checks skipped"
+} elseif (-not (Test-Path (Join-Path $engineRoot 'render\node_modules'))) {
+  Warn "render deps not installed - run: npm --prefix `"$engineRoot\render`" install"
+} else {
+  $sawRender = $false
+  & node $renderMjs --course $Course | ForEach-Object {
+    $line = [string]$_
+    if ($line -match '^\s*\[warn\]\s*(.+)$') { Warn $Matches[1] }
+    elseif ($line -match '^\s*\[ok\]\s*(.+)$') { }  # per-slide OK, keep quiet
+    elseif ($line -match '^RENDER:\s*(\d+) slides rendered, (\d+) warn') {
+      $sawRender = $true
+      Pass ("{0} slides rendered, {1} render warning(s)" -f $Matches[1], $Matches[2])
+    }
+    elseif ($line.Trim()) { Write-Host "  $line" }
+  }
+  if (-not $sawRender) { Warn "render-check produced no summary line" }
 }
 
 # ---- summary --------------------------------------------------------

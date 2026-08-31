@@ -23,9 +23,12 @@ course.
   README.md              this file
   build-course.ps1        assembles a course's Presentation/ from Presentation/ below
   verify.ps1              integrity checks for a course (JSON, page refs, tag balance,
-                          manifest / title drift, CSS, engine-lock, data-ref drift lint)
+                          manifest / title drift, CSS, engine-lock, data-ref drift lint,
+                          and section 7: headless-Chrome render checks via render/)
   generator/              PPT → HTML conversion tooling (run manually, not assembled)
     _paths.ps1  generate.ps1  extract-media.ps1  compare.ps1  export-orig.ps1  README.md
+  render/                 headless-Chrome render checks (Node + puppeteer-core; npm install once)
+    render-check.mjs  package.json  README.md
   Presentation/           the shared runtime — MIRRORS a course's Presentation/ tree
     build/
       index.html          standalone deck runner

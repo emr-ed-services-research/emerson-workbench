@@ -1,0 +1,14 @@
+{
+  "name": "emerson-workbench-render-check",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Headless-Chrome render checks for Workbench course slides (verify.ps1 step 4)",
+  "bin": { "render-check": "./render-check.mjs" },
+  "scripts": {
+    "check": "node render-check.mjs"
+  },
+  "dependencies": {
+    "puppeteer-core": "^25.0.0"
+  }
+}
