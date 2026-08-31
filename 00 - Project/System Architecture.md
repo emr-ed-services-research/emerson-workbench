@@ -12,6 +12,16 @@ updated: 2026-08-31
 
 *Captured 2026-08-30. This document defines the four architectural layers of the Emerson Workbench system, and sets the sequencing decision for what comes after chapter 2.*
 
+> [!check] Update 2026-08-31 — the gate has been reached
+> 1400 Chapter 2 is complete: all seven modules are through Stage 2 context
+> authoring and the Stage 3 four-part slide pass, and a coherence review has
+> confirmed the pipeline rules, templates, and checklist are committed and
+> consistent. The "finish chapter 2 first" precondition below is now **met**.
+> The Workshop shell stays structurally frozen; the next phase of work is
+> scoping and building the **Pipeline Console** (layer 4). The layer
+> definitions and the pipeline-gap-first working principle are unchanged and
+> remain in force.
+
 ## Why this document exists
 
 Today's session revealed a recurring confusion: process gaps discovered while polishing the pilot course (layer 2) were being treated as one-off slide fixes, when they were actually **pipeline specification gaps** (layer 3/4). Every fix should be asked: *does this belong in the pipeline's rules, or is it a one-time correction to this specific course's content?* This document exists so that question has a clear frame to be answered against, and so the next phase of work is explicit rather than assumed.
@@ -59,9 +69,9 @@ A dedicated interface (likely HTML-based) for running and managing course conver
 | Layer | Status |
 |---|---|
 | 1. Workbench Home | Not started |
-| 2. Workshop (course shell) | Built and structurally locked in; proven against real chapter 2 content |
-| 3. Cartridge | Not yet separated as a distinct artifact; currently entangled with Workshop editing |
-| 4. Pipeline Console | Not built; pipeline currently exists as documented conventions run via chat |
+| 2. Workshop (course shell) | Built and structurally locked in; proven against all of 1400 chapter 2 (7 modules, complete 2026-08-31) |
+| 3. Cartridge | Not yet separated as a distinct artifact; currently entangled with Workshop editing. Separation still deferred until after the Pipeline Console. |
+| 4. Pipeline Console | Not built; pipeline exists as documented conventions run via chat. **This is now the active next phase.** |
 
 ## Working principle going forward
 

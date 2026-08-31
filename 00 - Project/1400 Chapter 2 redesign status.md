@@ -26,9 +26,10 @@ Templates: `40 - Engine/Presentation/build/css/TEMPLATES.md`.
 | Day 1 · Ch 14 — Workshop 1: Sliding Stem | outline | not started |
 | Days 2 and 3 (Ch 5–16) | outline | not started |
 
-The day-intro and chapter-intro cards, the `.slide--hd` course-wide heading,
-and the TOC navigation (click-to-open, collapsible modules, Prev/Next spine)
-are in place across the whole shell.
+The day-intro and chapter-intro cards and the `.slide--hd` course-wide heading
+are in place across the whole shell. The TOC navigation exists but has known
+behavioural gaps — see **Carried forward past Chapter 2** at the end of this
+note.
 
 ## Chapter 2 modules 1–3 — four-part pass complete
 
@@ -206,3 +207,69 @@ Console).
 - Day 1 Chapters 3, 4, Workshop 1 — still `outline`.
 - Days 2 and 3.
 - Pipeline Console / Cartridge separation — deferred by [[System Architecture]].
+
+## Carried forward past Chapter 2
+
+Logged at the end-of-Chapter-2 coherence review (2026-08-31). None of these
+block the Pipeline Console phase; they are picked up when the Workshop shell is
+next unfrozen (likely alongside the Console build, since the Console is where
+shell/nav QA belongs).
+
+### Workshop shell — navigation behaviour
+
+The shell nav is present but does not yet behave as intended. These were
+reported as bugs, not design choices:
+
+- Clicking a **day or chapter name** in the TOC only toggles expand/collapse —
+  it does not navigate to that day/chapter intro card.
+- **Modules do not expand/collapse within a chapter** — the collapsible tier
+  stops at chapter level.
+- **Day-intro and chapter-intro cards are not in the sequential Prev/Next
+  spine** — you can only reach them from the TOC, not by paging through the
+  course.
+
+Because the Workshop is structurally locked until the Console phase, these are
+recorded here rather than fixed now. The `Where the course stands` note above
+was corrected to stop claiming this nav is fully working.
+
+### Day / chapter intro-card visual banner
+
+A directive to give the day- and chapter-intro cards a visual banner treatment
+was raised but its status was never confirmed. Revisit when the shell is
+unfrozen; confirm the intended treatment before building it.
+
+### Chapter 1 slide-level module structure
+
+`course.json` gives Chapter 1 one consolidated module ("Reading a Valve's
+Specifications", resolved 2026-08-31, commit `0ccc636`), but the underlying
+slide content still reads as a flat list rather than a module-shaped teaching
+unit the way Chapter 2 does. Flagged by Franz as a content decision to revisit
+later, not a nav bug. Tracked in [[Open Questions#Chapter 1 module structure (course 1400)]].
+
+### Burned-in blue arrows on deck photos
+
+Several deck photos carry crude blue arrows burned into the raster — slide 34
+plug tips (image51/52), module 4 disassembly photos (images 88, 90, 91, 92),
+the lap-line photo on slide 62, the match-mark photo on slide 56. Kept as-is;
+batched into one arrow-cleanup pass to run when image editing is worthwhile.
+
+### ENVIRO-SEAL / HIGH-SEAL packing imagery
+
+Module 6's packing visual-aid slide (71) shows only the two PTFE arrangements.
+The live-loaded packing types (HIGH-SEAL, ENVIRO-SEAL) have no slide-suitable
+photo — the deck's component flat-lays don't row with the PTFE stems, and the
+graphite / ENVIRO-SEAL sets already appear on slide 52. If dedicated imagery of
+these systems is wanted, it needs to be sourced from the D101453X012 /
+D101642X012 manuals in a later pass.
+
+## Chapter 2 — closed (2026-08-31)
+
+The end-of-Chapter-2 coherence review is complete. Documentation gaps found and
+fixed: `40 - Engine` added to [[Vault Structure]]; the geometry-check rule
+consolidated to a single canonical statement in [[Course Porting Pipeline]]
+working rule 2 (the pre-send checklist now points to it); the status blocks in
+[[Course Porting Pipeline]], [[System Architecture]] and [[Roadmap]] updated to
+say Chapter 2 is done; the Stage 1 "run it even when a skeleton exists" note
+added to the pipeline after finding modules 4–7 went straight into Stage 2.
+Open items that are not gaps are logged above. Chapter 2 is genuinely closed;
+Pipeline Console work can begin.

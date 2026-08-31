@@ -60,13 +60,14 @@ Chapter 2, Modules 1–3. See
 Depends on resolving: [[Open Questions#Rendering stack]],
 [[Open Questions#Source-change propagation]].
 
-**Near-term sequencing ([[System Architecture]], 2026-08-31):** the course
-shell ("Workshop") is structurally locked in. Finish course 1400 chapter 2's
-remaining modules under the existing pipeline conventions — no further
-structural changes — then build the **Pipeline Console** (a UI for running
-course conversions) as the next major phase. Cartridge / Workshop separation is
-deferred until after that. Rework requests while finishing chapter 2 are treated
-as pipeline QA, not one-off slide fixes.
+**Near-term sequencing ([[System Architecture]], updated 2026-08-31):** the
+course shell ("Workshop") is structurally locked in. Course 1400 Chapter 2 is
+**complete** — all seven modules through Stage 2 and the Stage 3 four-part pass,
+followed by a coherence review of the pipeline docs. The next major phase is
+building the **Pipeline Console** (a UI for running course conversions), with
+the Workshop shell frozen until then. Cartridge / Workshop separation is
+deferred until after the Console. Day 1 Chapters 3–4, Workshop 1, and Days 2–3
+remain `outline`.
 
 ## Stage 3 — Process Control Integration
 

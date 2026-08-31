@@ -11,9 +11,9 @@ updated: 2026-08-31
 # Course Porting Pipeline
 
 > [!note] Status
-> **In progress.** Consolidates the 1400 course-engine architecture review
-> (2026-08-29). Repeatable process for bringing any PowerPoint course into the
-> Workbench; belongs under [[Roadmap]] Stage 2.
+> **Proven on the 1400 pilot; being run per chapter.** Consolidates the 1400
+> course-engine architecture review (2026-08-29). Repeatable process for bringing
+> any PowerPoint course into the Workbench; belongs under [[Roadmap]] Stage 2.
 >
 > - **Step 1 done (2026-08-30):** `git init` + `.gitignore`; the generator guard
 >   (`generate.ps1` refuses to overwrite `PROTECTED.txt` slides without `-Force`).
@@ -25,6 +25,13 @@ updated: 2026-08-31
 >   (Template 2 proven with a second consumer); data single-sourcing resolved
 >   (lint now via `data-ref` + `40 - Engine/verify.ps1`, data layer as a named
 >   later stage). `verify.ps1` runs 0 FAIL for 1400.
+> - **1400 Chapter 2 complete (2026-08-31):** all seven modules through Stage 2
+>   and the Stage 3 four-part pass. Three cross-cutting working rules (below)
+>   were codified from its rework requests. Next phase is the Pipeline Console —
+>   see [[System Architecture]].
+> - **Step 4 partial:** `verify.ps1` validates structure (JSON, page refs, tag
+>   balance, CSS, engine-lock, `data-ref` drift). Headless-Chrome render checks
+>   are still run by hand at the Stage 3 Part 4 gate — not yet in `verify.ps1`.
 >
 > Open decisions at the end; mirror into [[Open Questions]].
 
@@ -76,9 +83,12 @@ first surfaced them.
    a real photo of the real part is both more trustworthy and usually clearer
    for the learner. After drawing, cross-check the diagram's geometry against a
    reference photo or the manual's own figure. Two slides were drawn wrong this
-   way before this rule existed: the Ch 3 packing-gland cutaway (wall too thick)
-   and the Ch 2 M5 lap-line cutaway (a ring drawn as a V) — both fixed by using
-   the sourced photo.
+   way before this rule existed: the Ch 2 M3 packing-box cutaway (bonnet wall
+   too thick — slide 51) and the Ch 2 M5 lap-line cutaway (a ring drawn as a V —
+   slide 62), both fixed by switching to the sourced figure.
+
+   This rule is the canonical statement of the geometry check. The Part 4
+   pre-send checklist (Stage 3) points back here rather than restating it.
 
 3. **A fix discovered during course work is a pipeline question first.** When a
    slide needs reworking, decide whether it is a one-time content correction or
@@ -89,11 +99,10 @@ first surfaced them.
    This is why rules 1 and 2 exist: both started as slide fixes that were
    actually pipeline gaps. [[System Architecture]] carries the four-layer model
    (Workbench / Workshop / Cartridge / Pipeline Console) this separation comes
-   from, and the current directive: finish chapter 2's remaining modules under
-   the existing conventions — no new structural or console work — then scope the
-   Pipeline Console.
+   from. 1400 Chapter 2 is now complete; the next phase is scoping and building
+   the Pipeline Console, with the Workshop shell frozen until then.
 
-## Where we are (2026-08-29)
+## Where we are (updated 2026-08-31)
 
 - **1400 fully converted** — all 418 slides on the component-extraction model
   (semantic HTML per slide against a shared design system).
@@ -101,18 +110,19 @@ first surfaced them.
   chapter-agnostic — no per-chapter code. The drop-a-slide-from-flow / keep the
   file / mark it with a `data-review` ribbon convention is identical across
   chapters.
-- **The four-part slide-redesign process is proven** on Chapter 2 modules 1–3
-  and Chapter 1.
-- **Four reusable slide templates exist** (see
-  `Presentation/build/css/TEMPLATES.md`): module intro card, labelled diagram
-  card, data table card, comparison table card. Each has **exactly one
-  consumer** so far — "shared" is built but unproven.
-- **Authoring is three-tiered, not two:**
-  1. *Templated* — Chapter 1 (m1–m3).
-  2. *Authored but not templated* — Chapter 2 (m1–m3): full context panes, but
-     its consolidated slides use ad-hoc markup that predates the templates.
-  3. *Outline only* — Chapter 2 m4–m7, Chapter 3, Chapter 4, Workshop 1: page
+- **The four-part slide-redesign process is proven** on all of Day 1 Chapters 1
+  and 2 (Ch 2 finished 2026-08-31 — seven modules, Stage 2 + Stage 3).
+- **Five reusable slide templates exist** (see
+  `40 - Engine/Presentation/build/css/TEMPLATES.md`): intro card,
+  `.slide--tmpl-diagram`, `.slide--tmpl-table`, `.slide--tmpl-compare`,
+  `.slide--tmpl-figrow`. After Chapter 2 each has multiple consumers — "shared"
+  is now exercised, not just built.
+- **Authoring tiers remaining:**
+  1. *Done to Stage 3* — Day 1 Chapters 1 and 2.
+  2. *Outline only* — Day 1 Chapters 3, 4, Workshop 1; Days 2–3 (Ch 5–16): page
      ranges and a one-line objective, nothing else.
+- **Chapter 2's own back-align** (its m1–m3 ad-hoc consolidated slides onto the
+  templates) was folded into the Stage 3 pass — no longer a separate tier.
 
 ## The blocker
 
@@ -183,6 +193,17 @@ skeleton with every module `status: "outline"`.
 
 Scaffolding possible (not required): a script that *proposes* modules from the
 deck's section breaks and CYK positions for a human to re-cut.
+
+**Run Stage 1 as a discrete step even when a rough skeleton already exists.**
+1400 Chapter 2's modules 4–7 already had titles, page ranges and a one-line
+objective in `course.json` (from the earlier chapter-structuring work), so this
+session went straight from that skeleton into Stage 2 without an explicit "is
+this the right cut?" pass. It happened to hold — the maintenance-sequence
+boundaries (Disassembly / Lapping / Packing / Reassembly) matched the Stage 2
+objectives and key concepts with no friction. But the check was skipped, not
+passed. For Chapter 3 onward, confirm each module boundary against its intended
+objective *before* authoring context — an inherited page range is a starting
+proposal, not a completed Stage 1.
 
 ### Stage 2 — Author the context layer
 
@@ -263,13 +284,10 @@ in; the render confirms it rather than discovers it.
    — re-crop from a higher-resolution render, lift a cleaner version from a
    manual, or redraw it as an SVG.
 
-   **Geometry accuracy (any hand-drawn diagram of a physical feature — seating
-   line, lap line, seal contact, thread, bore):** confirm what kind of geometry
-   the feature actually is — a flat face, a circumferential ring, a curved
-   surface, a helix — and cross-check the drawing against a source photo or the
-   manual's own figure. A ring shown as a line is fine; a ring shown as a V is
-   wrong. If a real photo shows the feature, prefer it over the drawing. (See
-   working rule 2.)
+   **Geometry accuracy:** for any hand-drawn diagram of a physical feature,
+   run working rule 2's geometry check — confirm the feature's real 3-D shape
+   and cross-check the drawing against a source photo or the manual's figure.
+   Full statement and worked examples: **working rule 2** (above).
 2. **No text over imagery.** Captions, notes and the callout list each sit in
    their own space. Nothing but a deliberate on-image marker overlaps a figure.
    Re-check this in the 16:9 shell, where a fixed-size figure takes more of the
@@ -363,13 +381,12 @@ the data source Bench Notes / Bench Book generation will read. Until then the
 
 7. Manifest / slide-title drift → regenerate `manifest.js` titles from the slide
    `<h1>`s as a `verify.ps1` step.
-8. **Converge Chapter 2** — back-align its consolidated slides (40, 47, 52) onto
-   Templates 3 and 4. Its own stage: Chapter 1 is currently structurally *ahead*
-   of the reference baseline, which is backwards from build order.
-9. **Pull the three authoring tiers to one bar.** Outline chapters enter at
-   Stage 2; Chapter 2 m1–m3 enters at Stage 3; Chapter 1 needs only its tuning
-   nits. A pipeline that only describes "author the next outline chapter" leaves
-   the middle tier stranded.
+8. ~~**Converge Chapter 2**~~ — done 2026-08-31. Its consolidated slides
+   (40, 47, 52 and the m4–m7 consolidations) are on the `.slide--tmpl-*`
+   templates; the four-part pass absorbed the back-align.
+9. ~~**Pull the authoring tiers to one bar**~~ — Day 1 Chapters 1 and 2 are now
+   both through Stage 3. Remaining chapters are all in the single "outline →
+   Stage 2 → Stage 3" tier.
 
 ## Recommended sequence
 
