@@ -9,14 +9,77 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 62 | ppt slides/slide62.xml | layout: 1 Column With Logo Layout | family: .slide--one-col -->
-  <article class="slide slide--one-col" data-slide="62" data-deck="1400">
+  <!-- Slide 62 | ppt slides/slide62-63.xml | layout: figure row | family: .slide--tmpl-figrow -->
+  <!-- ch2 four-part pass 2026-08-31. Merges the section-opener (old 62 - two stock images, no
+       text, one shared with the dropped slide 55) and the lap-line concept slide (old 63 -
+       schematic image105, small and crude). One concept slide: an inline SVG cross-section of a
+       plug bevel meeting a seat-ring bevel with the shared contact band (the lap line) labelled,
+       and a pointer to the manuals' Lapping Metal Seats section - the "documented procedure"
+       point Franz flagged the old opener for. Old slide 63 dropped-retained. Single-cell figrow
+       SVG (same pattern as the redrawn slide 51). -->
+  <article class="slide slide--tmpl-figrow" data-slide="62" data-deck="1400" data-review="ch2-callout-pass">
+    <div class="review-ribbon">ch2 pass: lap-line SVG; 62+63</div>
     <h1 class="slide-title">Valve Lapping</h1>
-    <figure class="slide-figure" style="left:59.091%;top:34.786%;width:22.977%;height:54.938%"><img src="../assets/img/image104.png" alt="Picture 5"></figure>
-    <figure class="slide-figure" style="left:4.67%;top:20.098%;width:29.296%;height:49.234%"><img src="../assets/img/image85.png" alt="Picture 14"></figure>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <svg viewBox="0 0 900 470" role="img" font-family="Arial, Helvetica, sans-serif"
+             aria-label="Cross-section of a metal valve seat: the plug's conical seating face nests into the seat ring's matching cone and the two meet along a band. Lapping works the two faces together with abrasive compound until that band - the lap line - is one continuous, even ring of contact all the way round. The procedure is documented in the Fisher easy-e valve manuals, section Lapping Metal Seats.">
+          <defs>
+            <pattern id="lap-hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="9" stroke="#b7bbbe" stroke-width="1"/>
+            </pattern>
+          </defs>
+
+          <!-- valve plug: body with a conical seating face, nested into the seat -->
+          <path d="M150 40 L330 40 L330 210 L240 300 L150 210 Z"
+                fill="#d7dadc" stroke="#3F4040" stroke-width="2.4"/>
+          <path d="M150 40 L330 40 L330 210 L240 300 L150 210 Z"
+                fill="url(#lap-hatch)" stroke="none"/>
+
+          <!-- seat ring: a block with a matching conical bore; the cone faces are the seat -->
+          <path d="M96 300 L96 430 L384 430 L384 300 L330 210 L240 300 L150 210 Z"
+                fill="#cdd0d2" stroke="#3F4040" stroke-width="2.4"/>
+          <path d="M96 300 L96 430 L384 430 L384 300 L330 210 L240 300 L150 210 Z"
+                fill="url(#lap-hatch)" stroke="none"/>
+          <!-- flow bore below the seat -->
+          <path d="M210 430 L210 360 L270 360 L270 430" fill="#ffffff" stroke="#3F4040" stroke-width="1.6"/>
+
+          <!-- the shared contact = the lap line (amber, the lapped finish) -->
+          <path d="M150 210 L240 300 L330 210" fill="none" stroke="#d9a441" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M150 210 L240 300 L330 210" fill="none" stroke="#a8791f" stroke-width="1.2"/>
+
+          <!-- stem stub -->
+          <rect x="226" y="12" width="28" height="28" fill="#b7bbbe" stroke="#3F4040" stroke-width="1.6"/>
+
+          <!-- leaders + numbered markers -->
+          <g stroke="#3F4040" stroke-width="1.6" fill="none">
+            <path d="M300 120 H452"/><path d="M292 250 L452 250"/><path d="M348 380 H452"/>
+          </g>
+          <g fill="#004B8D">
+            <circle cx="470" cy="120" r="15"/><circle cx="470" cy="250" r="15"/><circle cx="470" cy="380" r="15"/>
+          </g>
+          <g fill="#fff" font-size="17" font-weight="700" text-anchor="middle">
+            <text x="470" y="126">1</text><text x="470" y="256">2</text><text x="470" y="386">3</text>
+          </g>
+
+          <!-- labels -->
+          <g fill="#3F4040" font-size="22">
+            <text x="500" y="114">Plug seating face</text>
+            <text x="500" y="139" font-size="16" fill="#6b6f72">a machined cone</text>
+            <text x="500" y="236" font-weight="700">Lap line</text>
+            <text x="500" y="261" font-size="16" fill="#6b6f72">the band the two share &mdash; solid and even all</text>
+            <text x="500" y="282" font-size="16" fill="#6b6f72">round means it seals; a broken line leaks</text>
+            <text x="500" y="374">Seat-ring seating face</text>
+            <text x="500" y="399" font-size="16" fill="#6b6f72">the matching cone</text>
+          </g>
+
+          <text x="96" y="456" fill="#6b6f72" font-size="16" font-style="italic">Fisher easy-e manuals &mdash; Lapping Metal Seats</text>
+        </svg>
+      </figure>
+    </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">62</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
-  
+
 </main>
 </body>
 </html>

@@ -51,6 +51,12 @@ seal-two-piece-cut.png / seal-spring-loaded-clip.png
   share an aspect ratio with image96 (graphite ring in a vise) and their
   captions align above the footer. 2026-08-31.
 
+lap-setup-bonnet-on.png / lap-motion-handle.png
+  Deck image109 (valve reassembled for lapping, with the compound tub) and
+  image104 (hand turning a stem handle to lap) cropped from tall portrait to
+  ~square (AR 1.00 / 0.88) so they pair cleanly in the slide 64 and 65 figure
+  rows. 2026-08-31.
+
 cvh6-fig1-6-bonnet-packing-box.png
   Control Valve Handbook, Sixth Edition (D101881X012), Figure 1.6 "Bonnet Assembly"
   - a rendered cutaway of a bonnet showing the stem, the packing, the packing box
