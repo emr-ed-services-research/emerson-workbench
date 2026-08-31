@@ -32,7 +32,7 @@ const VAULT = path.resolve(HERE, '..', '..'); // render/ -> 40 - Engine/ -> vaul
 // ---- args -----------------------------------------------------------------
 
 function parseArgs(argv) {
-  const a = { course: null, slides: null, json: false, chrome: null };
+  const a = { course: null, slides: null, json: false, chrome: null, screenshot: null };
   for (let i = 0; i < argv.length; i++) {
     const k = argv[i];
     if (k === '--course') a.course = argv[++i];
@@ -43,6 +43,7 @@ function parseArgs(argv) {
         .filter(Number.isFinite);
     } else if (k === '--json') a.json = true;
     else if (k === '--chrome') a.chrome = argv[++i];
+    else if (k === '--screenshot') a.screenshot = argv[++i];
     else {
       process.stderr.write(`render-check: unknown argument "${k}"\n`);
       process.exit(2);
@@ -50,7 +51,7 @@ function parseArgs(argv) {
   }
   if (!a.course) {
     process.stderr.write(
-      'usage: render-check.mjs --course "<name>" [--slides 1,2] [--json] [--chrome <path>]\n'
+      'usage: render-check.mjs --course "<name>" [--slides 1,2] [--json] [--chrome <path>] [--screenshot <dir>]\n'
     );
     process.exit(2);
   }
@@ -157,7 +158,7 @@ async function mapLimit(items, n, task) {
   return out;
 }
 
-async function checkPass(browser, fileUrl, mode) {
+async function checkPass(browser, fileUrl, mode, shotPath) {
   const page = await browser.newPage();
   const findings = [];
   const errs = [];
@@ -192,6 +193,12 @@ async function checkPass(browser, fileUrl, mode) {
     if (dom.fatal) findings.push(`load-clean: ${dom.fatal}`);
     for (const b of dom.brokenImages) findings.push(`broken-image: ${b}`);
     for (const c of dom.clipping) findings.push(`clipping: ${c}`);
+    if (shotPath) {
+      try {
+        const el = await page.$('.slide');
+        await (el || page).screenshot({ path: shotPath });
+      } catch { /* a screenshot failure is not a check failure */ }
+    }
   } catch (e) {
     findings.push(`load-clean: load failed — ${String(e.message).split('\n')[0]}`);
   } finally {
@@ -220,6 +227,8 @@ async function main() {
   const slides = listSlides(slidesDir, prefix, args.slides);
   if (!slides.length) return bail('no slide files matched');
 
+  if (args.screenshot) fs.mkdirSync(args.screenshot, { recursive: true });
+
   const browser = await puppeteer.launch({
     executablePath: chrome,
     headless: true,
@@ -231,9 +240,14 @@ async function main() {
   try {
     results = await mapLimit(slides, CONCURRENCY, async (s) => {
       const fileUrl = pathToFileURL(path.join(slidesDir, s.file)).href;
+      const shot = args.screenshot
+        ? path.join(args.screenshot, s.file.replace(/\.html$/i, '.png'))
+        : null;
       const passes = {};
-      for (const mode of ['4:3', '16:9']) passes[mode] = await checkPass(browser, fileUrl, mode);
-      return { n: s.n, file: s.file, passes };
+      for (const mode of ['4:3', '16:9']) {
+        passes[mode] = await checkPass(browser, fileUrl, mode, mode === '16:9' ? shot : null);
+      }
+      return shot ? { n: s.n, file: s.file, passes, screenshot: shot } : { n: s.n, file: s.file, passes };
     });
   } finally {
     await browser.close();

@@ -13,9 +13,14 @@
 #  render/render-check.mjs - warn-only for now, see render/README.md.
 # ============================================================================
 param(
-  [Parameter(Mandatory = $true)] [string] $Course
+  [Parameter(Mandatory = $true)] [string] $Course,
+  # Optional: scope the slide-level sections (2 tag balance, 7 render) to just
+  # these slide numbers - e.g. "27,28,33". Used by the Pipeline Console's Stage 3
+  # per-module pass. Omit to check every slide.
+  [string] $Slides
 )
 $ErrorActionPreference = 'Stop'
+$slideFilter = if ($Slides) { @($Slides -split '[,\s]+' | Where-Object { $_ } | ForEach-Object { [int]$_ }) } else { $null }
 
 $engineRoot = $PSScriptRoot
 $vault      = Split-Path $engineRoot -Parent
@@ -69,9 +74,12 @@ if ($C) {
 
 # ---- 2. slide HTML tag balance -----------------------------------------
 Section "slide HTML tag balance"
-$slideFiles = Get-ChildItem $slidesDir -Filter '1400-*.html'
+$slideFiles = Get-ChildItem $slidesDir -Filter '*.html'   # full list - section 6 needs it
+$tagCheckFiles = if ($slideFilter) {
+  $slideFiles | Where-Object { $_.BaseName -match '(\d+)$' -and ([int]$Matches[1]) -in $slideFilter }
+} else { $slideFiles }
 $tagBad = @()
-foreach ($f in $slideFiles) {
+foreach ($f in $tagCheckFiles) {
   $t = [IO.File]::ReadAllText($f.FullName)
   foreach ($tag in 'article', 'figure', 'table', 'svg', 'ol', 'ul') {
     $o = ([regex]::Matches($t, "<$tag[ >]")).Count
@@ -82,7 +90,7 @@ foreach ($f in $slideFiles) {
   $dC = ([regex]::Matches($t, '</div>')).Count
   if ($dO -ne $dC) { $tagBad += "$($f.Name): <div> $dO open / $dC close" }
 }
-if ($tagBad.Count) { $tagBad | ForEach-Object { Fail $_ } } else { Pass "$($slideFiles.Count) slide files, all tags balanced" }
+if ($tagBad.Count) { $tagBad | ForEach-Object { Fail $_ } } else { Pass "$(@($tagCheckFiles).Count) slide files, all tags balanced" }
 
 # ---- 3. manifest ------------------------------------------------------
 Section "manifest.js"
@@ -163,7 +171,9 @@ if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
   Warn "render deps not installed - run: npm --prefix `"$engineRoot\render`" install"
 } else {
   $sawRender = $false
-  & node $renderMjs --course $Course | ForEach-Object {
+  $renderArgs = @('--course', $Course)
+  if ($slideFilter) { $renderArgs += @('--slides', ($slideFilter -join ',')) }
+  & node $renderMjs @renderArgs | ForEach-Object {
     $line = [string]$_
     if ($line -match '^\s*\[warn\]\s*(.+)$') { Warn $Matches[1] }
     elseif ($line -match '^\s*\[ok\]\s*(.+)$') { }  # per-slide OK, keep quiet

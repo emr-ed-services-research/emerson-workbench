@@ -71,7 +71,13 @@ node render-check.mjs --course "1400 Valve Trim and Body Maintenance"
 node render-check.mjs --course "..." --slides 30,31,62
 node render-check.mjs --course "..." --json
 node render-check.mjs --course "..." --chrome "C:/path/to/chrome.exe"
+node render-check.mjs --course "..." --slides 30,31 --screenshot <dir>
 ```
+
+`--screenshot <dir>` writes one PNG per slide (the `.slide` element in 16:9
+shell mode) as `<dir>/<prefix>NNN.png`, and adds the path to each slide's
+`--json` entry as `screenshot`. The Pipeline Console's Stage 3 pass uses this
+for the before/after thumbnails in its flag panel.
 
 - Uses `puppeteer-core` against the installed Chrome (auto-detected in the
   standard Windows locations, or `--chrome`). No bundled Chromium.
