@@ -100,7 +100,7 @@ modules 4–7 (option 1 — all Stage 2 first, then the slide passes as a block)
 | --- | --- | --- |
 | 4 · Body Disassembly & Seal Replacement | **done** — objective + 6 key concepts, sourced from the ET (D100398X012) and ED (D100390X012) manuals; `status: ready` | **done** — 7 slides → 3 in-flow: 56 Disassembly (figrow), 57 Inspect Plug & Stem (figrow), 58 Replacing the Piston Seal (figrow+lead, 58+59+60+61 consolidated). 55/59/60/61 dropped-retained. `pages` [56, 57, 58]. |
 | 5 · Valve Lapping | **done** — objective + 6 key concepts, sourced from the ET / ED / EZ manuals' Lapping Metal Seats sections and the CVH; `status: ready` | **done** — 5 slides → 4 in-flow: 62 Valve Lapping (lap-line-on-plug photo + manual pointer; 63 merged in), 64 Set Up the Lap, 65 Lap & Check, 66 Damage from Bad Practice — all figrow. `pages` [62, 64, 65, 66]. |
-| 6 · Packing Replacement & Adjustment | **done** — objective + 6 key concepts (removal + the five packing types' distinct compression methods), sourced from the ET manual's Packing Maintenance section (step 13 + Table 4) and the deck; `pages` [68–72, 74–79], `check` [73, 80]; `status: ready` | not started |
+| 6 · Packing Replacement & Adjustment | **done** — objective + 6 key concepts (removal + the five packing types' distinct compression methods), sourced from the ET / HIGH-SEAL / ENVIRO-SEAL manuals and the deck; `status: ready` | **done** — 11 slides → 3 in-flow: 68 Removing the Old Packing (68+69), 70 Building the Stack (ET Fig 4, is-sourced; 70+71+74), 72 Setting the Compression (5-method table; 72+75+76+77+78+79). `pages` [68, 70, 72], `check` [73, 80]. |
 | 7 · Reassembly & Gaskets | **done** — objective + 5 key concepts (new gaskets every time, spiral-wound as a spring, gasket locations, crosswise-progressive bonnet torque, rated bolting), sourced from the ET manual's Assembly section + bonnet-bolting note + Table 3; `pages` [81–85], `check` [86]; `status: ready` | not started |
 
 ### Module 4 — Stage 3 done (2026-08-31)
@@ -138,25 +138,24 @@ the seating band arrowed (`lap-line-on-plug.png`). `image110` moved off slide 65
 in the process, so 65 is now single-cell (the lapping motion). Rule codified in
 the pre-send checklist (Image-quality item) and working rule 2.
 
-### Module 6 — Stage 3 to-do
+### Module 6 — Stage 3 done (2026-08-31)
 
-- **Slide 68** is a tech-pub reminder (same as slide 62) — its point is that
-  packing work is done to the tech manual, not from memory. Keep it, but give it
-  a real treatment (an actual pointer to the packing manual section, not just a
-  bare image).
-- **Big consolidation target.** 11 content slides cover 5 packing types as
-  near-identical "components" + "compression" pairs. Stage 3 should collapse this
-  to roughly: one comparison table of the five adjustment methods
-  (spring-loaded PTFE → follower bottoms on bonnet; jam PTFE → min torque; jam
-  graphite → max then back to min; HIGH-SEAL → scale-to-indicator, max mark;
-  ENVIRO-SEAL → spring-flat) plus a figure row of the five stacks.
-- **Source manuals now held** (2026-08-31): HIGH-SEAL (`53688016.pdf` =
-  D101453X012) and ENVIRO-SEAL (`d101642x012.pdf` = D101642X012) are in
-  [[Technical Publications]]. Concepts 5–6 were checked and refined against the
-  actual Tightening Procedures — HIGH-SEAL uses a load scale to the
-  maximum-compression line; ENVIRO-SEAL uses the springs-100%-flat-then-back-off
-  method (1/2 turn PTFE/duplex, 1/4 turn graphite ULF). Slides 76–79 in the
-  Stage 3 pass can be built straight from these manuals' figures.
+11 content slides → 3 in-flow + the 2 CYK.
+
+- **68 Removing the Old Packing** (68+69): image115 (push it out the top), the
+  "repack to the manual" point Franz flagged is a `.tmpl-source` line.
+- **70 Building the Stack** (70+71+74): the ET manual Figure 4 PTFE/composition
+  packing arrangement, cropped and whited at the left edge, self-labelled
+  (box ring → wiper). `.tmpl-figrow` single cell + `.tmpl-source`.
+- **72 Setting the Compression** (72+75+76+77+78+79): the 5-method table on
+  `.slide--tmpl-table`, with a **"Set by"** column that carries the live-loaded
+  distinction (follower stop / torque / torque / spring geometry / spring
+  geometry). Table `style` vertically centred and font bumped so it fills the
+  slide. The HIGH-SEAL load-scale figure was tried as a compare aside but left
+  the slide sparse; dropped.
+
+69 / 71 / 74 / 75 / 76 / 77 / 78 / 79 dropped-retained. New sourced asset:
+`packing-stack-ptfe.png` (ET Fig 4 crop). Verified 4:3 and 16:9.
 
 ### Module 7 — Stage 3 to-do
 
