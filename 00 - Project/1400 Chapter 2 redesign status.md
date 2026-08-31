@@ -99,7 +99,7 @@ modules 4–7 (option 1 — all Stage 2 first, then the slide passes as a block)
 | Module | Stage 2 (context) | Stage 3 (slide pass) |
 | --- | --- | --- |
 | 4 · Body Disassembly & Seal Replacement | **done** — objective + 6 key concepts, sourced from the ET (D100398X012) and ED (D100390X012) manuals; `status: ready` | **done** — 7 slides → 3 in-flow: 56 Disassembly (figrow), 57 Inspect Plug & Stem (figrow), 58 Replacing the Piston Seal (figrow+lead, 58+59+60+61 consolidated). 55/59/60/61 dropped-retained. `pages` [56, 57, 58]. |
-| 5 · Valve Lapping | **done** — objective + 6 key concepts, sourced from the ET / ED / EZ manuals' Lapping Metal Seats sections and the CVH; `status: ready` | **done** — 5 slides → 4 in-flow: 62 What Lapping Does (redrawn lap-line SVG + manual pointer; 63 merged in), 64 Set Up the Lap (figrow), 65 Lap & Check (figrow), 66 Damage from Bad Practice (figrow). `pages` [62, 64, 65, 66]. |
+| 5 · Valve Lapping | **done** — objective + 6 key concepts, sourced from the ET / ED / EZ manuals' Lapping Metal Seats sections and the CVH; `status: ready` | **done** — 5 slides → 4 in-flow: 62 Valve Lapping (lap-line-on-plug photo + manual pointer; 63 merged in), 64 Set Up the Lap, 65 Lap & Check, 66 Damage from Bad Practice — all figrow. `pages` [62, 64, 65, 66]. |
 | 6 · Packing Replacement & Adjustment | **done** — objective + 6 key concepts (removal + the five packing types' distinct compression methods), sourced from the ET manual's Packing Maintenance section (step 13 + Table 4) and the deck; `pages` [68–72, 74–79], `check` [73, 80]; `status: ready` | not started |
 | 7 · Reassembly & Gaskets | **done** — objective + 5 key concepts (new gaskets every time, spiral-wound as a spring, gasket locations, crosswise-progressive bonnet torque, rated bolting), sourced from the ET manual's Assembly section + bonnet-bolting note + Table 3; `pages` [81–85], `check` [86]; `status: ready` | not started |
 
@@ -126,13 +126,17 @@ Leftover minor polish (not gate failures):
 ### Module 5 — Stage 3 done (2026-08-31)
 
 5 content slides → 4 in-flow. Old 62 (weak opener) and 63 (crude schematic
-image105) merged into a new slide 62: a redrawn inline SVG of a plug cone
-nested in a matching seat cone with the shared contact band (the lap line)
-labelled, plus the `.tmpl-source` pointer to the manuals' *Lapping Metal Seats*
-section — the "documented procedure" point. Old 63 dropped-retained. 64/65/66
-re-templated as figrows; slide 66 keeps just the clearer of the two
-near-identical galling composites (image113). Two new sourced crops
-(`lap-setup-bonnet-on.png`, `lap-motion-handle.png`). Verified 4:3 and 16:9.
+image105) merged into a new slide 62. 64/65/66 re-templated as figrows;
+slide 66 keeps just the clearer of the two near-identical galling composites
+(image113). Verified 4:3 and 16:9.
+
+**Slide 62 corrected (2026-08-31):** first drawn as an inline-SVG cutaway with
+the lap line as a flat "V" where the plug and seat cones meet — wrong geometry
+(the lap line is a *circumferential ring* around the plug's chamfer; an axial
+section of a ring is not a V). Replaced with the deck photo of a real plug with
+the seating band arrowed (`lap-line-on-plug.png`). `image110` moved off slide 65
+in the process, so 65 is now single-cell (the lapping motion). Rule codified in
+the pre-send checklist (Image-quality item) and working rule 2.
 
 ### Module 6 — Stage 3 to-do
 

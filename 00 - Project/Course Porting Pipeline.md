@@ -58,13 +58,27 @@ first surfaced them.
    headless across the whole deck. Reaching for the browser mid-draft is the
    failure this rule exists to stop.
 
-2. **Look for a sourced figure before drawing or hand-tuning one.** Whenever a
-   slide carries a diagram or image, check the Control Valve Handbook (its
-   component figures *and* its section 3.4, not only the Fisher instruction
-   manuals) for a cleaner existing version of the same thing. Prefer the sourced
-   figure — cropped, attributed in `SOURCES.txt`, `.is-sourced` treatment — over
-   a recreation. This check is owed **before spending time iterating on an
-   existing hand-drawn figure too**, not only when first authoring a slide.
+2. **Understand the real 3-D geometry, and look for a sourced figure, before
+   drawing.** Whenever a slide carries a diagram or image, check the Control
+   Valve Handbook (its component figures *and* its section 3.4, not only the
+   Fisher instruction manuals) for a cleaner existing version of the same thing.
+   Prefer the sourced figure — cropped, attributed in `SOURCES.txt`,
+   `.is-sourced` treatment — over a recreation. This check is owed **before
+   spending time iterating on an existing hand-drawn figure too**, not only when
+   first authoring a slide.
+
+   Before hand-drawing any diagram of a *physical feature* — a seating line, a
+   lap line, a seal contact, a thread, a gland bore — first name what kind of
+   geometry it is: a flat face, a **circumferential ring**, a curved surface, a
+   helix. A 2-D cutaway that flattens a ring into a line is fine; one that turns
+   a ring into a **V** is *wrong*. If you are not sure what the feature's shape
+   is in 3-D, that uncertainty is the signal to stop and check a source photo —
+   a real photo of the real part is both more trustworthy and usually clearer
+   for the learner. After drawing, cross-check the diagram's geometry against a
+   reference photo or the manual's own figure. Two slides were drawn wrong this
+   way before this rule existed: the Ch 3 packing-gland cutaway (wall too thick)
+   and the Ch 2 M5 lap-line cutaway (a ring drawn as a V) — both fixed by using
+   the sourced photo.
 
 3. **A fix discovered during course work is a pipeline question first.** When a
    slide needs reworking, decide whether it is a one-time content correction or
@@ -248,6 +262,14 @@ in; the render confirms it rather than discovers it.
    or an image with baked-in arrows / labels / JPEG noise does **not** ship as-is
    — re-crop from a higher-resolution render, lift a cleaner version from a
    manual, or redraw it as an SVG.
+
+   **Geometry accuracy (any hand-drawn diagram of a physical feature — seating
+   line, lap line, seal contact, thread, bore):** confirm what kind of geometry
+   the feature actually is — a flat face, a circumferential ring, a curved
+   surface, a helix — and cross-check the drawing against a source photo or the
+   manual's own figure. A ring shown as a line is fine; a ring shown as a V is
+   wrong. If a real photo shows the feature, prefer it over the drawing. (See
+   working rule 2.)
 2. **No text over imagery.** Captions, notes and the callout list each sit in
    their own space. Nothing but a deliberate on-image marker overlaps a figure.
    Re-check this in the 16:9 shell, where a fixed-size figure takes more of the

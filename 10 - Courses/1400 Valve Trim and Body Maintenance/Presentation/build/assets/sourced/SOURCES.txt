@@ -54,8 +54,15 @@ seal-two-piece-cut.png / seal-spring-loaded-clip.png
 lap-setup-bonnet-on.png / lap-motion-handle.png
   Deck image109 (valve reassembled for lapping, with the compound tub) and
   image104 (hand turning a stem handle to lap) cropped from tall portrait to
-  ~square (AR 1.00 / 0.88) so they pair cleanly in the slide 64 and 65 figure
-  rows. 2026-08-31.
+  ~square (AR 1.00 / 0.88) for the slide 64 and 65 figure rows. 2026-08-31.
+
+lap-line-on-plug.png
+  Deck image110 cropped to the plug and its arrowed seating band. Slide 62
+  first drew the lap line as a hand-drawn cutaway with a flat "V" - wrong
+  geometry: the lap line is a circumferential ring around the plug's conical
+  seating chamfer, and an axial section of a ring is not a V. This photo of the
+  real part replaces that cutaway. The deck's burned-in blue arrow is kept.
+  2026-08-31.
 
 cvh6-fig1-6-bonnet-packing-box.png
   Control Valve Handbook, Sixth Edition (D101881X012), Figure 1.6 "Bonnet Assembly"
