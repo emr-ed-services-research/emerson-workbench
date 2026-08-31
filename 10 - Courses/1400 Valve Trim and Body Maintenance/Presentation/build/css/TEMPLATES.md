@@ -91,6 +91,11 @@ the labels live.
   the Handbook — add `is-sourced` on the `<article>`, drop the `.tmpl-marker`
   elements, make the `.tmpl-list` mirror the figure's own numbering, and
   attribute the source in a `<div class="slide-textbox">` bottom caption.
+- **`.tmpl-fig` is sized for an `<img>` child** (its CSS targets `.tmpl-fig >
+  img`). For a redrawn **inline SVG** diagram, use a single-cell
+  `.slide--tmpl-figrow` instead — `.tmpl-cell:only-child > svg` fills the cell —
+  and carry the labels and a source line inside the SVG (as on 1400 slides 51
+  and 62).
 
 ---
 
