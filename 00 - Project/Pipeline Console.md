@@ -12,13 +12,14 @@ updated: 2026-08-31
 # Pipeline Console — Scoping Document
 
 > [!note] Status
-> **Phases 0–4 done; render checks (the Phase 5 prerequisite) done; Phase 5
-> (Stage 3) is next.** Layer 4 of the [[System Architecture]] four-layer model.
-> Written 2026-08-31, the day 1400 Chapter 2 closed and console work began.
-> Stages 0, 1, 2 and 4 all run end to end with live status and human review
-> gates; Stage 1 and Stage 2 were both verified against real 1400 chapters. The
-> headless-Chrome render checks (`verify.ps1` section 7, §8.3) are built and
-> warn-only. Build proceeds per §7.
+> **Phases 0–5 done — all five pipeline stages run in the console.** Layer 4 of
+> the [[System Architecture]] four-layer model. Written 2026-08-31, the day 1400
+> Chapter 2 closed and console work began. Every stage (0 convert · 1 cut ·
+> 2 context · 3 slides · 4 verify) runs end to end with live status, a machine
+> check, and a human review gate; Stages 1 and 2 were verified against real 1400
+> chapters, Stage 3 against a seeded dry-run (no paid fire yet). Remaining:
+> Phase 6 (visual pass) and Phase 7 (multi-project hardening), plus the smaller
+> open items in §9. Build proceeds per §7.
 
 Related: [[System Architecture]] (the four layers) · [[Course Porting Pipeline]]
 (the five stages this console runs) · [[Engine]] (the scripts it drives).
@@ -307,7 +308,7 @@ Phased so a genuinely useful console exists early, before the hardest parts.
 | 2 | ~~**Script stages (0 and 4)**~~ | Done 2026-08-31. `pwsh-runner` streams `powershell.exe` line by line; `runStage0` (extract-media + generate, opt-in `-Force`), `runStage4` (`verify.ps1`); pure loop-close evaluators return closed/flagged/failed; live instrument cluster (phase, counts, log tail, outcome). Verified against 1400. 19 tests. | Phase 0 |
 | 3 | ~~**Agent SDK integration**~~ | Done 2026-08-31. `@anthropic-ai/claude-agent-sdk` (ESM, dynamic-import) spawned headless in the vault, session streamed to the cluster; **Stage 2** wired end to end — agent authors the target chapter's outline modules, then `verify.ps1`, then per-module scoring; loop closes only when a human approves every module in the review rack. Verified against 1400 ch12 ($0.64, 42 turns). 30 tests. | — |
 | 4 | ~~**Stage 1**~~ | Done 2026-08-31. Reuses the Phase 3 Agent SDK machinery, scoped to one target chapter: fire → agent cuts the chapter into modules on its own judgement (inherited skeleton treated as a proposal) → pure structural check (coverage gaps/overlaps, ≥3-slide modules, page order, objective stubs, soft CYK notes) → per-module arc-review rack. `canCloseReview` makes **both** gates block — every module approved **and** the machine check green or its issues explicitly accepted; approvals alone never close past a red check (also retro-fixed Stage 2). Stage 0's regeneration-guard decline is now a no-op that undoes its own fire instead of cascade-locking. Also fixed a Phase 3 bug where the agent's `MEMORY_DIR` path never resolved. Verified end to end against 1400 ch3 (5→6 modules; 1-slide Deadband flagged, accepted as an exception). 48 tests. | Phase 3 |
-| 5 | **Stage 3 + light rack + batch review** | per-slide light grid; checklist parsing; flag panel; flag collation; re-run-flagged as one batch. The hardest surface. | ~~render checks~~ done — `render-check.mjs --json --slides` |
+| 5 | ~~**Stage 3 + light rack + batch review**~~ | Done 2026-08-31. Fire scope is one ready module at a time (`target = { chapterId, moduleId }`). `runStage3` screenshots each in-flow slide **before** the pass, runs the agent's four parts (printing `PART n/4:`), then **after**: `render-check --json --slides --screenshot` ∥ `-Slides`-scoped `verify.ps1` ∥ an in-process tag-balance. Per-slide light grid coloured by worst state; flag panel with **before/after thumbnails side by side**, the render findings, open-4:3 / open-16:9, and an inline comment + approve/flag. `re-run flagged` re-fires against just the flagged slides with their notes collated, merging approved slides forward. `canCloseReview` generalised to the slide rack — both gates block. 59 tests; paid end-to-end fire not yet run. | ~~render checks~~ done |
 | 6 | **Visual pass** | chosen direction (A) taken from wireframe to the finished control-surface aesthetic | direction approved |
 | 7 | **Multi-project hardening** | several live slots; pause/resume; survive the app being killed mid-run; run-lane / queue behaviour | — |
 
