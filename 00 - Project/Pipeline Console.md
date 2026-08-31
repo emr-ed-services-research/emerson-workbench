@@ -83,10 +83,16 @@ into a chat window.
 ```
 
 **The console drives Claude Code inside this vault.** The Agent SDK process is
-spawned with the vault as its working directory, so every run has the pinned
-memories, `CLAUDE.md`, the pipeline docs, and the Source Library in context —
-the same context a chat session has today. The console app's own code lives
-elsewhere and is never in Claude's working set.
+spawned with the vault as its working directory, so the pipeline docs, the
+memory files and the Source Library are all reachable by path. The console
+app's own code lives elsewhere and is never in Claude's working set.
+
+Note (from Phase 3): the Agent SDK does **not** auto-load `CLAUDE.md` or the
+memory system the way an interactive session does — there is no `CLAUDE.md` in
+this vault anyway. So each stage prompt is written self-contained: it names
+every context file the agent must read (the Stage section of
+[[Course Porting Pipeline]], [[teaching-philosophy]], the relevant memory
+files, the [[Source Library]] MOCs) before it starts work.
 
 **Two runner types:**
 
@@ -144,6 +150,14 @@ A project loaded into the console UI. Several slots coexist, each with
 independent live state. Loading is a **select-or-add**, not drag-and-drop: pick
 an existing project, or add one by choosing a `.pptx` and naming it. A slot can
 be unloaded and reloaded later with all stage state and flags intact.
+
+### Target chapter
+
+Stages 2 and 3 operate one **chapter** at a time, not the whole course — 1400
+alone has ~38 outline modules across Chapters 3–16, far more than one review
+pass. `project.target = { chapterId }` (nullable) is the chapter the next
+Stage 2 / Stage 3 fire will work on; the console defaults it to the first
+chapter with an unauthored module and shows a selector in the active slot.
 
 ### Flag
 
@@ -290,7 +304,7 @@ Phased so a genuinely useful console exists early, before the hardest parts.
 | 0 | ~~**Generator `-Course`**~~ | Done 2026-08-31. `generator/*.ps1` take `-Course "<name>"` and resolve everything through `generator/_paths.ps1`; section map moved to `Source Deck/sections.json`; `generate.ps1 -DryRun` added; the `PROTECTED.txt` guard extended to 1400 Ch 1–2. | — |
 | 1 | ~~**Shell + state machine**~~ | Done 2026-08-31. Electron app; project/slot model + `~/.emerson-pipeline-console/` persistence; control-loop state machine (`locked → armed → running → checking → flagged\|closed\|failed`, re-fire reverts downstream); slots + switch rack + dev panel. 10 tests. | Node.js (done) |
 | 2 | ~~**Script stages (0 and 4)**~~ | Done 2026-08-31. `pwsh-runner` streams `powershell.exe` line by line; `runStage0` (extract-media + generate, opt-in `-Force`), `runStage4` (`verify.ps1`); pure loop-close evaluators return closed/flagged/failed; live instrument cluster (phase, counts, log tail, outcome). Verified against 1400. 19 tests. | Phase 0 |
-| 3 | **Agent SDK integration** | Claude Code spawned headless in the vault; messages streamed to the cluster; **Stage 2** wired end to end (bounded, per-module, `verify.ps1`-checkable). | — |
+| 3 | ~~**Agent SDK integration**~~ | Done 2026-08-31. `@anthropic-ai/claude-agent-sdk` (ESM, dynamic-import) spawned headless in the vault, session streamed to the cluster; **Stage 2** wired end to end — agent authors the target chapter's outline modules, then `verify.ps1`, then per-module scoring; loop closes only when a human approves every module in the review rack. Verified against 1400 ch12 ($0.64, 42 turns). 30 tests. | — |
 | 4 | **Stage 1** | reuses the Phase 3 Agent SDK machinery: fire → agent cuts the arc → structural check → per-module approve/flag rack. | Phase 3 |
 | 5 | **Stage 3 + light rack + batch review** | per-slide light grid; checklist parsing; flag panel; flag collation; re-run-flagged as one batch. The hardest surface. | headless-Chrome render checks built (`verify.ps1` step 4) |
 | 6 | **Visual pass** | chosen direction (A) taken from wireframe to the finished control-surface aesthetic | direction approved |
@@ -336,6 +350,16 @@ live status — worth having even before the AI stages are wired.
   its own judgement, loop closes on a structural check plus a human approve/flag
   pass. No conversational pane — Franz's usage is approve/flag after the fact,
   not co-authoring the cut live.
+
+### Noted during Phase 3
+
+- **keyConcept verbosity.** The first real Stage 2 run (1400 ch12) produced
+  keyConcepts of 2–3 sentences each, where the pipeline wants terse
+  instructor-talking-point lines. This is prompt-tuning plus exactly what the
+  module-review flag is for — but the Stage 2 prompt should push harder on
+  brevity. Tighten `buildStage2Prompt` before the next chapter.
+- **Cost signal.** ~$0.64 / 42 turns for a 2-module chapter with source
+  reading. A 5–6 module chapter is likely $1.50–2.50.
 
 ### Still open
 
