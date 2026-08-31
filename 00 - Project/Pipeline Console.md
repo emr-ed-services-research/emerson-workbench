@@ -12,12 +12,12 @@ updated: 2026-08-31
 # Pipeline Console — Scoping Document
 
 > [!note] Status
-> **Approved; Phase 1 starting.** Layer 4 of the [[System Architecture]]
-> four-layer model. Written 2026-08-31, the day 1400 Chapter 2 closed and
-> console work began. The four blocking decisions in §9 are resolved (Node.js
-> installed; reuse the Claude Code subscription auth; generator
-> `-Course` parameterisation is prerequisite work; Stage 1 is a full switch).
-> Build proceeds per §7.
+> **Phases 0–4 done; Phase 5 (Stage 3) is next but blocked.** Layer 4 of the
+> [[System Architecture]] four-layer model. Written 2026-08-31, the day 1400
+> Chapter 2 closed and console work began. Stages 0, 1, 2 and 4 all run end to
+> end with live status and human review gates; Stage 1 and Stage 2 were both
+> verified against real 1400 chapters. Phase 5 needs the headless-Chrome render
+> checks (`verify.ps1` step 4, §8.3) built first. Build proceeds per §7.
 
 Related: [[System Architecture]] (the four layers) · [[Course Porting Pipeline]]
 (the five stages this console runs) · [[Engine]] (the scripts it drives).
@@ -305,7 +305,7 @@ Phased so a genuinely useful console exists early, before the hardest parts.
 | 1 | ~~**Shell + state machine**~~ | Done 2026-08-31. Electron app; project/slot model + `~/.emerson-pipeline-console/` persistence; control-loop state machine (`locked → armed → running → checking → flagged\|closed\|failed`, re-fire reverts downstream); slots + switch rack + dev panel. 10 tests. | Node.js (done) |
 | 2 | ~~**Script stages (0 and 4)**~~ | Done 2026-08-31. `pwsh-runner` streams `powershell.exe` line by line; `runStage0` (extract-media + generate, opt-in `-Force`), `runStage4` (`verify.ps1`); pure loop-close evaluators return closed/flagged/failed; live instrument cluster (phase, counts, log tail, outcome). Verified against 1400. 19 tests. | Phase 0 |
 | 3 | ~~**Agent SDK integration**~~ | Done 2026-08-31. `@anthropic-ai/claude-agent-sdk` (ESM, dynamic-import) spawned headless in the vault, session streamed to the cluster; **Stage 2** wired end to end — agent authors the target chapter's outline modules, then `verify.ps1`, then per-module scoring; loop closes only when a human approves every module in the review rack. Verified against 1400 ch12 ($0.64, 42 turns). 30 tests. | — |
-| 4 | **Stage 1** | reuses the Phase 3 Agent SDK machinery: fire → agent cuts the arc → structural check → per-module approve/flag rack. | Phase 3 |
+| 4 | ~~**Stage 1**~~ | Done 2026-08-31. Reuses the Phase 3 Agent SDK machinery, scoped to one target chapter: fire → agent cuts the chapter into modules on its own judgement (inherited skeleton treated as a proposal) → pure structural check (coverage gaps/overlaps, ≥3-slide modules, page order, objective stubs, soft CYK notes) → per-module arc-review rack. `canCloseReview` makes **both** gates block — every module approved **and** the machine check green or its issues explicitly accepted; approvals alone never close past a red check (also retro-fixed Stage 2). Stage 0's regeneration-guard decline is now a no-op that undoes its own fire instead of cascade-locking. Also fixed a Phase 3 bug where the agent's `MEMORY_DIR` path never resolved. Verified end to end against 1400 ch3 (5→6 modules; 1-slide Deadband flagged, accepted as an exception). 48 tests. | Phase 3 |
 | 5 | **Stage 3 + light rack + batch review** | per-slide light grid; checklist parsing; flag panel; flag collation; re-run-flagged as one batch. The hardest surface. | headless-Chrome render checks built (`verify.ps1` step 4) |
 | 6 | **Visual pass** | chosen direction (A) taken from wireframe to the finished control-surface aesthetic | direction approved |
 | 7 | **Multi-project hardening** | several live slots; pause/resume; survive the app being killed mid-run; run-lane / queue behaviour | — |
@@ -360,6 +360,26 @@ live status — worth having even before the AI stages are wired.
   brevity. Tighten `buildStage2Prompt` before the next chapter.
 - **Cost signal.** ~$0.64 / 42 turns for a 2-module chapter with source
   reading. A 5–6 module chapter is likely $1.50–2.50.
+
+### Noted during Phase 4
+
+- **`verify.ps1` skeleton check.** `evaluateStage1Structure` (coverage
+  gaps/overlaps, tiny modules, CYK-at-ends) lives only in the console. Per the
+  pipeline-gap-first triage rule it should also be a check in
+  `40 - Engine/verify.ps1`, so the structural rules are pipeline-wide and not
+  re-implementable drift. Follow-up, resolves the "Stage 1 scaffolding" open
+  decision in [[Course Porting Pipeline]].
+- **Re-fire cascade (Fix B).** Phase 4 shipped Fix A: a runner returning
+  `{ noop: true }` (only the Stage 0 regeneration-guard decline, so far) undoes
+  its fire via a snapshot held in `main.js`. The fuller fix makes snapshot/
+  restore a first-class state-machine concept — on `fire()` snapshot downstream;
+  on `report()` only a fresh `closed` invalidates it, `flagged`/`failed`
+  restores — removing the cascade-lock for every stage and moving the logic into
+  `stage-machine.js` under test.
+- **Stage 1 = per chapter.** Resolved that a Stage 1 fire operates on one target
+  chapter (reusing the Stage 2/3 selector), not the whole deck — 1400's day/
+  chapter structure already exists and Chapters 1–2 are locked. "Full switch" in
+  the design directive means a real control-loop switch, not whole-course scope.
 
 ### Still open
 

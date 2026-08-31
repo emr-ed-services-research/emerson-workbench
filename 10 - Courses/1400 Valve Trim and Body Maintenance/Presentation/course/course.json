@@ -218,11 +218,42 @@
           "summary": "Actuator action and fail mode, valve forces, bench set, and maintenance of the Fisher 657 and 667 actuators. Deadband.",
           "objectives": ["Define the action of the actuator", "Identify Fisher spring & diaphragm actuator types", "Identify the fail mode of the control valve assembly", "List valve forces that affect actuator operation and selection", "Define bench set and describe the procedure for setting it", "Describe common maintenance for the Fisher 657 and 667 actuators", "Describe deadband as it applies to control valves"],
           "modules": [
-            { "id": "ch3-m1", "title": "Actuator action & fail mode", "status": "outline", "pages": [88, 89, 90] },
-            { "id": "ch3-m2", "title": "Valve forces & bench set", "status": "outline", "pages": [91, 92, 93, 94, 95, 96, 97, 98, 99], "check": [100] },
-            { "id": "ch3-m3", "title": "Fisher 657 direct-acting actuator", "status": "outline", "pages": [101, 102, 103, 104, 105, 106, 107], "check": [108] },
-            { "id": "ch3-m4", "title": "Fisher 667 reverse-acting actuator", "status": "outline", "pages": [109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124] },
-            { "id": "ch3-m5", "title": "Deadband", "status": "outline", "pages": [125], "check": [126] }
+            {
+              "id": "ch3-m1", "title": "Actuator Action, Fail Mode & Bench Set",
+              "status": "outline",
+              "objective": "Determine a spring-and-diaphragm control valve assembly's fail mode from its actuator action and body orientation, and explain what bench set is and which valve forces it deliberately excludes.",
+              "pages": [88, 89, 91, 92, 93], "check": [90]
+            },
+            {
+              "id": "ch3-m2", "title": "Fisher 657 — Identify & Bench Set",
+              "status": "outline",
+              "objective": "Identify a Fisher 657 direct-acting actuator from its construction and nameplate, and measure and set its bench set with the actuator off the valve.",
+              "pages": [94, 95, 96, 97, 98, 99], "check": [100]
+            },
+            {
+              "id": "ch3-m3", "title": "Fisher 657 — Mount & Service",
+              "status": "outline",
+              "objective": "Mount a Fisher 657 actuator on a valve, set its travel, and disassemble and reassemble the diaphragm casing safely to the correct bolt torque.",
+              "pages": [101, 102, 103, 104, 105, 106, 107], "check": [108]
+            },
+            {
+              "id": "ch3-m4", "title": "Fisher 667 — Identify & Bench Set",
+              "status": "outline",
+              "objective": "Identify a Fisher 667 reverse-acting actuator and its fail-down spring action, and measure and set its bench set with the actuator off the valve.",
+              "pages": [109, 110, 111, 112, 114], "check": [113]
+            },
+            {
+              "id": "ch3-m5", "title": "Fisher 667 — Mount & Service",
+              "status": "outline",
+              "objective": "Mount a Fisher 667 actuator on a valve, set its travel, and replace its spring, seal bushing, and diaphragm safely to the correct diaphragm casing torque.",
+              "pages": [115, 116, 117, 118, 119, 120, 121, 122, 123, 124]
+            },
+            {
+              "id": "ch3-m6", "title": "Deadband",
+              "status": "outline",
+              "objective": "Explain deadband in a control valve assembly, what causes it, and how adding a positioner overcomes it.",
+              "pages": [125], "check": [126]
+            }
           ]
         },
         { "id": "ch4", "num": 4, "title": "Sliding-Stem Piston Actuator Maintenance", "range": [127, 145], "divider": 127, "status": "outline",
