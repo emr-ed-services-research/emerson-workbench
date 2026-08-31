@@ -182,6 +182,15 @@ line** (e.g. a flow direction) — never a sentence an instructor would read
 aloud; that belongs in the context pane. `.tmpl-note` also works inside
 `.slide--tmpl-diagram`.
 
+**Match the cells' aspect ratios.** The cells are equal width and the images
+are `object-fit: contain`, so a portrait photo next to a landscape one renders
+much taller, its caption drops toward the footer chrome, and the row looks
+uneven. Before placing deck photos in a row, crop them to within ~±15% AR of
+each other (a top/bottom or left/right trim, saved to `assets/sourced/` with a
+`SOURCES.txt` line — this is part of the Stage 3 pass). Keep each `<figcaption>`
+tag to a **single line** so a slightly taller cell's caption still clears the
+`.slide-chrome` logo. Seen and fixed on slides 34, 56, 57, 58.
+
 ### `.slide--tmpl-figrow.has-lead`
 
 A reference table above the figure row — the table plus the items it

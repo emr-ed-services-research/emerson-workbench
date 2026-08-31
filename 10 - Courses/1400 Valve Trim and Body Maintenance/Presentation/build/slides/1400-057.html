@@ -3,23 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1400 &middot; Slide 057 &mdash; Basic Plug Maintenance</title>
+<title>1400 &middot; Slide 057 &mdash; Inspect the Plug &amp; Stem</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 57 | ppt slides/slide57.xml | layout: 2 Column with Logo | family: .slide--two-col -->
-  <article class="slide slide--two-col" data-slide="57" data-deck="1400">
-    <h1 class="slide-title">Basic Plug Maintenance</h1>
-    <div class="slide-body"><ul><li style="font-size:2.02cqw">Minimum maintenance required for unbalanced plugs</li></ul></div>
-    <figure class="slide-figure" style="left:4.971%;top:36.077%;width:23.058%;height:46.905%"><img src="../assets/img/image91.png" alt="Picture 2"></figure>
-    <figure class="slide-figure" style="left:44.77%;top:27.451%;width:31.244%;height:47.675%"><img src="../assets/img/image92.png" alt="Picture 6"></figure>
-    <div class="slide-textbox" style="left:24.242%;top:41.746%;width:31.141%;height:20.987%;font-size:2.02cqw"><p>Verify plug seat surface</p><p>Minor defects: lap plugs</p><p>Gouges: machine or replace</p><p>Plugs may be reused</p><p>Damage to surfaces prevent shutoff and increase damage from wear</p></div>
-    <div class="slide-textbox" style="left:64.394%;top:25.195%;width:31.141%;height:23.759%;font-size:2.02cqw"><p>Verify stem surface</p><p>Minor thread defects: polish with light sandpaper</p><p>Gouges: replace stem</p><p>Never reuse stem when replacing plug</p><p>Stem damage can damage packing </p></div>
+  <!-- Slide 57 | ppt slides/slide57.xml | layout: figure row | family: .slide--tmpl-figrow -->
+  <!-- ch2 four-part pass 2026-08-31. Was .slide--two-col: one bullet plus two floating text
+       boxes (verify plug seat / verify stem). First rebuilt as .slide--tmpl-compare, but a
+       2-row table + one image left the slide half empty (the same failure that moved slide 47
+       off tmpl-compare). Rebuilt as a two-cell figure row: the plug seat photo (image91) and
+       the stem photo (image92), each caption carrying the lap/polish/replace decision. The
+       plug/stem reuse rule is module 4 key concept 2 and the tmpl-note. Both photos keep their
+       burned-in arrows (deck-wide, batched follow-up). -->
+  <article class="slide slide--tmpl-figrow" data-slide="57" data-deck="1400" data-review="ch2-callout-pass">
+    <div class="review-ribbon">ch2 pass: figrow; text boxes to captions</div>
+    <h1 class="slide-title">Inspect the Plug &amp; Stem</h1>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <img src="../assets/img/image91.png" alt="Close-up of an unbalanced valve plug's seating band at the tip, with a light scratch arrowed">
+        <figcaption><b>Plug seat</b>lap it; machine or replace a gouge</figcaption>
+      </figure>
+      <figure class="tmpl-cell">
+        <img src="../assets/img/image92.png" alt="Close-up of the valve stem surface with a fine scratch arrowed">
+        <figcaption><b>Stem surface</b>polish light marks; replace if gouged</figcaption>
+      </figure>
+    </div>
+    <p class="tmpl-note">A new plug always needs a new stem &mdash; never the reverse.</p>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">57</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
-  
+
 </main>
 </body>
 </html>

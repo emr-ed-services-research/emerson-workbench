@@ -37,6 +37,20 @@ piston-seal-spring-loaded-detail.png / piston-seal-location.png
   against the cage bore. White margins trimmed (6 px pad). Shown as the two figure
   cells on slide 47. 2026-08-31.
 
+disassembly-match-mark.png
+  Deck image88 (gloved hand paint-pen match-marking the actuator-bonnet and
+  bonnet-body joints) cropped from 403x661 to 403x425 (dropped 50 px of actuator
+  at top, 186 px of valve base at bottom) so it does not tower over the other two
+  photos in the slide 56 figure row. The deck's burned-in blue arrows are kept.
+  2026-08-31.
+
+seal-two-piece-cut.png / seal-spring-loaded-clip.png
+  Deck image98 (side-cutters removing a two-piece PTFE seal) and image102
+  (screwdriver working a spring-loaded PTFE seal's spiral clip) cropped top and
+  bottom to landscape (AR ~1.15) so all three photos in the slide 58 figure row
+  share an aspect ratio with image96 (graphite ring in a vise) and their
+  captions align above the footer. 2026-08-31.
+
 cvh6-fig1-6-bonnet-packing-box.png
   Control Valve Handbook, Sixth Edition (D101881X012), Figure 1.6 "Bonnet Assembly"
   - a rendered cutaway of a bonnet showing the stem, the packing, the packing box

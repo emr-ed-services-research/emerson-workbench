@@ -98,19 +98,30 @@ modules 4–7 (option 1 — all Stage 2 first, then the slide passes as a block)
 
 | Module | Stage 2 (context) | Stage 3 (slide pass) |
 | --- | --- | --- |
-| 4 · Body Disassembly & Seal Replacement | **done** — objective + 6 key concepts, sourced from the ET (D100398X012) and ED (D100390X012) manuals; `pages` [56–61]; `status: ready` | not started |
+| 4 · Body Disassembly & Seal Replacement | **done** — objective + 6 key concepts, sourced from the ET (D100398X012) and ED (D100390X012) manuals; `status: ready` | **done** — 7 slides → 3 in-flow: 56 Disassembly (figrow), 57 Inspect Plug & Stem (figrow), 58 Replacing the Piston Seal (figrow+lead, 58+59+60+61 consolidated). 55/59/60/61 dropped-retained. `pages` [56, 57, 58]. |
 | 5 · Valve Lapping | **done** — objective + 6 key concepts, sourced from the ET / ED / EZ manuals' Lapping Metal Seats sections and the CVH; `pages` [62–66], `check` [67]; `status: ready` | not started |
 | 6 · Packing Replacement & Adjustment | **done** — objective + 6 key concepts (removal + the five packing types' distinct compression methods), sourced from the ET manual's Packing Maintenance section (step 13 + Table 4) and the deck; `pages` [68–72, 74–79], `check` [73, 80]; `status: ready` | not started |
 | 7 · Reassembly & Gaskets | **done** — objective + 5 key concepts (new gaskets every time, spiral-wound as a spring, gasket locations, crosswise-progressive bonnet torque, rated bolting), sourced from the ET manual's Assembly section + bonnet-bolting note + Table 3; `pages` [81–85], `check` [86]; `status: ready` | not started |
 
-### Module 4 — Stage 3 to-do
+### Module 4 — Stage 3 done (2026-08-31)
 
-- **Slide 55** ("Fisher Easy-E Valve Maintenance") is a modules-4–7 roadmap that
-  duplicates the chapter-intro card — drop it in the Stage 3 pass (`data-review`
-  ribbon, retained for the standalone deck). It has already been removed from
-  module 4's `pages`.
-- Slides 56–61 are photo-heavy 2-column / 3-photo PowerPoint layouts — candidates
-  for `.slide--tmpl-figrow` (procedure-step photo rows) once the pass runs.
+7 slides → 3 in-flow. 55 dropped (roadmap); 58 rebuilt as a `figrow + lead
+table` consolidating 58+59+60+61; 56 and 57 rebuilt as figrows. Verified in
+4:3 and the 16:9 shell.
+
+Leftover minor polish (not gate failures):
+
+- Deck's burned-in **blue arrows** on images 88, 90, 91, 92 kept — part of the
+  batched arrow-cleanup follow-up.
+- Slide 57: `image91` (plug) is low-resolution (313 px native) and renders
+  smaller than the stem photo beside it. Fine to read; replace with a better
+  close-up in a later polish pass.
+- Slide 56: `image89` is taller than the other two cells, so its caption sits
+  ~30 px lower. Within tolerance.
+- New sourced crops: `disassembly-match-mark.png`, `seal-two-piece-cut.png`,
+  `seal-spring-loaded-clip.png` (see `SOURCES.txt`).
+- Template guidance added to `TEMPLATES.md` (engine + course copies): figrow
+  cells must share an aspect ratio (±15%) and figcaption tags stay one line.
 
 ### Module 5 — Stage 3 to-do
 
