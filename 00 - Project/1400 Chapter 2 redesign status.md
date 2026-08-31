@@ -178,10 +178,26 @@ the pre-send checklist (Image-quality item) and working rule 2.
 `svg-rebuilt`, `ole-fallback` — folded into the drop ribbon). CYK 86 retitled
 "Check Your Knowledge: Bonnet Torque" (was mislabelled "1").
 
+### Visual-aid slides added (2026-08-31, at Franz's request)
+
+Real photos of the packing and gasket examples, on repurposed dropped slides:
+
+- **Slide 71 · PTFE Packing Sets** (m6, renders 3rd): the two PTFE arrangements
+  module 6 distinguishes — spring-loaded single V-ring (image119) vs. jam
+  multi-ring (image121), both numbered. Graphite noted. Graphite / HIGH-SEAL
+  component flat-lays (image127/128) don't row with these and graphite +
+  ENVIRO-SEAL sets are already on slide 52, so they stay out.
+- **Slide 85 · The Three Gaskets** (m7, renders 2nd): flat sheet (image138),
+  metal shim (image140), spiral wound (image141) as whole rings. The three deck
+  photos were shot at different angles so the shim looks fuller than the other
+  two — a source-photo limitation, acceptable for a visual aid.
+
+`pages` now m6 [68, 70, 71, 72], m7 [82, 85, 83, 84].
+
 ## Chapter 2 Stage 3 — complete (2026-08-31)
 
 All seven modules have had their four-part slide pass. In-flow slide counts:
-m1 8, m2 6, m3 4, m4 3, m5 4, m6 3, m7 3 — plus the CYK slides. Chapter 2 is
+m1 8, m2 6, m3 4, m4 3, m5 4, m6 4, m7 4 — plus the CYK slides. Chapter 2 is
 done; next is whatever [[System Architecture]] sequences after it (the Pipeline
 Console).
 

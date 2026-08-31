@@ -56,6 +56,17 @@ lap-setup-bonnet-on.png / lap-motion-handle.png
   image104 (hand turning a stem handle to lap) cropped from tall portrait to
   ~square (AR 1.00 / 0.88) for the slide 64 and 65 figure rows. 2026-08-31.
 
+packing-set-spring-loaded.png / packing-set-jam-ptfe.png
+  Deck photos image119 (spring-loaded PTFE on a stem, numbered) and image121 (jam
+  PTFE on a stem, numbered) cropped to drop the bare stem and plug, for the
+  packing visual-aid slide (module 6, slide 71). Burned-in part numbers kept.
+  2026-08-31.
+
+gasket-flat-sheet.png / gasket-metal-shim.png / gasket-spiral-wound.png
+  Deck photos image138 / image140 / image141 (the three easy-e gasket types as
+  rings) cropped to a matching wide-ellipse framing (AR ~2.2) for the gasket
+  visual-aid slide (module 7, slide 85). 2026-08-31.
+
 lap-line-on-plug.png
   Deck image110 cropped to the plug and its arrowed seating band. Slide 62
   first drew the lap line as a hand-drawn cutaway with a flat "V" - wrong

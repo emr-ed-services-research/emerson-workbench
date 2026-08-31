@@ -196,7 +196,7 @@ window.EW_COURSE = {
                 { "t": "HIGH-SEAL is the higher pressure/temperature version of ENVIRO-SEAL — a long-travel Belleville spring pack with a load scale (D101453X012), and it is set by the scale, not by torque. Anti-seize the studs and nuts and hand-tighten; loosen the load-scale screws and line the bottom edge of the scale up with the indicator disk while the springs are still uncompressed; then tighten the nuts alternately and evenly, flange kept parallel, until the indicator disk reaches the maximum-compression line.", "pages": [72] },
                 { "t": "ENVIRO-SEAL is Belleville-loaded packing in double PTFE, single graphite ULF, or duplex, adjusted by the spring-flat method (D101642X012). Anti-seize the studs and nuts — threads and nut faces — hand-tighten, then tighten alternately and evenly, flange parallel, until the Belleville springs go 100% flat, shown by a sharp jump in nut torque. Then back each nut off to the 85% target load: 1/2 turn for PTFE or duplex, 1/4 turn for graphite ULF. The packing rings themselves are not lubricated.", "pages": [72] }
               ],
-              "pages": [68, 70, 72], "check": [73, 80]
+              "pages": [68, 70, 71, 72], "check": [73, 80]
             },
             {
               "id": "ch2-m7", "num": 7, "title": "Reassembly & Gaskets",
@@ -209,7 +209,7 @@ window.EW_COURSE = {
                 { "t": "The bonnet is never pulled straight to final torque. Clean the stud threads, lubricate the bolting, align the match marks, then tighten the nuts crosswise in progressive steps — tightening one nut relaxes its neighbour, so you work round the pattern several times, stepping the torque up each round, until every nut holds the table value and the joint is sealed.", "pages": [84] },
                 { "t": "Bonnet studs and nuts are a rated part: use only the material on the valve's serial card — the wrong grade can be overstressed in service — and install each stud so its grade and maker's mark stay visible. Table torque values assume the specified lubricant (lithium-based grease); a dry or differently-lubed joint gives the wrong clamp load.", "pages": [84] }
               ],
-              "pages": [82, 83, 84], "check": [86]
+              "pages": [82, 85, 83, 84], "check": [86]
             }
           ]
         },
