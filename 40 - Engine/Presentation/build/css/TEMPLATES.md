@@ -154,6 +154,15 @@ should be seen and compared together (e.g. the six seat-leakage classes).
 
 With `.tmpl-aside` present, `.tmpl-wrap` narrows automatically to leave room.
 
+**Only use `.tmpl-compare` when the aside image genuinely earns its half of the
+slide.** A short table (≈5 rows) plus a small supporting image leaves the bottom
+of the slide empty and reads as sparse — this happened on 1400 slides 47, 57
+and 72 and each moved off the template. If the table is the content, use plain
+`.slide--tmpl-table`; a short table there can be vertically centred and its
+font bumped with inline `style` on the `.tmpl-wrap` / `<table>` so it fills the
+slide (slide 72). If the images carry real teaching weight, use
+`.slide--tmpl-figrow.has-lead` (table over a photo row).
+
 ---
 
 ## Template 5 — figure row  `.slide--tmpl-figrow`
