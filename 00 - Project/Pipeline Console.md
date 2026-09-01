@@ -391,6 +391,16 @@ live status — worth having even before the AI stages are wired.
 
 ### Noted during Phase 6
 
+- **Per-chapter stage state (done 2026-09-01).** The Phase 4 "per-chapter state
+  matrix" deferral is resolved. `project.stages` held one course-wide blob, so
+  switching the target-chapter selector left the switch row showing the previous
+  chapter's state — a real hazard (a chapter could read as verified when only
+  its cut had run). Now `project.chapters[chapterId].stages` holds stages 1–4
+  per chapter (Stage 0 stays course-wide); `main.js` merges them into a flat
+  view so the state machine is unchanged. A chapter the console has no record of
+  is derived from `course.json` — cut-not-authored → Stage 1 `flagged` with its
+  rack ready, authored → Stage 1 `closed` + Stage 2 `flagged` — never a
+  fabricated `closed`. Console commit `bd9ecaa`.
 - **Electromechanical hardware skin — parked.** After comparing three
   directions (clean dashboard / electromechanical process-control hardware /
   pneumatic-actuator feel), the hardware direction was chosen and attempted:
