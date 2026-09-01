@@ -44,6 +44,7 @@ function parseArgs(argv) {
     } else if (k === '--json') a.json = true;
     else if (k === '--chrome') a.chrome = argv[++i];
     else if (k === '--screenshot') a.screenshot = argv[++i];
+    else if (k === '--dir') a.dir = argv[++i]; // render slides from here instead of the course's build/slides
     else {
       process.stderr.write(`render-check: unknown argument "${k}"\n`);
       process.exit(2);
@@ -51,7 +52,7 @@ function parseArgs(argv) {
   }
   if (!a.course) {
     process.stderr.write(
-      'usage: render-check.mjs --course "<name>" [--slides 1,2] [--json] [--chrome <path>] [--screenshot <dir>]\n'
+      'usage: render-check.mjs --course "<name>" [--slides 1,2] [--json] [--chrome <path>] [--screenshot <dir>] [--dir <slides dir>]\n'
     );
     process.exit(2);
   }
@@ -211,21 +212,22 @@ async function checkPass(browser, fileUrl, mode, shotPath) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const { slidesDir, prefix } = resolveCourse(args.course);
+  const { slidesDir: courseSlidesDir, prefix } = resolveCourse(args.course);
+  const slidesDir = args.dir || courseSlidesDir;
   const emit = (s) => process.stdout.write(s + '\n');
 
   const bail = (msg) => {
     if (args.json) emit(JSON.stringify({ ok: false, reason: msg, slides: [] }));
     else { emit(`  [warn] ${msg}`); emit(`\nRENDER: 0 slides rendered, 1 warn`); }
-    process.exit(0);
+    return { bailed: true };
   };
 
-  if (!fs.existsSync(slidesDir)) return bail(`no slides directory: ${slidesDir}`);
+  if (!fs.existsSync(slidesDir)) return void bail(`no slides directory: ${slidesDir}`);
   const chrome = findChrome(args.chrome);
-  if (!chrome) return bail('Chrome not found — render checks skipped (pass --chrome <path>)');
+  if (!chrome) return void bail('Chrome not found — render checks skipped (pass --chrome <path>)');
 
   const slides = listSlides(slidesDir, prefix, args.slides);
-  if (!slides.length) return bail('no slide files matched');
+  if (!slides.length) return void bail('no slide files matched');
 
   if (args.screenshot) fs.mkdirSync(args.screenshot, { recursive: true });
 
@@ -253,9 +255,10 @@ async function main() {
     await browser.close();
   }
 
+  // let stdout drain naturally (no process.exit — it can truncate a piped write)
   if (args.json) {
     emit(JSON.stringify({ ok: true, course: args.course, slides: results }, null, 2));
-    process.exit(0);
+    return;
   }
 
   let warn = 0;
@@ -266,11 +269,13 @@ async function main() {
     else for (const l of lines) { emit(`  [warn] ${r.file}: ${l}`); warn++; }
   }
   emit(`\nRENDER: ${results.length} slides rendered, ${warn} warn`);
-  process.exit(0);
 }
 
-main().catch((e) => {
-  process.stdout.write(`  [warn] render-check crashed: ${String(e && e.stack || e).split('\n')[0]}\n`);
-  process.stdout.write(`\nRENDER: 0 slides rendered, 1 warn\n`);
-  process.exit(0);
-});
+main().then(
+  () => process.exitCode === undefined && void 0,
+  (e) => {
+    process.stdout.write(`  [warn] render-check crashed: ${String((e && e.stack) || e).split('\n')[0]}\n`);
+    process.stdout.write(`\nRENDER: 0 slides rendered, 1 warn\n`);
+    process.exitCode = 0;
+  }
+);

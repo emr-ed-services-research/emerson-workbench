@@ -79,6 +79,12 @@ shell mode) as `<dir>/<prefix>NNN.png`, and adds the path to each slide's
 `--json` entry as `screenshot`. The Pipeline Console's Stage 3 pass uses this
 for the before/after thumbnails in its flag panel.
 
+`--dir <slides dir>` renders the slide HTML from an alternate directory instead
+of the course's `build/slides/`. The Stage 3 pass snapshots each slide's HTML
+before the agent edits it and renders the "before" screenshots from that
+immutable copy (with `../css` and `../assets` junctioned in), so a re-fire or a
+rework can never make the before/after comparison show edited-vs-edited.
+
 - Uses `puppeteer-core` against the installed Chrome (auto-detected in the
   standard Windows locations, or `--chrome`). No bundled Chromium.
 - `RENDER_CONCURRENCY` env var (default 6) tunes parallel pages. A full 418-slide
