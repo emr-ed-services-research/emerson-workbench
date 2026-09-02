@@ -66,6 +66,13 @@ A dedicated interface (likely HTML-based) for running and managing course conver
 
 ## Current state summary (as of this session)
 
+> [!tip] Living companion: [[System Map]]
+> `00 - Project/System Map.md` (+ a published infographic) is the **current-state
+> map** kept in sync with real progress — the layer statuses, the pipeline
+> stages, and where 1400 stands right now. This document is the fixed design;
+> [[System Map]] is the moving picture. Update it whenever a layer starts, a
+> build phase finishes, or a chapter moves through a stage.
+
 | Layer | Status |
 |---|---|
 | 1. Workbench Home | Not started |

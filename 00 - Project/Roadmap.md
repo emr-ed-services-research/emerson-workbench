@@ -80,3 +80,13 @@ demonstrations.
 - Use case: replicate specific failure scenarios live, in front of the class.
 
 Depends on resolving: [[Open Questions#Stage 3 hardware]].
+
+---
+
+## Current picture
+
+[[System Map]] (`00 - Project/System Map.md` + a published infographic) is the
+maintained current-state snapshot — the four architectural layers, the
+five-stage pipeline and its control-loop, and where 1400 sits stage by stage.
+It is a **living document**: keep it in sync whenever a layer starts, a build
+phase finishes, or a chapter moves through a stage.

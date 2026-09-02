@@ -1,0 +1,595 @@
+<title>Workbench System Map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    /* light palette — a spec-sheet ground with a faint warm bias */
+    --bg: #f4f2ee;
+    --panel: #ffffff;
+    --sunk: #eae7e0;
+    --ink: #1b1d1f;
+    --ink-dim: #5e646b;
+    --edge: #d7d3ca;
+    --edge-strong: #b9b4a8;
+    --accent: #b6791a;          /* signal amber, darkened for light-ground contrast */
+
+    --st-done: #2f8f56;
+    --st-active: #b6791a;
+    --st-frozen: #3f6fb0;
+    --st-none: #8a8f96;
+
+    --shadow: 0 1px 2px rgba(30, 26, 18, 0.06), 0 8px 24px -12px rgba(30, 26, 18, 0.12);
+
+    --sans: "IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+    --display: "Archivo", var(--sans);
+    --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+
+    --fs-eyebrow: 0.72rem;
+    --maxw: 60rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14161a;
+      --panel: #1d2025;
+      --sunk: #101216;
+      --ink: #e7e7e3;
+      --ink-dim: #8b929a;
+      --edge: #313640;
+      --edge-strong: #454c58;
+      --accent: #e2a52c;
+      --st-done: #47b374;
+      --st-active: #e2a52c;
+      --st-frozen: #6a9ee0;
+      --st-none: #6b7178;
+      --shadow: 0 1px 0 rgba(255, 255, 255, 0.03), 0 12px 30px -14px rgba(0, 0, 0, 0.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14161a;
+    --panel: #1d2025;
+    --sunk: #101216;
+    --ink: #e7e7e3;
+    --ink-dim: #8b929a;
+    --edge: #313640;
+    --edge-strong: #454c58;
+    --accent: #e2a52c;
+    --st-done: #47b374;
+    --st-active: #e2a52c;
+    --st-frozen: #6a9ee0;
+    --st-none: #6b7178;
+    --shadow: 0 1px 0 rgba(255, 255, 255, 0.03), 0 12px 30px -14px rgba(0, 0, 0, 0.6);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding: clamp(1.25rem, 4vw, 3.5rem) 1.25rem 4rem;
+  }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; display: flex; flex-direction: column; gap: 2.75rem; }
+
+  a { color: var(--accent); text-underline-offset: 2px; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--fs-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+
+  h1, h2, h3 { font-family: var(--display); font-weight: 600; line-height: 1.18; text-wrap: balance; }
+
+  /* ---- header ---- */
+  header { display: flex; flex-direction: column; gap: 1rem; }
+  .titlebar { display: flex; align-items: baseline; gap: 0.9rem; flex-wrap: wrap; }
+  h1 { font-size: clamp(1.9rem, 5vw, 2.9rem); font-weight: 700; letter-spacing: -0.01em; }
+  .stamp {
+    font-family: var(--mono); font-size: 0.75rem; color: var(--ink-dim);
+    border: 1px solid var(--edge); border-radius: 999px; padding: 0.2rem 0.7rem;
+    white-space: nowrap;
+  }
+  .lede { font-size: 1.08rem; color: var(--ink-dim); max-width: 46rem; }
+  .lede strong { color: var(--ink); font-weight: 600; }
+
+  .legend {
+    display: flex; flex-wrap: wrap; gap: 0.4rem 1.3rem;
+    padding: 0.85rem 1rem; margin-top: 0.4rem;
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 10px;
+    font-family: var(--mono); font-size: 0.76rem; color: var(--ink-dim);
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; flex: none; box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent); }
+  .dot.done { background: var(--st-done); color: var(--st-done); }
+  .dot.active { background: var(--st-active); color: var(--st-active); }
+  .dot.frozen { background: var(--st-frozen); color: var(--st-frozen); }
+  .dot.none { background: var(--st-none); color: var(--st-none); box-shadow: none; }
+
+  /* ---- section shell ---- */
+  section { display: flex; flex-direction: column; gap: 1.1rem; }
+  section > h2 { font-size: 1.4rem; }
+  .sec-head { display: flex; flex-direction: column; gap: 0.35rem; }
+  .sec-head p { color: var(--ink-dim); font-size: 0.97rem; max-width: 44rem; }
+
+  /* ---- figure ---- */
+  figure {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 12px;
+    padding: 1.5rem 1.4rem 1.1rem; box-shadow: var(--shadow);
+    overflow-x: auto;
+  }
+  figure svg { display: block; width: 100%; height: auto; color: var(--ink); }
+  figcaption { margin-top: 1rem; font-size: 0.86rem; color: var(--ink-dim); line-height: 1.5; }
+  figcaption b { color: var(--ink); font-weight: 600; }
+
+  /* ---- layer cards ---- */
+  .layers { display: flex; flex-direction: column; gap: 0.7rem; }
+  .layer {
+    display: grid; grid-template-columns: 2.4rem 1fr auto; gap: 0.4rem 1rem; align-items: start;
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 11px;
+    padding: 1rem 1.15rem; position: relative;
+  }
+  .layer.is-active { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), var(--shadow); }
+  .layer .lnum {
+    font-family: var(--mono); font-weight: 500; font-size: 1.05rem; color: var(--ink-dim);
+    border: 1px solid var(--edge-strong); border-radius: 7px; width: 2.4rem; height: 2.4rem;
+    display: grid; place-items: center;
+  }
+  .layer.is-active .lnum { color: var(--accent); border-color: var(--accent); }
+  .layer .lname { font-family: var(--display); font-weight: 600; font-size: 1.06rem; }
+  .layer .ldesc { grid-column: 2; color: var(--ink-dim); font-size: 0.92rem; margin-top: 0.15rem; }
+  .layer .lstatus {
+    grid-row: 1; grid-column: 3; font-family: var(--mono); font-size: 0.74rem; font-weight: 500;
+    letter-spacing: 0.04em; padding: 0.25rem 0.6rem; border-radius: 999px; white-space: nowrap;
+    align-self: center;
+  }
+  .lstatus.done   { color: var(--st-done);   background: color-mix(in srgb, var(--st-done) 12%, transparent); }
+  .lstatus.active { color: var(--st-active); background: color-mix(in srgb, var(--st-active) 14%, transparent); }
+  .lstatus.frozen { color: var(--st-frozen); background: color-mix(in srgb, var(--st-frozen) 12%, transparent); }
+  .lstatus.none   { color: var(--st-none);   background: color-mix(in srgb, var(--st-none) 13%, transparent); }
+  .layer .lnote { grid-column: 2 / -1; margin-top: 0.55rem; font-size: 0.85rem; color: var(--ink); border-left: 2px solid var(--accent); padding-left: 0.75rem; }
+
+  /* ---- generic table ---- */
+  .tbl-scroll { overflow-x: auto; border: 1px solid var(--edge); border-radius: 12px; background: var(--panel); }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 34rem; }
+  th, td { text-align: left; padding: 0.7rem 0.9rem; border-bottom: 1px solid var(--edge); vertical-align: top; }
+  thead th {
+    font-family: var(--mono); font-weight: 500; font-size: 0.72rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-dim); background: var(--sunk);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  td .sid { font-family: var(--mono); font-weight: 500; color: var(--accent); }
+  td.prove { color: var(--ink-dim); }
+  td.prove b { color: var(--ink); font-weight: 600; }
+
+  /* ---- vault grid ---- */
+  .vault { display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 0.7rem; }
+  .vault div {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 10px; padding: 0.85rem 1rem;
+  }
+  .vault code {
+    font-family: var(--mono); font-size: 0.82rem; font-weight: 500; color: var(--accent);
+    display: block; margin-bottom: 0.3rem;
+  }
+  .vault p { font-size: 0.85rem; color: var(--ink-dim); line-height: 1.5; }
+
+  /* ---- ch3 strip ---- */
+  .strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.45rem; }
+  .cell {
+    background: var(--panel); border: 1px solid var(--edge); border-radius: 9px;
+    padding: 0.8rem 0.7rem; display: flex; flex-direction: column; gap: 0.35rem; min-width: 0;
+  }
+  .cell .cs { font-family: var(--mono); font-size: 0.72rem; color: var(--ink-dim); letter-spacing: 0.03em; }
+  .cell .cn { font-family: var(--display); font-weight: 600; font-size: 0.9rem; line-height: 1.2; }
+  .cell .cv { font-size: 0.78rem; color: var(--ink-dim); line-height: 1.4; }
+  .cell.s-done   { border-color: color-mix(in srgb, var(--st-done) 55%, var(--edge)); }
+  .cell.s-active { border-color: var(--st-active); box-shadow: 0 0 0 1px var(--st-active); }
+  .cell.s-off    { opacity: 0.6; }
+  .cell .tag { font-family: var(--mono); font-size: 0.68rem; font-weight: 500; padding: 0.12rem 0.4rem; border-radius: 4px; align-self: flex-start; }
+  .tag.done   { color: var(--st-done);   background: color-mix(in srgb, var(--st-done) 14%, transparent); }
+  .tag.active { color: var(--st-active); background: color-mix(in srgb, var(--st-active) 16%, transparent); }
+  .tag.declined { color: var(--ink-dim); background: var(--sunk); font-style: italic; }
+  .tag.locked { color: var(--st-none); background: var(--sunk); }
+
+  .callout {
+    background: color-mix(in srgb, var(--accent) 7%, var(--panel));
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--edge));
+    border-radius: 11px; padding: 1.1rem 1.25rem; font-size: 0.95rem;
+  }
+  .callout b { font-weight: 600; }
+
+  /* ---- console panel ---- */
+  .stat-row { display: flex; flex-wrap: wrap; gap: 0.7rem; }
+  .stat {
+    background: var(--sunk); border: 1px solid var(--edge); border-radius: 9px;
+    padding: 0.6rem 0.9rem; font-family: var(--mono); font-size: 0.8rem; color: var(--ink-dim);
+  }
+  .stat b { color: var(--ink); font-weight: 500; font-size: 1.05rem; margin-right: 0.35rem; }
+  .plist { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
+  .plist li { display: grid; grid-template-columns: auto 1fr; gap: 0.7rem; font-size: 0.94rem; }
+  .plist .k {
+    font-family: var(--mono); font-size: 0.74rem; letter-spacing: 0.03em; text-transform: uppercase;
+    color: var(--accent); padding-top: 0.25rem; white-space: nowrap;
+  }
+  .plist .v { color: var(--ink-dim); }
+  .plist .v b { color: var(--ink); font-weight: 600; }
+
+  /* ---- footer ---- */
+  footer {
+    border-top: 1px solid var(--edge); padding-top: 1.5rem; margin-top: 1rem;
+    font-size: 0.84rem; color: var(--ink-dim); display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  footer code { font-family: var(--mono); font-size: 0.8rem; color: var(--ink); }
+  footer .u { font-family: var(--mono); font-size: 0.76rem; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .layer, figure { transition: border-color 0.2s; }
+  }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+  @media (max-width: 34rem) {
+    .strip { grid-template-columns: 1fr 1fr; }
+    .layer { grid-template-columns: 2.4rem 1fr; }
+    .layer .lstatus { grid-row: auto; grid-column: 2; justify-self: start; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header>
+    <div class="titlebar">
+      <h1>Workbench System Map</h1>
+      <span class="stamp">state as of 2026&#8288;-&#8288;09&#8288;-&#8288;01</span>
+    </div>
+    <p class="lede">
+      The <strong>Emerson Workbench</strong> replaces drift-prone 100&#8211;300 slide PowerPoint
+      decks with a maintained, source-linked course system. It is built in four layers; the
+      one under active construction is the <strong>Pipeline Console</strong> &mdash; the tool
+      that runs a legacy course through five inspection stages and produces a finished course
+      package, with a person signing off at every gate.
+    </p>
+    <div class="legend" aria-label="status key">
+      <span><span class="dot done"></span> built &amp; in use</span>
+      <span><span class="dot frozen"></span> built &amp; frozen</span>
+      <span><span class="dot active"></span> active build</span>
+      <span><span class="dot none"></span> not started</span>
+    </div>
+  </header>
+
+  <!-- ============ 1 · LAYERS ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">01 &nbsp;/&nbsp; Architecture</span>
+      <h2>Four layers, built bottom-up</h2>
+      <p>Each layer plugs into the one below it. The Console <em>produces</em> a Cartridge; a
+      Cartridge <em>loads into</em> a Workshop; a Workshop <em>lives in</em> the Home.</p>
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 720 300" role="img" aria-label="The runtime stack — Home contains Workshop contains Cartridge — sits on the left; the Pipeline Console is a separate tool on the right with an arrow labelled 'produces' feeding into the Cartridge. The Console is marked as the active build.">
+        <defs>
+          <marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <!-- runtime stack -->
+        <text x="20" y="26" font-family="IBM Plex Mono, monospace" font-size="12" fill="currentColor" opacity="0.6">RUNTIME STACK</text>
+
+        <rect x="20" y="40" width="360" height="228" rx="10" fill="none" stroke="currentColor" stroke-opacity="0.28"/>
+        <text x="34" y="62" font-family="Archivo, sans-serif" font-size="15" font-weight="600" fill="currentColor">1 · Workbench (Home)</text>
+        <text x="34" y="80" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor" opacity="0.62">every Educational Services course</text>
+
+        <rect x="40" y="92" width="320" height="160" rx="9" fill="var(--st-frozen)" fill-opacity="0.10" stroke="var(--st-frozen)" stroke-opacity="0.7"/>
+        <text x="54" y="113" font-family="Archivo, sans-serif" font-size="14.5" font-weight="600" fill="currentColor">2 · Workshop (Course Shell)</text>
+        <text x="54" y="130" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor" opacity="0.62">nav · templates · context pane · presenter</text>
+
+        <rect x="60" y="142" width="280" height="96" rx="8" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.4" stroke-dasharray="5 4"/>
+        <text x="74" y="164" font-family="Archivo, sans-serif" font-size="14" font-weight="600" fill="currentColor">3 · Cartridge</text>
+        <text x="74" y="181" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor" opacity="0.62">one course's content package</text>
+        <text x="74" y="214" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.5">not yet split from the Workshop</text>
+
+        <!-- console -->
+        <text x="470" y="26" font-family="IBM Plex Mono, monospace" font-size="12" fill="currentColor" opacity="0.6">THE TOOL</text>
+        <rect x="470" y="40" width="230" height="150" rx="10" fill="var(--st-active)" fill-opacity="0.09" stroke="var(--st-active)" stroke-width="1.6"/>
+        <text x="486" y="64" font-family="Archivo, sans-serif" font-size="15" font-weight="700" fill="currentColor">4 · Pipeline Console</text>
+        <text x="486" y="83" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor" opacity="0.66">PowerPoint in &#8594; Cartridge out</text>
+        <text x="486" y="101" font-family="IBM Plex Sans, sans-serif" font-size="11.5" fill="currentColor" opacity="0.66">separate Electron app</text>
+        <rect x="486" y="150" width="118" height="24" rx="12" fill="var(--st-active)" fill-opacity="0.16" stroke="var(--st-active)" stroke-width="1.3"/>
+        <text x="545" y="166" font-family="IBM Plex Mono, monospace" font-size="10.5" font-weight="500" fill="var(--st-active)" text-anchor="middle">ACTIVE BUILD</text>
+
+        <!-- produces arrow -->
+        <path d="M470 176 C 420 210, 380 210, 342 194" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar)"/>
+        <text x="405" y="230" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" text-anchor="middle" opacity="0.75">produces</text>
+      </svg>
+      <figcaption>
+        Layer&nbsp;2 is <b>built and structurally frozen</b> &mdash; proven against all seven modules
+        of 1400 Chapter&nbsp;2. Layer&nbsp;3 is <b>not yet a separate artifact</b>; content and shell
+        are still edited together. Layer&nbsp;1 is <b>not started</b>. All current work is in Layer&nbsp;4.
+      </figcaption>
+    </figure>
+
+    <div class="layers">
+      <div class="layer">
+        <span class="lnum">1</span>
+        <span class="lname">Workbench (Home)</span>
+        <span class="lstatus none">not started</span>
+        <span class="ldesc">Top-level landing for every Educational Services course; departmental branding and ownership.</span>
+      </div>
+      <div class="layer">
+        <span class="lnum">2</span>
+        <span class="lname">Workshop (Course Shell)</span>
+        <span class="lstatus frozen">built &middot; frozen</span>
+        <span class="ldesc">The reusable course layout: navigation, day/chapter/module hierarchy, the four slide templates, context pane, presenter mode.</span>
+        <span class="lnote">Structurally locked in. Proven against all of 1400 Chapter&nbsp;2. Remaining work is finishing content, not changing structure.</span>
+      </div>
+      <div class="layer">
+        <span class="lnum">3</span>
+        <span class="lname">Cartridge</span>
+        <span class="lstatus none">not split off</span>
+        <span class="ldesc">The content package for one course &mdash; the Pipeline's output &mdash; that plugs into a Workshop.</span>
+        <span class="lnote">Cartridge content and Workshop shell are still edited together in live nav. Formal separation is deferred until after the Console.</span>
+      </div>
+      <div class="layer is-active">
+        <span class="lnum">4</span>
+        <span class="lname">Pipeline Console</span>
+        <span class="lstatus active">active build</span>
+        <span class="ldesc">The tool that runs a legacy PowerPoint course through the five pipeline stages and produces a Cartridge. Its own repository, sibling of the vault.</span>
+        <span class="lnote">Build phases 0&#8211;6 complete. Running on real 1400 content now. Only multi-project hardening remains.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2 · PIPELINE ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">02 &nbsp;/&nbsp; The pipeline</span>
+      <h2>Five stages, in fixed order</h2>
+      <p>Each course chapter moves through the stages as its own state machine. Stage&nbsp;0
+      (bulk convert) is course-wide; Stages&nbsp;1&#8211;4 run per chapter.</p>
+    </div>
+
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr><th>Stage</th><th>What it does</th><th>Owner</th><th>How provable</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="sid">0</span> Bulk&nbsp;convert</td>
+            <td>Source <code>.pptx</code> &#8594; HTML slides + manifest + conversion report.</td>
+            <td>script</td>
+            <td class="prove"><b>Fully.</b> Deterministic, no judgement.</td>
+          </tr>
+          <tr>
+            <td><span class="sid">1</span> Cut&nbsp;the&nbsp;arc</td>
+            <td>Group slides into days &#8594; chapters &#8594; modules; boundaries from each module's objective, not deck order.</td>
+            <td>AI cut &#8594; human approve</td>
+            <td class="prove">Structure is checkable; <b>the cut is editorial judgement.</b></td>
+          </tr>
+          <tr>
+            <td><span class="sid">2</span> Author&nbsp;context</td>
+            <td>Per module: a doing-centred objective and 4&#8211;6 source-checked key concepts.</td>
+            <td>AI draft &#8594; human approve</td>
+            <td class="prove">Page refs are checkable; <b>fidelity to source is judgement.</b></td>
+          </tr>
+          <tr>
+            <td><span class="sid">3</span> Four-part&nbsp;pass</td>
+            <td>Re-sequence, source cross-check, consolidate split slides, apply templates, polish.</td>
+            <td>AI rework &#8594; human review, per slide</td>
+            <td class="prove">Render checks are automated; <b>callouts, image choice, polish are judgement.</b></td>
+          </tr>
+          <tr>
+            <td><span class="sid">4</span> Verify&nbsp;&amp;&nbsp;publish</td>
+            <td>Whole-deck render + integrity checks; regenerate data; publishable Cartridge.</td>
+            <td>script + human</td>
+            <td class="prove"><b>Mostly.</b> One <code>verify.ps1</code> pass.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <figure>
+      <svg viewBox="0 0 720 250" role="img" aria-label="A single stage transition: Stage N feeds an AND junction that requires both a passing machine check and a human approval before Stage N plus one unlocks. A dashed arrow shows that re-firing an earlier stage re-locks everything downstream.">
+        <defs>
+          <marker id="ar2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+
+        <rect x="20" y="86" width="128" height="70" rx="9" fill="currentColor" fill-opacity="0.05" stroke="currentColor" stroke-opacity="0.5"/>
+        <text x="84" y="118" font-family="Archivo, sans-serif" font-size="14" font-weight="600" fill="currentColor" text-anchor="middle">Stage N</text>
+        <text x="84" y="136" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.6">fired &#183; ran</text>
+
+        <path d="M148 121 H 196" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar2)"/>
+
+        <!-- two conditions -->
+        <rect x="210" y="60" width="200" height="42" rx="8" fill="var(--st-done)" fill-opacity="0.12" stroke="var(--st-done)" stroke-opacity="0.8"/>
+        <text x="228" y="86" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor">✓&nbsp;&nbsp;machine check passes</text>
+        <rect x="210" y="140" width="200" height="42" rx="8" fill="var(--st-active)" fill-opacity="0.12" stroke="var(--st-active)" stroke-opacity="0.85"/>
+        <text x="228" y="166" font-family="IBM Plex Sans, sans-serif" font-size="12" fill="currentColor">✓&nbsp;&nbsp;human approves</text>
+
+        <!-- AND -->
+        <path d="M410 81 H 452 M410 161 H 452 M452 81 V 161" fill="none" stroke="currentColor" stroke-width="1.4" stroke-opacity="0.55"/>
+        <circle cx="452" cy="121" r="17" fill="var(--bg, #fff)" stroke="currentColor" stroke-width="1.4"/>
+        <text x="452" y="126" font-family="Archivo, sans-serif" font-size="11" font-weight="700" fill="currentColor" text-anchor="middle">AND</text>
+        <path d="M469 121 H 520" fill="none" stroke="currentColor" stroke-width="1.6" marker-end="url(#ar2)"/>
+
+        <rect x="522" y="86" width="150" height="70" rx="9" fill="var(--st-active)" fill-opacity="0.09" stroke="var(--st-active)" stroke-width="1.5"/>
+        <text x="597" y="114" font-family="Archivo, sans-serif" font-size="14" font-weight="600" fill="currentColor" text-anchor="middle">Stage N+1</text>
+        <text x="597" y="132" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.65">unlocks</text>
+
+        <!-- re-fire re-locks -->
+        <path d="M540 156 C 500 230, 140 230, 84 158" fill="none" stroke="currentColor" stroke-width="1.3" stroke-dasharray="5 4" stroke-opacity="0.65" marker-end="url(#ar2)"/>
+        <text x="312" y="243" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" text-anchor="middle" opacity="0.7">re-firing Stage N re-locks everything downstream</text>
+      </svg>
+      <figcaption>
+        <b>The control-loop principle.</b> A stage does not close because it ran &mdash; it closes
+        when its own verification passes <b>and</b> a human approves. Approvals alone never close
+        past a failing check. This is the pipeline's checklist discipline built into the tool.
+      </figcaption>
+    </figure>
+
+    <figure>
+      <svg viewBox="0 0 720 200" role="img" aria-label="The five stages placed on a horizontal axis from 'provable by script' on the left to 'editorial judgement' on the right. Stages 0 and 4 sit at the provable end. Stages 1, 2 and 3 sit toward the judgement end, each marked with a human-approval gate.">
+        <line x1="30" y1="150" x2="690" y2="150" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.4"/>
+        <text x="30" y="176" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7">PROVABLE BY SCRIPT</text>
+        <text x="690" y="176" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity="0.7" text-anchor="end">EDITORIAL JUDGEMENT</text>
+
+        <!-- stage 0 -->
+        <circle cx="70" cy="150" r="6" fill="var(--st-done)"/>
+        <rect x="42" y="96" width="56" height="34" rx="7" fill="var(--st-done)" fill-opacity="0.12" stroke="var(--st-done)" stroke-opacity="0.7"/>
+        <text x="70" y="118" font-family="Archivo, sans-serif" font-size="13" font-weight="700" fill="currentColor" text-anchor="middle">0</text>
+        <text x="70" y="86" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.7">convert</text>
+
+        <!-- stage 4 -->
+        <circle cx="200" cy="150" r="6" fill="var(--st-done)"/>
+        <rect x="172" y="96" width="56" height="34" rx="7" fill="var(--st-done)" fill-opacity="0.12" stroke="var(--st-done)" stroke-opacity="0.7"/>
+        <text x="200" y="118" font-family="Archivo, sans-serif" font-size="13" font-weight="700" fill="currentColor" text-anchor="middle">4</text>
+        <text x="200" y="86" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.7">verify</text>
+
+        <!-- stage 1 -->
+        <circle cx="410" cy="150" r="6" fill="var(--st-active)"/>
+        <rect x="382" y="70" width="56" height="34" rx="7" fill="var(--st-active)" fill-opacity="0.12" stroke="var(--st-active)" stroke-opacity="0.8"/>
+        <text x="410" y="92" font-family="Archivo, sans-serif" font-size="13" font-weight="700" fill="currentColor" text-anchor="middle">1</text>
+        <text x="410" y="60" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.7">cut the arc</text>
+        <line x1="410" y1="104" x2="410" y2="144" stroke="var(--st-active)" stroke-width="1.4"/>
+        <text x="418" y="128" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" opacity="0.8">human gate</text>
+
+        <!-- stage 2 -->
+        <circle cx="520" cy="150" r="6" fill="var(--st-active)"/>
+        <rect x="492" y="70" width="56" height="34" rx="7" fill="var(--st-active)" fill-opacity="0.12" stroke="var(--st-active)" stroke-opacity="0.8"/>
+        <text x="520" y="92" font-family="Archivo, sans-serif" font-size="13" font-weight="700" fill="currentColor" text-anchor="middle">2</text>
+        <text x="520" y="60" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.7">author context</text>
+        <line x1="520" y1="104" x2="520" y2="144" stroke="var(--st-active)" stroke-width="1.4"/>
+
+        <!-- stage 3 -->
+        <circle cx="630" cy="150" r="6" fill="var(--st-active)"/>
+        <rect x="602" y="70" width="56" height="34" rx="7" fill="var(--st-active)" fill-opacity="0.12" stroke="var(--st-active)" stroke-opacity="0.8"/>
+        <text x="630" y="92" font-family="Archivo, sans-serif" font-size="13" font-weight="700" fill="currentColor" text-anchor="middle">3</text>
+        <text x="630" y="60" font-family="IBM Plex Sans, sans-serif" font-size="10" fill="currentColor" text-anchor="middle" opacity="0.7">slide pass</text>
+        <line x1="630" y1="104" x2="630" y2="144" stroke="var(--st-active)" stroke-width="1.4"/>
+      </svg>
+      <figcaption>
+        <b>The trust boundary is a feature.</b> The mechanical stages are provable &mdash; a script
+        confirms them. The stages that need taste or subject expertise are <b>deliberately kept
+        human-reviewed at every pass</b>. The machine does the labour and shows exactly what it
+        changed; a person owns every judgement call.
+      </figcaption>
+    </figure>
+  </section>
+
+  <!-- ============ 3 · LIVE STATE ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">03 &nbsp;/&nbsp; Live example</span>
+      <h2>Where 1400 stands right now</h2>
+      <p><b>1400 Valve Trim and Body Maintenance</b> &mdash; 3 days, 16 chapters. Chapters&nbsp;1&#8211;2
+      are finished; Chapter&nbsp;3 is the machine actively running the pipeline on real content.</p>
+    </div>
+
+    <div>
+      <p class="eyebrow" style="margin-bottom:0.6rem;">Chapter 3 &mdash; per-stage state</p>
+      <div class="strip">
+        <div class="cell s-done">
+          <span class="cs">stage 0</span><span class="cn">Bulk convert</span>
+          <span class="tag declined">declined</span>
+          <span class="cv">75 slides were finished by hand pre-pipeline; the guard refused to overwrite them.</span>
+        </div>
+        <div class="cell s-done">
+          <span class="cs">stage 1</span><span class="cn">Cut the arc</span>
+          <span class="tag done">closed</span>
+          <span class="cv">6 modules cut by the agent, all human-approved.</span>
+        </div>
+        <div class="cell s-done">
+          <span class="cs">stage 2</span><span class="cn">Author context</span>
+          <span class="tag done">closed</span>
+          <span class="cv">6 modules' objectives + key concepts authored and approved.</span>
+        </div>
+        <div class="cell s-active">
+          <span class="cs">stage 3</span><span class="cn">Four-part pass</span>
+          <span class="tag active">in progress</span>
+          <span class="cv">Running on module <code style="font-family:var(--mono);font-size:0.72rem">ch3-m1</code>. Per-slide before/after review under way; 4 of 6 slides flagged for a rework batch.</span>
+        </div>
+        <div class="cell s-off">
+          <span class="cs">stage 4</span><span class="cn">Verify &amp; publish</span>
+          <span class="tag locked">locked</span>
+          <span class="cv">Opens once Stage&nbsp;3 closes.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      Chapter&nbsp;3 is the proof point: <b>the machine actually running the pipeline end to end
+      on real course content</b>, with a person reviewing every gate &mdash; not a diagram of
+      intent. Chapters&nbsp;1&#8211;2 were taken through the same stages by hand before the Console
+      existed; Chapters&nbsp;4&#8211;16 are converted and waiting.
+    </div>
+  </section>
+
+  <!-- ============ 4 · THE CONSOLE ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">04 &nbsp;/&nbsp; The console</span>
+      <h2>A control panel, not a dashboard</h2>
+    </div>
+
+    <div class="stat-row">
+      <span class="stat"><b>6</b> build phases done</span>
+      <span class="stat"><b>67</b> tests</span>
+      <span class="stat"><b>16</b> commits</span>
+      <span class="stat"><b>5</b> pipeline stages wired</span>
+    </div>
+
+    <ul class="plist">
+      <li>
+        <span class="k">Separate app</span>
+        <span class="v">Its own Electron repository, sibling of the vault. It drives Claude Code with the vault as the working directory, so the pipeline docs, memories, and Source Library are all in context &mdash; but the Console's code is never mixed into course content.</span>
+      </li>
+      <li>
+        <span class="k">Instrument feel</span>
+        <span class="v">Chunky stage switches, indicator lights, a monospace instrument readout. Colour carries live status. <b>Built to feel like operating a physical process-control panel</b>, the domain adjacent to valve work &mdash; not a generic web dashboard.</span>
+      </li>
+      <li>
+        <span class="k">Before / after</span>
+        <span class="v">At Stage&nbsp;1 and&nbsp;2, the review rack shows what the cut or the authored context produced next to an outline of what the source slides actually cover. At Stage&nbsp;3, a real before/after screenshot of each slide. <b>The human approves knowing exactly what changed</b> &mdash; never a black box.</span>
+      </li>
+      <li>
+        <span class="k">Per-chapter</span>
+        <span class="v">Each chapter carries its own Stage&nbsp;1&#8211;4 state; switching the target chapter re-derives the panel from that chapter's real progress. Stage&nbsp;0 (bulk convert) is course-wide.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- ============ 5 · VAULT ============ -->
+  <section>
+    <div class="sec-head">
+      <span class="eyebrow">05 &nbsp;/&nbsp; The vault</span>
+      <h2>Where everything lives</h2>
+      <p>One Obsidian vault, six top-level folders. The Console's own code is not among them.</p>
+    </div>
+    <div class="vault">
+      <div><code>00 - Project</code><p>Charter, roadmap, architecture, this map, open questions, glossary.</p></div>
+      <div><code>10 - Courses</code><p>One folder per course &mdash; content, instructor/student guides, the built <code>Presentation/</code>, the source deck.</p></div>
+      <div><code>20 - Source Library</code><p>Control Valve Handbook, Fisher manuals, technical publications &mdash; the primary sources courses cite.</p></div>
+      <div><code>30 - Templates</code><p>Obsidian note skeletons: Bench Book, Bench Notes, Course Home, Source Document.</p></div>
+      <div><code>40 - Engine</code><p>The shared course runtime: design system, deck runner, learning shell, slide templates, the PPT&#8594;HTML generator, <code>verify.ps1</code>, headless render checks.</p></div>
+      <div><code>99 - Attachments</code><p>PDFs, images, exported decks.</p></div>
+    </div>
+  </section>
+
+  <footer>
+    <div><b style="color:var(--ink);font-weight:600;">This is a maintained document.</b> The source of truth is <code>00 - Project/System Map.md</code> in the vault; this page is generated from it and re-published when the real state changes &mdash; a layer starts, a build phase finishes, a chapter moves through a stage.</div>
+    <div class="u">last synced 2026-09-01 &nbsp;&#183;&nbsp; companion to System Architecture.md (the design) and Course Porting Pipeline.md (the process)</div>
+  </footer>
+
+</div>
