@@ -224,12 +224,24 @@ instruction was measuring.
 The actual standard, every time a slide's visual content is authored or
 reworked:
 
-1. **Establish completeness first, from source.** Use the Source Library /
-   component index to determine what full, correct coverage of the concept
-   actually requires — not what fits comfortably in the space already
-   decided, and not what the slide currently happens to show. If the source's
-   own treatment includes a mark, a callout, a comparison, or an illustration
-   that carries part of the concept, that element is in scope for the slide
+1. **Establish completeness first, from source — and "source" means every
+   legitimate source, not the reference library alone.** When converting an
+   existing deck, the deck itself is a source of completeness, not raw
+   material being judged against an external standard: it may carry real
+   instructional content, framing, or emphasis that is not in the Source
+   Library at all, earned by however the course was actually taught before.
+   Completeness for a conversion is measured against the **union** of the
+   Source Library / component index **and** the original deck, never the
+   Source Library alone with the deck treated as mere inventory to reshape —
+   that repeats this exact bias, just relocated: the correction was "don't
+   judge a slide's completeness by how little it shows," not "judge it by an
+   external checklist instead of what it already taught." Use whichever
+   sources exist for the scope at hand to determine what full, correct
+   coverage of the concept actually requires — not what fits comfortably in
+   the space already decided, and not what the slide currently happens to
+   show. If either the deck's own existing treatment or the Source Library's
+   treatment includes a mark, a callout, a comparison, or an illustration that
+   carries part of the concept, that element is in scope for the slide
    whether or not the current draft has room for it.
 2. **Measure the slide against that bar, not against a volume target.** An
    element — a diagram, a callout, an illustration like a bench-set graph's

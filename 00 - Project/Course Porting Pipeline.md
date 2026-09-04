@@ -119,8 +119,12 @@ first surfaced them.
    (Corrected 2026-09-04, from a ch3-m4 review — see [[teaching-philosophy]]
    "The standard is completeness against source, not a volume judgment" for
    the full statement.) Establish what full, correct coverage of a concept
-   requires from the Source Library / component index, then measure a slide
-   against that bar — never against how sparse or busy it looks. An element
+   requires from **every legitimate source for the scope at hand** — the
+   Source Library / component index, and, when converting an existing deck,
+   the deck itself (it may carry real instructional content or framing not in
+   the Source Library at all; it is a source, not inventory to reshape
+   against an external standard) — then measure a slide against that bar,
+   never against how sparse or busy it looks. An element
    stays, or gets added, because it is load-bearing for the concept; it goes
    only when it is genuinely redundant, decorative, or unrelated. Elegant
    delivery is a constraint applied *after* completeness, never traded against
