@@ -4,7 +4,7 @@ type: reference
 tags:
   - project
   - design
-updated: 2026-09-03
+updated: 2026-09-04
 ---
 
 # Emerson Workbench — Teaching Philosophy and Design Principles
@@ -199,6 +199,59 @@ The original deck's chapter order does not drive this; the teaching arc does.
 ## This is not standard web-based training
 
 This is deliberately **not** a standard web-based training module or an
-Articulate-style course. It should feel **sparse on screen** on purpose, because
-the instructor and the bench complete it. Density on the screen is a sign
-something has been put in the wrong place, not a sign of thoroughness.
+Articulate-style course. It should feel **sparse in prose** on purpose — no
+explanatory paragraphs, no bullet lists an instructor would read aloud —
+because the instructor and the bench complete the teaching, not the screen.
+That is a rule about **text**, stated already under "Slides are visual-only"
+above. It is not a rule about how much a slide is allowed to show, and must
+never be read as one.
+
+### The standard is completeness against source, not a volume judgment
+
+**Corrected 2026-09-04**, after a ch3-m4 review found a bench-set graph redraw
+that dropped its upper/lower travel-stop illustrations — the actual teaching
+point of that slide, not decoration around it — and construction callouts
+placed plausibly rather than verified against the source figure. Both traced
+back to an earlier version of this document that said flatly "density on the
+screen is a sign something has been put in the wrong place, not a sign of
+thoroughness" — true for explanatory text, false for a concept's visual
+content, and stated with no carve-out for the difference. A model following
+that instruction faithfully will prune a load-bearing illustration exactly as
+readily as real clutter, and will optimize for "looks clean and plausible"
+over "verified exactly correct," because exactness was never what the
+instruction was measuring.
+
+The actual standard, every time a slide's visual content is authored or
+reworked:
+
+1. **Establish completeness first, from source.** Use the Source Library /
+   component index to determine what full, correct coverage of the concept
+   actually requires — not what fits comfortably in the space already
+   decided, and not what the slide currently happens to show. If the source's
+   own treatment includes a mark, a callout, a comparison, or an illustration
+   that carries part of the concept, that element is in scope for the slide
+   whether or not the current draft has room for it.
+2. **Measure the slide against that bar, not against a volume target.** An
+   element — a diagram, a callout, an illustration like a bench-set graph's
+   travel-stop marks — **stays, or gets added,** because it is load-bearing
+   for teaching the concept completely and correctly. It **goes** only when
+   it is genuinely redundant with something already shown elsewhere,
+   decorative, or unrelated to the concept being taught at that step. "The
+   slide will look busier" is never, by itself, a reason to cut something the
+   source says the concept needs.
+3. **Elegant delivery is a constraint applied after completeness, never a
+   competing goal traded against it.** Once the concept is fully and
+   correctly covered, present it as cleanly as the templates allow — but
+   never at the cost of thoroughness. A slide that is sparse and wrong is not
+   the goal; nor is a slide that is complete and cluttered. The templates
+   (see the gallery / master-template system) exist to make "complete and
+   clean" the normal outcome, not to force a choice between them.
+
+**The test to hold every future revision against, verbatim:** a model working
+this pipeline should be **exactly as willing to add** a slide, a diagram, or a
+callout **as to remove one** — whichever move actually serves complete and
+correct coverage of the concept. Neither direction is inherently the right
+one; service to the concept is. Treating reduction as inherently good and
+addition as inherently suspect is itself a bias to correct on sight, not a
+safe default — it is what produced the ch3-m4 defects as directly as any
+layout bug did.

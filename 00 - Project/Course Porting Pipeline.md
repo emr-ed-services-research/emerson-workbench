@@ -5,7 +5,7 @@ tags:
   - project
   - pipeline
   - stage-2
-updated: 2026-09-03
+updated: 2026-09-04
 ---
 
 # Course Porting Pipeline
@@ -114,6 +114,26 @@ first surfaced them.
    (Workbench / Workshop / Cartridge / Pipeline Console) this separation comes
    from. 1400 Chapter 2 is now complete; the next phase is scoping and building
    the Pipeline Console, with the Workshop shell frozen until then.
+
+4. **Completeness against source, not volume, is the content standard.**
+   (Corrected 2026-09-04, from a ch3-m4 review — see [[teaching-philosophy]]
+   "The standard is completeness against source, not a volume judgment" for
+   the full statement.) Establish what full, correct coverage of a concept
+   requires from the Source Library / component index, then measure a slide
+   against that bar — never against how sparse or busy it looks. An element
+   stays, or gets added, because it is load-bearing for the concept; it goes
+   only when it is genuinely redundant, decorative, or unrelated. Elegant
+   delivery is a constraint applied *after* completeness, never traded against
+   it. **The test:** be exactly as willing to add a slide, a diagram, or a
+   callout as to remove one, whichever move actually serves complete and
+   correct coverage — reduction is not inherently virtuous and addition is not
+   inherently suspect; service to the concept is the only virtue. This rule
+   exists because an earlier version of the teaching philosophy said flatly
+   that on-screen density is a sign of misplacement, with no carve-out for a
+   concept that genuinely needs several visual elements to be taught
+   completely — read literally, that produced exactly the ch3-m4 defects (a
+   bench-set graph missing its travel-stop marks; callouts placed plausibly
+   rather than verified). Part 3 of Stage 3 (below) is amended accordingly.
 
 ## Where we are (updated 2026-08-31)
 
@@ -287,11 +307,19 @@ day / chapter / module hierarchy never changes). Run per module.
    right thing once checked against the real source. Any claim that cannot be
    confirmed against source material is **flagged explicitly as unresolved**,
    not guessed.
-3. **Consolidate artificially split slides.** Where one idea has been spread
-   across many near-identical slides (one slide per leakage class, per flow
-   characteristic, per packing type), combine them into one well-designed slide
-   — a comparison table or a single labelled figure — so related items can be
-   seen and compared together.
+3. **Consolidate artificially split slides — and verify nothing load-bearing
+   was lost doing it.** Where one idea has been spread across many
+   near-identical slides (one slide per leakage class, per flow characteristic,
+   per packing type), combine them into one well-designed slide — a comparison
+   table or a single labelled figure — so related items can be seen and
+   compared together. A consolidation removes **duplication**, never
+   **content**: before marking a merge done, re-check the result against
+   Part 2's source cross-reference and confirm every element that was teaching
+   something distinct in either original slide is still present — including
+   an element that reads as a decorative detail rather than a "concept," such
+   as a graph's calibration marks or a diagram's secondary illustration. Per
+   working rule 4, an under-covering merge is a defect to fix, not an economy
+   to keep.
 4. **Hierarchy + polish.** Keep day / chapter / module exactly as they are. Every
    resulting slide, however much it consolidates, gets the same clean visual
    treatment and context-pane parity as the rest of the course. This part ends
