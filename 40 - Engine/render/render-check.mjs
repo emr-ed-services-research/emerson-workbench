@@ -78,13 +78,24 @@ function findChrome(explicit) {
 function resolveCourse(course) {
   const pres = path.join(VAULT, '10 - Courses', course, 'Presentation');
   let prefix = null;
+  const checkSlides = new Set();
   try {
     const cj = JSON.parse(
       fs.readFileSync(path.join(pres, 'course', 'course.json'), 'utf8').replace(/^\uFEFF/, '')
     );
     prefix = cj.slidePrefix || (cj.course && cj.course.code ? `${cj.course.code}-` : null);
+    // check-your-knowledge slides carry their payload in .slide-body, which the
+    // shell's visual mode hides \u2014 the shell opens them with ?embed=1 only (see
+    // course.js __openCheck). Collect them so the 16:9 pass matches.
+    (function collect(o) {
+      if (Array.isArray(o)) return o.forEach(collect);
+      if (o && typeof o === 'object') {
+        if (Array.isArray(o.check)) for (const n of o.check) checkSlides.add(n);
+        Object.values(o).forEach(collect);
+      }
+    })(cj);
   } catch { /* prefix stays null -> loose match below */ }
-  return { slidesDir: path.join(pres, 'build', 'slides'), prefix };
+  return { slidesDir: path.join(pres, 'build', 'slides'), prefix, checkSlides };
 }
 
 function listSlides(slidesDir, prefix, only) {
@@ -159,7 +170,7 @@ async function mapLimit(items, n, task) {
   return out;
 }
 
-async function checkPass(browser, fileUrl, mode, shotPath) {
+async function checkPass(browser, fileUrl, mode, shotPath, visual = true) {
   const page = await browser.newPage();
   const findings = [];
   const errs = [];
@@ -172,7 +183,8 @@ async function checkPass(browser, fileUrl, mode, shotPath) {
     failed.push(`${u.split(/[\\/]/).pop()} (${(r.failure() && r.failure().errorText) || 'failed'})`);
   });
 
-  const url = mode === '16:9' ? `${fileUrl}?embed=1&visual=1` : fileUrl;
+  const url =
+    mode === '16:9' ? `${fileUrl}?embed=1${visual ? '&visual=1' : ''}` : fileUrl;
   await page.setViewport(VIEWPORTS[mode]);
   try {
     await page.goto(url, { waitUntil: 'load', timeout: 20000 });
@@ -212,7 +224,7 @@ async function checkPass(browser, fileUrl, mode, shotPath) {
 
 async function main() {
   const args = parseArgs(process.argv.slice(2));
-  const { slidesDir: courseSlidesDir, prefix } = resolveCourse(args.course);
+  const { slidesDir: courseSlidesDir, prefix, checkSlides } = resolveCourse(args.course);
   const slidesDir = args.dir || courseSlidesDir;
   const emit = (s) => process.stdout.write(s + '\n');
 
@@ -245,9 +257,10 @@ async function main() {
       const shot = args.screenshot
         ? path.join(args.screenshot, s.file.replace(/\.html$/i, '.png'))
         : null;
+      const visual = !checkSlides.has(s.n);
       const passes = {};
       for (const mode of ['4:3', '16:9']) {
-        passes[mode] = await checkPass(browser, fileUrl, mode, mode === '16:9' ? shot : null);
+        passes[mode] = await checkPass(browser, fileUrl, mode, mode === '16:9' ? shot : null, visual);
       }
       return shot ? { n: s.n, file: s.file, passes, screenshot: shot } : { n: s.n, file: s.file, passes };
     });

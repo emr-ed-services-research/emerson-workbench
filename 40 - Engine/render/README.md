@@ -4,7 +4,7 @@ type: reference
 tags:
   - project
   - engine
-updated: 2026-08-31
+updated: 2026-09-02
 ---
 
 # Render check — `verify.ps1` step 4
@@ -22,6 +22,14 @@ Each slide is rendered **twice** — standalone 4:3 (`.slide` is `1056 × 816`,
 `overflow: hidden`) and in the shell's visual mode 16:9
 (`?embed=1&visual=1` → `.ew-embedded`, `.slide` is `1056 × 594`, long text
 pruned). Per render:
+
+**Check-your-knowledge slides are the exception.** Their whole payload — the
+question and the answer options — lives in `.slide-body`, which visual mode
+hides (`.ew-visual .slide-body { display: none }`). The shell opens them with
+`?embed=1` only (see `course.js` `__openCheck`), so the 16:9 pass here does the
+same for any slide listed in a module's `check` array in `course.json`.
+Otherwise the render check — and the Stage 3 before/after screenshots taken from
+it — would show a check slide as a bare title with no content.
 
 | Check | What it flags |
 | --- | --- |

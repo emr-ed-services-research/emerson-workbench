@@ -606,7 +606,7 @@
 .ew-visual .content-note { display: none; }
 
 /* ---------- 7c. Reusable slide templates ------------------------------
-   Four card templates, introduced with the Chapter 1 rebuild and reusable
+   Card templates, introduced with the Chapter 1 rebuild and reusable
    course-wide. Documented in css/TEMPLATES.md.
 
    Template 1  module intro card   — rendered by the course shell, NOT a deck
@@ -616,6 +616,9 @@
    Template 3  .slide--tmpl-table   — one reference table as real HTML.
    Template 4  .slide--tmpl-compare — Template 3 + a highlighted example row and
                                      an optional paired illustration.
+   Template 5  .slide--tmpl-figrow  — 2-4 captioned figures side by side.
+   Template 6  .slide--tmpl-caution — a safety / failure warning on its own slide
+                                     (keyConcept role: caution).
    All templates carry the standard slide title + chrome; none use .slide-body,
    so nothing is stripped in visual mode. */
 
@@ -836,13 +839,15 @@
 .slide--tmpl-diagram::after,
 .slide--tmpl-table::after,
 .slide--tmpl-compare::after,
-.slide--tmpl-figrow::after { display: none; }
+.slide--tmpl-figrow::after,
+.slide--tmpl-caution::after { display: none; }
 
 .slide--hd .slide-title,
 .slide--tmpl-diagram .slide-title,
 .slide--tmpl-table .slide-title,
 .slide--tmpl-compare .slide-title,
-.slide--tmpl-figrow .slide-title {
+.slide--tmpl-figrow .slide-title,
+.slide--tmpl-caution .slide-title {
   top: 6cqh;
   left: 5.6cqw; right: 5.6cqw;
   height: auto;
@@ -859,7 +864,8 @@
 .slide--tmpl-diagram .slide-title::after,
 .slide--tmpl-table .slide-title::after,
 .slide--tmpl-compare .slide-title::after,
-.slide--tmpl-figrow .slide-title::after {
+.slide--tmpl-figrow .slide-title::after,
+.slide--tmpl-caution .slide-title::after {
   content: "";
   position: absolute;
   left: 0;
@@ -867,6 +873,55 @@
   width: 4.5cqw;
   height: 0.3cqh;
   background: var(--emerson-blue);
+}
+
+/* -- Template 6: caution card  .slide--tmpl-caution ------------------
+   A safety / failure warning given its own slide. Warm orange (accent5)
+   carries the signal — a left rule and a triangular mark — against the
+   otherwise blue/near-monochrome deck, so a caution reads as different at
+   a glance without shouting. Structure: the warning as the heading, one
+   .caution-body line saying what goes wrong, and an optional .caution-fig
+   (a photo or diagram of the failure or the safe method). Used for a
+   keyConcept tagged `role: caution` in course.json. */
+.slide--tmpl-caution .slide-title::after { background: var(--emerson-orange); }
+.slide--tmpl-caution .slide-title {
+  padding-left: 6.5cqw;
+  color: var(--emerson-charcoal);
+}
+.slide--tmpl-caution .slide-title::before {   /* warning triangle */
+  content: "";
+  position: absolute;
+  left: 0; top: 0.1cqh;
+  width: 0; height: 0;
+  border-left: 2.4cqw solid transparent;
+  border-right: 2.4cqw solid transparent;
+  border-bottom: 4.2cqw solid var(--emerson-orange);
+}
+.slide--tmpl-caution .slide-title__mark {   /* the "!" inside the triangle */
+  position: absolute;
+  left: 2.1cqw; top: 2.3cqw;
+  font: 700 1.9cqw/1 var(--font-display);
+  color: var(--emerson-white);
+}
+.slide--tmpl-caution .caution-body {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 26cqh; margin: 0;
+  padding-left: 2cqw;
+  border-left: 0.5cqw solid var(--emerson-orange);
+  font-size: 2.3cqw; line-height: 1.35;
+  color: var(--emerson-charcoal);
+}
+.slide--tmpl-caution .caution-body b { color: var(--emerson-orange); }
+.slide--tmpl-caution .caution-fig {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; bottom: 12cqh; top: 48cqh;
+  margin: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide--tmpl-caution .caution-fig > img,
+.slide--tmpl-caution .caution-fig > svg {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
 }
 
 /* ---------- 8. Print / export -------------------------------------- */

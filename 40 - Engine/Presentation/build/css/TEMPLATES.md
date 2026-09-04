@@ -226,3 +226,39 @@ other. Always check both.
 For a detailed sectional / cutaway that needs room: a bigger figure
 (`31cqw`), markers still in the left gutter with longer leader lines
 reaching in to the internal trim, list slid right. Used on slides 31 / 32.
+
+---
+
+## Template 6 — caution card  `.slide--tmpl-caution`
+
+A **safety or failure warning given its own slide**. Used when a key concept is
+tagged `role: caution` in `course.json` (see [[teaching-philosophy]] Axis 3).
+Warm orange (`--emerson-orange`, accent5) carries the signal — a triangular mark
+beside the heading, an orange title tick, an orange left rule on the body —
+against the otherwise blue / near-monochrome deck, so a caution reads as
+different at a glance without shouting.
+
+```html
+<article class="slide slide--tmpl-caution" data-slide="105" data-deck="1400">
+  <h1 class="slide-title"><span class="slide-title__mark">!</span>Relieve the spring before you open the casing</h1>
+  <p class="caution-body">
+    Thread the spring adjuster out until <b>all spring compression is relieved</b>
+    before removing the diaphragm-casing cap screws — a precompressed spring
+    throws the upper casing off.
+  </p>
+  <figure class="caution-fig">
+    <img src="../assets/img/imageNN.png" alt="…">
+  </figure>
+  <div class="slide-chrome">…</div>
+</article>
+```
+
+- The **heading is the warning** — imperative, short. `<span class="slide-title__mark">!</span>`
+  places the `!` inside the triangle; keep it as the first child of the `<h1>`.
+- `.caution-body` — **one** line saying what goes wrong. Bold the failure
+  itself. This is the one place a short sentence on the slide is allowed: a
+  safety consequence is not instructor patter, it is the point of the slide.
+- `.caution-fig` is optional — a photo or diagram of the failure, or of the
+  safe method. Omit it and the body sits alone.
+- The context pane still carries the concept as normal.
+
