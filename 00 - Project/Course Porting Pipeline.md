@@ -5,7 +5,7 @@ tags:
   - project
   - pipeline
   - stage-2
-updated: 2026-08-31
+updated: 2026-09-03
 ---
 
 # Course Porting Pipeline
@@ -76,6 +76,16 @@ first surfaced them.
    `.is-sourced` treatment — over a recreation. This check is owed **before
    spending time iterating on an existing hand-drawn figure too**, not only when
    first authoring a slide.
+
+   From Stage 2 on, this search is **front-loaded into a component index**
+   (`20 - Source Library/Component Index — <code> <chapter>.md`): the figures a
+   chapter's concepts need, each with a source locator and a precedence bucket
+   (`current` / `archive-corroborated` / `archive-only` / `legacy` — newer
+   sources win on correctness; a better-presented older figure is usable where
+   it does not conflict). Stage 2 earmarks each concept's component; Stage 3
+   uses the earmark instead of searching cold, and logs any decision to draw new
+   art. Provenance is confirmed by a full read of a source before it is cited —
+   spot-checks miss the conflicts you do not already know to look for.
 
    Before hand-drawing any diagram of a *physical feature* — a seating line, a
    lap line, a seal contact, a thread, a gland bore — first name what kind of
@@ -162,7 +172,7 @@ De-coupling fixes required first (all small):
 | --- | --- | --- | --- | --- |
 | **0 · Bulk convert** | `.pptx` | `slides/*.html`, `manifest.*`, `conversion-report.csv` | script | Fully — `extract-media.ps1` + `generate.ps1`. Works today. |
 | **1 · Cut the teaching arc** | converted deck + source chapter list + [[teaching-philosophy]] | `course.json` skeleton: days → chapters → modules, page ranges, `status: "outline"` | human | No — this is the judgement the philosophy governs. Scaffold only. |
-| **2 · Author the context layer** | skeleton + [[Source Library]] | per module: `objective`, 4–6 `keyConcepts` (`{t, pages}`), `check`, `visual: true`, `status: "ready"` | human + Claude | Partly — Claude drafts from slides + source; human approves. |
+| **2 · Author the context layer** | skeleton + [[Source Library]] + component index | per module: `objective`, 4–6 `keyConcepts` (`{t, pages, level, role, sources}`), `check`, `visual: true`, `status: "ready"`, `levelTarget` / `stakes` / `buildsOn`; chapter `domain` | human + Claude | Partly — Claude drafts from slides + source; human approves. |
 | **3 · Four-part slide pass** | authored module + [[Source Library]] | templated, polished slides; splits consolidated; dropped slides ribboned; unverifiable claims flagged | Claude + human review | Partly — procedure is defined; needs the template library and the data-single-source decision to be clean. |
 | **4 · Verify & publish** | rebuilt slides | browser-render checks, 16:9 tuning, `course-data.js` regenerated, integrity-validated | script + human | Mostly — one `verify.ps1`. |
 
@@ -218,18 +228,47 @@ proposal, not a completed Stage 1.
 Per module, write:
 
 - a one-sentence `objective`;
-- 4–6 `keyConcepts`, each `{ "t": "...", "pages": [n] }`, in
-  instructor-talking-point voice;
+- 4–6 `keyConcepts`, each
+  `{ "t": "...", "pages": [n], "level": "...", "role": "...", "sources": [...] }`,
+  in instructor-talking-point voice;
 - confirm `pages` / `check`;
-- set `"visual": true` and `"status": "ready"`.
+- set `"visual": true` and `"status": "ready"`;
+- the tags (below): chapter `domain`; module `levelTarget` / `stakes` /
+  `buildsOn`; per-concept `level` / `role` / `sources`.
 
 Correctness is checked against the [[Source Library]] here — this is where the
 four-part process's **Part 2** (source cross-reference) begins. Claude drafts
 from the slides plus the relevant Handbook / manual sections; the human approves
 each module.
 
-Requires: readable Source Library PDFs (Poppler is installed locally — see the
-`reading-source-library-pdfs` note).
+**Three tagging axes** (added 2026-09-03; see
+`00 - Project/Source Grounding — Staging Plan.md`,
+`00 - Project/Instructional-Method Review — ch3.md`, and [[teaching-philosophy]]
+"Instructional-design tags"):
+
+1. **Source-component earmarking (Axis A).** If the chapter has a component index
+   (`20 - Source Library/Component Index — <code> <chapter>.md`), each concept
+   gets `sources: [<component id>, …]` naming the indexed figure that supports
+   it. No indexed component → a short `sourceNote` instead. Stage 3 then pulls
+   from these instead of searching source material cold.
+2. **Bloom / domain (Axis B).** Each chapter carries a `domain` (`maintenance` /
+   `instrumentation` / `selection-sizing`); each module a `levelTarget` (Bloom's
+   revised: remember … create); each concept its own `level`. The objective
+   leads with a verb from the domain menu at `levelTarget`.
+3. **Instructional role (Axis C).** Each concept carries a `role` (`prime`,
+   `nomenclature`, `mechanism`, `procedure`, `application`, `contrast`,
+   `caution`, `check`) — what kind of move it is, telling Stage 3 how to frame
+   the slide. Each module carries `stakes` (one sentence — the on-the-job cost
+   of getting it wrong, shown on the intro card) and `buildsOn` (module ids this
+   one is a faded repeat of — Stage 3 goes terser).
+
+`moduleStage2Completeness` (strict mode, run by the Console's Stage 2) lints all
+of the above; a missing `prime` or formative `check` is an advisory note, not a
+failure (Stage 3 composes the check slide).
+
+Requires: readable Source Library PDFs (Poppler's `pdftotext` is at
+`C:\Users\E1552882\poppler\poppler-26.02.0\Library\bin\`; archive scans need
+`pdftoppm` — see the `reading-source-library-pdfs` note).
 
 ### Stage 3 — The four-part slide pass
 
@@ -261,6 +300,19 @@ day / chapter / module hierarchy never changes). Run per module.
 Parts 1–3 and every drafting decision in Part 4 are markup reasoning, not
 browser work — per working rule 1. The Part 4 verification stage is where this
 pass renders, once per slide.
+
+**Composition, from the Stage 2 tags** (Axis C — see [[teaching-philosophy]]):
+Stage 3 receives each slide's concept `level` + `role` and the module `stakes` /
+`buildsOn`. It frames each slide by its role (a `mechanism` is a diagram, a
+`procedure` a step sequence, a `caution` the `.slide--tmpl-caution` card, an
+`application` a concrete scenario), re-orders the existing slides toward
+`prime → nomenclature → mechanism → procedure`/`application` → `check`, writes an
+apply-or-higher module's check-your-knowledge stem as a *situation* rather than
+"which is true", and where `buildsOn` is set does not re-teach the referenced
+material. It does **not create new slide files** — a missing `prime` is the
+intro card's `stakes`; a missing formative `check` is noted (a first-class
+formative-check slide is a deferred Layer-2 change). A full re-fire also carries
+any open Stage-3 review flags for the module to resolve.
 
 **Ground rules:**
 

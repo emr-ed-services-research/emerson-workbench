@@ -4,7 +4,7 @@ type: reference
 tags:
   - project
   - design
-updated: 2026-08-29
+updated: 2026-09-03
 ---
 
 # Emerson Workbench — Teaching Philosophy and Design Principles
@@ -24,6 +24,129 @@ Emerson Educational Services courses build three kinds of skill:
   positioners and digital valve controllers.
 - **Engineering sizing and selection skills** — choosing the right trim, valve,
   and accessories for a given service.
+
+## Instructional-design tags
+
+Every module and key concept is tagged on two axes so the pipeline knows **what
+kind of learning each piece of content is trying to produce**. Added to the
+Pipeline Console's Stage 2 on 2026-09-03 (see
+`00 - Project/Source Grounding — Staging Plan.md` §5, Axis B). The console mirrors
+these lists in `src/main/instructional-design.js` — **keep the two in sync**;
+this note is the authority.
+
+### Axis 1 — domain
+
+The kind of training, one of the three skill kinds above. Set at the **chapter**
+level (stable), overridable per module.
+
+- `maintenance` — hands-on disassembly, inspection, repair, reassembly.
+- `instrumentation` — connecting to, configuring, calibrating positioners and
+  digital valve controllers.
+- `selection-sizing` — choosing and sizing trim, valves, and accessories.
+
+### Axis 2 — cognitive level (Bloom's revised taxonomy)
+
+What the learner does with the content. Per **key concept**; each module carries
+a `levelTarget` = its ceiling, which the objective is written to.
+
+| Level | The learner… |
+| --- | --- |
+| `remember` | recalls a fact unchanged — names a part, states a spec value, lists the steps |
+| `understand` | explains meaning in their own terms — how a mechanism works, why two constructions differ, what outcome to expect |
+| `apply` | carries out a procedure for real — performs the bench set, mounts the actuator, calculates a Cv |
+| `analyze` | breaks something down and examines relationships — diagnoses a fault from symptoms, compares as-found to spec, traces a force path |
+| `evaluate` | judges against criteria — fit-for-service vs replace, picks the correct fail-safe configuration, confirms a repair is complete |
+| `create` | assembles parts into a new whole — plans an outage sequence, specifies a repair scope (rare below advanced courses) |
+
+### Domain verb menus
+
+The objective and key concepts are written with verbs from the module's domain
+menu, at or below its `levelTarget`. The objective **leads** with a `levelTarget`
+verb.
+
+**`maintenance`**
+
+| Level | Verbs |
+| --- | --- |
+| remember | identify · name · locate · label · list · state |
+| understand | describe · explain · distinguish · recognize · summarize · predict |
+| apply | disassemble · assemble · install · mount · remove · replace · adjust · set · torque · lap · connect · measure · mark · lubricate · flush · stroke |
+| analyze | inspect · diagnose · troubleshoot · compare · trace · differentiate |
+| evaluate | verify · assess · determine · judge · justify |
+| create | plan · specify |
+
+**`instrumentation`**
+
+| Level | Verbs |
+| --- | --- |
+| remember | identify · name · recall · label |
+| understand | explain · describe · interpret · distinguish |
+| apply | mount · wire · configure · range · zero · span · calibrate · commission · stroke · set up |
+| analyze | diagnose · interpret · trace · correlate |
+| evaluate | verify · assess · judge |
+| create | configure · design |
+
+**`selection-sizing`**
+
+| Level | Verbs |
+| --- | --- |
+| remember | recall · identify · define |
+| understand | explain · describe · distinguish · classify |
+| apply | calculate · size · determine · look up · convert |
+| analyze | compare · examine · evaluate |
+| evaluate | select · specify · recommend · justify |
+| create | design |
+
+### Axis 3 — instructional role
+
+*What kind of move this concept is* — orthogonal to its cognitive level. Per
+**key concept**, a closed vocabulary. It tells Stage 3 how to *frame and treat*
+the slide (a `level: apply` concept can be a step-by-step procedure or a safety
+caution — the same cognitive demand, very different slide). Added from the
+instructional-method review, 2026-09-03.
+
+| `role` | The move | Slide treatment |
+| --- | --- | --- |
+| `prime` | Open the module — a prediction, a question, or the stakes, **before** the mechanism | A question-framed slide (not the summative check); comes first |
+| `nomenclature` | Name the parts | A labelled-parts figure; sequence it before the mechanism concepts |
+| `mechanism` | How it works | A schematic or cutaway (the default for `understand`) |
+| `procedure` | Do the steps | The ordered sequence, in the order a technician does it |
+| `application` | The mechanism in a real situation | A concrete case / scenario |
+| `contrast` | This vs. that | Parallel layout — figure row or comparison table |
+| `caution` | A safety or failure warning | The caution card (`.slide--tmpl-caution`) — the warning, the failure it prevents, distinct weight |
+| `check` | Formative retrieval | A question slide placed mid-module, before the end-of-module check-your-knowledge |
+
+### Module framing attributes
+
+| Attribute | Meaning |
+| --- | --- |
+| `stakes` | One sentence — the on-the-job consequence of getting this module wrong. Shown on the module-intro card, above the objective, as the hook. |
+| `buildsOn` | Module ids this one is a faded repeat of, or depends on. Stage 3 does not re-teach what those already covered — it goes terser and spends the room on what is new. |
+
+### How the pipeline uses the tags
+
+- **Stage 2** classifies each key concept's `level` and `role`, sets the module
+  `levelTarget` / `stakes` / `buildsOn`, and writes the objective from the domain
+  menu. `moduleStage2Completeness` lints all of it.
+- **Stage 3** receives each slide's `level` and `role` and the module framing,
+  and:
+  - pitches the treatment to the level (an `understand` slide is a diagram, an
+    `apply` slide a procedure, an `evaluate` slide a judgement);
+  - frames the slide by its role — a `caution` concept gets the
+    `.slide--tmpl-caution` card, an `application` concept gets a concrete
+    scenario;
+  - re-orders the existing slides toward the soft sequence
+    `prime → nomenclature → mechanism → procedure`/`application` → `check`;
+  - writes an apply-or-higher module's check-your-knowledge stem as a
+    **situation**, not "which statement is true";
+  - where `buildsOn` is set, omits re-explanation of the referenced material.
+  - It does **not create new slide files.** A missing `prime` is covered by the
+    intro card's `stakes` line; a missing formative `check` is *noted* for the
+    deferred first-class-formative-check change, not filled with a new slide.
+- Combined with the source-component earmarking (Axis A), `level` + `role`
+  sharpen Stage 3's *use an existing figure vs. compose new art* call —
+  recall/understand and `nomenclature`/`mechanism` concepts are usually well
+  served by an existing labelled figure.
 
 ## Doing-centered, not recall-centered
 
