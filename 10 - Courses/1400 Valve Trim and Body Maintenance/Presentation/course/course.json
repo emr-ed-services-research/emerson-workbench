@@ -214,44 +214,102 @@
           ]
         },
 
-        { "id": "ch3", "num": 3, "title": "Sliding-Stem Spring & Diaphragm Actuator Maintenance", "range": [87, 126], "divider": 87, "status": "outline",
+        { "id": "ch3", "num": 3, "title": "Sliding-Stem Spring & Diaphragm Actuator Maintenance", "range": [87, 126], "divider": 87, "status": "outline", "domain": "maintenance",
           "summary": "Actuator action and fail mode, valve forces, bench set, and maintenance of the Fisher 657 and 667 actuators. Deadband.",
           "objectives": ["Define the action of the actuator", "Identify Fisher spring & diaphragm actuator types", "Identify the fail mode of the control valve assembly", "List valve forces that affect actuator operation and selection", "Define bench set and describe the procedure for setting it", "Describe common maintenance for the Fisher 657 and 667 actuators", "Describe deadband as it applies to control valves"],
           "modules": [
             {
               "id": "ch3-m1", "title": "Actuator Action, Fail Mode & Bench Set",
-              "status": "outline",
+              "status": "ready", "visual": true, "levelTarget": "evaluate",
+              "stakes": "Choose the wrong actuator action or body orientation and the valve drives to the unsafe position on loss of air; misjudge bench set and the spring will not deliver rated travel or the seat load the shutoff class needs.",
+              "buildsOn": [],
               "objective": "Determine a spring-and-diaphragm control valve assembly's fail mode from its actuator action and body orientation, and explain what bench set is and which valve forces it deliberately excludes.",
-              "pages": [88, 89, 91, 92, 93], "check": [90]
+              "keyConcepts": [
+                { "t": "Actuator action is which way loading pressure drives the stem. Direct-acting (Fisher 657): air on top of the diaphragm pushes the stem down, the spring lifts it back up. Reverse-acting (Fisher 667): air lifts the stem up, the spring pushes it down.", "pages": [88], "level": "understand", "sources": ["ch3-cmp-da-schematic", "ch3-cmp-ra-schematic"], "role": "mechanism" },
+                { "t": "Fail mode of the assembly is where the plug goes on loss of air. It is set by actuator action combined with body orientation (PDTC vs PDTO) — the same actuator can fail a valve open or closed depending on how the body is built.", "pages": [88, 93], "level": "understand", "sources": ["ch3-cmp-fail-mode-matrix"], "role": "mechanism" },
+                { "t": "Push-down-to-close (direct-acting) body: the plug sits between actuator and seat, stem extension seats the plug, and the seat ring is the lower travel stop. Push-down-to-open (reverse-acting) body: the seat ring sits between actuator and plug, stem extension opens the valve, and the seat ring is the upper travel stop.", "pages": [93], "level": "understand", "sources": ["ch3-cmp-pdtc-pdto-bodies"], "role": "contrast" },
+                { "t": "Selecting an action: first decide whether the spring should open or close the valve on air failure, then choose actuator action and body orientation together to give that fail-safe result.", "pages": [89], "level": "evaluate", "sources": ["ch3-cmp-fail-mode-matrix"], "role": "application" },
+                { "t": "Bench set is the diaphragm-pressure range that strokes the actuator through the RATED valve travel with the assembly on the bench — no process or valve forces acting. The spring rate is chosen for the service conditions and the ANSI shutoff class wanted.", "pages": [92], "level": "understand", "sources": ["ch3-cmp-bench-set-graph"], "role": "mechanism" },
+                { "t": "Bench set is defined friction-free: it deliberately excludes the in-service valve forces the actuator must also overcome — static plug unbalance (A), seat load (B), packing friction (C), and additional forces such as piston-ring friction (D).", "pages": [91, 92], "level": "understand", "sources": ["ch3-cmp-valve-forces-cutaway", "ch3-cmp-bench-set-decomposition"], "role": "nomenclature" }
+              ],
+              "pages": [88, 93, 89, 91, 92], "check": [90]
             },
             {
               "id": "ch3-m2", "title": "Fisher 657 — Identify & Bench Set",
-              "status": "outline",
+              "status": "ready", "visual": true, "levelTarget": "apply",
+              "stakes": "A 657 set to the wrong bench set will not stroke to rated travel in service, and removing a diaphragm casing with spring compression still on it throws the cover off.",
+              "buildsOn": ["ch3-m1"],
               "objective": "Identify a Fisher 657 direct-acting actuator from its construction and nameplate, and measure and set its bench set with the actuator off the valve.",
-              "pages": [94, 95, 96, 97, 98, 99], "check": [100]
+              "keyConcepts": [
+                { "t": "The 657 is a direct-acting, spring-opposed diaphragm actuator: loading pressure on top of the diaphragm pushes the stem down, the spring pushes it back up — so the stem fails up (retracts) on loss of air.", "pages": [94, 95], "level": "understand", "sources": ["ch3-cmp-da-schematic"], "role": "mechanism" },
+                { "t": "Construction top to bottom: upper and lower diaphragm casings with the diaphragm and diaphragm plate between them, the actuator spring below on its spring seat, and the spring adjuster threaded in the yoke to set initial spring compression.", "pages": [94], "level": "remember", "sources": ["ch3-cmp-657-assembly"], "role": "nomenclature" },
+                { "t": "The upper diaphragm casing holds the compressed spring's force. Thread the spring adjuster out until all spring compression is relieved before removing the casing cap screws, or the casing is thrown off.", "pages": [95], "level": "apply", "sources": ["ch3-cmp-657-assembly"], "role": "caution" },
+                { "t": "Read the nameplate before working: actuator type and size, bench-set range (e.g. 3-11 psig), rated travel, and maximum valve stem diameter — these define what a correct bench set looks like.", "pages": [96], "level": "remember", "sources": ["ch3-cmp-nameplate"], "role": "nomenclature" },
+                { "t": "Bench set is the initial spring compression, checked with the actuator off the valve so there is no packing friction. The lower bench-set pressure is where the actuator stem first moves.", "pages": [97, 98], "level": "understand", "sources": ["ch3-cmp-bench-set-graph", "ch3-cmp-benchset-adjustment-setup"], "role": "mechanism" },
+                { "t": "To set and verify it: apply the lower bench-set pressure and mark the stem at first movement, then apply the upper bench-set pressure and measure the travel between marks — it must equal the rated travel on the nameplate.", "pages": [98], "level": "apply", "sources": ["ch3-cmp-benchset-adjustment-setup"], "role": "procedure" }
+              ],
+              "pages": [94, 95, 96, 97, 98], "check": [100]
             },
             {
               "id": "ch3-m3", "title": "Fisher 657 — Mount & Service",
-              "status": "outline",
+              "status": "ready", "visual": true, "levelTarget": "apply",
+              "stakes": "An actuator mounted with too little stem-connector thread engagement, or a diaphragm casing torqued out of sequence, strips threads, mis-sets travel, or leaks the diaphragm.",
+              "buildsOn": ["ch3-m2"],
               "objective": "Mount a Fisher 657 actuator on a valve, set its travel, and disassemble and reassemble the diaphragm casing safely to the correct bolt torque.",
+              "keyConcepts": [
+                { "t": "Before mounting, push the valve plug and stem down into the body, away from the actuator. The 657 spring holds its stem up; a raised valve stem fouls the mounting and can bend the stem or damage the threads.", "pages": [101], "level": "apply", "sources": ["ch3-cmp-mounting-components"], "role": "procedure" },
+                { "t": "Lift or hoist the actuator onto the bonnet and run the yoke locknut down against the bonnet, tightened with a hammer and blunt chisel. Do not connect the actuator and valve stems yet.", "pages": [101], "level": "apply", "sources": ["ch3-cmp-mounting-components"], "role": "procedure" },
+                { "t": "The stem connector must engage each stem — actuator and valve — by at least one stem diameter of thread; incomplete engagement strips threads or gives improper travel. Fine travel adjustment is at the locknut and jam nut.", "pages": [103], "level": "apply", "sources": ["ch3-cmp-stem-connector"], "role": "procedure" },
+                { "t": "With the actuator on the valve, re-check travel: stroke it and confirm full rated travel is reached by the upper bench-set value. Once packing friction is present, full travel occurs at bench set plus the friction force divided by the diaphragm area.", "pages": [102, 104], "level": "analyze", "sources": ["ch3-cmp-bench-set-graph"], "role": "application" },
+                { "t": "Disassembly order: bypass the valve, vent the loading pressure, then thread the spring adjuster out until all spring compression is relieved BEFORE removing the diaphragm-casing cap screws — a precompressed spring throws the upper casing off.", "pages": [105], "level": "apply", "sources": ["ch3-cmp-657-assembly"], "role": "caution" },
+                { "t": "Reassembly torque: diaphragm-casing bolts go on clean and dry (no lubricant). Tighten four bolts 90 degrees apart, then criss-cross the rest, in two rounds — 13 N·m (10 lbf·ft) then 27 N·m (20 lbf·ft) — finishing with a circular check pass.", "pages": [106, 107], "level": "apply", "sources": ["ch3-cmp-casing-torque-pattern"], "role": "procedure" }
+              ],
               "pages": [101, 102, 103, 104, 105, 106, 107], "check": [108]
             },
             {
               "id": "ch3-m4", "title": "Fisher 667 — Identify & Bench Set",
-              "status": "outline",
+              "status": "ready", "visual": true, "levelTarget": "apply",
+              "stakes": "A 667 bench-set wrong fails to reach rated travel, and a nicked or dry seal-bushing O-ring makes the reverse-acting stem bind or leak.",
+              "buildsOn": ["ch3-m2"],
               "objective": "Identify a Fisher 667 reverse-acting actuator and its fail-down spring action, and measure and set its bench set with the actuator off the valve.",
+              "keyConcepts": [
+                { "t": "The 667 is a reverse-acting, spring-opposed diaphragm actuator: loading pressure lifts the stem up into the actuator and the spring pushes it down out of the yoke. Air enters at the yoke and follows an internal air path to the lower casing; the top casing is vented.", "pages": [109, 112], "level": "understand", "sources": ["ch3-cmp-ra-schematic", "ch3-cmp-667-assembly-sealbushing"], "role": "mechanism" },
+                { "t": "Because the spring pushes the stem down, a 667 connected to a valve drives the plug/stem assembly down and fails down on loss of air. Release the spring force before removing the stem connector or parts move suddenly.", "pages": [110], "level": "understand", "sources": ["ch3-cmp-ra-schematic"], "role": "caution" },
+                { "t": "The 667 actuator stem runs through a seal bushing carrying two O-rings in the yoke — the seal the 657 does not have. It must stroke smoothly; binding there points to wrong assembly or damaged O-rings.", "pages": [109], "level": "analyze", "sources": ["ch3-cmp-667-assembly-sealbushing"], "role": "nomenclature" },
+                { "t": "Read the nameplate: actuator type and size, bench-set range (e.g. 7-15 psig), rated travel, and stem diameter.", "pages": [111], "level": "remember", "sources": ["ch3-cmp-nameplate"], "role": "nomenclature" },
+                { "t": "Bench set is checked with the actuator off the valve so there is no packing friction. Adjust the spring adjuster until the stem first moves exactly at the nameplate bench-set pressure.", "pages": [112], "level": "understand", "sources": ["ch3-cmp-bench-set-graph", "ch3-cmp-benchset-adjustment-setup"], "role": "mechanism" },
+                { "t": "Off the valve, measure travel by the screwdriver method: hold a marked screwdriver or scale against the stem, mark it at the low bench-set pressure and again at the high bench-set pressure — the distance between marks is the actuator travel and must equal rated travel.", "pages": [114], "level": "apply", "sources": ["ch3-cmp-benchset-adjustment-setup"], "role": "procedure" }
+              ],
               "pages": [109, 110, 111, 112, 114], "check": [113]
             },
             {
               "id": "ch3-m5", "title": "Fisher 667 — Mount & Service",
-              "status": "outline",
+              "status": "ready", "visual": true, "levelTarget": "apply",
+              "stakes": "Skipping spring-compression relief or getting the diaphragm-casing torque pattern wrong on a 667 damages the diaphragm, distorts the casing, or lets parts move under load.",
+              "buildsOn": ["ch3-m3", "ch3-m4"],
               "objective": "Mount a Fisher 667 actuator on a valve, set its travel, and replace its spring, seal bushing, and diaphragm safely to the correct diaphragm casing torque.",
+              "keyConcepts": [
+                { "t": "Mounting: push the valve plug and stem down into the body, apply air to retract (lift) the actuator stem clear, lift the actuator onto the bonnet, make sure the yoke seats against the bonnet, then tighten the yoke locknut with a hammer and blunt chisel.", "pages": [115, 116], "level": "apply", "sources": ["ch3-cmp-mounting-components"], "role": "procedure" },
+                { "t": "Set travel on the valve: engage the stem connector at least one stem diameter of thread, apply full supply pressure and mark the stem at rated travel, then decrease diaphragm pressure and confirm rated travel is reached by the lower bench-set value (the 667 strokes opposite to the 657).", "pages": [117, 118, 119], "level": "apply", "sources": ["ch3-cmp-stem-connector", "ch3-cmp-benchset-adjustment-setup"], "role": "procedure" },
+                { "t": "Removing the spring: with all spring compression relieved by the spring adjuster, the spring drops out the bottom of the spring barrel; it can then be used as a tool to drive the seal bushing out once the diaphragm and diaphragm plate are off.", "pages": [120], "level": "apply", "sources": ["ch3-cmp-667-assembly-sealbushing"], "role": "procedure" },
+                { "t": "Seal bushing: it carries the stem O-rings and comes out by removing its snap ring and pushing from the bottom. On reassembly, lubricate the O-rings and bushing with lithium grease and feed the stem threads through carefully so they do not cut the O-rings.", "pages": [121], "level": "apply", "sources": ["ch3-cmp-667-assembly-sealbushing"], "role": "procedure" },
+                { "t": "Diaphragm change-out: the diaphragm is installed between the upper and lower diaphragm plates, with the travel-stop spacer between the upper plate and the stem cap screw.", "pages": [122], "level": "apply", "sources": ["ch3-cmp-diaphragm-changeout"], "role": "procedure" },
+                { "t": "Diaphragm-casing bolt torque: bolts clean and dry; four bolts 90 degrees apart then diagonal/criss-cross, in two rounds — 13 N·m (10 lbf·ft) then 27 N·m (20 lbf·ft) — then verify in a circular pattern.", "pages": [123, 124], "level": "apply", "sources": ["ch3-cmp-casing-torque-pattern"], "role": "procedure" }
+              ],
               "pages": [115, 116, 117, 118, 119, 120, 121, 122, 123, 124]
             },
             {
               "id": "ch3-m6", "title": "Deadband",
-              "status": "outline",
+              "status": "ready", "visual": true, "levelTarget": "understand",
+              "stakes": "Ignore deadband and the valve sits still while the signal changes — the loop hunts, offsets, or limit-cycles and the process never settles.",
+              "buildsOn": ["ch3-m1"],
               "objective": "Explain deadband in a control valve assembly, what causes it, and how adding a positioner overcomes it.",
+              "keyConcepts": [
+                { "t": "Deadband is the change in diaphragm pressure needed to reverse the valve's direction of travel — the input signal can move by that much with no stem response.", "pages": [125], "level": "understand", "sources": ["ch3-cmp-deadband-graph"], "role": "mechanism" },
+                { "t": "On the travel-vs-pressure graph it is the horizontal gap between the opening and closing curves: on a valve the actuator needs 'bench set plus deadband' pressure, not bench set alone, to move.", "pages": [125], "level": "understand", "sources": ["ch3-cmp-deadband-graph"], "role": "mechanism" },
+                { "t": "The cause is friction — mainly packing friction, plus unbalanced forces. Bench set is defined friction-free, so deadband is what real in-service friction adds on top of it.", "pages": [125], "level": "understand", "sources": ["ch3-cmp-deadband-graph", "ch3-cmp-valve-forces-cutaway"], "role": "mechanism" },
+                { "t": "Effect on control: every controller reversal is lost motion, giving sluggish response, offset, or limit cycling. A high-gain positioner drives the actuator through the deadband and largely removes it.", "pages": [125], "level": "understand", "sources": ["ch3-cmp-deadband-effect-chart"], "role": "application" }
+              ],
               "pages": [125], "check": [126]
             }
           ]

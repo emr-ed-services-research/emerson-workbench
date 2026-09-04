@@ -3,21 +3,99 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1400 &middot; Slide 102 &mdash; 657 Measure Travel Mounted on Valve</title>
+<title>1400 &middot; Slide 102 &mdash; Re-Checking Travel on the Valve</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
   <!-- Slide 102 | ppt slides/slide102.xml | layout: 2 Column with Logo | family: .slide--two-col -->
-  <article class="slide slide--two-col" data-slide="102" data-deck="1400">
-    <h1 class="slide-title">657 Measure Travel Mounted on Valve</h1>
-    <div class="slide-body"><ul><li style="font-size:2.02cqw">Apply zero air to actuator</li><li style="font-size:2.02cqw">Measure for rated travel</li><li style="font-size:2.02cqw">Mark stem</li><li style="font-size:2.02cqw">Increase diaphragm pressure verify travel</li><li data-level="2" style="font-size:1.389cqw">Rated travel should occur by upper bench set value</li></ul></div>
-    <figure class="slide-figure" style="left:34.784%;top:20.222%;width:30.432%;height:58.989%"><img src="../assets/img/image164.png" alt="Picture 8"></figure>
-    <figure class="slide-figure" style="left:60.197%;top:20.222%;width:36.364%;height:59.46%"><img src="../assets/img/image165.png" alt="Picture 9"></figure>
+  <!-- ch3-m3 four-part pass 2026-09-04. CONSOLIDATION: slides 102 ("657 Measure Travel
+       Mounted on Valve" - two on-valve travel-measurement photos) and 104 ("Setting
+       Travel 657 - No Friction" - a ~85 KB deck auto-trace of the Fisher bench-set
+       decomposition graph, data-review="svg-rebuilt") were the two halves of ONE key
+       concept (course.json ch3-m3 keyConcept 4, pages:[102,104], role:application,
+       level:analyze) - the on-valve travel re-check and the reason full travel shifts
+       once packing friction is acting. Folded into this ONE slide; slide 104 is now a
+       retained-but-dropped stub (data-review="ch3-m3-consolidated"). To Franz: drop
+       104 from ch3-m3 "pages" (same as 99 in ch3-m2).
+       Part 1/4 + Part 2/4: the concept is analyze/application - the relationship the
+       learner reasons across is "friction moves the pressure that gives full travel",
+       so the slide is a graph, not the measurement photos. Redrawn as a clean
+       house-style inline SVG on the same axes/geometry as slides 92 and 97
+       (ch3-cmp-bench-set-graph), after Fisher 657/667 IM Fig. 5 (the opening curve
+       offset from the bench-set line by friction). Reduced to ONE friction shift
+       (opening only) - the full opening+closing deadband treatment is ch3-m6
+       (slide 125, ch3-cmp-deadband-graph) and is not pre-empted here. buildsOn
+       ch3-m2: the friction-free / off-the-valve definition is from slides 97-99 and
+       is shown here only as the dashed reference line. To Franz: this on-valve
+       variant of ch3-cmp-bench-set-graph is not one of the three enumerated in the
+       Component Index (92/97/112) - logged as an extension of that component, faithful
+       to the same source figure.
+       Part 4: markup-only, no browser. -->
+  <article class="slide slide--tmpl-figrow" data-slide="102" data-deck="1400" data-review="ch3-four-part">
+    <div class="review-ribbon">ch3-m3 pass: bench-set graph &mdash; friction shifts full travel on the valve (102+104 consolidated)</div>
+    <h1 class="slide-title">Re-Checking Travel on the Valve</h1>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <svg viewBox="0 0 520 344" role="img" aria-label="Graph of actuator travel against diaphragm pressure. A dashed reference line runs from 0 percent travel at the 3 psig lower bench set to 100 percent travel at the 11 psig upper bench set - the friction-free bench set measured off the valve. A solid line parallel to it is shifted to the right: on the valve, packing friction means full rated travel is not reached until a pressure of bench set plus the friction force divided by the diaphragm area. The horizontal gap between the two lines at 100 percent travel is labelled packing friction divided by diaphragm area." font-family="Arial, Helvetica, sans-serif">
+          <!-- shift band between the two lines -->
+          <path d="M160 40 L379 288 L460 288 L242 40 Z" fill="#F6BE00" opacity="0.13"/>
+          <!-- dashed pressure guides -->
+          <g stroke="#959797" stroke-width="1.4" stroke-dasharray="4 4">
+            <path d="M379 40 V300"/>
+            <path d="M460 40 V300"/>
+          </g>
+          <!-- axes -->
+          <g stroke="#3F4040" stroke-width="2.4" fill="none" stroke-linecap="round">
+            <path d="M78 40 V288 H488"/>
+            <path d="M78 40 l-6 12 M78 40 l6 12"/>
+            <path d="M488 288 l-12 -6 M488 288 l-12 6"/>
+          </g>
+          <!-- x ticks -->
+          <g stroke="#3F4040" stroke-width="1.6">
+            <path d="M78 288 v6 M160 288 v6 M242 288 v6 M324 288 v6 M406 288 v6 M488 288 v6"/>
+          </g>
+          <g fill="#3F4040" font-size="14" text-anchor="middle">
+            <text x="78" y="306">0</text>
+            <text x="160" y="306">3</text>
+            <text x="242" y="306">6</text>
+            <text x="324" y="306">9</text>
+            <text x="406" y="306">12</text>
+            <text x="488" y="306">15</text>
+          </g>
+          <!-- y end labels -->
+          <g fill="#3F4040" font-size="13" text-anchor="end">
+            <text x="72" y="45">0%</text>
+            <text x="72" y="292">100%</text>
+          </g>
+          <!-- friction-free bench-set line (reference, off the valve) -->
+          <path d="M160 40 L379 288" fill="none" stroke="#6E7070" stroke-width="2.6" stroke-dasharray="7 5"/>
+          <circle cx="379" cy="288" r="4.4" fill="#6E7070"/>
+          <!-- on-valve opening line (shifted by friction) -->
+          <path d="M242 40 L460 288" fill="none" stroke="#004B8D" stroke-width="3.6"/>
+          <circle cx="460" cy="288" r="4.6" fill="#004B8D"/>
+          <!-- friction gap bracket at 100% travel -->
+          <g stroke="#004B8D" stroke-width="2" fill="none">
+            <path d="M379 296 H460 M379 296 v-6 M460 296 v-6"/>
+          </g>
+          <text x="419" y="322" fill="#004B8D" font-size="12.5" font-weight="700" text-anchor="middle">+ packing friction &#247; diaphragm area</text>
+          <!-- labels with white halo -->
+          <g font-size="13" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">
+            <text x="150" y="150" fill="#6E7070" text-anchor="middle" transform="rotate(48.6 150 150)">off the valve &#8212; friction-free</text>
+            <text x="300" y="120" fill="#004B8D" text-anchor="middle" transform="rotate(48.6 300 120)">on the valve &#8212; with packing friction</text>
+            <text x="371" y="60" fill="#3F4040" text-anchor="end">upper bench set (11 psig)</text>
+          </g>
+          <!-- axis titles -->
+          <text x="283" y="340" fill="#3F4040" font-size="14" font-weight="700" text-anchor="middle">Actuator diaphragm pressure (psig) &#8594;</text>
+          <text x="30" y="164" fill="#3F4040" font-size="15" font-weight="700" text-anchor="middle" transform="rotate(-90 30 164)">Actuator travel</text>
+        </svg>
+      </figure>
+    </div>
+    <p class="tmpl-source">After Fisher 657/667 Instruction Manual Fig. 5 &mdash; bench-set line vs. the opening curve offset by friction; same geometry as slides 92 / 97</p>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">102</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
-  
+
 </main>
 </body>
 </html>
