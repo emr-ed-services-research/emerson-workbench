@@ -5,7 +5,7 @@ tags:
   - project
   - architecture
   - decisions
-updated: 2026-08-31
+updated: 2026-09-04
 ---
 
 # Emerson Workbench — System Architecture & Next-Phase Directive
@@ -45,7 +45,11 @@ The reusable course-level LMS layout: navigation, templates, context pane, prese
 
 ## Layer 3 — Cartridge
 
-The actual content package for a single course — the output of running a legacy course through the Pipeline (layer 4). A Cartridge is what plugs into a Workshop.
+The actual content package for a single course — the output of the Pipeline
+(layer 4), whether that run **converted** a legacy course or **originated** a
+module directly from the Source Library with no deck at all (see Layer 4,
+below — corrected 2026-09-04; the two were previously conflated in this
+doc's own framing). A Cartridge is what plugs into a Workshop.
 
 - Not yet formally separated as a distinct artifact — currently, cartridge content and Workshop shell are being edited together in the same live nav, which is a known source of thrash/overhead
 - Future direction: author and QA a Cartridge's content as a standalone unit against the pipeline checklist, *then* integrate into the Workshop as a discrete step — reduces the need to touch live nav for every content fix
@@ -53,10 +57,38 @@ The actual content package for a single course — the output of running a legac
 
 ## Layer 4 — Pipeline Console
 
-A dedicated interface (likely HTML-based) for running and managing course conversions — legacy PowerPoint in, Cartridge out. Not yet built; currently the "pipeline" is really just a set of conventions ([[Course Porting Pipeline]], the 5-stage process, the 4-part slide pass) being executed via chat instructions to Claude Code.
+A dedicated interface (likely HTML-based) for running and managing course
+**conversion or origination** — legacy PowerPoint in *or* nothing but the
+Source Library and Axis A/B/C methodology in, Cartridge out either way.
+
+**Corrected 2026-09-04** (Franz — "is convert-or-originate one capability or
+two?"): the earlier framing here, "legacy PowerPoint in, Cartridge out," was
+itself the constraint, not just a description of it — it structurally
+excluded ever asking for a module built cold from source material alone with
+no existing deck to convert. The actual capability Stage 1 through 4 provide
+is **generating a verified, source-grounded, Axis A/B/C-tagged concept map
+for a given scope** — a chapter cut from an existing deck's slide range, or a
+scope named directly (e.g. "bench-setting a 657") with no deck at all. An
+existing deck, when one exists, is one input that seeds a rough first draft
+of what's in scope; it was never structurally what the process is anchored
+to, even though every stage's prompt currently reads that way. Stage 0
+(bulk-convert) is the one stage that is genuinely deck-only — it has nothing
+to do when there is no deck, and now closes immediately as not-applicable
+rather than leaving the whole pipeline permanently locked (fixed at the
+state-machine level, `PipelineConsole` commit `5ac9c1d`). Stages 1–3's
+prompts still assume an existing slide range to read and edit; making
+origination fully real is generalizing those three prompts to work from a
+named scope + the Source Library alone, and permitting Stage 3 to *author* a
+new slide from an approved master template (see the template-gallery work)
+rather than only ever rearranging slides that already exist — not yet done,
+tracked in [[Course Porting Pipeline]].
+
+Not yet built; currently the "pipeline" is really just a set of conventions ([[Course Porting Pipeline]], the 5-stage process, the 4-part slide pass) being executed via chat instructions to Claude Code.
 
 **Target capabilities:**
-- Drag-and-drop a legacy PPT course in to start a conversion
+- Drag-and-drop a legacy PPT course in to start a conversion, **or** name a
+  scope with no deck at all to originate a module cold from the Source
+  Library
 - Visible pipeline stages/checkpoints (initial conversion → source cross-reference → 4-part slide pass → QA), matching the existing pipeline stages
 - Checkbox-based review at each checkpoint — flag a slide for rework by checking a box and adding a comment, rather than typing out a fresh explanation from scratch each time. Comments across all flagged slides in a pass should be collated into one batch before being handed to Claude, so a full rework pass runs against all flagged items and their comments together, rather than one at a time.
 - **Multi-project state**: each course conversion is its own saved, resumable project — pause one course's conversion at any checkpoint, start or resume a different course's conversion, come back later with all flags/state intact

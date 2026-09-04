@@ -528,6 +528,24 @@ Mirror into [[Open Questions]] once reviewed.
 - **Bench Notes / Bench Book** — this pipeline covers the *presentation*
   artifact. Where does generation of the instructor / student guides from shared
   source content ([[Roadmap]] Stage 2) attach — a parallel Stage 3', or later.
+- **Origination without a deck (Franz, 2026-09-04)** — checked whether
+  "convert-or-originate" is one capability or two; it's one, and the
+  state-machine gate that made a no-deck project permanently stuck at Stage 0
+  is fixed (`PipelineConsole` commit `5ac9c1d`). **Not yet done:** Stage 1's
+  and Stage 2's prompts still open with "read every slide in the range" /
+  "read its slides for the page numbers listed," unconditionally — they need
+  a second mode that cuts a module's scope and drafts its `keyConcepts`
+  directly from a named topic + the Source Library / component index, with no
+  slide range to read at all. Stage 3's explicit "does not create new slide
+  files" rule needs to become "does not create new slide files **when
+  converting**" — an origination module's assigned-but-unbacked page numbers
+  are exactly what it should author, against the approved master template for
+  that concept's Axis C role (see the template-gallery work — this is the
+  reason that work matters beyond just fixing layout bugs). Which console
+  affordance starts an origination project (a distinct "no deck" action, not
+  inferred from an empty Source Deck folder) and how an origination module's
+  page numbers get allocated with no deck length to bound them are still
+  open.
 
 ## Related
 
