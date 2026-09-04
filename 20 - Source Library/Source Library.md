@@ -4,7 +4,7 @@ type: moc
 tags:
   - moc
   - source-library
-updated: 2026-08-29
+updated: 2026-09-03
 ---
 
 # Source Library
@@ -14,11 +14,24 @@ across courses. In Stage 2 these become referenceable source content — a cours
 module cites a handbook section rather than paraphrasing it, so corrections
 propagate everywhere at once.
 
-**Current state:** real content is loaded. This is a **lightweight locate-the-
-source catalogue** — what each document is and its scope at a chapter or section
-level. Concept-level cross-referencing between documents is deliberately
-**deferred** until the library has been used for a real task and we know what
-kind of retrieval is actually useful.
+**Current state:** real content is loaded. The base catalogue is a
+**lightweight locate-the-source** index — what each document is and its scope at
+a chapter or section level.
+
+**Concept-level indexing has started, scoped to real use.** The deferred
+"wait for a real retrieval task" condition is now met — the Pipeline Console's
+Stage 3 was generating diagrams from scratch while good source material sat idle.
+The response is a per-chapter **teaching-component index** built only as far as a
+course actually reaches:
+
+- [[Component Index — 1400 ch3]] — the discrete instructional components (a
+  diagram, a labelled figure, a graph) that Chapter 3's concepts need, each with
+  its source, a precedence bucket (`current` / `archive-corroborated` /
+  `archive-only` / `legacy`), and a locator. Stage 2 tags each key concept
+  against it; Stage 3 pulls from it instead of searching cold.
+
+See `00 - Project/Source Grounding — Staging Plan.md` for the build plan and how
+this graduates into the permanent pipeline docs.
 
 ## Holdings
 
@@ -72,5 +85,6 @@ that shelf. Shelf contents are defined in `course/course.json` under `"library"`
 2. Add a catalogue entry to the relevant category note above — what it is,
    edition / document number / date, and scope at a chapter or section level.
 3. Record the exact edition/version and date so citations stay precise.
-4. Do **not** build concept-level cross-references yet — that waits until we
-   have a real retrieval task to shape it.
+4. Concept-level indexing is now **per-chapter and use-driven** (see
+   [[Component Index — 1400 ch3]]). Build an index entry only when a course
+   chapter actually needs the component — do not pre-index a document wholesale.

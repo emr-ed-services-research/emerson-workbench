@@ -6,7 +6,7 @@ publisher: Emerson / Fisher Controls International LLC
 edition: Sixth Edition
 tags:
   - source-library
-updated: 2026-08-29
+updated: 2026-09-03
 ---
 
 # Emerson Control Valve Handbook
@@ -56,9 +56,13 @@ Deadband); pull specific section numbers directly from the PDF when citing.
 
 ## Key sections referenced
 
-> Populate as courses cite specific chapters. Concept-level cross-referencing is
-> deferred until the library has been used for a real task.
+Populated as courses cite specific sections (via the per-chapter
+[[Component Index — 1400 ch3|component indexes]]).
 
 | Section | Topic | Cited from |
 | --- | --- | --- |
-| _TBD_ | | |
+| §2.1.1 (incl. 2.1.1.2, 2.1.1.4) + Fig 2.3 | Deadband — definition, effects, friction as the cause | 1400 ch3-m6 (deadband) |
+| §3.8.1 + Fig 3.43 | Diaphragm actuators — direct-acting vs reverse-acting | 1400 ch3-m1, m2, m4 (actuator action) |
+| §5.11.1.1–5.11.1.4 + §5.11.2 | Actuator/valve forces: unbalance (A), seat load (B), packing friction (C), additional (D); total = A+B+C+D | 1400 ch3-m1 (valve forces) |
+| §8.2 + Fig 8.2 | Criss-cross bolt-tightening pattern | 1400 ch3-m3, m5 (diaphragm-casing torque) |
+| §8.5.5 + Fig 8.10 | Bench set — definition; "Bench Set Seating Force" graph (backup reference to Fisher IM Fig 5) | 1400 ch3-m1, m2, m4, m6 (bench set / deadband graph) |
