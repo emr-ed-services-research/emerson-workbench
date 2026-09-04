@@ -202,6 +202,17 @@ line** (e.g. a flow direction) — never a sentence an instructor would read
 aloud; that belongs in the context pane. `.tmpl-note` also works inside
 `.slide--tmpl-diagram`.
 
+**The row auto-clears a wrapped note.** When a plain (non `has-lead`) figure
+row is followed by a `.tmpl-note`, the CSS (`:has(> .tmpl-note)`) switches the
+row + note pair from two independently-positioned absolute boxes to a flow
+column, so the note's actual rendered height pushes the row up instead of
+sitting under a fixed offset — a note that wraps to two or three lines can
+never collide with the figcaptions above it. No markup change needed; this is
+automatic from the existing `<h1>` / `.tmpl-row` / `.tmpl-note` sibling
+structure. Fixed 2026-09-04 after the collision was hand-patched once on 1400
+slide 98 with a per-image inline `max-height` — do not re-reach for that
+per-slide patch; the template now holds generally (1400 slides 101, 103).
+
 **Match the cells' aspect ratios.** The cells are equal width and the images
 are `object-fit: contain`, so a portrait photo next to a landscape one renders
 much taller, its caption drops toward the footer chrome, and the row looks

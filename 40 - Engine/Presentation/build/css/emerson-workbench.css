@@ -829,6 +829,35 @@
 }
 .slide--tmpl-diagram .tmpl-note { right: 47cqw; }
 
+/* .tmpl-row + .tmpl-note collision fix (Franz review, 1400 ch3-m3 rework 2026-09-04).
+   The rules above fix the row to a constant bottom:12cqh and the note to a
+   constant bottom:6cqh, sized for a one-line note - a note that wraps to two
+   or more lines grows upward past 12cqh and collides with the figcaptions
+   above it (hand-patched once already on 1400 slide 98 with an inline image
+   max-height; that was a one-slide patch, not a template fix). Where a plain
+   (non has-lead) figure row is followed by a .tmpl-note, lay the pair out as
+   a flow column instead of two independently-positioned absolute boxes: the
+   note's own rendered height then always pushes the row up rather than
+   sitting under it, so the two can never overlap regardless of how many
+   lines the note wraps to at a given aspect ratio. No slide markup changes
+   needed - existing <h1>/.tmpl-row/.tmpl-note/.slide-chrome siblings already
+   fit this layout. */
+.slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) {
+  display: flex;
+  flex-direction: column;
+}
+.slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-row {
+  position: static;
+  margin: 17cqh 5.6cqw 0;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-note {
+  position: static;
+  margin: 1.6cqh 5.6cqw 6cqh;
+  flex: none;
+}
+
 /* -- Standard slide heading ----------------------------------------
    The course-wide slide-heading treatment. The full-width PowerPoint
    title rule is dropped for a restrained heading — semibold, held to a

@@ -28,7 +28,16 @@
        NOTE the Component Index procedure-photo table has image162/image163 swapped
        (it lists image162 as "hoist", image163 as "locknut"); the images themselves
        are the other way round and are placed here by what they actually show.
-       Part 4: markup-only, no browser. -->
+       Part 4: markup-only, no browser.
+       ch3-m3 Stage 3 rework 2026-09-04: human review found the .tmpl-note (this
+       slide's two-sentence pre-mount/hold note) visually overlapping the
+       figcaption row above it at 16:9 - the same bug hand-patched once already on
+       ch3-m2 slide 98 with a per-image inline max-height. Fixed at the template
+       level instead: .slide--tmpl-figrow's CSS now lays a .tmpl-row + trailing
+       .tmpl-note out as a flow column (via :has(> .tmpl-note)) rather than two
+       fixed-offset absolute boxes, so the note's real rendered height pushes the
+       row up and the two can never collide, at any wrap length or aspect ratio.
+       See css/TEMPLATES.md Template 5. No markup change on this slide. -->
   <article class="slide slide--tmpl-figrow" data-slide="101" data-deck="1400" data-review="ch3-four-part">
     <div class="review-ribbon">ch3-m3 pass: figrow; mounting sequence (hoist on, lock the yoke)</div>
     <h1 class="slide-title">Mounting the 657 on the Valve</h1>

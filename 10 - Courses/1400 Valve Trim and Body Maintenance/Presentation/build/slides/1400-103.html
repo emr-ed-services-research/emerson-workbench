@@ -26,7 +26,14 @@
        Part 2/4: earmark ch3-cmp-stem-connector (status: legacy) - "prefer the 657 IM
        Fig 3 detail; deck photos acceptable". Fig 3 not extracted; the deck photo is
        legible and directly labelled, so it is kept per the Component Index rule.
-       Part 4: markup-only, no browser. -->
+       Part 4: markup-only, no browser.
+       ch3-m3 Stage 3 rework 2026-09-04: human review found the .tmpl-note (the
+       thread-engagement + locknut/jam-nut note) visually overlapping the
+       figcaption above it at 16:9 - same bug as slide 101, same fix: the
+       .slide--tmpl-figrow CSS now lays a .tmpl-row + trailing .tmpl-note out as a
+       flow column (:has(> .tmpl-note)) instead of two fixed-offset absolute
+       boxes, so the note can never collide with the figcaption regardless of wrap
+       length. See css/TEMPLATES.md Template 5. No markup change on this slide. -->
   <article class="slide slide--tmpl-figrow" data-slide="103" data-deck="1400" data-review="ch3-four-part">
     <div class="review-ribbon">ch3-m3 pass: figrow; stem-connector thread engagement</div>
     <h1 class="slide-title">Stem Connector &mdash; Thread Engagement</h1>

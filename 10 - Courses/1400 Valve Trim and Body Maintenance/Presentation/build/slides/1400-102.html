@@ -32,7 +32,22 @@
        variant of ch3-cmp-bench-set-graph is not one of the three enumerated in the
        Component Index (92/97/112) - logged as an extension of that component, faithful
        to the same source figure.
-       Part 4: markup-only, no browser. -->
+       Part 4: markup-only, no browser.
+       ch3-m3 Stage 3 rework 2026-09-04: human review found the rotated "on the
+       valve - with packing friction" label overlapping the unrotated "upper bench
+       set (11 psig)" label near the chart top. Geometry: the on-valve line runs
+       (242,40)->(460,288) at the coded 48.6 deg slope; the label was centred at
+       its own (300,120), and at that centre a ~34-char string rotated 48.6 deg
+       extends roughly 95-100px along the line in each direction, i.e. up to about
+       y=25 - above the plot's own top axis (y=40) and squarely through the "upper
+       bench set" label's y=50-64 band near x=203-371. Fix: slide the same label
+       along the same line to a lower point still on it, (356,170) (rotation
+       pivot moved with it, still 48.6 deg) - its span now runs roughly y=80 to
+       y=260, clearing "upper bench set" above (>15px) and the axis/bracket
+       geometry below (>25px), while staying close enough to the on-valve line
+       (line x at y=170 is ~356, i.e. right on the new anchor) to still read as
+       that line's label. No other label moved; line geometry unchanged. -->
+
   <article class="slide slide--tmpl-figrow" data-slide="102" data-deck="1400" data-review="ch3-four-part">
     <div class="review-ribbon">ch3-m3 pass: bench-set graph &mdash; friction shifts full travel on the valve (102+104 consolidated)</div>
     <h1 class="slide-title">Re-Checking Travel on the Valve</h1>
@@ -83,7 +98,7 @@
           <!-- labels with white halo -->
           <g font-size="13" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">
             <text x="150" y="150" fill="#6E7070" text-anchor="middle" transform="rotate(48.6 150 150)">off the valve &#8212; friction-free</text>
-            <text x="300" y="120" fill="#004B8D" text-anchor="middle" transform="rotate(48.6 300 120)">on the valve &#8212; with packing friction</text>
+            <text x="356" y="170" fill="#004B8D" text-anchor="middle" transform="rotate(48.6 356 170)">on the valve &#8212; with packing friction</text>
             <text x="371" y="60" fill="#3F4040" text-anchor="end">upper bench set (11 psig)</text>
           </g>
           <!-- axis titles -->
