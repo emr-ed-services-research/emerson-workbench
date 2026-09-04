@@ -463,8 +463,26 @@ yet; for ch3 (already tagged for A/B) it is another `force` re-author.
       hand-fixed slide 98 (capped image height, tightened captions). This is the
       "sibling-box collision" QA check in §4 — bumped to first priority.
 - [x] ch3-m2 Stage 3 accepted (Franz moved on), Stage 3 → closed.
-- [~] ch3-m3 Stage 3 (Mount & Service, `buildsOn: [ch3-m2]`, one `caution`
-      concept on slide 105) — running.
+- [~] **ch3-m3 Stage 3** (Mount & Service, `buildsOn: [ch3-m2]`, one `caution`
+      concept on slide 105) — the console's agent run **crashed on the Claude
+      session limit** before the after-render/screenshot/review-capture phase
+      (2026-09-04); the console recorded Stage 3 as `failed` with no m3 review
+      entry, but the editorial pass had already completed on all 8 slides.
+      Verified by hand: `verify.ps1` 0 FAIL, render-check 0 warn (8 slides).
+      Reviewed against screenshots: 105/106/108 clean; **101 and 103 have a
+      `.tmpl-note`/figcaption overlap** (the same bug hand-patched on ch3-m2's
+      slide 98 — recurring because that fix was a one-off patch, not the
+      template; this is the "sibling-box collision" QA check, still §4
+      priority 1); **102's graph has a label collision** ("on the valve" vs
+      "upper bench set"). Franz's calls: **keep slides 95 and 105 separate**
+      (different modules, 105 owns the bypass/vent/relieve sequence); **both
+      proposed consolidations approved** (102+104, 106+107 — 104/107 kept as
+      `data-review="ch3-m3-consolidated"` stubs). `course.json` ch3-m3 `pages`
+      → `[101,102,103,105,106]`, concept 4 `pages` `[102,104]`→`[102]`, concept
+      6 `pages` `[106,107]`→`[106]`; `course-data.js` regenerated; re-verified
+      0 FAIL. **Still open:** a Stage 3 rework re-fire for slides 101/102/103
+      (the two layout collisions above) — the console's Stage 3 state also
+      needs re-syncing off `failed` since it never recorded this run.
 - [ ] Four-bucket precedence rule written into [[Course Porting Pipeline]]
       working rules.
 - [ ] Stage 3 QA mechanisms (§4 above) shipped; noted in
