@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emerson Workbench</title>
+<link rel="stylesheet" href="course.css">
+<script src="../build/manifest.js" charset="utf-8"></script>
+<script src="course-data.js" charset="utf-8"></script>
+<script src="course.js" defer charset="utf-8"></script>
+</head>
+<body>
+
+<div class="shell">
+
+  <header class="shell__hd">
+    <img src="../build/assets/brand/logo-emerson-corp-2c.png" alt="Emerson">
+    <div class="hd__title" id="hdTitle"></div>
+    <div class="hd__day" id="hdDay"></div>
+    <div class="hd__spacer"></div>
+    <div class="hd__progress" id="hdProgress" hidden>
+      <span id="progressPct">0%</span>
+      <span class="hd__bar"><i id="progressBar"></i></span>
+    </div>
+    <div class="hd__toggles">
+      <button class="hd__btn hd__btn--lib" id="btnLib" aria-pressed="false" title="Source library ( L )">📚</button>
+      <button class="hd__btn" id="btnToc"     aria-pressed="true"  title="Left rail — Course contents ( [ )">◧&nbsp;Contents</button>
+      <button class="hd__btn" id="btnCtx"     aria-pressed="true"  title="Right rail — Current context ( ] )">Context&nbsp;◨</button>
+      <button class="hd__btn" id="btnPresent" aria-pressed="false" title="Present mode ( P )">⛶&nbsp;Present</button>
+    </div>
+  </header>
+
+  <nav class="shell__toc" id="toc" aria-label="Course contents">
+    <div class="toc__head">Course contents</div>
+    <div id="tocList"></div>
+  </nav>
+  <button class="rail-tab rail-tab--toc" id="tabToc" title="Show contents">›</button>
+
+  <main class="shell__main">
+    <div class="stage__crumbs" id="crumbs"></div>
+    <div class="stage__scroll">
+      <article class="stage__card" id="card"></article>
+    </div>
+    <div class="stage__nav" id="stageNav">
+      <div class="nav__dots" id="dots"></div>
+      <span class="nav__pos" id="pos"></span>
+      <div class="nav__pair">
+        <button class="nav__btn" id="btnPrev">◀ Previous</button>
+        <button class="nav__btn nav__btn--primary" id="btnNext">Next ▶</button>
+      </div>
+    </div>
+
+    <!-- source library — a reference shelf laid over the presentation pane.
+         Opening/closing it never touches the course route underneath. -->
+    <div class="libov" id="libov" aria-label="Source library">
+      <div class="libov__panel">
+        <div class="libov__bar">
+          <button class="libov__nav" id="libBack" hidden>‹&nbsp;Library</button>
+          <span class="libov__title" id="libTitle">Source Library</span>
+          <a class="libov__nav" id="libExt" target="_blank" rel="noopener" hidden title="Open in a new tab">Open ↗</a>
+          <button class="libov__nav libov__close" id="libClose" title="Close (Esc)">✕</button>
+        </div>
+        <div class="libov__body">
+          <div class="libov__index" id="libIndex"></div>
+          <div class="libov__doc" id="libDoc"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <aside class="shell__ctx" id="ctx" aria-label="Current context">
+    <div class="ctx__here" id="ctxHere"></div>
+    <div class="ctx__mod" id="ctxMod"></div>
+    <div class="ctx__block">
+      <h4>Module objective</h4>
+      <p class="ctx__obj" id="ctxObj"></p>
+    </div>
+    <div class="ctx__block">
+      <h4>Key concepts</h4>
+      <ul class="ctx__concepts" id="ctxConcepts"></ul>
+    </div>
+    <div class="ctx__block" id="ctxCheckWrap">
+      <button class="ctx__check" id="ctxCheck">✓ &nbsp;Check your knowledge</button>
+    </div>
+  </aside>
+  <button class="rail-tab rail-tab--ctx" id="tabCtx" title="Show context">‹</button>
+
+  <footer class="shell__ft">
+    <span id="ftLeft"></span>
+    <span id="ftRight"></span>
+  </footer>
+
+</div>
+</body>
+</html>

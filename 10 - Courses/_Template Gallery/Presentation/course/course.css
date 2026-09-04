@@ -1,0 +1,521 @@
+/* ============================================================================
+   course.css — Emerson Workbench learning-environment shell.
+   Top-level identity = teaching days. Chapters & modules nest inside.
+   Uses the EMERSON design system; this is the frame, not a slide layout.
+   ========================================================================== */
+
+/* The EMERSON colour scheme is the single source in tokens.css. */
+@import url("../build/css/tokens.css");
+
+:root {
+  --rail-bg:   #F3F4F5;
+  --rail-line: #E1E3E5;
+  --ink:       var(--emerson-charcoal);
+  --ink-soft:  #6B6D6D;
+  --accent:    var(--emerson-blue);
+
+  --font: "Arial", "Helvetica Neue", Helvetica, "Liberation Sans", system-ui, sans-serif;
+
+  --h-header: 56px;
+  --h-footer: 30px;
+  --w-toc:    306px;
+  --w-ctx:    330px;
+  color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  font-family: var(--font); color: var(--ink); background: var(--rail-bg);
+  font-size: 14px; line-height: 1.45; overflow: hidden;
+}
+a { color: var(--accent); }
+button { font-family: inherit; }
+
+/* ---------- shell grid ---------------------------------------------- */
+.shell {
+  display: grid; height: 100vh;
+  grid-template-columns: var(--w-toc) minmax(0, 1fr) var(--w-ctx);
+  grid-template-rows: var(--h-header) minmax(0, 1fr) var(--h-footer);
+  grid-template-areas: "hd hd hd" "toc main ctx" "ft ft ft";
+  transition: grid-template-columns .18s ease;
+}
+body.hide-toc .shell { grid-template-columns: 0 minmax(0,1fr) var(--w-ctx); }
+body.hide-ctx .shell { grid-template-columns: var(--w-toc) minmax(0,1fr) 0; }
+body.hide-toc.hide-ctx .shell { grid-template-columns: 0 minmax(0,1fr) 0; }
+body.hide-toc .shell__toc { visibility: hidden; }
+body.hide-ctx .shell__ctx { visibility: hidden; }
+/* present mode keeps the context rail — it only clears the left nav + tightens */
+body.present .shell__main { background: #e7e9eb; }
+
+/* ---------- header ------------------------------------------------- */
+.shell__hd {
+  grid-area: hd; display: flex; align-items: center; gap: 14px; padding: 0 14px;
+  background: var(--emerson-white); border-bottom: 2px solid var(--accent);
+}
+.shell__hd img { height: 22px; }
+.hd__title { font-weight: 700; color: var(--emerson-blue); white-space: nowrap; }
+.hd__title span { color: var(--emerson-grey); font-weight: 400; }
+.hd__day {
+  font-size: 12px; font-weight: 700; color: var(--emerson-charcoal);
+  background: var(--rail-bg); border: 1px solid var(--rail-line);
+  border-radius: 12px; padding: 3px 11px; white-space: nowrap;
+}
+.hd__day:empty { display: none; }
+.hd__spacer { flex: 1; }
+.hd__progress { display: flex; align-items: center; gap: 8px; color: var(--ink-soft); font-size: 12px; }
+.hd__bar { width: 110px; height: 6px; background: var(--rail-line); border-radius: 3px; overflow: hidden; }
+.hd__bar > i { display: block; height: 100%; width: 0; background: var(--emerson-green); transition: width .3s ease; }
+.hd__toggles { display: flex; gap: 6px; }
+.hd__btn {
+  border: 1px solid var(--rail-line); background: var(--emerson-white); color: var(--ink);
+  border-radius: 5px; padding: 6px 10px; cursor: pointer; font-size: 12px; white-space: nowrap;
+}
+.hd__btn:hover { background: var(--rail-bg); }
+.hd__btn[aria-pressed="true"] { background: var(--accent); color: #fff; border-color: var(--accent); }
+#btnPresent[aria-pressed="true"] { background: #2f7d1f; border-color: #2f7d1f; }
+
+/* ---------- left rail: course contents --------------------------- */
+.shell__toc {
+  grid-area: toc; background: var(--rail-bg); border-right: 1px solid var(--rail-line);
+  overflow-y: auto; padding: 0 0 48px;
+}
+.toc__head {
+  padding: 12px 16px 8px; font-size: 11px; letter-spacing: .09em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 700;
+}
+
+/* ---- collapsible top-level sections -----------------------------
+   Module 0, the three days, and Wrap-Up are all <details class="toc__sec">.
+   Fully collapsed, the rail is just those five rows. */
+.toc__sec { border-top: 1px solid var(--rail-line); }
+.toc__sec-hd {
+  display: flex; align-items: center; gap: 9px; padding: 11px 14px;
+  cursor: pointer; list-style: none; user-select: none;
+}
+.toc__sec-hd::-webkit-details-marker { display: none; }
+.toc__sec-hd:hover { background: #ebedee; }
+.toc__sec-caret {
+  flex: none; margin-left: auto; color: var(--emerson-grey);
+  font-size: 11px; transition: transform .15s ease;
+}
+.toc__sec[open] > .toc__sec-hd .toc__sec-caret { transform: rotate(90deg); }
+.toc__sec-body { padding-bottom: 6px; }
+.toc__sec-open {
+  display: block; margin: 6px 12px 8px; padding: 7px 10px;
+  font-size: 11.5px; font-weight: 700; color: var(--accent); text-decoration: none;
+  background: color-mix(in srgb, var(--emerson-blue) 7%, #fff);
+  border: 1px solid var(--rail-line); border-radius: 6px;
+}
+.toc__sec-open:hover { border-color: var(--accent); }
+
+/* bookends: Module 0 and Wrap-Up — set apart from the day spine */
+.toc__bookend {
+  margin: 4px 10px; border: 1px solid var(--rail-line); border-radius: 7px;
+  background: var(--emerson-white); overflow: hidden;
+}
+.toc__bookend > .toc__sec-hd { padding: 9px 12px; }
+.toc__bookend.is-current { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.toc__b-tag {
+  flex: none; font-size: 9.5px; letter-spacing: .06em; text-transform: uppercase; font-weight: 700;
+  color: var(--emerson-grey); border: 1px solid var(--rail-line); border-radius: 3px; padding: 1px 5px;
+}
+.toc__b-title { font-weight: 600; font-size: 12.5px; }
+.toc__b-dot {
+  flex: none; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--rail-line); margin-left: auto;
+}
+.toc__bookend .toc__sec-caret { margin-left: 4px; }
+.toc__bookend.is-done .toc__b-dot { background: var(--emerson-green); }
+
+/* day sections: the primary identity */
+.toc__day { border-top: 3px solid var(--rail-line); }
+.toc__day:first-of-type { margin-top: 4px; }
+.toc__day.is-current { border-top-color: var(--accent); }
+.toc__day-hd { padding: 12px 14px; }
+.toc__day-num {
+  font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700;
+  color: var(--emerson-blue);
+  background: color-mix(in srgb, var(--emerson-blue) 12%, #fff); border-radius: 3px; padding: 1px 6px;
+}
+.toc__day-title { font-size: 15px; font-weight: 800; color: var(--emerson-charcoal); letter-spacing: .01em; }
+.toc__day.is-current .toc__day-title { color: var(--emerson-blue); }
+
+/* chapters — read as detail inside the day */
+.toc__ch { border-top: 1px solid var(--rail-line); margin-left: 8px; }
+.toc__ch:first-of-type { border-top: 0; }
+.toc__ch-btn {
+  width: 100%; display: flex; align-items: baseline; gap: 8px; padding: 7px 12px 7px 8px;
+  background: none; border: 0; cursor: pointer; text-align: left; color: var(--ink); font-size: 12.5px;
+}
+.toc__ch-btn::-webkit-details-marker { display: none; }
+.toc__ch-btn:hover { background: #ebedee; }
+.toc__ch-num { flex: none; min-width: 18px; font-weight: 700; color: var(--emerson-grey); font-variant-numeric: tabular-nums; font-size: 11px; }
+.toc__ch-title { flex: 1; font-weight: 600; }
+.toc__ch.is-workshop .toc__ch-title { font-style: italic; }
+.toc__ch.is-current > .toc__ch-btn .toc__ch-title { color: var(--emerson-blue); }
+
+/* Carets are the expand / collapse control. Clicking the name itself
+   navigates to that day / chapter / module's intro card instead. */
+.toc__ch-caret, .toc__mod-caret {
+  flex: none; margin-left: auto; color: var(--emerson-grey); transition: transform .15s ease;
+}
+.toc__sec-caret, .toc__ch-caret, .toc__mod-caret {
+  padding: 2px 5px; border-radius: 4px; cursor: pointer;
+}
+.toc__sec-caret:hover, .toc__ch-caret:hover, .toc__mod-caret:hover {
+  background: #dfe1e3; color: var(--emerson-charcoal);
+}
+.toc__ch[open] > .toc__ch-btn .toc__ch-caret,
+.toc__mod[open] > .toc__mod-btn .toc__mod-caret { transform: rotate(90deg); }
+
+.toc__mods { margin: 0; padding: 0 0 6px; }
+.toc__mod > .toc__mod-btn {
+  width: 100%; display: flex; align-items: baseline; gap: 8px; padding: 5px 12px 5px 30px;
+  cursor: pointer; list-style: none; color: var(--ink); font-size: 12px;
+}
+.toc__mod > .toc__mod-btn::-webkit-details-marker { display: none; }
+.toc__mod > .toc__mod-btn:hover { background: #ebedee; }
+.toc__mod.is-current > .toc__mod-btn { background: #e4edf5; box-shadow: inset 3px 0 0 var(--accent); font-weight: 700; }
+.toc__mod.is-current > .toc__mod-btn .toc__mod-title { color: var(--emerson-blue); }
+.toc__mod-dot { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--rail-line); margin-top: 5px; }
+.toc__mod.is-ready .toc__mod-dot { background: var(--emerson-green); }
+.toc__mod.is-done  .toc__mod-dot { background: var(--emerson-blue); }
+.toc__mod-title { flex: 1; }
+.toc__mod-tag {
+  flex: none; font-size: 9px; letter-spacing: .05em; text-transform: uppercase; color: var(--emerson-grey);
+  border: 1px solid var(--rail-line); border-radius: 3px; padding: 0 4px; align-self: center;
+}
+.toc__pagelist { list-style: none; margin: 0; padding: 0 0 4px; }
+.toc__pagelist li a { display: block; padding: 3px 12px 3px 44px; font-size: 11px; color: var(--ink-soft); text-decoration: none; }
+.toc__pagelist li a:hover { color: var(--ink); background: #ebedee; }
+.toc__pagelist li.is-current a { color: var(--emerson-blue); font-weight: 700; }
+
+/* ---------- centre: content stage ------------------------------- */
+.shell__main { grid-area: main; display: flex; flex-direction: column; min-width: 0; background: #eceef0; position: relative; }
+.stage__crumbs {
+  padding: 9px 20px; font-size: 12px; color: var(--ink-soft);
+  border-bottom: 1px solid var(--rail-line); background: var(--emerson-white);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.stage__crumbs b { color: var(--ink); font-weight: 600; }
+.stage__crumbs .sep { color: var(--emerson-grey); margin: 0 7px; }
+
+.stage__scroll { flex: 1; overflow: auto; padding: 20px; display: flex; justify-content: center; }
+.stage__card {
+  width: 100%; max-width: 1000px; background: var(--emerson-white);
+  border: 1px solid var(--rail-line); border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.05);
+  overflow: hidden; align-self: flex-start;
+}
+body.present .stage__scroll { padding: 14px 24px; }
+body.present .stage__card { max-width: 1180px; }
+
+/* slide pages fit inside the stage with no scrolling — the card scales to
+   whichever of width / height runs out first, keeping the 1056:816 ratio */
+body.page-view .stage__scroll {
+  overflow: hidden; padding: 14px; align-items: center;
+  container-type: size;
+}
+body.page-view .stage__card--page {
+  flex: none; align-self: center;
+  width: min(100cqw, 100cqh * (16 / 9));
+  height: auto; max-width: 100%;
+  aspect-ratio: 16 / 9;
+}
+body.page-view .page__frame { width: 100%; height: 100%; aspect-ratio: auto; }
+
+/* -- module overview: minimal. no concept list, no topics list -- */
+.ov { padding: 34px 42px 40px; }
+.ov--bookend { padding-top: 44px; }
+.ov__kicker { font-size: 11.5px; letter-spacing: .09em; text-transform: uppercase; color: var(--emerson-grey); font-weight: 700; }
+.ov__title { margin: 6px 0 14px; font-size: 27px; color: var(--emerson-blue); font-weight: 700; line-height: 1.15; }
+.ov__rule { height: 2px; background: var(--accent); width: 64px; margin-bottom: 22px; }
+.ov__objective { font-size: 15.5px; line-height: 1.55; margin: 0 0 20px; padding-left: 16px; border-left: 3px solid var(--emerson-cyan); }
+.ov__objective b { color: var(--emerson-blue); }
+.ov__hint { font-size: 13px; color: var(--ink-soft); line-height: 1.5; max-width: 46em; margin: 0 0 8px; }
+.ov__start {
+  margin-top: 26px; display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent); color: #fff; border: 0; border-radius: 6px;
+  padding: 11px 20px; font-size: 14px; font-weight: 700; cursor: pointer;
+}
+.ov__start:hover { background: #003d73; }
+.ov__note {
+  margin-top: 24px; padding: 12px 14px; background: #fff8e1; border: 1px solid #f0e2b0;
+  border-radius: 6px; font-size: 12.5px; color: #6b5b1e;
+}
+
+/* -- day / chapter intro cards: same family as the module overview,
+   scoped one and two levels up. They add a navigable list of what is
+   inside (chapters, or modules). -- */
+.ov--tier .ov__list { margin-top: 22px; }
+.ov--tier .ov__list h4 {
+  margin: 0 0 8px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 700;
+}
+.ov__objlist { margin: 0 0 4px; padding-left: 20px; font-size: 13.5px; line-height: 1.6; }
+.ov__row {
+  display: flex; align-items: baseline; gap: 10px; padding: 8px 10px;
+  text-decoration: none; color: var(--ink); font-size: 13.5px;
+  border: 1px solid var(--rail-line); border-radius: 6px; margin-bottom: 6px;
+}
+.ov__row:hover { border-color: var(--accent); background: color-mix(in srgb, var(--emerson-blue) 5%, #fff); }
+.ov__row .n {
+  flex: none; min-width: 2ch; text-align: right; font-weight: 700;
+  color: var(--emerson-grey); font-variant-numeric: tabular-nums;
+}
+.ov__row-tag {
+  flex: none; margin-left: auto; font-size: 9px; letter-spacing: .05em; text-transform: uppercase;
+  color: var(--emerson-grey); border: 1px solid var(--rail-line); border-radius: 3px; padding: 0 4px;
+}
+
+/* -- home -- */
+.home__m0 {
+  display: block; margin: 4px 0 6px; padding: 12px 14px; text-decoration: none; color: var(--ink);
+  background: var(--rail-bg); border: 1px solid var(--rail-line); border-radius: 7px; font-size: 12.5px; line-height: 1.5;
+}
+.home__m0:hover { border-color: var(--emerson-grey); }
+.home__m0 b { color: var(--emerson-blue); }
+.home__days { margin-top: 8px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.home__day { border: 1px solid var(--rail-line); border-radius: 8px; padding: 12px 14px; }
+.home__day-hd { display: block; font-weight: 800; color: var(--emerson-blue); font-size: 15px; text-decoration: none; }
+.home__day-hd:hover { text-decoration: underline; }
+.home__day-hd span {
+  font-size: 10px; letter-spacing: .08em; text-transform: uppercase;
+  background: color-mix(in srgb, var(--emerson-blue) 12%, #fff); border-radius: 3px; padding: 1px 5px; margin-right: 6px;
+}
+.home__day-sub { font-size: 11.5px; color: var(--ink-soft); margin: 4px 0 8px; line-height: 1.4; }
+.home__ch { display: flex; gap: 8px; padding: 4px 0; font-size: 12.5px; color: var(--ink); text-decoration: none; }
+.home__ch:hover { color: var(--emerson-blue); }
+.home__ch .n { color: var(--emerson-grey); min-width: 2ch; text-align: right; font-variant-numeric: tabular-nums; }
+
+/* -- slide page (existing HTML in an iframe, visual-only when the module asks) -- */
+/* the slide card is a fixed 16:9 shape now — no longer inherited from whatever
+   the original PowerPoint page happened to be */
+.stage__card--page { padding: 0; background: var(--emerson-white); }
+.page__frame { width: 100%; border: 0; display: block; aspect-ratio: 16 / 9; }
+
+/* -- check milestone -- */
+.chk-card { padding: 40px; text-align: center; }
+.chk-card .badge {
+  display: inline-grid; place-items: center; width: 54px; height: 54px; border-radius: 50%;
+  background: var(--emerson-green); color: #fff; font-size: 26px; font-weight: 700; margin-bottom: 14px;
+}
+.chk-card h2 { color: var(--emerson-blue); margin: 0 0 6px; }
+.chk-card p { color: var(--ink-soft); margin: 0 0 20px; }
+
+/* -- stage footer nav -- */
+.stage__nav {
+  display: flex; align-items: center; gap: 14px; padding: 10px 20px;
+  border-top: 1px solid var(--rail-line); background: var(--emerson-white);
+}
+/* prev + next sit together on the right so back-and-forth review needs no
+   big mouse travel; the dots keep the left, taking up the slack */
+.nav__pair { display: flex; align-items: center; gap: 6px; flex: none; }
+.nav__btn {
+  border: 1px solid var(--rail-line); background: var(--emerson-white); color: var(--ink);
+  border-radius: 6px; padding: 8px 14px; cursor: pointer; font-size: 13px; white-space: nowrap;
+}
+.nav__btn:hover:not(:disabled) { background: var(--rail-bg); }
+.nav__btn:disabled { opacity: .4; cursor: default; }
+.nav__btn--primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.nav__btn--primary:hover:not(:disabled) { background: #003d73; }
+.nav__dots { flex: 1; display: flex; align-items: center; gap: 6px; justify-content: flex-start; flex-wrap: wrap; }
+.nav__dot { width: 9px; height: 9px; border-radius: 50%; border: 0; padding: 0; background: var(--rail-line); cursor: pointer; }
+.nav__dot.is-current { background: var(--accent); transform: scale(1.35); }
+.nav__dot.is-overview { border-radius: 2px; }
+.nav__dot.is-check { background: var(--emerson-green); }
+.nav__pos { font-size: 12px; color: var(--ink-soft); white-space: nowrap; }
+
+/* ---------- right rail: current context — the one place text teaches -- */
+.shell__ctx {
+  grid-area: ctx; background: var(--rail-bg); border-left: 1px solid var(--rail-line);
+  overflow-y: auto; padding: 18px 18px 40px;
+}
+.ctx__here { font-size: 11px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-soft); font-weight: 700; }
+.ctx__mod { margin: 4px 0 16px; font-size: 17px; color: var(--emerson-blue); font-weight: 700; line-height: 1.2; }
+.ctx__block { margin-bottom: 18px; }
+.ctx__block h4 { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-soft); }
+.ctx__obj { font-size: 13px; line-height: 1.5; margin: 0; }
+.ctx__concepts { margin: 0; padding: 0; list-style: none; }
+.ctx__concepts li {
+  position: relative; padding: 8px 8px 8px 18px; font-size: 12.5px; line-height: 1.45;
+  border-bottom: 1px solid var(--rail-line); border-radius: 4px;
+  transition: background .15s ease, color .15s ease;
+}
+.ctx__concepts li:last-child { border-bottom: 0; }
+.ctx__concepts li::before {
+  content: ""; position: absolute; left: 3px; top: 14px; width: 7px; height: 7px;
+  border-radius: 50%; background: var(--rail-line);
+}
+.ctx__concepts li[data-goto] { cursor: pointer; }
+.ctx__concepts li[data-goto]:hover { background: #e9ebed; }
+.ctx__concepts li.is-active {
+  background: color-mix(in srgb, var(--emerson-blue) 9%, #fff);
+  box-shadow: inset 3px 0 0 var(--accent);
+  color: var(--emerson-charcoal); font-weight: 600;
+}
+.ctx__concepts li.is-active::before { background: var(--accent); }
+.ctx__concepts li.ctx__empty { list-style: none; padding-left: 8px; color: var(--ink-soft); font-style: italic; }
+.ctx__concepts li.ctx__empty::before { display: none; }
+.ctx__check {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--emerson-white); border: 1px solid var(--emerson-green); color: #2f7d1f;
+  border-radius: 6px; padding: 10px; cursor: pointer; font-size: 13px; font-weight: 700;
+}
+.ctx__check:hover { background: #f2faee; }
+
+/* the home / course-overview view has no "current module" — drop the context rail */
+body.view-home .shell { grid-template-columns: var(--w-toc) minmax(0,1fr) 0; }
+body.view-home .shell__ctx { visibility: hidden; }
+body.view-home.hide-toc .shell { grid-template-columns: 0 minmax(0,1fr) 0; }
+
+/* ---------- source library overlay ------------------------------
+   A reference shelf laid over the presentation pane only. It is never
+   display:none — closed = visibility:hidden — so an open PDF keeps its exact
+   scroll position while the instructor flips back to the course and returns. */
+.hd__btn--lib { position: relative; margin-right: 12px; font-size: 14px; padding: 6px 9px; }
+.hd__btn--lib::after {
+  content: ""; position: absolute; right: -7px; top: 5px; bottom: 5px;
+  width: 1px; background: var(--rail-line);
+}
+
+.libov {
+  position: absolute; inset: 0; z-index: 20; display: flex; padding: 14px;
+  background: rgba(18, 22, 27, .30);
+  visibility: hidden; opacity: 0;
+  transition: opacity .14s ease, visibility .14s ease;
+}
+body.lib-open .libov { visibility: visible; opacity: 1; }
+
+.libov__panel {
+  flex: 1; min-width: 0; display: flex; flex-direction: column;
+  background: var(--emerson-white); border-radius: 10px; overflow: hidden;
+  box-shadow: 0 14px 46px rgba(0, 0, 0, .30);
+  transform: translateY(8px); transition: transform .14s ease;
+}
+body.lib-open .libov__panel { transform: none; }
+
+.libov__bar {
+  flex: none; display: flex; align-items: center; gap: 9px; padding: 9px 12px;
+  background: var(--rail-bg); border-bottom: 1px solid var(--rail-line);
+}
+.libov__title {
+  flex: 1; font-weight: 700; color: var(--emerson-blue); font-size: 13.5px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.libov__nav {
+  flex: none; border: 1px solid var(--rail-line); background: var(--emerson-white);
+  color: var(--ink); border-radius: 6px; padding: 5px 10px; font-size: 12.5px;
+  line-height: 1; cursor: pointer; text-decoration: none;
+}
+.libov__nav:hover { background: var(--rail-bg); border-color: var(--emerson-grey); }
+.libov__close { font-size: 13px; padding: 5px 9px; }
+
+/* index and doc stack in the same box and toggle with visibility (never
+   display:none) so an open PDF never reloads or loses its place */
+.libov__body { flex: 1; min-height: 0; position: relative; }
+.libov__index, .libov__doc {
+  position: absolute; inset: 0; background: var(--emerson-white);
+}
+/* the index is the responsive container: both the cover row and the manual
+   columns hold their wide layout and scale down proportionally with it, only
+   stacking once the pane is genuinely phone-portrait narrow */
+.libov__index { overflow-y: auto; padding: 18px 20px 26px; container: libidx / inline-size; }
+.libov__index[hidden], .libov__doc[hidden] { display: block; visibility: hidden; }
+.libidx__group {
+  font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 700; margin: 18px 0 7px;
+}
+.libidx__group:first-child { margin-top: 0; }
+
+/* the five primary sources — flat cover-style tiles, always one row, larger
+   than the manuals; type scales to the tile via container units */
+.libidx__covers {
+  display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(6px, 1.2cqi, 12px); margin-bottom: 6px;
+}
+.libcover {
+  display: flex; flex-direction: column; gap: 4%; cursor: pointer; font: inherit;
+  text-align: left; border: 0; border-radius: 8px;
+  background: var(--cover, var(--emerson-blue)); color: #fff;
+  aspect-ratio: 3 / 4; padding: 9% 8%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .18);
+  transition: transform .12s ease, box-shadow .12s ease;
+  container-type: inline-size;
+}
+.libcover:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, .28); }
+.libcover__kicker {
+  font-size: clamp(7.5px, 6.5cqi, 9.5px); letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 700; color: rgba(255, 255, 255, .72); line-height: 1.25;
+}
+.libcover__title {
+  font-size: clamp(12px, 13cqi, 19px); font-weight: 800; line-height: 1.14; letter-spacing: .005em;
+  margin-top: auto;
+}
+.libcover__meta { font-size: clamp(8.5px, 7.5cqi, 10.5px); color: rgba(255, 255, 255, .78); font-variant-numeric: tabular-nums; }
+
+/* instruction manuals — three fixed columns by document type, no badges */
+.libidx__cols {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(8px, 1.8cqi, 18px); align-items: start;
+}
+.libidx__col-hd {
+  font-size: 11px; letter-spacing: .07em; text-transform: uppercase; font-weight: 700;
+  color: var(--emerson-charcoal); margin-bottom: 8px; padding-bottom: 5px;
+  border-bottom: 2px solid var(--rail-line);
+}
+.libidx__col-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.libidx__doc {
+  width: 100%; text-align: left; display: flex; flex-direction: column; gap: 2px;
+  border: 1px solid var(--rail-line); border-radius: 7px; background: var(--emerson-white);
+  padding: 9px 11px; cursor: pointer; font: inherit;
+}
+.libidx__doc:hover {
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--emerson-blue) 5%, #fff);
+}
+.libidx__t { font-weight: 600; font-size: 12.5px; color: var(--ink); line-height: 1.3; }
+.libidx__s { font-size: 10.5px; color: var(--ink-soft); font-variant-numeric: tabular-nums; }
+.libidx__note { margin-top: 22px; font-size: 11px; color: var(--ink-soft); font-style: italic; }
+
+/* genuine phone-portrait: stack the covers and the manual columns */
+@container libidx (max-width: 460px) {
+  .libidx__covers { grid-template-columns: 1fr; gap: 10px; }
+  .libcover { aspect-ratio: auto; min-height: 88px; padding: 13px 14px; }
+  .libcover__kicker { font-size: 9px; }
+  .libcover__title { font-size: 17px; margin-top: 6px; }
+  .libcover__meta { font-size: 10px; }
+  .libidx__cols { grid-template-columns: 1fr; gap: 4px; }
+  .libidx__col-hd { margin-top: 14px; }
+}
+
+.libov__frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.libov__frame[data-active="false"] { visibility: hidden; }
+
+/* ---------- footer ------------------------------------------------- */
+.shell__ft {
+  grid-area: ft; display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; font-size: 11px; color: var(--emerson-grey);
+  background: var(--emerson-white); border-top: 1px solid var(--rail-line);
+}
+
+/* ---------- rail peek tabs -------------------------------------- */
+.rail-tab {
+  position: absolute; top: calc(var(--h-header) + 8px); z-index: 6;
+  width: 20px; height: 44px; border: 1px solid var(--rail-line);
+  background: var(--emerson-white); color: var(--emerson-grey); cursor: pointer; font-size: 11px; padding: 0;
+}
+.rail-tab--toc { left: 0; border-left: 0; border-radius: 0 6px 6px 0; }
+.rail-tab--ctx { right: 0; border-right: 0; border-radius: 6px 0 0 6px; }
+body:not(.hide-toc) .rail-tab--toc, body:not(.hide-ctx) .rail-tab--ctx { display: none; }
+
+@media (max-width: 1240px) { :root { --w-toc: 270px; --w-ctx: 300px; } }
+@media (max-width: 1000px) {
+  .home__days { grid-template-columns: 1fr; }
+  .shell { grid-template-columns: 0 minmax(0,1fr) 0; }
+  body:not(.hide-toc) .shell__toc { position: fixed; left: 0; top: var(--h-header); bottom: var(--h-footer);
+    width: 288px; z-index: 12; box-shadow: 4px 0 16px rgba(0,0,0,.15); }
+  body:not(.hide-ctx) .shell__ctx { position: fixed; right: 0; top: var(--h-header); bottom: var(--h-footer);
+    width: 300px; z-index: 12; box-shadow: -4px 0 16px rgba(0,0,0,.15); }
+}
