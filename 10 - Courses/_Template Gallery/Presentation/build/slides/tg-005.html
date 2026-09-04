@@ -10,6 +10,11 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
+  <!-- GALLERY REVISION 2026-09-04: manifest x/y is the source the marker
+       spans transcribe FROM (same discipline as nomenclature/mechanism).
+       Frame capacity: ~5 steps before the diagram crowds; a longer procedure
+       should split across two slides (buildsOn / faded-repeat), not add a
+       6th marker to one diagram. -->
   <article class="slide slide--role-procedure-callout" data-slide="05" data-deck="gallery">
     <h1 class="slide-title">Role: Procedure (list + callout diagram) — Lorem Ipsum Sequence</h1>
     <div class="tpl-content">
@@ -25,13 +30,13 @@
         <li>Consectetur adipiscing — apply torque at point 2</li>
         <li>Sed do eiusmod — verify clearance at point 3</li>
       </ol>
-      <p class="tpl-source">Source: [Placeholder Manual] Fig. 0 — each step's target point verified against the source figure (hidden callout-manifest below).</p>
+      <p class="tpl-source">Source: [Placeholder Manual] Fig. 0 — each step's x/y is transcribed from this slide's callout-manifest, which records the verified source position first.</p>
     </div>
     <script type="application/json" class="callout-manifest">
     [
-      { "marker": 1, "label": "engage the fitting", "sourceLocator": "Fig. 0, callout A" },
-      { "marker": 2, "label": "apply torque", "sourceLocator": "Fig. 0, callout B" },
-      { "marker": 3, "label": "verify clearance", "sourceLocator": "Fig. 0, callout C" }
+      { "marker": 1, "label": "engage the fitting", "sourceLocator": "Fig. 0, callout A", "x": "44%", "y": "18%" },
+      { "marker": 2, "label": "apply torque", "sourceLocator": "Fig. 0, callout B", "x": "80%", "y": "30%" },
+      { "marker": 3, "label": "verify clearance", "sourceLocator": "Fig. 0, callout C", "x": "36%", "y": "68%" }
     ]
     </script>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">05</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>

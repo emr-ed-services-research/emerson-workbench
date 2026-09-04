@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template Gallery — Application (annotated curve)</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- GALLERY REVISION 2026-09-04, new variant. Application's single-curve
+       template (application-07) treats the chart as one undifferentiated
+       box — fine when the concept is "here is the relationship," but wrong
+       when the concept needs the learner to see specific anchored features
+       ON the curve (e.g. a bench-set graph's upper/lower travel-stop marks —
+       the ch3-m4 defect: those illustrations were dropped composing into a
+       frame that had nowhere reserved to put them). This variant reserves
+       1-3 anchored annotation slots directly on the chart, each with its own
+       callout-manifest entry (same source-first discipline as the
+       diagram roles) — so an application concept with real anchored features
+       has a frame built to hold them, instead of an author dropping them to
+       fit application-07's plain box, or inventing freehand overlay text.
+       Frame capacity: 1-3 annotations before the chart crowds; more than
+       that, this is now a nomenclature/mechanism-shaped concept wearing a
+       chart, not an application concept — reconsider the role. -->
+  <article class="slide slide--role-application-annotated" data-slide="11" data-deck="gallery">
+    <h1 class="slide-title">Role: Application (annotated curve) — Lorem Ipsum In Practice</h1>
+    <div class="tpl-content">
+      <div class="tpl-chart-wrap">
+        <div class="tpl-chart placeholder-img">PLACEHOLDER<br>GRAPH / CHART</div>
+        <div class="tpl-annotation" style="left:36%;top:24%">
+          <span class="tpl-annotation__dot"></span>
+          <span class="tpl-annotation__label">Upper lorem stop</span>
+        </div>
+        <div class="tpl-annotation" style="left:66%;top:72%">
+          <span class="tpl-annotation__dot"></span>
+          <span class="tpl-annotation__label">Lower ipsum stop</span>
+        </div>
+      </div>
+      <p class="tpl-takeaway">Lorem ipsum dolor sit amet: the takeaway, still in its own row below the chart — the annotations live ON the figure because they are part of what the figure shows, not commentary about it.</p>
+    </div>
+    <script type="application/json" class="callout-manifest">
+    [
+      { "marker": "upper", "label": "Upper lorem stop", "sourceLocator": "Fig. 0, upper stop mark", "x": "36%", "y": "24%" },
+      { "marker": "lower", "label": "Lower ipsum stop", "sourceLocator": "Fig. 0, lower stop mark", "x": "66%", "y": "72%" }
+    ]
+    </script>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">11</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

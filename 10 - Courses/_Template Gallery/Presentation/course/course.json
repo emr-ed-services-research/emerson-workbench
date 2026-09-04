@@ -12,7 +12,7 @@
     "id": "gallery",
     "title": "Master Slide Templates — Axis C Roles (placeholder content)",
     "visual": true,
-    "summary": "10 mockups, one per Axis C concept role (prime, nomenclature, mechanism, procedure x3 variants, application, contrast, caution, check). Lorem-ipsum text and generic placeholder graphics only — nothing here is real ch3 content. Built 2026-09-04 in response to the ch3-m4 review findings (wrong callouts, a factual error, a chrome/content collision, a dropped teaching illustration) to prove a rigorously structured, non-freehand template system before any real content is recomposed against it. Page through with Next / Previous exactly as you would a real module.",
-    "pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    "summary": "11 mockups, one per Axis C concept role (prime, nomenclature, mechanism, procedure x3 variants, application x2 variants, contrast, caution, check). Lorem-ipsum text and generic placeholder graphics only — nothing here is real ch3 content. Built 2026-09-04 in response to the ch3-m4 review findings (wrong callouts, a factual error, a chrome/content collision, a dropped teaching illustration), then revised the same day after sitting with the 'gallery, not canvas' framing: the callout manifests now record verified position FIRST (source, not documentation), Mechanism gained a reserved motion-arrow slot, and Application gained an annotated-curve variant (page 11) — the direct answer to the dropped travel-stop illustrations, which had nowhere reserved to go in the plain single-curve chart. Page through with Next / Previous exactly as you would a real module.",
+    "pages": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
   }
 }

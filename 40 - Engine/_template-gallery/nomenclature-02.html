@@ -9,6 +9,13 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
+  <!-- GALLERY REVISION 2026-09-04: the manifest is now filled in FIRST, from
+       the real source figure's own callout positions, and the marker spans'
+       inline x/y are transcribed FROM it — the manifest is the source of the
+       position, not a record written after the fact to justify a position
+       chosen by eye. This frame's honest capacity is ~6 callouts before the
+       figure crowds; a diagram needing more should split into two frames or
+       use a denser labelled-diagram convention, not add a 7th marker here. -->
   <article class="slide slide--role-nomenclature" data-slide="02" data-deck="gallery">
     <h1 class="slide-title">Role: Nomenclature — Lorem Ipsum Construction</h1>
     <div class="tpl-content">
@@ -28,15 +35,15 @@
         <li><span class="num">4</span>Ut enim ad minim veniam fitting</li>
         <li><span class="num">5</span>Quis nostrud exercitation part</li>
       </ul>
-      <p class="tpl-source">Source: [Placeholder Manual] Fig. 0 — each marker's position is recorded against the source figure's own callout (see the hidden callout-manifest in this file's markup) and verified before publish, not placed by eye.</p>
+      <p class="tpl-source">Source: [Placeholder Manual] Fig. 0 — each marker's x/y is transcribed from this slide's callout-manifest, which records the verified source position FIRST; a marker is never placed by eye and written up after.</p>
     </div>
     <script type="application/json" class="callout-manifest">
     [
-      { "marker": 1, "label": "Lorem ipsum part name", "sourceLocator": "Fig. 0, callout A" },
-      { "marker": 2, "label": "Consectetur adipiscing elit component", "sourceLocator": "Fig. 0, callout B" },
-      { "marker": 3, "label": "Sed do eiusmod tempor part", "sourceLocator": "Fig. 0, callout C" },
-      { "marker": 4, "label": "Ut enim ad minim veniam fitting", "sourceLocator": "Fig. 0, callout D" },
-      { "marker": 5, "label": "Quis nostrud exercitation part", "sourceLocator": "Fig. 0, callout E" }
+      { "marker": 1, "label": "Lorem ipsum part name", "sourceLocator": "Fig. 0, callout A", "x": "52%", "y": "12%" },
+      { "marker": 2, "label": "Consectetur adipiscing elit component", "sourceLocator": "Fig. 0, callout B", "x": "30%", "y": "34%" },
+      { "marker": 3, "label": "Sed do eiusmod tempor part", "sourceLocator": "Fig. 0, callout C", "x": "82%", "y": "30%" },
+      { "marker": 4, "label": "Ut enim ad minim veniam fitting", "sourceLocator": "Fig. 0, callout D", "x": "38%", "y": "64%" },
+      { "marker": 5, "label": "Quis nostrud exercitation part", "sourceLocator": "Fig. 0, callout E", "x": "58%", "y": "82%" }
     ]
     </script>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">02</span><img class="slide-chrome__logo" src="../Presentation/build/assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
