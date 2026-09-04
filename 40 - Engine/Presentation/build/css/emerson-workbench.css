@@ -858,6 +858,44 @@
   flex: none;
 }
 
+/* .tmpl-fig + .tmpl-note collision fix (Franz review, 1400 ch3-m4 rework
+   2026-09-04). Same root-cause CLASS as the .tmpl-row/.tmpl-note fix above,
+   but the varying dimension is on the other side of the pair: .tmpl-fig is
+   vertically centered at a constant top:54cqh via translateY(-50%) and sized
+   only from its own --fig-ar and width, with no awareness of the .tmpl-note
+   pinned beneath it at a constant bottom:6cqh. A normal-proportioned figure
+   never reaches that low, but a tall/narrow --fig-ar (a slim cutaway) grows
+   the centered box tall enough that its bottom edge lands on the note text
+   (1400 slide 109, --fig-ar:0.549, previously pinned with an inline
+   width:26cqw). Fix: where a .slide--tmpl-diagram carries a .tmpl-note,
+   anchor the figure to the same top the .tmpl-list uses (17cqh) instead of
+   centering it, and cap its width to whichever is smaller - the slide's own
+   template-width ceiling, or the width implied by a fixed 55cqh height
+   budget at the figure's own --fig-ar. Both dimensions stay governed by the
+   one --fig-ar, so the box's aspect ratio is exact (no letterboxing) and
+   every .tmpl-marker top:% still lands on the same point of the image.
+   Anchoring to a known top plus a height cap bounds the figure's reach to
+   17cqh + 55cqh = 72cqh regardless of how many lines the note itself wraps
+   to - unlike centering, which would need the figure's height and the
+   note's height budgeted against each other and re-tuned per slide. A slide
+   using this combination must NOT also pin an inline width on .tmpl-fig
+   (only --fig-ar) - an inline width overrides this rule and reintroduces
+   the bug; see TEMPLATES.md. The .tmpl-list and .tmpl-note rules are
+   untouched - .tmpl-list is an independent column never party to this
+   collision, and .tmpl-note already sits well clear of 72cqh once the
+   figure stops being centered. */
+.slide--tmpl-diagram:has(> .tmpl-note) .tmpl-fig {
+  top: 17cqh;
+  transform: none;
+  width: min(17cqw, 55cqh * var(--fig-ar, 0.6));
+}
+.slide--tmpl-diagram.is-sourced:has(> .tmpl-note) .tmpl-fig {
+  width: min(26cqw, 55cqh * var(--fig-ar, 0.6));
+}
+.slide--tmpl-diagram.is-wide:has(> .tmpl-note) .tmpl-fig {
+  width: min(31cqw, 55cqh * var(--fig-ar, 0.6));
+}
+
 /* -- Standard slide heading ----------------------------------------
    The course-wide slide-heading treatment. The full-width PowerPoint
    title rule is dropped for a restrained heading — semibold, held to a

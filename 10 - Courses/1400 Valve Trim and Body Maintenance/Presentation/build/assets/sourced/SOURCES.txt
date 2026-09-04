@@ -117,6 +117,15 @@ benchset-measure-travel.png
   cropped for the slide 99 row, which was folded into slide 98 in the 2026-09-04 review.
   2026-09-04 (ch3-m2 Stage 3 pass).
 
+667-spring-stem-connector.png
+  Deck image174 (the same first-party Fisher 667 reverse-acting spring-and-diaphragm
+  actuator cutaway render used on slide 109, 495x901) cropped to the bottom 551x495
+  (rows 350-901): the compressed actuator spring bearing down through the yoke onto the
+  stem connector (hex nut, bracket, OPEN travel-direction plate). Cross-checked against
+  Fisher 667 IM (D100310X012) Figs 7-10 - key 18 (spring), 73 (yoke), 31 (stem connector)
+  sit in exactly this lower band. Used on slide 110 (ch3-m4 caution card: release the
+  spring before you loosen the stem connector). 2026-09-04 (ch3-m4 Stage 3 pass).
+
 657-hoist-onto-bonnet.png
   Deck image163 (first-party studio photo: a gloved hand carrying a 657 actuator by
   the yoke, lowering it onto the valve bonnet) cropped 481x856 -> 481x418 (28 px off
@@ -143,6 +152,23 @@ slide 97 bench-set graph (inline SVG, in 1400-097.html)
   Fig. 8.10 as backup, per Component Index ch3-cmp-bench-set-graph (slide-97 variant).
   Same geometry as the slide 92 SVG; friction-free / off-the-valve framing, first-movement
   point marked, 3-11 psig band. Replaces the ~110 KB deck auto-trace SVG. 2026-09-04.
+slide 111 nameplate (inline SVG, in 1400-111.html)
+  Same house-style inline-SVG nameplate as slide 96, re-populated with the 667's own
+  example values (TYPE 667, SIZE 30, BENCH SET 7-15, PRESS UNITS psig, TRAVEL 3/4 in -
+  matches Fisher 667 IM Table 1 for size 30). OPER RANGE set to 3-18 psig: the same 3 psig
+  floor as slide 96's 657 example, with headroom above the 15 psig upper bench set
+  proportioned to slide 96's headroom above its 11 psig upper bench set - illustrative,
+  not read off a specific nameplate photo (flagged to Franz, same caveat as slide 96).
+  Marked EXAMPLE. 2026-09-04 (ch3-m4 Stage 3 pass).
+slide 112 bench-set graph (inline SVG, in 1400-112.html)
+  House-style redraw of the reverse-acting bench-set line, after Fisher 657/667
+  Instruction Manual Fig. 5 (reverse-acting panel) with CVH 6th ed. Fig. 8.10 as backup,
+  per Component Index ch3-cmp-bench-set-graph (slide-112 variant). Same geometry as
+  slides 92 and 97 (0%-top/100%-bottom travel axis, diagonal "off the valve" label);
+  only the pressure values change, to the slide-111 nameplate's 7-15 psig bench set.
+  Replaces the ~90 KB deck auto-trace SVG, which also duplicated slide 109's mechanism
+  content on the same slide (folded out as part of this pass - see 1400-109.html and
+  1400-112.html comments). 2026-09-04.
 
 cvh6-fig1-6-bonnet-packing-box.png
   Control Valve Handbook, Sixth Edition (D101881X012), Figure 1.6 "Bonnet Assembly"

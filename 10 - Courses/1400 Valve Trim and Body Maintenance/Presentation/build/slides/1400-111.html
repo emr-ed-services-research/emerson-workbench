@@ -3,26 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1400 &middot; Slide 111 &mdash; 667 Actuator Information</title>
+<title>1400 &middot; Slide 111 &mdash; Read the Nameplate First</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
   <!-- Slide 111 | ppt slides/slide111.xml | layout: Title Only | family: .slide--title-only -->
-  <article class="slide slide--title-only" data-slide="111" data-deck="1400">
-    <h1 class="slide-title">667 Actuator Information</h1>
-    <figure class="slide-figure" style="left:11.156%;top:27.451%;width:77.745%;height:32.567%"><img src="../assets/img/image157.png" alt="Picture 17"></figure>
-    <div class="slide-textbox" style="left:28.519%;top:36.725%;width:22.494%;height:3.96%;font-size:1.768cqw"><p>XXXXXXXXX</p></div>
-    <div class="slide-textbox" style="left:62.259%;top:36.725%;width:22.494%;height:3.96%;font-size:1.768cqw"><p>667</p></div>
-    <div class="slide-textbox" style="left:23.036%;top:41.245%;width:22.494%;height:3.96%;font-size:1.768cqw"><p>30</p></div>
-    <div class="slide-textbox" style="left:61.978%;top:41.245%;width:22.494%;height:3.96%;font-size:1.768cqw"><p>7-15</p></div>
-    <div class="slide-textbox" style="left:64.931%;top:46.311%;width:22.494%;height:3.96%;font-size:1.768cqw"><p>PSI</p></div>
-    <div class="slide-textbox" style="left:24.512%;top:46.311%;width:22.494%;height:3.96%;font-size:1.768cqw"><p>3/4 Inch</p></div>
-    <div class="slide-textbox" style="left:48.06%;top:50.984%;width:22.494%;height:3.96%;font-size:1.768cqw"><p>0-18</p></div>
+  <!-- ch3-m4 four-part pass 2026-09-04.
+       Part 1/4: keyConcept 4, role: nomenclature, level: remember - "read the nameplate:
+       type & size, bench-set range (e.g. 7-15 psig), rated travel, stem diameter". The
+       original was a title-only slide with deck image157 (the same flat vector-style Fisher
+       nameplate graphic used on ch3-m2 slide 96) and six floating PowerPoint value boxes
+       (XXXXXXXXX / 667 / 30 / 7-15 / PSI / 3/4 Inch / 0-18) - the same "leftover flat
+       PowerPoint" problem slide 96 already fixed for the 657.
+       Part 2/4: Component Index ch3-cmp-nameplate is status: legacy, delivery "prefer a
+       clean crop of an actual 657/667 nameplate from the IM; the deck image is acceptable
+       if legible". Rebuilt as the SAME house-style inline SVG nameplate as slide 96 (same
+       field layout, same EXAMPLE tag and note), with the deck's own 667 example values:
+       TYPE 667, SIZE 30, BENCH SET 7-15, PRESS UNITS psig, TRAVEL 3/4 in (matches Fisher
+       667 IM Table 1 for size 30 - Acceptable Valve Stem Diameter 3/8 in, Maximum Travel
+       0.75 in). OPER RANGE: deck showed 0-18 (unchanged from the 657 slide's placeholder);
+       replaced with 3-18 psig - same 3 psig floor as slide 96's corrected 657 example, and
+       ~3 psig of headroom above the 15 psig bench-set upper (proportionate to slide 96's
+       657 example, which carried ~4 psig of headroom above its 11 psig upper bench set).
+       This is an illustrative pairing, not read off a specific nameplate photo - flagged
+       to Franz, same caveat as slide 96.
+       GENERATED ART - logged in SOURCES.txt. Reused on a single-cell .slide--tmpl-figrow
+       per TEMPLATES.md (inline SVG diagrams use figrow, not .tmpl-fig). -->
+  <article class="slide slide--tmpl-figrow" data-slide="111" data-deck="1400" data-review="ch3-four-part">
+    <div class="review-ribbon">ch3-m4 pass: 667 example nameplate redrawn as SVG (same pattern as slide 96); OPER RANGE illustrative &mdash; see To-Franz</div>
+    <h1 class="slide-title">Read the Nameplate First</h1>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <svg viewBox="0 0 640 250" role="img" aria-label="Example Fisher 667 actuator nameplate. TYPE 667. SIZE 30. BENCH SET 7 to 15. PRESS UNITS psig. TRAVEL three-quarter inch. OPER RANGE 3 to 18 psig. Values shown are an example." font-family="Arial, Helvetica, sans-serif">
+          <rect x="6" y="6" width="628" height="238" rx="14" fill="#1b1b1b" stroke="#3F4040" stroke-width="2"/>
+          <g fill="#1b1b1b" stroke="#6E7070" stroke-width="2">
+            <circle cx="42" cy="42" r="9"/><circle cx="598" cy="42" r="9"/>
+            <circle cx="42" cy="208" r="9"/><circle cx="598" cy="208" r="9"/>
+          </g>
+          <text x="74" y="50" fill="#ffffff" font-size="24" font-weight="700">ACTUATOR</text>
+          <text x="40" y="223" fill="#F5A623" font-size="14" font-weight="700" letter-spacing="1">EXAMPLE</text>
+          <rect x="214" y="30" width="88" height="27" rx="4" fill="#ffffff"/>
+          <text x="258" y="50" fill="#1b1b1b" font-size="17" font-weight="800" text-anchor="middle" letter-spacing="1">FISHER</text>
+          <text x="470" y="50" fill="#ffffff" font-size="18" font-weight="700" text-anchor="middle">Fisher Controls</text>
+          <g fill="#ffffff" font-size="16" font-weight="700">
+            <text x="40" y="101">SERIAL NO</text>
+            <text x="40" y="141">SIZE</text>
+            <text x="40" y="181">TRAVEL</text>
+            <text x="336" y="101">TYPE</text>
+            <text x="336" y="141">BENCH SET</text>
+            <text x="336" y="181">PRESS UNITS</text>
+            <text x="214" y="223">OPER RANGE</text>
+          </g>
+          <g fill="#ffffff">
+            <rect x="152" y="86" width="150" height="21"/>
+            <rect x="152" y="126" width="150" height="21"/>
+            <rect x="152" y="166" width="150" height="21"/>
+            <rect x="470" y="86" width="150" height="21"/>
+            <rect x="470" y="126" width="150" height="21"/>
+            <rect x="470" y="166" width="150" height="21"/>
+            <rect x="330" y="208" width="150" height="21"/>
+          </g>
+          <g fill="#1b1b1b" font-size="15" font-weight="700" text-anchor="middle">
+            <text x="227" y="102">&mdash;</text>
+            <text x="227" y="142">30</text>
+            <text x="227" y="182">3/4 in</text>
+            <text x="545" y="102">667</text>
+            <text x="545" y="142">7&ndash;15</text>
+            <text x="545" y="182">psig</text>
+            <text x="405" y="224">3&ndash;18 psig</text>
+          </g>
+        </svg>
+      </figure>
+    </div>
+    <p class="tmpl-note">Example nameplate &mdash; read <em>which</em> fields matter (type &amp; size, bench-set range, rated travel, stem diameter); a real actuator's values will differ.</p>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">111</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
-  
+
 </main>
 </body>
 </html>

@@ -96,6 +96,24 @@ the labels live.
   `.slide--tmpl-figrow` instead — `.tmpl-cell:only-child > svg` fills the cell —
   and carry the labels and a source line inside the SVG (as on 1400 slides 51
   and 62).
+- `.tmpl-note` also works here (see Template 5), for one line of teaching
+  emphasis below the figure/list pair.
+
+**A `.tmpl-note` under a tall figure auto-clears it.** `.tmpl-fig` is normally
+vertically centered and sized purely from its own `--fig-ar` and width, which
+is fine for a normal-proportioned figure but lets a tall/narrow one (a slim
+cutaway) grow its centered box down into a `.tmpl-note` pinned near the
+bottom of the slide (1400 slide 109, `--fig-ar:0.549`). Where a `.tmpl-note`
+follows the figure, the CSS (`:has(> .tmpl-note)`) anchors `.tmpl-fig` to the
+same top the list uses instead of centering it, and caps its width to
+whichever is smaller — the template's own width ceiling for that variant, or
+the width implied by a fixed height budget at the figure's `--fig-ar` — so
+the figure's reach is bounded regardless of how tall its aspect ratio would
+otherwise make it. **Do not also set an inline `width` on `.tmpl-fig` when it
+has a sibling `.tmpl-note`** — only `--fig-ar`; an inline width overrides the
+cap and reintroduces the collision. Fixed 2026-09-04 (1400 slide 109);
+do not hand-patch a future tall-figure-plus-note collision with an inline
+`max-height` or width — this template rule already covers it.
 
 ---
 
