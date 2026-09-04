@@ -480,9 +480,24 @@ yet; for ch3 (already tagged for A/B) it is another `force` re-author.
       `data-review="ch3-m3-consolidated"` stubs). `course.json` ch3-m3 `pages`
       → `[101,102,103,105,106]`, concept 4 `pages` `[102,104]`→`[102]`, concept
       6 `pages` `[106,107]`→`[106]`; `course-data.js` regenerated; re-verified
-      0 FAIL. **Still open:** a Stage 3 rework re-fire for slides 101/102/103
-      (the two layout collisions above) — the console's Stage 3 state also
-      needs re-syncing off `failed` since it never recorded this run.
+      0 FAIL. **Rework fired and closed** (2026-09-04, headless Agent SDK,
+      56 turns, $2.01): root-caused the `.tmpl-note`/figcaption overlap to
+      `.slide--tmpl-figrow`'s CSS (row/note pinned to constant `bottom:`
+      offsets, sized for a one-line note) and fixed it **at the template
+      level** — `:has(> .tmpl-note)` lays a plain figrow + trailing note out
+      as a flow column so the note's real height always pushes the row up.
+      This replaces ch3-m2 slide 98's one-off patch with a fix that holds for
+      all 14+ existing figrow+note slides (verified); applied to both the
+      course build and the canonical `40 - Engine` copy, `TEMPLATES.md`
+      updated in both. Slide 102's graph label repositioned. Full-course
+      `verify.ps1` re-run: 0 FAIL (10 pre-existing warnings, all in
+      unauthored Day 2/3 outline slides, unrelated). **ch3-m3 Stage 3 done.**
+      One gap noted for the record: the console's own Stage 3 review rack for
+      ch3-m3 only holds 101/102/103 (the rework's scope) — 105/106/108 were
+      reviewed by hand in this session but never went through the console's
+      after-render/screenshot phase, since the original run crashed before
+      reaching it. Cosmetic for now; worth a full (non-rework) Stage 3 fire
+      later if the console's own record should be complete.
 - [ ] Four-bucket precedence rule written into [[Course Porting Pipeline]]
       working rules.
 - [ ] Stage 3 QA mechanisms (§4 above) shipped; noted in
