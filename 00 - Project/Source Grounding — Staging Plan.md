@@ -498,6 +498,31 @@ yet; for ch3 (already tagged for A/B) it is another `force` re-author.
       after-render/screenshot phase, since the original run crashed before
       reaching it. Cosmetic for now; worth a full (non-rework) Stage 3 fire
       later if the console's own record should be complete.
+- [x] **ch3-m4 Stage 3** (Fisher 667 — Identify & Bench Set, `buildsOn: []`,
+      mirrors ch3-m2's 657 treatment) — full four-part pass (2026-09-04, $3.14,
+      74 turns): merged RA-mechanism content duplicated across 109/112 into
+      109 alone; Template 6 caution card on 110; nameplate SVG on 111 (EXAMPLE,
+      as slide 96); bench-set graph only on 112 (reverse-acting panel, 7–15
+      psig); CYK on 113 recast as a situation, and its original claim replaced
+      after the 667 IM's own procedure contradicted it (PDTC starts upper
+      travel stop, PDTO/reverse-acting starts lower — not "always upper" as
+      originally written); 114 rebuilt as a 3-step figrow. **Third instance of
+      the sibling-box collision class** found on slide 109 — `.tmpl-fig` (tall
+      narrow cutaway) overlapped `.tmpl-note`, same root cause as the
+      figrow/note bug, different template (`.slide--tmpl-diagram`). Fixed the
+      same way, at the template level: `:has(> .tmpl-note) .tmpl-fig` anchors
+      to `top:17cqh` and caps its width instead of centering an unbounded box;
+      verified against the other 8 existing `.tmpl-diagram` slides (none
+      touched). Full-course `verify.ps1`: 0 FAIL. **ch3-m4 Stage 3 done**, all
+      6 slides approved, console closed. Two judgment calls left open for
+      Franz (not blocking): slide 111's OPER RANGE is illustrative like slide
+      96's; slide 112 keeps the module's shared travel-axis convention even
+      though it no longer tracks a reverse-acting stem's actual direction.
+      **Tooling note:** `build-course.ps1`'s "unchanged" fast path (course
+      copy already byte-identical to engine) returns before refreshing
+      `_engine-lock.json`'s recorded hash — a hand-edit landing both copies
+      identical never updates the lock. Worked around by hand twice now;
+      worth patching `build-course.ps1` directly at some point.
 - [ ] Four-bucket precedence rule written into [[Course Porting Pipeline]]
       working rules.
 - [ ] Stage 3 QA mechanisms (§4 above) shipped; noted in
