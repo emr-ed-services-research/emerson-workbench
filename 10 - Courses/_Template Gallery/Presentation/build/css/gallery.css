@@ -161,22 +161,24 @@
 }
 .slide--role-nomenclature .tpl-marker,
 .slide--role-mechanism .tpl-marker {
+  /* ONE callout-marker colour across every role — Style Guide §6.
+     `--emerson-blue`, white number, white halo ring. The halo is what
+     keeps it legible on any background (a dark cutaway, a photo, or a
+     blue/grey data line). Orange stays reserved for caution and for §5.6's
+     semantic regions/brackets, never for a numbered marker. */
   position: absolute;
   transform: translate(-50%, -50%);
   width: 1.9cqw;
   height: 1.9cqw;
   border-radius: 50%;
-  background: var(--emerson-charcoal);
+  background: var(--emerson-blue);
   color: var(--emerson-white);
   font-size: 1.15cqw;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 0.2cqw var(--emerson-white);
-}
-.slide--role-mechanism .tpl-marker {
-  background: var(--emerson-blue);
+  box-shadow: 0 0 0 0.22cqw var(--emerson-white);
 }
 /* Reserved, first-class motion indicator — the one thing this frame exists
    to show that Nomenclature's static labelling does not. Sits under the
@@ -226,7 +228,7 @@
   width: 1.9cqw;
   height: 1.9cqw;
   border-radius: 50%;
-  background: var(--emerson-charcoal);
+  background: var(--emerson-blue);   /* §6 — one marker colour */
   color: var(--emerson-white);
   font-size: 1.15cqw;
   font-weight: 700;
@@ -234,7 +236,6 @@
   align-items: center;
   justify-content: center;
 }
-.slide--role-mechanism .tpl-list .num { background: var(--emerson-blue); }
 .slide--role-nomenclature .tpl-source,
 .slide--role-mechanism .tpl-source {
   grid-row: 2;
@@ -485,7 +486,7 @@
   width: 1.7cqw;
   height: 1.7cqw;
   border-radius: 50%;
-  background: var(--emerson-orange);
+  background: var(--emerson-blue);   /* §6 — one marker colour (was orange) */
   color: var(--emerson-white);
   font-size: 1.0cqw;
   font-weight: 700;

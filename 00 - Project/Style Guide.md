@@ -178,9 +178,9 @@ Rules:
 - **Series entries** carry a swatch (a sample of the exact stroke — solid
   bar, dashed bar, dotted bar — or a small filled/hatched square for a
   region) followed by the name. No number.
-- **Feature entries** carry a numbered circle — `--emerson-orange` fill,
-  white number, white halo — identical to the marker on the plot, point
-  and span alike (§5.2, §5.5).
+- **Feature entries** carry a numbered circle — `--emerson-blue` fill,
+  white number, white halo (§6, the one callout-marker colour) — identical
+  to the marker on the plot, point and span alike (§5.2, §5.5).
 - **Order:** all series first, then all features. Within each group, in the
   order encountered on the plot (left-to-right, then top-to-bottom).
 - **One key per graph.** A key that is all swatches and no numbered
@@ -200,13 +200,15 @@ series.
 
 ### 5.5 On-plot marks
 
-- **Feature markers:** a filled circle in `--emerson-orange` with a white
-  halo, the number in white. The circle sits *on* the feature. Small — the
-  circle must not be as wide as the gap it sits in (tp-010's first build
-  failed here: two markers ~2 psig apart, each nearly that wide).
+- **Feature markers:** a filled circle in `--emerson-blue` with a white
+  halo, the number in white (§6, the one callout-marker colour). The
+  circle sits *on* the feature. Small — the circle must not be as wide as
+  the gap it sits in (tp-010's first build failed here: two markers ~2 psig
+  apart, each nearly that wide).
 - **Spans:** a thin, square-cornered bracket linking the span's two ends,
-  **plus a numbered circle at one end** (§5.2 / §5.3 — the key entry and
-  the on-plot marker use the same circle). A span whose teaching point is
+  in `--emerson-orange` (§5.6, an offset region), **plus a numbered circle
+  at one end** — the circle is `--emerson-blue` like every other marker,
+  even though the bracket it caps is orange. A span whose teaching point is
   its *area* is a filled region instead: `--emerson-yellow` at ~0.13 alpha
   or a hatch, keyed as a series.
 - **Threshold lines** (e.g. tp-010's vertical lines at specific psig
@@ -442,14 +444,34 @@ is likewise deferred (see §5.10).
 
 ## 6. Callout conventions
 
-*Stub. To cover: formalise the marker → label → source-locator manifest
-the Component Index and slide-template work already practise —
+*Mostly stubbed. To cover: formalise the marker → label → source-locator
+manifest the Component Index and slide-template work already practise —
 positions derived from a verified source figure or an already-reviewed
 production slide, authored before the marker is placed, never a record
 written afterward to justify a freehand choice; per-template callout
 capacity; the on-image dot convention vs. the gutter-marker-with-leader
 convention and when each applies; how §5's graph keys and §6's part
 callouts are the same list mechanism.*
+
+### 6.1 The one callout-marker colour — resolved 2026-09-06
+
+**Every numbered callout marker is a filled `--emerson-blue` circle, white
+number, white halo ring.** On the figure/plot and in the list, every role
+— nomenclature, mechanism, all three procedure variants, and §5 graph
+features. Before this, the gallery templates diverged (nomenclature
+charcoal, mechanism/procedure blue, §5 features orange); Franz called it in
+while §6 was still cheap to define.
+
+- The **white halo ring** is what makes one colour work on any background —
+  a dark cutaway, a photo, or a blue/grey data line.
+- **Orange is not a marker colour.** It stays reserved for the caution
+  treatment and for §5.6's semantic regions and brackets (a bench-set band,
+  a deadband, a friction offset). A span feature is therefore an *orange
+  bracket* capped by a *blue numbered circle* — the bracket carries the
+  meaning, the circle is just the marker.
+- The production `.slide--tmpl-diagram` (Template 2) still uses its older
+  two-tone scheme (charcoal gutter marker, blue list circle); it aligns to
+  this rule if/when it is next revisited, not now.
 
 ## 7. Terminology
 
