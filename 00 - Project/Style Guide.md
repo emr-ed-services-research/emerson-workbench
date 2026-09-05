@@ -6,17 +6,18 @@ tags:
   - design
   - style
 updated: 2026-09-05
-status: in progress — §5 drafted for review; other sections stubbed
+status: in progress — §5 revised after an adversarial pass, awaiting direct review; other sections stubbed
 ---
 
 # Emerson Workbench — Style Guide
 
 > [!note] Status
 > Being built section by section, each with its own review pass. **§5
-> (Diagram & graph conventions) is drafted and ready for review** — it was
-> written first because it unblocks the pages 6/10 chart rebuild in the
-> template proof. The remaining sections are stubbed with scope notes and
-> will be written as their own passes.
+> (Diagram & graph conventions) has been through an adversarial self-review
+> and revision and is awaiting a direct review pass** — it was written
+> first because it unblocks the pages 6/10 chart rebuild in the template
+> proof (which does not start until §5 is approved). The remaining sections
+> are stubbed with scope notes and will be written as their own passes.
 
 ## What this document is
 
@@ -92,46 +93,57 @@ padding/margin/border in `cqw`/`cqh` when it also declares
 
 ## 5. Diagram & graph conventions
 
-Covers the internal drawing style of everything visual on a slide that
-isn't a photograph: analytical **graphs** (travel-vs-pressure lines,
-response curves, characteristic curves) and redrawn **schematics /
-cutaways**. Where a figure carries numbered part callouts, the marker →
-label → source-locator discipline for those is §6; this section is the
-drawing itself.
+Covers **analytical graphs** — travel-vs-pressure lines, response curves,
+characteristic curves. Redrawn **schematics and cutaways** get their
+part-callout treatment from §6 and share only §5.8 (redraw policy) and
+§5.9 (the source line); the rules below on keys, on-plot marks, and axes
+are graph-specific and do **not** apply to a cutaway — a cutaway's
+gutter-marker-with-leader callouts are the approved convention there (§6),
+not something §5 overrides. Graphs are authored as inline SVG.
 
 ### 5.1 The principle — labels come off the plot
 
-**A reader identifies what a line, region, or point means from a key, not
-from text sitting on the data.** The only text inside a plot's drawing area
-is: axis tick labels, axis titles, and short feature numbers inside markers.
-Everything else — every series name, every annotation longer than a number
-— lives in a key beside or below the plot.
+**One thing the Control Valve Handbook does consistently, across every
+graph type in the 6th edition: it never rotates a text label to follow a
+sloped line.** A diagonal line's name always goes somewhere the reader
+reads it level — a margin, a bracket, a legend.
 
-This is derived from the Control Valve Handbook's own practice, which is
-consistent across every graph type in the 6th edition:
+Beyond that one invariant the CVH is *not* consistent — it uses a
+different approach in every figure:
 
 | CVH figure | What it shows | How it labels |
 | --- | --- | --- |
 | Fig. 1.18 *Deadband* | one hysteresis loop — the shape *is* the message | axes only; **no line labels, no key**; the prose carries it |
-| Fig. 3.38 / 6.8 *Inherent Flow Characteristics* | three curves fanning from a shared origin to a shared end, widely separated | short **horizontal** labels in the open space near each curve |
-| Fig. 2.3 *Effect of Deadband on Valve Performance* | three signal traces that track and overlap each other, repeated across three panels | one compact **boxed legend** with short line samples, placed once |
-| Fig. 8.10 *Bench Set Seating Force* | two near-parallel sloped lines, a span, and axis-position callouts | labels in the **margins with short pointer-ins**, a **bracket** for the span, **leader-line callouts** for the named lines |
+| Fig. 3.38 / 6.8 *Inherent Flow Characteristics* | three curves fanning wide from a shared origin to a shared end | short **horizontal** labels in the open space near each curve |
+| Fig. 2.3 *Effect of Deadband on Valve Performance* | three signal traces that interweave, repeated over three panels | one compact **boxed legend**, placed once |
+| Fig. 8.10 *Bench Set Seating Force* | two near-parallel sloped lines, a span, axis-position callouts | **margin labels with pointer-ins**, a **bracket** for the span, **leader-line callouts** into the plot for the named lines |
 
-The through-line: **the CVH never rotates a text label to follow a sloped
-line.** When a line is diagonal, its name goes to a margin, a leader, a
-bracket, or a legend. Our current graphs (1400-092, 1400-102, 1400-112,
-and the proof's tp-006 / tp-010) all rotate labels along diagonal lines —
-that is exactly the thing this section rules out.
+**§5 takes the invariant and then goes stricter than the CVH by choice:**
+every series name and every annotation goes in a key; nothing is labelled
+inline on the plot, and no leader crosses the plot area. The CVH's Fig.
+3.38 (inline labels) and Fig. 8.10 (leaders into the plot) each read fine
+*in that figure* — but "are these curves separated enough for an inline
+label" and "where does this leader anchor and route" are per-instance
+freehand judgments, and removing exactly that kind of call is the point of
+the template system. A key in one fixed position is also simply more
+findable on a projected slide than labels scattered across the plot.
 
-### 5.2 Series vs. features — the two things a graph labels
+So the plot's drawing area carries only: axis tick labels, axis titles,
+and short feature numbers inside markers. Everything else is in the key.
 
-Every labelled thing on a graph is one of two kinds, and each gets a
-different treatment:
+Our current graphs — 1400-092, 1400-102, 1400-112, and the proof's
+tp-006 / tp-010 — all rotate labels along diagonal lines. That is the
+first thing this section rules out.
+
+### 5.2 What a graph labels — series, features, threshold lines
+
+Every labelled thing on a graph is one of three kinds:
 
 | Kind | Definition | Treatment |
 | --- | --- | --- |
-| **Series** | a whole line, curve, dashed reference, or shaded region the reader must tell apart from other series | a **key entry with a visual swatch** (a short sample of the actual line style, or a small fill/hatch chip) — no number |
-| **Feature** | a specific point, a threshold value, a span, or a single annotated event on the plot | a **numbered marker on the plot**, keyed to a numbered entry in the same list — the callout pattern of §6 |
+| **Series** | a whole line, curve, dashed reference, or shaded region the reader must tell apart from other series | a **key entry with a swatch** (a sample of the actual line style, or a small fill/hatch chip) — no number |
+| **Feature** | a specific point or a single annotated event on the plot | a **numbered marker on the plot**, keyed to a numbered entry in the same list — the callout pattern of §6 |
+| **Threshold line** | a specific axis value made visible as a full-height / full-width line (a pressure, a travel %) | a **dotted line** (§5.6), keyed as a series if the reader needs to *name* it, or tied to a feature number if the point is what happens *at* that value |
 
 A span (a bench-set range, a deadband width) is a borderline case: treat it
 as a **feature** if the teaching point is "this interval, right here" (mark
@@ -142,34 +154,35 @@ the fill's hatch).
 ### 5.3 The key
 
 **The key is the slide's numbered "what to notice" list (`.tpl-list`), not
-a separate floating legend box.** The chart-bearing role templates
-(mechanism, application) already carry this list beside or below the
-figure; a graph reuses it. This is the point of unification — a graph's key
-is the same callout list the nomenclature and mechanism templates already
-use, so graphs stop being a special case.
+a separate floating legend box.** This is the point of unification — a
+graph's key is the same callout list the nomenclature and mechanism
+templates already use, so graphs stop being a special case. (What the
+templates carry today, and the changes this needs, are listed at the end
+of §5.10, "Template changes §5 requires".)
 
 Rules:
 
-- **Series entries** carry a swatch (a ~24 px sample of the exact stroke —
-  solid bar, dashed bar, dotted bar — or a small filled/hatched square for
-  a region) followed by the name. No number.
+- **Series entries** carry a swatch (a sample of the exact stroke — solid
+  bar, dashed bar, dotted bar — or a small filled/hatched square for a
+  region) followed by the name. No number.
 - **Feature entries** carry a numbered dot; the same number appears on the
   plot at the feature.
 - **Order:** all series first, then all features. Within each group, in the
   order encountered on the plot (left-to-right, then top-to-bottom).
-- **One key per graph.**
+- **One key per graph.** A key that is all swatches and no numbered
+  features is fine (tp-006 rebuilt is exactly that).
 - Entry text is a name plus, if useful, a short functional tag — never a
-  sentence an instructor would read aloud (same rule as every other list in
-  the system; the sentence belongs in the context pane).
+  sentence an instructor would read aloud; the sentence belongs in the
+  context pane.
 
-### 5.4 The one exception — a single-series schematic
+### 5.4 The single-series case
 
-When a graph has **exactly one line or loop and the shape itself is the
-whole teaching point** (the CVH Fig. 1.18 case), it carries **no key and no
-rotated label**: axes, the drawing, a caption, and the context pane carry
-it. This is the exception, not a default to reach for — it applies only
-when there is genuinely one series and nothing to tell apart. Using it is a
-deviation and gets the same review as any deviation.
+A graph with **one series and nothing to tell apart** carries no key — a
+key would be decoration. The CVH Fig. 1.18 deadband loop is this: one
+hysteresis loop, the shape is the whole point. Axes, the drawing, a
+caption, and the context pane carry it. This is a genuine category, not a
+carve-out to reach for — it applies only when there is genuinely one
+series.
 
 ### 5.5 On-plot marks
 
@@ -179,9 +192,10 @@ deviation and gets the same review as any deviation.
 - **Spans:** a thin, square-cornered bracket, or a filled region. A filled
   region uses `--emerson-yellow` at ~0.13 alpha (the established
   bench-set-band fill) or a hatch; either way it is a keyed series.
-- **Threshold / reference lines** (e.g. tp-010's vertical lines at specific
-  psig values): a dotted `--emerson-grey` line, keyed as a series or
-  annotated with a feature number — never left unlabelled.
+- **Threshold lines** (e.g. tp-010's vertical lines at specific psig
+  values): a dotted `--emerson-grey` line, keyed as a series or annotated
+  with a feature number — never left unlabelled. (An ideal/friction-free
+  *reference* line is a series, not a threshold line — dashed, per §5.6.)
 - **No rotated text.** **No leader lines crossing the plot area.** A
   feature that can't be a short number in a dot goes in the key.
 - **Axis-position callouts** ("0 % travel = upper stop", "100 % = lower
@@ -190,8 +204,7 @@ deviation and gets the same review as any deviation.
 
 ### 5.6 Line & region style vocabulary
 
-A fixed vocabulary so the same meaning looks the same on every graph.
-Rationalised from what 1400-092 / 102 / 125 already use, snapped to tokens:
+A fixed vocabulary so the same meaning looks the same on every graph:
 
 | Meaning | Stroke | Colour (token) |
 | --- | --- | --- |
@@ -200,11 +213,19 @@ Rationalised from what 1400-092 / 102 / 125 already use, snapped to tokens:
 | a second measured series shown for contrast | solid, 3 px | `--emerson-cyan` |
 | a threshold / limit / "value of interest" line | dotted, 1.5 px | `--emerson-grey` |
 | an operating range / bench-set band (region fill) | — | `--emerson-yellow` @ ~0.13 alpha |
-| a deadband / error / offset region (region fill or bracket) | bracket 1.5 px | `--emerson-orange` |
+| a deadband / error / offset region (fill or bracket) | bracket 1.5 px | `--emerson-orange` |
 
 No colour outside `tokens.css` appears in an authored graph. (The legacy
-1400-125 uses `#0000FF` and dotted orange/purple leader callouts — that
-slide is pre-redesign and is what this table rules out.)
+1400-125 uses a non-palette `#0000FF` with dotted orange/purple leader
+callouts — that is what this table rules out.)
+
+**Provenance / to verify at rebuild.** These values are rationalised from
+tp-006 and tp-010 (read from source) and 1400-092 / 102 / 112 (read from
+render, not source). Two are deliberate changes to land on tokens: the
+band fill `#F6BE00 → --emerson-yellow`, and the reference-line grey
+`#6E7070 → --emerson-grey`. `--emerson-grey` (`#959797`) is lighter than
+what is in use now — confirm at rebuild that it reads strongly enough as a
+thin dashed diagonal on white; if not, use `--emerson-charcoal` at ~60 %.
 
 ### 5.7 Axes
 
@@ -219,34 +240,28 @@ slide is pre-redesign and is what this table rules out.)
   conceptual — they show a relationship, not values to read off. Add faint
   `--emerson-grey` gridlines only when a reader genuinely must extract a
   quantitative value from the plot (rare).
+- **Orientation:** a travel-vs-pressure graph puts **0 % travel at the top**
+  of the y-axis, 100 % at the bottom — travel increases downward, matching
+  the valve stem closing. This is the Fisher instruction-manual convention
+  and is already what 1400-092 / 102 / 112 and tp-006 / tp-010 do. Keep it.
 
 ### 5.8 Redraw vs. use the source figure
 
-**Redraw** when any of:
+Whether to redraw a figure or use it as-is is governed by
+`Source Grounding — Staging Plan.md` and the Component Index rules — §5
+does not restate that logic. §5 adds only two things:
 
-- the source figure is a low-resolution scan that clashes with the design
-  system, or
-- it carries the source manual's own parts-list key numbers that can't be
-  cleanly reused (several 1400 ch2 figures were passed over for exactly
-  this reason — see `1400 Chapter 2 redesign status.md`), or
-- the teaching point needs an element the source figure doesn't isolate
-  (e.g. the bench-set graph's travel-stop marks — the ch3-m4 defect was
-  dropping exactly that).
-
-**Use the source figure as-is** (with our own markers layered on top, under
-a §6 manifest) when it is clean line-art, correctly scoped, and our markers
-cover the teaching point.
-
-A redraw is **specified against a named source figure** (manual + figure
-number), never invented — the same rule the Component Index applies to
-components. See `Source Grounding — Staging Plan.md`.
+- a redrawn graph follows §5.1–§5.7;
+- a redraw is **specified against a named source figure** (manual + figure
+  number), never invented — the same rule the Component Index applies to
+  components.
 
 ### 5.9 The source line
 
 Every graph and every redrawn figure carries a `.tpl-source` line (grey
-italic, below the content):
+italic, below the content), matching the format already in use:
 
-> After [manual / handbook], Fig. [N] — [what was kept, what was changed].
+> After [manual / handbook], Fig. [N] — [what was kept / changed]. Component Index: [id].
 
 A redraw that departs from its source figure states how, briefly
 ("travel-stop marks added"; "axes relabelled to psig"; "both curves from
@@ -285,22 +300,33 @@ this is here so the section is reviewable against real cases).
   features.
 - The long rotated labels are gone.
 
-**Template implication:** the mechanism template (tp-006) already has the
-`.tpl-list` beside the figure — it needs a swatch-marker variant on list
-entries. The application-annotated template (tp-010) currently has on-chart
-`.tpl-annotation` dots and a `.tpl-takeaway` line but **no key list** — it
-needs the `.tpl-list` added, in the same position the mechanism template
-uses it. Both are small, structural template changes, scoped with the
-rebuild.
+**Template changes §5 requires** (all scoped with the rebuild, none built
+yet):
+
+1. `.tpl-list` gains a **swatch-entry variant** — an entry led by a
+   line-style or fill sample instead of a number. Needed by every
+   chart-bearing template.
+2. The **application-annotated** template gains a `.tpl-list` in the same
+   position the mechanism template uses it. It currently has only
+   free-floating `.tpl-annotation` dots and a `.tpl-takeaway` line; the
+   takeaway can stay, the annotation dots become plot markers keyed to the
+   new list.
+3. Still to pin down in that work, and worth a view at review: whether the
+   key sits **right of** or **below** the plot; the swatch's size in
+   `cqw`; key-text scale (inherits §2).
 
 ### 5.11 Checklist (folds into the Stage 3 pre-send check)
+
+All items are human-verified against the rendered slide — none are caught
+by the headless render checks today, which see clipping and broken images
+but not label rotation or colour intent.
 
 - [ ] No text is rotated to follow a data line. Only an axis title is rotated.
 - [ ] Every line, curve, and region has a key entry with a swatch.
 - [ ] Every number shown on the plot resolves to a numbered key entry.
 - [ ] Colours are from the §5.6 vocabulary; no non-token colour.
-- [ ] Axis lines are charcoal with an arrowhead; tick labels horizontal.
-- [ ] The source line is present and says what was kept / changed.
+- [ ] Axis lines are charcoal with an arrowhead; tick labels horizontal; 0 % travel at top.
+- [ ] The source line is present, names the source figure, and says what changed.
 - [ ] Redraws are specified against a named source figure, not invented.
 
 ### 5.12 Scope of the first rebuild — decide at §5 review
