@@ -182,29 +182,39 @@ concept-tags: [bench set, rated travel, lower bench set, upper bench set, fricti
 status: current
 source:
   - doc: Control Valve Handbook 6th ed.
-    locator: "§8.5.5 + Figure 8.10 'Bench Set Seating Force' (clean vector; travel-on-Y / pressure-on-X, matching the course's graph convention). PRIMARY — the figure used."
+    locator: "§8.5.5 + Figure 8.10 'Bench Set Seating Force' (clean vector; travel-on-Y / pressure-on-X). The DEADBAND figure — three interleaved curves + a 'Deadband' bracket. Geometry reference for the redraw, NOT used directly."
   - doc: Fisher 657 / 667 Instruction Manual
     locator: "Figure 5 — 'Typical Valve Response to Deadband' (drawing A6763-2, 2018; DIRECT / REVERSE ACTING panels). Corroborating reference; axes transposed from the course convention."
 delivery: >
-  Use the source figure directly where a slide's scope matches it (Style Guide
-  §5.8, source-figure-first) — CVH Fig 8.10 with a §5.3 key. Redraw ONLY for a
-  stated §5.8 reason. CORRECTED 2026-09-05: the prior "house-style redraw,
-  faithful to Fisher IM Fig 5" delivery rested on a wrong "low-res 1990s scan"
-  premise (both figures are clean vector) — see Source Grounding Staging Plan §3.
+  BOUNDED REDRAW + a §5.3 key, on the .slide--tmpl-graph template
+  (TEMPLATES.md Template 7). CORRECTED 2026-09-05: the earlier "use CVH Fig 8.10
+  directly" delivery was wrong — Fig 8.10 is the three-line deadband figure and
+  each bench-set slide teaches one or two of those lines; the rest is ch3-m6
+  content and the curves are interleaved and un-croppable (Style Guide §5.8
+  reason #2). Fig 5's axes are transposed (reason #1). Spec the redraw against
+  Fig 8.10's printed geometry ("Bench Set (3-11 psig)"). The still-earlier
+  "low-res 1990s scan" premise was also wrong (both figures are clean vector) —
+  see Source Grounding Staging Plan §3.
 used-by: [92, 97, 102, 112]
 variants:
-  - tp-010 / slide 102 (ch3-m3, on-valve friction shift): REDRAW, §5.8 reason #2
-    (Fig 8.10's third line — the deadband's decreasing-pressure side — is m6
-    content, spatially interleaved, can't be cropped or left unkeyed). Two lines
-    only: friction-free bench set (3-11 psig, from Fig 8.10's printed label) and
-    the on-valve line offset right by the friction contribution — pixel-measured
-    on Fig 8.10 at ~65 px against a 281 px blue run for the 8-psig span ≈ 1.85
-    psig, ~23 % of the span; drawn as 2 psig. Built 2026-09-05, on its second
-    review round (round 1: ② needed a real circle marker; the plot needed a
-    steeper slope to make the shift readable; the key went vertical).
-  - slides 92 / 97 / 112 (ch3-m1/m2/m4): pending the §5.12 scope decision —
-    evaluate CVH Fig 8.10 direct-use + a §5.3 key before assuming a redraw.
-    92 is ch3-m1 (done), 97 ch3-m2 (done), 112 ch3-m4 (under the full stop).
+  - slide 92 (ch3-m1, generic friction-free definition): DONE 2026-09-05. Single
+    bench-set line 3→11 psig + a bench-set-range band; key = line swatch + band
+    swatch; friction-free framing in the takeaway.
+  - slide 97 (ch3-m2, direct-acting off the valve): DONE 2026-09-05. Same single
+    line; the first-movement and full-travel points are numbered features ①②.
+    Was missed in Style Guide §5.12's original scope enumeration — caught by
+    checking this used-by list at §5 review.
+  - slide 102 / tp-010 (ch3-m3, on-valve friction shift): DONE 2026-09-05.
+    §5.8 reason #2 — Fig 8.10's decreasing-pressure line and deadband bracket
+    are m6 content, spatially interleaved, un-croppable. Two lines: friction-free
+    bench set (3-11 psig, from Fig 8.10's printed label) and the on-valve line
+    offset right by the friction contribution — pixel-measured on Fig 8.10 at
+    ~23 % of the 8-psig bench-set span; drawn as 2 psig. Marked ①② with a span
+    bracket. tp-010 is the proof twin; slide 102 matches it. tp-010 passed its
+    second review round (round 1: ② needed a real circle marker; steeper slope;
+    vertical key).
+  - slide 112 (ch3-m4, reverse-acting off the valve): DEFERRED — ch3-m4 content,
+    under the module-work full stop (Franz, 2026-09-05).
 ```
 
 ```yaml

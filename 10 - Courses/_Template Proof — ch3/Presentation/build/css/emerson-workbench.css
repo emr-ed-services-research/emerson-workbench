@@ -907,6 +907,7 @@
 .slide--tmpl-table::after,
 .slide--tmpl-compare::after,
 .slide--tmpl-figrow::after,
+.slide--tmpl-graph::after,
 .slide--tmpl-caution::after { display: none; }
 
 .slide--hd .slide-title,
@@ -914,6 +915,7 @@
 .slide--tmpl-table .slide-title,
 .slide--tmpl-compare .slide-title,
 .slide--tmpl-figrow .slide-title,
+.slide--tmpl-graph .slide-title,
 .slide--tmpl-caution .slide-title {
   top: 6cqh;
   left: 5.6cqw; right: 5.6cqw;
@@ -932,6 +934,7 @@
 .slide--tmpl-table .slide-title::after,
 .slide--tmpl-compare .slide-title::after,
 .slide--tmpl-figrow .slide-title::after,
+.slide--tmpl-graph .slide-title::after,
 .slide--tmpl-caution .slide-title::after {
   content: "";
   position: absolute;
@@ -1042,6 +1045,139 @@
 .slide--tmpl-caution .caution-fig > svg {
   max-width: 100%; max-height: 100%;
   object-fit: contain;
+}
+
+/* -- Template 7: keyed graph  .slide--tmpl-graph --------------------
+   A conceptual analytical graph (travel-vs-pressure and the like) laid
+   out to Style Guide §5: the plot on the left carries ONLY axes, data
+   lines/regions, and small numbered feature dots sitting ON the line;
+   every series, region, and feature is named in a vertical key to the
+   right (§5.3). No text is rotated to follow a data line and no leader
+   line crosses the plot (§5.1 / §5.5) — that is the whole reason this
+   template exists instead of .slide--tmpl-figrow, which has no key
+   column and left authors labelling lines in place.
+
+   This is a port of the gallery .slide--role-application design (proven
+   by the template proof, tp-010, which passed direct review). Structure:
+     <figure class="tmpl-plot"><svg>…</svg></figure>
+     <ul class="tmpl-key">
+       <li><span class="swatch" style="--swatch-c:var(--emerson-blue)"></span>…series…</li>
+       <li><span class="swatch is-dashed" style="--swatch-c:var(--emerson-grey)"></span>…reference…</li>
+       <li><span class="num">1</span>…feature…</li>
+     </ul>
+     <p class="tmpl-takeaway">one plain-language line</p>   (optional)
+     <p class="tmpl-source">After …, Fig. … — … . Component Index: … .</p>
+
+   The article is the grid container; every inset is a MARGIN on a child,
+   never cqw/cqh padding on .slide itself (that element declares
+   container-type: size — a self-referencing container-query length there
+   corrupts cqw/cqh for the whole subtree; see the caution-template note
+   above and TEMPLATES.md). A single-series graph with nothing to tell
+   apart (§5.4) omits .tmpl-key and the grid collapses to one column. */
+.slide--tmpl-graph {
+  display: grid;
+  grid-template-columns: 54cqw 27cqw;
+  grid-template-rows: 15cqh 56cqh auto auto;
+  align-content: start;
+  justify-content: center;
+  column-gap: 3cqw;
+}
+.slide--tmpl-graph:not(:has(.tmpl-key)) {
+  grid-template-columns: 74cqw;
+}
+
+.slide--tmpl-graph .tmpl-plot {
+  grid-column: 1;
+  grid-row: 2;
+  margin: 0;               /* <figure> — kill the UA 40px side margin */
+  align-self: stretch;
+  justify-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  min-height: 0;
+}
+.slide--tmpl-graph .tmpl-plot > svg {
+  /* the graph's own aspect is held by preserveAspectRatio="xMidYMid meet";
+     scale it to fit the box on whichever axis binds first */
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+}
+
+.slide--tmpl-graph .tmpl-key {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0 5cqw 0 0;
+  padding: 0;
+  list-style: none;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.2cqh;
+}
+.slide--tmpl-graph .tmpl-key li {
+  /* never display:flex — an inline <b> would split into its own flex item;
+     hanging indent via absolute positioning instead (same as Template 2) */
+  position: relative;
+  padding-left: 4.6cqw;
+  font-size: 1.5cqw;
+  line-height: 1.3;
+  color: var(--body-text);
+}
+.slide--tmpl-graph .tmpl-key .num {
+  position: absolute;
+  left: 0;
+  top: 0.02em;
+  width: 2.4cqw;
+  height: 2.4cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);   /* §6.1 — one callout-marker colour */
+  color: var(--emerson-white);
+  font: 700 1.35cqw/1 var(--font-body);
+  display: grid;
+  place-items: center;
+}
+.slide--tmpl-graph .tmpl-key .swatch {
+  /* a sample of the exact stroke the plot uses for that series */
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 3.2cqw;
+  height: 0;
+  border-top: 0.5cqw solid var(--swatch-c, var(--emerson-charcoal));
+}
+.slide--tmpl-graph .tmpl-key .swatch.is-dashed { border-top-style: dashed; }
+.slide--tmpl-graph .tmpl-key .swatch.is-dotted { border-top-style: dotted; }
+.slide--tmpl-graph .tmpl-key .swatch.is-band {
+  /* a region fill, not a line — a small filled bar at the same faint
+     alpha the band uses on the plot, so the key sample actually matches */
+  top: 0.3em;
+  height: 1.7cqw;
+  border: none;
+  background: var(--swatch-c, var(--emerson-yellow));
+  opacity: 0.3;
+}
+
+.slide--tmpl-graph .tmpl-takeaway {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  margin: 1.8cqh 0 0 0;
+  padding-left: 1.7cqw;
+  border-left: 0.5cqw solid var(--emerson-orange);
+  font-size: 1.7cqw;
+  line-height: 1.35;
+  color: var(--body-text);
+}
+
+.slide--tmpl-graph .tmpl-source {
+  position: static;   /* the global .tmpl-source is absolute; here it's a grid row */
+  grid-column: 1 / -1;
+  grid-row: 4;
+  margin: 1.4cqh 0 0 0;
 }
 
 /* ---------- 8. Print / export -------------------------------------- */

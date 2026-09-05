@@ -1,9 +1,10 @@
 # Reusable slide templates
 
-Four card templates for the 1400 course. The CSS lives in
-`emerson-workbench.css` §7c (the hand-maintained design system); this file is the
+Seven templates for the 1400 course. The CSS lives in
+`emerson-workbench.css` (the hand-maintained design system); this file is the
 usage reference. Introduced with the Chapter 1 rebuild (2026-08-29) and reusable
-course-wide.
+course-wide. Template 7 (`.slide--tmpl-graph`) was added 2026-09-05 for the
+Style Guide §5 diagram/graph conventions.
 
 Every template carries the standard `.slide` frame (title box, divider rule,
 footer chrome). None use `.slide-body`, so nothing is stripped in visual mode —
@@ -289,5 +290,58 @@ different at a glance without shouting.
   safety consequence is not instructor patter, it is the point of the slide.
 - `.caution-fig` is optional — a photo or diagram of the failure, or of the
   safe method. Omit it and the body sits alone.
+- The context pane still carries the concept as normal.
+
+---
+
+## Template 7 — keyed graph  `.slide--tmpl-graph`
+
+A conceptual analytical graph (travel-vs-pressure and the like) laid out to
+**Style Guide §5**: the plot on the left carries only axes, data lines and
+regions, and small numbered feature dots sitting *on* the line; every series,
+region, and feature is named in a vertical key to the right (§5.3). **No text
+is rotated to follow a data line and no leader line crosses the plot** (§5.1 /
+§5.5) — that is the whole reason this template exists instead of
+`.slide--tmpl-figrow`, which has no key column and left authors labelling
+lines in place. It is a production port of the gallery
+`.slide--role-application` design proven by the template proof (tp-010).
+
+```html
+<article class="slide slide--tmpl-graph" data-slide="92" data-deck="1400">
+  <h1 class="slide-title">Bench Set</h1>
+  <figure class="tmpl-plot">
+    <svg viewBox="0 0 640 366" width="640" height="366"
+         preserveAspectRatio="xMidYMid meet" role="img" aria-label="…">…</svg>
+  </figure>
+  <ul class="tmpl-key">
+    <li><span class="swatch" style="--swatch-c:var(--emerson-blue)"></span>On the valve</li>
+    <li><span class="swatch is-dashed" style="--swatch-c:var(--emerson-grey)"></span>Friction-free reference</li>
+    <li><span class="swatch is-band" style="--swatch-c:var(--emerson-yellow)"></span>Bench-set range</li>
+    <li><span class="num">1</span>Upper bench set</li>
+  </ul>
+  <p class="tmpl-takeaway">One plain-language line — the thing to carry away.</p>
+  <p class="tmpl-source">After …, Fig. … — … . Component Index: … .</p>
+  <div class="slide-chrome">…</div>
+</article>
+```
+
+- **The `<svg>` must carry `width`/`height` attributes matching its
+  `viewBox`** and `preserveAspectRatio="xMidYMid meet"` — the CSS scales it to
+  fit the plot box and it letterboxes cleanly. Draw the plot area near-square
+  so a diagonal line slopes ~45–48° (§5.10); a shallow plot makes a small
+  offset unreadable.
+- **`.tmpl-key` entries:** a `.swatch` (`is-dashed`, `is-dotted`, or `is-band`
+  variants) leads a *series* or *region* entry — a sample of the exact stroke,
+  no number; a `.num` leads a *feature* entry — a blue numbered circle
+  identical to the marker drawn on the plot (§6.1). Series first, then
+  features, in plot order. Keep entry text to a name plus a short tag, never a
+  sentence.
+- **Feature markers are drawn inside the SVG** at known viewBox coordinates
+  (a filled `--emerson-blue` circle, white halo, white number) — not as
+  box-percentage overlays.
+- A **single-series graph with nothing to tell apart** (§5.4) omits
+  `.tmpl-key` and the plot takes the full width.
+- `.tmpl-takeaway` is optional — one line, an orange left rule. `.tmpl-source`
+  is required and names the source figure and what changed (§5.9).
 - The context pane still carries the concept as normal.
 

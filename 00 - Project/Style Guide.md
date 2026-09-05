@@ -305,13 +305,25 @@ Whatever the outcome: a redraw is **specified against a named source
 figure** (manual + figure number), never invented — the same rule the
 Component Index applies to components — and it follows §5.1–§5.7.
 
-For the bench-set / deadband graphs specifically: **CVH Fig. 8.10** is
-clean vector art and already matches the course's travel-on-Y /
-pressure-on-X layout — a use-directly case. Fisher 657/667 IM Fig. 5
-(drawing A6763-2, 2018) is also clean, but its axes are transposed from
-the course's convention. The `Source Grounding — Staging Plan.md` §3
-recommendation to redraw these was an unconfirmed checklist item resting
-on a factually wrong "low-res 1990s scan" premise; it does not stand.
+For the bench-set / deadband graphs specifically (corrected 2026-09-05,
+after inspecting Fig. 8.10 directly and against tp-010's worked outcome):
+**CVH Fig. 8.10 is NOT a use-directly case for these slides.** It is clean
+vector art in the course's travel-on-Y / pressure-on-X layout, but it is
+the *deadband* figure — three interleaved curves (friction-free nominal,
+on-valve increasing, on-valve decreasing), a "Deadband" bracket, and
+"*actuator connected to valve, deadband present". Each bench-set slide
+teaches a sub-concept that is one or two of those lines; the rest is
+ch3-m6 content and cannot be cropped out because all three run parallel
+and interleaved (reason #2). Fisher 657/667 IM Fig. 5 (drawing A6763-2,
+2018) is also clean but its axes are transposed (reason #1). So this whole
+family is **a bounded redraw + a §5.3 key**, spec'd against Fig. 8.10's
+printed geometry — exactly what tp-010 concluded and §5.10 records, and
+now what 1400-092 / 097 / 102 are built as (`.slide--tmpl-graph`,
+TEMPLATES.md Template 7). The earlier "use-directly" wording here recreated
+the same false premise that produced the original redraw confusion. The
+`Source Grounding — Staging Plan.md` §3 "low-res 1990s scan" line was still
+factually wrong (both figures are clean vector); its *recommendation* to
+redraw was right, for the reason above rather than the one it gave.
 
 ### 5.9 The source line
 
@@ -415,30 +427,33 @@ but not label rotation or colour intent.
 - [ ] The figure is used directly unless a redraw has a stated §5.8 reason.
 - [ ] A redraw is specified against a named source figure, not invented.
 
-### 5.12 Scope of the first rebuild — decide at §5 review
+### 5.12 Scope of the first rebuild — done 2026-09-05
 
 The diagonal-rotated-label pattern is not confined to the proof pages: the
-shipped production slides **1400-092** (Bench Set), **1400-102**
-(Re-Checking Travel), **1400-112** (Bench Set, Reverse-Acting) carry it
-too, and **1400-125** (Deadband) is a pre-redesign legacy slide needing a
-full redesign of which the label convention is only one part.
+shipped production slides **1400-092** (Bench Set, m1), **1400-097** (Bench
+Set — Direct-Acting, m2), **1400-102** (Re-Checking Travel, m3), and
+**1400-112** (Bench Set — Reverse-Acting, m4) all carry it, and **1400-125**
+(Deadband) is a pre-redesign legacy slide of which the label convention is
+only one part.
 
-Given the source-figure-first direction (§5.8), the work for 092 / 102 /
-112 is **"replace the redraw with a keyed source figure"** — evaluate CVH
-Fig. 8.10 direct-use, add a §5.3 key — **not** "rebuild the redraw to the
-key convention." This is potentially *less* work than a redraw, not the
-same work relabelled.
+**097 was missed in this section's original enumeration** — the Component
+Index's `ch3-cmp-bench-set-graph` lists `used-by: [92, 97, 102, 112]` and
+097 has the identical two-rotated-label defect. Caught by checking the
+Component Index directly at §5 review.
 
-Open decision, to be made deliberately at §5 review:
+**Franz's scope decision (2026-09-05): 092 / 097 / 102 in, 112 deferred.**
+112 is ch3-m4 content — under the module-work full stop, same treatment as
+the proof's tp-008 / tp-013. 1400-125 and tp-006 stay deferred with the
+ch3-m6 deadband-slide redesign.
 
-- **Same pass** — do 092 / 102 / 112 alongside tp-010.
-- **Separate follow-up** — do only tp-010 now (it gates the Stage 3
-  authoring decision); log 092 / 102 / 112 as their own pass, since the
-  production fix blocks nothing.
-
-1400-125 is not part of either option — it folds into the eventual
-deadband-slide redesign (ch3-m6, under the module-work full stop). tp-006
-is likewise deferred (see §5.10).
+**Done:** all three (092 / 097 / 102) rebuilt onto the new
+`.slide--tmpl-graph` (TEMPLATES.md Template 7 — the production port of
+tp-010's keyed-graph design). Each is a bounded redraw + a §5.3 key, per
+§5.8: the rotated diagonal labels removed, the "stem first moves" /
+"full rated travel" callouts folded into the x-axis ticks or promoted to
+numbered features, the friction-free framing moved to the takeaway. Line
+geometry unchanged. 102 matches tp-010 exactly (its proof twin). Held for
+Franz's direct review; the Stage 3 authoring gate is unaffected.
 
 ---
 

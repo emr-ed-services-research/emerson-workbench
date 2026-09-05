@@ -9,83 +9,70 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 92 | ppt slides/slide92.xml | layout: figure row | family: .slide--tmpl-figrow -->
-  <!-- ch3-m1 four-part pass.
-       Part 1/2: the original was bullets only, no visual. Bench set IS a travel-vs-pressure
-       relationship, so it gets a graph. Source: Control Valve Handbook 6th ed. Figure 8.10
-       "Bench Set Seating Force" (p.187) and the glossary - "Bench Set: ... a pressure range to
-       fully stroke a valve to its rated travel". CVH Fig 8.10 itself is deadband-centric (three
-       curves, a Deadband bracket, "*actuator connected to valve, deadband present") - that is
-       the Deadband module (ch3-m6). For m1, bench set is defined friction-free, so this is a
-       reduced redraw: the single bench-set line only, no deadband. Same call as slide 39 (redrew
-       a low-fit source graph as a clean inline SVG). See To-Franz note.
-       Bullet text -> key concepts (p92).
-       ch3-m1 Stage 3 re-pass 2026-09-03 (Part 2, per Component Index ch3-cmp-bench-set-graph):
-       re-anchored the citation - the canonical current figure for this graph is Fisher 657/667
-       Instruction Manual Fig 5 (DIRECT/REVERSE ACTING panels, bench-set centreline), with CVH
-       Fig 8.10 as the backup reference. Also dropped the "valve open" / "plug seated" end labels:
-       this graph is the friction-free, on-the-bench case with no valve fitted, and those labels
-       imported one specific 657-on-PDTC reading. Replaced with travel-state labels
-       ("stem at rest" / "full rated travel") that hold for either action. -->
-  <article class="slide slide--tmpl-figrow" data-slide="92" data-deck="1400" data-review="ch3-four-part">
-    <div class="review-ribbon">ch3-m1 pass: bench-set graph (after Fisher 657/667 IM Fig 5)</div>
+  <!-- Slide 92 | ppt slides/slide92.xml | family: .slide--tmpl-graph -->
+  <!-- ch3-m1. keyConcept: bench set is the diaphragm-pressure range that
+       strokes the actuator through RATED travel on the bench, with no
+       process or valve forces. Component: ch3-cmp-bench-set-graph.
+
+       LABEL-CONVENTION REBUILD 2026-09-05 (Style Guide §5, Franz's
+       §5.12 scope decision — 092/097/102 in, 112 deferred as ch3-m4).
+       Was a .slide--tmpl-figrow with two rotated diagonal labels along
+       the bench-set line ("bench only — no valve forces"; state labels
+       "stem at rest" / "full rated travel"). §5.1 rules out text that
+       follows a data line. Moved to the new .slide--tmpl-graph (Template
+       7 — the production port of tp-010's keyed-graph design): the plot
+       carries only axes, the line and band, and horizontal callouts
+       folded into the x-axis ticks (§5.5); the line and band are named
+       in the §5.3 key on the right; the friction-free framing is now the
+       takeaway. Line geometry unchanged (3→11 psig, 0→100 % travel).
+
+       SOURCE (§5.8): NOT a direct-use of CVH Fig 8.10 — that figure is
+       the three-line deadband treatment ("Deadband" bracket, "*actuator
+       connected to valve, deadband present") and its other two curves
+       can't be cropped away for the friction-free single line this slide
+       teaches. §5.8 reason #2 → bounded redraw, spec'd against Fig 8.10's
+       printed "Bench Set (3-11 psig)" geometry. -->
+  <article class="slide slide--tmpl-graph" data-slide="92" data-deck="1400" data-review="ch3-label-rebuild">
+    <div class="review-ribbon">ch3-m1: bench-set graph &mdash; rotated labels &rarr; §5.3 key (Template 7)</div>
     <h1 class="slide-title">Bench Set</h1>
-    <div class="tmpl-row">
-      <figure class="tmpl-cell">
-        <svg viewBox="0 0 520 344" role="img" aria-label="Graph of actuator travel against actuator diaphragm pressure. A single straight line runs from 0 percent travel at the lower bench-set pressure to 100 percent rated travel at the upper bench-set pressure. The pressure band between the two is the bench set range." font-family="Arial, Helvetica, sans-serif">
-          <!-- bench-set range band -->
-          <rect x="160" y="40" width="219" height="248" fill="#F6BE00" opacity="0.13"/>
-          <!-- dashed pressure guides -->
-          <g stroke="#959797" stroke-width="1.4" stroke-dasharray="4 4">
-            <path d="M160 40 V288"/>
-            <path d="M379 40 V288"/>
-          </g>
-          <!-- axes -->
-          <g stroke="#3F4040" stroke-width="2.4" fill="none" stroke-linecap="round">
-            <path d="M78 40 V288 H488"/>
-            <path d="M78 40 l-6 12 M78 40 l6 12"/>
-            <path d="M488 288 l-12 -6 M488 288 l-12 6"/>
-          </g>
-          <!-- x ticks -->
-          <g stroke="#3F4040" stroke-width="1.6">
-            <path d="M78 288 v6 M160 288 v6 M242 288 v6 M324 288 v6 M406 288 v6 M488 288 v6"/>
-          </g>
-          <g fill="#3F4040" font-size="14" text-anchor="middle">
-            <text x="78" y="306">0</text>
-            <text x="160" y="306">3</text>
-            <text x="242" y="306">6</text>
-            <text x="324" y="306">9</text>
-            <text x="406" y="306">12</text>
-            <text x="488" y="306">15</text>
-          </g>
-          <!-- y end labels -->
-          <g fill="#3F4040" font-size="13" text-anchor="end">
-            <text x="72" y="45">0%</text>
-            <text x="72" y="292">100%</text>
-          </g>
-          <!-- bench-set range bracket -->
-          <g stroke="#004B8D" stroke-width="2" fill="none">
-            <path d="M160 32 H379 M160 32 v6 M379 32 v6"/>
-          </g>
-          <text x="269" y="24" fill="#004B8D" font-size="14" font-weight="700" text-anchor="middle">Bench set range</text>
-          <!-- the bench-set line -->
-          <path d="M160 40 L 379 288" fill="none" stroke="#004B8D" stroke-width="3.6"/>
-          <!-- line + state labels, white halo -->
-          <g font-size="14" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">
-            <text x="186" y="58" fill="#6E7070">stem at rest</text>
-            <text x="300" y="250" fill="#6E7070">full rated travel</text>
-            <text x="270" y="150" fill="#004B8D" text-anchor="middle" transform="rotate(48.6 270 150)">bench only &#8212; no valve forces</text>
-          </g>
-          <!-- axis titles -->
-          <text x="283" y="324" fill="#3F4040" font-size="15" font-weight="700" text-anchor="middle">Actuator diaphragm pressure (psig) &#8594;</text>
-          <text x="30" y="164" fill="#3F4040" font-size="15" font-weight="700" text-anchor="middle" transform="rotate(-90 30 164)">Actuator travel</text>
-        </svg>
-      </figure>
-    </div>
-    <p class="tmpl-source">After Fisher 657/667 Instruction Manual Fig. 5, and Control Valve Handbook 6th ed. Fig. 8.10 &mdash; bench-set line only</p>
+    <figure class="tmpl-plot">
+      <svg viewBox="0 0 640 366" width="640" height="366" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Graph of actuator travel against actuator diaphragm pressure. A single straight blue line runs from 0 percent travel at the lower bench-set pressure of 3 psig to 100 percent rated travel at the upper bench-set pressure of 11 psig. The yellow band between the two pressures is the bench-set range." font-family="Arial, Helvetica, sans-serif">
+        <rect x="173" y="30" width="285" height="256" fill="var(--emerson-yellow)" opacity="0.18"/>
+        <g stroke="var(--emerson-grey)" stroke-width="1.4" stroke-dasharray="4 4">
+          <path d="M173 30 V286"/><path d="M458 30 V286"/>
+        </g>
+        <g stroke="var(--emerson-charcoal)" stroke-width="2" fill="none" stroke-linecap="round">
+          <path d="M66 22 V290"/>
+          <path d="M66 290 H612"/>
+          <path d="M612 290 l-9 -3.5 M612 290 l-9 3.5"/>
+        </g>
+        <g stroke="var(--emerson-charcoal)" stroke-width="1.4">
+          <path d="M66 290 v5 M173 290 v5 M280 290 v5 M386 290 v5 M493 290 v5 M600 290 v5"/>
+        </g>
+        <g fill="var(--emerson-charcoal)" font-size="12" text-anchor="middle">
+          <text x="66" y="308">0</text><text x="173" y="308">3</text><text x="280" y="308">6</text>
+          <text x="386" y="308">9</text><text x="493" y="308">12</text><text x="600" y="308">15</text>
+        </g>
+        <g fill="var(--emerson-blue)" font-size="12" font-weight="700" text-anchor="middle">
+          <text x="173" y="328">lower bench set</text>
+          <text x="458" y="328">upper bench set</text>
+        </g>
+        <g fill="var(--emerson-charcoal)" font-size="12" text-anchor="end">
+          <text x="58" y="34">0%</text><text x="58" y="290">100%</text>
+        </g>
+        <text x="339" y="356" fill="var(--emerson-charcoal)" font-size="13" font-weight="700" text-anchor="middle">Actuator diaphragm pressure (psig)</text>
+        <text x="18" y="159" fill="var(--emerson-charcoal)" font-size="13" font-weight="700" text-anchor="middle" transform="rotate(-90 18 159)">Actuator travel</text>
+        <path d="M173 30 L458 286" fill="none" stroke="var(--emerson-blue)" stroke-width="3.6"/>
+      </svg>
+    </figure>
+    <ul class="tmpl-key">
+      <li><span class="swatch" style="--swatch-c:var(--emerson-blue)"></span>Bench-set line</li>
+      <li><span class="swatch is-band" style="--swatch-c:var(--emerson-yellow)"></span>Bench-set range</li>
+    </ul>
+    <p class="tmpl-takeaway">On the bench, with no valve forces acting, the spring alone sets travel &mdash; the bench-set range is the pressure that strokes the actuator to its rated travel.</p>
+    <p class="tmpl-source">Redrawn after Control Valve Handbook 6th ed. Fig.&nbsp;8.10 &mdash; the friction-free bench-set line only; Fig.&nbsp;8.10's other two curves and its deadband bracket are ch3-m6 content (Style Guide &sect;5.8 reason&nbsp;2). Component Index: ch3-cmp-bench-set-graph.</p>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">92</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
-
 </main>
 </body>
 </html>
