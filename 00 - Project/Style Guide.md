@@ -147,28 +147,39 @@ Every labelled thing on a graph is one of three kinds:
 | **Feature** | a specific point or a single annotated event on the plot | a **numbered marker on the plot**, keyed to a numbered entry in the same list — the callout pattern of §6 |
 | **Threshold line** | a specific axis value made visible as a full-height / full-width line (a pressure, a travel %) | a **dotted line** (§5.6), keyed as a series if the reader needs to *name* it, or tied to a feature number if the point is what happens *at* that value |
 
-A span (a bench-set range, a deadband width) is a borderline case: treat it
-as a **feature** if the teaching point is "this interval, right here" (mark
-it with a bracket, key the bracket); treat it as a **series** if the
-teaching point is "this *area* between the curves" (fill the region, key
-the fill's hatch).
+A span (a bench-set range, a deadband width, a friction shift) is a
+**feature** when the teaching point is "this interval, right here": mark it
+with a thin square-cornered bracket **and a numbered circle** at its
+reference end — the same numbered-circle marker every feature uses, so the
+key entry and the on-plot marker always match (a bracket with only a bare
+number beside it fails that — the key promises a circle the plot doesn't
+show). Treat the span as a **series** instead only when the teaching point
+is "this *area* between the curves": fill the region and give it a hatch
+swatch in the key.
 
 ### 5.3 The key
 
 **The key is the slide's numbered "what to notice" list (`.tpl-list`), not
 a separate floating legend box.** This is the point of unification — a
 graph's key is the same callout list the nomenclature and mechanism
-templates already use, so graphs stop being a special case. (What the
-templates carry today, and the changes this needs, are listed at the end
-of §5.10, "Template changes §5 requires".)
+templates already use, so graphs stop being a special case.
+
+**Layout: a vertical list in a right-hand column**, the same position and
+shape the mechanism template puts its list (not a horizontal strip below
+the plot — that wraps to two crowded rows the moment a graph has four-plus
+entries, and it reads as clutter). **Key text is a step smaller than the
+body/label scale** — it is reference, scanned once, not read. The plot
+takes the rest of the width; design the graph's own aspect ratio (§5.7)
+to sit comfortably in a left column rather than assuming full width.
 
 Rules:
 
 - **Series entries** carry a swatch (a sample of the exact stroke — solid
   bar, dashed bar, dotted bar — or a small filled/hatched square for a
   region) followed by the name. No number.
-- **Feature entries** carry a numbered dot; the same number appears on the
-  plot at the feature.
+- **Feature entries** carry a numbered circle — `--emerson-orange` fill,
+  white number, white halo — identical to the marker on the plot, point
+  and span alike (§5.2, §5.5).
 - **Order:** all series first, then all features. Within each group, in the
   order encountered on the plot (left-to-right, then top-to-bottom).
 - **One key per graph.** A key that is all swatches and no numbered
@@ -188,12 +199,15 @@ series.
 
 ### 5.5 On-plot marks
 
-- **Feature markers:** a filled dot in `--emerson-orange` with a white
-  halo, the number in white, sized as the gallery's existing
-  `.tpl-annotation__dot` / marker spec. The dot sits *on* the feature.
-- **Spans:** a thin, square-cornered bracket, or a filled region. A filled
-  region uses `--emerson-yellow` at ~0.13 alpha (the established
-  bench-set-band fill) or a hatch; either way it is a keyed series.
+- **Feature markers:** a filled circle in `--emerson-orange` with a white
+  halo, the number in white. The circle sits *on* the feature. Small — the
+  circle must not be as wide as the gap it sits in (tp-010's first build
+  failed here: two markers ~2 psig apart, each nearly that wide).
+- **Spans:** a thin, square-cornered bracket linking the span's two ends,
+  **plus a numbered circle at one end** (§5.2 / §5.3 — the key entry and
+  the on-plot marker use the same circle). A span whose teaching point is
+  its *area* is a filled region instead: `--emerson-yellow` at ~0.13 alpha
+  or a hatch, keyed as a series.
 - **Threshold lines** (e.g. tp-010's vertical lines at specific psig
   values): a dotted `--emerson-grey` line, keyed as a series or annotated
   with a feature number — never left unlabelled. (An ideal/friction-free
@@ -310,25 +324,31 @@ Concrete targets for the rebuild (the rebuild is a separate step; this is
 here so the section is reviewable against real cases). The key contents
 below apply whether the base is a lifted source figure or a redraw.
 
-**tp-010 — "Re-Checking Travel on the Valve"**
+**tp-010 — "Re-Checking Travel on the Valve"** — built 2026-09-05, on its
+second review round.
 
-Live option, to be evaluated first: **use CVH Fig. 8.10 (or a crop of it)
-directly, with a §5.3 key** — it is clean vector, matches the course's
-axis layout, and already carries the bench-set line, the friction-shifted
-line, and the deadband. A redraw is only on the table if that evaluation
-turns up one of the §5.8 reasons.
+Source-first (§5.8) landed on a **bounded redraw, reason #2**: Fig. 8.10
+and Fisher IM Fig. 5 are both three-line deadband figures; tp-010 teaches
+only the one-sided friction shift; the third line (the deadband's
+decreasing-pressure side) is ch3-m6 content, parallel and interleaved,
+un-croppable. Redraw spec'd against Fig. 8.10's geometry — **the
+friction-free-to-on-valve offset was pixel-measured on Fig. 8.10 at ≈1.85
+psig, ~23 % of the 8-psig bench-set span** (drawn as 2 psig).
 
-Either way, the key:
+The key (vertical, right column, §5.3):
 
-- Series: off-the-valve / friction-free (dashed `--emerson-grey`),
-  on-the-valve / with packing friction (solid `--emerson-blue`), the shift
-  band (`--emerson-yellow` fill).
-- Features: **1** — upper bench set (11 psig); **2** — bench set +
-  (packing friction ÷ diaphragm area), at the shifted endpoint.
-- Key: three swatch entries + two numbered entries. Dots "1" and "2" on the
-  plot; the vertical reference lines become dotted `--emerson-grey`
-  threshold lines tied to those two features.
-- No rotated labels.
+- Series: off the valve / friction-free (grey dashed), on the valve / with
+  packing friction (blue solid). Colour by role (§5.6) — Fig. 8.10 colours
+  its nominal line blue, we do not match the source palette.
+- Features: **①** upper bench set (11 psig), a numbered circle at the
+  friction-free line's 100 %-travel corner; **②** bench set + friction ÷
+  diaphragm area, a numbered circle at the on-valve corner, with a span
+  bracket linking ① and ②.
+- No rotated labels; no threshold lines needed.
+
+The plot's own aspect ratio is near-square (matching Fig. 8.10) so the
+lines slope near 45° — a shallow plot made the ~2-psig shift unreadable in
+the first build even though the proportion was correct.
 
 **tp-006 — "How Deadband Shows Up on the Graph"**
 
@@ -345,20 +365,25 @@ opening curve (solid `--emerson-cyan`), bench-set reference (dashed
 "closing curve" / "opening curve" / "bench-set line" labels come off the
 lines into the key.
 
-**Template changes §5 requires** (all scoped with the rebuild, none built
-yet):
+**Template changes §5 requires** (done for the application-annotated
+template as of tp-010's 2026-09-05 rebuild):
 
-1. `.tpl-list` gains a **swatch-entry variant** — an entry led by a
+1. `.tpl-list` gained a **swatch-entry variant** — an entry led by a
    line-style or fill sample instead of a number. Needed by every
    chart-bearing template.
-2. The **application-annotated** template gains a `.tpl-list` in the same
-   position the mechanism template uses it. It currently has only
-   free-floating `.tpl-annotation` dots and a `.tpl-takeaway` line; the
-   takeaway can stay, the annotation dots become plot markers keyed to the
-   new list.
-3. Still to pin down in that work, and worth a view at review: whether the
-   key sits **right of** or **below** the plot; the swatch's size in
-   `cqw`; key-text scale (inherits §2).
+2. The **application-annotated** template gained a `.tpl-list` (vertical,
+   right column, per §5.3), replacing the free-floating `.tpl-annotation`
+   dot+halo-label overlays. Chart left, key right, takeaway and source
+   line full-width below.
+3. Resolved: key sits **right of** the plot, vertical, at a step below the
+   body/label text scale (§5.3). The graph's own aspect ratio is designed
+   to sit in the left column, not to assume full width.
+
+Still open, for review: whether "annotated" stays a separate template from
+plain `application` (every §5 graph has a key now, so the distinction may
+be only "has numbered point features"); and §5.7's arrowhead question (a
+bounded 0-100 % axis — tp-010 gives the pressure axis an arrowhead and the
+travel axis none).
 
 ### 5.11 Checklist (folds into the Stage 3 pre-send check)
 

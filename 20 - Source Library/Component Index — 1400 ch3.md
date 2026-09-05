@@ -197,9 +197,11 @@ variants:
     (Fig 8.10's third line — the deadband's decreasing-pressure side — is m6
     content, spatially interleaved, can't be cropped or left unkeyed). Two lines
     only: friction-free bench set (3-11 psig, from Fig 8.10's printed label) and
-    the on-valve line offset right by the friction contribution (~2 psig,
-    transcribed from Fig 8.10's deadband-bracket proportion). Built 2026-09-05,
-    awaiting Franz's review.
+    the on-valve line offset right by the friction contribution — pixel-measured
+    on Fig 8.10 at ~65 px against a 281 px blue run for the 8-psig span ≈ 1.85
+    psig, ~23 % of the span; drawn as 2 psig. Built 2026-09-05, on its second
+    review round (round 1: ② needed a real circle marker; the plot needed a
+    steeper slope to make the shift readable; the key went vertical).
   - slides 92 / 97 / 112 (ch3-m1/m2/m4): pending the §5.12 scope decision —
     evaluate CVH Fig 8.10 direct-use + a §5.3 key before assuming a redraw.
     92 is ch3-m1 (done), 97 ch3-m2 (done), 112 ch3-m4 (under the full stop).
