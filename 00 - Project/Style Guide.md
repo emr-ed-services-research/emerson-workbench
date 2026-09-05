@@ -303,6 +303,29 @@ rebuild.
 - [ ] The source line is present and says what was kept / changed.
 - [ ] Redraws are specified against a named source figure, not invented.
 
+### 5.12 Scope of the first rebuild — decide at §5 review
+
+§5's derivation established that the diagonal-rotated-label pattern is not
+confined to the proof pages: the shipped production slides **1400-092**
+(Bench Set), **1400-102** (Re-Checking Travel), **1400-112** (Bench Set,
+Reverse-Acting) carry it too, and **1400-125** (Deadband) is a
+pre-redesign legacy slide that needs a full redesign of which the label
+convention is only one part.
+
+Open decision, to be made deliberately when §5 is reviewed — not by
+default once the rebuild starts:
+
+- **Same pass** — rebuild 092 / 102 / 112 alongside tp-006 / tp-010. It is
+  the identical fix under the same fresh rule.
+- **Separate follow-up** — rebuild only the two proof pages now (that is
+  what gates the Stage 3 authoring decision); log 092 / 102 / 112 as their
+  own pass, since the production fix blocks nothing and pulling it in
+  extends how long the gate stays closed.
+
+1400-125 is not part of either option — it folds into the eventual
+redesign of the deadband slide (ch3-m6, currently under the module-work
+full stop).
+
 ---
 
 ## 6. Callout conventions
