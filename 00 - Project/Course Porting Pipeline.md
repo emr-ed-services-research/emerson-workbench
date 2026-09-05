@@ -575,8 +575,32 @@ Mirror into [[Open Questions]] once reviewed.
     source reads, precedence judgment calls, a Franz review pass), not the
     same category as the state-machine plumbing fix. A trial topic index
     (e.g. "bench-setting a Fisher 657") is the natural next step to prove
-    this shape for real, but — like any other content-adjacent authoring —
-    it stays paused under the current full stop until explicitly asked for.
+    this shape for real.
+
+    **Correction (Franz, same day):** this does *not* stay paused under the
+    full stop. It's research, source cross-referencing, and tagging — no
+    generation into any template, so it doesn't touch the risk the full stop
+    exists to gate. It can and should run in parallel with the template
+    proof below, not after it.
+
+  **The gate on Stage 3 authoring, stated explicitly (Franz, 2026-09-04):**
+  building the capability itself — Stage 3 writing *fresh* content into a
+  chosen master template, the actual unlock for real origination — does not
+  start until the 16-example template proof (2 real ch3 examples per Axis C
+  role, rendered and reviewed) has landed and passed review. Reasoning
+  carried over directly from the ch3-m4 failure: new generation logic
+  writing into a frame is the same shape of risk whether the frame is a
+  freehand slide or an unproven template — validate the 11 templates against
+  real content first, then build authoring logic with confidence in what
+  it's writing into, not on faith that it's probably fine. Concretely, until
+  the proof lands: no design, prototyping, or implementation of the Stage 3
+  authoring capability itself. Explicitly **not** gated by this: the topic-
+  index trial (above); and design *discussion* / architecture docs about how
+  Stage 3 authoring should eventually work, which can continue — only
+  actually building and firing that capability is blocked. The template
+  proof is now the single highest-priority piece of work for two reasons at
+  once: it's what the original full stop already required, and it's what
+  unlocks this.
 
 ## Related
 
