@@ -14,23 +14,31 @@
        content: ch3-m2 keyConcept 4, production slide 1400-096.html (an
        inline SVG nameplate redraw, no callout markers - a "read these
        labeled fields" nomenclature case rather than a "point at parts on a
-       photo" one). No numbered markers on the figure by design: a nameplate
-       carries its own printed field labels, so per Style Guide §6.3 the
-       list keys the fields by their printed names (TYPE, BENCH SET, TRAVEL,
-       MAX STEM DIA verbatim) and the plate itself stays unmarked. Tests the
-       template against a non-photographic, self-labelled nomenclature case.
+       photo" one). Standard nomenclature layout — figure left, list right.
+       No numbered markers on the figure by design: a nameplate carries its
+       own printed field labels, so per Style Guide §6.3 the list keys the
+       fields by their printed names (TYPE, BENCH SET, TRAVEL, MAX STEM DIA
+       verbatim) and the plate itself stays unmarked. Tests the template
+       against a non-photographic, self-labelled nomenclature case.
+
        CONTENT FIX 2026-09-06: the list keyed OPER RANGE as field 4, but
        ch3-cmp-nameplate names "maximum valve stem diameter" as the 4th
        field that "defines what a correct bench set looks like" — OPER
        RANGE is not in the component at all. Nameplate SVG now carries a
        MAX STEM DIA field and the list keys it; OPER RANGE stays drawn (a
-       real nameplate has it) but unkeyed, like SERIAL NO. -->
-  <article class="slide slide--role-nomenclature has-wide-fig" data-slide="04" data-deck="proof">
+       real nameplate has it) but unkeyed, like SERIAL NO.
+
+       NOTE 2026-09-05 (Franz's whole-set review): a `.has-wide-fig`
+       variant was briefly applied here during the sparse-layout pass and
+       reverted — it was built for tp-017's genuinely-wide 2-panel diagram
+       and pattern-matched onto this nameplate without confirming the
+       standard side-column layout was actually failing. It wasn't. -->
+  <article class="slide slide--role-nomenclature" data-slide="04" data-deck="proof">
     <h1 class="slide-title">Read the Nameplate First</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <svg viewBox="0 0 640 250" width="640" height="250" role="img" aria-label="Example Fisher 657 actuator nameplate. TYPE 657. SIZE 30. BENCH SET 3 to 11 psig. TRAVEL three-quarter inch. MAX STEM DIA three-eighths inch. SERIAL NO and OPER RANGE 3 to 15 psig also shown. Values shown are an example." font-family="Arial, Helvetica, sans-serif">
+          <svg viewBox="0 0 640 250" role="img" aria-label="Example Fisher 657 actuator nameplate. TYPE 657. SIZE 30. BENCH SET 3 to 11 psig. TRAVEL three-quarter inch. MAX STEM DIA three-eighths inch. SERIAL NO and OPER RANGE 3 to 15 psig also shown. Values shown are an example." font-family="Arial, Helvetica, sans-serif" style="width:100%;height:auto">
             <rect x="6" y="6" width="628" height="238" rx="14" fill="#1b1b1b" stroke="#3F4040" stroke-width="2"/>
             <g fill="#1b1b1b" stroke="#6E7070" stroke-width="2">
               <circle cx="42" cy="42" r="9"/><circle cx="598" cy="42" r="9"/>

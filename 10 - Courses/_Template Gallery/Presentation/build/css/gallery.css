@@ -257,54 +257,6 @@
   grid-column: 1 / span 2;
 }
 
-/* .has-wide-fig (nomenclature) — a wide, short, self-labelled figure (a
-   nameplate, a gauge face) that a 36cqw side column renders too small to
-   read. SPARSE-LAYOUT PASS 2026-09-05: figure across the top at a readable
-   size, the field-gloss list in a 2-column block below it, source last —
-   mirrors procedure-image's .has-wide-fig. Used by tp-004 (Fisher 657
-   nameplate, Style Guide §6.3 — the plate keeps its own printed labels,
-   no markers). The slide's <svg>/<img> must NOT carry an inline width/
-   height (inline wins over these rules); size it here. */
-.slide--role-nomenclature.has-wide-fig .tpl-content {
-  grid-template-columns: 1fr;
-  grid-template-rows: auto auto auto;
-  align-content: center;
-  row-gap: 4cqh;
-}
-.slide--role-nomenclature.has-wide-fig .tpl-fig-wrap {
-  grid-row: 1;
-  grid-column: 1;
-  width: 100%;
-  height: auto;
-  justify-content: center;
-}
-.slide--role-nomenclature.has-wide-fig .tpl-fig {
-  width: 100%;
-  height: auto;
-  display: flex;
-  justify-content: center;
-}
-.slide--role-nomenclature.has-wide-fig .tpl-fig > svg,
-.slide--role-nomenclature.has-wide-fig .tpl-fig > img {
-  width: auto;
-  height: auto;
-  max-width: 88cqw;
-  max-height: 32cqh;
-}
-.slide--role-nomenclature.has-wide-fig .tpl-list {
-  grid-row: 2;
-  grid-column: 1;
-  height: auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.8cqh 5cqw;
-  justify-content: start;
-}
-.slide--role-nomenclature.has-wide-fig .tpl-source {
-  grid-row: 3;
-  grid-column: 1;
-}
-
 /* ---------------------------------------------------------------------- *
  * 4a. PROCEDURE — list + single image.
  * ---------------------------------------------------------------------- */
@@ -617,19 +569,24 @@
    takeaway + source full-width below. SPARSE-LAYOUT PASS 2026-09-05:
    `align-content: start` keeps the table + figure tucked under the title
    with the takeaway/source right below them; the leftover height collects
-   at the bottom as margin rather than as a band between the title and the
-   content or a gap in the middle. */
+   at the bottom as margin rather than as a band in the middle.
+   WHOLE-SET REVIEW FIX 2026-09-05: `align-items: center` on row 1 — this
+   is the same rule the `:has(.tpl-list)` variant and nomenclature/mechanism
+   already carry, and it was not extended to this new variant. Without it
+   the shorter of the table / figure top-aligns against the taller instead
+   of centring beside it. */
 .slide--role-application:has(.tmpl-table) .tpl-content {
   grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
   grid-template-rows: auto auto auto;
   align-content: start;
+  align-items: center;
   column-gap: 3cqw;
   row-gap: 2.4cqh;
-  align-items: start;
 }
 .slide--role-application:has(.tmpl-table) .tmpl-table {
   grid-column: 1;
   grid-row: 1;
+  min-width: 0;
 }
 .slide--role-application:has(.tmpl-table) .tpl-fig {
   grid-column: 2;
@@ -637,7 +594,6 @@
   margin: 0;
   min-width: 0;
   max-height: 46cqh;
-  align-self: center;
   display: flex;
   align-items: center;
   justify-content: center;

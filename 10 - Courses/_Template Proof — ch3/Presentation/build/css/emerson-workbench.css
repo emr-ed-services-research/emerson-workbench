@@ -955,19 +955,33 @@
   padding-left: 6.5cqw;
   color: var(--emerson-charcoal);
 }
-.slide--tmpl-caution .slide-title::before {   /* warning triangle */
-  content: "";
+/* ICON FIX 2026-09-05 (16-example proof, Franz's whole-set review).
+   Was: a CSS border-triangle (::before) with the "!" glyph absolutely
+   positioned over it as a separate sibling — the glyph was oversized
+   (1.9cqw in a 4.2cqw triangle) and pinned by a bare `top` so its dot
+   sat on the base line, and the ::after title rule showed through under
+   the triangle base as stray horizontal marks. This was wrong in
+   production too (1400-095/105/110), not just the proof.
+   Now: the .slide-title__mark span IS the icon — a single element clipped
+   to a triangle, with the "!" as its own centred content, so the glyph
+   can never drift out of the shape. No ::before, and the title rule is
+   suppressed on caution (the triangle + the .caution-body orange left
+   rule already carry the signal). No markup change — the span still just
+   contains "!". */
+.slide--tmpl-caution .slide-title::before { content: none; }
+.slide--tmpl-caution .slide-title::after { display: none; }
+.slide--tmpl-caution .slide-title__mark {
   position: absolute;
   left: 0; top: 0.1cqh;
-  width: 0; height: 0;
-  border-left: 2.4cqw solid transparent;
-  border-right: 2.4cqw solid transparent;
-  border-bottom: 4.2cqw solid var(--emerson-orange);
-}
-.slide--tmpl-caution .slide-title__mark {   /* the "!" inside the triangle */
-  position: absolute;
-  left: 2.1cqw; top: 2.3cqw;
-  font: 700 1.9cqw/1 var(--font-display);
+  width: 4.8cqw; height: 4.2cqw;
+  box-sizing: border-box;
+  background: var(--emerson-orange);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.5cqw;
+  font: 700 1.55cqw/1 var(--font-display);
   color: var(--emerson-white);
 }
 /* ROOT-CAUSE FIX 2026-09-05 (16-example template proof, Franz's direct
