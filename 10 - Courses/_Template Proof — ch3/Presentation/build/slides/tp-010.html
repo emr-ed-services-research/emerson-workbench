@@ -3,83 +3,90 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Template Proof — Application, annotated curve (re-checking travel)</title>
+<title>Template Proof — Application, keyed graph (re-checking travel)</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- TEMPLATE PROOF 2026-09-05, role: application, variant: annotated
-       curve. Real content: ch3-m3 keyConcept 4 (analyze level), production
-       slide 1400-102.html - the exact real bench-set/friction-shift SVG,
-       unmodified, with the annotation markers pointing at its own already-
-       present labels rather than inventing new ones. This is the strongest
-       real test of the annotated-application variant: it's a genuinely
-       complex analytical chart (dashed reference line, shifted solid line,
-       shaded band, bracket, three rotated in-chart labels), not a simple
-       curve - if the annotation layer holds up legibly here, it holds up
-       for the simpler bench-set-travel-stop case that motivated the
-       variant.
-       UPDATE 2026-09-05 (re-render verification after the label-convention
-       fix): the second annotation's box-relative left/top % put its dot
-       almost exactly on top of the line's own SVG endpoint circle at the
-       axis corner, overlapping the "15" tick and the axis arrowhead - the
-       same box-relative-vs-viewBox mismatch flagged for chart markers in
-       tp-006, just far enough off here (rather than fully wrong) that it
-       wasn't caught until a 2x zoom render. Repositioned into the clear
-       space inside the shaded band, still adjacent to the point it labels. -->
+  <!-- TEMPLATE PROOF — REBUILT 2026-09-05 to Style Guide §5. Role:
+       application (keyed analytical graph). Real content: ch3-m3
+       keyConcept 4 (analyze) — "on the valve, full rated travel occurs at
+       bench set plus the friction force divided by the diaphragm area."
+       Source component: ch3-cmp-bench-set-graph. Maps to production slide
+       1400-102.
+
+       SOURCE-FIGURE-FIRST EVALUATION (Style Guide §5.8): the canonical
+       figures for this concept — CVH 6th ed. Fig. 8.10 and Fisher 657/667
+       IM Fig. 5 (A6763-2) — are both DEADBAND figures: three lines
+       (friction-free nominal, plus the on-valve increasing- and
+       decreasing-pressure lines) with a deadband bracket. This slide
+       teaches only the one-sided friction SHIFT (friction-free vs on-valve
+       increasing); the decreasing-pressure line and the deadband bracket
+       are ch3-m6 content, under the module-work full stop. Fig. 8.10's
+       three lines are parallel and spatially interleaved — the third line
+       cannot be cropped out, and keying it would teach m6 content here. So
+       §5.8 reason #2 applies ("the figure cannot be cropped or keyed down
+       to the single sub-concept a slide teaches") and this is a REDRAW,
+       spec'd tightly against Fig. 8.10's geometry: the friction-free line
+       runs 3→11 psig (its printed "Bench Set (3-11 psig)" label); the
+       on-valve line is parallel, offset right by the friction contribution
+       (~2 psig, transcribed from Fig. 8.10's deadband-bracket proportion).
+
+       §5 APPLIED: no text on the plot except axis ticks, axis titles, and
+       the two feature numbers. Series named in the KEY (`.tpl-list`) with
+       a line-sample swatch. Line styling per §5.6 (friction-free = grey
+       dashed reference; on-valve real = blue solid) — note Fig. 8.10
+       colours its nominal line blue; §5.6's mapping is by role, not by
+       matching the source's palette. y-axis 0% travel at top per §5.7.
+       No arrowhead on the bounded 0-100% y-axis (open question flagged
+       for §5.7 review); x-axis (pressure) keeps its arrowhead. -->
   <article class="slide slide--role-application-annotated" data-slide="10" data-deck="proof">
     <h1 class="slide-title">Re-Checking Travel on the Valve</h1>
     <div class="tpl-content">
       <div class="tpl-chart-wrap">
         <div class="tpl-chart">
-          <svg viewBox="0 0 520 344" role="img" aria-label="Graph of actuator travel against diaphragm pressure. A dashed reference line runs from 0 percent travel at the 3 psig lower bench set to 100 percent travel at the 11 psig upper bench set - the friction-free bench set measured off the valve. A solid line parallel to it is shifted to the right: on the valve, packing friction means full rated travel is not reached until a pressure of bench set plus the friction force divided by the diaphragm area." font-family="Arial, Helvetica, sans-serif" style="width:100%;height:100%">
-            <path d="M160 40 L379 288 L460 288 L242 40 Z" fill="#F6BE00" opacity="0.13"/>
-            <g stroke="#959797" stroke-width="1.4" stroke-dasharray="4 4">
-              <path d="M379 40 V300"/>
-              <path d="M460 40 V300"/>
+          <svg viewBox="0 0 620 250" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Graph of actuator travel (0 to 100 percent, increasing downward) against actuator diaphragm pressure in psig. A grey dashed line — the friction-free bench set, off the valve — reaches 100 percent travel at 11 psig. A blue solid line — on the valve, with packing friction — is parallel but shifted right, reaching 100 percent travel about 2 psig later. Marker 1 is the friction-free point at 11 psig; marker 2 is where on-valve travel reaches 100 percent, at bench set plus friction divided by diaphragm area." font-family="Arial, Helvetica, sans-serif" style="width:100%;height:100%">
+            <!-- axes -->
+            <g stroke="var(--emerson-charcoal)" stroke-width="2" fill="none" stroke-linecap="round">
+              <path d="M66 28 V200"/>
+              <path d="M66 200 H602"/>
+              <path d="M602 200 l-9 -3.5 M602 200 l-9 3.5"/>
             </g>
-            <g stroke="#3F4040" stroke-width="2.4" fill="none" stroke-linecap="round">
-              <path d="M78 40 V288 H488"/>
-              <path d="M78 40 l-6 12 M78 40 l6 12"/>
-              <path d="M488 288 l-12 -6 M488 288 l-12 6"/>
+            <g stroke="var(--emerson-charcoal)" stroke-width="1.4">
+              <path d="M66 200 v4 M171 200 v4 M276 200 v4 M381 200 v4 M486 200 v4 M591 200 v4"/>
             </g>
-            <g stroke="#3F4040" stroke-width="1.6">
-              <path d="M78 288 v6 M160 288 v6 M242 288 v6 M324 288 v6 M406 288 v6 M488 288 v6"/>
+            <g fill="var(--emerson-charcoal)" font-size="11" text-anchor="middle">
+              <text x="66" y="214">0</text><text x="171" y="214">3</text><text x="276" y="214">6</text>
+              <text x="381" y="214">9</text><text x="486" y="214">12</text><text x="591" y="214">15</text>
             </g>
-            <g fill="#3F4040" font-size="14" text-anchor="middle">
-              <text x="78" y="306">0</text><text x="160" y="306">3</text><text x="242" y="306">6</text>
-              <text x="324" y="306">9</text><text x="406" y="306">12</text><text x="488" y="306">15</text>
+            <g fill="var(--emerson-charcoal)" font-size="11" text-anchor="end">
+              <text x="60" y="32">0%</text><text x="60" y="196">100%</text>
             </g>
-            <g fill="#3F4040" font-size="13" text-anchor="end">
-              <text x="72" y="45">0%</text><text x="72" y="292">100%</text>
-            </g>
-            <path d="M160 40 L379 288" fill="none" stroke="#6E7070" stroke-width="2.6" stroke-dasharray="7 5"/>
-            <circle cx="379" cy="288" r="4.4" fill="#6E7070"/>
-            <path d="M242 40 L460 288" fill="none" stroke="#004B8D" stroke-width="3.6"/>
-            <circle cx="460" cy="288" r="4.6" fill="#004B8D"/>
-            <g stroke="#004B8D" stroke-width="2" fill="none">
-              <path d="M379 296 H460 M379 296 v-6 M460 296 v-6"/>
-            </g>
-            <g font-size="13" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">
-              <text x="150" y="150" fill="#6E7070" text-anchor="middle" transform="rotate(48.6 150 150)">off the valve — friction-free</text>
-              <text x="356" y="170" fill="#004B8D" text-anchor="middle" transform="rotate(48.6 356 170)">on the valve — with packing friction</text>
-            </g>
-            <text x="283" y="340" fill="#3F4040" font-size="14" font-weight="700" text-anchor="middle">Actuator diaphragm pressure (psig) →</text>
-            <text x="30" y="164" fill="#3F4040" font-size="15" font-weight="700" text-anchor="middle" transform="rotate(-90 30 164)">Actuator travel</text>
+            <text x="328" y="238" fill="var(--emerson-charcoal)" font-size="12.5" font-weight="700" text-anchor="middle">Actuator diaphragm pressure (psig)</text>
+            <text x="16" y="114" fill="var(--emerson-charcoal)" font-size="12.5" font-weight="700" text-anchor="middle" transform="rotate(-90 16 114)">Actuator travel</text>
+            <!-- data lines -->
+            <path d="M66 28 H171 L451 192 H602" fill="none" stroke="var(--emerson-grey)" stroke-width="2.2" stroke-dasharray="7 5"/>
+            <path d="M66 28 H241 L521 192 H602" fill="none" stroke="var(--emerson-blue)" stroke-width="3.4"/>
+            <!-- feature 1: a point (friction-free reaches 100% travel here).
+                 feature 2: a span (the friction shift) — a bracket between the
+                 two full-travel points, its number at the top-left corner. -->
+            <path d="M451 192 V182 H521 V192" fill="none" stroke="var(--emerson-orange)" stroke-width="1.6"/>
+            <text x="447" y="179" fill="var(--emerson-orange)" font-size="11" font-weight="700" text-anchor="end" paint-order="stroke" stroke="#ffffff" stroke-width="3" stroke-linejoin="round">2</text>
+            <circle cx="451" cy="192" r="8.5" fill="var(--emerson-orange)" stroke="#ffffff" stroke-width="2"/>
+            <text x="451" y="192" fill="#ffffff" font-size="10" font-weight="700" text-anchor="middle" dominant-baseline="central">1</text>
           </svg>
         </div>
-        <div class="tpl-annotation" style="left:71%;top:19%">
-          <span class="tpl-annotation__dot"></span>
-          <span class="tpl-annotation__label">Upper bench set (11 psig)</span>
-        </div>
-        <div class="tpl-annotation" style="left:71%;top:74%">
-          <span class="tpl-annotation__dot"></span>
-          <span class="tpl-annotation__label">+ packing friction ÷ diaphragm area</span>
-        </div>
       </div>
+      <ul class="tpl-list">
+        <li><span class="swatch is-dashed" style="--swatch-c:var(--emerson-grey)"></span>Off the valve — friction-free</li>
+        <li><span class="swatch" style="--swatch-c:var(--emerson-blue)"></span>On the valve — with packing friction</li>
+        <li><span class="num">1</span>Upper bench set — 11 psig</li>
+        <li><span class="num">2</span>Bench set + friction &divide; diaphragm area</li>
+      </ul>
       <p class="tpl-takeaway">Full rated travel on the valve doesn't happen at the bench-set pressure any more — it happens at bench set plus the extra pressure packing friction adds.</p>
+      <p class="tpl-source">After Control Valve Handbook 6th ed. Fig. 8.10 and Fisher 657/667 IM Fig. 5 (A6763-2) — the friction-free and on-valve bench-set lines only, at their axis positions; the deadband's decreasing-pressure line and bracket omitted (ch3-m6 content); line styling per Style Guide &sect;5.6. Component Index: ch3-cmp-bench-set-graph.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">10</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

@@ -181,21 +181,28 @@ teaches: >
 concept-tags: [bench set, rated travel, lower bench set, upper bench set, friction-free, spring rate, on the bench]
 status: current
 source:
-  - doc: Fisher 657 / 667 Instruction Manual
-    locator: "Figure 5 — 'Typical Valve Response to Deadband' (drawing A6763-2; DIRECT ACTING and REVERSE ACTING panels). Use the bench-set centreline; omit the opening/closing curves for m1/m2/m4."
   - doc: Control Valve Handbook 6th ed.
-    locator: "§8.5.5 + Figure 8.10 'Bench Set Seating Force' — BACKUP reference (deadband-centric, denser)"
-delivery: house-style hand-authored SVG redraw, faithful to Fisher IM Fig 5
-used-by: [92, 97, 112]
+    locator: "§8.5.5 + Figure 8.10 'Bench Set Seating Force' (clean vector; travel-on-Y / pressure-on-X, matching the course's graph convention). PRIMARY — the figure used."
+  - doc: Fisher 657 / 667 Instruction Manual
+    locator: "Figure 5 — 'Typical Valve Response to Deadband' (drawing A6763-2, 2018; DIRECT / REVERSE ACTING panels). Corroborating reference; axes transposed from the course convention."
+delivery: >
+  Use the source figure directly where a slide's scope matches it (Style Guide
+  §5.8, source-figure-first) — CVH Fig 8.10 with a §5.3 key. Redraw ONLY for a
+  stated §5.8 reason. CORRECTED 2026-09-05: the prior "house-style redraw,
+  faithful to Fisher IM Fig 5" delivery rested on a wrong "low-res 1990s scan"
+  premise (both figures are clean vector) — see Source Grounding Staging Plan §3.
+used-by: [92, 97, 102, 112]
 variants:
-  - slide 92 (ch3-m1, generic): bench-set line ONLY — no opening/closing curves,
-    no deadband bracket. Existing SVG already does this; re-anchor its citation
-    from "after CVH Fig 8.10" to "after Fisher 657/667 IM Fig 5 / CVH Fig 8.10".
-  - slide 97 (ch3-m2, direct action): Fig 5 DIRECT ACTING panel, bench-set line;
-    friction-free framing (m2 is off-the-valve) so deadband bracket faint/omitted.
-    Replaces the ~110 KB deck auto-trace currently on the slide.
-  - slide 112 (ch3-m4, reverse action): Fig 5 REVERSE ACTING panel. Replaces the
-    deck auto-trace.
+  - tp-010 / slide 102 (ch3-m3, on-valve friction shift): REDRAW, §5.8 reason #2
+    (Fig 8.10's third line — the deadband's decreasing-pressure side — is m6
+    content, spatially interleaved, can't be cropped or left unkeyed). Two lines
+    only: friction-free bench set (3-11 psig, from Fig 8.10's printed label) and
+    the on-valve line offset right by the friction contribution (~2 psig,
+    transcribed from Fig 8.10's deadband-bracket proportion). Built 2026-09-05,
+    awaiting Franz's review.
+  - slides 92 / 97 / 112 (ch3-m1/m2/m4): pending the §5.12 scope decision —
+    evaluate CVH Fig 8.10 direct-use + a §5.3 key before assuming a redraw.
+    92 is ch3-m1 (done), 97 ch3-m2 (done), 112 ch3-m4 (under the full stop).
 ```
 
 ```yaml
