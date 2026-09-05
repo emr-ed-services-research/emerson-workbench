@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template Proof — Mechanism (deadband graph)</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- TEMPLATE PROOF 2026-09-05, role: mechanism, example 2. Real content:
+       ch3-m6 keyConcepts 1-3 (course.json) - deadband as the gap between
+       opening/closing curves, caused by friction. Production slide
+       1400-125.html carries the full Fisher IM Fig. 5 redraw (both curves +
+       bracket). Stress-tests the mechanism template against a CHART rather
+       than a device-schematic diagram.
+       FINDING: the external on-image marker mechanism (left/top % against
+       the .tpl-fig BOX) does not transfer cleanly to a chart. A photo fills
+       its frame edge to edge, so a marker's % position roughly matches
+       where it looks on screen. A chart SVG has its own internal viewBox
+       coordinate space and axis padding (this one plots inside roughly
+       x:78-488, y:40-288 of a 0-520x0-344 box) and its own preserveAspectRatio
+       letterboxing once scaled into the .tpl-fig box - naive box-relative
+       percentages land the markers in the chart's margin, not on the
+       curves, as first authored here. Removed the external markers for this
+       example rather than hand-tune coordinates that would only be right at
+       one specific rendered size; the chart already labels its own curves
+       internally (a convention charts already have that photos don't), so
+       the numbered list works as a "what to notice" companion without
+       needing an external dot to point at anything. Recommend: either give
+       chart-based mechanism/nomenclature examples their own marker
+       convention (computed against the chart's plotted area, not the image
+       box) or treat "no external markers, rely on in-chart labels + a
+       companion list" as the template's actual answer for this content
+       type - this file does the latter. -->
+  <article class="slide slide--role-mechanism" data-slide="06" data-deck="proof">
+    <h1 class="slide-title">How Deadband Shows Up on the Graph</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <svg viewBox="0 0 520 344" role="img" aria-label="Graph of actuator travel against diaphragm pressure showing the bench-set line and, either side of it, the opening and closing curves, with the range of deadband bracketed between them." font-family="Arial, Helvetica, sans-serif" style="width:100%;height:100%">
+            <g stroke="#3F4040" stroke-width="2.4" fill="none" stroke-linecap="round">
+              <path d="M78 40 V288 H488"/>
+              <path d="M78 40 l-6 12 M78 40 l6 12"/>
+              <path d="M488 288 l-12 -6 M488 288 l-12 6"/>
+            </g>
+            <path d="M120 40 L420 288" fill="none" stroke="#6E7070" stroke-width="2.2" stroke-dasharray="6 4"/>
+            <path d="M150 40 L450 288" fill="none" stroke="#004B8D" stroke-width="3"/>
+            <path d="M90 40 L390 288" fill="none" stroke="#00A4D2" stroke-width="3"/>
+            <g stroke="#F79428" stroke-width="1.6" stroke-dasharray="3 3"><path d="M90 288 V300 M450 288 V300"/></g>
+            <path d="M90 296 H450" stroke="#F79428" stroke-width="1.6" fill="none"/>
+            <text x="270" y="316" fill="#F79428" font-size="13" font-weight="700" text-anchor="middle">range of deadband</text>
+            <text x="150" y="34" fill="#004B8D" font-size="12" font-weight="700" text-anchor="middle">closing curve</text>
+            <text x="390" y="34" fill="#00A4D2" font-size="12" font-weight="700" text-anchor="middle">opening curve</text>
+            <text x="270" y="205" fill="#6E7070" font-size="12" font-weight="700" text-anchor="middle" transform="rotate(-33 270 205)">bench-set line</text>
+            <text x="30" y="164" fill="#3F4040" font-size="14" font-weight="700" text-anchor="middle" transform="rotate(-90 30 164)">Travel</text>
+            <text x="283" y="335" fill="#3F4040" font-size="14" font-weight="700" text-anchor="middle">Diaphragm pressure →</text>
+          </svg>
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Closing curve — friction opposes the stem moving down</li>
+        <li><span class="num">2</span>Opening curve — friction opposes the stem moving up</li>
+        <li><span class="num">3</span>The gap between them at any travel point is the deadband — a pressure change the actuator makes with no travel change at all</li>
+      </ul>
+      <p class="tpl-source">Fisher 657/667 Instruction Manual, Fig. 5 "Typical Valve Response to Deadband"; Control Valve Handbook 6th ed. §2.1.1. Component Index: ch3-cmp-deadband-graph.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">06</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template Proof — Mechanism (657 direct-acting)</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- TEMPLATE PROOF 2026-09-05, role: mechanism. Real content: ch3-m1
+       keyConcept 1 (course.json) - "actuator action is which way loading
+       pressure drives the stem." Production slide 1400-088.html teaches
+       this as a SIDE-BY-SIDE pair (657 direct + 667 reverse in one
+       .slide--tmpl-figrow) - i.e. one keyConcept, two mechanisms, composed
+       as a comparison.
+       FINDING: the mechanism template (one figure + a numbered function
+       sequence) does not have room for "compare two mechanisms" the way
+       the current production slide does - that shape is closer to
+       Contrast's job. Split the concept for this proof: the 657 half goes
+       here as a genuine single-mechanism "how it works" example; the 667
+       half is a natural second Contrast candidate (not used in this proof
+       since one contrast example already covers PDTC/PDTO - see tp-011's
+       report note) or a second Mechanism instance in its own right. Either
+       way, a keyConcept authored to cover two mechanisms at once does not
+       map onto one Mechanism-template slide without either dropping one
+       side or changing the slide count - a real Stage-3-authoring
+       consideration, not a template bug per se. -->
+  <article class="slide slide--role-mechanism" data-slide="05" data-deck="proof">
+    <h1 class="slide-title">How a Direct-Acting Actuator Works</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/img/image151.png" style="width:100%;height:100%;object-fit:contain" alt="Sectional view of a Fisher 657 direct-acting spring-and-diaphragm actuator: loading pressure connection on top of the diaphragm, spring below in the yoke">
+          <svg class="tpl-flow-arrow" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <marker id="pf1" markerWidth="6" markerHeight="6" refX="4.5" refY="3" orient="auto">
+                <path d="M0,0 L6,3 L0,6 Z" fill="var(--emerson-blue)"></path>
+              </marker>
+            </defs>
+            <path d="M50,12 L50,80" fill="none" stroke="var(--emerson-blue)" stroke-width="1.1" stroke-dasharray="3 2" marker-end="url(#pf1)"></path>
+          </svg>
+          <span class="tpl-marker" style="left:50%;top:10%">1</span>
+          <span class="tpl-marker" style="left:50%;top:55%">2</span>
+          <span class="tpl-marker" style="left:50%;top:82%">3</span>
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Loading pressure enters above the diaphragm</li>
+        <li><span class="num">2</span>Increasing pressure pushes the diaphragm and stem down</li>
+        <li><span class="num">3</span>On loss of air, the spring drives the stem back up — the actuator fails up (retracts)</li>
+      </ul>
+      <p class="tpl-source">Control Valve Handbook 6th ed. §3.8.1, Fig. 3.43; Fisher 657 Instruction Manual Fig. 2. Component Index: ch3-cmp-da-schematic.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">05</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

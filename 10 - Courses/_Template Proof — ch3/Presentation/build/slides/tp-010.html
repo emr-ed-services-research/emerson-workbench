@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template Proof — Application, annotated curve (re-checking travel)</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- TEMPLATE PROOF 2026-09-05, role: application, variant: annotated
+       curve. Real content: ch3-m3 keyConcept 4 (analyze level), production
+       slide 1400-102.html - the exact real bench-set/friction-shift SVG,
+       unmodified, with the annotation markers pointing at its own already-
+       present labels rather than inventing new ones. This is the strongest
+       real test of the annotated-application variant: it's a genuinely
+       complex analytical chart (dashed reference line, shifted solid line,
+       shaded band, bracket, three rotated in-chart labels), not a simple
+       curve - if the annotation layer holds up legibly here, it holds up
+       for the simpler bench-set-travel-stop case that motivated the
+       variant. -->
+  <article class="slide slide--role-application-annotated" data-slide="10" data-deck="proof">
+    <h1 class="slide-title">Re-Checking Travel on the Valve</h1>
+    <div class="tpl-content">
+      <div class="tpl-chart-wrap">
+        <div class="tpl-chart">
+          <svg viewBox="0 0 520 344" role="img" aria-label="Graph of actuator travel against diaphragm pressure. A dashed reference line runs from 0 percent travel at the 3 psig lower bench set to 100 percent travel at the 11 psig upper bench set - the friction-free bench set measured off the valve. A solid line parallel to it is shifted to the right: on the valve, packing friction means full rated travel is not reached until a pressure of bench set plus the friction force divided by the diaphragm area." font-family="Arial, Helvetica, sans-serif" style="width:100%;height:100%">
+            <path d="M160 40 L379 288 L460 288 L242 40 Z" fill="#F6BE00" opacity="0.13"/>
+            <g stroke="#959797" stroke-width="1.4" stroke-dasharray="4 4">
+              <path d="M379 40 V300"/>
+              <path d="M460 40 V300"/>
+            </g>
+            <g stroke="#3F4040" stroke-width="2.4" fill="none" stroke-linecap="round">
+              <path d="M78 40 V288 H488"/>
+              <path d="M78 40 l-6 12 M78 40 l6 12"/>
+              <path d="M488 288 l-12 -6 M488 288 l-12 6"/>
+            </g>
+            <g stroke="#3F4040" stroke-width="1.6">
+              <path d="M78 288 v6 M160 288 v6 M242 288 v6 M324 288 v6 M406 288 v6 M488 288 v6"/>
+            </g>
+            <g fill="#3F4040" font-size="14" text-anchor="middle">
+              <text x="78" y="306">0</text><text x="160" y="306">3</text><text x="242" y="306">6</text>
+              <text x="324" y="306">9</text><text x="406" y="306">12</text><text x="488" y="306">15</text>
+            </g>
+            <g fill="#3F4040" font-size="13" text-anchor="end">
+              <text x="72" y="45">0%</text><text x="72" y="292">100%</text>
+            </g>
+            <path d="M160 40 L379 288" fill="none" stroke="#6E7070" stroke-width="2.6" stroke-dasharray="7 5"/>
+            <circle cx="379" cy="288" r="4.4" fill="#6E7070"/>
+            <path d="M242 40 L460 288" fill="none" stroke="#004B8D" stroke-width="3.6"/>
+            <circle cx="460" cy="288" r="4.6" fill="#004B8D"/>
+            <g stroke="#004B8D" stroke-width="2" fill="none">
+              <path d="M379 296 H460 M379 296 v-6 M460 296 v-6"/>
+            </g>
+            <g font-size="13" font-weight="700" paint-order="stroke" stroke="#ffffff" stroke-width="5" stroke-linejoin="round">
+              <text x="150" y="150" fill="#6E7070" text-anchor="middle" transform="rotate(48.6 150 150)">off the valve — friction-free</text>
+              <text x="356" y="170" fill="#004B8D" text-anchor="middle" transform="rotate(48.6 356 170)">on the valve — with packing friction</text>
+            </g>
+            <text x="283" y="340" fill="#3F4040" font-size="14" font-weight="700" text-anchor="middle">Actuator diaphragm pressure (psig) →</text>
+            <text x="30" y="164" fill="#3F4040" font-size="15" font-weight="700" text-anchor="middle" transform="rotate(-90 30 164)">Actuator travel</text>
+          </svg>
+        </div>
+        <div class="tpl-annotation" style="left:71%;top:19%">
+          <span class="tpl-annotation__dot"></span>
+          <span class="tpl-annotation__label">Upper bench set (11 psig)</span>
+        </div>
+        <div class="tpl-annotation" style="left:81%;top:86%">
+          <span class="tpl-annotation__dot"></span>
+          <span class="tpl-annotation__label">+ packing friction ÷ diaphragm area</span>
+        </div>
+      </div>
+      <p class="tpl-takeaway">Full rated travel on the valve doesn't happen at the bench-set pressure any more — it happens at bench set plus the extra pressure packing friction adds.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">10</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>
