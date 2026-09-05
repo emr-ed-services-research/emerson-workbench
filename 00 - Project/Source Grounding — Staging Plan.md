@@ -106,9 +106,11 @@ needs. Expand later, deliberately, once proven on real content.
   `pages: [93]` → **retagged to `[89]`** (Franz, 2026-09-03). (2) ch3-m3
   concept 4's quantitative friction claim is not shown on its slides — left as
   authored (consistent with CVH §5.11/§8.5.5; wording was pre-approved).
-- **Still to do:** the redraw queue (Stage 3) — bench-set graph (92/97/112),
-  deadband graph (125), PDTC/PDTO bodies (93), casing-torque pattern (107/124),
-  plus slide 112's leftover deck textbox (new verify warning).
+- **Still to do:** the figure queue (Stage 3) — bench-set graph (92/97/112)
+  and deadband graph (125) are now **source-figure-first** (CVH Fig 8.10 +
+  a Style Guide §5.3 key), not a redraw, per §3's corrected recommendation;
+  PDTC/PDTO bodies (93), casing-torque pattern (107/124), plus slide 112's
+  leftover deck textbox (new verify warning).
 
 ### Decisions received (Franz, 2026-09-02)
 
@@ -197,13 +199,29 @@ Slides **97 and 112** carry ~110 KB machine-traced path-soup SVGs
 auto-vectorised from the deck — placeholders, not Stage 3 work (ch3-m2 and
 ch3-m4 have not been through Stage 3). Slide **125** similarly.
 
-**Recommendation:** index **Fisher 657/667 IM Figure 5** as the canonical
-reference for the bench-set / deadband graph, with **CVH Fig 8.10** as the
-corroborating cross-reference. **Keep the delivery format a house-style
-hand-authored SVG redraw** — the Fisher figure is a low-res 1990s scan that
-would clash with the Workbench design system, so a redraw is justified — but the
-redraw is now *specified against a named current figure*, not invented from
-scratch. Per-slide variants:
+**Recommendation — CORRECTED & SUPERSEDED 2026-09-05.** This was an
+unconfirmed "Open for Franz" checkbox, and its rationale was factually
+wrong: it claimed "the Fisher figure is a low-res 1990s scan that would
+clash with the Workbench design system" — contradicting this section's own
+comparison notes four lines above ("Clean, purpose-built as a teaching
+graphic"). Fisher 657/667 IM Fig. 5 (drawing A6763-2) is a clean **2018**
+vector drawing; CVH Fig 8.10 is clean vector too. The redraw premise did
+not hold.
+
+**Resolved (Franz, 2026-09-05; see `Style Guide.md` §5.8):** use the
+source figure **directly** by default — CVH Fig 8.10 for these graphs (it
+matches the course's travel-on-Y / pressure-on-X layout), with a Style
+Guide §5.3 key beside it carrying the course's terms and isolating each
+slide's sub-concept. Redraw only for a stated §5.8 reason (axis layout
+genuinely incompatible and no clean alternative; can't crop/key to the
+sub-concept; genuinely poor quality). Fisher IM Fig. 5 stays indexed as
+the canonical reference; CVH Fig 8.10 is the corroborating cross-ref and
+the figure actually used.
+
+The per-slide table below is kept for the **concept breakdown** — which
+sub-concept each slide teaches. Read "redraw of Fig 5 panel" in each row
+as "keyed crop/view of CVH Fig 8.10" unless a §5.8 reason is argued for
+that slide.
 
 | Slide | Module | Variant |
 | --- | --- | --- |
@@ -221,8 +239,12 @@ figure that already splits direct/reverse.
 - Confirm the revised buckets: **D750004 and D750020 → `archive-corroborated`
   and indexed** (pp listed above), D750066 → `archive-corroborated` but not
   separately indexed for ch3, nothing `superseded`.
-- Confirm the bench-set-graph recommendation (Fisher Fig 5 as canonical
-  reference; house-style redraw as delivery; the four per-slide variants).
+- ~~Confirm the bench-set-graph recommendation (Fisher Fig 5 as canonical
+  reference; house-style redraw as delivery; the four per-slide variants).~~
+  **Resolved 2026-09-05:** the redraw rationale was factually wrong (see
+  the corrected recommendation above); use the source figure (CVH Fig 8.10)
+  directly with a Style Guide §5.3 key, redraw only for a stated §5.8
+  reason.
 
 ---
 

@@ -14,10 +14,12 @@ status: in progress — §5 revised after an adversarial pass, awaiting direct r
 > [!note] Status
 > Being built section by section, each with its own review pass. **§5
 > (Diagram & graph conventions) has been through an adversarial self-review
-> and revision and is awaiting a direct review pass** — it was written
-> first because it unblocks the pages 6/10 chart rebuild in the template
-> proof (which does not start until §5 is approved). The remaining sections
-> are stubbed with scope notes and will be written as their own passes.
+> and two rounds of revision — the second establishing source-figure-first
+> for analytical graphs (§5.8) — and is awaiting a direct review pass.** It
+> was written first because it unblocks the pages 6/10 chart rebuild in the
+> template proof (which does not start until §5 is approved). The remaining
+> sections are stubbed with scope notes and will be written as their own
+> passes.
 
 ## What this document is
 
@@ -245,49 +247,78 @@ thin dashed diagonal on white; if not, use `--emerson-charcoal` at ~60 %.
   the valve stem closing. This is the Fisher instruction-manual convention
   and is already what 1400-092 / 102 / 112 and tp-006 / tp-010 do. Keep it.
 
-### 5.8 Redraw vs. use the source figure
+### 5.8 Use the source figure directly; redraw only for a stated reason
 
-Whether to redraw a figure or use it as-is is governed by
-`Source Grounding — Staging Plan.md` and the Component Index rules — §5
-does not restate that logic. §5 adds only two things:
+**Default: use the source figure directly** — extracted at high
+resolution, with a §5.3 key beside it carrying the course's terminology
+and isolating what each slide teaches. The same base figure can serve a
+sequence of slides with different key entries active. This is the default
+because redrawing is where risk enters: every real graph defect this
+project has hit — dropped illustrations, mispositioned callouts, ad hoc
+conventions — came from a redraw re-deriving what the source figure
+already had right.
 
-- a redrawn graph follows §5.1–§5.7;
-- a redraw is **specified against a named source figure** (manual + figure
-  number), never invented — the same rule the Component Index applies to
-  components.
+**Redraw only for one of these stated reasons:**
+
+1. the source figure's axis layout is genuinely incompatible with the
+   course's convention (§5.7) and no clean alternative figure matches it;
+2. the figure cannot be cropped or keyed down to the single sub-concept a
+   slide teaches;
+3. the figure is genuinely poor quality — a low-resolution raster,
+   baked-in noise, illegible labels.
+
+"It should match our visual system" is **not** on this list — the key
+mechanism (§5.3) already carries the course's vocabulary beside a lifted
+figure.
+
+**Whole-family visual coherence** — wanting every graph in a related set
+to share one look — is *arguable case by case, not a standing fourth
+reason*. If it is invoked for a specific slide, the argument must state
+plainly what is lost by using that slide's source figure directly and why
+that loss outweighs the source-first default. "They'd look more
+consistent" is not, by itself, the argument.
+
+Whatever the outcome: a redraw is **specified against a named source
+figure** (manual + figure number), never invented — the same rule the
+Component Index applies to components — and it follows §5.1–§5.7.
+
+For the bench-set / deadband graphs specifically: **CVH Fig. 8.10** is
+clean vector art and already matches the course's travel-on-Y /
+pressure-on-X layout — a use-directly case. Fisher 657/667 IM Fig. 5
+(drawing A6763-2, 2018) is also clean, but its axes are transposed from
+the course's convention. The `Source Grounding — Staging Plan.md` §3
+recommendation to redraw these was an unconfirmed checklist item resting
+on a factually wrong "low-res 1990s scan" premise; it does not stand.
 
 ### 5.9 The source line
 
-Every graph and every redrawn figure carries a `.tpl-source` line (grey
-italic, below the content), matching the format already in use:
+Every graph — lifted directly or redrawn — carries a `.tpl-source` line
+(grey italic, below the content), matching the format already in use:
 
 > After [manual / handbook], Fig. [N] — [what was kept / changed]. Component Index: [id].
 
-A redraw that departs from its source figure states how, briefly
+A figure used directly says so ("CVH Fig. 8.10, cropped to the
+friction-shift region"). A redraw that departs from its source figure
+states how, briefly
 ("travel-stop marks added"; "axes relabelled to psig"; "both curves from
 Fig. 5, deadband bracket added"). This is what makes a redraw checkable
 against its source instead of trusted.
 
 ### 5.10 Worked application — pages 6 & 10 of the template proof
 
-Concrete targets for the rebuild (the rebuild itself is a separate step;
-this is here so the section is reviewable against real cases).
-
-**tp-006 — "How Deadband Shows Up on the Graph"**
-
-- Series: closing curve (solid `--emerson-blue`), opening curve (solid
-  `--emerson-cyan`), bench-set reference (dashed `--emerson-grey`).
-- The deadband is a **span** — bracket it, and key the bracket (its
-  teaching point is "the gap between the curves", so a bracket, not a
-  fill).
-- Key (`.tpl-list`): three swatch entries for the lines + one swatch entry
-  for the deadband bracket. The current numbered list ("1 closing curve /
-  2 opening curve / 3 the gap…") becomes swatch-keyed; entry 3's
-  explanation moves to the context pane.
-- Nothing rotated. "closing curve" / "opening curve" / "bench-set line" no
-  longer sit on the lines.
+Concrete targets for the rebuild (the rebuild is a separate step; this is
+here so the section is reviewable against real cases). The key contents
+below apply whether the base is a lifted source figure or a redraw.
 
 **tp-010 — "Re-Checking Travel on the Valve"**
+
+Live option, to be evaluated first: **use CVH Fig. 8.10 (or a crop of it)
+directly, with a §5.3 key** — it is clean vector, matches the course's
+axis layout, and already carries the bench-set line, the friction-shifted
+line, and the deadband. A redraw is only on the table if that evaluation
+turns up one of the §5.8 reasons.
+
+Either way, the key:
 
 - Series: off-the-valve / friction-free (dashed `--emerson-grey`),
   on-the-valve / with packing friction (solid `--emerson-blue`), the shift
@@ -295,10 +326,24 @@ this is here so the section is reviewable against real cases).
 - Features: **1** — upper bench set (11 psig); **2** — bench set +
   (packing friction ÷ diaphragm area), at the shifted endpoint.
 - Key: three swatch entries + two numbered entries. Dots "1" and "2" on the
-  plot; the vertical reference lines at 11 psig and the shifted value
-  become dotted `--emerson-grey` threshold lines tied to those two
-  features.
-- The long rotated labels are gone.
+  plot; the vertical reference lines become dotted `--emerson-grey`
+  threshold lines tied to those two features.
+- No rotated labels.
+
+**tp-006 — "How Deadband Shows Up on the Graph"**
+
+tp-006 teaches deadband via the opening/closing-valve band — Fisher 657/667
+IM Fig. 5's frame, transposed to the course's axes. Whether it ends up a
+keyed source figure or a redraw, and whether Fig. 8.10's friction-shift
+frame or Fig. 5's opening/closing frame teaches deadband better, is a
+**ch3-m6 content decision and is deferred** — ch3-m6 is under the
+module-work full stop. Flagged, not decided here.
+
+Illustrative key (whichever base): closing curve (solid `--emerson-blue`),
+opening curve (solid `--emerson-cyan`), bench-set reference (dashed
+`--emerson-grey`); the deadband as a bracketed span, keyed. The rotated
+"closing curve" / "opening curve" / "bench-set line" labels come off the
+lines into the key.
 
 **Template changes §5 requires** (all scoped with the rebuild, none built
 yet):
@@ -327,30 +372,33 @@ but not label rotation or colour intent.
 - [ ] Colours are from the §5.6 vocabulary; no non-token colour.
 - [ ] Axis lines are charcoal with an arrowhead; tick labels horizontal; 0 % travel at top.
 - [ ] The source line is present, names the source figure, and says what changed.
-- [ ] Redraws are specified against a named source figure, not invented.
+- [ ] The figure is used directly unless a redraw has a stated §5.8 reason.
+- [ ] A redraw is specified against a named source figure, not invented.
 
 ### 5.12 Scope of the first rebuild — decide at §5 review
 
-§5's derivation established that the diagonal-rotated-label pattern is not
-confined to the proof pages: the shipped production slides **1400-092**
-(Bench Set), **1400-102** (Re-Checking Travel), **1400-112** (Bench Set,
-Reverse-Acting) carry it too, and **1400-125** (Deadband) is a
-pre-redesign legacy slide that needs a full redesign of which the label
-convention is only one part.
+The diagonal-rotated-label pattern is not confined to the proof pages: the
+shipped production slides **1400-092** (Bench Set), **1400-102**
+(Re-Checking Travel), **1400-112** (Bench Set, Reverse-Acting) carry it
+too, and **1400-125** (Deadband) is a pre-redesign legacy slide needing a
+full redesign of which the label convention is only one part.
 
-Open decision, to be made deliberately when §5 is reviewed — not by
-default once the rebuild starts:
+Given the source-figure-first direction (§5.8), the work for 092 / 102 /
+112 is **"replace the redraw with a keyed source figure"** — evaluate CVH
+Fig. 8.10 direct-use, add a §5.3 key — **not** "rebuild the redraw to the
+key convention." This is potentially *less* work than a redraw, not the
+same work relabelled.
 
-- **Same pass** — rebuild 092 / 102 / 112 alongside tp-006 / tp-010. It is
-  the identical fix under the same fresh rule.
-- **Separate follow-up** — rebuild only the two proof pages now (that is
-  what gates the Stage 3 authoring decision); log 092 / 102 / 112 as their
-  own pass, since the production fix blocks nothing and pulling it in
-  extends how long the gate stays closed.
+Open decision, to be made deliberately at §5 review:
+
+- **Same pass** — do 092 / 102 / 112 alongside tp-010.
+- **Separate follow-up** — do only tp-010 now (it gates the Stage 3
+  authoring decision); log 092 / 102 / 112 as their own pass, since the
+  production fix blocks nothing.
 
 1400-125 is not part of either option — it folds into the eventual
-redesign of the deadband slide (ch3-m6, currently under the module-work
-full stop).
+deadband-slide redesign (ch3-m6, under the module-work full stop). tp-006
+is likewise deferred (see §5.10).
 
 ---
 
