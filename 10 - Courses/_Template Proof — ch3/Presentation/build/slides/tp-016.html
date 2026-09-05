@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template Proof — Procedure (list + callout diagram)</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- TEMPLATE PROOF 2026-09-06, role: procedure, variant: list + callout
+       diagram (`.slide--role-procedure-callout`) — the third procedure
+       variant, previously with no proof example. Real content: ch3-m3
+       keyConcept 6 (apply) — diaphragm-casing bolt torque. Source
+       component: ch3-cmp-casing-torque-pattern. Maps to production slide
+       1400-106 (values verified against Fisher 657 IM Table 2, key 23,
+       and its CAUTION note).
+
+       The diagram (bolt circle) is lifted from 1400-106's own SVG — a
+       clean house-style redraw already reviewed in the ch3-m3 four-part
+       pass. Markers ①–④ are drawn IN the SVG at known viewBox coords, not
+       as box-%-positioned .tpl-marker overlays (the reliability lesson
+       from tp-006 / §5).
+
+       TEMPLATE-FIT NOTE for review: the template comment says "the
+       numbered markers ARE the steps." Here the markers ①–④ are the
+       first-round cardinal-bolt ORDER (a sub-sequence inside step 2), not
+       a 1:1 map to the four procedure steps. It still reads — the diagram
+       elaborates "which four, in what order" for the step that names them
+       — but procedure-callout's model may want restating as "the diagram
+       supports the steps; markers key to a step where useful." -->
+  <article class="slide slide--role-procedure-callout" data-slide="16" data-deck="proof">
+    <h1 class="slide-title">Diaphragm-Casing Bolt Torque</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <svg viewBox="0 0 340 300" preserveAspectRatio="xMidYMid meet" role="img" aria-label="A ring of twelve diaphragm-casing bolts. The four bolts 90 degrees apart — at 12, 3, 6 and 9 o'clock — are filled and numbered 1 to 4, snugged first. The other eight are then tightened in a criss-cross pattern shown by dashed chords crossing the ring." font-family="Arial, Helvetica, sans-serif" style="width:100%;height:100%">
+            <circle cx="160" cy="150" r="105" fill="none" stroke="#C7C9C9" stroke-width="10"/>
+            <circle cx="160" cy="150" r="72" fill="none" stroke="#E4E5E5" stroke-width="2"/>
+            <g stroke="var(--emerson-blue)" stroke-width="1.6" stroke-dasharray="5 4" opacity="0.55">
+              <path d="M212.5 59.1 L107.5 240.9"/>
+              <path d="M250.9 97.5 L69.1 202.5"/>
+              <path d="M250.9 202.5 L69.1 97.5"/>
+              <path d="M212.5 240.9 L107.5 59.1"/>
+            </g>
+            <g fill="#ffffff" stroke="#9A9C9C" stroke-width="2">
+              <circle cx="212.5" cy="59.1" r="9"/>
+              <circle cx="250.9" cy="97.5" r="9"/>
+              <circle cx="250.9" cy="202.5" r="9"/>
+              <circle cx="212.5" cy="240.9" r="9"/>
+              <circle cx="107.5" cy="240.9" r="9"/>
+              <circle cx="69.1" cy="202.5" r="9"/>
+              <circle cx="69.1" cy="97.5" r="9"/>
+              <circle cx="107.5" cy="59.1" r="9"/>
+            </g>
+            <g fill="var(--emerson-blue)">
+              <circle cx="160" cy="45" r="12"/>
+              <circle cx="265" cy="150" r="12"/>
+              <circle cx="160" cy="255" r="12"/>
+              <circle cx="55" cy="150" r="12"/>
+            </g>
+            <g fill="#ffffff" font-size="13" font-weight="700" text-anchor="middle">
+              <text x="160" y="49.5">1</text>
+              <text x="265" y="154.5">2</text>
+              <text x="160" y="259.5">3</text>
+              <text x="55" y="154.5">4</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <ol class="tpl-steps">
+        <li>Bolts go on <b>clean and dry</b> — no lubricant.</li>
+        <li>Round 1: snug the four bolts 90&deg; apart (&#9312;–&#9315;), then criss-cross the rest, to 13&nbsp;N&middot;m (10&nbsp;lbf&middot;ft).</li>
+        <li>Round 2: same order, to 27&nbsp;N&middot;m (20&nbsp;lbf&middot;ft). <b>Do not exceed 27&nbsp;N&middot;m</b> or the diaphragm is damaged.</li>
+        <li>Finish with one circular check pass, bolt to bolt.</li>
+      </ol>
+      <p class="tpl-source">After Fisher 657 Instruction Manual, Table 2 (diaphragm casing, key 23) and its Actuator Assembly procedure / CAUTION note. Diagram lifted from production slide 1400-106. Component Index: ch3-cmp-casing-torque-pattern.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">16</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>
