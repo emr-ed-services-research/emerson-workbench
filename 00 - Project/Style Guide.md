@@ -473,6 +473,30 @@ while §6 was still cheap to define.
   two-tone scheme (charcoal gutter marker, blue list circle); it aligns to
   this rule if/when it is next revisited, not now.
 
+### 6.2 A source figure that carries its own numbered key — resolved 2026-09-05
+
+When a figure is used directly (§5.8) and it carries **its own circled or
+bracketed numbers** — a manufacturer's note key, `①②③④` printed on the
+drawing — those numbers stay as the source drew them. Do **not** renumber
+the figure, erase its numbers, or reorder a step list to line up with them.
+
+- **The slide's own numbering keeps its meaning.** A procedure step list is
+  numbered by teaching sequence; that ordering is the point of the list and
+  is never bent to match a figure's note key.
+- **Name the two schemes apart in the source line or a short caption**, so a
+  reader is not left assuming step 2 and the figure's ② are the same thing.
+  Standard phrasing: *"The figure's own numbers ①–④ are [manufacturer]'s
+  note key, not the step numbers."*
+- This is the accepted resolution of the tp-017 collision (Fisher 657 IM
+  Fig. 4 — its ①–④ mark loading-pressure points, the step list's ①–④ are
+  the verification sequence). Preferred over redrawing the figure to drop
+  its numbers, which §5.8 rules out for "matches our system" reasons anyway.
+- If the figure's numbers genuinely *cannot* coexist with the slide's
+  without confusing the teach — e.g. the figure's key is central to what the
+  slide explains — that is a signal the figure needs a §5.3 key of our own
+  (numbered markers we place and control), not direct use. Decide that at
+  the point of use; the default is direct use + the caption.
+
 ## 7. Terminology
 
 *Stub. To cover: valve / actuator nomenclature house style and the
