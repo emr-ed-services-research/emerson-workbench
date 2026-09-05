@@ -4,7 +4,7 @@ type: moc
 tags:
   - moc
   - source-library
-updated: 2026-09-03
+updated: 2026-09-04
 ---
 
 # Source Library
@@ -21,14 +21,37 @@ a chapter or section level.
 **Concept-level indexing has started, scoped to real use.** The deferred
 "wait for a real retrieval task" condition is now met — the Pipeline Console's
 Stage 3 was generating diagrams from scratch while good source material sat idle.
-The response is a per-chapter **teaching-component index** built only as far as a
-course actually reaches:
+The response is a **teaching-component index** built only as far as a real
+request actually reaches — never a wholesale pre-index of a document:
 
 - [[Component Index — 1400 ch3]] — the discrete instructional components (a
   diagram, a labelled figure, a graph) that Chapter 3's concepts need, each with
   its source, a precedence bucket (`current` / `archive-corroborated` /
   `archive-only` / `legacy`), and a locator. Stage 2 tags each key concept
   against it; Stage 3 pulls from it instead of searching cold.
+
+**Two ways a component index gets triggered (corrected 2026-09-04 — see
+`Course Porting Pipeline.md` "Origination without a deck").** Both are
+"use-driven," bounded to the request in front of them, never speculative:
+
+1. **Deck-driven** (the ch3 case above) — a chapter's existing slides define
+   the scope; the index is built by cross-referencing what those slides
+   already teach against the Source Library, in full, for that chapter only.
+2. **Topic-driven** (needed for origination, not yet built for real) — a
+   named topic with **no existing deck** ("bench-setting a Fisher 657") defines
+   the scope instead; the index is built by reading the relevant Source
+   Library sections for *that topic*, not the whole document. Same
+   record shape, same precedence-bucket discipline, same review gate — the
+   only difference is what supplies the boundary of what's in scope. This is
+   **not** "index the whole Handbook so any future topic already has an
+   answer" — that reintroduces the wholesale pre-indexing this section exists
+   to rule out; a topic index is scoped exactly as tightly as a chapter one,
+   built when that topic is actually being authored, not before.
+
+Building either kind of index is real research and editorial judgment — full
+reads of the relevant sources, precedence calls that go to Franz for
+review — not a quick lookup or a code change. Treat it with the same weight
+as authoring Stage 2 content, not as pipeline plumbing.
 
 See `00 - Project/Source Grounding — Staging Plan.md` for the build plan and how
 this graduates into the permanent pipeline docs.
@@ -85,6 +108,7 @@ that shelf. Shelf contents are defined in `course/course.json` under `"library"`
 2. Add a catalogue entry to the relevant category note above — what it is,
    edition / document number / date, and scope at a chapter or section level.
 3. Record the exact edition/version and date so citations stay precise.
-4. Concept-level indexing is now **per-chapter and use-driven** (see
-   [[Component Index — 1400 ch3]]). Build an index entry only when a course
-   chapter actually needs the component — do not pre-index a document wholesale.
+4. Concept-level indexing is **use-driven** — deck-driven (a chapter's slides)
+   or topic-driven (a named scope with no deck) — see "Concept-level indexing
+   has started" above. Build an index entry only when a real request actually
+   needs the component; do not pre-index a document wholesale.

@@ -547,6 +547,37 @@ Mirror into [[Open Questions]] once reviewed.
   page numbers get allocated with no deck length to bound them are still
   open.
 
+  **Follow-up (Franz, 2026-09-04, same day):** the two open questions above —
+  bounding a module with no page range, and which template Stage 3 authors
+  into — may collapse into one: generalize the Component Index. Checked
+  against how the ch3 index and Axis C actually work:
+  - **Template selection is already solved**, not just plausible: Stage 3's
+    existing role→treatment mapping (`teaching-philosophy.md`) already picks
+    a caution card for a `caution` concept, a scenario for `application`,
+    etc. The only real gap is authoring a new file into that choice, per the
+    "does not create new slide files" note above.
+  - **The index generalizes deck-scoped → topic-scoped, not course-scoped →
+    library-scoped.** The ch3 index's 18 components were found by
+    cross-referencing *ch3's existing slides* against source, in full — its
+    method is deck-anchored even though its file lives in the Source
+    Library. Widening it to a true library-wide index (pre-cataloguing
+    everything the Handbook and every Fisher IM contain, independent of any
+    request) would reverse `Source Library.md`'s own deliberate "use-driven,
+    never pre-index a document wholesale" rule (`Source Grounding — Staging
+    Plan.md`: "bounded to what ch3 actually needs"). The right generalization
+    keeps that discipline: an origination request's *named topic* is the
+    trigger, the same way a chapter's slides are the trigger today — a
+    small, request-scoped index built for that topic alone, not a
+    library-wide one. See `Source Library.md` "Two ways a component index
+    gets triggered."
+  - **Building a topic index is real editorial work, not a bounded code
+    change** — the same size and character as building ch3's index was (full
+    source reads, precedence judgment calls, a Franz review pass), not the
+    same category as the state-machine plumbing fix. A trial topic index
+    (e.g. "bench-setting a Fisher 657") is the natural next step to prove
+    this shape for real, but — like any other content-adjacent authoring —
+    it stays paused under the current full stop until explicitly asked for.
+
 ## Related
 
 [[Roadmap]] · [[Open Questions]] · [[teaching-philosophy]] · [[1400 Presentation]] ·
