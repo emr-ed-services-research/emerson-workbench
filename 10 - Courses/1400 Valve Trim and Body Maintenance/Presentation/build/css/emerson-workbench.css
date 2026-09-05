@@ -970,20 +970,43 @@
   font: 700 1.9cqw/1 var(--font-display);
   color: var(--emerson-white);
 }
+/* ROOT-CAUSE FIX 2026-09-05 (16-example template proof, Franz's direct
+   review): .caution-body was position:absolute with an unbounded height
+   (only top:26cqh, no bottom limit), while .caution-fig was independently
+   pinned to a fixed top:48cqh regardless of how tall the body actually
+   rendered — the exact "fixed absolute offset, doesn't account for real
+   content height" class of bug patched three times elsewhere this session
+   (ch3-m2 slide 98, ch3-m3 101/103, ch3-m4 109), sitting undetected here
+   because nothing had exercised a long enough caution-body until this
+   proof's page 13 (a real 3-line caution). Template 6 was never actually
+   built on CSS Grid like the rest of the template system — it predates
+   that pass. Converted: .slide--tmpl-caution itself is now the grid
+   container (its own .slide-title / .slide-chrome children stay
+   unaffected, both position:absolute and so outside grid flow); the body
+   sits in an `auto` row sized to its own real content, the figure fills
+   the remaining `1fr` — the same structural guarantee every other
+   template in this system already has. */
+.slide--tmpl-caution {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  row-gap: 1.8cqh;
+  padding: 26cqh 5.6cqw 12.5cqh 5.6cqw;
+  box-sizing: border-box;
+}
 .slide--tmpl-caution .caution-body {
-  position: absolute;
-  left: 5.6cqw; right: 5.6cqw; top: 26cqh; margin: 0;
+  margin: 0;
   padding-left: 2cqw;
   border-left: 0.5cqw solid var(--emerson-orange);
   font-size: 2.3cqw; line-height: 1.35;
   color: var(--emerson-charcoal);
+  min-height: 0;
 }
 .slide--tmpl-caution .caution-body b { color: var(--emerson-orange); }
 .slide--tmpl-caution .caution-fig {
-  position: absolute;
-  left: 5.6cqw; right: 5.6cqw; bottom: 12cqh; top: 48cqh;
   margin: 0;
   display: flex; align-items: center; justify-content: center;
+  min-height: 0;
+  min-width: 0;
 }
 .slide--tmpl-caution .caution-fig > img,
 .slide--tmpl-caution .caution-fig > svg {

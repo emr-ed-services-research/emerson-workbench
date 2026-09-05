@@ -20,7 +20,15 @@
        shaded band, bracket, three rotated in-chart labels), not a simple
        curve - if the annotation layer holds up legibly here, it holds up
        for the simpler bench-set-travel-stop case that motivated the
-       variant. -->
+       variant.
+       UPDATE 2026-09-05 (re-render verification after the label-convention
+       fix): the second annotation's box-relative left/top % put its dot
+       almost exactly on top of the line's own SVG endpoint circle at the
+       axis corner, overlapping the "15" tick and the axis arrowhead - the
+       same box-relative-vs-viewBox mismatch flagged for chart markers in
+       tp-006, just far enough off here (rather than fully wrong) that it
+       wasn't caught until a 2x zoom render. Repositioned into the clear
+       space inside the shaded band, still adjacent to the point it labels. -->
   <article class="slide slide--role-application-annotated" data-slide="10" data-deck="proof">
     <h1 class="slide-title">Re-Checking Travel on the Valve</h1>
     <div class="tpl-content">
@@ -66,7 +74,7 @@
           <span class="tpl-annotation__dot"></span>
           <span class="tpl-annotation__label">Upper bench set (11 psig)</span>
         </div>
-        <div class="tpl-annotation" style="left:81%;top:86%">
+        <div class="tpl-annotation" style="left:71%;top:74%">
           <span class="tpl-annotation__dot"></span>
           <span class="tpl-annotation__label">+ packing friction ÷ diaphragm area</span>
         </div>
