@@ -497,6 +497,27 @@ the figure, erase its numbers, or reorder a step list to line up with them.
   (numbered markers we place and control), not direct use. Decide that at
   the point of use; the default is direct use + the caption.
 
+### 6.3 A figure that already carries its own field labels — resolved 2026-09-05
+
+The nomenclature convention is *numbered markers on the figure, keyed to a
+list beside it* (§6.1). It does **not** apply when the figure is one that
+carries **its own printed field labels** — a nameplate (`TYPE`, `BENCH SET`,
+`TRAVEL`, `MAX STEM DIA`), a gauge face, a wiring legend. The printed labels
+already do the marker's job; layering numbered circles on top to force a
+one-to-one match with the list is a fit that does not belong.
+
+- **The list still carries the numbered entries** — it is the teaching
+  order and the place the plain-language gloss lives ("`MAX STEM DIA` — the
+  largest valve stem this actuator fits"). The figure just is not marked.
+- **The list entry names the field by its printed label**, verbatim, so the
+  reader's eye crosses to the plate on the label text rather than a number.
+- This is the accepted resolution for tp-004 (the Fisher 657 nameplate).
+  Same shape as §6.2 — a source figure has its own labelling scheme and the
+  house convention accommodates it rather than overwriting it.
+- The boundary: this covers figures whose labels are an inherent part of
+  the object (a real nameplate reads that way). A cutaway or schematic with
+  no native callouts still gets our numbered markers.
+
 ## 7. Terminology
 
 *Stub. To cover: valve / actuator nomenclature house style and the

@@ -10,43 +10,44 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- TEMPLATE PROOF 2026-09-05, role: application. Real content: ch3-m1
-       keyConcept 4 (evaluate level), production slide 1400-089.html (a
-       decision table + a 4-up supporting figure).
-       FINDING: the application master template is built around ONE
-       analytical figure (chart + takeaway). This concept's real content is
-       a DECISION TABLE plus a supporting figure - a different kind of
-       "application" than an annotated curve (compare tp-010). Recomposed by
-       placing the table and the figure together inside the .tpl-chart row
-       (a small ad hoc flex wrapper, not part of the approved template CSS)
-       since the template itself has no defined slot for "a table plus a
-       supporting image side by side." Two application-shaped
-       sub-cases - "apply the mechanism to make a choice from a decision
-       table" vs. "read a specific feature off a curve" (tp-010) - may
-       warrant the same kind of two-variant split Procedure already has,
-       rather than forcing both into one Application layout. -->
+  <!-- TEMPLATE PROOF 2026-09-05, role: application, variant: decision-table.
+       Real content: ch3-m1 keyConcept 4 (evaluate level), production slide
+       1400-089.html (a decision table + a 4-up supporting figure).
+
+       This is the application role's SECOND variant, built 2026-09-05
+       (Style Guide §5.10, gallery.css §5 :has(.tmpl-table)). The concept is
+       an evaluate-level pick — "given the fail-safe outcome you need and
+       the body you have, which actuator action?" — which is a decision
+       table, not an annotated curve (tp-010 is the curve variant). The
+       template now has a real slot for it: production .tmpl-table left, a
+       corroborating figure right, takeaway + source full-width below. No
+       more ad hoc inline flex wrapper.
+
+       CONTENT VERIFIED 2026-09-05 against ch3-cmp-da-schematic (DA fails
+       up), ch3-cmp-ra-schematic (RA fails down) and ch3-cmp-pdtc-pdto-bodies
+       (PDTC: stem-down closes; PDTO: stem-down opens). All four rows check
+       out, and the figure (deck image153) agrees row-for-row. This domain
+       is where the original ch3-m4 review found real errors, so the pass
+       was done deliberately, not assumed from tp-010. -->
   <article class="slide slide--role-application" data-slide="09" data-deck="proof">
     <h1 class="slide-title">Selecting an Action</h1>
     <div class="tpl-content">
-      <div style="display:flex; gap:2.4cqw; align-items:center; height:100%; min-height:0">
-        <table style="flex:1 1 40%; min-width:0; border-collapse:collapse; font-size:1.5cqw">
-          <thead>
-            <tr style="background:var(--emerson-blue); color:#fff">
-              <th style="padding:0.6cqh 0.8cqw; text-align:left">Desired fail mode</th>
-              <th style="padding:0.6cqh 0.8cqw; text-align:left">Valve body</th>
-              <th style="padding:0.6cqh 0.8cqw; text-align:left">Actuator action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td style="padding:0.5cqh 0.8cqw; border-bottom:1px solid var(--emerson-grey)">Fail closed</td><td style="padding:0.5cqh 0.8cqw; border-bottom:1px solid var(--emerson-grey)">PDTC</td><td style="padding:0.5cqh 0.8cqw; border-bottom:1px solid var(--emerson-grey)">Reverse-acting</td></tr>
-            <tr><td style="padding:0.5cqh 0.8cqw; border-bottom:1px solid var(--emerson-grey)">Fail closed</td><td style="padding:0.5cqh 0.8cqw; border-bottom:1px solid var(--emerson-grey)">PDTO</td><td style="padding:0.5cqh 0.8cqw; border-bottom:1px solid var(--emerson-grey)">Direct-acting</td></tr>
-            <tr><td style="padding:0.5cqh 0.8cqw; border-bottom:1px solid var(--emerson-grey)">Fail open</td><td style="padding:0.5cqh 0.8cqw; border-bottom:1px solid var(--emerson-grey)">PDTC</td><td style="padding:0.5cqh 0.8cqw; border-bottom:1px solid var(--emerson-grey)">Direct-acting</td></tr>
-            <tr><td style="padding:0.5cqh 0.8cqw">Fail open</td><td style="padding:0.5cqh 0.8cqw">PDTO</td><td style="padding:0.5cqh 0.8cqw">Reverse-acting</td></tr>
-          </tbody>
-        </table>
-        <img src="../assets/sourced/fail-mode-spring-schematics.png" style="flex:1 1 55%; min-width:0; max-width:55%; max-height:100%; object-fit:contain" alt="Four schematics: direct-acting over PDTC fails open, direct-acting over PDTO fails closed, reverse-acting over PDTC fails closed, reverse-acting over PDTO fails open">
-      </div>
+      <table class="tmpl-table">
+        <thead>
+          <tr><th>Desired fail mode</th><th>Valve body</th><th>Actuator action</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Fail closed</td><td>PDTC</td><td>Reverse-acting</td></tr>
+          <tr><td>Fail closed</td><td>PDTO</td><td>Direct-acting</td></tr>
+          <tr><td>Fail open</td><td>PDTC</td><td>Direct-acting</td></tr>
+          <tr><td>Fail open</td><td>PDTO</td><td>Reverse-acting</td></tr>
+        </tbody>
+      </table>
+      <figure class="tpl-fig">
+        <img src="../assets/sourced/fail-mode-spring-schematics.png" alt="Four spring-and-body schematics. Direct-acting actuator: over a PDTC body the spring opens the valve, so it fails open; over a PDTO body the spring closes it, so it fails closed. Reverse-acting actuator: over a PDTC body it fails closed; over a PDTO body it fails open.">
+      </figure>
       <p class="tpl-takeaway">Pick the actuator action from the desired fail-safe outcome and the valve's body orientation together — not either one alone.</p>
+      <p class="tpl-source">Table after Control Valve Handbook 6th ed. §3.8.1 (reversible action / fail-safe). Figure: 1400 deck slide 89 (image153) — the four DA/RA × PDTC/PDTO spring-and-body schematics, used directly. Component Index: ch3-cmp-fail-mode-matrix.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">09</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

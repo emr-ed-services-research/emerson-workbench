@@ -90,15 +90,30 @@
  *    a hook, not a reference.
  * ---------------------------------------------------------------------- */
 .slide--role-prime .tpl-content {
-  grid-template-rows: 1fr auto;
+  /* SPARSE-LAYOUT PASS 2026-09-05: was `1fr auto` with align-content:center,
+     which is inert next to a 1fr track — the hero row took all the slack,
+     the image floated in it, and the gap to the tagline read as dead space.
+     Two content-sized rows centred as one group: image and tagline stay
+     together, whitespace splits evenly above and below. */
+  grid-template-rows: auto auto;
   justify-items: center;
   align-content: center;
-  row-gap: 2.6cqh;
+  row-gap: 3.2cqh;
 }
 .slide--role-prime .tpl-hero {
-  width: 58cqw;
-  height: 100%;
-  max-height: 100%;
+  width: 100%;
+  height: 44cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-prime .tpl-hero > img,
+.slide--role-prime .tpl-hero > svg {
+  max-width: 82cqw;
+  max-height: 44cqh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 .slide--role-prime .tpl-tagline {
   max-width: 74cqw;
@@ -240,6 +255,54 @@
 .slide--role-mechanism .tpl-source {
   grid-row: 2;
   grid-column: 1 / span 2;
+}
+
+/* .has-wide-fig (nomenclature) — a wide, short, self-labelled figure (a
+   nameplate, a gauge face) that a 36cqw side column renders too small to
+   read. SPARSE-LAYOUT PASS 2026-09-05: figure across the top at a readable
+   size, the field-gloss list in a 2-column block below it, source last —
+   mirrors procedure-image's .has-wide-fig. Used by tp-004 (Fisher 657
+   nameplate, Style Guide §6.3 — the plate keeps its own printed labels,
+   no markers). The slide's <svg>/<img> must NOT carry an inline width/
+   height (inline wins over these rules); size it here. */
+.slide--role-nomenclature.has-wide-fig .tpl-content {
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto;
+  align-content: center;
+  row-gap: 4cqh;
+}
+.slide--role-nomenclature.has-wide-fig .tpl-fig-wrap {
+  grid-row: 1;
+  grid-column: 1;
+  width: 100%;
+  height: auto;
+  justify-content: center;
+}
+.slide--role-nomenclature.has-wide-fig .tpl-fig {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+}
+.slide--role-nomenclature.has-wide-fig .tpl-fig > svg,
+.slide--role-nomenclature.has-wide-fig .tpl-fig > img {
+  width: auto;
+  height: auto;
+  max-width: 88cqw;
+  max-height: 32cqh;
+}
+.slide--role-nomenclature.has-wide-fig .tpl-list {
+  grid-row: 2;
+  grid-column: 1;
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.8cqh 5cqw;
+  justify-content: start;
+}
+.slide--role-nomenclature.has-wide-fig .tpl-source {
+  grid-row: 3;
+  grid-column: 1;
 }
 
 /* ---------------------------------------------------------------------- *
@@ -451,11 +514,14 @@
  *    tell apart (§5.4) carries no key and keeps the full width — as does a
  *    figure-plus-takeaway with no graph.
  *
- *    NOT covered by this template — a DECISION-TABLE application (tp-009:
- *    a comparison table + a supporting figure, `role: application`,
- *    `evaluate`). Genuinely different shape, currently hand-styled inline.
- *    A real second variant (like procedure's list/callout/sequence split),
- *    not yet built — Style Guide §5.10.
+ *    SECOND VARIANT — a DECISION-TABLE application, gated on
+ *    `:has(.tmpl-table)` (tp-009: a selection table + a corroborating
+ *    figure, `role: application`, `evaluate`). Built 2026-09-05, Style
+ *    Guide §5.10. The table IS the content — an evaluate-level "pick the
+ *    row that meets the requirement"; the figure shows the same cases so
+ *    the pick can be checked against the physical picture. Table styling
+ *    is the production `.tmpl-table` (blue header, 5%-blue zebra, optional
+ *    `tr.is-example`) reused as-is — this block only places it.
  * ---------------------------------------------------------------------- */
 .slide--role-application .tpl-content {
   grid-template-rows: 1fr auto;
@@ -547,6 +613,51 @@
   grid-row: 3;
 }
 
+/* decision-table variant — table left, corroborating figure right,
+   takeaway + source full-width below. SPARSE-LAYOUT PASS 2026-09-05:
+   `align-content: start` keeps the table + figure tucked under the title
+   with the takeaway/source right below them; the leftover height collects
+   at the bottom as margin rather than as a band between the title and the
+   content or a gap in the middle. */
+.slide--role-application:has(.tmpl-table) .tpl-content {
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  column-gap: 3cqw;
+  row-gap: 2.4cqh;
+  align-items: start;
+}
+.slide--role-application:has(.tmpl-table) .tmpl-table {
+  grid-column: 1;
+  grid-row: 1;
+}
+.slide--role-application:has(.tmpl-table) .tpl-fig {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  min-width: 0;
+  max-height: 46cqh;
+  align-self: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-application:has(.tmpl-table) .tpl-fig img {
+  max-width: 100%;
+  max-height: 46cqh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.slide--role-application:has(.tmpl-table) .tpl-takeaway {
+  grid-column: 1 / span 2;
+  grid-row: 2;
+}
+.slide--role-application:has(.tmpl-table) .tpl-source {
+  grid-column: 1 / span 2;
+  grid-row: 3;
+}
+
 /* ---------------------------------------------------------------------- *
  * 6. CONTRAST — two panels, mirrored. `subgrid` locks the label / image /
  *    caption rows to the SAME height on both sides — captions align row to
@@ -617,7 +728,12 @@
   display: flex;
   flex-direction: column;
   gap: 1.1cqh;
-  align-self: start;
+  /* SPARSE-LAYOUT PASS 2026-09-05: was `align-self: start`, which pinned the
+     options to the top of the stretched middle row and dropped the whole
+     empty band between them and the reveal footer. Centre them in that row
+     so the breathing room splits above and below — reads as a deliberate
+     "think about it" pause, not a dangling gap. */
+  align-self: center;
 }
 .slide--role-check .tpl-options li {
   /* Not display:flex — same latent risk as the list templates above: any
