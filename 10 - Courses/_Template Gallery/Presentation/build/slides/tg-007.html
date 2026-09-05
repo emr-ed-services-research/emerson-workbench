@@ -10,11 +10,17 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
+  <!-- APPLICATION, keyless mode (Style Guide §5.4). One template, shared
+       with tg-011 (keyed mode). A graph with one series and nothing to
+       tell apart carries no key and keeps the full width — the shape is
+       the whole message, axes + drawing + takeaway carry it. The
+       `:has(.tpl-list)` gate in gallery.css switches to the chart-left /
+       key-right layout only when a `.tpl-list` is present (tg-011). -->
   <article class="slide slide--role-application" data-slide="07" data-deck="gallery">
-    <h1 class="slide-title">Role: Application — Lorem Ipsum In Practice</h1>
+    <h1 class="slide-title">Role: Application — one series, no key (§5.4)</h1>
     <div class="tpl-content">
-      <div class="tpl-chart placeholder-img">PLACEHOLDER<br>GRAPH / CHART</div>
-      <p class="tpl-takeaway">Lorem ipsum dolor sit amet: the takeaway a learner should draw from this figure, anchored in its own row so it can never be reached by the chart above it, however tall the chart's own labels or legend run.</p>
+      <div class="tpl-chart placeholder-img">PLACEHOLDER<br>SINGLE-SERIES GRAPH<br>(no key — §5.4)</div>
+      <p class="tpl-takeaway">Lorem ipsum dolor sit amet: the takeaway a learner should draw from this figure, anchored in its own row so it can never be reached by the chart above it.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">07</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

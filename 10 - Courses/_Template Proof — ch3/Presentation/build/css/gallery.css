@@ -399,64 +399,58 @@
 }
 
 /* ---------------------------------------------------------------------- *
- * 5. APPLICATION — an analytical figure (graph/chart) plus a takeaway.
- *    Same row-track trick as procedure-sequence: the takeaway owns its
- *    own row, so it cannot collide with the chart regardless of chart
- *    complexity or note length.
+ * 5. APPLICATION — an analytical graph, Style Guide §5. ONE template
+ *    (2026-09-05: the former `application-annotated` variant merged in —
+ *    §5 gives every graph a key by default, so "has anchored features"
+ *    stopped being a distinct template).
+ *
+ *    Graph in a LEFT column; the KEY (`.tpl-list`) a VERTICAL list in a
+ *    RIGHT column, same shape/position as the mechanism list, one step
+ *    smaller than body text (§5.3). Series get a line-sample swatch;
+ *    features a numbered circle identical to the plot marker (point and
+ *    span alike, §5.2). Takeaway + source line own their own full-width
+ *    rows below. The graph's aspect ratio (in the .html) is near-square to
+ *    sit in the left column, not to assume full width. `NOTHING` is
+ *    labelled inline on the plot (§5.1) — this supersedes the old
+ *    rotated-halo-label / free-floating `.tpl-annotation` conventions.
+ *
+ *    The `:has(.tpl-list)` gate: a graph with one series and nothing to
+ *    tell apart (§5.4) carries no key and keeps the full width — as does a
+ *    figure-plus-takeaway with no graph.
+ *
+ *    NOT covered by this template — a DECISION-TABLE application (tp-009:
+ *    a comparison table + a supporting figure, `role: application`,
+ *    `evaluate`). Genuinely different shape, currently hand-styled inline.
+ *    A real second variant (like procedure's list/callout/sequence split),
+ *    not yet built — Style Guide §5.10.
  * ---------------------------------------------------------------------- */
 .slide--role-application .tpl-content {
   grid-template-rows: 1fr auto;
-  row-gap: 1.8cqh;
+  row-gap: 1.6cqh;
 }
 .slide--role-application .tpl-chart {
   width: 100%;
   height: 100%;
 }
 .slide--role-application .tpl-takeaway {
-  font-size: 1.7cqw;
+  font-size: 1.6cqw;
   line-height: 1.35;
   border-left: 0.35cqw solid var(--emerson-orange);
   padding-left: 1.7cqw;
   margin: 0;
 }
+.slide--role-application .tpl-source { margin: 0; }
 
-/* ---------------------------------------------------------------------- *
- * IN-DIAGRAM LABEL CONVENTION — SUPERSEDED 2026-09-05 by `Style Guide.md`
- * §5 (Diagram & graph conventions). The earlier rule here — rotated
- * halo text along a line for a curve label, dot+halo text for a point —
- * was itself a reactively-invented convention. §5 replaces it: labels
- * come off the plot entirely; series go in a key (the `.tpl-list`, with a
- * line-sample swatch), point features get a numbered dot in the SVG keyed
- * to a numbered list entry, and NOTHING is labelled inline on the plot.
- * See §5.1–§5.5. tp-006 still carries the old rotated SVG labels — it is
- * deferred (ch3-m6, under the module-work full stop) and will be rebuilt
- * to §5 when that module is live.
- * ---------------------------------------------------------------------- */
-
-/* ---------------------------------------------------------------------- *
- * 5b. APPLICATION — analytical graph with keyed features. Style Guide §5.
- *    Graph in a LEFT column, the KEY (`.tpl-list`) a VERTICAL list in a
- *    RIGHT column — same shape and position as the mechanism template's
- *    list (§5.3). Key text a step smaller than the body scale; the graph's
- *    own aspect ratio (in the .html) is designed near-square to sit in the
- *    left column, not to assume full width. Series get a line-sample
- *    swatch, features a numbered circle identical to the plot marker.
- *    Replaces the earlier free-floating `.tpl-annotation` overlays
- *    (naming ON the plot, §5.1 rules that out). Takeaway + source line
- *    full-width rows below, each in its own row so neither collides.
- *    HISTORY: a first pass put the key in a horizontal strip below the
- *    plot — it wrapped to two crowded rows at 4 entries (Franz review
- *    2026-09-05), hence the return to a vertical right column.
- *    STILL OPEN (Style Guide §5.10): merge with plain `application`?
- * ---------------------------------------------------------------------- */
-.slide--role-application-annotated .tpl-content {
+/* keyed-graph layout — chart left, vertical key right, takeaway + source
+   full-width below */
+.slide--role-application:has(.tpl-list) .tpl-content {
   grid-template-columns: 1fr 26cqw;
   grid-template-rows: 1fr auto auto;
   column-gap: 2.4cqw;
   row-gap: 1.2cqh;
   align-items: center;
 }
-.slide--role-application-annotated .tpl-chart-wrap {
+.slide--role-application:has(.tpl-list) .tpl-chart-wrap {
   grid-column: 1;
   grid-row: 1;
   position: relative;
@@ -464,11 +458,7 @@
   height: 100%;
   min-height: 0;
 }
-.slide--role-application-annotated .tpl-chart {
-  width: 100%;
-  height: 100%;
-}
-.slide--role-application-annotated .tpl-list {
+.slide--role-application .tpl-list {
   grid-column: 2;
   grid-row: 1;
   list-style: none;
@@ -480,7 +470,7 @@
   gap: 1.5cqh;
   height: 100%;
 }
-.slide--role-application-annotated .tpl-list li {
+.slide--role-application .tpl-list li {
   /* hanging indent — same reason as the nomenclature/mechanism list:
      never display:flex, so inline <b> in an entry still flows as one line */
   position: relative;
@@ -488,7 +478,7 @@
   font-size: 1.3cqw;
   line-height: 1.3;
 }
-.slide--role-application-annotated .tpl-list .num {
+.slide--role-application .tpl-list .num {
   position: absolute;
   left: 0;
   top: 0.05em;
@@ -503,7 +493,7 @@
   align-items: center;
   justify-content: center;
 }
-.slide--role-application-annotated .tpl-list .swatch {
+.slide--role-application .tpl-list .swatch {
   /* a short sample of the actual line style — solid or dashed bar */
   position: absolute;
   left: 0;
@@ -512,22 +502,16 @@
   height: 0;
   border-top: 0.36cqw solid var(--swatch-c, var(--emerson-charcoal));
 }
-.slide--role-application-annotated .tpl-list .swatch.is-dashed {
+.slide--role-application .tpl-list .swatch.is-dashed {
   border-top-style: dashed;
 }
-.slide--role-application-annotated .tpl-takeaway {
+.slide--role-application:has(.tpl-list) .tpl-takeaway {
   grid-column: 1 / span 2;
   grid-row: 2;
-  font-size: 1.6cqw;
-  line-height: 1.35;
-  border-left: 0.35cqw solid var(--emerson-orange);
-  padding-left: 1.7cqw;
-  margin: 0;
 }
-.slide--role-application-annotated .tpl-source {
+.slide--role-application:has(.tpl-list) .tpl-source {
   grid-column: 1 / span 2;
   grid-row: 3;
-  margin: 0;
 }
 
 /* ---------------------------------------------------------------------- *

@@ -6,20 +6,21 @@ tags:
   - design
   - style
 updated: 2026-09-05
-status: in progress — §5 revised after an adversarial pass, awaiting direct review; other sections stubbed
+status: in progress — §5 complete, awaiting a final direct review; other sections stubbed
 ---
 
 # Emerson Workbench — Style Guide
 
 > [!note] Status
 > Being built section by section, each with its own review pass. **§5
-> (Diagram & graph conventions) has been through an adversarial self-review
-> and two rounds of revision — the second establishing source-figure-first
-> for analytical graphs (§5.8) — and is awaiting a direct review pass.** It
-> was written first because it unblocks the pages 6/10 chart rebuild in the
-> template proof (which does not start until §5 is approved). The remaining
-> sections are stubbed with scope notes and will be written as their own
-> passes.
+> (Diagram & graph conventions) is complete — all open items resolved
+> (source-figure-first §5.8; the key convention §5.3; the
+> application-template merge §5.10; the bounded-axis arrowhead rule §5.7) —
+> and awaiting a final direct review pass.** It was proven in application
+> by rebuilding tp-010 in the template proof (tp-006 deferred with ch3-m6).
+> One follow-up is logged inside §5.10 (a decision-table application
+> variant, unbuilt). The remaining sections are stubbed with scope notes
+> and will be written as their own passes.
 
 ## What this document is
 
@@ -245,8 +246,14 @@ thin dashed diagonal on white; if not, use `--emerson-charcoal` at ~60 %.
 
 ### 5.7 Axes
 
-- **Axis lines:** `--emerson-charcoal`, ~2.4 px, with an open arrowhead at
-  the far (increasing) end of each axis. Matches the CVH.
+- **Axis lines:** `--emerson-charcoal`, ~2.4 px.
+- **Arrowheads — by whether the axis is bounded:** an **open-ended** axis
+  (pressure, time — the quantity continues past what's drawn) gets an open
+  arrowhead at its increasing end. A **bounded** axis (0–100 % travel, a
+  percentage, any hard-limited scale) gets **no arrowhead** — an arrow
+  says "continues past here", which misrepresents a hard limit. On a
+  travel-vs-pressure graph the pressure axis has an arrowhead and the
+  0–100 % travel axis does not (tp-010).
 - **Tick labels:** `--emerson-charcoal`, horizontal, at the value.
 - **Axis titles:** the x-axis title horizontal below the axis; the y-axis
   title rotated 90° counter-clockwise beside the axis. **An axis title is
@@ -365,25 +372,31 @@ opening curve (solid `--emerson-cyan`), bench-set reference (dashed
 "closing curve" / "opening curve" / "bench-set line" labels come off the
 lines into the key.
 
-**Template changes §5 requires** (done for the application-annotated
-template as of tp-010's 2026-09-05 rebuild):
+**Template changes §5 required — all done (2026-09-05):**
 
 1. `.tpl-list` gained a **swatch-entry variant** — an entry led by a
-   line-style or fill sample instead of a number. Needed by every
-   chart-bearing template.
-2. The **application-annotated** template gained a `.tpl-list` (vertical,
-   right column, per §5.3), replacing the free-floating `.tpl-annotation`
-   dot+halo-label overlays. Chart left, key right, takeaway and source
-   line full-width below.
-3. Resolved: key sits **right of** the plot, vertical, at a step below the
-   body/label text scale (§5.3). The graph's own aspect ratio is designed
-   to sit in the left column, not to assume full width.
+   line-style or fill sample instead of a number.
+2. The application template gained a `.tpl-list` (vertical, right column,
+   per §5.3), replacing the free-floating `.tpl-annotation` dot+halo-label
+   overlays. Chart left, key right, takeaway and source line full-width
+   below; a `:has(.tpl-list)` gate keeps a keyless single-series graph
+   (§5.4) full-width.
+3. **`application` and `application-annotated` merged into one template.**
+   Confirmed no real content-shape difference remained: both were
+   "analytical graph + takeaway", and §5 makes a key universal, so "has
+   anchored features" (the old `-annotated` distinguisher) is now just
+   "has numbered features in its key" — not a template. One
+   `slide--role-application`.
 
-Still open, for review: whether "annotated" stays a separate template from
-plain `application` (every §5 graph has a key now, so the distinction may
-be only "has numbered point features"); and §5.7's arrowhead question (a
-bounded 0-100 % axis — tp-010 gives the pressure axis an arrowhead and the
-travel axis none).
+**One real variant is still unbuilt** — a **decision-table application**:
+tp-009 ("Selecting an Action", `role: application`, `evaluate`) is a
+comparison table plus a supporting figure, a genuinely different shape
+from an analytical graph, currently hand-styled inline. It warrants its
+own variant the way `procedure` has list / callout / photo-sequence.
+Flagged, not built; needs its own go-ahead. Also note: `TEMPLATES.md`
+documents the production `.slide--tmpl-*` classes only — the gallery
+`.slide--role-*` templates are documented by gallery.css comments plus
+this section, not TEMPLATES.md.
 
 ### 5.11 Checklist (folds into the Stage 3 pre-send check)
 
@@ -395,7 +408,7 @@ but not label rotation or colour intent.
 - [ ] Every line, curve, and region has a key entry with a swatch.
 - [ ] Every number shown on the plot resolves to a numbered key entry.
 - [ ] Colours are from the §5.6 vocabulary; no non-token colour.
-- [ ] Axis lines are charcoal with an arrowhead; tick labels horizontal; 0 % travel at top.
+- [ ] Axis lines charcoal; arrowhead only on an open-ended axis, none on a bounded one (§5.7); tick labels horizontal; 0 % travel at top.
 - [ ] The source line is present, names the source figure, and says what changed.
 - [ ] The figure is used directly unless a redraw has a stated §5.8 reason.
 - [ ] A redraw is specified against a named source figure, not invented.
