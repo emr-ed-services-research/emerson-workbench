@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Template Proof — Procedure, list+image (bench-set verification)</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- TEMPLATE PROOF 2026-09-06, role: procedure, variant: list + image —
+       the SECOND procedure-image example. Real content: ch3-m2 keyConcept
+       "apply the lower bench-set pressure and mark the stem at first
+       movement, apply the upper bench-set pressure and measure the travel
+       between marks — it must equal the nameplate rated travel." Source
+       component: ch3-cmp-benchset-adjustment-setup. Maps to production
+       slide 1400-098.
+
+       WHY procedure-IMAGE, not procedure-sequence (Franz confirmed
+       2026-09-06): the clean source is Fisher 657 IM Figure 4 "Bench Set
+       Adjustment" — a 2-panel line-art DIAGRAM (lower bench set / upper
+       bench set), not a photo sequence. Forcing it into a photo sequence
+       would be manufacturing a fit. procedure-sequence stays validated
+       only by tp-008's deferred example (ch3-m4), same as mechanism/tp-006
+       and caution/tp-013 — its real validation waits for the m4 stop.
+
+       FIGURE: Fisher 657 IM Fig. 4 used directly (§5.8 source-figure-first)
+       — clean 2018 line art with the IM's own labels and numbered notes
+       ①–④; cropped to the drawing (the NOTES block below it is dropped,
+       the step list carries that).
+
+       ===== FLAG — HOLD FOR REVIEW (2026-09-05) =====
+       Two open issues, neither smoothed over:
+
+       1. NUMBERING COLLISION. The source figure carries its OWN circled
+          notes ①②③④ (① lower bench-set loading pressure, ② upper, ③ mark
+          the stem, ④ measure travel). The procedure-image step list is
+          also numbered ①②③④ — different content, same glyphs, on the same
+          slide. §5.8 lets us use a numbered source figure directly; §6's
+          callout convention has no rule for what happens when the figure's
+          own numbers clash with the template's step numbers. This is a
+          genuine §5/§6 gap — do not invent a fix here. Options to decide:
+          renumber-nothing + unnumbered step list (loses "ordered"); accept
+          + a caption noting the figure's numbers are a separate scheme;
+          this content wants a different treatment.
+
+       2. NEW TEMPLATE MODIFIER. .has-wide-fig (gallery.css §4a) was added
+          for this slide — a landscape 2-panel figure will not read in
+          procedure-image's 34cqw right column. It puts the figure
+          full-width on top and the steps in a 2-column wrapping row below.
+          The 2-column step layout makes a numbered procedure read L→R
+          across rows rather than straight down — acceptable with the
+          numbers but not ideal. Confirm the modifier earns its place or
+          this content needs a different role. -->
+
+  <article class="slide slide--role-procedure-image has-wide-fig" data-slide="17" data-deck="proof">
+    <h1 class="slide-title">Bench Set — Verify Off the Valve</h1>
+    <div class="tpl-content">
+      <ol class="tpl-steps">
+        <li>Actuator off the valve, stem at the top of its travel — no packing friction.</li>
+        <li>Raise to the <b>lower</b> bench-set pressure from the nameplate; mark the stem where it first moves.</li>
+        <li>Raise to the <b>upper</b> bench-set pressure; the stem extends fully. Mark the stem again.</li>
+        <li>Measure between the marks — it must equal the nameplate <b>rated travel</b>.</li>
+      </ol>
+      <div class="tpl-fig">
+        <img src="../assets/sourced/657-benchset-adjustment-fig4.png" style="width:100%;height:100%;object-fit:contain" alt="Fisher 657 Instruction Manual Figure 4, Bench Set Adjustment: two panels. Left, at the lower bench-set loading pressure, the actuator stem is retracted and marked where it first moves. Right, at the upper bench-set loading pressure, the stem is fully extended; a second mark is made and the distance between the marks is the rated valve travel to measure.">
+      </div>
+      <p class="tpl-source">Fisher 657 Instruction Manual (D100306X012), Figure 4 "Bench Set Adjustment" — used directly (Style Guide &sect;5.8), cropped to the drawing; the figure's notes &#9312;&ndash;&#9315; are carried by the step list. Component Index: ch3-cmp-benchset-adjustment-setup.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">17</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -161,22 +161,24 @@
 }
 .slide--role-nomenclature .tpl-marker,
 .slide--role-mechanism .tpl-marker {
+  /* ONE callout-marker colour across every role — Style Guide §6.
+     `--emerson-blue`, white number, white halo ring. The halo is what
+     keeps it legible on any background (a dark cutaway, a photo, or a
+     blue/grey data line). Orange stays reserved for caution and for §5.6's
+     semantic regions/brackets, never for a numbered marker. */
   position: absolute;
   transform: translate(-50%, -50%);
   width: 1.9cqw;
   height: 1.9cqw;
   border-radius: 50%;
-  background: var(--emerson-charcoal);
+  background: var(--emerson-blue);
   color: var(--emerson-white);
   font-size: 1.15cqw;
   font-weight: 700;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 0 0.2cqw var(--emerson-white);
-}
-.slide--role-mechanism .tpl-marker {
-  background: var(--emerson-blue);
+  box-shadow: 0 0 0 0.22cqw var(--emerson-white);
 }
 /* Reserved, first-class motion indicator — the one thing this frame exists
    to show that Nomenclature's static labelling does not. Sits under the
@@ -226,7 +228,7 @@
   width: 1.9cqw;
   height: 1.9cqw;
   border-radius: 50%;
-  background: var(--emerson-charcoal);
+  background: var(--emerson-blue);   /* §6 — one marker colour */
   color: var(--emerson-white);
   font-size: 1.15cqw;
   font-weight: 700;
@@ -234,7 +236,6 @@
   align-items: center;
   justify-content: center;
 }
-.slide--role-mechanism .tpl-list .num { background: var(--emerson-blue); }
 .slide--role-nomenclature .tpl-source,
 .slide--role-mechanism .tpl-source {
   grid-row: 2;
@@ -246,9 +247,33 @@
  * ---------------------------------------------------------------------- */
 .slide--role-procedure-image .tpl-content {
   grid-template-columns: 1fr 34cqw;
+  grid-template-rows: 1fr auto;
   column-gap: 3.6cqw;
   align-items: center;
 }
+.slide--role-procedure-image .tpl-steps { grid-row: 1; grid-column: 1; }
+.slide--role-procedure-image .tpl-fig { grid-row: 1; grid-column: 2; }
+.slide--role-procedure-image .tpl-source { grid-row: 2; grid-column: 1 / span 2; margin: 0; }
+
+/* .has-wide-fig — a wide figure (a 2-panel comparison, a landscape diagram)
+   that a 34cqw side column would render illegibly small. Figure spans the
+   full width on top, steps below it, source last. Added 2026-09-06 for
+   tp-017 (Fisher 657 IM Fig. 4, a 2-panel bench-set diagram). */
+.slide--role-procedure-image.has-wide-fig .tpl-content {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto auto;
+  column-gap: 0;
+  row-gap: 1.4cqh;
+}
+.slide--role-procedure-image.has-wide-fig .tpl-fig { grid-row: 1; grid-column: 1; }
+.slide--role-procedure-image.has-wide-fig .tpl-steps {
+  grid-row: 2; grid-column: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.8cqh 3.2cqw;
+}
+.slide--role-procedure-image.has-wide-fig .tpl-steps li { font-size: 1.5cqw; flex: 1 1 40%; }
+.slide--role-procedure-image.has-wide-fig .tpl-source { grid-row: 3; }
 .slide--role-procedure-image .tpl-steps {
   list-style: none;
   counter-reset: step;
@@ -294,8 +319,16 @@
 }
 
 /* ---------------------------------------------------------------------- *
- * 4b. PROCEDURE — list + callout diagram. Same skeleton as nomenclature,
- *    but the numbered markers ARE the steps (procedural, not naming).
+ * 4b. PROCEDURE — list + callout diagram. Same skeleton as nomenclature.
+ *    The diagram SUPPORTS the step list (softened 2026-09-06 from "the
+ *    markers ARE the steps"). Where a step happens at a specific place on
+ *    the diagram, a numbered marker there carries that step's number.
+ *    A procedure whose diagram shows a pattern or sub-sequence instead —
+ *    a bolt-torque star, a criss-cross order — is still valid: the markers
+ *    show that sub-sequence and a step names it (tp-016). The structural
+ *    guarantees are unchanged — reserved fig / steps / source slots, no
+ *    overlap, marker positions verified against source; only the framing
+ *    claim was too strict.
  * ---------------------------------------------------------------------- */
 .slide--role-procedure-callout .tpl-content {
   grid-template-columns: 36cqw 1fr;
@@ -485,7 +518,7 @@
   width: 1.7cqw;
   height: 1.7cqw;
   border-radius: 50%;
-  background: var(--emerson-orange);
+  background: var(--emerson-blue);   /* §6 — one marker colour (was orange) */
   color: var(--emerson-white);
   font-size: 1.0cqw;
   font-weight: 700;

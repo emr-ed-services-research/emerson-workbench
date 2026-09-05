@@ -247,9 +247,33 @@
  * ---------------------------------------------------------------------- */
 .slide--role-procedure-image .tpl-content {
   grid-template-columns: 1fr 34cqw;
+  grid-template-rows: 1fr auto;
   column-gap: 3.6cqw;
   align-items: center;
 }
+.slide--role-procedure-image .tpl-steps { grid-row: 1; grid-column: 1; }
+.slide--role-procedure-image .tpl-fig { grid-row: 1; grid-column: 2; }
+.slide--role-procedure-image .tpl-source { grid-row: 2; grid-column: 1 / span 2; margin: 0; }
+
+/* .has-wide-fig — a wide figure (a 2-panel comparison, a landscape diagram)
+   that a 34cqw side column would render illegibly small. Figure spans the
+   full width on top, steps below it, source last. Added 2026-09-06 for
+   tp-017 (Fisher 657 IM Fig. 4, a 2-panel bench-set diagram). */
+.slide--role-procedure-image.has-wide-fig .tpl-content {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto auto;
+  column-gap: 0;
+  row-gap: 1.4cqh;
+}
+.slide--role-procedure-image.has-wide-fig .tpl-fig { grid-row: 1; grid-column: 1; }
+.slide--role-procedure-image.has-wide-fig .tpl-steps {
+  grid-row: 2; grid-column: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.8cqh 3.2cqw;
+}
+.slide--role-procedure-image.has-wide-fig .tpl-steps li { font-size: 1.5cqw; flex: 1 1 40%; }
+.slide--role-procedure-image.has-wide-fig .tpl-source { grid-row: 3; }
 .slide--role-procedure-image .tpl-steps {
   list-style: none;
   counter-reset: step;
@@ -295,8 +319,16 @@
 }
 
 /* ---------------------------------------------------------------------- *
- * 4b. PROCEDURE — list + callout diagram. Same skeleton as nomenclature,
- *    but the numbered markers ARE the steps (procedural, not naming).
+ * 4b. PROCEDURE — list + callout diagram. Same skeleton as nomenclature.
+ *    The diagram SUPPORTS the step list (softened 2026-09-06 from "the
+ *    markers ARE the steps"). Where a step happens at a specific place on
+ *    the diagram, a numbered marker there carries that step's number.
+ *    A procedure whose diagram shows a pattern or sub-sequence instead —
+ *    a bolt-torque star, a criss-cross order — is still valid: the markers
+ *    show that sub-sequence and a step names it (tp-016). The structural
+ *    guarantees are unchanged — reserved fig / steps / source slots, no
+ *    overlap, marker positions verified against source; only the framing
+ *    claim was too strict.
  * ---------------------------------------------------------------------- */
 .slide--role-procedure-callout .tpl-content {
   grid-template-columns: 36cqw 1fr;

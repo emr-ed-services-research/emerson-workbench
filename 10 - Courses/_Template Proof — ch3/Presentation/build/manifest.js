@@ -14,5 +14,6 @@ window.EW_MANIFEST = [
     { "n": 13, "file": "tp-013.html", "family": "role-caution",      "section": "Proof", "title": "Caution — Spring on the Stem Connector",       "hasNotes": false, "review": "DEFERRED — ch3-m4 kc2, full stop; + possible factual imprecision (see comment)" },
     { "n": 14, "file": "tp-014.html", "family": "role-check",        "section": "Proof", "title": "Check — Bench Set",                            "hasNotes": false, "review": "" },
     { "n": 15, "file": "tp-015.html", "family": "role-check",        "section": "Proof", "title": "Check — Spring Force",                         "hasNotes": false, "review": "" },
-    { "n": 16, "file": "tp-016.html", "family": "role-procedure",    "section": "Proof", "title": "Procedure (list+callout) — Casing Bolt Torque", "hasNotes": false, "review": "" }
+    { "n": 16, "file": "tp-016.html", "family": "role-procedure",    "section": "Proof", "title": "Procedure (list+callout) — Casing Bolt Torque", "hasNotes": false, "review": "" },
+    { "n": 17, "file": "tp-017.html", "family": "role-procedure",    "section": "Proof", "title": "Procedure (list+image) — Bench Set Verification", "hasNotes": false, "review": "FLAG — source figure carries its own numbered notes 1-4 that collide with the step list's 1-4 (different meaning); needs a §5/§6 rule for numbered source figures. Also new .has-wide-fig template modifier — hold for review." }
 ];
