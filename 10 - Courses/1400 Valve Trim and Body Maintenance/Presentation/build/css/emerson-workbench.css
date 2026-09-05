@@ -981,20 +981,36 @@
    proof's page 13 (a real 3-line caution). Template 6 was never actually
    built on CSS Grid like the rest of the template system — it predates
    that pass. Converted: .slide--tmpl-caution itself is now the grid
-   container (its own .slide-title / .slide-chrome children stay
-   unaffected, both position:absolute and so outside grid flow); the body
-   sits in an `auto` row sized to its own real content, the figure fills
-   the remaining `1fr` — the same structural guarantee every other
-   template in this system already has. */
+   container; the body sits in an `auto` row sized to its own real
+   content, the figure fills the remaining `1fr` — the same structural
+   guarantee every other template in this system already has.
+   REGRESSION FOUND AND FIXED 2026-09-05 (self-caught during a full
+   individual re-review of the proof, not one of Franz's named findings):
+   the first version of this fix put `padding: 26cqh 5.6cqw 12.5cqh 5.6cqw`
+   directly on .slide--tmpl-caution — the SAME element that declares
+   `container-type: size` (on the base .slide rule). That is a
+   self-referencing container-query length use (padding, in units defined
+   BY the container, on the container itself), which is circular; the
+   observed effect was not a layout error on this element but corrupted
+   cqw/cqh resolution for .slide-chrome__logo — a sibling positioned via
+   left/top in cqw/cqh — which rendered at roughly 68%/52% of the slide
+   instead of its correct 81.4%/88.1% (bottom-right corner), landing on
+   top of the caution figure. That is the exact "Emerson logo overlaps
+   live content" defect from the original ch3-m4 crisis, reintroduced by
+   this fix and already propagated to the real production 1400 course
+   before being caught. Fixed by moving all spacing off the container and
+   onto the two grid children as margin instead — .slide-chrome was never
+   actually position:absolute itself (only its children are; an earlier
+   version of this comment wrongly assumed otherwise without checking), so
+   it is a normal static grid item, and a self-referencing container-query
+   property on the container can corrupt cqw/cqh resolution anywhere in
+   the subtree, not just wherever the property itself is used. */
 .slide--tmpl-caution {
   display: grid;
   grid-template-rows: auto 1fr;
-  row-gap: 1.8cqh;
-  padding: 26cqh 5.6cqw 12.5cqh 5.6cqw;
-  box-sizing: border-box;
 }
 .slide--tmpl-caution .caution-body {
-  margin: 0;
+  margin: 26cqh 5.6cqw 0 5.6cqw;
   padding-left: 2cqw;
   border-left: 0.5cqw solid var(--emerson-orange);
   font-size: 2.3cqw; line-height: 1.35;
@@ -1003,7 +1019,7 @@
 }
 .slide--tmpl-caution .caution-body b { color: var(--emerson-orange); }
 .slide--tmpl-caution .caution-fig {
-  margin: 0;
+  margin: 1.8cqh 5.6cqw 12.5cqh 5.6cqw;
   display: flex; align-items: center; justify-content: center;
   min-height: 0;
   min-width: 0;
