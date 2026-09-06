@@ -1,0 +1,78 @@
+{
+  "course": "Origination Test — ch3-m2",
+  "slidePrefix": "ob-",
+  "_note": "Candidate B of the ch3-m2 A/B dry-run. NOT a real course. Originated cold from the topic 'bench-setting a Fisher 657' via 20 - Source Library/Component Index — bench-set-657.md, using the Axis-C-as-checklist scoping pass. No Stage 1 (module scope set by hand); no deck. See the comparison doc at 10 - Courses/_Origination Test — ch3-m2/COMPARISON.md.",
+  "days": [
+    {
+      "id": "d1",
+      "title": "Day 1",
+      "chapters": [
+        {
+          "id": "obch",
+          "title": "Origination Test",
+          "num": 1,
+          "domain": "maintenance",
+          "modules": [
+            {
+              "id": "ob-m1",
+              "title": "Bench-Set a Fisher 657 Off the Valve",
+              "status": "ready",
+              "visual": true,
+              "domain": "maintenance",
+              "levelTarget": "apply",
+              "stakes": "A 657 set to the wrong bench set will not stroke to its rated travel in service — too little seat load for the shutoff class, or the valve never fully opens.",
+              "buildsOn": ["ch3-m1"],
+              "objective": "Set the bench set on a Fisher 657 with the actuator off the valve: adjust the spring so the stem first moves at the lower bench-set pressure, and verify the travel between marks equals the nameplate rated travel.",
+              "keyConcepts": [
+                {
+                  "t": "Bench set is the initial compression on the actuator spring, set with the spring adjuster, that fixes the diaphragm-pressure range which strokes the actuator through its full rated travel. It is defined with no packing friction acting — which is why it is set and checked with the actuator off the valve.",
+                  "pages": [1],
+                  "level": "understand",
+                  "role": "mechanism",
+                  "sources": ["bs657-cmp-definition", "bs657-cmp-deadband-graph"]
+                },
+                {
+                  "t": "The nameplate carries the two fields a correct bench set must hit: BENCH SET (the loading-pressure range — first stem movement at the lower psig, full travel at the upper) and TRAVEL (the stroke between the marks must equal this). Corrected during authoring from an earlier 'three numbers' wording — the nameplate presents the bench set as one range field, not two separate numbers; see ob-002.html and COMPARISON.md.",
+                  "pages": [2],
+                  "level": "remember",
+                  "role": "nomenclature",
+                  "sources": ["ch3-cmp-nameplate"]
+                },
+                {
+                  "t": "Off the valve: raise pressure to the lower bench-set value and watch for first stem movement — adjust the spring adjuster into or out of the yoke until first movement is exactly at that pressure. Then raise to the upper bench-set pressure and mark the stem; the travel between marks must equal the nameplate rated travel.",
+                  "pages": [3],
+                  "level": "apply",
+                  "role": "procedure",
+                  "sources": ["bs657-cmp-bench-set-adjustment"]
+                },
+                {
+                  "t": "On the valve, packing friction shifts things: full rated travel then occurs at the bench-set pressure plus the friction force divided by the effective diaphragm area (rising pressure). That extra pressure is why bench set is verified off the valve first, where friction is not in play.",
+                  "pages": [4],
+                  "level": "analyze",
+                  "role": "application",
+                  "sources": ["bs657-cmp-friction-discussion", "bs657-cmp-deadband-graph"]
+                },
+                {
+                  "t": "When you bench-set during mounting it happens in sequence: the actuator is set on the bonnet and the yoke locknut run down, bench set is verified with the stems still unconnected, and only then is the two-piece stem connector installed and the full stroke rechecked against rated travel.",
+                  "pages": [5],
+                  "level": "apply",
+                  "role": "procedure",
+                  "sources": ["bs657-cmp-mounting-preconditions", "bs657-cmp-stem-connector"]
+                },
+                {
+                  "t": "Formative check: given a short measured travel at the upper bench-set pressure despite correct first movement at the lower pressure, the learner identifies the wrong spring or a mis-set spring adjuster as the likely cause (friction is excluded because the actuator is off the valve).",
+                  "pages": [6],
+                  "level": "evaluate",
+                  "role": "check",
+                  "sourceNote": "no figure — situation stem; logic from CVH §8.5.5 + Fisher 657 IM Spring Verification step 8 (spring free-length / rate tolerances)"
+                }
+              ],
+              "pages": [1, 2, 3, 4, 5],
+              "check": [6]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+window.EW_MANIFEST = [
+    { "n": 1, "file": "ob-001.html", "family": "role-application",  "section": "Candidate B", "title": "Mechanism — Bench Set, the Pressure Range",        "hasNotes": false, "review": "ORIGINATED — concept 1; role mechanism delivered as a keyed graph (see COMPARISON.md role->template note)" },
+    { "n": 2, "file": "ob-002.html", "family": "role-nomenclature", "section": "Candidate B", "title": "Nomenclature — The Two Nameplate Fields",         "hasNotes": false, "review": "ORIGINATED — concept 2; nameplate figure reused from ch3-cmp-nameplate; concept text corrected 3-numbers -> 2-fields during authoring" },
+    { "n": 3, "file": "ob-003.html", "family": "role-procedure",    "section": "Candidate B", "title": "Procedure — Set the Bench Set Off the Valve",   "hasNotes": false, "review": "ORIGINATED — concept 3; Fisher 657 IM Fig 4, .has-wide-fig, same as proof tp-017" },
+    { "n": 4, "file": "ob-004.html", "family": "role-application",  "section": "Candidate B", "title": "Application — Friction Shifts It on the Valve",  "hasNotes": false, "review": "ORIGINATED — concept 4; graph geometry carried over from proof tp-010, not re-measured" },
+    { "n": 5, "file": "ob-005.html", "family": "role-procedure",    "section": "Candidate B", "title": "Procedure — Bench Set in the Mounting Sequence", "hasNotes": false, "review": "ORIGINATED — concept 5; touches ch3-m3 stem-connector ground — flagged, not resolved" },
+    { "n": 6, "file": "ob-006.html", "family": "role-check",        "section": "Candidate B", "title": "Check — Short Travel Off the Valve",             "hasNotes": false, "review": "ORIGINATED — concept 6; stem adapted from proof tp-014 / ch3-m2 real check" }
+];

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Origination Test — Bench Set, What It Is</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- ORIGINATION TEST — candidate B, concept 1 [understand · mechanism].
+       Concept: bench set = the initial spring compression that fixes the
+       diaphragm-pressure range which strokes the actuator through rated
+       travel; defined friction-free. Sources: bs657-cmp-definition (CVH
+       glossary + §8.5.5; 657 IM "Discussion of Bench Set" p5),
+       bs657-cmp-deadband-graph (Fig 5, reduced to the bench-set line).
+       Template: .slide--role-application, keyed graph (§5.3). The concept
+       is "mechanism" but its natural figure is a travel-vs-pressure graph,
+       not a cutaway — see COMPARISON.md, the role→template mapping note.
+       Figure: house-style redraw spec'd against CVH Fig 8.10's printed
+       "Bench Set (3-11 psig)" geometry (§5.8 reason 2 — Fig 8.10's other
+       two curves are deadband). -->
+  <article class="slide slide--role-application" data-slide="1" data-deck="ob">
+    <h1 class="slide-title">Bench Set &mdash; the Pressure Range for Rated Travel</h1>
+    <div class="tpl-content">
+      <div class="tpl-chart-wrap">
+        <div class="tpl-chart">
+          <svg viewBox="0 0 520 330" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Graph of actuator travel (0 percent at top to 100 percent at bottom) against actuator diaphragm pressure in psig. A single straight blue line runs from 0 percent travel at the lower bench-set pressure of 3 psig to 100 percent rated travel at the upper bench-set pressure of 11 psig. The yellow band between the two pressures is the bench-set range." font-family="Arial, Helvetica, sans-serif" style="width:100%;height:100%">
+            <rect x="145" y="24" width="233" height="262" fill="var(--emerson-yellow)" opacity="0.18"/>
+            <g stroke="var(--emerson-grey)" stroke-width="1.4" stroke-dasharray="4 4">
+              <path d="M145 24 V286"/><path d="M378 24 V286"/>
+            </g>
+            <g fill="var(--emerson-blue)" font-size="11" font-weight="700" text-anchor="middle">
+              <text x="145" y="19">lower bench set</text>
+              <text x="378" y="19">upper bench set</text>
+            </g>
+            <g stroke="var(--emerson-charcoal)" stroke-width="2" fill="none" stroke-linecap="round">
+              <path d="M58 24 V286"/>
+              <path d="M58 286 H500"/>
+              <path d="M500 286 l-9 -3.5 M500 286 l-9 3.5"/>
+            </g>
+            <g stroke="var(--emerson-charcoal)" stroke-width="1.4">
+              <path d="M58 286 v4 M145 286 v4 M232 286 v4 M320 286 v4 M407 286 v4 M494 286 v4"/>
+            </g>
+            <g fill="var(--emerson-charcoal)" font-size="11" text-anchor="middle">
+              <text x="58" y="300">0</text><text x="145" y="300">3</text><text x="232" y="300">6</text>
+              <text x="320" y="300">9</text><text x="407" y="300">12</text><text x="494" y="300">15</text>
+            </g>
+            <g fill="var(--emerson-charcoal)" font-size="11" text-anchor="end">
+              <text x="52" y="28">0%</text><text x="52" y="290">100%</text>
+            </g>
+            <text x="279" y="312" fill="var(--emerson-charcoal)" font-size="12.5" font-weight="700" text-anchor="middle">Actuator diaphragm pressure (psig)</text>
+            <text x="14" y="155" fill="var(--emerson-charcoal)" font-size="12.5" font-weight="700" text-anchor="middle" transform="rotate(-90 14 155)">Actuator travel</text>
+            <path d="M145 24 L378 286" fill="none" stroke="var(--emerson-blue)" stroke-width="3.6"/>
+          </svg>
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="swatch" style="--swatch-c:var(--emerson-blue)"></span>Bench-set line &mdash; 0&nbsp;% to full rated travel</li>
+        <li><span class="swatch is-band" style="--swatch-c:var(--emerson-yellow)"></span>Bench-set range</li>
+      </ul>
+      <p class="tpl-takeaway">Bench set is the spring compression that makes the actuator stroke its full rated travel over the nameplate pressure range &mdash; defined with no packing friction, so it is set with the actuator off the valve.</p>
+      <p class="tpl-source">Redrawn after Control Valve Handbook 6th ed. Fig.&nbsp;8.10 &mdash; the friction-free bench-set line only; Fig.&nbsp;8.10's other two curves are ch3-m6 deadband content (Style Guide &sect;5.8 reason&nbsp;2). Definition after CVH &sect;1.4 glossary and &sect;8.5.5. Component Index: bs657-cmp-definition, bs657-cmp-deadband-graph.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">1</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>
