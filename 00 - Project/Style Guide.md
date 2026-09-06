@@ -5,22 +5,27 @@ tags:
   - project
   - design
   - style
-updated: 2026-09-05
-status: in progress — §5 complete, awaiting a final direct review; other sections stubbed
+updated: 2026-09-06
+status: full draft — §§5–6 reviewed and proven in production; §§1–4, 7–10 drafted, self-reviewed, awaiting one consolidated read
 ---
 
 # Emerson Workbench — Style Guide
 
 > [!note] Status
-> Being built section by section, each with its own review pass. **§5
-> (Diagram & graph conventions) is complete — all open items resolved
-> (source-figure-first §5.8; the key convention §5.3; the
-> application-template merge §5.10; the bounded-axis arrowhead rule §5.7) —
-> and awaiting a final direct review pass.** It was proven in application
-> by rebuilding tp-010 in the template proof (tp-006 deferred with ch3-m6).
-> One follow-up is logged inside §5.10 (a decision-table application
-> variant, unbuilt). The remaining sections are stubbed with scope notes
-> and will be written as their own passes.
+> **All sections are now drafted.**
+> - **§5 (Diagram & graph conventions)** and **§6 (Callout conventions)** are
+>   reviewed and proven end-to-end in production — the 1400-092 / 097 / 102
+>   bench-set-graph rebuild onto `.slide--tmpl-graph`, the tp-010 proof
+>   example, and the caution-icon fix. Small reconciliations are noted inline
+>   (§5.6 alpha; §5.10 follow-up: a decision-table application variant — now
+>   built).
+> - **§§1–4 and §§7–10** were written 2026-09-06 by lifting and correcting
+>   what already exists (`1400 Presentation.md` §4, `emerson-workbench.css`,
+>   `tokens.css`, `teaching-philosophy.md`, the `.tmpl-*` templates), with a
+>   full adversarial self-review each. They largely formalise settled
+>   practice; two minor open calls are flagged (§3.3 green/purple;
+>   §5.6/tp-010 alpha) for a single consolidated read rather than a
+>   per-section review cycle.
 
 ## What this document is
 
@@ -58,39 +63,261 @@ comment becomes a pointer.
 
 ## 1. Basis & scope
 
-*Stub. To cover: what this governs and what it doesn't; who it's for
-(the pipeline, and a human author working a slide by hand); how it is
-revised (a change here is a reviewed change, like a template change); the
-principle that a template or manifest cites this document rather than
-carrying its own rule.*
+### 1.1 What this document governs
+
+Everything the pipeline generates into a slide, or a human author edits on a
+slide by hand: **typography, colour, slide furniture, diagram and graph
+conventions, callout conventions, valve/actuator terminology, and the tone of
+instructional writing.** If a choice about *how a slide looks or how its text
+reads* has a house answer, that answer is here.
+
+It does **not** govern:
+
+- **Pedagogy** — what a course teaches, in what order, at what cognitive
+  level. That is `teaching-philosophy.md`. This guide cites it and implements
+  the design consequences that follow from it; it never restates or overrides
+  a pedagogy decision.
+- **Which source backs a concept** — the figure, manual, or component a slide
+  is built from. That is the **Component Index** and the Source Library.
+- **Course and module structure** — `Roadmap.md`, `Vault Structure.md`, the
+  per-course status notes.
+
+### 1.2 Who it is for
+
+Two readers. The **pipeline** — Stage 3 in particular, which composes and
+reworks slide visuals and writes context-pane concepts. And a **human author**
+editing a slide directly, who needs the same answers without reading the CSS.
+
+### 1.3 What it is derived from
+
+Three sources, and the guide is explicit throughout about which parts are
+*derived* and which are a *house choice* (the §5 review established this as a
+discipline — a convention presented as "derived from the Handbook" when it is
+actually our decision is a defect to catch):
+
+1. **`teaching-philosophy.md`** — for the conventions that follow directly
+   from the doing-centered philosophy (slides visual-only, the context pane
+   carries the text, completeness measured against source).
+2. **The EMERSON brand** — the colour scheme and type, as captured machine-
+   readably in `tokens.css` and originally extracted from the legacy 1400
+   PowerPoint theme ("Course book Template Mar 2019").
+3. **The field's own conventions** — the Control Valve Handbook and the Fisher
+   instruction manuals — where a house choice needs grounding in how control-
+   valve documentation is actually done (e.g. §5.1's label-rotation rule).
+
+### 1.4 How it is revised, and its authority over code
+
+A change to this document is a **reviewed change**, held to the same bar as a
+template change — because the templates and the callout manifest are
+*implementations* of what it states.
+
+- A template, a `gallery.css` / `emerson-workbench.css` comment, or a manifest
+  **cites this document** ("see Style Guide §X") rather than carrying its own
+  copy of a rule. Where a convention currently lives only in a code comment
+  (the `gallery.css` "IN-DIAGRAM LABEL CONVENTION" block was the clearest
+  case), it moves here and the comment becomes a pointer.
+- Where this document and a code comment disagree, **this document wins** and
+  the comment is a bug to fix — not the other way round.
+- `tokens.css` is the exception in one direction only: it stays the single
+  *machine* source for the palette values. §3 here is the human spec and the
+  usage intent; it never redefines a token, and a hex value in §3 that
+  disagrees with `tokens.css` is an error in §3.
+
+---
 
 ## 2. Typography & visual hierarchy
 
-*Stub. To cover, lifted and de-scoped from `1400 Presentation.md` §4.3:
-the Arial-based web font stack; the type scale (slide title, card heading,
-body/label, caption, source line) as it actually stands in
-`emerson-workbench.css`; when the restrained `.slide--hd` heading is used
-vs. the full PowerPoint title rule; the rule that slides carry headers and
-labels only, never prose (from `teaching-philosophy.md`).*
+Lifted and de-scoped from `1400 Presentation.md` §4.3 (a description of the
+legacy deck's theme) to the Workbench standard, and reconciled with the values
+actually in `emerson-workbench.css` — where the two differ, **the stylesheet is
+current** and §4.3 is history.
+
+### 2.1 Typefaces
+
+| Token | Face | Used for |
+| --- | --- | --- |
+| `--font-body` | `"Arial", "Helvetica Neue", Helvetica, "Liberation Sans", system-ui, sans-serif` | everything — body, on-slide labels, captions, source lines, tables, context pane |
+| `--font-display` | `"DTL Argo T", <the body stack>` | slide titles and section furniture (dividers, cover, breaker) only |
+
+**DTL Argo T** is Emerson's licensed corporate display face. It is an
+optional `@font-face`; the Arial fallback is acceptable and the pipeline does
+**not** block on the licence. Nothing on a content slide except the title
+needs the display face.
+
+Arial is the theme's own major *and* minor font — this is not a substitution,
+it is what the brand uses. Arial Narrow, Calibri, Tahoma, Times, Courier and
+the rest that appear in the source `.pptx` are incidental and are not part of
+the standard.
+
+### 2.2 The type scale
+
+Slides are CSS containers sized `1056 × 816`, so on-slide type is in **`cqw`**
+(1 cqw = 1 % of slide width). The point sizes below are the legacy-deck
+equivalents; the conversion is `cqw = pt × 0.12626`.
+
+| Role | Size | Weight | Colour | Notes |
+| --- | ---: | --- | --- | --- |
+| Slide title — **current (`.slide--hd`)** | `2.7cqw` | 600 | `--emerson-blue` | display face; tight tracking (`-0.005em`); a short blue accent tick beneath, not a full rule (§2.4). This is what the card templates use. |
+| Slide title — legacy (bare `.slide-title`) | `3.03cqw` (24 pt) | 400 | `--emerson-blue` | the un-`--hd` deck style; on old slides only, above a full-bleed divider rule |
+| Section / cover / breaker title | `3.54cqw` (28 pt) | 400 divider · 700 cover & breaker | blue (divider) · white (cover, breaker) | furniture only; not in this pass's scope beyond the value |
+| On-slide label / short header | `1.6–1.9cqw` (12.5–15 pt) | 400–700 | `--emerson-charcoal` | a name or a phrase, never a sentence |
+| Diagram/graph key entry | `1.4cqw` | 400 | `--body-text` | a step smaller than the label scale — reference, scanned once (§5.3) |
+| Caption / figure source line | `1.2–1.26cqw` (≈10 pt) | 400 italic | `--emerson-grey` | |
+| Footer copyright | `1.01cqw` (8 pt) | 400 | `--emerson-grey` | |
+| Footer page number | `0.88cqw` (7 pt) | 400 | `--emerson-grey` | |
+
+Individual legacy slides frequently overrode run sizes; a rebuilt slide uses
+the scale above and does not inherit those per-run exceptions.
+
+### 2.3 Hierarchy — what may appear on a slide
+
+From `teaching-philosophy.md` ("Slides are visual-only"), stated here as a
+typographic rule:
+
+1. **The title** — blue, display face, one line.
+2. **On-slide labels and short headers** — charcoal, body face: a part name, a
+   column head, an axis title, a numbered-list entry that is a name-plus-tag.
+3. **Nothing else.** No explanatory paragraph, no bullet an instructor would
+   read aloud. If a slide carries a sentence an instructor would recite
+   verbatim, it belongs in the context pane.
+
+The **one exception** is the caution card's single `.caution-body` line — a
+safety consequence, stated plainly, is the point of that slide, not
+instructor patter (§4.4, §8).
+
+### 2.4 The restrained heading is the default
+
+New and rebuilt content uses `.slide--hd` (semibold `2.7cqw`, tight tracking,
+a short blue accent tick beneath — the card templates get it automatically).
+The full-bleed PowerPoint title rule of the legacy deck is **history**; do not
+reproduce it on new slides.
+
+---
 
 ## 3. Colour palette & usage
 
-*Stub. To cover: the EMERSON palette from `tokens.css` with a plain-language
-role for each token; the load-bearing conventions — blue = structure and
-the "real / measured" data series, orange = caution and callout accent,
-grey = secondary / reference, the accent set for callouts; the rule that
-non-token colours do not appear in authored content (the legacy deadband
-slide 1400-125 uses a non-palette `#0000FF` and dotted orange/purple — that
-is what this section rules out).*
+### 3.1 The palette
+
+From `tokens.css` (`<a:clrScheme name="EMERSON">`). These are the only colours
+that appear in authored content.
+
+| Token | Hex | Plain-language role |
+| --- | --- | --- |
+| `--emerson-blue` | `#004B8D` | **structure** — titles, the divider rule, section furniture — **and** the primary "real / on-the-valve / measured" data series in a graph, **and** every numbered callout marker |
+| `--emerson-charcoal` | `#3F4040` | body text, on-slide labels, axis lines |
+| `--emerson-grey` | `#959797` | secondary / reference — captions, footer, page numbers, figure source lines, **and** an ideal / friction-free reference line in a graph (dashed) |
+| `--emerson-white` | `#FFFFFF` | the page background (always), and the halo ring / numeral inside a callout marker |
+| `--emerson-cyan` | `#00A4D2` | a **second** measured series shown for contrast in a graph |
+| `--emerson-yellow` | `#FFCF22` | an operating-range / bench-set band — a low-alpha region fill (exact value §5.6), never a line |
+| `--emerson-orange` | `#F79428` | **caution** — the caution card's mark and left rule — **and** a graph's semantic region or bracket (a deadband, a friction offset). **Never a marker colour.** |
+| `--emerson-green` | `#62BB46` | *(brand accent; no current authored-content role — see §3.3)* |
+| `--emerson-purple` | `#6E298D` | *(brand accent; no current authored-content role — see §3.3)* |
+| `--emerson-link` | `#00AA7E` | hyperlink |
+| `--emerson-link-visited` | `#D31245` | followed hyperlink |
+
+### 3.2 Load-bearing conventions
+
+Colour is not decoration here; it carries meaning, and the same meaning looks
+the same everywhere:
+
+- **Blue is structure and "the real thing."** Chrome and titles are blue;
+  and in a data figure, the blue series is the one that describes actual
+  measured / on-the-valve behaviour (§5.6), and a numbered callout marker is
+  a filled blue circle with a white halo (§6.1).
+- **Orange is caution and offset.** The caution card is orange; and a graph's
+  deadband / error / offset *region or bracket* is orange (§5.6). Orange is
+  never used for a numbered marker — a span feature is an orange bracket
+  *capped by* a blue numbered circle.
+- **Grey is secondary or ideal.** Captions, footers, and source lines are
+  grey; a friction-free / theoretical *reference* line in a graph is grey and
+  dashed (§5.6).
+- **Cyan is the second measured series**; **yellow is a range band**. Both are
+  reached for only inside §5.6's vocabulary.
+
+The full line-and-region vocabulary is §5.6; the one-marker-colour rule is
+§6.1. This section is the palette-level statement they both rest on.
+
+### 3.3 Green and purple carry no authored-content role
+
+The legacy deck's theme labelled green, cyan, yellow, orange, and purple all
+as generic "callout" accents. §5.6 then gave cyan and yellow specific graph
+meanings and §6.1 collapsed every callout marker to one blue — leaving
+**green and purple with no assigned role in slide content.** They stay valid
+brand colours (a Workbench-home or course-shell surface may use them), and
+nothing currently misuses them, so no action is needed. If the consolidated
+review wants them formally struck from the authored-content palette that is a
+one-line change; the default is to leave them available and unused.
+
+### 3.4 No non-token colour
+
+A hex value that is not in `tokens.css` does not appear in an authored slide.
+The legacy deadband slide **1400-125** uses a non-palette `#0000FF` with
+dotted orange-and-purple leader callouts; that slide is pre-redesign and is
+exactly what this rule rules out.
+
+---
 
 ## 4. Slide furniture / chrome
 
-*Stub. To cover: the title box + full-bleed rule, the footer chrome
-(copyright / page number / logo) and its fixed corner position, the
-caution card's signal treatment. Cross-reference the container-query
-constraint learned 2026-09-05: never size a container's own
-padding/margin/border in `cqw`/`cqh` when it also declares
-`container-type` — route spacing through a child.*
+The frame every content slide carries. From `emerson-workbench.css` §3 and
+`1400 Presentation.md` §4.4, de-scoped to the standard.
+
+### 4.1 Header
+
+The **slide title** sits in a box at the top-left (`left/right: 3.44cqw`,
+`top: 3.4cqh`), text bottom-aligned, in `--emerson-blue`, display face. On the
+legacy layout a **full-bleed `--emerson-blue` divider rule** (~`0.09cqh`) runs
+under it at `16.73cqh`; the `.slide--hd` treatment replaces that rule with a
+short blue accent tick under the heading and is the default for new content
+(§2.4).
+
+### 4.2 Footer chrome
+
+Three fixed elements, **referenced once from CSS and never pasted per slide**:
+
+| Element | Position | Style |
+| --- | --- | --- |
+| Copyright line | left, `bottom: 2.9cqh` | `1.01cqw`, `--emerson-grey`; text is the `--copyright-line` token |
+| Page number | right, `right: 2.0cqw` | `0.88cqw`, `--emerson-grey` |
+| Emerson corporate logo | fixed corner box, `left: 81.4cqw`, `top: 88.1cqh`, `width: 12.16cqw` | 2-colour standard logo; white variant on the cover and blue breaker |
+
+The **copyright year is a single token** (`--copyright-line`), normalised —
+the source `.pptx` had two masters disagreeing (2023 vs 2024); the standard is
+one current year, set once.
+
+### 4.3 Background
+
+**White, always.** No tinted or textured slide backgrounds in content.
+(Divider and breaker furniture are the only full-colour fields.)
+
+### 4.4 The caution card
+
+`.slide--tmpl-caution` carries its own signal treatment — an orange warning
+triangle beside the heading, an orange title tick, and an orange left rule on
+the `.caution-body` line — so a caution reads as different at a glance without
+shouting. The icon is one `clip-path` triangle element with the `!` as its
+centred content (rebuilt 2026-09-05; do not reintroduce the old CSS-border
+triangle with a separately-positioned glyph). Full detail: `TEMPLATES.md`
+Template 6; the writing rule for the body line is §8.
+
+### 4.5 The container-query spacing constraint
+
+**Hard rule, learned the expensive way (2026-09-05, twice).** `.slide`
+declares `container-type: size`. **Never** set a `cqw` / `cqh` value for the
+`padding`, `margin`, or `border` of an element that itself declares
+`container-type` — that is a self-referencing container-query length, it is
+circular, and it silently corrupts `cqw` / `cqh` resolution for the **whole
+subtree**, not just where the bad value is used. Route every inset through a
+**child** element's margin instead (the caution and graph templates both do
+this deliberately). A grid item, a figure, a list — anything that is not the
+container — may use `cqw` / `cqh` freely.
+
+### 4.6 Content clears the logo corner
+
+Every template's content region is inset far enough to clear the fixed logo
+box at `left: 81.4cqw / top: 88.1cqh` at both the 4:3 and 16:9 canvas ratios.
+A slide whose content overlaps that corner is a bug (it has happened —
+`1400-111` before the ch3-m4 rework).
 
 ---
 
@@ -209,7 +436,7 @@ series.
   in `--emerson-orange` (§5.6, an offset region), **plus a numbered circle
   at one end** — the circle is `--emerson-blue` like every other marker,
   even though the bracket it caps is orange. A span whose teaching point is
-  its *area* is a filled region instead: `--emerson-yellow` at ~0.13 alpha
+  its *area* is a filled region instead: `--emerson-yellow` at 0.18 alpha
   or a hatch, keyed as a series.
 - **Threshold lines** (e.g. tp-010's vertical lines at specific psig
   values): a dotted `--emerson-grey` line, keyed as a series or annotated
@@ -231,20 +458,23 @@ A fixed vocabulary so the same meaning looks the same on every graph:
 | an ideal / friction-free / theoretical reference | dashed, 2 px | `--emerson-grey` |
 | a second measured series shown for contrast | solid, 3 px | `--emerson-cyan` |
 | a threshold / limit / "value of interest" line | dotted, 1.5 px | `--emerson-grey` |
-| an operating range / bench-set band (region fill) | — | `--emerson-yellow` @ ~0.13 alpha |
+| an operating range / bench-set band (region fill) | — | `--emerson-yellow` @ 0.18 alpha |
 | a deadband / error / offset region (fill or bracket) | bracket 1.5 px | `--emerson-orange` |
 
 No colour outside `tokens.css` appears in an authored graph. (The legacy
 1400-125 uses a non-palette `#0000FF` with dotted orange/purple leader
 callouts — that is what this table rules out.)
 
-**Provenance / to verify at rebuild.** These values are rationalised from
-tp-006 and tp-010 (read from source) and 1400-092 / 102 / 112 (read from
-render, not source). Two are deliberate changes to land on tokens: the
-band fill `#F6BE00 → --emerson-yellow`, and the reference-line grey
-`#6E7070 → --emerson-grey`. `--emerson-grey` (`#959797`) is lighter than
-what is in use now — confirm at rebuild that it reads strongly enough as a
-thin dashed diagonal on white; if not, use `--emerson-charcoal` at ~60 %.
+**Provenance.** These values were rationalised from tp-006 and tp-010
+(read from source) and the legacy 1400-092 / 102 / 112 (read from render).
+Two were deliberate changes to land on tokens: the band fill
+`#F6BE00 → --emerson-yellow`, and the reference-line grey
+`#6E7070 → --emerson-grey`. Confirmed in the 092 / 097 / 102 rebuild
+(2026-09-05): `--emerson-grey` at 2 px dashed reads strongly enough as a
+diagonal on white. The band settled at **0.18 alpha** across that family
+(the key swatch, being tiny, goes to 0.30 to match perceptually). tp-010
+as built uses 0.13 and should be nudged to 0.18 to match — a one-line
+reconciliation for the consolidated §5 review, not a defect.
 
 ### 5.7 Axes
 
@@ -459,14 +689,32 @@ Franz's direct review; the Stage 3 authoring gate is unaffected.
 
 ## 6. Callout conventions
 
-*Mostly stubbed. To cover: formalise the marker → label → source-locator
-manifest the Component Index and slide-template work already practise —
-positions derived from a verified source figure or an already-reviewed
-production slide, authored before the marker is placed, never a record
-written afterward to justify a freehand choice; per-template callout
-capacity; the on-image dot convention vs. the gutter-marker-with-leader
-convention and when each applies; how §5's graph keys and §6's part
-callouts are the same list mechanism.*
+Covers **part callouts on a schematic, cutaway, or photo** — numbering a
+figure and naming the numbers in a list. §5's graph keys and §6's part
+callouts are **the same list mechanism** (`.tpl-list` / `.tmpl-list`): a
+graph's key is a part-callout list where series get a swatch instead of a
+number. The rules below are the general ones; §5.2–§5.5 are the
+graph-specific overrides.
+
+### 6.0 The callout manifest — the record comes before the marker
+
+The Component Index and the slide-template work already practise this;
+stated here as the rule:
+
+- **Every marker's position is derived from a verified source** — the real
+  source figure at the coordinates the Component Index records, or an
+  already-reviewed production slide — **before the marker is placed**, not
+  eyeballed onto the drawing and then explained.
+- The marker → label → source-locator record is authored *as* the marker is
+  placed. A record written afterward to justify a freehand choice is exactly
+  the failure this rule exists to stop (it produced the ch3-m4 mispositioned
+  callouts).
+- At review, **every leader is checked at 2× zoom** and must terminate on the
+  exact part it names — not "near", not "in the right region" (pre-send
+  checklist item 3).
+- A redrawn figure's markers are verified against the source figure's real
+  geometry, not the redraw's convenience (working rule 2, the geometry
+  check).
 
 ### 6.1 The one callout-marker colour — resolved 2026-09-06
 
@@ -533,30 +781,223 @@ one-to-one match with the list is a fit that does not belong.
   the object (a real nameplate reads that way). A cutaway or schematic with
   no native callouts still gets our numbered markers.
 
+### 6.4 On-image dot vs. gutter marker — and per-template capacity
+
+Two placements, both current, chosen by figure type:
+
+| Placement | When | Templates |
+| --- | --- | --- |
+| **Marker on the feature** — a filled `--emerson-blue` circle sitting on the part, drawn *inside* the SVG at known coordinates | a graph feature (a point on a line); a schematic where the marker can sit on the part without hiding it | `.slide--tmpl-graph`, the gallery role templates |
+| **Marker in a left gutter with a thin leader** pointing in at the part | a dense cutaway or photo where a dot on the part would obscure detail, or where several parts cluster too tightly for on-part dots | `.slide--tmpl-diagram` (Template 2) |
+
+A leader line **never crosses the plot area of a graph** (§5.5) — the gutter
+placement is for pictorial figures, not data figures.
+
+**Per-template callout capacity is finite.** When a figure needs many
+numbered parts, or a graph key runs long, the usual cause is that the step
+is carrying more than one concept — split the teaching step, don't shrink
+the markers to fit. As a feel for the ceiling: tp-003's nomenclature
+cutaway carries 7 and reads as near the comfortable limit; the built graph
+keys sit at 2–4 entries.
+
+**Markers drawn inside the SVG beat box-percentage overlays.** A
+`.tpl-marker` positioned by `top: X%` of a figure box drifts when the box's
+aspect changes between the 4:3 and 16:9 canvases; a `<circle>` at a known
+viewBox coordinate does not (the tp-006 lesson).
+
+---
+
 ## 7. Terminology
 
-*Stub. To cover: valve / actuator nomenclature house style and the
-decisions already made (e.g. "packing box" not "stuffing box" — see
-`valve-packing-box-terminology`), trademark handling (Fisher™ etc.),
-units and their formatting, cross-reference to `Glossary.md`.*
+### 7.1 Scope
+
+Valve / actuator house style for **on-slide labels and context-pane
+writing**. Project-infrastructure nouns (Bench Book, Bench Notes, Source
+content, Cartridge…) are `Glossary.md`. A domain term not settled here
+defaults to the **Control Valve Handbook**'s usage, then the relevant
+**Fisher instruction manual**.
+
+### 7.2 Decisions already made
+
+- **"packing box"** (or **"packing bore"**) — the machined, open recess the
+  stem packing sits in. It is a feature *cut into* the bonnet, **not the
+  bonnet casting as a whole**; a leader labelling it lands on the annular
+  cavity or the bore wall, never the solid casting. "Stuffing box" is the
+  same component and is not used in the course — "packing box" throughout.
+  (Established on the 1400 Chapter 2 packing content, where a leader was
+  corrected off the solid casting — see `valve-packing-box-terminology`.)
+- **Actuator action:** **direct-acting** / **reverse-acting** are the
+  primary terms. "Air-to-close" / "air-to-open" may appear once as a gloss,
+  not as the working term.
+- **Body orientation:** **push-down-to-close (PDTC)** / **push-down-to-open
+  (PDTO)** — expand on first use in a module, abbreviate after.
+- **Trademark:** current practice is inconsistent — across the 1400 ch3
+  slides "Fisher 657" appears bare ~23 times and as "Fisher™ 657" ~4 times.
+  Formalise the scattered ™ into a rule rather than inventing one:
+  **Fisher™** on the first mention in a module (the title or the intro
+  card), plain **Fisher** everywhere after. Emerson is the parent company,
+  Fisher the product brand — a slide about a 657 is a "Fisher 657", never an
+  "Emerson 657".
+
+### 7.3 Units
+
+| Quantity | Unit | Format |
+| --- | --- | --- |
+| Pressure | **psig** | `11 psig` — space between value and unit |
+| Torque | **N·m primary, lbf·ft in parentheses** | `13 N·m (10 lbf·ft)` — the form the ch3 torque content and the Component Index use |
+| Length / travel | **inches**, vulgar fractions for nominal sizes | `3/8 in`, `3/4 in` |
+| Angle | degrees | `90°` — no space |
+
+A value and its unit are not split across a line break. A unit that is
+constant down a table column goes in the column header, not every cell
+(§9.4).
+
+### 7.4 When a term is not settled
+
+Use the Control Valve Handbook's term and move on. If the same ambiguity
+recurs across several slides, **flag it for a terminology decision** rather
+than picking a different word each time — the same discipline §5 applied to
+diagram conventions.
+
+---
 
 ## 8. Instructional writing tone
 
-*Stub. To cover: objective and key-concept phrasing (the domain verb menus
-and Bloom levels already in `teaching-philosophy.md`), imperative voice for
-procedures and cautions, the "terse instructor talking-point, not learner
-prose" standard for the context pane, check-your-knowledge stem style
-(situation, not "which is true", for apply-or-higher modules).*
+Formalises `teaching-philosophy.md`; it makes no new pedagogy calls.
+
+### 8.1 The module objective
+
+One sentence, imperative, **leading with a verb from the module's domain
+menu** (`teaching-philosophy.md` "Domain verb menus") at the module's
+`levelTarget`. Form: *"After completing this module the student will be able
+to [verb] …"*. One objective per module; it is written to the ceiling
+cognitive level, not an average.
+
+### 8.2 Key concepts (the context pane)
+
+**Terse, instructor-talking-point voice** — the tight phrasing an instructor
+uses as a prompt to themselves, not prose for a learner to read cover to
+cover. Sentence fragments are fine. One idea per concept. 4–6 per module.
+Never a paragraph. The currently-relevant concept highlights as the class
+moves; the writing has to survive being glanced at, not studied.
+
+### 8.3 On-slide text
+
+Names and short headers only (§2.3). The sole full-sentence exceptions:
+
+- a **procedure step** — imperative mood, one action per step, in the order a
+  technician performs it ("Thread the spring adjuster out until all spring
+  compression is relieved");
+- a **caution body** — one sentence, the consequence stated plainly, the
+  failure itself in bold ("… or **the casing is thrown off**"). A safety
+  consequence is the point of a caution slide, not instructor patter.
+- an **application takeaway** — one plain-language line under an analytical
+  figure, stating the thing to carry away.
+
+### 8.4 Check-your-knowledge stems
+
+For an **apply-or-higher** module, the stem is a **situation**, not "which
+statement is true": *"You are bench-setting a 657 off the valve and the
+travel between your marks is short. What is the most likely cause?"* Options
+are all plausible; exactly one is correct; the wrong ones are real mistakes a
+technician makes, not obvious throwaways.
+
+### 8.5 Voice and register
+
+- **Second person** ("you") for procedures, cautions, and check stems.
+- **Present tense** for how a mechanism works ("the spring drives the stem
+  down").
+- **No** marketing register, no "simply / just / obviously / of course", no
+  rhetorical questions — except the one deliberate `prime` slide that opens a
+  module with a question or a stake.
+
+---
 
 ## 9. Table conventions
 
-*Stub. To cover: the existing `.tmpl-table` treatment (blue header row,
-row tint, `.num` for right-aligned figures), when a table is the content
-vs. a supporting aside, the short-table centring pattern — lifted from
-`TEMPLATES.md` Templates 3–4.*
+### 9.1 The production table treatment (`.tmpl-table`)
+
+From `TEMPLATES.md` Templates 3–4:
+
+- **Header row:** `--emerson-blue` background, white text, weight 700,
+  sentence case.
+- **Body rows:** zebra-striped — even rows `color-mix(in srgb,
+  var(--emerson-blue) 5%, #fff)`.
+- **Numeric columns:** `class="num"` — right-aligned, `tabular-nums`.
+- **A highlighted example row:** `tr.is-example` — `--emerson-yellow` tint at
+  ~0.32, weight 700, an `--emerson-orange` inset bar on the left edge. Used
+  in Template 4 to mark the row the slide is working through.
+- Cell borders: 1 px `--emerson-grey`.
+
+### 9.2 Table as content vs. supporting aside
+
+| Shape | Template |
+| --- | --- |
+| A reference table the learner reads *is* the slide | `.slide--tmpl-table` (Template 3) |
+| A reference table with **one row worked as the example**, plus an optional paired illustration | `.slide--tmpl-compare` (Template 4) — the `tr.is-example` row |
+| A reference table **plus the items it tabulates** shown in a figure row beneath | `.slide--tmpl-figrow.has-lead` |
+| A short **decision / selection** table beside a corroborating figure | `.slide--role-application:has(.tmpl-table)` — the decision-table application variant (§5.10) |
+
+### 9.3 Short-table layout
+
+A table with few rows does **not** stretch to fill its space. It sits at its
+natural height and is **vertically centred against whatever it is paired
+with** (`align-items: center`) — the fix made building the tp-009
+decision-table variant, where the table was top-aligning against a taller
+figure.
+
+### 9.4 Decision-table column order
+
+Order the columns so the reader scans **left-to-right from what they have to
+what to do**: the "given" columns first (desired outcome, the body they
+have), the "answer" column last (the action to specify). tp-009's
+fail-mode table is "Desired fail mode → Valve body → Actuator action".
+
+### 9.5 A constant unit goes in the header
+
+If a column's unit is the same in every row, it goes in the column heading
+("Torque (N·m)") and the cells carry bare numbers.
+
+---
 
 ## 10. Change control
 
-*Stub. To cover: a change to this guide is a reviewed change; templates and
-manifests cite it rather than restating it; how a deviation is flagged and
-reviewed.*
+### 10.1 A change here is a reviewed change
+
+Held to the same bar as a template change, because the templates and the
+callout manifest are implementations of this document (§1.4).
+
+### 10.2 Review effort scales with risk
+
+- A section that **formalises existing practice** — most of §§1–4 and 7–10 —
+  gets a full **adversarial self-review** (catch overclaimed derivation and
+  internal contradiction) and then one consolidated read, not a per-section
+  direct pass.
+- A section making a **new, high-stakes call** — redraws touching shipped
+  production slides, factual claims about hardware, a convention with no
+  existing practice to derive from — gets repeated direct review, the way §5
+  did.
+- A **genuinely open design decision** is flagged for a decision (as §5's
+  legend / arrowhead / redraw questions were), never settled silently and
+  presented as derived.
+
+### 10.3 This document's authority
+
+Where a template comment, a manifest, or a pipeline doc states a convention
+this document also states, **this document is authoritative** and the other
+carries a "see Style Guide §X" pointer. A disagreement is a bug in the other
+file, not a competing opinion.
+
+### 10.4 Revision notes are inline and dated
+
+Each section carries its own dated notes in place ("corrected 2026-09-05",
+"resolved 2026-09-06"), the pattern §5 established. There is no separate
+changelog to drift.
+
+### 10.5 Codify before (or with) the fix
+
+A convention discovered while doing pipeline work is written **here first**,
+then the slide or template fix is the first instance of the codified rule —
+not an isolated patch that a later reviewer has to reverse-engineer into a
+rule. This is the pipeline-gap-first triage rule
+(`workbench-architecture-and-phase.md`) applied to style.
