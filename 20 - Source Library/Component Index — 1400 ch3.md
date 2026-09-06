@@ -51,12 +51,16 @@ full archive review found no conflicts to protect against.)
 | **Archive D750066** — *Maintaining Spring-and-Diaphragm Actuators*      | Fisher Educational Services · ~1990s scan | `archive-corroborated` (actuator content) | Reviewed in full. Disassembly/inspection procedure is consistent with current practice; explicitly defers to the instruction manual for torque values etc. Its analog-positioner sections are dated but are Day-3 material, out of ch3 scope — not indexed here. |
 | **Legacy 1400 PowerPoint deck** — `build/slides/**/img/imageNNN.png`    | —                                         | `legacy`                                  | Fisher-origin art, uncredited, often low-res. Use **only** where no current or archive figure covers the same thing — mostly hands-on procedure photos. Where a current-manual figure covers the same diagram, it wins.                                          |
 
-**Delivery rule for graphs:** the bench-set / deadband graphs are delivered as
-**house-style hand-authored SVG**, redrawn to be faithful to **Fisher 657/667 IM
-Figure 5** (canonical) with **CVH Fig 8.10** as the backup reference. A redraw is
-justified — the Fisher figure is a low-res scan that would clash with the
-Workbench design system — but it is a *specified* redraw of a named current
-figure, not an invention.
+**Delivery rule for graphs (corrected 2026-09-05/06 — see Style Guide §5.8):**
+the bench-set / deadband graphs are a **bounded house-style SVG redraw + a §5.3
+key**, spec'd against **CVH Fig 8.10**'s printed geometry (Fisher 657/667 IM
+Figure 5 corroborating; its axes are transposed from the course convention). The
+redraw is justified NOT because the source is low quality — both figures are
+clean vector — but because Fig 8.10 is the three-line *deadband* figure and each
+bench-set slide teaches one or two of those lines, which are interleaved and
+un-croppable (§5.8 reason #2). See the `ch3-cmp-bench-set-graph` record below and
+`.slide--tmpl-graph` (TEMPLATES.md Template 7). The earlier "low-res 1990s scan"
+premise here was factually wrong and is retracted.
 
 ---
 
@@ -334,19 +338,48 @@ used-by: [101, 103, 115, 116, 118]
 ```yaml
 id: ch3-cmp-stem-connector
 teaches: >
-  The two-piece stem connector must engage each stem — actuator and valve — by at
-  least one stem diameter of thread; incomplete engagement strips threads or gives
-  improper travel. Fine travel adjustment is at the locknut and jam nut.
-concept-tags: [stem connector, thread engagement, one stem diameter, travel adjustment, locknut, jam nut]
-status: legacy   # current slides use deck photos; Fisher IM Fig 3 covers it
+  The two-piece stem connector clamps the actuator and valve stems together after
+  bench set is confirmed. Each stem must engage the connector threads by at least
+  one stem diameter — incomplete engagement strips the threads or gives improper
+  operation. The connector is fitted at the upper bench-set pressure; the valve
+  stem locknuts are then run up until the travel-indicator disk contacts the
+  bottom of the connector, which sets the connector's position (and the travel-
+  scale zero). Final check: stroke the valve fully open to fully closed and verify
+  the travel equals the nameplate rated travel. Never loosen the cap screws while
+  spring or loading-pressure force is on the connector.
+concept-tags: [stem connector, thread engagement, one stem diameter, incomplete engagement, upper bench set pressure, travel indicator disk, verify rated travel, cap screws under load]
+status: current   # corrected 2026-09-06 — was `legacy`; the 657/667 IMs carry a full current procedure, not just Fig 3
 source:
-  - doc: Fisher 657 Instruction Manual
-    locator: "Figure 3 (stem connector shown); Spring Verification note re: stem connector on size 70/70i and 87"
+  - doc: Fisher 657 Instruction Manual (D100306X012)
+    locator: >
+      "Installing the Stem Connector Assembly", pp 7–8 — steps 1–6 + the WARNING,
+      the "incomplete engagement" CAUTION ("length of each stem clamped ... equal
+      to or greater than one diameter"), the "do not loosen the cap screws under
+      load" CAUTION, and the replacement-connector Note (two halves + cap screws +
+      spacer; remove spacer; mated pair only). Figure 3 shows the assembled
+      connector; Figures 6–10 help locate its position on the stems.
+  - doc: Fisher 667 Instruction Manual (D100310X012)
+    locator: "'Installing the Stem Connector Assembly', pp 9–10 — parallel procedure (stem locknuts keys 69/75); adds the size 70/70i, 76/76i, 87 note that the connector is assembled around the stems BEFORE the spring adjuster is turned, then removed before rechecking bench set"
   - doc: Legacy deck
-    locator: "img/image166.png, img/image167.png (slides 103, 118)"
-delivery: prefer the 657 IM Fig 3 detail; deck photos acceptable
+    locator: "img/image166.png, img/image167.png (slides 103, 118) — the on-slide photo only; kept per the burned-in-deck-arrows house convention (see slide 1400-103)"
+delivery: current procedure text (657/667 IM) + Figure 3 or the deck photo for the on-slide visual — NOT a legacy component
 used-by: [103, 118]
-```
+notes: >
+  Undergrade fix 2026-09-06 (Franz, via the bench-set-657 topic-index trial). The
+  entry was `status: legacy` with the comment "current slides use deck photos;
+  Fisher IM Fig 3 covers it" — that treated the IM's contribution as only the
+  figure and missed the entire "Installing the Stem Connector Assembly" section,
+  which is a full current procedure with three CAUTIONs.
+
+  Also flagged, NOT changed here (slide work, not index work): production slide
+  1400-103 step 3 reads "Make fine travel adjustments at the locknut and jam
+  nut." The current 657/667 IMs do not use "jam nut" (both nuts are "stem
+  locknuts") and do not frame the locknuts as a travel adjustment — stroke length
+  is fixed by bench set; the locknuts set the connector's *position* (indicator
+  disk against the connector bottom). When 1400-103 / 1400-118 are next touched,
+  reword to match the source or cite where "fine travel adjustment at the
+  locknut" comes from.
+
 
 ```yaml
 id: ch3-cmp-casing-torque-pattern

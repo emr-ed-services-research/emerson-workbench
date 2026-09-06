@@ -583,6 +583,41 @@ Mirror into [[Open Questions]] once reviewed.
     exists to gate. It can and should run in parallel with the template
     proof below, not after it.
 
+    **Trial done, accepted (Franz, 2026-09-06):**
+    `20 - Source Library/Component Index — bench-set-657.md` — built cold
+    2026-09-04, compared against the ch3 index. Accepted as the trial
+    result. Its one shortcut (carrying over ch3's archive-review verdict for
+    D750004/D750066 rather than re-reading the same Franz-confirmed pages)
+    is defensible, not missing rigor. **Core finding, actionable for sizing
+    future origination requests:** a topic-driven scope comes out
+    *finer-grained* than a deck-cut module — "bench-setting a 657" naturally
+    excludes the casing-torque and disassembly content that ch3-m2/m3
+    bundle in, because those sit in the IM's *Maintenance* section, not its
+    bench-set procedure. Scope an origination request at roughly
+    single-concern granularity, not to match an existing module's breadth.
+
+    **Standing guidance for the NEXT topic index — Axis C as a
+    component-type checklist (Franz, 2026-09-06):** the trial drew scope
+    purely by editorial judgement + whatever was easy to find in source.
+    The next one adds a structural pass: decompose the topic into its spine
+    of teaching steps (from the current source's own procedure sequencing),
+    then for **each step** walk the Axis C role vocabulary and ask
+    explicitly — does this step need a `nomenclature` artifact? a
+    `mechanism` one? a `procedure`, `application`, `contrast`, `caution`,
+    `check`? Each "yes" with no matching component is a gap to index, even
+    if nothing in the source jumps out. This catches load-bearing artifacts
+    a "read the source and cut the scope" pass misses — the way the trial
+    only found the glossary definition and the friction-measurement
+    procedure by reading whole sections rather than jumping to cited
+    figures. It is a retrofit requirement on nothing already built; it is
+    how the next topic index is scoped.
+
+    **Still open, correctly gated:** whether a topic index *holds up when
+    consumed* — a real Stage 2 authoring pass finding it complete with no
+    `sourceNote` fallbacks, the way ch3's index proved itself — cannot be
+    tested until origination-mode Stage 1/2 prompts exist. That waits on
+    the template proof, not forced now.
+
   **The gate on Stage 3 authoring, stated explicitly (Franz, 2026-09-04):**
   building the capability itself — Stage 3 writing *fresh* content into a
   chosen master template, the actual unlock for real origination — does not

@@ -7,10 +7,22 @@ tags:
   - component-index
   - topic-driven
 topic: "Bench-setting a Fisher 657"
-updated: 2026-09-04
+updated: 2026-09-06
+status: accepted as the trial result (Franz, 2026-09-06)
 ---
 
 # Teaching-Component Index — Topic: Bench-Setting a Fisher 657
+
+> [!note] Accepted 2026-09-06
+> Accepted as the trial result. The archive-review shortcut (carrying over
+> ch3's Franz-confirmed verdict for D750004/D750066) is defensible, not
+> missing rigor. Core finding — a topic-driven scope is finer-grained than
+> a deck-cut module — stands and is recorded in
+> `Course Porting Pipeline.md` "Origination without a deck" for sizing
+> future origination requests. The next topic index adds an
+> Axis-C-as-checklist scoping pass (see that doc); this trial delivered its
+> value without it. The `ch3-cmp-stem-connector` undergrade this file
+> flagged was **fixed** in the ch3 index on 2026-09-06.
 
 **Trial run, topic-driven (no deck).** Built cold — from the named topic and
 the Source Library alone, with no existing course slides to read — as the
@@ -342,9 +354,12 @@ not a bounded code change.
 
 - **Not yet applied anywhere** — this is a standalone trial file, not wired
   into any course.json, module, or Stage 2 tagging pass.
-- **`ch3-cmp-stem-connector`'s `legacy` status** is worth Franz's second look
-  against this file's finding (above) — separate from this trial, a call for
-  whoever next touches that component in the ch3 index.
+- **`ch3-cmp-stem-connector`'s `legacy` status** — RESOLVED 2026-09-06. The
+  ch3 index entry was corrected to `status: current` with the full
+  "Installing the Stem Connector Assembly" procedure (657 IM pp 7–8, 667 IM
+  pp 9–10) and its three CAUTIONs cited. A secondary discrepancy was also
+  flagged there (slide 1400-103's "fine travel adjustment at the locknut and
+  jam nut" is not IM terminology — for slide work, not index work).
 - **No archive re-read performed** for D750004/D750066 in this trial;
   precedence carried over from the prior full review rather than re-verified
   independently. If a future topic index touches archive ground ch3 has NOT
