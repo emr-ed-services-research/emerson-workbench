@@ -26,6 +26,11 @@ status: full draft — §§5–6 reviewed and proven in production; §§1–4, 7
 >   practice; two minor open calls are flagged (§3.3 green/purple;
 >   §5.6/tp-010 alpha) for a single consolidated read rather than a
 >   per-section review cycle.
+> - **§§2.4 / 4.1 (header chrome)** were revised after a Franz finding: the
+>   gallery / proof `[class*="slide--role-"]` templates had been on the
+>   legacy full-bleed rule, not the restrained heading. The CSS was fixed
+>   and verified across both courses; §§2.4 / 4.1 now describe the corrected
+>   state.
 
 ## What this document is
 
@@ -185,12 +190,25 @@ The **one exception** is the caution card's single `.caution-body` line — a
 safety consequence, stated plainly, is the point of that slide, not
 instructor patter (§4.4, §8).
 
-### 2.4 The restrained heading is the default
+### 2.4 The restrained heading is the standard
 
-New and rebuilt content uses `.slide--hd` (semibold `2.7cqw`, tight tracking,
-a short blue accent tick beneath — the card templates get it automatically).
-The full-bleed PowerPoint title rule of the legacy deck is **history**; do not
-reproduce it on new slides.
+**Every rebuilt slide uses the restrained heading** — `.slide-title` at
+semibold `2.7cqw`, tight tracking (`-0.005em`), with a **short blue accent
+tick** beneath it in place of a rule. It is carried by `.slide--hd` and is
+applied automatically to every card template (`.slide--tmpl-*`) and every
+gallery role template (`[class*="slide--role-"]`).
+
+The **legacy header** — a `3.03cqw`/400 title above a full-bleed
+`--emerson-blue` divider rule running edge to edge — is the deck's original
+PowerPoint style. It survives only on the un-rebuilt legacy 1400 slides and
+is replaced by the restrained heading as each is converted (the documented
+rollout: it becomes universal once the whole deck is on it). **Do not
+reproduce the full-bleed rule on a new slide.**
+
+> The gallery and proof `[class*="slide--role-"]` templates were on the
+> legacy rule until 2026-09-06 — the `.slide--role-*` selectors had simply
+> never been added to the shared heading block. Fixed; verified across both
+> courses.
 
 ---
 
@@ -264,12 +282,15 @@ The frame every content slide carries. From `emerson-workbench.css` §3 and
 
 ### 4.1 Header
 
-The **slide title** sits in a box at the top-left (`left/right: 3.44cqw`,
-`top: 3.4cqh`), text bottom-aligned, in `--emerson-blue`, display face. On the
-legacy layout a **full-bleed `--emerson-blue` divider rule** (~`0.09cqh`) runs
-under it at `16.73cqh`; the `.slide--hd` treatment replaces that rule with a
-short blue accent tick under the heading and is the default for new content
-(§2.4).
+The **slide title** sits in a box at the top-left (`left/right: 5.6cqw`,
+`top: 6cqh`), left-aligned, in `--emerson-blue`, display face, at the
+restrained scale (§2.4). Beneath it, a **short `--emerson-blue` accent tick**
+(`4.5cqw` wide, `0.3cqh` tall, at the left) — not a rule.
+
+The **legacy full-bleed divider rule** (`.slide::after`: a `--emerson-blue`
+line, `~0.09cqh`, edge to edge, at `16.73cqh`, with the title one size up at
+`top: 3.4cqh`) is suppressed on every rebuilt slide and survives only on
+un-rebuilt legacy 1400 slides (§2.4).
 
 ### 4.2 Footer chrome
 
