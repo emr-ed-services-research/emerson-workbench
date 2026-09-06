@@ -101,12 +101,13 @@ mounting-sequence framing as first-class components.
    gets this from A and not from B.
 
 2. **The diaphragm-casing caution (A `095`) — "relieve the spring before you
-   open the casing, or it is thrown off."** B drops this **entirely**. The
-   topic index scoped it out deliberately (it is 657 IM *Maintenance*-section
-   content; you bench-set a 657 without opening the diaphragm casing). That
-   is a defensible scoping call — **but it is a real safety caution that A's
-   author chose to keep in the module,** and B's narrower scope loses it.
-   This is the single most consequential difference between the two.
+   open the casing, or it is thrown off."** B does not carry this. The topic
+   index scoped it out deliberately (it is 657 IM *Maintenance*-section
+   content), and **Franz's review confirmed that is correct**: the caution
+   belongs to the disassembly phase, and bench-setting only happens
+   post-assembly. Not a gap — a correct scope boundary. (Earlier drafts of
+   this section over-weighted it; kept here to show the scope line landed in
+   the right place.)
 
 3. **Explicit DA-action mechanism.** Neither module re-teaches it — both lean
    on `ch3-m1`. Not a difference, listed for completeness.
@@ -182,10 +183,12 @@ it" question was asking about.
 
 3. **`ob-001` shipped its first render with an SVG label collision.** The
    folded "lower bench set" / "upper bench set" axis labels overlapped the
-   x-axis title. Caught on visual inspection of the render and fixed (labels
-   moved above the plot). This is exactly the class of defect the 17 proof
-   examples needed review rounds to shake out — the authoring pass did not
-   prevent it, a render check did.
+   x-axis title. Caught by the **generation agent's own self-check** — looking
+   at the screenshot — and fixed (labels moved above the plot). Note
+   `render-check.mjs` passed this render clean: overlapping SVG text is not
+   clipping, so the automated check did not flag it. This is exactly the class
+   of defect the 17 proof examples needed review rounds to shake out; the
+   authoring pass did not prevent it.
 
 4. **`ob-004`'s graph geometry is inherited, not derived.** The 2-psig
    friction shift is carried over wholesale from the proof's `tp-010`, where
@@ -229,7 +232,7 @@ it" question was asking about.
 
 ---
 
-## 9. Bottom line for review
+## 9. Bottom line
 
 - Candidate B reached real, clean-rendering HTML. The authoring process
   produced six coherent, source-grounded slides.
@@ -237,14 +240,41 @@ it" question was asking about.
 - B is deeper on the bench-set concept; A is broader (it also identifies the
   657). This is a **scope** difference driven by how each concept map was
   cut, and it matches the topic-index trial's finding exactly.
-- B drops A's diaphragm-casing safety caution. That is the one omission that
-  should not be waved through on "different scope" alone.
-- The process is **not** trustworthy unattended yet: it wrote one concept
-  wrong (nameplate), shipped one render defect (label collision), and
-  inherited a measurement it presented as analysis. Every one of those was
-  caught by a human or a render check, not by the authoring pass.
+- B does **not** drop a safety caution. The apparent gap — no "relieve the
+  spring before opening the diaphragm casing" warning — is correctly out of
+  scope: that caution belongs to the disassembly phase, and bench-setting
+  only happens post-assembly (Franz's review, 2026-09-06). Section 4 above
+  overstated this; it is not the omission it was first read as.
+- The three defects encountered during authoring were **all caught by the
+  generation agent's own self-check** — rechecking a source figure while
+  composing (the nameplate concept), looking at the render (the label
+  collision), disclosing an inherited measurement (`ob-004`'s geometry). None
+  was caught by an automated check, and — when this section was first
+  written — none had been seen by a human. Agent self-check catching some of
+  its own mistakes is a real and wanted layer, but it is a **weaker
+  guarantee than independent review** and must never be described in language
+  that implies human review happened.
 - Two template families still coexist; that has to be resolved before any of
   this is more than a test.
+
+## 10. Franz's direct review — 2026-09-06
+
+First human review of `ob-001`…`ob-006`. Verdict: **genuinely positive** —
+content accurate, the mounting-sequence and diagnostic-check slides hold up,
+and the apparent safety-caution gap is correctly out of scope (see §9). Two
+minor findings, **logged not actioned** (this note is scoped to a labeling
+correction, not reopening the test):
+
+1. **`ob-006` answer conflates two failure modes.** "The wrong spring is
+   installed, or the spring adjuster is set wrong" — a simple wrong adjuster
+   *setting* shifts both bench-set pressure points together (like a gauge
+   error) and should not compress the travel between them. The physically
+   correct cause of short travel across the rated span is an **assembly
+   fault** (e.g. spring seat installed upside down, changing the adjuster's
+   effective travel), not "set wrong." Wording should distinguish assembly
+   fault from simple mis-setting.
+2. **`ob-003` (cropped IM Figure 4) is faithful but dense** and not improved
+   by generation — flagged as a real gap; separate idea thread to come.
 
 **This test does not lift the full stop on ch3-m4 completion, ch3-m5, or
 ch3-m6.** It is bounded to ch3-m2. Building `ob-005` surfaced one real
