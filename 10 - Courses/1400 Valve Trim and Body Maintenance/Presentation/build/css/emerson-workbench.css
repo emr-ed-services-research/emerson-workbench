@@ -901,14 +901,17 @@
    title rule is dropped for a restrained heading — semibold, held to a
    modest size, with a short blue accent tick beneath it that echoes the
    intro card's .ov__rule. Carried by `.slide--hd` on any slide; the
-   card templates get it automatically. */
+   production card templates (`.slide--tmpl-*`) and the gallery role
+   templates (`[class*="slide--role-"]`, added 2026-09-06 — they had been
+   falling through to the legacy full-bleed rule) get it automatically. */
 .slide--hd::after,
 .slide--tmpl-diagram::after,
 .slide--tmpl-table::after,
 .slide--tmpl-compare::after,
 .slide--tmpl-figrow::after,
 .slide--tmpl-graph::after,
-.slide--tmpl-caution::after { display: none; }
+.slide--tmpl-caution::after,
+[class*="slide--role-"]::after { display: none; }
 
 .slide--hd .slide-title,
 .slide--tmpl-diagram .slide-title,
@@ -916,7 +919,8 @@
 .slide--tmpl-compare .slide-title,
 .slide--tmpl-figrow .slide-title,
 .slide--tmpl-graph .slide-title,
-.slide--tmpl-caution .slide-title {
+.slide--tmpl-caution .slide-title,
+[class*="slide--role-"] .slide-title {
   top: 6cqh;
   left: 5.6cqw; right: 5.6cqw;
   height: auto;
@@ -935,7 +939,8 @@
 .slide--tmpl-compare .slide-title::after,
 .slide--tmpl-figrow .slide-title::after,
 .slide--tmpl-graph .slide-title::after,
-.slide--tmpl-caution .slide-title::after {
+.slide--tmpl-caution .slide-title::after,
+[class*="slide--role-"] .slide-title::after {
   content: "";
   position: absolute;
   left: 0;
@@ -970,7 +975,12 @@
    can never drift out of the shape. No ::before, and the title rule is
    suppressed on caution (the triangle + the .caution-body orange left
    rule already carry the signal). No markup change — the span still just
-   contains "!". */
+   contains "!".
+   GLYPH SIZE 2026-09-06 (Franz): the "!" was proportionally undersized
+   (1.55cqw in a 4.2cqw triangle, ~37 %) and hard to read at a glance.
+   Bumped to 2.2cqw (~52 %) — still centred flex content in the same
+   clipped-triangle structure, so the earlier drift/clip problem does not
+   return; the triangle itself is unchanged. */
 .slide--tmpl-caution .slide-title::before { content: none; }
 .slide--tmpl-caution .slide-title::after { display: none; }
 .slide--tmpl-caution .slide-title__mark {
@@ -983,8 +993,8 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  padding-bottom: 0.5cqw;
-  font: 700 1.55cqw/1 var(--font-display);
+  padding-bottom: 0.42cqw;
+  font: 700 2.2cqw/1 var(--font-display);
   color: var(--emerson-white);
 }
 /* ROOT-CAUSE FIX 2026-09-05 (16-example template proof, Franz's direct
