@@ -2,7 +2,7 @@
 #  generate.ps1  -  convert every slide of a course deck to HTML
 #  against emerson-workbench.css.  Run extract-media.ps1 first.
 #
-#  Usage:  .\generate.ps1 -Course "1400 Valve Trim and Body Maintenance"
+#  Usage:  .\generate.ps1 -Course "14101 Valve Trim and Body Maintenance"
 #          .\generate.ps1 -Course "<name>" -DryRun    # write to <tmp>/dryrun/ only
 #          .\generate.ps1 -Course "<name>" -Force     # regen hand-owned slides
 #

@@ -15,7 +15,7 @@ Emerson's flagship reference on control valve theory, performance, sizing,
 selection, installation and maintenance — "both a textbook and a reference on
 the strongest link in the control loop." Includes contributions from the ISA.
 The primary background source across Educational Services courses, including
-[[1400 — Course Home|1400 Valve Trim and Body Maintenance]].
+[[14101 — Course Home|14101 Valve Trim and Body Maintenance]].
 
 ## Details
 
@@ -52,17 +52,17 @@ Deadband); pull specific section numbers directly from the PDF when citing.
 
 ## Used by
 
-- [[1400 — Course Home|1400 Valve Trim and Body Maintenance]]
+- [[14101 — Course Home|14101 Valve Trim and Body Maintenance]]
 
 ## Key sections referenced
 
 Populated as courses cite specific sections (via the per-chapter
-[[Component Index — 1400 ch3|component indexes]]).
+[[Component Index — 14101 ch3|component indexes]]).
 
 | Section | Topic | Cited from |
 | --- | --- | --- |
-| §2.1.1 (incl. 2.1.1.2, 2.1.1.4) + Fig 2.3 | Deadband — definition, effects, friction as the cause | 1400 ch3-m6 (deadband) |
-| §3.8.1 + Fig 3.43 | Diaphragm actuators — direct-acting vs reverse-acting | 1400 ch3-m1, m2, m4 (actuator action) |
-| §5.11.1.1–5.11.1.4 + §5.11.2 | Actuator/valve forces: unbalance (A), seat load (B), packing friction (C), additional (D); total = A+B+C+D | 1400 ch3-m1 (valve forces) |
-| §8.2 + Fig 8.2 | Criss-cross bolt-tightening pattern | 1400 ch3-m3, m5 (diaphragm-casing torque) |
-| §8.5.5 + Fig 8.10 | Bench set — definition; "Bench Set Seating Force" graph (backup reference to Fisher IM Fig 5) | 1400 ch3-m1, m2, m4, m6 (bench set / deadband graph) |
+| §2.1.1 (incl. 2.1.1.2, 2.1.1.4) + Fig 2.3 | Deadband — definition, effects, friction as the cause | 14101 ch3-m6 (deadband) |
+| §3.8.1 + Fig 3.43 | Diaphragm actuators — direct-acting vs reverse-acting | 14101 ch3-m1, m2, m4 (actuator action) |
+| §5.11.1.1–5.11.1.4 + §5.11.2 | Actuator/valve forces: unbalance (A), seat load (B), packing friction (C), additional (D); total = A+B+C+D | 14101 ch3-m1 (valve forces) |
+| §8.2 + Fig 8.2 | Criss-cross bolt-tightening pattern | 14101 ch3-m3, m5 (diaphragm-casing torque) |
+| §8.5.5 + Fig 8.10 | Bench set — definition; "Bench Set Seating Force" graph (backup reference to Fisher IM Fig 5) | 14101 ch3-m1, m2, m4, m6 (bench set / deadband graph) |

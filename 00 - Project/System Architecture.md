@@ -13,7 +13,7 @@ updated: 2026-09-04
 *Captured 2026-08-30. This document defines the four architectural layers of the Emerson Workbench system, and sets the sequencing decision for what comes after chapter 2.*
 
 > [!check] Update 2026-08-31 — the gate has been reached
-> 1400 Chapter 2 is complete: all seven modules are through Stage 2 context
+> 14101 Chapter 2 is complete: all seven modules are through Stage 2 context
 > authoring and the Stage 3 four-part slide pass, and a coherence review has
 > confirmed the pipeline rules, templates, and checklist are committed and
 > consistent. The "finish chapter 2 first" precondition below is now **met**.
@@ -101,14 +101,14 @@ Not yet built; currently the "pipeline" is really just a set of conventions ([[C
 > [!tip] Living companion: [[System Map]]
 > `00 - Project/System Map.md` (+ a published infographic) is the **current-state
 > map** kept in sync with real progress — the layer statuses, the pipeline
-> stages, and where 1400 stands right now. This document is the fixed design;
+> stages, and where 14101 stands right now. This document is the fixed design;
 > [[System Map]] is the moving picture. Update it whenever a layer starts, a
 > build phase finishes, or a chapter moves through a stage.
 
 | Layer | Status |
 |---|---|
 | 1. Workbench Home | Not started |
-| 2. Workshop (course shell) | Built and structurally locked in; proven against all of 1400 chapter 2 (7 modules, complete 2026-08-31) |
+| 2. Workshop (course shell) | Built and structurally locked in; proven against all of 14101 chapter 2 (7 modules, complete 2026-08-31) |
 | 3. Cartridge | Not yet separated as a distinct artifact; currently entangled with Workshop editing. Separation still deferred until after the Pipeline Console. |
 | 4. Pipeline Console | Not built; pipeline exists as documented conventions run via chat. **This is now the active next phase.** |
 

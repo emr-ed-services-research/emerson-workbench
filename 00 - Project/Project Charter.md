@@ -50,7 +50,7 @@ Full detail in [[Roadmap]].
 
 ### Stage 1 — Status Quo Transfer (Pilot)
 
-- Course: [[1400 — Course Home|1400 Valve Trim and Body Maintenance]]
+- Course: [[14101 — Course Home|14101 Valve Trim and Body Maintenance]]
 - Goal: convert the existing PowerPoint deck into an HTML presentation artifact.
 - Maintain the current look and feel of the PowerPoint — no redesign yet.
 - Deliverable: a working Emerson Workbench "class" that any instructor can open

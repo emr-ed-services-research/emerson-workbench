@@ -11,7 +11,7 @@ updated: 2026-09-04
 # Course Porting Pipeline
 
 > [!note] Status
-> **Proven on the 1400 pilot; being run per chapter.** Consolidates the 1400
+> **Proven on the 14101 pilot; being run per chapter.** Consolidates the 14101
 > course-engine architecture review (2026-08-29). Repeatable process for bringing
 > any PowerPoint course into the Workbench; belongs under [[Roadmap]] Stage 2.
 >
@@ -20,12 +20,12 @@ updated: 2026-09-04
 > - **Step 2 done (2026-08-30):** engine extracted to [[Engine|40 - Engine]];
 >   `build-course.ps1` assembles a course's `Presentation/` from it; the three
 >   de-coupling fixes applied (slide prefix, shell title, colour tokens) plus
->   per-course localStorage namespacing. Verified in-browser for 1400.
+>   per-course localStorage namespacing. Verified in-browser for 14101.
 > - **Step 3 done (2026-08-30):** Chapter 2 slide 27 → `.slide--tmpl-diagram`
 >   (Template 2 proven with a second consumer); data single-sourcing resolved
 >   (lint now via `data-ref` + `40 - Engine/verify.ps1`, data layer as a named
->   later stage). `verify.ps1` runs 0 FAIL for 1400.
-> - **1400 Chapter 2 complete (2026-08-31):** all seven modules through Stage 2
+>   later stage). `verify.ps1` runs 0 FAIL for 14101.
+> - **14101 Chapter 2 complete (2026-08-31):** all seven modules through Stage 2
 >   and the Stage 3 four-part pass. Three cross-cutting working rules (below)
 >   were codified from its rework requests. Next phase is the Pipeline Console —
 >   see [[System Architecture]].
@@ -44,14 +44,14 @@ One repeatable process to port a PowerPoint course into the Emerson Workbench:
 **bulk-convert → cut to the teaching arc → author the context layer → run the
 four-part slide pass → verify → publish.**
 
-[[1400 — Course Home|1400]] was the proving ground. Everything below is extracted
+[[14101 — Course Home|14101]] was the proving ground. Everything below is extracted
 from what worked there and what forked. The goal of writing it down is to stop
 re-deriving the process per course and to make the engine a shared asset instead
 of a thing that gets copied.
 
 ## Working rules (every stage, every course)
 
-Cross-cutting rules that came out of the 1400 work. They apply at **every stage
+Cross-cutting rules that came out of the 14101 work. They apply at **every stage
 and to every course** — not scoped to a chapter, a module, or the stage that
 first surfaced them.
 
@@ -112,7 +112,7 @@ first surfaced them.
    This is why rules 1 and 2 exist: both started as slide fixes that were
    actually pipeline gaps. [[System Architecture]] carries the four-layer model
    (Workbench / Workshop / Cartridge / Pipeline Console) this separation comes
-   from. 1400 Chapter 2 is now complete; the next phase is scoping and building
+   from. 14101 Chapter 2 is now complete; the next phase is scoping and building
    the Pipeline Console, with the Workshop shell frozen until then.
 
 4. **Completeness against source, not volume, is the content standard.**
@@ -141,7 +141,7 @@ first surfaced them.
 
 ## Where we are (updated 2026-08-31)
 
-- **1400 fully converted** — all 418 slides on the component-extraction model
+- **14101 fully converted** — all 418 slides on the component-extraction model
   (semantic HTML per slide against a shared design system).
 - **The shell layer is solid.** `course.js` / `course.css` / `course.json` are
   chapter-agnostic — no per-chapter code. The drop-a-slide-from-flow / keep the
@@ -163,8 +163,8 @@ first surfaced them.
 
 ## The blocker
 
-**The engine lives inside course 1400's folder** —
-`10 - Courses/1400 Valve Trim and Body Maintenance/Presentation/` holds
+**The engine lives inside course 14101's folder** —
+`10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/` holds
 `course.js`, `course.css`, `emerson-workbench.css`, `slides.js`, the shell
 skeleton, the `_generator/` scripts, and the templates.
 
@@ -223,21 +223,21 @@ work — which is what the regeneration guard (below) fences off.
 
 Human decides, from what is taught in what sequence:
 
-- **Days** — the top-level identity (1400: Sliding Stem / Rotary / Positioners).
+- **Days** — the top-level identity (14101: Sliding Stem / Rotary / Positioners).
 - **Chapters** — detail nested inside a day.
 - **Module boundaries** — cut from each module's stated objective and key
   concepts, **not** the deck's chapter order or its check-your-knowledge slide
   positions.
 
 Governed by [[teaching-philosophy]] ("structure mirrors the teaching arc, not
-the source deck") and the 1400 module-boundary work. Output is a `course.json`
+the source deck") and the 14101 module-boundary work. Output is a `course.json`
 skeleton with every module `status: "outline"`.
 
 Scaffolding possible (not required): a script that *proposes* modules from the
 deck's section breaks and CYK positions for a human to re-cut.
 
 **Run Stage 1 as a discrete step even when a rough skeleton already exists.**
-1400 Chapter 2's modules 4–7 already had titles, page ranges and a one-line
+14101 Chapter 2's modules 4–7 already had titles, page ranges and a one-line
 objective in `course.json` (from the earlier chapter-structuring work), so this
 session went straight from that skeleton into Stage 2 without an explicit "is
 this the right cut?" pass. It happened to hold — the maintenance-sequence
@@ -507,7 +507,7 @@ one course by hand with Claude's help" and "we have a way to do this."
   `ew<code>.*`.
 - Generator scripts course-parameterised 2026-08-31 (`-Course`, via
   `generator/_paths.ps1`; section map in `Source Deck/sections.json`). Still
-  coupled (deferred): the standalone deck runner's three "1400" strings and the
+  coupled (deferred): the standalone deck runner's three "14101" strings and the
   `emerson-workbench.css` copyright-year token. Tracked in [[Engine]] "Known
   not-yet-decoupled".
 
@@ -522,7 +522,7 @@ Mirror into [[Open Questions]] once reviewed.
 - **Generator future** — retire it from authored chapters (recommended) versus
   invest in a merge-aware / patch-overlay rebuild. (Parameterisation done; this
   is the deeper question of the one-shot rebuild model. The `PROTECTED.txt`
-  guard now covers 1400 Chapters 1–2.)
+  guard now covers 14101 Chapters 1–2.)
 - **Stage 1 scaffolding** — does the teaching-arc cut get a proposing script, or
   stay fully manual.
 - **Bench Notes / Bench Book** — this pipeline covers the *presentation*
@@ -639,6 +639,6 @@ Mirror into [[Open Questions]] once reviewed.
 
 ## Related
 
-[[Roadmap]] · [[Open Questions]] · [[teaching-philosophy]] · [[1400 Presentation]] ·
+[[Roadmap]] · [[Open Questions]] · [[teaching-philosophy]] · [[14101 Presentation]] ·
 [[Source Library]] · `Presentation/build/README.md` ·
 `Presentation/course/README.md` · `Presentation/build/css/TEMPLATES.md`

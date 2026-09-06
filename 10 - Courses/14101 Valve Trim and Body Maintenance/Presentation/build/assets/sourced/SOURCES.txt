@@ -1,0 +1,181 @@
+﻿Figures lifted from the Source Library for use in the 14101 course slides.
+Emerson first-party publications, reused in Emerson Educational Services training.
+
+cvh6-fig1-3-globe-valve-components.png
+  Control Valve Handbook, Sixth Edition (D101881X012), Figure 1.3
+  "Sliding-Stem Control Valve" - exploded major-components view, callouts 1-11.
+  Cropped from page 18 (400 dpi render): the diagram only - callout circles
+  1-11, the exploded trim stack, and the full body incl. BOTH end flanges.
+  The figure's own text-label column is whited out (the slide's .tmpl-list
+  carries the labels). Page rect x 315-858, y 1222-2210 of the 2200x3400
+  render; 34 px white pad. Final 601x1056 (AR 0.569). Used on slide 27.
+  (Re-cropped 2026-08-29: earlier crops clipped the body's right flange.)
+
+plug-unbalanced-head.png / plug-balanced-head.png
+  Deck images image44 / image45 (Fisher plug photos) cropped to the plug head so
+  the distinguishing feature reads at slide size: solid face (unbalanced) vs drilled
+  balance passages (balanced). Used on slide 30. 2026-08-30.
+
+flow-curve.png / flow-cages.png
+  Deck image64 (Fisher 'Flow Characteristics' figure) split into its two halves: the
+  Cv-vs-travel curve chart (slide 39) and the three characterised cages (slide 40).
+  2026-08-30.
+
+cage-plug-assembly.png
+  Deck image60 (Fisher balanced plug in a cage) cropped to drop the bare stem so
+  the plug + cage fill the frame. Used on slide 37. 2026-08-30.
+
+cage-quick-opening.png / cage-linear.png / cage-equal-pct.png
+  The three cages from deck image64, split into one image each (labels dropped).
+  Shown in a row beneath the table on slide 40. 2026-08-30.
+(slide 39 flow-curve.png is superseded by an inline SVG redraw; file retained.)
+
+piston-seal-spring-loaded-detail.png / piston-seal-location.png
+  Deck image76 (Fisher spring-loaded-PTFE piston-seal figure) split into its two
+  panels: the labelled seal stack-up (retainer / metal backup / PTFE ring / spring)
+  and the sectional showing where the piston seal rides on the balanced plug OD,
+  against the cage bore. White margins trimmed (6 px pad). Shown as the two figure
+  cells on slide 47. 2026-08-31.
+
+disassembly-match-mark.png
+  Deck image88 (gloved hand paint-pen match-marking the actuator-bonnet and
+  bonnet-body joints) cropped from 403x661 to 403x425 (dropped 50 px of actuator
+  at top, 186 px of valve base at bottom) so it does not tower over the other two
+  photos in the slide 56 figure row. The deck's burned-in blue arrows are kept.
+  2026-08-31.
+
+seal-two-piece-cut.png / seal-spring-loaded-clip.png
+  Deck image98 (side-cutters removing a two-piece PTFE seal) and image102
+  (screwdriver working a spring-loaded PTFE seal's spiral clip) cropped top and
+  bottom to landscape (AR ~1.15) so all three photos in the slide 58 figure row
+  share an aspect ratio with image96 (graphite ring in a vise) and their
+  captions align above the footer. 2026-08-31.
+
+lap-setup-bonnet-on.png / lap-motion-handle.png
+  Deck image109 (valve reassembled for lapping, with the compound tub) and
+  image104 (hand turning a stem handle to lap) cropped from tall portrait to
+  ~square (AR 1.00 / 0.88) for the slide 64 and 65 figure rows. 2026-08-31.
+
+packing-set-spring-loaded.png / packing-set-jam-ptfe.png
+  Deck photos image119 (spring-loaded PTFE on a stem, numbered) and image121 (jam
+  PTFE on a stem, numbered) cropped to drop the bare stem and plug, for the
+  packing visual-aid slide (module 6, slide 71). Burned-in part numbers kept.
+  2026-08-31.
+
+gasket-flat-sheet.png / gasket-metal-shim.png / gasket-spiral-wound.png
+  Deck photos image138 / image140 / image141 (the three easy-e gasket types as
+  rings) cropped to a matching wide-ellipse framing (AR ~2.2) for the gasket
+  visual-aid slide (module 7, slide 85). 2026-08-31.
+
+lap-line-on-plug.png
+  Deck image110 cropped to the plug and its arrowed seating band. Slide 62
+  first drew the lap line as a hand-drawn cutaway with a flat "V" - wrong
+  geometry: the lap line is a circumferential ring around the plug's conical
+  seating chamfer, and an axial section of a ring is not a V. This photo of the
+  real part replaces that cutaway. The deck's burned-in blue arrow is kept.
+  2026-08-31.
+
+fail-mode-spring-schematics.png
+  14101 source deck slide 89 (embedded OLE object, image153.png, 3000x2469 render).
+  The four spring-and-body schematics only - direct-acting actuator over a PDTC
+  then a PDTO valve, reverse-acting actuator over a PDTC then a PDTO valve, each
+  captioned "Spring Opens/Closes" and "Fail-Open/-Closed". Cropped from the top
+  of image153 (page rect x 40-2960, y 20-1710); the figure's own selection
+  matrix beneath the schematics is dropped - slide 89 carries that as the
+  .tmpl-table. Final 2920x1690 (AR 1.73). Used on slide 89 as the .has-lead
+  figure row beneath the matrix table. 2026-09-01 (ch3-m1 Stage 3 rework).
+
+globe-valve-forces-cutaway.png
+  Fisher figure W0451-1, "Control Valve Force Requirements / Major Sources",
+  from D750020 "Actuator Sizing for Sliding-Stem Control Valves" (Fisher
+  Educational Services, 11x17 booklet), body page 5. A rendered section through
+  a cage-guided balanced-plug globe valve carrying Fisher's own force callouts:
+  PACKING FRICTION (force C), PISTON RING FRICTION (force D), PLUG UNBALANCE
+  STATIC (SHUTOFF) (force A), SEAT LOAD (force B) - the same A-D breakdown as the
+  CVH 5.11.1 table on slide 91. Rendered from the scan at 450 dpi (PDF page 17,
+  the figure is the upper-right quadrant of the 2-up sheet); cropped to the
+  figure (rect x 4230-6370, y 700-2320 of the 7650x4950 render); two-step
+  HQ-bicubic downscale + white-point lift (levels 165/220) to clear the print
+  screen-tint background; final 1400x1059 (AR 1.32). Replaces an earlier crop of
+  deck line-art image154 (512x512) that could not be force-labelled with
+  confidence. Used on slide 91 as the .has-lead figure beneath the table.
+  Re-sourced 2026-09-02 (ch3-m1 Stage 3 image rework); first added 2026-09-01.
+
+657-spring-under-casing.png
+  Deck image151 (a first-party Fisher 657 direct-acting spring-and-diaphragm actuator
+  cutaway render, the same art used on slides 88 and 94) cropped to the top 575x430 of
+  575x975: the upper and lower diaphragm casings and the compressed actuator spring, so
+  the spring load path into the upper casing reads. Used on slide 95 (ch3-m2 caution card:
+  relieve the spring before opening the diaphragm casing). 2026-09-04 (ch3-m2 Stage 3 pass).
+
+benchset-measure-travel.png
+  Deck image161 (bench-set travel measurement close-up, with the deck's burned-in blue
+  "Measure Travel" arrows) cropped 637x673 -> 525x673, 56 px off each side (AR 0.780).
+  Shows the actuator stem with the lower/upper bench-set marks and a scale. Burned-in deck
+  arrows kept (house convention). Used on slide 98 as the step-2 cell of the consolidated
+  "Bench Set - Off the Valve" figure row (paired with image159, AR 0.673); originally
+  cropped for the slide 99 row, which was folded into slide 98 in the 2026-09-04 review.
+  2026-09-04 (ch3-m2 Stage 3 pass).
+
+667-spring-stem-connector.png
+  Deck image174 (the same first-party Fisher 667 reverse-acting spring-and-diaphragm
+  actuator cutaway render used on slide 109, 495x901) cropped to the bottom 551x495
+  (rows 350-901): the compressed actuator spring bearing down through the yoke onto the
+  stem connector (hex nut, bracket, OPEN travel-direction plate). Cross-checked against
+  Fisher 667 IM (D100310X012) Figs 7-10 - key 18 (spring), 73 (yoke), 31 (stem connector)
+  sit in exactly this lower band. Used on slide 110 (ch3-m4 caution card: release the
+  spring before you loosen the stem connector). 2026-09-04 (ch3-m4 Stage 3 pass).
+
+657-hoist-onto-bonnet.png
+  Deck image163 (first-party studio photo: a gloved hand carrying a 657 actuator by
+  the yoke, lowering it onto the valve bonnet) cropped 481x856 -> 481x418 (28 px off
+  the top, 410 px off the bottom - dropped the long lower yoke / stem so the casing,
+  hand and bonnet fill the frame). AR 1.151, to match image162's AR 1.316 for an even
+  two-cell figure row on slide 101 (657 mounting sequence: hoist on / lock the yoke).
+  Used on slide 101. 2026-09-04 (ch3-m3 Stage 3 pass).
+
+GENERATED ART (house-style redraws, not lifted figures):
+slide 96 nameplate (inline SVG, in 1400-096.html)
+  A crisp inline-SVG reproduction of deck image157 - Fisher's own flat vector-style
+  "ACTUATOR / Fisher Controls" nameplate graphic - with its exact field layout (SERIAL NO /
+  SIZE / TRAVEL on the left, TYPE / BENCH SET / PRESS UNITS on the right, OPER RANGE across
+  the bottom) and the deck slide's own example values baked in (TYPE 657, SIZE 30, BENCH
+  SET 3-11, PRESS UNITS psig, TRAVEL 3/4 in). Replaces image157 + seven floating PowerPoint
+  value boxes. 2026-09-04 review: values checked against Fisher 657 IM Table 1
+  (Specifications) - TYPE/SIZE/TRAVEL/PRESS UNITS valid; OPER RANGE changed from the deck's
+  0-18 to 3-15 psig (a standard operating range). Marked explicitly as an EXAMPLE nameplate
+  (SVG "EXAMPLE" tag + note) - the teaching point is which fields to read, not the numbers.
+  2026-09-04 (ch3-m2 Stage 3 pass).
+slide 97 bench-set graph (inline SVG, in 1400-097.html)
+  House-style redraw of the direct-acting bench-set line (travel vs diaphragm pressure),
+  after Fisher 657/667 Instruction Manual Fig. 5 (direct-acting panel) with CVH 6th ed.
+  Fig. 8.10 as backup, per Component Index ch3-cmp-bench-set-graph (slide-97 variant).
+  Same geometry as the slide 92 SVG; friction-free / off-the-valve framing, first-movement
+  point marked, 3-11 psig band. Replaces the ~110 KB deck auto-trace SVG. 2026-09-04.
+slide 111 nameplate (inline SVG, in 1400-111.html)
+  Same house-style inline-SVG nameplate as slide 96, re-populated with the 667's own
+  example values (TYPE 667, SIZE 30, BENCH SET 7-15, PRESS UNITS psig, TRAVEL 3/4 in -
+  matches Fisher 667 IM Table 1 for size 30). OPER RANGE set to 3-18 psig: the same 3 psig
+  floor as slide 96's 657 example, with headroom above the 15 psig upper bench set
+  proportioned to slide 96's headroom above its 11 psig upper bench set - illustrative,
+  not read off a specific nameplate photo (flagged to Franz, same caveat as slide 96).
+  Marked EXAMPLE. 2026-09-04 (ch3-m4 Stage 3 pass).
+slide 112 bench-set graph (inline SVG, in 1400-112.html)
+  House-style redraw of the reverse-acting bench-set line, after Fisher 657/667
+  Instruction Manual Fig. 5 (reverse-acting panel) with CVH 6th ed. Fig. 8.10 as backup,
+  per Component Index ch3-cmp-bench-set-graph (slide-112 variant). Same geometry as
+  slides 92 and 97 (0%-top/100%-bottom travel axis, diagonal "off the valve" label);
+  only the pressure values change, to the slide-111 nameplate's 7-15 psig bench set.
+  Replaces the ~90 KB deck auto-trace SVG, which also duplicated slide 109's mechanism
+  content on the same slide (folded out as part of this pass - see 1400-109.html and
+  1400-112.html comments). 2026-09-04.
+
+cvh6-fig1-6-bonnet-packing-box.png
+  Control Valve Handbook, Sixth Edition (D101881X012), Figure 1.6 "Bonnet Assembly"
+  - a rendered cutaway of a bonnet showing the stem, the packing, the packing box
+  (the bored recess), and the bonnet, in correct proportion, with the Handbook's
+  own callouts 1-4. Cropped from page 19 (500 dpi render), page rect approx
+  x 404-960, y 1846-2442; the stray label column ("2. Packing / 3. Packing Box /
+  4. Valve Stem") whited out top-right. Final 556x596 (AR 0.933). Used on slide 51
+  with the is-sourced diagram variant (as slide 27). Replaces an earlier
+  hand-drawn SVG whose bonnet-wall proportions were wrong. 2026-08-31.

@@ -10,7 +10,7 @@
 #  course-data.js, _generator/PROTECTED.txt, READMEs) are NEVER touched.
 #
 #  Usage:
-#    .\build-course.ps1 -Course "1400 Valve Trim and Body Maintenance"
+#    .\build-course.ps1 -Course "14101 Valve Trim and Body Maintenance"
 #    .\build-course.ps1 -Course "<name>" -WhatIf     # preview, change nothing
 #    .\build-course.ps1 -Course "<name>" -Force      # overwrite hand-edited targets
 #

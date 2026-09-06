@@ -15,7 +15,7 @@ folder layout each course follows.
 
 | Course | Stage | Status | Home |
 | --- | --- | --- | --- |
-| 1400 Valve Trim and Body Maintenance | Stage 1 pilot | Migration in progress | [[1400 — Course Home]] |
+| 14101 Valve Trim and Body Maintenance | Stage 1 pilot | Migration in progress | [[14101 — Course Home]] |
 
 ## Adding a course
 

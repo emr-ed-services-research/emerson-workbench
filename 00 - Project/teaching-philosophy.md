@@ -186,7 +186,7 @@ Course structure follows the **actual teaching arc**, not the source deck's
 chapter order. Modules are cut from what is taught in what sequence, and
 resequenced or split as needed.
 
-Example — the **1400** course opens by:
+Example — the **14101** course opens by:
 
 1. **Scoping the work** with a P&ID — staying between the flanges; the valve and
    its immediate connections, not the wider loop.

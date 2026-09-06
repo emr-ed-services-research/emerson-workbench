@@ -9,10 +9,10 @@ updated: 2026-08-30
 
 # Emerson Workbench — Engine
 
-The shared runtime for every Workbench course. Extracted from course 1400 on
+The shared runtime for every Workbench course. Extracted from course 14101 on
 2026-08-30 (see [[Course Porting Pipeline]] step 2). Before this, the design
 system, shell, deck runner and generator all lived inside
-`10 - Courses/1400 …/Presentation/`, so a second course would have had to copy
+`10 - Courses/14101 …/Presentation/`, so a second course would have had to copy
 them — an immediate fork. Now they live here once and are assembled into each
 course.
 
@@ -63,7 +63,7 @@ resolves identically in the engine and in an assembled course. No path rewriting
 
 ```powershell
 cd "40 - Engine"
-.\build-course.ps1 -Course "1400 Valve Trim and Body Maintenance"
+.\build-course.ps1 -Course "14101 Valve Trim and Body Maintenance"
 .\build-course.ps1 -Course "<name>" -WhatIf     # preview only
 .\build-course.ps1 -Course "<name>" -Force      # overwrite hand-edited targets
 ```
@@ -82,7 +82,7 @@ course.**
 ## Checking a course
 
 ```powershell
-.\verify.ps1 -Course "1400 Valve Trim and Body Maintenance"
+.\verify.ps1 -Course "14101 Valve Trim and Body Maintenance"
 ```
 
 Runs: `course.json` JSON validity; every `keyConcepts` page ref is inside its
@@ -107,7 +107,7 @@ A course's `course/course.json` carries everything specific:
 
 ## Known not-yet-decoupled
 
-- **`build/index.html`** (the standalone deck runner) still shows "1400 …" in
+- **`build/index.html`** (the standalone deck runner) still shows "14101 …" in
   three places. Lower priority — it is the standalone viewer, not the shell.
 - **`--copyright-line`** in `emerson-workbench.css` has the year baked in.
 
@@ -119,5 +119,5 @@ through `generator/_paths.ps1`. Section ranges live per-course in
 ## Related
 
 [[Course Porting Pipeline]] · `Presentation/build/css/TEMPLATES.md` ·
-`10 - Courses/1400 …/Presentation/build/README.md` ·
-`10 - Courses/1400 …/Presentation/course/README.md`
+`10 - Courses/14101 …/Presentation/build/README.md` ·
+`10 - Courses/14101 …/Presentation/course/README.md`

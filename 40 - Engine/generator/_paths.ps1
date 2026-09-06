@@ -4,7 +4,7 @@
 #  Dot-source it, then call Resolve-CoursePaths:
 #
 #     . "$PSScriptRoot\_paths.ps1"
-#     $P = Resolve-CoursePaths -Course "1400 Valve Trim and Body Maintenance"
+#     $P = Resolve-CoursePaths -Course "14101 Valve Trim and Body Maintenance"
 #
 #  This is the single place that knows the vault layout. extract-media.ps1,
 #  generate.ps1, compare.ps1 and export-orig.ps1 all get their paths here so a

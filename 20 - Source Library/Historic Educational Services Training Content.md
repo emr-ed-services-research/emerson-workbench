@@ -59,10 +59,10 @@ this archive.
 
 ## Used by
 
-- **1400 Chapter 3** — three documents reviewed in full against current sources
+- **14101 Chapter 3** — three documents reviewed in full against current sources
   (page by page, 2026-09-02) and found to have **no conflicts**; they explicitly
   defer to the instruction manual for specifics. Now `archive-corroborated` and
-  cited via [[Component Index — 1400 ch3]]:
+  cited via [[Component Index — 14101 ch3]]:
   - **D750004** *Pneumatic Spring-and-Diaphragm Actuators* — teaching diagrams
     for direct/reverse acting, PDTC/PDTO fail modes, force decomposition, static
     balance, bench set (pp 5, 7, 13, 15, 17, 19).

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14101 &middot; Slide 089 &mdash; Selecting an Action</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- Slide 89 | ppt slides/slide89.xml | layout: figure row with lead table | family: .slide--tmpl-figrow has-lead -->
+  <!-- ch3-m1 four-part pass; ch3-m1 Stage 3 rework 2026-09-01.
+       Part 1/3: the original was an OLE-fallback raster (image153, 3000x2469) - four spring
+       schematics ABOVE a selection matrix, all with baked-in text.
+       First pass rebuilt only the matrix as HTML (Template 3) and dropped the schematics.
+       Rework: human review asked for the visual aid back "if available in the source docs" - it
+       is. The four schematics are lifted from image153 (assets/sourced/fail-mode-spring-
+       schematics.png, matrix cropped off) and shown as the .has-lead figure row beneath the
+       clean HTML matrix. Table = the ordering task ("I need fail-X, build this"); schematics =
+       the mechanism (which way the spring drives the stem, and the resulting plug position).
+       Part 2: matrix verified from first principles against the CVH glossary definitions of
+       direct-/reverse-acting and PDTC/PDTO, consistent with ch3-m2/m4 key concepts (657 fails
+       up / retracts, 667 fails down / extends), and it matches the source figure's own matrix
+       and its four schematic captions (direct+PDTC = fail-open, direct+PDTO = fail-closed,
+       reverse+PDTC = fail-closed, reverse+PDTO = fail-open).
+       data-ref: the same selection rule recurs for piston actuators (ch4-m1) and rotary
+       (ch9-m4) when those chapters are built.
+       ch3-m1 Stage 3 re-pass 2026-09-03: review flag "visual aid would be helpful if in the
+       source docs" is RESOLVED - the four spring-and-body schematics (from the deck's own OLE
+       figure, matrix cropped off) are the .has-lead figure row beneath the HTML matrix. Matrix
+       re-verified from first principles: loss of air -> direct-acting stem retracts (up),
+       reverse-acting stem extends (down); PDTC closes on stem-down, PDTO opens on stem-down ->
+       DA+PDTC fail-open, DA+PDTO fail-closed, RA+PDTC fail-closed, RA+PDTO fail-open. All four
+       rows correct. Slide unchanged this pass. Confirm the stack renders clean in the 16:9
+       shell (table height differs from 4:3) on the console render. -->
+  <article class="slide slide--tmpl-figrow has-lead" data-slide="89" data-deck="1400" data-review="ch3-four-part">
+    <div class="review-ribbon">ch3-m1 rework: matrix table + source spring schematics</div>
+    <h1 class="slide-title">Selecting an Action</h1>
+    <div class="tmpl-stack">
+    <div class="tmpl-lead">
+      <table class="tmpl-table" data-ref="fail-mode-actuator-body" style="font-size:1.7cqw; table-layout:fixed">
+        <colgroup><col style="width:34%"><col style="width:30%"><col style="width:36%"></colgroup>
+        <thead><tr><th>Desired fail mode</th><th>Valve body</th><th>Actuator action</th></tr></thead>
+        <tbody>
+          <tr><td>Fail closed</td><td>PDTC</td><td>Reverse-acting</td></tr>
+          <tr><td>Fail closed</td><td>PDTO</td><td>Direct-acting</td></tr>
+          <tr><td>Fail open</td><td>PDTC</td><td>Direct-acting</td></tr>
+          <tr><td>Fail open</td><td>PDTO</td><td>Reverse-acting</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <img src="../assets/sourced/fail-mode-spring-schematics.png" alt="Four schematics. Direct-acting actuator (spring below a fixed reference, driving the stem up on loss of air): over a PDTC valve the plug lifts off the seat, fail-open; over a PDTO valve the plug moves onto the seat, fail-closed. Reverse-acting actuator (spring above, driving the stem down on loss of air): over a PDTC valve the plug seats, fail-closed; over a PDTO valve the plug drops off the seat, fail-open.">
+        <figcaption><b>Spring-drive direction &times; body orientation</b>&rarr; the assembly's fail mode</figcaption>
+      </figure>
+    </div>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">89</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+
+</main>
+</body>
+</html>

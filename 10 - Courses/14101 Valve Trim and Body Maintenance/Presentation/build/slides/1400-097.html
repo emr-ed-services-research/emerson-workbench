@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14101 &middot; Slide 097 &mdash; Bench Set &mdash; Direct-Acting, Off the Valve</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- Slide 97 | ppt slides/slide97.xml | family: .slide--tmpl-graph -->
+  <!-- ch3-m2. keyConcept 5: bench set is checked with the actuator off the
+       valve so there is no packing friction; the lower bench-set pressure
+       is where the stem first moves, the upper is full rated travel.
+       Component: ch3-cmp-bench-set-graph. buildsOn ch3-m1 (slide 92 — the
+       generic definition is not re-taught here).
+
+       LABEL-CONVENTION REBUILD 2026-09-05 (Style Guide §5, Franz's §5.12
+       scope decision — 097 added to scope from the Component Index's
+       used-by:[92,97,102,112], having been missed in §5.12's original
+       enumeration). Was a .slide--tmpl-figrow with a rotated diagonal
+       label along the line ("off the valve — no packing friction") plus
+       floating "stem first moves" / "full rated travel" state labels.
+       §5.1 rules out text that follows a data line; §5.5 folds
+       axis-position callouts into the ticks or the key. Moved to
+       .slide--tmpl-graph (Template 7): the first-movement and full-travel
+       points are now numbered features ①②, keyed on the right; the
+       off-the-valve framing is the takeaway. Line geometry unchanged
+       (3→11 psig, tied to the slide-96 nameplate example).
+
+       SOURCE (§5.8): NOT a direct-use of CVH Fig 8.10 or Fisher IM Fig 5 —
+       Fig 8.10 is the three-line deadband treatment (un-croppable to this
+       single friction-free line); Fig 5's axes are transposed from the
+       course convention. §5.8 reasons #1 and #2 → bounded redraw. -->
+  <article class="slide slide--tmpl-graph" data-slide="97" data-deck="1400" data-review="ch3-label-rebuild">
+    <div class="review-ribbon">ch3-m2: bench-set graph &mdash; rotated label &rarr; §5.3 key, endpoints ①② (Template 7)</div>
+    <h1 class="slide-title">Bench Set &mdash; Direct-Acting, Off the Valve</h1>
+    <figure class="tmpl-plot">
+      <svg viewBox="0 0 640 366" width="640" height="366" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Graph of actuator travel against actuator diaphragm pressure for a direct-acting 657 off the valve. A single straight blue line runs from 0 percent travel at the lower bench-set pressure of 3 psig, where the stem first moves, to 100 percent rated travel at the upper bench-set pressure of 11 psig. The yellow band between the two pressures is the bench-set range." font-family="Arial, Helvetica, sans-serif">
+        <rect x="173" y="30" width="285" height="256" fill="var(--emerson-yellow)" opacity="0.18"/>
+        <g stroke="var(--emerson-grey)" stroke-width="1.4" stroke-dasharray="4 4">
+          <path d="M173 30 V286"/><path d="M458 30 V286"/>
+        </g>
+        <g stroke="var(--emerson-charcoal)" stroke-width="2" fill="none" stroke-linecap="round">
+          <path d="M66 22 V290"/>
+          <path d="M66 290 H612"/>
+          <path d="M612 290 l-9 -3.5 M612 290 l-9 3.5"/>
+        </g>
+        <g stroke="var(--emerson-charcoal)" stroke-width="1.4">
+          <path d="M66 290 v5 M173 290 v5 M280 290 v5 M386 290 v5 M493 290 v5 M600 290 v5"/>
+        </g>
+        <g fill="var(--emerson-charcoal)" font-size="12" text-anchor="middle">
+          <text x="66" y="308">0</text><text x="173" y="308">3</text><text x="280" y="308">6</text>
+          <text x="386" y="308">9</text><text x="493" y="308">12</text><text x="600" y="308">15</text>
+        </g>
+        <g fill="var(--emerson-blue)" font-size="12" font-weight="700" text-anchor="middle">
+          <text x="173" y="328">lower bench set</text>
+          <text x="458" y="328">upper bench set</text>
+        </g>
+        <g fill="var(--emerson-charcoal)" font-size="12" text-anchor="end">
+          <text x="58" y="34">0%</text><text x="58" y="290">100%</text>
+        </g>
+        <text x="339" y="356" fill="var(--emerson-charcoal)" font-size="13" font-weight="700" text-anchor="middle">Actuator diaphragm pressure (psig)</text>
+        <text x="18" y="159" fill="var(--emerson-charcoal)" font-size="13" font-weight="700" text-anchor="middle" transform="rotate(-90 18 159)">Actuator travel</text>
+        <path d="M173 30 L458 286" fill="none" stroke="var(--emerson-blue)" stroke-width="3.6"/>
+        <g font-size="10" font-weight="700" text-anchor="middle">
+          <circle cx="173" cy="30" r="9" fill="var(--emerson-blue)" stroke="#ffffff" stroke-width="2.6"/>
+          <text x="173" y="30" fill="#ffffff" dominant-baseline="central">1</text>
+          <circle cx="458" cy="286" r="9" fill="var(--emerson-blue)" stroke="#ffffff" stroke-width="2.6"/>
+          <text x="458" y="286" fill="#ffffff" dominant-baseline="central">2</text>
+        </g>
+      </svg>
+    </figure>
+    <ul class="tmpl-key">
+      <li><span class="swatch" style="--swatch-c:var(--emerson-blue)"></span>Bench-set line</li>
+      <li><span class="swatch is-band" style="--swatch-c:var(--emerson-yellow)"></span>Bench-set range</li>
+      <li><span class="num">1</span>Stem first moves</li>
+      <li><span class="num">2</span>Full rated travel</li>
+    </ul>
+    <p class="tmpl-takeaway">Set bench set with the actuator off the valve, where no packing friction is acting: the stem should first move exactly at the nameplate lower bench-set pressure.</p>
+    <p class="tmpl-source">Redrawn after Control Valve Handbook 6th ed. Fig.&nbsp;8.10 and Fisher 657/667 Instruction Manual Fig.&nbsp;5 (direct-acting panel) &mdash; the friction-free bench-set line only; the deadband curves are ch3-m6 content (Style Guide &sect;5.8 reasons&nbsp;1&ndash;2). Component Index: ch3-cmp-bench-set-graph.</p>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">97</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

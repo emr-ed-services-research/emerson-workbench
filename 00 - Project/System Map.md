@@ -42,9 +42,9 @@ below it.
 | Layer | What it is | Status (2026-09-01) |
 | --- | --- | --- |
 | **1 · Workbench (Home)** | Top-level landing for every Educational Services course; departmental branding and ownership. | **Not started.** |
-| **2 · Workshop (Course Shell)** | The reusable course layout: nav, day/chapter/module hierarchy, the four slide templates, context pane, presenter mode. | **Built and structurally frozen.** Proven against all seven modules of 1400 Chapter 2. Remaining work is content, not structure. |
+| **2 · Workshop (Course Shell)** | The reusable course layout: nav, day/chapter/module hierarchy, the four slide templates, context pane, presenter mode. | **Built and structurally frozen.** Proven against all seven modules of 14101 Chapter 2. Remaining work is content, not structure. |
 | **3 · Cartridge** | The content package for one course — the Pipeline's output — that plugs into a Workshop. | **Not yet split off.** Cartridge content and Workshop shell are still edited together in live nav. Separation deferred until after the Console. |
-| **4 · Pipeline Console** | The tool that runs a legacy PowerPoint course through the five pipeline stages and produces a Cartridge. | **Active build — all current work is here.** Separate Electron app, sibling of this vault. Build phases 0–6 complete; running on real 1400 content. |
+| **4 · Pipeline Console** | The tool that runs a legacy PowerPoint course through the five pipeline stages and produces a Cartridge. | **Active build — all current work is here.** Separate Electron app, sibling of this vault. Build phases 0–6 complete; running on real 14101 content. |
 
 The Console **produces** a Cartridge; the Cartridge **loads into** a Workshop;
 the Workshop **lives in** the Home.
@@ -101,9 +101,9 @@ the memories, pipeline docs, and Source Library are all in context.
 
 ---
 
-## 4. Where 1400 stands right now
+## 4. Where 14101 stands right now
 
-**Course:** 1400 Valve Trim and Body Maintenance (3 days, 16 chapters, ~38
+**Course:** 14101 Valve Trim and Body Maintenance (3 days, 16 chapters, ~38
 outline modules).
 
 | Chapter | Stage 0 | Stage 1 | Stage 2 | Stage 3 | Stage 4 |

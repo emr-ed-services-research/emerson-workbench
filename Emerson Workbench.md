@@ -31,7 +31,7 @@ artifacts instructors and students actually use.
 
 ## Active work
 
-- **Stage 1 pilot:** [[1400 — Course Home|1400 Valve Trim and Body Maintenance]]
+- **Stage 1 pilot:** [[14101 — Course Home|14101 Valve Trim and Body Maintenance]]
   — convert the existing deck into an HTML presentation artifact, same look and feel.
 
 ## The two course artifacts

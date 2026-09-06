@@ -3,10 +3,10 @@
    Course-agnostic base stylesheet for Emerson Workbench HTML presentations.
 
    Encodes the design system extracted from
-   "1400 Valve Trim & Body Maintenance.pptx"
+   "14101 Valve Trim & Body Maintenance.pptx"
    (theme "Course book Template Mar 2019", colour scheme "EMERSON").
-   See  10 - Courses/1400 Valve Trim and Body Maintenance/Presentation/
-        1400 Presentation.md  section 4.
+   See  10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/
+        14101 Presentation.md  section 4.
 
    Every slide is an <article class="slide slide--{family}"> whose intrinsic
    size is 1056 x 816 px (11 x 8.5 in at 96 dpi, the deck's real page size).
@@ -829,11 +829,11 @@
 }
 .slide--tmpl-diagram .tmpl-note { right: 47cqw; }
 
-/* .tmpl-row + .tmpl-note collision fix (Franz review, 1400 ch3-m3 rework 2026-09-04).
+/* .tmpl-row + .tmpl-note collision fix (Franz review, 14101 ch3-m3 rework 2026-09-04).
    The rules above fix the row to a constant bottom:12cqh and the note to a
    constant bottom:6cqh, sized for a one-line note - a note that wraps to two
    or more lines grows upward past 12cqh and collides with the figcaptions
-   above it (hand-patched once already on 1400 slide 98 with an inline image
+   above it (hand-patched once already on 14101 slide 98 with an inline image
    max-height; that was a one-slide patch, not a template fix). Where a plain
    (non has-lead) figure row is followed by a .tmpl-note, lay the pair out as
    a flow column instead of two independently-positioned absolute boxes: the
@@ -858,7 +858,7 @@
   flex: none;
 }
 
-/* .tmpl-fig + .tmpl-note collision fix (Franz review, 1400 ch3-m4 rework
+/* .tmpl-fig + .tmpl-note collision fix (Franz review, 14101 ch3-m4 rework
    2026-09-04). Same root-cause CLASS as the .tmpl-row/.tmpl-note fix above,
    but the varying dimension is on the other side of the pair: .tmpl-fig is
    vertically centered at a constant top:54cqh via translateY(-50%) and sized
@@ -866,7 +866,7 @@
    pinned beneath it at a constant bottom:6cqh. A normal-proportioned figure
    never reaches that low, but a tall/narrow --fig-ar (a slim cutaway) grows
    the centered box tall enough that its bottom edge lands on the note text
-   (1400 slide 109, --fig-ar:0.549, previously pinned with an inline
+   (14101 slide 109, --fig-ar:0.549, previously pinned with an inline
    width:26cqw). Fix: where a .slide--tmpl-diagram carries a .tmpl-note,
    anchor the figure to the same top the .tmpl-list uses (17cqh) instead of
    centering it, and cap its width to whichever is smaller - the slide's own
@@ -1024,7 +1024,7 @@
    instead of its correct 81.4%/88.1% (bottom-right corner), landing on
    top of the caution figure. That is the exact "Emerson logo overlaps
    live content" defect from the original ch3-m4 crisis, reintroduced by
-   this fix and already propagated to the real production 1400 course
+   this fix and already propagated to the real production 14101 course
    before being caught. Fixed by moving all spacing off the container and
    onto the two grid children as margin instead — .slide-chrome was never
    actually position:absolute itself (only its children are; an earlier

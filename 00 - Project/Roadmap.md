@@ -18,7 +18,7 @@ from it, without changing the content or its look.
 
 | | |
 | --- | --- |
-| Pilot course | [[1400 — Course Home\|1400 Valve Trim and Body Maintenance]] |
+| Pilot course | [[14101 — Course Home\|14101 Valve Trim and Body Maintenance]] |
 | Input | Existing PowerPoint deck (100–300+ slides) |
 | Output | HTML presentation artifact, same look and feel as the deck |
 | Definition of done | Any instructor can open the Workbench class and present from it |
@@ -29,14 +29,14 @@ Scope guardrails:
 - No content rewrite. This is a transfer, not an edit.
 - Instructor/student guide unification is *not* in this stage.
 
-Working notes: [[1400 Presentation]].
+Working notes: [[14101 Presentation]].
 
 ## Stage 2 — Curriculum Migration + AI Implementation
 
 **Objective:** move the whole curriculum into the Markdown structure and change
 how editing works.
 
-**Started:** the 1400 course now has a learning-environment shell around the
+**Started:** the 14101 course now has a learning-environment shell around the
 converted content instead of a linear slide viewer. Navigation is organised
 around the **three teaching days** (Sliding Stem / Rotary / Positioners), with
 chapters and modules nested inside; welcome/safety/logistics is pulled into a
@@ -44,7 +44,7 @@ set-apart "Module 0". Each module has a right-hand context panel carrying the
 teaching text (objective + key concepts, the current one highlighting as you
 move through), and the slides themselves are visual-only. Proof: Day 1,
 Chapter 2, Modules 1–3. See
-`10 - Courses/1400 Valve Trim and Body Maintenance/Presentation/course/README.md`.
+`10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/course/README.md`.
 
 - Migrate all courses into the [[Vault Structure|standard structure]].
 - Establish **shared source content** as the single point of truth. A course
@@ -61,7 +61,7 @@ Depends on resolving: [[Open Questions#Rendering stack]],
 [[Open Questions#Source-change propagation]].
 
 **Near-term sequencing ([[System Architecture]], updated 2026-08-31):** the
-course shell ("Workshop") is structurally locked in. Course 1400 Chapter 2 is
+course shell ("Workshop") is structurally locked in. Course 14101 Chapter 2 is
 **complete** — all seven modules through Stage 2 and the Stage 3 four-part pass,
 followed by a coherence review of the pipeline docs. The next major phase is
 building the **Pipeline Console** (a UI for running course conversions), with
@@ -87,6 +87,6 @@ Depends on resolving: [[Open Questions#Stage 3 hardware]].
 
 [[System Map]] (`00 - Project/System Map.md` + a published infographic) is the
 maintained current-state snapshot — the four architectural layers, the
-five-stage pipeline and its control-loop, and where 1400 sits stage by stage.
+five-stage pipeline and its control-loop, and where 14101 sits stage by stage.
 It is a **living document**: keep it in sync whenever a layer starts, a build
 phase finishes, or a chapter moves through a stage.

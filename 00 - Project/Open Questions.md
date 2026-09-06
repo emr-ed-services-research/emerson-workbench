@@ -24,7 +24,7 @@ content?
 - Candidates to evaluate: static site generator, a slides framework
   (reveal.js / Marp), a custom build step, or an Obsidian publish/export path.
 
-**Decided (Stage 1 pilot, [[1400 Presentation]]):**
+**Decided (Stage 1 pilot, [[14101 Presentation]]):**
 - *Authoring model* — component extraction: per-slide semantic HTML against a
   shared `emerson-workbench.css` that encodes the deck's design system.
 - *Runner* — a dependency-free vanilla JS/CSS viewer (`build/index.html` +
@@ -32,7 +32,7 @@ content?
   slides already self-scale, and the slide files stay plain HTML so the runner
   is swappable later at no cost.
 
-All 418 slides of course 1400 are converted on this model.
+All 418 slides of course 14101 are converted on this model.
 
 **Still open:** whether the same per-slide fragment model carries into Stage 2
 Bench Notes / Bench Book generation from shared source content.
@@ -61,7 +61,7 @@ control integration?
 
 **Status:** open.
 
-## Chapter 1 module structure (course 1400)
+## Chapter 1 module structure (course 14101)
 
 **Question:** Chapter 1 ("Control Valve Specifications for Maintenance")
 currently has proper modules in `course.json` (Reading the P&ID; ASME
@@ -78,7 +78,7 @@ its lighter structure acceptable because it is a short specifications primer?
 **Decided (2026-08-31):** the three modules were consolidated into one —
 "Reading a Valve's Specifications" (slides 13, 14, 16, 19 + a two-part check).
 Franz's rule: no modules of only one or two slides. Commit `0ccc636`. See the
-`1400-module-boundaries` memory.
+`14101-module-boundaries` memory.
 
 **Status:** resolved.
 

@@ -1,12 +1,12 @@
 # ============================================================================
 #  verify.ps1  -  integrity checks for a Workbench course
 #
-#  Folds in the checks that were run by hand through the 1400 four-part pass:
+#  Folds in the checks that were run by hand through the 14101 four-part pass:
 #  JSON validity, key-concept page-ref integrity, slide-HTML tag balance,
 #  manifest parse + title drift, CSS brace balance, engine-lock drift, and the
 #  reference-data (data-ref) drift lint.
 #
-#  Usage:  .\verify.ps1 -Course "1400 Valve Trim and Body Maintenance"
+#  Usage:  .\verify.ps1 -Course "14101 Valve Trim and Body Maintenance"
 #
 #  Exit code 0 = all pass (warnings allowed), 1 = one or more FAIL.
 #  Step 4 (headless-Chrome render of every rebuilt slide) runs via

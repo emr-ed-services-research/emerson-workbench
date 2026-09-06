@@ -27,7 +27,7 @@ status: accepted as the trial result (Franz, 2026-09-06)
 **Trial run, topic-driven (no deck).** Built cold — from the named topic and
 the Source Library alone, with no existing course slides to read — as the
 test case for `00 - Project/Course Porting Pipeline.md` "Origination without
-a deck." Method mirrors `Component Index — 1400 ch3.md` exactly (same record
+a deck." Method mirrors `Component Index — 14101 ch3.md` exactly (same record
 shape, same precedence-bucket discipline, same standard: read a source in
 full before citing it) with one deliberate difference: the *scope* comes from
 the topic name, not from a chapter's existing page range.
@@ -111,7 +111,7 @@ source:
 delivery: definition — context-pane / opening concept, no figure needed
 used-by: []
 notes: >
-  NOT independently indexed in Component Index — 1400 ch3.md — the ch3 index
+  NOT independently indexed in Component Index — 14101 ch3.md — the ch3 index
   goes straight to the graph and the adjustment procedure without a
   standalone glossary-definition component. This is the clearest thing the
   cold build found that the deck-driven build didn't capture as its own
@@ -161,7 +161,7 @@ source:
 delivery: procedure text / formula — no figure required, or a small worked-example callout
 used-by: []
 notes: >
-  NOT its own component in Component Index — 1400 ch3.md. ch3-m3 keyConcept 4
+  NOT its own component in Component Index — 14101 ch3.md. ch3-m3 keyConcept 4
   ("on-valve travel re-check; friction shifts full travel", pages [102,104])
   covers the same underlying fact narratively and cites ch3-cmp-bench-set-graph,
   but the ch3 index has no record for this specific 5-step measurement
@@ -254,7 +254,7 @@ notes: >
 ## Comparison against the ch3 index
 
 Built cold as instructed — the source reading and component extraction above
-were done without opening `Component Index — 1400 ch3.md`. This section is
+were done without opening `Component Index — 14101 ch3.md`. This section is
 the after-the-fact comparison.
 
 **Converges cleanly on:**

@@ -24,7 +24,7 @@ Stage 3 was generating diagrams from scratch while good source material sat idle
 The response is a **teaching-component index** built only as far as a real
 request actually reaches — never a wholesale pre-index of a document:
 
-- [[Component Index — 1400 ch3]] — the discrete instructional components (a
+- [[Component Index — 14101 ch3]] — the discrete instructional components (a
   diagram, a labelled figure, a graph) that Chapter 3's concepts need, each with
   its source, a precedence bucket (`current` / `archive-corroborated` /
   `archive-only` / `legacy`), and a locator. Stage 2 tags each key concept
@@ -76,7 +76,7 @@ this graduates into the permanent pipeline docs.
   processes and the valves used at each point: **Oil & Gas**, **Power & Severe
   Service**, **Refining**, **Pulp & Paper**.
 - **[[Technical Publications]]** — instruction manuals for the exact hardware
-  taught in [[1400 — Course Home|1400]]:
+  taught in [[14101 — Course Home|14101]]:
   - *Sliding-stem actuators* — Fisher 667, 657, 585C
   - *Rotary actuators* — Fisher 1051/1052, 1061, 2052
   - *Globe valve bodies (easy-e)* — ES/EAS, ED, ET/EAT, EZ
@@ -94,9 +94,9 @@ this graduates into the permanent pipeline docs.
   **historical and unverified** — verify anything from it against a current
   source before use.
 
-## In the 1400 course environment
+## In the 14101 course environment
 
-The [[1400 — Course Home|1400]] course shell has a **📚 source-library shelf**
+The [[14101 — Course Home|14101]] course shell has a **📚 source-library shelf**
 in its header (`Presentation/course/`) — the handbook, the four sourcebooks and
 the sixteen instruction manuals open as a scrollable overlay over the slide,
 without leaving the course page. The historical archive is deliberately left off

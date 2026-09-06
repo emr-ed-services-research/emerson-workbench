@@ -2,7 +2,7 @@
 
 > Course-parameterised (2026-08-31). Every script takes `-Course "<folder name
 > under 10 - Courses>"` and resolves the deck, build path, slide prefix, deck
-> id and section map from it via `_paths.ps1`. No hardcoded `1400` or absolute
+> id and section map from it via `_paths.ps1`. No hardcoded `14101` or absolute
 > paths.
 >
 > Unlike the rest of the engine these scripts are **not** copied into a course
@@ -22,8 +22,8 @@ Two PowerShell scripts rebuild a course deck:
 
 ```powershell
 cd "40 - Engine\generator"
-.\extract-media.ps1 -Course "1400 Valve Trim and Body Maintenance"
-.\generate.ps1      -Course "1400 Valve Trim and Body Maintenance"
+.\extract-media.ps1 -Course "14101 Valve Trim and Body Maintenance"
+.\generate.ps1      -Course "14101 Valve Trim and Body Maintenance"
 ```
 
 `extract-media` first, then `generate`. Windows only (uses System.Drawing for

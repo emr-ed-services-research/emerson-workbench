@@ -68,7 +68,7 @@ and must be edited in the engine, not in the course. See [[Engine]].
 - **`type` values:** `home`, `moc`, `reference`, `course`, `module`, `source`,
   `template`.
 - **Naming:** course modules are prefixed with the course number, e.g.
-  `1400.02 Trim Removal`.
+  `14101.02 Trim Removal`.
 - **Templates:** create notes from `30 - Templates` via the Templates core
   plugin.
 - **Shared source content (Stage 2):** lives in the Source Library or a future

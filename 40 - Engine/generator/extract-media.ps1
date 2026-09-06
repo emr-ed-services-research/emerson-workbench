@@ -3,7 +3,7 @@
 #  assets/brand/                  - curated brand assets (logos, cover art)
 # Emits <tmp>/media-map.json : { 'image33.emf' : 'image33.png', ... }
 #
-# Usage:  .\extract-media.ps1 -Course "1400 Valve Trim and Body Maintenance"
+# Usage:  .\extract-media.ps1 -Course "14101 Valve Trim and Body Maintenance"
 param(
   [Parameter(Mandatory = $true)] [string] $Course,
   [string] $SourcePptx,

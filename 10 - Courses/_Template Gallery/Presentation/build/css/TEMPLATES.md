@@ -1,6 +1,6 @@
 # Reusable slide templates
 
-Seven templates for the 1400 course. The CSS lives in
+Seven templates for the 14101 course. The CSS lives in
 `emerson-workbench.css` (the hand-maintained design system); this file is the
 usage reference. Introduced with the Chapter 1 rebuild (2026-08-29) and reusable
 course-wide. Template 7 (`.slide--tmpl-graph`) was added 2026-09-05 for the
@@ -95,7 +95,7 @@ the labels live.
 - **`.tmpl-fig` is sized for an `<img>` child** (its CSS targets `.tmpl-fig >
   img`). For a redrawn **inline SVG** diagram, use a single-cell
   `.slide--tmpl-figrow` instead — `.tmpl-cell:only-child > svg` fills the cell —
-  and carry the labels and a source line inside the SVG (as on 1400 slides 51
+  and carry the labels and a source line inside the SVG (as on 14101 slides 51
   and 62).
 - `.tmpl-note` also works here (see Template 5), for one line of teaching
   emphasis below the figure/list pair.
@@ -104,7 +104,7 @@ the labels live.
 vertically centered and sized purely from its own `--fig-ar` and width, which
 is fine for a normal-proportioned figure but lets a tall/narrow one (a slim
 cutaway) grow its centered box down into a `.tmpl-note` pinned near the
-bottom of the slide (1400 slide 109, `--fig-ar:0.549`). Where a `.tmpl-note`
+bottom of the slide (14101 slide 109, `--fig-ar:0.549`). Where a `.tmpl-note`
 follows the figure, the CSS (`:has(> .tmpl-note)`) anchors `.tmpl-fig` to the
 same top the list uses instead of centering it, and caps its width to
 whichever is smaller — the template's own width ceiling for that variant, or
@@ -112,7 +112,7 @@ the width implied by a fixed height budget at the figure's `--fig-ar` — so
 the figure's reach is bounded regardless of how tall its aspect ratio would
 otherwise make it. **Do not also set an inline `width` on `.tmpl-fig` when it
 has a sibling `.tmpl-note`** — only `--fig-ar`; an inline width overrides the
-cap and reintroduces the collision. Fixed 2026-09-04 (1400 slide 109);
+cap and reintroduces the collision. Fixed 2026-09-04 (14101 slide 109);
 do not hand-patch a future tall-figure-plus-note collision with an inline
 `max-height` or width — this template rule already covers it.
 
@@ -175,7 +175,7 @@ With `.tmpl-aside` present, `.tmpl-wrap` narrows automatically to leave room.
 
 **Only use `.tmpl-compare` when the aside image genuinely earns its half of the
 slide.** A short table (≈5 rows) plus a small supporting image leaves the bottom
-of the slide empty and reads as sparse — this happened on 1400 slides 47, 57
+of the slide empty and reads as sparse — this happened on 14101 slides 47, 57
 and 72 and each moved off the template. If the table is the content, use plain
 `.slide--tmpl-table`; a short table there can be vertically centred and its
 font bumped with inline `style` on the `.tmpl-wrap` / `<table>` so it fills the
@@ -228,9 +228,9 @@ column, so the note's actual rendered height pushes the row up instead of
 sitting under a fixed offset — a note that wraps to two or three lines can
 never collide with the figcaptions above it. No markup change needed; this is
 automatic from the existing `<h1>` / `.tmpl-row` / `.tmpl-note` sibling
-structure. Fixed 2026-09-04 after the collision was hand-patched once on 1400
+structure. Fixed 2026-09-04 after the collision was hand-patched once on 14101
 slide 98 with a per-image inline `max-height` — do not re-reach for that
-per-slide patch; the template now holds generally (1400 slides 101, 103).
+per-slide patch; the template now holds generally (14101 slides 101, 103).
 
 **Match the cells' aspect ratios.** The cells are equal width and the images
 are `object-fit: contain`, so a portrait photo next to a landscape one renders
@@ -239,7 +239,7 @@ uneven. Before placing deck photos in a row, crop them to within ~±15% AR of
 each other (a top/bottom or left/right trim, saved to `assets/sourced/` with a
 `SOURCES.txt` line — this is part of the Stage 3 pass). Keep each `<figcaption>`
 tag to a **single line** so a slightly taller cell's caption still clears the
-`.slide-chrome` logo. Seen and fixed on 1400 slides 34, 56, 57, 58.
+`.slide-chrome` logo. Seen and fixed on 14101 slides 34, 56, 57, 58.
 
 ### `.slide--tmpl-figrow.has-lead`
 

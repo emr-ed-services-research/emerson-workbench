@@ -20,7 +20,7 @@ status: full draft — all ten sections written; §§5–6 proven in production;
 >   example, and the caution-icon fix. §5.10's follow-up (a decision-table
 >   application variant) is built.
 > - **§§1–4 and §§7–10** were written 2026-09-06 by lifting and correcting
->   what already exists (`1400 Presentation.md` §4, `emerson-workbench.css`,
+>   what already exists (`14101 Presentation.md` §4, `emerson-workbench.css`,
 >   `tokens.css`, `teaching-philosophy.md`, the `.tmpl-*` templates), with a
 >   full adversarial self-review each.
 > - **The two flagged open calls are resolved:** §3.3 — green and purple are
@@ -60,7 +60,7 @@ comment becomes a pointer.
 | Document | Owns | This guide's relationship |
 | --- | --- | --- |
 | `teaching-philosophy.md` | *why* — pedagogy, and the design principles that follow directly from it (visual-only slides, context pane carries the text, completeness-vs-volume, structure mirrors the teaching arc) | This guide cites it as its basis and does not restate or override it. Pedagogy decisions stay there. |
-| `1400 Presentation.md` §4 "Design system (read from the deck)" | a description of the legacy 1400 PowerPoint's theme (geometry, palette, type, chrome), extracted as a reproduction target for the CSS | **Superseded** as the forward standard. Its palette / typography / geometry / chrome are lifted into §§2–4 here, de-scoped from "the 1400 deck" to "the Workbench standard." §4 there stays as history. |
+| `14101 Presentation.md` §4 "Design system (read from the deck)" | a description of the legacy 14101 PowerPoint's theme (geometry, palette, type, chrome), extracted as a reproduction target for the CSS | **Superseded** as the forward standard. Its palette / typography / geometry / chrome are lifted into §§2–4 here, de-scoped from "the 14101 deck" to "the Workbench standard." §4 there stays as history. |
 | `tokens.css` | the EMERSON palette as machine values | Stays the single machine source. §3 here is the human spec and usage intent; it never redefines a token. |
 | `TEMPLATES.md`, `gallery.css` header comments | usage reference for specific CSS classes + accumulated collision fixes | Keep as usage references. Conventions they state move here; they gain "see Style Guide §X" pointers. |
 | `Glossary.md` | ~12 project nouns | §7 (terminology) is the house style for instructional writing and cross-references it. |
@@ -106,7 +106,7 @@ actually our decision is a defect to catch):
    from the doing-centered philosophy (slides visual-only, the context pane
    carries the text, completeness measured against source).
 2. **The EMERSON brand** — the colour scheme and type, as captured machine-
-   readably in `tokens.css` and originally extracted from the legacy 1400
+   readably in `tokens.css` and originally extracted from the legacy 14101
    PowerPoint theme ("Course book Template Mar 2019").
 3. **The field's own conventions** — the Control Valve Handbook and the Fisher
    instruction manuals — where a house choice needs grounding in how control-
@@ -134,7 +134,7 @@ template change — because the templates and the callout manifest are
 
 ## 2. Typography & visual hierarchy
 
-Lifted and de-scoped from `1400 Presentation.md` §4.3 (a description of the
+Lifted and de-scoped from `14101 Presentation.md` §4.3 (a description of the
 legacy deck's theme) to the Workbench standard, and reconciled with the values
 actually in `emerson-workbench.css` — where the two differ, **the stylesheet is
 current** and §4.3 is history.
@@ -202,7 +202,7 @@ gallery role template (`[class*="slide--role-"]`).
 
 The **legacy header** — a `3.03cqw`/400 title above a full-bleed
 `--emerson-blue` divider rule running edge to edge — is the deck's original
-PowerPoint style. It survives only on the un-rebuilt legacy 1400 slides and
+PowerPoint style. It survives only on the un-rebuilt legacy 14101 slides and
 is replaced by the restrained heading as each is converted (the documented
 rollout: it becomes universal once the whole deck is on it). **Do not
 reproduce the full-bleed rule on a new slide.**
@@ -282,7 +282,7 @@ exactly what this rule rules out.
 ## 4. Slide furniture / chrome
 
 The frame every content slide carries. From `emerson-workbench.css` §3 and
-`1400 Presentation.md` §4.4, de-scoped to the standard.
+`14101 Presentation.md` §4.4, de-scoped to the standard.
 
 ### 4.1 Header
 
@@ -294,7 +294,7 @@ restrained scale (§2.4). Beneath it, a **short `--emerson-blue` accent tick**
 The **legacy full-bleed divider rule** (`.slide::after`: a `--emerson-blue`
 line, `~0.09cqh`, edge to edge, at `16.73cqh`, with the title one size up at
 `top: 3.4cqh`) is suppressed on every rebuilt slide and survives only on
-un-rebuilt legacy 1400 slides (§2.4).
+un-rebuilt legacy 14101 slides (§2.4).
 
 ### 4.2 Footer chrome
 
@@ -852,14 +852,14 @@ defaults to the **Control Valve Handbook**'s usage, then the relevant
   bonnet casting as a whole**; a leader labelling it lands on the annular
   cavity or the bore wall, never the solid casting. "Stuffing box" is the
   same component and is not used in the course — "packing box" throughout.
-  (Established on the 1400 Chapter 2 packing content, where a leader was
+  (Established on the 14101 Chapter 2 packing content, where a leader was
   corrected off the solid casting — see `valve-packing-box-terminology`.)
 - **Actuator action:** **direct-acting** / **reverse-acting** are the
   primary terms. "Air-to-close" / "air-to-open" may appear once as a gloss,
   not as the working term.
 - **Body orientation:** **push-down-to-close (PDTC)** / **push-down-to-open
   (PDTO)** — expand on first use in a module, abbreviate after.
-- **Trademark:** current practice is inconsistent — across the 1400 ch3
+- **Trademark:** current practice is inconsistent — across the 14101 ch3
   slides "Fisher 657" appears bare ~23 times and as "Fisher™ 657" ~4 times.
   Formalise the scattered ™ into a rule rather than inventing one:
   **Fisher™** on the first mention in a module (the title or the intro

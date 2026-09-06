@@ -12,7 +12,7 @@ updated: 2026-08-31
 Fisher / Emerson instruction manuals held in the Source Library, in
 `20 - Source Library/Technical Publications/`. These are the current
 authoritative maintenance references for the specific hardware taught in the
-[[1400 — Course Home|1400]] course.
+[[14101 — Course Home|14101]] course.
 
 This is a locate-the-right-source catalogue: what each manual is and its scope
 at a section level. Concept-level cross-referencing between manuals is
@@ -140,7 +140,7 @@ assembly. ENVIRO-SEAL bellows seal bonnet. Parts.
 The easy-e instruction manuals (ES / ED / ET / EZ) hand off to these two
 dedicated manuals for the two live-loaded packing systems — adjustment is by
 spring geometry, not flange torque, and the procedure lives only in these docs.
-Both are used by [[1400 — Course Home|1400]] Chapter 2 Module 6 (Packing
+Both are used by [[14101 — Course Home|14101]] Chapter 2 Module 6 (Packing
 Replacement & Adjustment). HIGH-SEAL is the higher pressure/temperature version
 of ENVIRO-SEAL; the two are set by *different* methods.
 
@@ -221,7 +221,7 @@ Instrument levels HC, AD, PD and ODV. Sections: installation with pneumatic and
 electrical connections; wiring practices; control-system requirements; manual
 setup; instrument setup; travel / pressure control; partial stroke test (PST);
 outputs; alert setup; calibration — travel calibration, sensor calibration,
-relay adjustment; maintenance and parts. The positioner used in the 1400
+relay adjustment; maintenance and parts. The positioner used in the 14101
 positioner chapters.
 
 ### Fisher FIELDVUE DVC7K-H Digital Valve Controller
@@ -236,5 +236,5 @@ variables; maintenance and parts. Current-generation successor to the DVC6200.
 
 ## Used by
 
-- [[1400 — Course Home|1400 Valve Trim and Body Maintenance]] — actuator, valve
+- [[14101 — Course Home|14101 Valve Trim and Body Maintenance]] — actuator, valve
   body and positioner maintenance across all three teaching days.

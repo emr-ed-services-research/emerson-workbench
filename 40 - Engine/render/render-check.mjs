@@ -16,7 +16,7 @@
 //  bundled Chromium.
 //
 //  Usage:
-//    node render-check.mjs --course "1400 Valve Trim and Body Maintenance"
+//    node render-check.mjs --course "14101 Valve Trim and Body Maintenance"
 //    node render-check.mjs --course "..." --slides 30,31,62
 //    node render-check.mjs --course "..." --json
 //    node render-check.mjs --course "..." --chrome "C:/path/to/chrome.exe"

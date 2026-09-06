@@ -42,7 +42,7 @@ The repository of primary source materials hosted in the Workbench — the
 ## Class / Course
 
 A deliverable unit an instructor opens and teaches from, e.g.
-[[1400 — Course Home|1400 Valve Trim and Body Maintenance]]. Composed of modules.
+[[14101 — Course Home|14101 Valve Trim and Body Maintenance]]. Composed of modules.
 
 ## Presentation artifact
 

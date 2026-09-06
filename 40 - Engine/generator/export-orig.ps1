@@ -1,7 +1,7 @@
 # Export a list of slides from a course's original .pptx as PNG via PowerPoint COM.
 # Spot-check helper: pair with compare.ps1 to eyeball conversion fidelity.
 #
-# Usage:  .\export-orig.ps1 -Course "1400 Valve Trim and Body Maintenance" -Slides 15,20,45,81
+# Usage:  .\export-orig.ps1 -Course "14101 Valve Trim and Body Maintenance" -Slides 15,20,45,81
 param(
   [Parameter(Mandatory = $true)] [string] $Course,
   [Parameter(Mandatory = $true)] [int[]]  $Slides,

@@ -86,5 +86,5 @@ stiction, linkage deadband, packing leakage, material incompatibility.
 
 ## Used by
 
-- [[1400 — Course Home|1400 Valve Trim and Body Maintenance]] — background on
-  where the valve families taught in 1400 are applied in real service.
+- [[14101 — Course Home|14101 Valve Trim and Body Maintenance]] — background on
+  where the valve families taught in 14101 are applied in real service.

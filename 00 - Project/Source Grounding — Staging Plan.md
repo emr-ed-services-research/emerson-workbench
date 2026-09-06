@@ -75,7 +75,7 @@ instead of rediscovering.
 4. **QA layering — only after 1–3 are real.** The three mechanisms from the
    source-grounding assessment (§5, Step 4).
 
-Scope discipline throughout: bounded to what ch3 (and 1400 generally) actually
+Scope discipline throughout: bounded to what ch3 (and 14101 generally) actually
 needs. Expand later, deliberately, once proven on real content.
 
 ---
@@ -84,7 +84,7 @@ needs. Expand later, deliberately, once proven on real content.
 
 **Status (2026-09-03):** Steps 1–2 done; step 3 mechanism wired.
 - **Step 1–2:** precedence confirmed; component index built
-  (`20 - Source Library/Component Index — 1400 ch3.md`, 18 components + a
+  (`20 - Source Library/Component Index — 14101 ch3.md`, 18 components + a
   procedure-photo group + a proposed concept→component+level map).
 - **Step 3 (wiring):** the console now reads the index and the ID tags —
   `src/main/instructional-design.js` (verb menus + Bloom levels, mirrors
@@ -132,7 +132,7 @@ needs. Expand later, deliberately, once proven on real content.
 | **Control Valve Handbook, 6th ed.** (D101881X012, Aug 2023) | current / primary | current | deadband concept & causes (§2.1.1), friction (§2.1.1.4), actuator types (§3.2), valve/actuator force categories (§5.x), fail-safe action |
 | **Fisher 657 Instruction Manual** (D100306X012, Jun 2018) | current / primary | current | 657 operating schematic (Fig 2), mounting components (Fig 3), bench-set adjustment (Fig 4), deadband response (Fig 5), full assembly + parts (Figs 6–10), casing torque (Table 2, 27 N·m / 20 lbf·ft) |
 | **Fisher 667 Instruction Manual** (D100310X012, May 2018) | current / primary | current | 667 operating schematic (Fig 2), seal-bushing / stem O-rings, mounting components (Fig 3), bench-set adjustment (Fig 4), friction + deadband measurement, assembly + parts (Figs 6–10), casing torque (Table 2) |
-| **Legacy 1400 PowerPoint deck** (`build/slides/**/img/imageNNN.png`) | legacy / uncredited | mixed — Fisher-origin art, often superseded by the current manuals | most ch3 procedure photos + some diagrams currently in the slides |
+| **Legacy 14101 PowerPoint deck** (`build/slides/**/img/imageNNN.png`) | legacy / uncredited | mixed — Fisher-origin art, often superseded by the current manuals | most ch3 procedure photos + some diagrams currently in the slides |
 | **Archive D750004** — *Pneumatic Spring-and-Diaphragm Actuators* (Fisher Ed. Services student guide, ~1990s scan) | archive · reviewed in full, **no conflicts** | historical but corroborated | purpose-built teaching diagrams for direct/reverse acting, PDTC/PDTO fail modes, actuator forces, static balance, bench set (pp 5, 7, 13, 15, 17, 19) |
 | **Archive D750020** — *Actuator Sizing for Sliding-Stem Control Valves* (~1990s scan) | archive · reviewed in full, **no conflicts** | historical but corroborated | valve-force cutaway with A/B/C/D callouts (in use, slide 91); valve-plug-unbalance diagrams; sizing method (redundant with CVH §5.11) |
 | **Archive D750066** — *Maintaining Spring-and-Diaphragm Actuators* (~1990s scan) | archive · reviewed in full, **no conflicts** | historical; actuator content corroborated, positioner content dated | 657/667-class disassembly/assembly/inspection procedures (consistent with current); analog-positioner sections are superseded but out of ch3 scope |
@@ -250,7 +250,7 @@ figure that already splits direct/reverse.
 
 ## 4. Step 2 — Teaching-component index, ch3 — **BUILT**
 
-`20 - Source Library/Component Index — 1400 ch3.md` (2026-09-03). 18 discrete
+`20 - Source Library/Component Index — 14101 ch3.md` (2026-09-03). 18 discrete
 components (est. was ~16) grouped by module, plus a procedure-photo catch-all.
 The table below was the planning inventory; the index file is now authoritative.
 Diagram/figure components where **source-grounding vs. invention is the live
@@ -437,7 +437,7 @@ yet; for ch3 (already tagged for A/B) it is another `force` re-author.
 - [x] §3 precedence buckets confirmed by Franz (2026-09-02).
 - [x] Bench-set-graph decision confirmed (Fisher IM Fig 5 canonical). The four
       slide variants (92/97/112/125) still to be built by Stage 3.
-- [x] `20 - Source Library/Component Index — 1400 ch3.md` built.
+- [x] `20 - Source Library/Component Index — 14101 ch3.md` built.
 - [x] Step 3 mechanism wired in the console (`instructional-design.js`,
       `course-model.js`, `prompts.js`, `stage-runners.js`); 78 tests green.
 - [x] `teaching-philosophy.md` "Instructional-design tags" section written.

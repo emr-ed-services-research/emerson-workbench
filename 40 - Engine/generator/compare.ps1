@@ -2,7 +2,7 @@
 # Needs <tmp>/orig/sNNN.png (from export-orig.ps1) and <tmp>/mine/sNNN.png
 # (rendered from the converted HTML).
 #
-# Usage:  .\compare.ps1 -Course "1400 Valve Trim and Body Maintenance" -Slides 15,20,45,81
+# Usage:  .\compare.ps1 -Course "14101 Valve Trim and Body Maintenance" -Slides 15,20,45,81
 param(
   [Parameter(Mandatory = $true)] [string] $Course,
   [Parameter(Mandatory = $true)] [int[]]  $Slides,

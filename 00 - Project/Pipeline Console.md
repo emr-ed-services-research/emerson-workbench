@@ -14,10 +14,10 @@ updated: 2026-08-31
 > [!note] Status
 > **Phases 0–6 done — all five pipeline stages run in the console, visual pass
 > shipped.** Layer 4 of the [[System Architecture]] four-layer model. Written
-> 2026-08-31, the day 1400 Chapter 2 closed and console work began. Every stage
+> 2026-08-31, the day 14101 Chapter 2 closed and console work began. Every stage
 > (0 convert · 1 cut · 2 context · 3 slides · 4 verify) runs end to end with
 > live status, a machine check, and a human review gate; verified end to end on
-> 1400 this session (`verify.ps1` full run: 0 FAIL, 26 warn, all 418 slides
+> 14101 this session (`verify.ps1` full run: 0 FAIL, 26 warn, all 418 slides
 > rendered; all five stage switches driven to closed/green). The look is
 > token-refined Direction A (`phase6-clean-baseline`). Remaining: Phase 7
 > (multi-project hardening) and the smaller open items in §9. Build proceeds
@@ -124,9 +124,9 @@ the vault — the vault only ever receives the committed course outputs).
 
 ```jsonc
 {
-  "id": "1400-vtbm",
-  "course": "1400 Valve Trim and Body Maintenance",
-  "sourcePptx": "…/Source Deck/1400 Valve Trim & Body Maintenance.pptx",
+  "id": "14101-vtbm",
+  "course": "14101 Valve Trim and Body Maintenance",
+  "sourcePptx": "…/Source Deck/14101 Valve Trim & Body Maintenance.pptx",
   "vaultPath": "C:/Users/E1552882/Documents-Local/Projects/EmersonWorkbench",
   "created": "2026-09-01T…",
   "stages": {
@@ -157,7 +157,7 @@ be unloaded and reloaded later with all stage state and flags intact.
 
 ### Target chapter
 
-Stages 2 and 3 operate one **chapter** at a time, not the whole course — 1400
+Stages 2 and 3 operate one **chapter** at a time, not the whole course — 14101
 alone has ~38 outline modules across Chapters 3–16, far more than one review
 pass. `project.target = { chapterId }` (nullable) is the chapter the next
 Stage 2 / Stage 3 fire will work on; the console defaults it to the first
@@ -184,7 +184,7 @@ tool instead of relied on by habit.
 | Stage | Fire action | Live signal | Loop-close condition |
 | --- | --- | --- | --- |
 | **0 · Convert** | `extract-media.ps1` then `generate.ps1 -Course …` | slide count ticking; `svg-rebuilt` / `ole-fallback` flag counts; log tail | `conversion-report.csv` written; every `slides/*.html` tag-balanced; `manifest.*` parses. No hard errors. |
-| **1 · Cut the arc** | AI makes the editorial cut on its own judgement — days → chapters → modules, boundaries from each module's objective and key concepts (not deck order), per [[teaching-philosophy]] and the `1400-module-boundaries` rule | proposed module tree renders; per-module light | **Structural check** (valid JSON; every module has an objective stub + a page range; ranges cover the deck with no unintended gaps/overlaps; no module of only 1–2 slides; CYK slides at module ends) **and** a human approve/flag pass on the editorial judgement. A flagged module holds the loop open until re-cut or accepted. Skeleton written `status: "outline"`. |
+| **1 · Cut the arc** | AI makes the editorial cut on its own judgement — days → chapters → modules, boundaries from each module's objective and key concepts (not deck order), per [[teaching-philosophy]] and the `14101-module-boundaries` rule | proposed module tree renders; per-module light | **Structural check** (valid JSON; every module has an objective stub + a page range; ranges cover the deck with no unintended gaps/overlaps; no module of only 1–2 slides; CYK slides at module ends) **and** a human approve/flag pass on the editorial judgement. A flagged module holds the loop open until re-cut or accepted. Skeleton written `status: "outline"`. |
 | **2 · Context** | AI drafts `objective` + 4–6 `keyConcepts {t,pages}` per module from slides + Source Library | per-module lights: `drafting → drafted → approved`; which source docs were opened | `verify.ps1` course.json section passes (valid JSON; every keyConcept page ref inside its module's `pages`) **and** every module human-approved → `status: "ready"`. |
 | **3 · Slide pass** | AI runs the four parts per module | **per-slide light rack** (§5); four-part sub-progress (sequencing · source · consolidate · polish) | Every in-flow slide passes the **six-item pre-send checklist** run as headless-Chrome render checks + `verify.ps1` on changed slides. Judgement items (callout accuracy, polish bar) are human-confirm sub-gates. A `flagged` slide holds the loop open until `resolved` or `accepted`. |
 | **4 · Verify & publish** | full `verify.ps1` + headless render of every slide and every shell module; regenerate `course-data.js`; update README | check-by-check pass/fail stream; whole-deck render thumbnails | `verify.ps1` exits 0 (0 FAIL); every render clean. Cartridge is publishable. |
@@ -208,9 +208,9 @@ Landscape window. Four regions.
 ┌───────────────────────────────────────────────────────────────────────┐
 │  EMERSON · PIPELINE CONSOLE            wired to: …/EmersonWorkbench     │  top strip
 ├───────────┬───────────────────────────────────────────────────────────┤
-│  SLOTS    │   ACTIVE SLOT ·  1400 Valve Trim and Body Maintenance      │
+│  SLOTS    │   ACTIVE SLOT ·  14101 Valve Trim and Body Maintenance      │
 │           │                                                           │
-│ ▸1400 VTBM│    ( 0 )    ( 1 )    ( 2 )    [ 3 ]    ( 4 )                │  stage switches
+│ ▸14101 VTBM│    ( 0 )    ( 1 )    ( 2 )    [ 3 ]    ( 4 )                │  stage switches
 │   ●stage3 │   CONVERT    CUT   CONTEXT   SLIDES   VERIFY               │  (chunky toggles,
 │           │    ○green    ○green ○green   ◐amber   ○dark                │   light above each)
 │  +2100 …  │                                                           │
@@ -256,7 +256,7 @@ approve/flag pass. There is no proposal-editing or co-authoring pane — the age
 cuts the arc, the human signs it off or flags modules for a re-cut. This matches
 how Stage 1 has actually been used.
 
-**Multi-project.** Each slot keeps its own live state. Start 1400 at Stage 3,
+**Multi-project.** Each slot keeps its own live state. Start 14101 at Stage 3,
 pause it, load course 2100 and run it to Stage 1, come back — every light and
 flag is where you left it. Whether two slots can run Claude *simultaneously* or
 are queued is an open question (§9).
@@ -305,11 +305,11 @@ Phased so a genuinely useful console exists early, before the hardest parts.
 
 | # | Phase | Delivers | Needs |
 | --- | --- | --- | --- |
-| 0 | ~~**Generator `-Course`**~~ | Done 2026-08-31. `generator/*.ps1` take `-Course "<name>"` and resolve everything through `generator/_paths.ps1`; section map moved to `Source Deck/sections.json`; `generate.ps1 -DryRun` added; the `PROTECTED.txt` guard extended to 1400 Ch 1–2. | — |
+| 0 | ~~**Generator `-Course`**~~ | Done 2026-08-31. `generator/*.ps1` take `-Course "<name>"` and resolve everything through `generator/_paths.ps1`; section map moved to `Source Deck/sections.json`; `generate.ps1 -DryRun` added; the `PROTECTED.txt` guard extended to 14101 Ch 1–2. | — |
 | 1 | ~~**Shell + state machine**~~ | Done 2026-08-31. Electron app; project/slot model + `~/.emerson-pipeline-console/` persistence; control-loop state machine (`locked → armed → running → checking → flagged\|closed\|failed`, re-fire reverts downstream); slots + switch rack + dev panel. 10 tests. | Node.js (done) |
-| 2 | ~~**Script stages (0 and 4)**~~ | Done 2026-08-31. `pwsh-runner` streams `powershell.exe` line by line; `runStage0` (extract-media + generate, opt-in `-Force`), `runStage4` (`verify.ps1`); pure loop-close evaluators return closed/flagged/failed; live instrument cluster (phase, counts, log tail, outcome). Verified against 1400. 19 tests. | Phase 0 |
-| 3 | ~~**Agent SDK integration**~~ | Done 2026-08-31. `@anthropic-ai/claude-agent-sdk` (ESM, dynamic-import) spawned headless in the vault, session streamed to the cluster; **Stage 2** wired end to end — agent authors the target chapter's outline modules, then `verify.ps1`, then per-module scoring; loop closes only when a human approves every module in the review rack. Verified against 1400 ch12 ($0.64, 42 turns). 30 tests. | — |
-| 4 | ~~**Stage 1**~~ | Done 2026-08-31. Reuses the Phase 3 Agent SDK machinery, scoped to one target chapter: fire → agent cuts the chapter into modules on its own judgement (inherited skeleton treated as a proposal) → pure structural check (coverage gaps/overlaps, ≥3-slide modules, page order, objective stubs, soft CYK notes) → per-module arc-review rack. `canCloseReview` makes **both** gates block — every module approved **and** the machine check green or its issues explicitly accepted; approvals alone never close past a red check (also retro-fixed Stage 2). Stage 0's regeneration-guard decline is now a no-op that undoes its own fire instead of cascade-locking. Also fixed a Phase 3 bug where the agent's `MEMORY_DIR` path never resolved. Verified end to end against 1400 ch3 (5→6 modules; 1-slide Deadband flagged, accepted as an exception). 48 tests. | Phase 3 |
+| 2 | ~~**Script stages (0 and 4)**~~ | Done 2026-08-31. `pwsh-runner` streams `powershell.exe` line by line; `runStage0` (extract-media + generate, opt-in `-Force`), `runStage4` (`verify.ps1`); pure loop-close evaluators return closed/flagged/failed; live instrument cluster (phase, counts, log tail, outcome). Verified against 14101. 19 tests. | Phase 0 |
+| 3 | ~~**Agent SDK integration**~~ | Done 2026-08-31. `@anthropic-ai/claude-agent-sdk` (ESM, dynamic-import) spawned headless in the vault, session streamed to the cluster; **Stage 2** wired end to end — agent authors the target chapter's outline modules, then `verify.ps1`, then per-module scoring; loop closes only when a human approves every module in the review rack. Verified against 14101 ch12 ($0.64, 42 turns). 30 tests. | — |
+| 4 | ~~**Stage 1**~~ | Done 2026-08-31. Reuses the Phase 3 Agent SDK machinery, scoped to one target chapter: fire → agent cuts the chapter into modules on its own judgement (inherited skeleton treated as a proposal) → pure structural check (coverage gaps/overlaps, ≥3-slide modules, page order, objective stubs, soft CYK notes) → per-module arc-review rack. `canCloseReview` makes **both** gates block — every module approved **and** the machine check green or its issues explicitly accepted; approvals alone never close past a red check (also retro-fixed Stage 2). Stage 0's regeneration-guard decline is now a no-op that undoes its own fire instead of cascade-locking. Also fixed a Phase 3 bug where the agent's `MEMORY_DIR` path never resolved. Verified end to end against 14101 ch3 (5→6 modules; 1-slide Deadband flagged, accepted as an exception). 48 tests. | Phase 3 |
 | 5 | ~~**Stage 3 + light rack + batch review**~~ | Done 2026-08-31. Fire scope is one ready module at a time (`target = { chapterId, moduleId }`). `runStage3` screenshots each in-flow slide **before** the pass, runs the agent's four parts (printing `PART n/4:`), then **after**: `render-check --json --slides --screenshot` ∥ `-Slides`-scoped `verify.ps1` ∥ an in-process tag-balance. Per-slide light grid coloured by worst state; flag panel with **before/after thumbnails side by side**, the render findings, open-4:3 / open-16:9, and an inline comment + approve/flag. `re-run flagged` re-fires against just the flagged slides with their notes collated, merging approved slides forward. `canCloseReview` generalised to the slide rack — both gates block. 59 tests; paid end-to-end fire not yet run. | ~~render checks~~ done |
 | 6 | ~~**Visual pass**~~ | Done 2026-08-31. Ships as a **token-system refinement of Direction A** (`styles.css` rebuilt on a grey ramp, spacing/type scales, structural-only accent, one unified indicator-light glow treatment) — tag `phase6-clean-baseline`. A follow-on electromechanical-hardware pass (panel-mount maintained toggles + momentary pilot pushbuttons, branch `phase6-hardware-switches`) was tried and **reverted**: pure CSS box-shadow/gradient can't carry a convincing physical-hardware feel without a visual reference loop — that needs purpose-built SVG/PNG switch art, parked as an unscheduled follow-up. | direction approved |
 | 7 | **Multi-project hardening** | several live slots; pause/resume; survive the app being killed mid-run; run-lane / queue behaviour | — |
@@ -328,13 +328,13 @@ live status — worth having even before the AI stages are wired.
    slide prefix, deck id and section map through `generator/_paths.ps1`;
    per-course chapter ranges live in `<course>/Source Deck/sections.json`;
    `generate.ps1 -DryRun` previews a conversion into a scratch dir. Verified:
-   re-running against 1400 reproduces the committed output byte-for-byte, and
-   the regeneration guard (now covering 1400 Chapters 1–2) still blocks.
+   re-running against 14101 reproduces the committed output byte-for-byte, and
+   the regeneration guard (now covering 14101 Chapters 1–2) still blocks.
 3. ~~**Headless-Chrome render checks do not exist yet.**~~ Done 2026-08-31.
    `verify.ps1` section 7 runs `40 - Engine/render/render-check.mjs`
    (`puppeteer-core` against the installed Chrome): every slide rendered in both
    4:3 and the 16:9 shell, checked for load-clean / broken-image / clipping.
-   Warn-only for now; the finished 1400 Chapters 1–2 render clean (baseline in
+   Warn-only for now; the finished 14101 Chapters 1–2 render clean (baseline in
    `render/README.md`). `--json --slides N,M` mode is built for the Phase 5
    Stage 3 per-module calls. Stage 4 picks it up through `verify.ps1` already.
 4. ~~**Agent SDK auth**~~ — resolved: reuse the Claude Code subscription auth
@@ -361,7 +361,7 @@ live status — worth having even before the AI stages are wired.
 
 ### Noted during Phase 3
 
-- **keyConcept verbosity.** The first real Stage 2 run (1400 ch12) produced
+- **keyConcept verbosity.** The first real Stage 2 run (14101 ch12) produced
   keyConcepts of 2–3 sentences each, where the pipeline wants terse
   instructor-talking-point lines. This is prompt-tuning plus exactly what the
   module-review flag is for — but the Stage 2 prompt should push harder on
@@ -385,7 +385,7 @@ live status — worth having even before the AI stages are wired.
   restores — removing the cascade-lock for every stage and moving the logic into
   `stage-machine.js` under test.
 - **Stage 1 = per chapter.** Resolved that a Stage 1 fire operates on one target
-  chapter (reusing the Stage 2/3 selector), not the whole deck — 1400's day/
+  chapter (reusing the Stage 2/3 selector), not the whole deck — 14101's day/
   chapter structure already exists and Chapters 1–2 are locked. "Full switch" in
   the design directive means a real control-loop switch, not whole-course scope.
 

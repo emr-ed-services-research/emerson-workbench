@@ -47,7 +47,7 @@ Every finding is `[warn]`. It never changes `verify.ps1`'s exit code and never
 blocks a Pipeline Console stage. Checks get promoted to `[FAIL]` one at a time
 once the baseline below stays clean through a few more chapters.
 
-## Baseline — 1400, 2026-08-31
+## Baseline — 14101, 2026-08-31
 
 Full run: **418 slides, 410 clean, 10 warnings on 8 slides.**
 
@@ -75,7 +75,7 @@ how that chapter's warnings should go to zero.
 ```
 npm --prefix "40 - Engine/render" install        # one time
 
-node render-check.mjs --course "1400 Valve Trim and Body Maintenance"
+node render-check.mjs --course "14101 Valve Trim and Body Maintenance"
 node render-check.mjs --course "..." --slides 30,31,62
 node render-check.mjs --course "..." --json
 node render-check.mjs --course "..." --chrome "C:/path/to/chrome.exe"
