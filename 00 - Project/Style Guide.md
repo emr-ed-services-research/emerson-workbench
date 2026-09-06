@@ -6,30 +6,32 @@ tags:
   - design
   - style
 updated: 2026-09-06
-status: full draft — §§5–6 reviewed and proven in production; §§1–4, 7–10 drafted, self-reviewed, awaiting one consolidated read
+status: full draft — all ten sections written; §§5–6 proven in production; both flagged items closed
 ---
 
 # Emerson Workbench — Style Guide
 
 > [!note] Status
-> **All sections are now drafted.**
+> **Full draft — all ten sections written, both flagged items closed
+> (2026-09-06).**
 > - **§5 (Diagram & graph conventions)** and **§6 (Callout conventions)** are
 >   reviewed and proven end-to-end in production — the 1400-092 / 097 / 102
 >   bench-set-graph rebuild onto `.slide--tmpl-graph`, the tp-010 proof
->   example, and the caution-icon fix. Small reconciliations are noted inline
->   (§5.6 alpha; §5.10 follow-up: a decision-table application variant — now
->   built).
+>   example, and the caution-icon fix. §5.10's follow-up (a decision-table
+>   application variant) is built.
 > - **§§1–4 and §§7–10** were written 2026-09-06 by lifting and correcting
 >   what already exists (`1400 Presentation.md` §4, `emerson-workbench.css`,
 >   `tokens.css`, `teaching-philosophy.md`, the `.tmpl-*` templates), with a
->   full adversarial self-review each. They largely formalise settled
->   practice; two minor open calls are flagged (§3.3 green/purple;
->   §5.6/tp-010 alpha) for a single consolidated read rather than a
->   per-section review cycle.
+>   full adversarial self-review each.
+> - **The two flagged open calls are resolved:** §3.3 — green and purple are
+>   left in the palette, available and unused, not an open question;
+>   §5.6 band alpha — 0.18 is the settled value (the only authored graphs
+>   with a band, 092 / 097 / 102, are all at 0.18; tp-010 has no band, so
+>   the earlier "nudge tp-010" note was mistaken and is corrected).
 > - **§§2.4 / 4.1 (header chrome)** were revised after a Franz finding: the
 >   gallery / proof `[class*="slide--role-"]` templates had been on the
 >   legacy full-bleed rule, not the restrained heading. The CSS was fixed
->   and verified across both courses; §§2.4 / 4.1 now describe the corrected
+>   and verified across both courses; §§2.4 / 4.1 describe the corrected
 >   state.
 
 ## What this document is
@@ -260,11 +262,13 @@ The full line-and-region vocabulary is §5.6; the one-marker-colour rule is
 The legacy deck's theme labelled green, cyan, yellow, orange, and purple all
 as generic "callout" accents. §5.6 then gave cyan and yellow specific graph
 meanings and §6.1 collapsed every callout marker to one blue — leaving
-**green and purple with no assigned role in slide content.** They stay valid
-brand colours (a Workbench-home or course-shell surface may use them), and
-nothing currently misuses them, so no action is needed. If the consolidated
-review wants them formally struck from the authored-content palette that is a
-one-line change; the default is to leave them available and unused.
+**green and purple with no assigned role in slide content.**
+
+That is the settled position (Franz, 2026-09-06): they are **left in the
+palette, available and unused.** They stay valid brand colours — a
+Workbench-home or course-shell surface may reach for them — but no authored
+slide content forces a use, and nothing currently misuses them. Not an open
+question.
 
 ### 3.4 No non-token colour
 
@@ -486,16 +490,19 @@ No colour outside `tokens.css` appears in an authored graph. (The legacy
 1400-125 uses a non-palette `#0000FF` with dotted orange/purple leader
 callouts — that is what this table rules out.)
 
-**Provenance.** These values were rationalised from tp-006 and tp-010
-(read from source) and the legacy 1400-092 / 102 / 112 (read from render).
-Two were deliberate changes to land on tokens: the band fill
-`#F6BE00 → --emerson-yellow`, and the reference-line grey
-`#6E7070 → --emerson-grey`. Confirmed in the 092 / 097 / 102 rebuild
-(2026-09-05): `--emerson-grey` at 2 px dashed reads strongly enough as a
-diagonal on white. The band settled at **0.18 alpha** across that family
-(the key swatch, being tiny, goes to 0.30 to match perceptually). tp-010
-as built uses 0.13 and should be nudged to 0.18 to match — a one-line
-reconciliation for the consolidated §5 review, not a defect.
+**Provenance.** The line styles were rationalised from tp-006 and tp-010
+(read from source); the band fill and the reference-line grey came from the
+legacy 1400-092 / 097 / 102 / 112 (read from render), where the band was
+`#F6BE00 @ 0.13` and the reference line `#6E7070`. Two deliberate changes
+to land on tokens: `#F6BE00 → --emerson-yellow`, `#6E7070 → --emerson-grey`.
+Confirmed in the 092 / 097 / 102 rebuild (2026-09-05/06): `--emerson-grey`
+at 2 px dashed reads strongly enough as a diagonal on white, and the band
+settled at **0.18 alpha** (the key swatch, being tiny, goes to 0.30 to
+match perceptually). **The rebuilt 092 / 097 / 102 are the only authored
+graphs that carry a range band, and all three are at 0.18** — tp-010's
+concept (the one-sided friction shift) uses the two lines plus an orange
+span bracket and no band, and tp-006 is not yet rebuilt to §5. So 0.18 is
+the settled value with nothing left to reconcile.
 
 ### 5.7 Axes
 
