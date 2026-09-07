@@ -9,36 +9,75 @@
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Slide 98 | ppt slides/slide98.xml | layout: Title Only | family: .slide--title-only -->
-  <!-- ch3-m2 four-part pass 2026-09-04; CONSOLIDATION 2026-09-04 (review, Franz approved).
-       Part 1/4 + Part 3/4: slides 98 ("...Low Bench Set") and 99 ("...High Bench Set") were
-       the two halves of ONE procedure (keyConcept 6, role: procedure, level: apply) - an
-       artificial low/high split, both earmarked to the same component
-       (ch3-cmp-benchset-adjustment-setup / 657 IM Fig 4). Folded into this ONE slide as a
-       two-step procedure: step 1 = apply the lower bench-set pressure off the valve and
-       mark the stem at first movement; step 2 = apply the upper bench-set pressure and
-       measure the travel between the marks = rated travel on the nameplate. Slide 99 is now
-       a retained-but-dropped stub (data-review="ch3-m2-consolidated"); Franz removes 99
-       from the ch3-m2 module "pages" after this pass.
-       Part 2/4: two-cell .slide--tmpl-figrow, one representative photo per step - image159
-       ("Mark Stem" close-up, AR 0.673) and assets/sourced/benchset-measure-travel.png (deck
-       image161 cropped to AR 0.673). Identical ARs -> even row. The regulator/gauge shots
-       (image158/image160) are dropped; the applied pressure is named in each figcaption.
-       Burned-in deck arrows on the measure photo kept (house convention, as slides 56/62). -->
-  <article class="slide slide--tmpl-figrow" data-slide="98" data-deck="1400" data-review="ch3-four-part">
-    <div class="review-ribbon">ch3-m2 pass: figrow; bench set off the valve &mdash; steps 1 &amp; 2 (slide 99 folded in)</div>
+  <!-- Slide 98 | ppt slides/slide98.xml | family: .slide--tmpl-figrow -->
+  <!-- ch3-m2 keyConcept 6 (role: procedure, level: apply) — off the valve, apply
+       the lower bench-set pressure and mark the stem at first movement, apply the
+       upper bench-set pressure and mark again; the span between the marks must
+       equal the nameplate rated travel. Component: ch3-cmp-benchset-adjustment-setup.
+       Serves prim.mnt.actuator.set-travel.spring.
+
+       REDRAW SWAP 2026-09-06 (standing redraw policy — NOT Stage 3 authoring;
+       Franz's explicit slide-edit go-ahead). Replaced the two deck photos
+       (image159 "Mark Stem" + assets/sourced/benchset-measure-travel.png
+       "Measure Travel") with the house redraw of Fisher 657/667 IM Figure 4
+       "Bench Set Adjustment" (assets/sourced/benchset-fig4-redraw.svg — the
+       standalone asset Franz reviewed and selected 2026-09-06 over the deck
+       photos and Fig 4 as-is). On the slide the redraw is visual-only per the
+       house inline-SVG pattern (slide 97): the diagram + panel headers + part
+       labels live in the SVG; the procedure and the off-the-valve takeaway are
+       the .tmpl-note. Fig 4 as geometric source (Style Guide §5.8 — source
+       figure confirmed hard to parse). Direct-acting (657) direction shown; a
+       667 stem retracts, same procedure. -->
+  <article class="slide slide--tmpl-figrow" data-slide="98" data-deck="1400" data-review="ch3-redraw-swap">
+    <div class="review-ribbon">ch3-m2: bench-set-off-the-valve redraw (Fisher IM Fig 4) replaces the two deck photos</div>
     <h1 class="slide-title">Bench Set &mdash; Off the Valve</h1>
     <div class="tmpl-row">
       <figure class="tmpl-cell">
-        <img src="../assets/img/image159.png" style="max-height:52cqh" alt="Close-up of the actuator stem below the spring adjuster, scribed with a mark where it first begins to move">
-        <figcaption><b>1 &middot; Mark the stem</b>at the lower bench set, at first movement</figcaption>
-      </figure>
-      <figure class="tmpl-cell">
-        <img src="../assets/sourced/benchset-measure-travel.png" style="max-height:52cqh" alt="Close-up of the actuator stem showing the lower and upper bench-set marks with a scale measuring the distance between them">
-        <figcaption><b>2 &middot; Measure travel</b>at the upper bench set, between the marks</figcaption>
+        <svg viewBox="0 0 680 296" width="680" height="296" preserveAspectRatio="xMidYMid meet" font-family="Arial, Helvetica, sans-serif" role="img" aria-label="Bench-set adjustment off the valve, two states. State A, lower bench-set loading pressure: the actuator stem makes its first movement and is marked level with a fixed reference at the spring-adjuster face. State B, upper bench-set loading pressure: the stem has extended, carrying the first mark below the reference, and a second mark is made at the reference. The vertical dimension between the two marks on the stem is the rated travel, which must equal the nameplate travel span.">
+          <defs>
+            <marker id="bsArr" viewBox="0 0 10 10" refX="7.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 1 L9 5 L0 9 Z" fill="var(--emerson-orange)"/>
+            </marker>
+          </defs>
+
+          <!-- shared reference line: mark-1's height, held from state A -->
+          <line x1="86" y1="150" x2="440" y2="150" stroke="var(--emerson-grey)" stroke-width="1.6" stroke-dasharray="7 5"/>
+          <text x="82" y="154" text-anchor="end" fill="var(--emerson-grey)" font-size="12" font-weight="600">reference</text>
+
+          <!-- ===== STATE A ===== -->
+          <text x="196" y="34" text-anchor="middle" fill="var(--emerson-charcoal)" font-size="16" font-weight="800">A</text>
+          <text x="196" y="52" text-anchor="middle" fill="var(--emerson-charcoal)" font-size="13" font-weight="600">Lower bench-set pressure</text>
+          <path d="M166 78 h110 v14 h-14 v10 h-82 v-10 h-14 z" fill="#eceeeb" stroke="var(--emerson-charcoal)" stroke-width="2.4" stroke-linejoin="round"/>
+          <rect x="197" y="102" width="48" height="26" rx="2" fill="#dfe1de" stroke="var(--emerson-charcoal)" stroke-width="2.4"/>
+          <text x="255" y="119" fill="var(--emerson-grey)" font-size="12" font-weight="600">spring adjuster</text>
+          <line x1="196" y1="66" x2="196" y2="212" stroke="var(--emerson-charcoal)" stroke-width="6" stroke-linecap="round"/>
+          <line x1="183" y1="150" x2="209" y2="150" stroke="var(--emerson-blue)" stroke-width="7.5" stroke-linecap="round"/>
+          <text x="216" y="168" fill="var(--emerson-blue)" font-size="12" font-weight="800">mark 1</text>
+
+          <!-- ===== STATE B ===== -->
+          <text x="430" y="34" text-anchor="middle" fill="var(--emerson-charcoal)" font-size="16" font-weight="800">B</text>
+          <text x="430" y="52" text-anchor="middle" fill="var(--emerson-charcoal)" font-size="13" font-weight="600">Upper bench-set pressure</text>
+          <path d="M400 78 h110 v14 h-14 v10 h-82 v-10 h-14 z" fill="#eceeeb" stroke="var(--emerson-charcoal)" stroke-width="2.4" stroke-linejoin="round"/>
+          <rect x="431" y="102" width="48" height="26" rx="2" fill="#dfe1de" stroke="var(--emerson-charcoal)" stroke-width="2.4"/>
+          <line x1="430" y1="66" x2="430" y2="252" stroke="var(--emerson-charcoal)" stroke-width="6" stroke-linecap="round"/>
+          <line x1="417" y1="150" x2="443" y2="150" stroke="var(--emerson-blue)" stroke-width="7.5" stroke-linecap="round"/>
+          <line x1="417" y1="206" x2="443" y2="206" stroke="var(--emerson-blue)" stroke-width="7.5" stroke-linecap="round"/>
+          <text x="410" y="146" text-anchor="end" fill="var(--emerson-blue)" font-size="12" font-weight="800">mark 2</text>
+          <text x="410" y="210" text-anchor="end" fill="var(--emerson-blue)" font-size="12" font-weight="800">mark 1</text>
+
+          <!-- rated-travel dimension -->
+          <line x1="443" y1="150" x2="512" y2="150" stroke="var(--emerson-grey)" stroke-width="1.3" stroke-dasharray="3 3"/>
+          <line x1="443" y1="206" x2="512" y2="206" stroke="var(--emerson-grey)" stroke-width="1.3" stroke-dasharray="3 3"/>
+          <line x1="504" y1="150" x2="504" y2="206" stroke="var(--emerson-orange)" stroke-width="2.6" marker-start="url(#bsArr)" marker-end="url(#bsArr)"/>
+          <text x="520" y="173" fill="var(--emerson-orange)" font-size="14" font-weight="800">rated</text>
+          <text x="520" y="190" fill="var(--emerson-orange)" font-size="14" font-weight="800">travel</text>
+
+          <line x1="40" y1="270" x2="500" y2="270" stroke="#e2e4e0" stroke-width="1.2"/>
+          <text x="40" y="286" fill="var(--emerson-grey)" font-size="11" font-style="italic">Redrawn after Fisher 657 / 667 IM Fig.&#160;4 (40A8715-B), simplified for legibility.</text>
+        </svg>
       </figure>
     </div>
-    <p class="tmpl-note">Off the valve &mdash; no packing friction; the travel between the marks must equal the nameplate rated travel.</p>
+    <p class="tmpl-note">Raise the loading pressure to the <b>lower</b> bench-set value and mark the stem at first movement; raise to the <b>upper</b> value and mark again. Off the valve, no packing friction &mdash; the span between the two marks must equal the nameplate rated travel. Direct-acting (657) shown; a 667 stem retracts, same procedure.</p>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">98</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
 
