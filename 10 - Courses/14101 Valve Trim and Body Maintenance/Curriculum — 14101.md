@@ -10,13 +10,15 @@ updated: 2026-09-06
 
 # Curriculum Registry — 14101
 
-> [!note] Status — Phase 4 of the Instructional Primitives Pathway (Option C)
+> [!note] Status — Phases 1–4 complete (Instructional Primitives Pathway, Option C)
 > The **Day-One competency map + primitive registry**. Phase 2 retrofitted
 > the two built 657 modules to prove the schema; Phase 3 extended the map
-> to the buildable Day-One arc (Option C, Franz 2026-09-06); Phase 4
-> enumerates the primitive per competency. Schema in
-> `00 - Project/curriculum-development.md`. Phases 2 and 3 gates closed
-> (Franz); Phase 4 at gate.
+> to the buildable Day-One arc (Option C); Phase 4 enumerated the primitive
+> per competency. **Phases 2, 3, and 4 gates all closed (Franz,
+> 2026-09-06.)** Schema in `00 - Project/curriculum-development.md`.
+> **Phase 5 (wire origination Stage 1/2) is NOT started** — held pending a
+> separate explicit decision to widen the Stage 3 authoring gate. See the
+> Gate log.
 >
 > **In scope — full map:** ch1-m1, ch2-m1…m7, ch3-m1, ch3-m2, ch3-m3.
 > **Named, no edges (full stop):** ch3-m4, ch3-m5, ch3-m6 — the 667 modules
@@ -487,7 +489,7 @@ but the same four roles apply to every one.
 ### ch3-m1 — Actuator Action, Fail Mode & Bench Set
 
 ```yaml
-- { module: ch3-m1, competency: mnt.valve-body.contrast-pdtc-pdto,               progression: applies, note: "body orientation, from ch2-m1" }
+- { module: ch3-m1, competency: mnt.valve-body.contrast-pdtc-pdto,               progression: develops, note: "fail-action treatment — dedicated slide 93, figure, Component Index entry; Phase 4 correction of Phase 3's `applies` (Franz confirmed 2026-09-06)" }
 - { module: ch3-m1, competency: mnt.actuator.explain-actuator-action,            progression: introduces }
 - { module: ch3-m1, competency: mnt.actuator.determine-fail-mode,                progression: introduces }
 - { module: ch3-m1, competency: mnt.actuator.select-action-for-failsafe,         progression: introduces }
@@ -703,32 +705,31 @@ standard of provenance (source doc + locator + precedence bucket). That is
 real editorial work — the same size as the ch3 Component Index build — and
 is flagged as the Phase 4 follow-on, not a Phase 4 blocker.
 
-### New-vs-reframe calls for Franz
+### New-vs-reframe calls — all four confirmed (Franz, 2026-09-06)
 
-1. **`mnt.actuator.bench-set` now has three graph variants** — `generic`
-   (ch3-m1 slide 92, one friction-free line), `friction-free` (ch3-m2 slide
-   97, same line + first-movement / full-travel points ①②), `friction-shift`
-   (ch3-m3 slide 102, two lines + offset span). All redraws of the CVH Fig
-   8.10 lineage, one per progression step. **Recommend: keep all three** —
-   they are genuinely different figures and this is the intended
-   "variant per `develops` step" pattern. (A fourth, `deadband-full`, is the
-   ch3-m6 slide 112 figure — named but under the full stop.)
+1. **`mnt.actuator.bench-set` keeps three graph variants** — `generic`
+   (*Actuator Action, Fail Mode & Bench Set*, "Bench Set"), `friction-free`
+   (*Fisher 657 — Identify & Bench Set* page 4 of 5, same line + points ①②),
+   `friction-shift` (*Fisher 657 — Mount & Service* page 2 of 5, two lines +
+   offset span). One redraw per real progression step — "exactly the
+   justified-variant case this schema was built to allow, not duplication"
+   (Franz). A fourth, `deadband-full` (ch3-m6), is named but under the full
+   stop.
 
-2. **`contrast-pdtc-pdto` has two primitives** — ch2-m1's stem-travel
-   introduction and ch3-m1 slide 93's fail-action body sections. One
-   competency, two figures at two progression steps (`introduces` →
-   `develops`). **Confirm: variant split, not a reframe.**
+2. **`contrast-pdtc-pdto` = two primitives** — ch2-m1's stem-travel
+   introduction and ch3-m1's fail-action body sections. Real variant split
+   tied to two progression steps (`introduces` → `develops`), not a reframe.
+   Confirmed.
 
-3. **ch3-m1 `develops` `contrast-pdtc-pdto`** (Phase 3's map had `applies`).
-   Slide 93 is a dedicated teaching slide with its own figure and Component
-   Index entry, so it is more than "exercised." **Confirm the Phase 3
-   progression correction.**
+3. **ch3-m1 `develops` `contrast-pdtc-pdto`** — corrected from Phase 3's
+   `applies`. A dedicated teaching slide + figure + Component Index entry is
+   real teaching content, not exercise of a prior competency. Confirmed; the
+   ch3-m1 edge above is updated.
 
-4. **Multi-photo figrows as list-asset primitives** — slides 47, 58, 64/65,
-   71, 85, 89, 91, 101 (and the ch3-m2/m3 ones). Per Finding 2 these are one
-   primitive with an `asset` list because each is a genuine parallel
-   layout. **Confirm** — `SOURCES.txt` describes each as a figure row of
-   side-by-side photos, so this reads correctly.
+4. **Multi-photo figrows are list-asset primitives** — `select-piston-seal`,
+   `replace-piston-seal`, `lap-metal-seat`, `adjust-packing`,
+   `select-and-place-gaskets`, and the ch3-m1 fail-mode / forces slides.
+   Consistent application of Finding 2. Confirmed.
 
 ### Count
 
@@ -894,7 +895,7 @@ competency; 14101 is one fixed-programme hands-on course, no per-role
 filter inside it. The ch2-m4 disassembly-safety asymmetry stays a watch
 item, no change requested.
 
-### Phase 4 — at gate (awaiting Franz confirm)
+### Phase 4 — closed (Franz, 2026-09-06)
 
 **Delivered:** a primitive per competency — ch3-m1 in full YAML (5 + 1
 shared), ch2 / ch1-m1 as a registry table (25 rows). **≈41 primitives for
@@ -908,13 +909,22 @@ need a **ch2 / ch1 Component Index** to reach the ch3 standard — real
 editorial work (ch3-Component-Index scale), flagged as the Phase 4
 follow-on, not a blocker.
 
-**Four new-vs-reframe calls for you:** (1) keep three `mnt.actuator.bench-set`
-graph variants (recommended); (2) `contrast-pdtc-pdto` = two primitives at
-two progression steps, variant not reframe; (3) confirm ch3-m1 `develops`
-(not `applies`) `contrast-pdtc-pdto`; (4) confirm multi-photo figrows are
-list-asset primitives.
+**All four new-vs-reframe calls confirmed** (see that section). No flags.
+The `exists*` provenance gap is logged as the ch1/ch2 Component Index
+follow-on — real editorial work, not rushed to close this gate.
 
-**Gate question:** confirm the primitive count and the four calls, or flag
-any. Then Phase 5 (wire origination Stage 1/2) — which is gated behind an
-explicit widening of the Stage 3 authoring gate, currently open only for
-the bounded ch3-m2 test.
+### Phase 5 — NOT STARTED (held pending a separate decision)
+
+Phase 5 wires origination-mode Stage 1/2 to consume this map. The pathway
+gates it behind an **explicit widening of the Stage 3 authoring gate**,
+which is currently open only for the bounded ch3-m2 A/B test. Franz's
+instruction at the Phase 4 gate (2026-09-06): that widening is a
+**separate, deliberate decision in its own right, not a side effect of the
+Phase 4 approval**. No Phase 5 work — no design, prototyping, or
+implementation — begins until the widening is explicitly requested and
+confirmed on its own terms.
+
+**Not gated by Phase 5:** the ch1/ch2 Component Index follow-on — that is
+source-indexing work, the same kind as the ch3 Component Index, and needs
+no authoring gate. The `prim.mnt.actuator.set-travel.spring` redraw stays a
+logged open content item on its own timing.
