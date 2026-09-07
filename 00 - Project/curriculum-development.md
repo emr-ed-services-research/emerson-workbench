@@ -38,7 +38,7 @@ Foundation to roof:
 | Layer | What it is | Modelled as data? |
 | --- | --- | --- |
 | **Purpose** | Teach four roles the skills their jobs need | No — it is the reason the rest exists |
-| **Domain objectives** | Overarching objectives per domain (maintenance, instrumentation, selection-sizing) | Sketched, empty — filled when a second course exists to validate a rollup |
+| **Domain objectives** | Overarching objectives per domain (maintenance, instrumentation, engineering) | Sketched, empty — filled when a second course exists to validate a rollup |
 | **Courses & modules** | A course (14101) and its modules | Yes |
 | **Placement edges** | `module × roles × competency × progression → primitive` | Yes |
 | **Instructional primitives** | `competency × asset-variant` — the finite authored unit | Yes |
@@ -67,7 +67,7 @@ separate relationship (see Placement edges).
 | --- | --- |
 | `mnt` | maintenance |
 | `inst` | instrumentation |
-| `siz` | selection-sizing |
+| `eng` | engineering (sizing and selection — "engineering courses" internally) |
 
 **Areas** — the three are known and enumerable, so they are fixed now, not
 deferred (retrofitting an ID scheme is expensive — the `1400 → 14101`
@@ -116,6 +116,7 @@ course.
 ```yaml
 id: prim.mnt.actuator.set-travel.spring
 competencyId: mnt.actuator.set-travel
+status: exists                              # exists | pending  (built vs. planned but not yet authored)
 asset: 657-benchset-adjustment-fig4.png     # or assetRef: <id> into the Component Index
 provenance: ch3-cmp-benchset-adjustment-setup   # Component Index entry
 redrawRecord: >                             # the three-reason redraw rule, applied per primitive
@@ -123,6 +124,10 @@ redrawRecord: >                             # the three-reason redraw rule, appl
   the drawing. (Style Guide §5.8 — none of the three redraw reasons apply.)
 variantTag: spring                          # optional; only when a competency has a real asset split
 ```
+
+`status: pending` primitives carry `assetRef`, `provenance`, and
+`redrawRecord` as `TBD` until authored; a `status: exists` primitive must
+name a real asset and a real Component Index entry.
 
 A new primitive is created **only** for a genuinely new `competency ×
 asset-variant`. It is a human-curated call: an agent may propose "new
@@ -316,7 +321,7 @@ serves: [mnt.actuator.set-travel]
 
 ## What Phase 1 does not do
 
-- No domain-objective content (`mnt`, `inst`, `siz` overarching objectives
+- No domain-objective content (`mnt`, `inst`, `eng` overarching objectives
   stay empty slots).
 - No Day-Two / Day-Three content, and no change to the ch3-m4 / m5 / m6
   full stop.

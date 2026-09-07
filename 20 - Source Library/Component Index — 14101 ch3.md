@@ -66,8 +66,14 @@ premise here was factually wrong and is retracted.
 
 ## Components
 
-Record shape: `id` · `teaches` · `concept-tags` · `status` · `source`
-(`doc` + `locator`) · `delivery` · `used-by` · `notes`.
+Record shape: `id` · `teaches` · `concept-tags` · `status` · `serves` ·
+`source` (`doc` + `locator`) · `delivery` · `used-by` · `notes`.
+
+`serves: [<competency id>, …]` is the forward pointer into the curriculum
+layer (`00 - Project/curriculum-development.md`) — added 2026-09-06 in
+Phase 2 of the Instructional Primitives Pathway, for the entries the ch3-m2
+/ ch3-m3 retrofit touched. See `10 - Courses/14101 Valve Trim and Body
+Maintenance/Curriculum — 14101.md`.
 
 ### ch3-m1 — Actuator Action, Fail Mode & Bench Set (slides 88–93)
 
@@ -78,6 +84,7 @@ teaches: >
   pushes the stem down; the spring returns it up. Fails up (retracts) on loss of air.
 concept-tags: [actuator action, direct-acting, Fisher 657, spring return, loading pressure]
 status: current
+serves: [mnt.actuator.direct-acting-principle]  # competency taught in ch3-m1; ch3-m2 applies it
 source:
   - doc: Control Valve Handbook 6th ed. (D101881X012)
     locator: "§3.8.1, Figure 3.43 (left panel) — 'Diaphragm Actuators'"
@@ -184,6 +191,7 @@ teaches: >
   pressure. Defined friction-free.
 concept-tags: [bench set, rated travel, lower bench set, upper bench set, friction-free, spring rate, on the bench]
 status: current
+serves: [mnt.actuator.bench-set]
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§8.5.5 + Figure 8.10 'Bench Set Seating Force' (clean vector; travel-on-Y / pressure-on-X). The DEADBAND figure — three interleaved curves + a 'Deadband' bracket. Geometry reference for the redraw, NOT used directly."
@@ -271,6 +279,7 @@ teaches: >
   seat, spring adjuster threaded in the yoke.
 concept-tags: [Fisher 657, diaphragm casing, diaphragm plate, actuator spring, spring seat, spring adjuster, yoke, construction]
 status: current
+serves: [mnt.actuator.identify-sd-construction, mnt.actuator.relieve-spring-before-casing]
 source:
   - doc: Fisher 657 Instruction Manual (D100306X012)
     locator: "Figure 2 (schematic); Figures 6–10 (full assembly by size, with key numbers); Table 2 (torque)"
@@ -290,6 +299,7 @@ teaches: >
   sets initial compression.
 concept-tags: [bench set procedure, spring verification, lower bench set, upper bench set, mark stem, measure travel, spring adjuster, rated travel]
 status: current
+serves: [mnt.actuator.set-travel]
 source:
   - doc: Fisher 657 / 667 Instruction Manual
     locator: "Figure 4 — 'Bench Set Adjustment' (SPRING ADJUSTER, LOWER/UPPER BENCH SET LOADING PRESSURE, RATED VALVE TRAVEL MEASURE, MARK VALVE STEM HERE)"
@@ -310,6 +320,7 @@ teaches: >
   a correct bench set looks like.
 concept-tags: [nameplate, actuator size, bench-set range, rated travel, stem diameter]
 status: legacy   # current slide uses deck art
+serves: [mnt.actuator.read-nameplate]
 source:
   - doc: Legacy deck
     locator: "img/image157.png (currently on slides 96 and 111)"
@@ -328,6 +339,7 @@ teaches: >
   at least one stem diameter of thread.
 concept-tags: [mounting, yoke locknut, bonnet, stem connector, hammer and chisel, thread engagement]
 status: current
+serves: [mnt.actuator.mount-on-valve]
 source:
   - doc: Fisher 657 / 667 Instruction Manual
     locator: "Figure 3 — 'Actuator-Mounting Components for Size 30/30i through 70/70i Actuators'"
@@ -349,6 +361,7 @@ teaches: >
   spring or loading-pressure force is on the connector.
 concept-tags: [stem connector, thread engagement, one stem diameter, incomplete engagement, upper bench set pressure, travel indicator disk, verify rated travel, cap screws under load]
 status: current   # corrected 2026-09-06 — was `legacy`; the 657/667 IMs carry a full current procedure, not just Fig 3
+serves: [mnt.actuator.install-stem-connector]
 source:
   - doc: Fisher 657 Instruction Manual (D100306X012)
     locator: >
@@ -389,6 +402,7 @@ teaches: >
   27 N·m (20 lbf·ft) — finishing with a circular check pass.
 concept-tags: [diaphragm casing torque, criss-cross pattern, clean and dry, 13 N·m, 27 N·m, 10 lbf·ft, 20 lbf·ft, two rounds]
 status: current
+serves: [mnt.actuator.torque-diaphragm-casing]
 source:
   - doc: Fisher 657 / 667 Instruction Manual
     locator: "Table 2 — 'Actuator Assembly Recommended Torque Values' (Diaphragm casing, key 23: 27 N·m / 20 lbf·ft)"
