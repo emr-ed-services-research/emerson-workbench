@@ -560,36 +560,22 @@ review wants valve-body disassembly safety as its own competency.
 
 ---
 
-## Role routing
+## Role routing — R1 (Franz, 2026-09-06)
 
-**The open question for this gate.** Franz's framing: hands-on depth never
-flexes by role, but role decides *which competencies a course routes a
-cohort toward*, and "operator training stays bounded to the same core
-actuator / instrument competencies the other three roles already need."
+**All four roles route to every competency.** 14101 is one hands-on course
+with a fixed bench programme — taking it means doing all of it, including
+the deep rebuild procedures (`lap-metal-seat`, `build-packing-stack`,
+`replace-piston-seal`, `torque-bonnet`). No `operator`-excludes list. This
+matches how the class runs: one cohort, hands-on, together — not a per-role
+filtered path inside a single live bench programme.
 
-Two readings of what 14101 routes to `operator`:
+Every placement edge in this file therefore carries
+`roles: [maint-tech, inst-tech, sizing-eng, operator]` (spelled out on the
+Phase 2 edges; stated once for the Phase 3 edges).
 
-- **(R1) All four roles → every competency.** 14101 is a maintenance
-  course; anyone who enrols does the whole bench programme. Simplest;
-  matches "the curriculum does not flex down."
-- **(R2) `operator` → a core subset.** Operators get the actuator arc
-  (`mnt.actuator.*` — action, fail mode, bench set, travel) and the
-  valve-body *identification / contrast* competencies, but not the deep
-  rebuild procedures (`lap-metal-seat`, `build-packing-stack`,
-  `replace-piston-seal`, `torque-bonnet`). Matches "bounded to the core
-  competencies," and reflects that an operator is unlikely to be sent to
-  re-lap a seat.
-
-Recommend **R1 for 14101 specifically** — it is a single hands-on course
-with a fixed bench programme, and Franz was explicit that taking the course
-means doing all of it. R2 is really a statement about *which course an
-operator is enrolled in*, not about filtering inside one. If R2 is wanted,
-the filter is a short `operator`-excludes list on ~6 procedure
-competencies.
-
-Until this is called, the placement edges above omit `roles` (Phase 3 is
-progression-level); the Phase 2 ch3-m2/m3 edges keep their provisional
-`[all four]`.
+A lighter operator subset (the old R2) may become a *separate, lighter
+course* if one is ever built — a statement about which course an operator
+enrolls in, not a filter inside 14101. Out of scope here.
 
 ---
 
