@@ -167,17 +167,65 @@ slide-by-slide review now has **both** surfaces.
 ### 5.4 Second fix pass — the templates themselves (2026-09-07)
 
 Landed in the shared `emerson-workbench.css` (one canonical file,
-propagated verbatim to every course; the three lock-tracked courses
-re-assembled via `build-course.ps1 -Force`, which also cleared a
-pre-existing lock/CSS drift). Each fix is unit-consistent with the logo's
-own `cqw` position, so it holds at any render size.
+propagated verbatim to every course). Each fix is unit-consistent with
+the logo's own `cqw` position, so it holds at any render size.
 
-| defect | template fix |
-|---|---|
-| logo overlap | New `--logo-keepout: 20cqw` token = the right inset that clears `.slide-chrome__logo` (pinned `left:81.4cqw`, ~5.75cqw tall, owns the bottom-right corner). Applied as `right` on `.tmpl-note` (both the absolute and the `:has(> .tmpl-note)` flow variant) and the global `.tmpl-source`; as a left-anchored `max-width: 72cqw` on the graph's `.tmpl-takeaway` / `.tmpl-source` (a right inset is unreliable there — the centred grid's edge position varies). Text of **any** length now wraps inside the safe zone. |
-| figcaption alignment | `.slide--tmpl-figrow .tmpl-row` is now a 2-track grid (image band / caption band) and each `.tmpl-cell` `subgrid`s onto both. The caption band is sized once, to the tallest figcaption across all cells, so a caption that wraps to two lines no longer shoves its own image up relative to a one-line neighbour — every bold heading sits on the same baseline, tag text flows down. Verified on shipped 2-cell (028), 3-cell (035, 114), single-cell (089), has-lead (089/091) and flow-note (098/103) figrows. |
-| graph plot "cut off" | plot row floor raised from `minmax(0,1fr)` to `minmax(42cqh,1fr)` — a long takeaway/source now overflows the slide bottom *visibly* instead of silently crushing the plot. |
-| `.reveal-answer` overflow | `white-space:nowrap` removed; the element is now a centred grid box in the lower band (`top:38cqh; bottom:5cqh`, `width:82cqw`, `text-wrap:balance`, `hyphens:auto`, `overflow:hidden` backstop) at `5.6cqw`. A terse answer ("A & D", "A · Direct-acting") still reads large; a full-sentence answer wraps and stays on the slide. |
+**Logo overlap.** New `--logo-keepout: 20cqw` token = the right inset that
+clears `.slide-chrome__logo` (pinned `left:81.4cqw`, ~5.75cqw tall, owns
+the bottom-right corner). Applied as `right` on `.tmpl-note` (both the
+absolute and the `:has(> .tmpl-note)` flow variant) and the global
+`.tmpl-source`; as a left-anchored `max-width: 72cqw` on the graph's
+`.tmpl-takeaway` / `.tmpl-source` (a right inset is unreliable there — the
+centred grid's edge position varies). Text of **any** length wraps inside
+the safe zone.
+
+**Figcaption alignment.** `.slide--tmpl-figrow .tmpl-row` is now a 2-track
+grid (image band / caption band) and each `.tmpl-cell` `subgrid`s onto
+both. The caption band is sized once, to the tallest figcaption across all
+cells, so a caption that wraps to two lines no longer shoves its own image
+up relative to a one-line neighbour — every bold heading sits on the same
+baseline, tag text flows down. Verified on shipped 2-cell (028), 3-cell
+(035, 114), single-cell (089), has-lead (089/091) and flow-note (098/103)
+figrows.
+
+**Graph plot floor.** `.slide--tmpl-graph` is a 4-row grid
+`[title 15cqh] [plot] [takeaway] [source]`; rows 3–4 are `auto` (size to
+content, grow when text wraps). Row 2 (plot) was `minmax(0, 1fr)` — the
+`0` minimum let the plot shrink to nothing as rows 3–4 grew, and the
+`max-height:100%` SVG scaled down with it, silently. Changed to
+`minmax(42cqh, 1fr)`. **42cqh is derived, not guessed:** the plot SVGs are
+`viewBox="0 0 640 366"` (aspect ≈ 1.75) in a `54cqw` column, so the SVG's
+natural height is `54 / 1.75 ≈ 30.9cqw ≈ 40cqh`; 42cqh is that plus a
+hair, the height at which the graph still renders full-size. Now if
+takeaway + source together exceed `100 − 15 − 42 = 43cqh` (≈ 5 wrapped
+lines each), the source line visibly runs off the slide bottom — an
+obvious "too much text" signal — instead of the plot vanishing. The plot
+is protected unconditionally; only the failure signal changed, from
+invisible to loud. (Capping takeaway/source with `overflow:hidden` like
+`.reveal-answer` was rejected — it would silently clip a citation, worse
+than a visible overflow caught in review.)
+
+**`.reveal-answer` full-sentence handling.** Was
+`position:absolute; left:50%; top:58cqh; transform:translateX(-50%);
+font-size:6.82cqw; white-space:nowrap` — a single non-wrapping line,
+centred, with no width cap, so a multi-word answer grew the box past both
+slide edges. Now: **`white-space:nowrap` deleted** (text may wrap);
+**`width:82cqw`** (a definite wrapping column, ~9cqw margin each side);
+**`top:38cqh; bottom:5cqh`** replaces the single anchor with a fixed
+82cqw × 57cqh box, entirely inside the slide; **`display:grid;
+place-content:center`** centres the text block (any line count) in that
+box, so longer answers grow symmetrically around ~y66cqh rather than
+pushing off the bottom; **`font-size` 6.82cqw → 5.6cqw** + `line-height:
+1.15` for headroom (≈ 29 chars/line, ≈ 8 lines / ≈ 230 chars fit before
+anything clips); **`overflow:hidden`** is the backstop — past ~8 lines the
+box clips the excess (symmetrically) instead of letting it spill onto the
+title or footer; `text-wrap:balance` + `hyphens:auto` even the lines and
+let a lone long token break. Net: the box has fixed dimensions and
+`overflow:hidden`, so "runs off-slide" is now structurally impossible; at
+2–5× the current answer length it wraps cleanly and stays large, and only
+at absurd length does it clip (bounded, inside the box). The one cost is
+the smaller base font — a terse answer ("A & D") reads a step smaller than
+before, still clearly a reveal.
 
 **Side effect — latent production bugs fixed:** shipped slides **92, 103,
 112** had `.tmpl-note` / `.tmpl-source` running under the logo in the raw
@@ -185,6 +233,43 @@ own `cqw` position, so it holds at any render size.
 fixed by the same change. Regression pass over ~15 production figrow /
 graph / check slides + the Template Gallery + Template Proof: no
 regressions.
+
+### 5.4a The `_engine-lock.json` / CSS hash drift (scoped)
+
+`build-course.ps1 -Force` on the three lock-tracked courses (14101,
+Template Gallery, Template Proof) also cleared a pre-existing drift. Fully
+scoped:
+
+- **What was out of sync:** `_engine-lock.json` recorded SHA256
+  `F4EA55F1…` for `build\css\emerson-workbench.css`; the actual file — in
+  the engine *and* every course copy, all byte-identical to each other —
+  was `6E43106F…`. Only the lock's bookkeeping was wrong; the CSS itself
+  was consistent everywhere.
+- **Since when:** commit `e5a995c` (2026-09-06), "Correct course number
+  1400 → 14101." The commit before it (`ccb7bd5`, 2026-09-05) had lock and
+  CSS matching exactly.
+- **What `e5a995c` changed in the CSS:** comment text only — five
+  occurrences of the string "1400" swept to "14101" (the header
+  docstring's PPTX filename + doc path, and four dated review-note
+  comments). **Zero rules, selectors, or values changed.** The sweep
+  edited comments (changing the file's hash) but didn't re-run
+  `build-course.ps1` to refresh the lock. `verify.ps1` would have `Warn`ed
+  about it (never `Fail`) from 09-06 on.
+- **Did clearing it change anything visible in production?** No. The
+  `-Force` run's only net content change to any course CSS is the four
+  defect fixes above (already accounted for) — the 09-06 comment sweep was
+  already present in every copy. The lock now records the true current
+  hash; no pixel changed.
+- **Did it mask / interact with the five B-self defects, or with why
+  render-check passed?** No, provably: (1) it was a comment-only
+  difference, so the CSS *rules* the slides rendered against were
+  identical either way; (2) `render-check.mjs` never reads
+  `_engine-lock.json` — the lock/drift check lives in `verify.ps1`, a
+  different tool; (3) the scratch course where B-self lives has **no
+  `_engine-lock.json` at all** (hand-set-up, never assembled by
+  `build-course.ps1`), so the drift did not exist there. render-check
+  passed the B-self slides for the reasons in §5.2 (narrow automated
+  checks + the pruned view I looked at); the lock has no role in that.
 
 ### 5.5 What was inspected — this pass
 
