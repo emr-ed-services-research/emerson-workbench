@@ -150,6 +150,7 @@ teaches: >
   the valve, seat ring is the upper travel stop.
 concept-tags: [PDTC, PDTO, valve body orientation, travel stop, seat ring, plug]
 status: legacy   # current slide uses deck art; recommend redraw
+serves: [mnt.valve-body.contrast-pdtc-pdto]
 source:
   - doc: Legacy deck
     locator: "img/image42.png, img/image43.png (currently on slide 93)"
@@ -158,7 +159,13 @@ source:
     bucket: archive-corroborated
 delivery: recommend house-style redraw / re-crop from D750004 p5+p7 cutaways —
   the deck images are uncredited and lower quality
-used-by: [93]
+used-by: [29, 93]
+notes: >
+  Same asset (img/image42+43) as `ch2-cmp-pdtc-pdto-sectionals` in
+  `Component Index — 14101 ch1-ch2.md` — used on ch2-m1 slide 29 as well.
+  ONE primitive (`prim.mnt.valve-body.contrast-pdtc-pdto.body-sections`),
+  two placement edges: ch2-m1 `introduces`, ch3-m1 `develops` (Franz
+  confirmed 2026-09-06). A future redraw would serve both.
 ```
 
 ```yaml

@@ -256,20 +256,19 @@ mechanism types and exercises the placement edge across modules.
 ```yaml
 - id: prim.mnt.actuator.set-travel.spring
   competencyId: mnt.actuator.set-travel
-  assetRef: TBD            # OPEN CONTENT ITEM — see below
+  asset: benchset-fig4-redraw.svg
   provenance: ch3-cmp-benchset-adjustment-setup
   redrawRecord: >
-    Redraw candidate. Neither existing asset serves the competency well:
-    the shipped deck photos ("Fisher 657 — Identify & Bench Set" page 5 of 5)
-    are functional but thin on why the step matters; Fisher 657/667 IM
-    Figure 4 is cluttered enough that a subject-matter expert struggled to
-    parse it. Redraw must take Figure 4 as the geometric source (do not
-    invent geometry), preserve what it correctly shows — spring adjuster,
-    lower/upper bench-set loading-pressure points, rated-travel measurement,
-    stem marking — and resolve the clutter. (Style Guide §5.8 redraw
-    reason: source figure confirmed hard to parse.)
+    House SVG redraw of Fisher 657/667 IM Figure 4 "Bench Set Adjustment"
+    (40A8715-B). Figure 4 as the geometric source; simplified for legibility
+    per Style Guide §5.8 (source figure confirmed hard to parse by an SME).
+    Keeps the spring adjuster, both stem marks, and the rated-travel
+    dimension; drops the yoke hatching, travel-indicator scales, DVC bracket,
+    and the ①②③④ note web. Selected by Franz 2026-09-06 over the shipped
+    deck photos and Fig 4 as-is. NOT yet placed on a slide — that is a
+    separate slide-edit go-ahead.
   variantTag: spring
-  status: pending          # awaiting the redraw; Phase 4 / Stage 3 authoring
+  status: exists           # redraw approved 2026-09-06
 
 - id: prim.mnt.actuator.set-travel.piston
   competencyId: mnt.actuator.set-travel
@@ -284,18 +283,14 @@ Two primitives, not three. The **spring** primitive covers both
 direct- and reverse-acting actuators — the same procedure appears on the
 reverse-acting screwdriver-method slide as *"the same procedure with a
 marked screwdriver/scale instead of a travel indicator,"* which is a
-slide-level framing difference, not a new primitive. It is currently
-`status: pending` on an **open content item** (see below). The **piston**
-primitive is genuinely new: a double-acting actuator has no bench set, sets
-travel against travel stops and a scale rather than a loading-pressure
-range, and uses a different stem connector — a real
+slide-level framing difference, not a new primitive. Its asset is a
+**house redraw of Fisher IM Figure 4**, approved by Franz 2026-09-06 after
+he found neither the shipped deck photos nor Fig 4 as-is adequate
+(`10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/build/assets/sourced/benchset-fig4-redraw.svg`).
+The **piston** primitive is genuinely new: a double-acting actuator has no
+bench set, sets travel against travel stops and a scale rather than a
+loading-pressure range, and uses a different stem connector — a real
 `competency × asset-variant` split.
-
-> **Open content item — `prim.mnt.actuator.set-travel.spring`.** Franz
-> reviewed both existing assets (2026-09-06) and found neither good enough.
-> This is a real content gap, not a medium choice: the primitive stays
-> `status: pending` until a redraw is produced and reviewed. It does not
-> block Phase 3.
 
 ### The placement edges
 

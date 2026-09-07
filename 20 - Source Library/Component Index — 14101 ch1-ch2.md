@@ -680,14 +680,16 @@ notes: image148 (torque-value table screenshot) dropped — values belong in the
 
 ## Discrepancies found during the index build
 
-1. **`contrast-pdtc-pdto` — one primitive, not two.** `ch2-cmp-pdtc-pdto-sectionals`
-   (this index) and `ch3-cmp-pdtc-pdto-bodies` (ch3 index) describe the
-   **same image files** (deck image42 / image43). So
-   `mnt.valve-body.contrast-pdtc-pdto` is served by **one primitive** used
-   at two placement edges — ch2-m1 slide 29 (`introduces`) and ch3-m1 slide
-   93 (`develops`) — not the two primitives Phase 4 call 2 provisionally
-   recorded. **For Franz:** confirm collapsing to one primitive
-   (`prim.mnt.valve-body.contrast-pdtc-pdto.body-sections`).
+1. **`contrast-pdtc-pdto` — one primitive, not two. RESOLVED (Franz,
+   2026-09-06).** `ch2-cmp-pdtc-pdto-sectionals` (this index) and
+   `ch3-cmp-pdtc-pdto-bodies` (ch3 index) describe the **same image files**
+   (deck image42 / image43). `mnt.valve-body.contrast-pdtc-pdto` is served
+   by **one primitive** (`prim.mnt.valve-body.contrast-pdtc-pdto.body-sections`)
+   at two placement edges — ch2-m1 slide 29 (`introduces`), ch3-m1 slide 93
+   (`develops`). Phase 4 call 2's provisional "two primitives" was wrong;
+   Franz confirmed the collapse and `Curriculum — 14101.md` is updated. The
+   two Component-Index records are kept (they carry different `teaches`
+   framing and `used-by`), but they point at one asset and one primitive.
 
 2. **`ch1-cmp-valve-assembly-stackup` (slide 14, deck image29)** could be
    upgraded to CVH Fig 1.3 (already sourced, used on slide 27). Minor,
@@ -713,9 +715,10 @@ in `Curriculum — 14101.md` now have real provenance: mostly **`current`**
 or **`legacy`** first-party deck sectionals corroborated against a named
 current-manual figure. **No archive content** in ch1/ch2.
 
-**Flagged for Franz:** discrepancy 1 (collapse `contrast-pdtc-pdto` to one
-primitive). Discrepancies 2–4 are logged, no action needed now.
+**Discrepancy 1 resolved (Franz, 2026-09-06):** `contrast-pdtc-pdto`
+collapsed to one primitive; `Curriculum — 14101.md` updated. Discrepancies
+2–4 are logged, no action requested.
 
-**Not done:** the `Curriculum — 14101.md` primitive registry rows are not
-yet rewritten to cite these component ids — that is a mechanical follow-up
-once discrepancy 1 is confirmed.
+**Follow-up:** the `Curriculum — 14101.md` `exists*` rows still cite the
+production slide rather than these component ids. Rewriting them to point at
+the `ch1-cmp-*` / `ch2-cmp-*` ids is a mechanical pass, not urgent.

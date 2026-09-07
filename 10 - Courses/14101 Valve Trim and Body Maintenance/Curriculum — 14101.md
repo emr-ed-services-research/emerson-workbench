@@ -205,10 +205,11 @@ full stop or unbuilt: `measure-deadband` (ch3-m6), and
 
 ## Primitives — Phase 2 (ch3-m2 / m3)
 
-One per `competency × asset-variant`. The retrofit invents none — nine are
-`status: exists` (the asset already shipped); one,
-`prim.mnt.actuator.set-travel.spring`, is `status: pending` after Franz's
-2026-09-06 review found neither shipped asset adequate (see Finding 3).
+One per `competency × asset-variant`. All ten are `status: exists`.
+`prim.mnt.actuator.set-travel.spring` was `pending` after Franz's
+2026-09-06 review found neither shipped asset adequate; it is now a house
+redraw of Fisher IM Figure 4 (`sourced/benchset-fig4-redraw.svg`),
+approved 2026-09-06, and moved to `exists` — not yet placed on a slide.
 The ch3-m1, ch2, and ch1-m1 primitives are in **Primitive registry —
 Phase 4** below.
 
@@ -265,16 +266,16 @@ Phase 4** below.
 
 - id: prim.mnt.actuator.set-travel.spring
   competencyId: mnt.actuator.set-travel
-  status: pending          # OPEN CONTENT ITEM — redraw candidate, see FINDING 3 resolution
-  assetRef: TBD
+  status: exists           # redraw approved by Franz 2026-09-06
+  asset: benchset-fig4-redraw.svg   # sourced/ — house redraw of Fisher IM Fig 4
   provenance: ch3-cmp-benchset-adjustment-setup
   redrawRecord: >
-    Redraw candidate. Shipped "Fisher 657 — Identify & Bench Set" page 5 of 5
-    uses two deck photos (mark-stem + measure-travel) — functional but thin.
-    Fisher IM Figure 4 is the alternative but is cluttered (SME-confirmed
-    hard to parse). Redraw takes Figure 4 as geometric source, preserves
-    spring adjuster / bench-set pressure points / rated-travel measure /
-    stem marking, resolves the clutter.
+    House SVG redraw of Fisher 657/667 IM Figure 4 "Bench Set Adjustment"
+    (40A8715-B). Fig 4 as geometric source; simplified for legibility per
+    Style Guide §5.8. Keeps spring adjuster / both stem marks / rated-travel
+    dimension; drops the yoke hatching, travel-indicator scales, DVC bracket,
+    and the ①②③④ note web. Selected over the shipped deck photos and Fig 4
+    as-is (Franz, 2026-09-06). NOT yet placed on a slide — separate go-ahead.
   variantTag: spring
 
 - id: prim.mnt.actuator.mount-on-valve.photo
@@ -424,7 +425,7 @@ but the same four roles apply to every one.
 ```yaml
 - { module: ch2-m1, competency: mnt.valve-body.identify-assembly-stackup,           progression: applies }
 - { module: ch2-m1, competency: mnt.valve-body.identify-trim-parts,                 progression: introduces }
-- { module: ch2-m1, competency: mnt.valve-body.contrast-pdtc-pdto,                  progression: introduces }
+- { module: ch2-m1, competency: mnt.valve-body.contrast-pdtc-pdto,                  progression: introduces, primitive: prim.mnt.valve-body.contrast-pdtc-pdto.body-sections, slide: 29, note: "same primitive ch3-m1 develops" }
 - { module: ch2-m1, competency: mnt.valve-body.contrast-balanced-unbalanced-plug,   progression: introduces }
 - { module: ch2-m1, competency: mnt.valve-body.identify-seat-and-tip-types,         progression: introduces }
 ```
@@ -489,7 +490,7 @@ but the same four roles apply to every one.
 ### ch3-m1 — Actuator Action, Fail Mode & Bench Set
 
 ```yaml
-- { module: ch3-m1, competency: mnt.valve-body.contrast-pdtc-pdto,               progression: develops, note: "fail-action treatment — dedicated slide 93, figure, Component Index entry; Phase 4 correction of Phase 3's `applies` (Franz confirmed 2026-09-06)" }
+- { module: ch3-m1, competency: mnt.valve-body.contrast-pdtc-pdto,               progression: develops, primitive: prim.mnt.valve-body.contrast-pdtc-pdto.body-sections, slide: 93, note: "same primitive ch2-m1 introduces; fail-action framing. Phase 4 correction of Phase 3's `applies` (Franz confirmed 2026-09-06)" }
 - { module: ch3-m1, competency: mnt.actuator.explain-actuator-action,            progression: introduces }
 - { module: ch3-m1, competency: mnt.actuator.determine-fail-mode,                progression: introduces }
 - { module: ch3-m1, competency: mnt.actuator.select-action-for-failsafe,         progression: introduces }
@@ -655,12 +656,14 @@ asset; Phase 5 / Stage 3 authoring.
 - id: prim.mnt.valve-body.contrast-pdtc-pdto.body-sections
   competencyId: mnt.valve-body.contrast-pdtc-pdto
   status: exists
-  asset: [image42.png, image43.png]           # PDTC and PDTO body sections (slide 93)
-  provenance: ch3-cmp-pdtc-pdto-bodies
+  asset: [image42.png, image43.png]           # PDTC / PDTO Fisher colour sectionals
+  provenance: ch2-cmp-pdtc-pdto-sectionals    # == ch3-cmp-pdtc-pdto-bodies (same image files)
   redrawRecord: existing deck figures, no redraw
-  variantTag: fail-action
-  # ch3-m1 DEVELOPS contrast-pdtc-pdto (Phase 3 said `applies`) — dedicated
-  # slide + figure = develops. See new-vs-reframe call 3.
+  # ONE primitive, TWO placement edges (Franz confirmed 2026-09-06): ch2-m1
+  # slide 29 `introduces`, ch3-m1 slide 93 `develops`. The Component Index
+  # build showed ch2-cmp-pdtc-pdto-sectionals and ch3-cmp-pdtc-pdto-bodies
+  # are the same asset — Phase 4 call 2's provisional "two primitives" was
+  # wrong. No variantTag: same asset, different framing at the two slides.
 ```
 
 ### ch2 + ch1-m1 primitives (registry table)
@@ -675,7 +678,7 @@ exists.
 | `mnt.valve-body.read-pressure-class` | `.pt-table` | exists* | ch1 slide 16 (ASME B16.34 table) |
 | `mnt.valve-body.read-leakage-class` | `.fci-class-table` | exists* | ch1 slide 19 (ANSI/FCI 70-2 table) |
 | `mnt.valve-body.identify-trim-parts` | `.globe-components` | exists | `cvh6-fig1-3-globe-valve-components.png` (CVH Fig 1.3), slide 27 |
-| `mnt.valve-body.contrast-pdtc-pdto` | `.stem-travel` (introduces) | exists* | ch2-m1 slide 28/29 — **plus** the ch3-m1 `.body-sections` variant above |
+| `mnt.valve-body.contrast-pdtc-pdto` | `.body-sections` (above) | exists | **one primitive** (`prim.mnt.valve-body.contrast-pdtc-pdto.body-sections`, deck image42/43) at two edges — ch2-m1 slide 29 `introduces`, ch3-m1 slide 93 `develops` (Franz confirmed 2026-09-06) |
 | `mnt.valve-body.contrast-balanced-unbalanced-plug` | `.plug-heads` | exists | `plug-unbalanced-head.png` + `plug-balanced-head.png`, slide 30 |
 | `mnt.valve-body.identify-seat-and-tip-types` | `.tip-and-seat` | exists* | ch2-m1 slides 31–35 |
 | `mnt.valve-body.contrast-cage-post-guiding` | `.cage-vs-post` | exists | `cage-plug-assembly.png`, slide 37 |
@@ -716,10 +719,14 @@ is flagged as the Phase 4 follow-on, not a Phase 4 blocker.
    (Franz). A fourth, `deadband-full` (ch3-m6), is named but under the full
    stop.
 
-2. **`contrast-pdtc-pdto` = two primitives** — ch2-m1's stem-travel
-   introduction and ch3-m1's fail-action body sections. Real variant split
-   tied to two progression steps (`introduces` → `develops`), not a reframe.
-   Confirmed.
+2. **`contrast-pdtc-pdto` = ONE primitive** — corrected after the ch1/ch2
+   Component Index build (2026-09-06): `ch2-cmp-pdtc-pdto-sectionals` and
+   `ch3-cmp-pdtc-pdto-bodies` are the same image files (deck image42/43), so
+   there is one primitive (`prim.mnt.valve-body.contrast-pdtc-pdto.body-sections`)
+   at two placement edges — ch2-m1 slide 29 `introduces`, ch3-m1 slide 93
+   `develops`. Phase 4's provisional "two primitives" was wrong; Franz
+   confirmed the collapse. *This is what the phase-gate discipline is meant
+   to produce* (Franz).
 
 3. **ch3-m1 `develops` `contrast-pdtc-pdto`** — corrected from Phase 3's
    `applies`. A dedicated teaching slide + figure + Component Index entry is
@@ -737,14 +744,15 @@ is flagged as the Phase 4 follow-on, not a Phase 4 blocker.
 | --- | --: | --: |
 | ch3-m2 / m3 (Phase 2) | 9 | 10 |
 | ch3-m1 (Phase 4) | 6 | 5 + 1 shared |
-| ch2 (Phase 4) | 22 | 22 |
+| ch2 (Phase 4) | 22 | 21 |
 | ch1-m1 (Phase 4) | 3 | 3 |
-| **Total, in-scope** | **37** (of 41) | **≈41** |
+| **Total, in-scope** | **37** (of 41) | **≈40** |
 | named-only (ch3-m6, ch4) | 4 | 0 now |
 
-**≈41 primitives for 37 edged competencies** — countable, bounded, one per
-`competency × asset-variant`. Growth beyond this happens only for a
-genuinely new combination, human-confirmed.
+**≈40 primitives for 37 edged competencies** — countable, bounded, one per
+`competency × asset-variant`. (Was ≈41; the `contrast-pdtc-pdto` collapse
+removed one — see new-vs-reframe call 2.) Growth beyond this happens only
+for a genuinely new combination, human-confirmed.
 
 ## Phase 2 findings
 
@@ -845,19 +853,20 @@ genuine "building in depth" arc that does exist for `mnt.actuator.bench-set`
 already carried by `progression` (`introduces → develops`), one primitive
 variant per step.
 
-**Franz's call (2026-09-06): neither existing asset is good enough.** The
-deck photos are functional but thin — they show the pen-mark action without
-the context for *why* it matters. Figure 4 is too cluttered; a
-subject-matter expert found it hard to parse, so a fresh student almost
-certainly can't follow it. This is a **content gap**, not a medium
-preference. The `prim.mnt.actuator.set-travel.spring` primitive stays
-`status: pending` (assetRef `TBD`) — a **redraw candidate** under the
-Style Guide §5.8 three-reason policy (source figure confirmed hard to
-parse). The redraw must take **Figure 4 as the geometric source** — not
-invent geometry from scratch — and preserve what Figure 4 correctly shows
-(spring adjuster, lower/upper bench-set loading-pressure points, rated-
-travel measurement, stem marking) while resolving the clutter. Tracked in
-*Open content items* below; does not block Phase 3.
+**Franz's call (2026-09-06): neither existing asset was good enough.** The
+deck photos are functional but thin; Figure 4 is too cluttered for even a
+subject-matter expert to parse quickly. A content gap, not a medium
+preference.
+
+**CLOSED 2026-09-06.** A house SVG redraw of Figure 4 was produced
+(`sourced/benchset-fig4-redraw.svg` — Fig 4 as geometric source per Style
+Guide §5.8; keeps spring adjuster / both stem marks / the rated-travel
+dimension; drops the yoke hatching, travel-indicator scales, DVC bracket,
+and the ①②③④ note web). Franz reviewed it directly and **selected it over
+both prior options**. `prim.mnt.actuator.set-travel.spring` moved to
+`status: exists`. Wiring the redraw onto the slide (replacing the two deck
+photos) awaits its own slide-edit go-ahead — it does not touch the Stage 3
+authoring gate.
 
 ---
 
@@ -867,12 +876,13 @@ Tracked, not blocking. These are content tasks, not schema decisions.
 
 | Item | Where | Status |
 | --- | --- | --- |
-| **`prim.mnt.actuator.set-travel.spring` redraw** — redraw Fisher IM Figure 4 for legibility (geometric source = Fig 4; preserve spring adjuster / bench-set pressure points / rated-travel measure / stem marking; resolve clutter). Neither the shipped deck photos nor Fig 4 is adequate. | *"Fisher 657 — Identify & Bench Set"* page 5 of 5 (`1400-098`) | `status: pending` — Phase 5 / Stage 3 authoring pass |
-| **ch2 / ch1 Component Index** — 11 valve-body primitives are `exists*` (production slide only). Build a Component Index for ch1 + ch2 to the ch3 standard (source doc + locator + precedence bucket per figure) so those primitives carry full provenance. Same size as the ch3 Component Index build. | ch1-m1, ch2-m1…m7 | Phase 4 follow-on — not a blocker |
+| **`prim.mnt.actuator.set-travel.spring` redraw** — house SVG redraw of Fisher IM Figure 4. | `sourced/benchset-fig4-redraw.svg` | **DONE** — Franz selected it 2026-09-06 over both prior options; primitive moved to `status: exists`. Wiring it onto *"Fisher 657 — Identify & Bench Set"* page 5 of 5 (replacing the two deck photos) awaits a separate slide-edit go-ahead. |
+| **ch1 / ch2 Component Index** — build a Component Index for ch1 + ch2 to the ch3 standard so the `exists*` valve-body primitives carry full provenance. | ch1-m1, ch2-m1…m7 | **DONE** — `Component Index — 14101 ch1-ch2.md`, 25 components, committed 2026-09-06. The `exists*` rows now have real provenance. Minor items in its own "Discrepancies" section. |
 | **Finding 5** — possible redundant caution: *"Mount & Service"* page 4 of 5 (`1400-105`) may be `applies`, not `develops`, of `mnt.actuator.relieve-spring-before-casing`. | ch3-m3 | for the ch3-m3 owner |
 | **Finding 6** — RESOLVED in Phase 3: friction is a `develops` step of `mnt.actuator.bench-set`, not a separate competency. | ch3-m3 | closed |
 | **Finding 7** — "jam nut" terminology on *"Mount & Service"* page 3 of 5 (`1400-103`) is not Fisher IM wording. | ch3-m3 | slide-content fix |
-| **ch2-m4 disassembly-safety asymmetry** — folded into `mnt.valve-body.disassemble-body` rather than split out as its own `caution` competency (the actuator side splits it out). Watch item, no change requested at the Phase 3 gate. | ch2-m4 | watch |
+| **ch2-m4 disassembly-safety asymmetry** — folded into `mnt.valve-body.disassemble-body` rather than split out as its own `caution` competency (the actuator side splits it out). | ch2-m4 | watch — no change requested |
+| **ch1 slide-14 upgrade / EZ IM Fig 12 redraw candidate** — see the ch1-ch2 Component Index "Discrepancies". | ch1-m1 / ch2-m2 | logged, no action requested |
 
 ## Gate log
 
@@ -882,8 +892,9 @@ The schema **held** — it describes every ch3-m2 / m3 content slide with no
 invented structure. The two schema gaps are resolved and folded into
 `curriculum-development.md`: Finding 1 (assessment edges =
 `primitive: null`, `progression: applies`) and Finding 2 (`asset` may be a
-list, for parallel figrows only). Finding 3 needed no schema change — it is
-a tracked content gap. Findings 4–7 are content-owner items.
+list, for parallel figrows only). Finding 3 needed no schema change — it
+was a content gap, now **closed** (redraw produced and approved 2026-09-06).
+Findings 4–7 are content-owner items.
 
 ### Phase 3 — closed (Franz, 2026-09-06)
 
@@ -897,19 +908,24 @@ item, no change requested.
 
 ### Phase 4 — closed (Franz, 2026-09-06)
 
-**Delivered:** a primitive per competency — ch3-m1 in full YAML (5 + 1
-shared), ch2 / ch1-m1 as a registry table (25 rows). **≈41 primitives for
-37 edged competencies.** No `pending` on the valve-body side (every ch2 /
-ch1 competency has a shipped figure); `prim.mnt.actuator.set-travel.spring`
-remains the one `pending` primitive (the Finding 3 redraw).
+**Delivered:** a primitive per competency — ch3-m1 in full YAML, ch2 /
+ch1-m1 as a registry table. **≈40 primitives for 37 edged competencies**
+(≈41 at the gate; the `contrast-pdtc-pdto` collapse below removed one).
 
-**Provenance:** 14 valve-body primitives are `SOURCES.txt`-backed
-(`exists`); 11 are `exists*` — production slide only. The `exists*` rows
-need a **ch2 / ch1 Component Index** to reach the ch3 standard — real
-editorial work (ch3-Component-Index scale), flagged as the Phase 4
-follow-on, not a blocker.
+**Follow-ons — both now DONE** (2026-09-06, neither touched the Stage 3
+authoring gate):
+- **ch1/ch2 Component Index** built to the ch3 standard —
+  `Component Index — 14101 ch1-ch2.md`, 25 components. The `exists*`
+  valve-body primitives now carry real provenance.
+- **`prim.mnt.actuator.set-travel.spring`** — the redraw was produced,
+  Franz selected it over both prior options, and the primitive is now
+  `status: exists`.
 
-**All four new-vs-reframe calls confirmed** (see that section). No flags.
+**New-vs-reframe calls:** three confirmed as recorded. **Call 2 corrected**
+after the Component Index build: `contrast-pdtc-pdto` is **one** primitive
+at two edges, not two primitives — Franz confirmed the collapse
+("exactly the kind of correction the phase-gate discipline is meant to
+produce").
 The `exists*` provenance gap is logged as the ch1/ch2 Component Index
 follow-on — real editorial work, not rushed to close this gate.
 
