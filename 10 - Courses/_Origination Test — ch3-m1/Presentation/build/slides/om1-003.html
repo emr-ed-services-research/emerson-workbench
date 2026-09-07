@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OT31 &middot; Slide 003 &mdash; Fail Mode of the Assembly</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- PHASE 5 ORIGINATION DRY RUN — Candidate B-self. Concept 3 of om1.
+       Competency mnt.actuator.determine-fail-mode [analyze · mechanism ·
+       introduces]. Primitive: prim.mnt.actuator.determine-fail-mode.schematic-
+       matrix — Component Index ch3-cmp-fail-mode-matrix
+       (fail-mode-spring-schematics.png, the four DA/RA × PDTC/PDTO
+       spring-and-body schematics, already extracted). Template
+       .slide--tmpl-figrow.has-lead: the four-way outcome matrix as the lead
+       table, the schematics as the figure row. Matrix wording is the fail
+       OUTCOME per pairing (not the selection direction — that is slide 4).
+       SELF-CHECK: matrix cross-checked against ch3-cmp-fail-mode-matrix
+       teaches text and CVH §3.8.1 sign convention — DA fails up: over PDTC
+       the plug lifts (fail-open), over PDTO the plug seats (fail-closed);
+       RA fails down: over PDTC the plug seats (fail-closed), over PDTO the
+       plug drops (fail-open). -->
+  <article class="slide slide--tmpl-figrow has-lead" data-slide="3" data-deck="om1">
+    <h1 class="slide-title">Fail Mode of the Assembly</h1>
+    <div class="tmpl-stack">
+      <div class="tmpl-lead">
+        <table class="tmpl-table" data-ref="fail-mode-outcomes" style="font-size:1.7cqw; table-layout:fixed">
+          <colgroup><col style="width:34%"><col style="width:33%"><col style="width:33%"></colgroup>
+          <thead><tr><th>On loss of air</th><th>PDTC body</th><th>PDTO body</th></tr></thead>
+          <tbody>
+            <tr><td>Direct-acting (fails up)</td><td>plug lifts &mdash; <b>fail open</b></td><td>plug seats &mdash; <b>fail closed</b></td></tr>
+            <tr><td>Reverse-acting (fails down)</td><td>plug seats &mdash; <b>fail closed</b></td><td>plug drops &mdash; <b>fail open</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tmpl-row">
+        <figure class="tmpl-cell">
+          <img src="../assets/sourced/fail-mode-spring-schematics.png" alt="Four spring-and-body schematics. Direct-acting actuator, spring driving the stem up on loss of air: over a PDTC body the plug lifts off the seat (fail-open); over a PDTO body the plug moves onto the seat (fail-closed). Reverse-acting actuator, spring driving the stem down: over a PDTC body the plug seats (fail-closed); over a PDTO body the plug drops off the seat (fail-open).">
+          <figcaption><b>Spring-drive direction &times; body orientation</b>&rarr; the assembly's fail mode</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">3</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

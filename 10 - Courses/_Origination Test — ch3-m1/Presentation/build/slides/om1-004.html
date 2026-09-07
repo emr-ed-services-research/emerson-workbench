@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OT31 &middot; Slide 004 &mdash; Selecting an Action</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- PHASE 5 ORIGINATION DRY RUN — Candidate B-self. Concept 4 of om1.
+       Competency mnt.actuator.select-action-for-failsafe [evaluate ·
+       application · introduces]. Shares the fail-mode-matrix primitive
+       (ch3-cmp-fail-mode-matrix) — no new figure; the level treatment for
+       `evaluate` is "the judgement — a decision framework / a matrix", so
+       this is the matrix READ IN THE SELECT DIRECTION: given a required safe
+       failure + a body, pick the actuator action. Template
+       .slide--tmpl-table.
+       CONCEPT-MAP NOTE: the shipped ch3-m1 deck folds this concept and
+       concept 3 (determine-fail-mode) onto ONE slide (shipped slide 89).
+       Candidate B keeps them separate per the origination "one concept per
+       slide" rule — flagged in COMPARISON.md as over-fragmentation vs. the
+       human cut. -->
+  <article class="slide slide--tmpl-table" data-slide="4" data-deck="om1">
+    <h1 class="slide-title">Selecting an Action</h1>
+    <div class="tmpl-wrap">
+      <table class="tmpl-table" data-ref="fail-safe-selection" style="font-size:1.9cqw; table-layout:fixed">
+        <caption style="caption-side:top; text-align:left; font-size:1.6cqw; color:var(--emerson-charcoal); padding:0 0 1cqh; line-height:1.35;">Work backwards from safety: decide fail-open or fail-closed first, then choose actuator action and body orientation together &mdash; the spring must drive the valve the safe way.</caption>
+        <colgroup><col style="width:30%"><col style="width:32%"><col style="width:38%"></colgroup>
+        <thead><tr><th>Safe failure needed</th><th>With this body&hellip;</th><th>&hellip;choose this action</th></tr></thead>
+        <tbody>
+          <tr><td rowspan="2">Fail closed</td><td>PDTC</td><td>Reverse-acting</td></tr>
+          <tr><td>PDTO</td><td>Direct-acting</td></tr>
+          <tr><td rowspan="2">Fail open</td><td>PDTC</td><td>Direct-acting</td></tr>
+          <tr><td>PDTO</td><td>Reverse-acting</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">4</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

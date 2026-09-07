@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OT31 &middot; Slide 006 &mdash; What Bench Set Excludes</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- PHASE 5 ORIGINATION DRY RUN — Candidate B-self. Concept 6 of om1.
+       Competency mnt.actuator.explain-excluded-forces [understand ·
+       nomenclature · develops — this extends the bench-set concept from
+       slide 5 by naming what it leaves out]. Primitives: ch3-cmp-valve-
+       forces-cutaway (globe-valve-forces-cutaway.png — Fisher W0451-1 from
+       archive D750020, the A/B/C/D force cutaway, already extracted) +
+       ch3-cmp-bench-set-decomposition (the F_i / F_s / F_CVR segmented-scale
+       idea from D750004 p18-19 + CVH §8.5.5). Template
+       .slide--tmpl-figrow.has-lead: the A-D force table as the lead, the
+       force cutaway as the figure. Table wording after CVH §5.11.1.1-4.
+       "Packing box" = the bored recess the stem packing sits in (row C),
+       per the standing terminology correction. -->
+  <article class="slide slide--tmpl-figrow has-lead" data-slide="6" data-deck="om1">
+    <h1 class="slide-title">What Bench Set Excludes</h1>
+    <div class="tmpl-stack">
+      <div class="tmpl-lead">
+        <table class="tmpl-table" data-ref="valve-forces-excluded" style="font-size:1.5cqw; table-layout:fixed">
+          <colgroup><col style="width:24%"><col style="width:28%"><col style="width:48%"></colgroup>
+          <thead><tr><th>Force</th><th>Where it acts</th><th>Set by</th></tr></thead>
+          <tbody>
+            <tr><td>A &middot; Static unbalance</td><td>Valve plug face</td><td>process &Delta;P &times; net unbalance area &mdash; large on unbalanced plugs, small on balanced</td></tr>
+            <tr><td>B &middot; Seat load</td><td>Plug-to-seat contact line</td><td>the ANSI/FCI shutoff class wanted, in lb per lineal inch of port</td></tr>
+            <tr><td>C &middot; Packing friction</td><td>Stem, in the packing box</td><td>stem size, packing type, and packing compression</td></tr>
+            <tr><td>D &middot; Additional forces</td><td>Piston-ring seals, bellows, soft seats</td><td>construction &mdash; e.g. piston-ring friction on balanced trim</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tmpl-row">
+        <figure class="tmpl-cell">
+          <img src="../assets/sourced/globe-valve-forces-cutaway.png" alt="Cutaway of a cage-guided balanced-plug globe valve with Fisher's own force callouts: plug unbalance static (A) on the plug face, seat load (B) at the plug-to-seat line, packing friction (C) at the stem, piston-ring friction (D) at the cage bore.">
+          <figcaption><b>Bench set is friction-free by definition</b>these four are what the actuator must <i>also</i> overcome in the line</figcaption>
+        </figure>
+      </div>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">6</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>
