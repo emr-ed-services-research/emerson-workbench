@@ -2,7 +2,9 @@ window.EW_COURSE = {
   "course": {
     "code": "14101",
     "title": "Valve Trim and Body Maintenance",
-    "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential"
+    "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential",
+    "domain": "maintenance",
+    "tier": "introductory"
   },
   "slideBase": "../build/slides/",
   "slidePrefix": "1400-",
