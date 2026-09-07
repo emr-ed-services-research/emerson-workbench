@@ -114,20 +114,25 @@ no context, no progression** — those live on the placement edge or the
 course.
 
 ```yaml
-id: prim.mnt.actuator.set-travel.spring
-competencyId: mnt.actuator.set-travel
+id: prim.mnt.actuator.identify-sd-construction.cutaway
+competencyId: mnt.actuator.identify-sd-construction
 status: exists                              # exists | pending  (built vs. planned but not yet authored)
-asset: 657-benchset-adjustment-fig4.png     # or assetRef: <id> into the Component Index
-provenance: ch3-cmp-benchset-adjustment-setup   # Component Index entry
+asset: image155.png                         # one filename, OR a list for a true parallel figrow (Finding 2)
+provenance: ch3-cmp-657-assembly            # Component Index entry
 redrawRecord: >                             # the three-reason redraw rule, applied per primitive
-  Existing-figure crop, no redraw. Fisher 657/667 IM Figure 4, cropped to
-  the drawing. (Style Guide §5.8 — none of the three redraw reasons apply.)
-variantTag: spring                          # optional; only when a competency has a real asset split
+  Existing figure, no redraw — first-party colour sectional, cleaner than
+  the IM parts drawings. (Style Guide §5.8 — no redraw reason applies.)
+variantTag: cutaway                         # optional; only when a competency has a real asset split
 ```
 
-`status: pending` primitives carry `assetRef`, `provenance`, and
-`redrawRecord` as `TBD` until authored; a `status: exists` primitive must
-name a real asset and a real Component Index entry.
+- **`asset` may be a single filename or a list.** A list is only for a
+  genuine *parallel* figrow — several figures shown side by side at once, as
+  one authored layout (Finding 2). It is **not** for an ordered sequence
+  where one figure precedes another for a pedagogical reason; that is a
+  `progression` matter on the placement edge, not a primitive.
+- `status: pending` primitives carry `assetRef`, `provenance`, and
+  `redrawRecord` as `TBD` until authored; a `status: exists` primitive must
+  name a real asset and a real Component Index entry.
 
 A new primitive is created **only** for a genuinely new `competency ×
 asset-variant`. It is a human-curated call: an agent may propose "new
@@ -139,14 +144,19 @@ never adjudicated live by an agent.
 ```yaml
 moduleId: 14101/direct-acting-actuator
 roles: [maint-tech, inst-tech, sizing-eng, operator]   # explicit and mandatory — no "all" default
-competencyId: mnt.actuator.set-travel
+competencyId: mnt.actuator.set-travel                  # or a list, on an assessment edge
 progression: introduces               # introduces | develops | applies
-primitiveId: prim.mnt.actuator.set-travel.spring
+primitiveId: prim.mnt.actuator.set-travel.spring       # null on an assessment edge (Finding 1)
 ```
 
 `roles` is always written out. When a module serves all four, list all
 four; when a competency is routed to a subset, the edge names the subset.
 There is no implicit default to interpret later.
+
+**Assessment (Check Your Knowledge) edges** carry `progression: applies`,
+`primitiveId: null`, and a `competencyId` list naming every competency the
+check tests. A check is an application of its module's competencies, not a
+teaching artifact — so it has no primitive (Finding 1).
 
 **Progression:**
 
@@ -246,13 +256,20 @@ mechanism types and exercises the placement edge across modules.
 ```yaml
 - id: prim.mnt.actuator.set-travel.spring
   competencyId: mnt.actuator.set-travel
-  asset: 657-benchset-adjustment-fig4.png
+  assetRef: TBD            # OPEN CONTENT ITEM — see below
   provenance: ch3-cmp-benchset-adjustment-setup
   redrawRecord: >
-    Existing-figure crop, no redraw. Fisher 657/667 IM Figure 4 cropped to
-    the drawing (Style Guide §5.8 — no redraw reason applies).
+    Redraw candidate. Neither existing asset serves the competency well:
+    the shipped deck photos ("Fisher 657 — Identify & Bench Set" page 5 of 5)
+    are functional but thin on why the step matters; Fisher 657/667 IM
+    Figure 4 is cluttered enough that a subject-matter expert struggled to
+    parse it. Redraw must take Figure 4 as the geometric source (do not
+    invent geometry), preserve what it correctly shows — spring adjuster,
+    lower/upper bench-set loading-pressure points, rated-travel measurement,
+    stem marking — and resolve the clutter. (Style Guide §5.8 redraw
+    reason: source figure confirmed hard to parse.)
   variantTag: spring
-  status: exists            # already on slides 1400-098 and 1400-114
+  status: pending          # awaiting the redraw; Phase 4 / Stage 3 authoring
 
 - id: prim.mnt.actuator.set-travel.piston
   competencyId: mnt.actuator.set-travel
@@ -264,15 +281,21 @@ mechanism types and exercises the placement edge across modules.
 ```
 
 Two primitives, not three. The **spring** primitive covers both
-direct- and reverse-acting actuators — the Component Index already records
-Figure 4 as `used-by: [98, 99, 114]`, where slide 114 is the reverse-acting
-(667) screwdriver-method slide, *"the same procedure with a marked
-screwdriver/scale instead of a travel indicator."* That is a **slide-level
-framing difference, not a new primitive.** The **piston** primitive is
-genuinely new: a double-acting actuator has no bench set, sets travel
-against travel stops and a scale rather than a loading-pressure range, and
-uses a different stem connector — a real `competency × asset-variant`
-split.
+direct- and reverse-acting actuators — the same procedure appears on the
+reverse-acting screwdriver-method slide as *"the same procedure with a
+marked screwdriver/scale instead of a travel indicator,"* which is a
+slide-level framing difference, not a new primitive. It is currently
+`status: pending` on an **open content item** (see below). The **piston**
+primitive is genuinely new: a double-acting actuator has no bench set, sets
+travel against travel stops and a scale rather than a loading-pressure
+range, and uses a different stem connector — a real
+`competency × asset-variant` split.
+
+> **Open content item — `prim.mnt.actuator.set-travel.spring`.** Franz
+> reviewed both existing assets (2026-09-06) and found neither good enough.
+> This is a real content gap, not a medium choice: the primitive stays
+> `status: pending` until a redraw is produced and reviewed. It does not
+> block Phase 3.
 
 ### The placement edges
 

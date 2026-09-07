@@ -105,8 +105,10 @@ All under `mnt.actuator.*`. Eight, derived from the ch3-m2/m3 key concepts.
 
 ## Primitives
 
-One per `competency × asset-variant`. Every one is `status: exists` — this
-retrofit invents none.
+One per `competency × asset-variant`. The retrofit invents none — nine are
+`status: exists` (the asset already shipped); one,
+`prim.mnt.actuator.set-travel.spring`, is `status: pending` after Franz's
+2026-09-06 review found neither shipped asset adequate (see Finding 3).
 
 ```yaml
 - id: prim.mnt.actuator.identify-sd-construction.cutaway
@@ -161,13 +163,17 @@ retrofit invents none.
 
 - id: prim.mnt.actuator.set-travel.spring
   competencyId: mnt.actuator.set-travel
-  status: exists
-  asset: [image159.png, benchset-measure-travel.png]   # mark-stem close-up + measure-travel photo (slide 098)
+  status: pending          # OPEN CONTENT ITEM — redraw candidate, see FINDING 3 resolution
+  assetRef: TBD
   provenance: ch3-cmp-benchset-adjustment-setup
-  redrawRecord: existing deck photos (crop), no redraw; burned-in deck arrows kept
+  redrawRecord: >
+    Redraw candidate. Shipped "Fisher 657 — Identify & Bench Set" page 5 of 5
+    uses two deck photos (mark-stem + measure-travel) — functional but thin.
+    Fisher IM Figure 4 is the alternative but is cluttered (SME-confirmed
+    hard to parse). Redraw takes Figure 4 as geometric source, preserves
+    spring adjuster / bench-set pressure points / rated-travel measure /
+    stem marking, resolves the clutter.
   variantTag: spring
-  # SEE FINDING 3 — the Component Index and the template proof (tp-017) use
-  # Fisher IM Fig 4 for this; production slide 098 uses the two photos above.
 
 - id: prim.mnt.actuator.mount-on-valve.photo
   competencyId: mnt.actuator.mount-on-valve
@@ -198,6 +204,7 @@ Ten primitives for nine competencies: `mnt.actuator.bench-set` and
 `mnt.actuator.relieve-spring-before-casing` each carry two variants (both
 flagged below). `mnt.actuator.direct-acting-principle` carries **none** —
 it is taught in ch3-m1 and only *applied* here (see edges).
+`mnt.actuator.set-travel` has one primitive, currently `pending`.
 
 ---
 
@@ -295,32 +302,30 @@ are *"Fisher 657 — Identify & Bench Set"* (5 pages) and *"Fisher 657 —
 Mount & Service"* (5 pages). Internal pipeline numbers are in parens for
 file reference only.
 
-### Schema gaps — need a decision before Phase 3
+### Schema gaps — resolved (Franz, 2026-09-06)
 
-**FINDING 1 — Check slides don't fit "one edge, one primitive."**
-The Check Your Knowledge slides after *"Fisher 657 — Identify & Bench Set"*
-(`1400-100`) and *"Fisher 657 — Mount & Service"* (`1400-108`) assess a
-module's competencies but teach none and use no primitive. The retrofit
-models them as an `applies` edge naming several competencies with
-`primitive: null`. Options: (a) accept `primitive: null` on assessment
-edges; (b) add an `assessment-item` primitive type; (c) model checks
-outside the competency graph entirely. Recommend (a) — smallest, and a
-check genuinely *is* an application of its module's competencies.
+**FINDING 1 — Check slides don't fit "one edge, one primitive." APPROVED
+option (a).** The Check Your Knowledge slides after *"Fisher 657 — Identify
+& Bench Set"* (`1400-100`) and *"Fisher 657 — Mount & Service"* (`1400-108`)
+are modelled as an `applies` edge with `primitive: null` naming every
+competency the check tests. Folded into `curriculum-development.md` →
+Placement edge → "Assessment edges."
 
-**FINDING 2 — Multi-asset slides.** Three slides are two-figure `figrow`
-layouts: *"Fisher 657 — Identify & Bench Set"* page 5 of 5 (`1400-098`),
-*"Fisher 657 — Mount & Service"* page 1 of 5 (`1400-101`) and page 5 of 5
-(`1400-106`). The retrofit treats each as **one primitive whose `asset` is
-a list**, on the basis that a figrow is one authored layout. Confirm the
-`asset` field may be a list, or split these into one primitive per figure
-with a shared competency.
+**FINDING 2 — Multi-asset slides. APPROVED.** The `asset` field may be a
+**list** — but only for a genuine *parallel* figrow (several figures shown
+side by side at once, as one authored layout): *"Fisher 657 — Identify &
+Bench Set"* page 5 of 5 (`1400-098` — but see Finding 3), *"Fisher 657 —
+Mount & Service"* page 1 of 5 (`1400-101`) and page 5 of 5 (`1400-106`). A
+list is **not** for an ordered sequence — that is a `progression` matter on
+the edge. Folded into `curriculum-development.md` → Instructional primitive.
 
 ### Content notes — not model problems, logged for the owner
 
-**FINDING 3 — Slide-98 asset vs. the Phase 1 worked example.** See the
-dedicated resolution below — the deadband premise it turned on did not hold
-on inspection, so this is now a plain medium choice, not a canonical-asset
-or ordered-sequence question.
+**FINDING 3 — `mnt.actuator.set-travel` has no adequate asset. RESOLVED as
+an open content item, not a schema decision.** See the dedicated resolution
+below. Franz reviewed both existing assets and found neither good enough;
+the primitive stays `status: pending` pending a redraw. Does not block
+Phase 3.
 
 **FINDING 4 — `used-by` staleness.** `ch3-cmp-benchset-adjustment-setup`
 lists `used-by: [98, 99, 114]`; the slide that was `1400-099` was folded
@@ -375,29 +380,49 @@ not hold.** Four sources agree:
 
 Figure 4 and the deck photos teach the **same procedure at the same
 depth** — off-valve bench-set travel verification — differing only in
-medium (2018 line drawing vs. two photos). So:
+medium (2018 line drawing vs. two photos). So there is **no
+ordered-sequence schema construct motivated by this slide**, and the
+genuine "building in depth" arc that does exist for `mnt.actuator.bench-set`
+(*"Actuator Action, Fail Mode & Bench Set"* → *"Identify & Bench Set"* page
+4 of 5 → *"Mount & Service"* page 2 of 5 → the ch3-m6 deadband slide) is
+already carried by `progression` (`introduces → develops`), one primitive
+variant per step.
 
-- **No ordered-sequence schema construct is motivated by this slide.**
-- The genuine "building in depth" arc that does exist —
-  `mnt.actuator.bench-set` across *"Actuator Action, Fail Mode & Bench Set"*
-  → *"Identify & Bench Set"* page 4 of 5 → *"Mount & Service"* page 2 of 5
-  → the ch3-m6 deadband slide — is already expressed by `progression`
-  (`introduces → develops`) on placement edges, one primitive variant per
-  step. No new construct needed there either.
-- What remains is a **medium choice** for `prim.mnt.actuator.set-travel.spring`:
-  the two deck photos that shipped (and that Franz approved in the ch3-m2
-  consolidation), Figure 4 (the template-proof and origination-test
-  choice), or both under Finding 2's `asset`-list.
+**Franz's call (2026-09-06): neither existing asset is good enough.** The
+deck photos are functional but thin — they show the pen-mark action without
+the context for *why* it matters. Figure 4 is too cluttered; a
+subject-matter expert found it hard to parse, so a fresh student almost
+certainly can't follow it. This is a **content gap**, not a medium
+preference. The `prim.mnt.actuator.set-travel.spring` primitive stays
+`status: pending` (assetRef `TBD`) — a **redraw candidate** under the
+Style Guide §5.8 three-reason policy (source figure confirmed hard to
+parse). The redraw must take **Figure 4 as the geometric source** — not
+invent geometry from scratch — and preserve what Figure 4 correctly shows
+(spring adjuster, lower/upper bench-set loading-pressure points, rated-
+travel measurement, stem marking) while resolving the clutter. Tracked in
+*Open content items* below; does not block Phase 3.
 
-## Gate verdict
+---
 
-The schema **held** — it describes finished content with no invented
-structure. It is **not "wrong"** in the sense the pathway's stop condition
-means. Findings 1 and 2 are genuine unspecified constructs (assessment
-items, composite figures) that Phase 3 will hit immediately, so they want a
-decision now. Finding 3 turned out not to need a schema change — the
-ordered-sequence idea it raised is not motivated once the deadband premise
-is dropped. Findings 4–7 are content-owner items, not blockers.
+## Open content items
 
-**Recommend:** resolve Findings 1 and 2, make the medium call on Finding 3's
-primitive, then open Phase 3.
+Tracked, not blocking. These are content tasks, not schema decisions.
+
+| Item | Where | Status |
+| --- | --- | --- |
+| **`prim.mnt.actuator.set-travel.spring` redraw** — redraw Fisher IM Figure 4 for legibility (geometric source = Fig 4; preserve spring adjuster / bench-set pressure points / rated-travel measure / stem marking; resolve clutter). Neither the shipped deck photos nor Fig 4 is adequate. | *"Fisher 657 — Identify & Bench Set"* page 5 of 5 (`1400-098`) | `status: pending` — Phase 4 / Stage 3 authoring pass |
+| **Finding 5** — possible redundant caution: *"Mount & Service"* page 4 of 5 (`1400-105`) may be `applies`, not `develops`, of `mnt.actuator.relieve-spring-before-casing`. | ch3-m3 | for the ch3-m3 owner |
+| **Finding 6** — `mnt.actuator.bench-set` `develops` vs. a new `mnt.actuator.friction-effect` competency for *"Mount & Service"* page 2 of 5 (`1400-102`). | ch3-m3 | judgment call, deferred |
+| **Finding 7** — "jam nut" terminology on *"Mount & Service"* page 3 of 5 (`1400-103`) is not Fisher IM wording. | ch3-m3 | slide-content fix |
+
+## Gate verdict — Phase 2 closed (Franz, 2026-09-06)
+
+The schema **held** — it describes every ch3-m2 / m3 content slide with no
+invented structure. The two schema gaps are resolved and folded into
+`curriculum-development.md`: Finding 1 (assessment edges =
+`primitive: null`, `progression: applies`) and Finding 2 (`asset` may be a
+list, for parallel figrows only). Finding 3 needed no schema change — it is
+a tracked content gap. Findings 4–7 are content-owner items.
+
+**Phase 3 is clear to proceed.** The `mnt.actuator.set-travel` asset gap is
+an open content item, not a Phase 3 blocker.
