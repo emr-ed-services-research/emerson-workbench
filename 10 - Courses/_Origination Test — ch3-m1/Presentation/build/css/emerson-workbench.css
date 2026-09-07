@@ -601,12 +601,31 @@
 }
 .slide.is-revealed .reveal-answer { visibility: visible; }
 
+/* ---------- 7a. 16:9 aspect, standalone (raw single-slide viewer) -----
+   `.ew-16x9` sets the slide's aspect to 16:9 and refits the letterbox calc
+   used outside the course shell (build/index.html) to that ratio - nothing
+   else changes: chrome stays visible, no text is pruned. This is the QA/
+   review surface (Franz review, 14101 layout pass 2026-09-07: 4:3 is
+   retired as a target - virtually no delivery screen is 4:3 today, and the
+   only reason the raw viewer rendered it was that 1056x816 is the slide's
+   native authoring canvas, inherited unchanged from the source PPTX page
+   size, not a deliberate delivery shape). `.ew-embedded` below also gets
+   16:9 but additionally hides chrome and stretches to fill a pre-sized
+   card - the course shell's job, not this one. All slide geometry is
+   percentage / container-query based, so figures and the title furniture
+   reflow into the new ratio without distortion either way. */
+.ew-16x9 .slide { --slide-h: 594; }            /* 1056 x 594 = 16:9 */
+.ew-16x9 .ew-stage .slide {
+  width: min(100%, calc((100vh - 5vmin) * 1056 / 594));
+}
+
 /* ---------- 7b. Embedded in the course shell ---------------------- */
 /* In the course shell the slide card is a fixed 16:9 shape and scales fluidly
-   to fill whatever space the rail configuration leaves. The slide box adopts
-   that same 16:9 ratio here (the standalone deck viewer and print stay 4:3).
-   All slide geometry is percentage / container-query based, so figures and
-   the title furniture reflow into the new ratio without distortion. */
+   to fill whatever space the rail configuration leaves - same 16:9 aspect as
+   .ew-16x9 above, plus hiding the per-slide chrome (the shell supplies its
+   own) and stretching to fill the card instead of letterboxing. Print stays
+   4:3 (11x8.5in handout page - a separate, unaddressed question; see the
+   layout-pass notes). */
 .ew-embedded, .ew-embedded body { height: 100%; }
 .ew-embedded .ew-deck { background: var(--emerson-white); }
 .ew-embedded .ew-stage { min-height: 0; height: 100%; padding: 0; place-items: center; }
@@ -1128,44 +1147,59 @@
    apart (§5.4) omits .tmpl-key and the grid collapses to one column. */
 .slide--tmpl-graph {
   display: grid;
-  grid-template-columns: 54cqw 27cqw;
-  /* plot row has a floor (min 42cqh) so a takeaway or source that wraps to
-     two or three lines cannot squeeze the plot to nothing - the grid
-     overflows the slide bottom visibly instead of silently crushing the
-     graph. (Franz review, 14101 layout pass 2026-09-07.) */
-  grid-template-rows: 15cqh minmax(42cqh, 1fr) auto auto;
+  /* GRID TRACKS AND GAP ARE `%`, NOT cqw/cqh. This grid lives on the article,
+     which is itself the `container-type: size` element - a container-query
+     length in an element's OWN properties resolves against the *viewport*
+     (or nearest ancestor container), never against that element, so
+     `54cqw` here came out viewport-scaled: it overflowed the slide on a
+     wide desktop window (4:3 deck view) and undersized inside the narrower
+     16:9 shell iframe. `%` on a grid container resolves against the grid
+     container's own box - exactly .slide's real width/height in each
+     aspect ratio. (Franz review, 14101 layout pass 2026-09-07.) */
+  /* chart gets the big share (matches the gallery original this template was
+     ported from - .slide--role-application:has(.tpl-list) uses `1fr 26cqw`);
+     the earlier port's fixed `54cqw` chart column rendered the plot small
+     with dead space around it, worst in the 16:9 shell. */
+  grid-template-columns: 66% 26%;
+  /* chart row `1fr` with a 45% floor: `1fr` hands the chart all the height
+     left after the title and the takeaway/source, so the plot (aspect
+     1.749, viewBox 640x366) fills the 66% column width in BOTH aspect
+     ratios in the normal case; the 45% floor still stops a takeaway/source
+     that wraps to many lines from crushing the plot - past that the grid
+     overflows the slide bottom visibly instead of the plot vanishing. */
+  grid-template-rows: 15% minmax(45%, 1fr) auto auto;
   justify-content: center;
-  column-gap: 3cqw;
+  column-gap: 3%;
 }
 .slide--tmpl-graph:not(:has(.tmpl-key)) {
-  grid-template-columns: 74cqw;
+  grid-template-columns: 92%;
 }
 
 .slide--tmpl-graph .tmpl-plot {
   grid-column: 1;
   grid-row: 2;
   margin: 0;               /* <figure> — kill the UA 40px side margin */
-  align-self: stretch;
-  justify-self: stretch;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  place-self: stretch;     /* fill the whole cell - the SVG's own
+                              preserveAspectRatio="xMidYMid meet" then scales
+                              the drawing to fit and centres it; any letterbox
+                              is inside the <svg>, white on the white slide.
+                              (Sizing the <figure> to the SVG's intrinsic
+                              640x366 instead - via justify-self:center +
+                              width:auto - was what capped the plot at ~640px
+                              on a wide window and left it small elsewhere.) */
   min-width: 0;
   min-height: 0;
 }
 .slide--tmpl-graph .tmpl-plot > svg {
-  /* the graph's own aspect is held by preserveAspectRatio="xMidYMid meet";
-     scale it to fit the box on whichever axis binds first */
   display: block;
   width: 100%;
-  height: auto;
-  max-height: 100%;
+  height: 100%;
 }
 
 .slide--tmpl-graph .tmpl-key {
   grid-column: 2;
   grid-row: 2;
-  margin: 0 5cqw 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
   align-self: center;

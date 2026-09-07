@@ -188,22 +188,18 @@ baseline, tag text flows down. Verified on shipped 2-cell (028), 3-cell
 (035, 114), single-cell (089), has-lead (089/091) and flow-note (098/103)
 figrows.
 
-**Graph plot floor.** `.slide--tmpl-graph` is a 4-row grid
-`[title 15cqh] [plot] [takeaway] [source]`; rows 3–4 are `auto` (size to
-content, grow when text wraps). Row 2 (plot) was `minmax(0, 1fr)` — the
-`0` minimum let the plot shrink to nothing as rows 3–4 grew, and the
-`max-height:100%` SVG scaled down with it, silently. Changed to
-`minmax(42cqh, 1fr)`. **42cqh is derived, not guessed:** the plot SVGs are
-`viewBox="0 0 640 366"` (aspect ≈ 1.75) in a `54cqw` column, so the SVG's
-natural height is `54 / 1.75 ≈ 30.9cqw ≈ 40cqh`; 42cqh is that plus a
-hair, the height at which the graph still renders full-size. Now if
-takeaway + source together exceed `100 − 15 − 42 = 43cqh` (≈ 5 wrapped
-lines each), the source line visibly runs off the slide bottom — an
-obvious "too much text" signal — instead of the plot vanishing. The plot
-is protected unconditionally; only the failure signal changed, from
-invisible to loud. (Capping takeaway/source with `overflow:hidden` like
-`.reveal-answer` was rejected — it would silently clip a citation, worse
-than a visible overflow caught in review.)
+**Graph plot floor (height) — first pass, superseded, see §5.9.** The
+first version of this fix raised `.slide--tmpl-graph`'s plot row from
+`minmax(0, 1fr)` to `minmax(42cqh, 1fr)` so a long takeaway/source could
+no longer crush the plot to nothing vertically. That part held up. But it
+was derived from **height math only** — Franz's direct review (see §5.9)
+found the plot's *width* was never actually verified the same way: it
+overflowed the slide on the left in the raw 4:3 view and rendered
+undersized in the 16:9 shell, because the plot column was sized in `cqw`
+on `.slide` itself, which — like the `--logo-keepout` padding case the
+template's own comment already warned about — resolves against the
+*viewport*, not `.slide`, when used in `.slide`'s own properties. §5.9 has
+the corrected fix.
 
 **`.reveal-answer` full-sentence handling.** Was
 `position:absolute; left:50%; top:58cqh; transform:translateX(-50%);
@@ -295,11 +291,11 @@ scoped:
   day / chapter / module, so **this cannot recur in a real build**. Fixed
   in the scratch data.
 - **Graph plot floating with dead space above it** (slide 005 / shipped
-  92) — the plot floor stops it being *crushed*, but the plot still
-  centres in its row leaving a gap above. This is **shipped behaviour on
-  92 / 97 / 102**, not new to B-self. It is a real aesthetic looseness;
-  flagged for Franz to decide whether the plot should hug the title
-  (`align-items:start` on `.tmpl-plot`) rather than asserting it away.
+  92) — flagged here for Franz's call; **resolved as part of §5.9**, not
+  by leaving it as shipped behaviour. The graph's width fix (chart column
+  66% instead of 54%, `place-self:stretch` instead of centring at
+  intrinsic size) plus the plot hugging the title row means the plot now
+  fills nearly all the available space in both surviving views.
 
 ### 5.7 Composition friction — agent self-checks (labelled as such)
 
@@ -323,12 +319,164 @@ correctness is still unguarded**; my *reporting* of it was unreliable
 workaround. Three lessons:
 
 - **Pipeline gap:** origination Stage 3 needs a real render gate — the raw
-  4:3 view and the 16:9 shell, both looked at, before "done."
+  QA view (now 16:9, §5.9) and the course shell, both looked at, before
+  "done."
 - **Reporting gap (mine):** "renders clean" is only sayable with the view
   named and the checklist stated. Recorded in memory.
 - **Fix-discipline gap (mine):** a layout defect gets fixed in the
   layout, not by trimming the content that exposed it. The template must
   hold realistic-length content.
+
+### 5.9 4:3 retired as a target; the raw viewer rebuilt at 16:9; the graph fixed for real
+
+Franz's direct review of the fixed graph (§5.4) found it still broken —
+differently on each aspect ratio: **overflowing off the slide on the left
+in 4:3**, **rendering too small with unused white space in 16:9**. His
+read: the plot's height was derived properly (§5.4's `minmax(42cqh,1fr)`)
+but its *width* was never verified against the real container the same
+way — and before fixing that, he asked what `build/index.html` (the raw
+viewer, 4:3 by default) actually *is*: a delivery artifact, the QA tool,
+or both — since virtually no real screen is 4:3 today and it looked like
+two different jobs had been living inside one rendering shape.
+
+**What `build/index.html` is, checked against its own doc
+(`build/README.md`), not assumed:** it is the "runner" from **Stage 1**
+— written before the Workshop shell (`course/index.html`) existed, when
+there was no other way to present a converted deck. Its own doc still
+calls it "How to present." But nobody has used it that way this session
+or in the pipeline generally — the Workshop shell is the real delivery
+surface, and the Workshop shell is **already 16:9-only**
+(`.ew-embedded .slide { --slide-h: 594 }`). In practice, all session,
+`build/index.html` has been used for exactly one thing: Franz opening a
+raw slide, full chrome, full text, to catch defects the Workshop's own
+pruned `?embed=1&visual=1` view hides — logo overlap, caption wrap, and
+this graph, in that order. **It renders 4:3 not because 4:3 is a chosen
+target, but because 1056×816 is the slide's native authoring canvas,
+inherited unchanged from the source PPTX's 11×8.5in page** — the runner
+was simply never updated to reinterpret that canvas at 16:9 the way the
+Workshop shell already does. Conclusion: it is the QA tool (with a stale
+"how to present" self-description from before Workshop existed), and per
+Franz's decision it is rebuilt at 16:9, not retired.
+
+**The rebuild — additive, does not touch the 4:3 canvas itself.** The
+Workshop shell's 16:9 reinterpretation already exists as a CSS var
+override (`--slide-h: 594`, driven by `?embed=1`) bundled together with
+chrome-hiding and text-pruning. That bundle is wrong for a raw QA view —
+it would hide exactly what the QA view exists to show. So the aspect
+switch was split out into its own hook, independent of chrome:
+
+- `emerson-workbench.css` §7a (new): `.ew-16x9 .slide { --slide-h: 594 }`
+  + the letterbox-fit calc (`.ew-16x9 .ew-stage .slide { width:
+  min(100%, calc((100vh - 5vmin) * 1056 / 594)) }`) — aspect only, chrome
+  and text untouched. `.ew-embedded` (the Workshop shell's mode) is
+  unchanged and now additionally carries `.ew-16x9` for the same aspect.
+- `slides.js`: a new `?ratio=16x9` query flag adds `.ew-16x9` on its own;
+  `?embed=1` now adds both `.ew-embedded` and `.ew-16x9`.
+- `build/index.html`'s `go()` now requests `slides/FILE.html?ratio=16x9`
+  for every slide — the raw viewer is 16:9 by default, chrome visible,
+  nothing pruned, for every course (the file is engine-managed, propagated
+  to all five). A slide opened bare with no query string still renders
+  its native 4:3 canvas — an intentionally narrow residual, listed below.
+
+**The graph, fixed against the one surviving target (16:9), with the
+actual mechanism this time.** Two things were wrong, both because the
+existing fix compared against the SVG's own intrinsic size instead of the
+real container:
+
+1. `grid-template-columns: 54% 27%` (already `%`, from §5.4) was correct
+   as a *fraction*, but 54% was copied from the original (broken) `54cqw`
+   port rather than from what the design this template was ported from
+   actually uses. The gallery original —
+   `.slide--role-application:has(.tpl-list) .tpl-content { grid-template-
+   columns: 1fr 26cqw }` (proven, tp-010, already approved) — gives the
+   chart nearly all the space and the key a fixed narrow column, not a
+   54/27 split. Changed to `66% 26%` (with a `%` key margin fix to match).
+2. `.tmpl-plot` was `justify-self:center` with `width:auto` — for a grid
+   item, `justify-self` anything but `stretch` sizes the box to its
+   **content**, and the SVG carries `width="640" height="366"` attributes
+   as its intrinsic size. So `.tmpl-plot` was capping itself at literally
+   640px regardless of the column's real width — full-size on a narrow
+   window (looks fine), overflowing left once the column got wider than
+   640px on a wide window (4:3's failure), and undersized whenever the
+   column was narrower than 640px (16:9's failure, since 16:9's shorter
+   slide gives a narrower absolute column at the same viewport). Fixed:
+   `.tmpl-plot { place-self: stretch }` — the figure now fills its actual
+   grid cell (66% of the real `.slide` width, whatever that is), and the
+   SVG's own `preserveAspectRatio="xMidYMid meet"` (already in the
+   markup, matching the gallery's `.tpl-chart` pattern) scales the
+   *drawing* to fit inside that, centred — any leftover space is white
+   letterbox inside the `<svg>`, invisible on the white slide, not a
+   visible gap in the layout.
+
+Net: the plot is now sized from the SVG's real aspect (`viewBox="0 0 640
+366"`, ≈1.75) against the *actual* column width in whichever aspect ratio
+is rendering — not a copied fixed value and not the SVG's own intrinsic
+pixel size. It fills 66% of the slide width in every window size tested,
+and the corresponding height, with no query resolving against the wrong
+container.
+
+**What was checked, specifically, before reporting this closed:**
+
+- **The rebuilt raw viewer** (`build/index.html`, now `?ratio=16x9`,
+  chrome and text untouched), at five window sizes spanning 1024–2560px
+  wide (om1-005 and production 92/97/102): the plot holds at a consistent
+  ~66% of slide width and does not overflow at any size — the exact
+  viewport-dependent failure Franz found is gone because the fix no
+  longer depends on viewport size at all (`%` grid tracks + `place-self:
+  stretch`, not `cqw` on `.slide` itself or content-based sizing).
+- **The Workshop shell** (`course/index.html`, om1's real 16:9 delivery
+  surface), om1-005: plot fills 54%→66% of the card width, uses most of
+  the card height, no overflow, no letterbox visible at this shorter
+  aspect.
+- **Regression, in the rebuilt raw viewer specifically** (16:9, full
+  chrome): production 92, 97, 102 (graph — including 102's 4-entry key,
+  to confirm the narrower key column still holds real key text), 35 and
+  114 (multi-cell caption alignment, to confirm the earlier fix still
+  holds at 16:9), 98 (the 4-line-note slide, to confirm the logo
+  keep-out still holds at 16:9), 90 (check slide), 103 (2-line note),
+  001/007 of the om1 deck. No regressions from either the graph fix or
+  the aspect-ratio rebuild.
+- **Template Gallery / Template Proof**, through the rebuilt raw viewer:
+  tg-010 (role-check, gallery.css) and tp-010 (role-application graph,
+  unaffected by the `.slide--tmpl-graph` change since it's a different
+  template family) both render cleanly at 16:9 with full chrome — no
+  regression from the aspect-ratio rebuild on the gallery templates.
+
+**Flagged, not fixed — other places the pipeline still assumes or targets
+4:3, so this doesn't quietly re-diverge:**
+
+1. **`.slide`'s native canvas itself** (`width:1056px;
+   aspect-ratio:1056/816` in `emerson-workbench.css`) — every `cqh`-based
+   vertical value in the ~2400-line stylesheet, across every already-
+   reviewed shipped slide, is tuned against this 816px-tall canvas; 16:9
+   is achieved by reinterpreting it, not by a native 16:9 base. Re-basing
+   the canvas itself to 594 would be the deep version of this decision
+   and would touch the vertical layout of every shipped slide — not
+   attempted here.
+2. **`render-check.mjs`** (`40 - Engine/render/`) still runs a `'4:3'`
+   pass (bare slide, no query params) as one of its two automated
+   checks, and `render/README.md` carries a **historical findings
+   baseline keyed to that mode** (mostly `outline`-status slides).
+   Pointing that pass at `?ratio=16x9` too would be the direct parallel
+   of the `build/index.html` fix, but it would shift or invalidate that
+   documented baseline — a call for Franz, not a silent code change.
+3. **Governing docs treat "4:3 and 16:9" as a standing double-check
+   rule**, not just an implementation detail: `Course Porting Pipeline.md`
+   (working rules, the Stage 3 pre-send checklist), `Style Guide.md`
+   (logo/marker keep-out math specified "at both the 4:3 and 16:9 canvas
+   ratios"), and `Pipeline Console.md` (the designed per-slide review
+   rack has explicit "open-4:3 / open-16:9" actions). None edited here —
+   this is a process-doc decision, not a slide fix.
+4. **Print/PDF export** (`@page { size: 11in 8.5in }`,
+   `@media print { .slide { width: 11in } }`) is explicitly 4:3-shaped,
+   matching the source PPTX page. Not clear whether this is a deliberate,
+   separate requirement (printed handouts) or another legacy carry-over —
+   flagged as an open question, not assumed either way.
+5. **Per-course `build/index.html` / `slides.js` / CSS** — fixed this
+   pass, propagated to all five courses (14101, both Origination Tests,
+   Template Gallery, Template Proof) and, for the three lock-tracked
+   courses, re-synced via `build-course.ps1 -Force` so `_engine-lock.json`
+   stays accurate. Listed for completeness, not as a remaining gap.
 
 ## 6. Honest assessment of the self-executed process
 

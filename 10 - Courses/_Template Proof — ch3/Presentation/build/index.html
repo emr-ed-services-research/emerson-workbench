@@ -102,7 +102,9 @@
   function go(n) {
     i = Math.min(Math.max(n, 1), MAN.length);
     var s = MAN[i - 1];
-    frame.src = 'slides/' + s.file;
+    /* 4:3 is retired as a target (Franz, 2026-09-07) - this raw viewer is the
+       QA/review surface, so it renders the real 16:9 shape, chrome and all. */
+    frame.src = 'slides/' + s.file + '?ratio=16x9';
     elSection.textContent = s.section || '';
     elPos.textContent = i + ' / ' + MAN.length;
     range.value = i;

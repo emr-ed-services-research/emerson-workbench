@@ -5,9 +5,16 @@
   var inFrame = window.parent && window.parent !== window;
 
   /* embedded in the course shell: drop the dark stage + per-slide chrome so the
-     slide sits cleanly inside the content card */
+     slide sits cleanly inside the content card. Implies the 16:9 aspect below. */
   if (location.search.indexOf("embed=1") > -1) {
-    document.documentElement.classList.add("ew-embedded");
+    document.documentElement.classList.add("ew-embedded", "ew-16x9");
+  }
+  /* 16:9 aspect on its own, chrome and text untouched - the raw single-slide
+     viewer (build/index.html) requests this on every slide: 4:3 is retired
+     as a target, but the QA view still needs everything visible that
+     ?embed=1 alone would hide. */
+  if (location.search.indexOf("ratio=16x9") > -1) {
+    document.documentElement.classList.add("ew-16x9");
   }
   /* visual-only: the course's context pane carries the teaching text, so hide
      the slide's explanatory body — keep titles, figures, tables, and short
