@@ -28,7 +28,13 @@ request actually reaches — never a wholesale pre-index of a document:
   diagram, a labelled figure, a graph) that Chapter 3's concepts need, each with
   its source, a precedence bucket (`current` / `archive-corroborated` /
   `archive-only` / `legacy`), and a locator. Stage 2 tags each key concept
-  against it; Stage 3 pulls from it instead of searching cold.
+  against it; Stage 3 pulls from it instead of searching cold. Each record also
+  carries a `serves:` pointer into the curriculum layer (competency ids).
+- [[Component Index — 14101 ch1-ch2]] — the same, for Chapter 1 (valve
+  specifications) and Chapter 2 (Fisher Easy-E valve maintenance). 25
+  components, built 2026-09-06 as the Phase 4 follow-on of the Instructional
+  Primitives Pathway. Almost entirely `current` (CVH 6th ed. + current Fisher
+  easy-e / ET / packing manuals); no archive content.
 
 **Two ways a component index gets triggered (corrected 2026-09-04 — see
 `Course Porting Pipeline.md` "Origination without a deck").** Both are
