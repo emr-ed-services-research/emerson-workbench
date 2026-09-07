@@ -148,42 +148,75 @@ which it never tested. **Standing lesson recorded in memory
 (`render-clean-claims-must-name-the-view.md`): a "renders clean" claim
 must name the view(s) opened and what was looked for.**
 
-### 5.3 Fixes applied (2026-09-07) and what was inspected after
+### 5.3 First fix attempt — rejected as ad-hoc
 
-| # | Fix |
+The first fix pass shortened the offending text on the om1 slides so it
+stopped reaching the logo / stopped wrapping / fit the nowrap element.
+**Franz rejected that (2026-09-07):** every "fix" made the *content*
+shorter, not the *layout* able to hold content of realistic length. The
+templates were left exactly as fragile — the next time Stage 2 wrote a
+note, caption, takeaway or answer a few words longer, all five defects
+would come back. That is a workaround, not a fix.
+
+The one non-content item from that pass that stands: the scratch course
+had **no 16:9 Workshop view at all** (`build/index.html` is the 4:3
+deck-review tool). `course/index.html` + `course.js` + `course.css` +
+`course-data.js` were added from the 14101 production shell, so
+slide-by-slide review now has **both** surfaces.
+
+### 5.4 Second fix pass — the templates themselves (2026-09-07)
+
+Landed in the shared `emerson-workbench.css` (one canonical file,
+propagated verbatim to every course; the three lock-tracked courses
+re-assembled via `build-course.ps1 -Force`, which also cleared a
+pre-existing lock/CSS drift). Each fix is unit-consistent with the logo's
+own `cqw` position, so it holds at any render size.
+
+| defect | template fix |
 |---|---|
-| 1 | Built `course/index.html` + `course.js` + `course.css` + `course-data.js` for the scratch course, from the 14101 production shell. The 16:9 Workshop view now exists; slide-by-slide review should use **both** `build/index.html` (4:3) and `course/index.html` (16:9). |
-| 2 | Shortened every `.tmpl-note` / `.tmpl-takeaway` / `.tmpl-source` to one line that ends well before `x81cqw`: om1-001, om1-002, om1-005. |
-| 3 | om1-002 figcaptions cut to one line each; mid-caption `<b>` already removed. Captions now align. |
-| 4 | om1-005: `.tmpl-key` entries cut to bare names ("Bench-set line"); takeaway and source to one line each — frees the plot row. |
-| 5 | om1-007: revealed answer → `A · Direct-acting`; options → terse pairings matching shipped slide 90; stem shortened. |
-| — | om1-004's earlier `.tmpl-note`→`<caption>` fix and the om1-001/002 `<b>` removal (from the first render pass) are retained. |
+| logo overlap | New `--logo-keepout: 20cqw` token = the right inset that clears `.slide-chrome__logo` (pinned `left:81.4cqw`, ~5.75cqw tall, owns the bottom-right corner). Applied as `right` on `.tmpl-note` (both the absolute and the `:has(> .tmpl-note)` flow variant) and the global `.tmpl-source`; as a left-anchored `max-width: 72cqw` on the graph's `.tmpl-takeaway` / `.tmpl-source` (a right inset is unreliable there — the centred grid's edge position varies). Text of **any** length now wraps inside the safe zone. |
+| figcaption alignment | `.slide--tmpl-figrow .tmpl-row` is now a 2-track grid (image band / caption band) and each `.tmpl-cell` `subgrid`s onto both. The caption band is sized once, to the tallest figcaption across all cells, so a caption that wraps to two lines no longer shoves its own image up relative to a one-line neighbour — every bold heading sits on the same baseline, tag text flows down. Verified on shipped 2-cell (028), 3-cell (035, 114), single-cell (089), has-lead (089/091) and flow-note (098/103) figrows. |
+| graph plot "cut off" | plot row floor raised from `minmax(0,1fr)` to `minmax(42cqh,1fr)` — a long takeaway/source now overflows the slide bottom *visibly* instead of silently crushing the plot. |
+| `.reveal-answer` overflow | `white-space:nowrap` removed; the element is now a centred grid box in the lower band (`top:38cqh; bottom:5cqh`, `width:82cqw`, `text-wrap:balance`, `hyphens:auto`, `overflow:hidden` backstop) at `5.6cqw`. A terse answer ("A & D", "A · Direct-acting") still reads large; a full-sentence answer wraps and stays on the slide. |
 
-**What was inspected this pass — explicitly:**
+**Side effect — latent production bugs fixed:** shipped slides **92, 103,
+112** had `.tmpl-note` / `.tmpl-source` running under the logo in the raw
+4:3 view already; **35, 114** had misaligned multi-cell captions. All are
+fixed by the same change. Regression pass over ~15 production figrow /
+graph / check slides + the Template Gallery + Template Proof: no
+regressions.
 
-- **Raw 4:3** (`slides/om1-00N.html`, no query — the `build/index.html`
-  view), every slide 001–007, screenshotted at slide-native size, looked
-  at for: logo/footer overlap, text running past the content region,
-  figcaption alignment, SVG containment, table fit.
-  - 001, 002: `.tmpl-note` now ends at ≈x60cqw — clear of the logo. ✎ fixed.
-  - 003, 004, 006: clean (were already — not edited).
-  - 005: takeaway + source both one line, source ends ≈x64cqw, clear of
-    the logo. Plot still floats high with dead space below — **this
-    matches shipped slide 92 exactly** (same template, same behaviour);
-    logged as a template looseness, not a B-self defect.
-  - 007 (check, answer revealed via `?embed=1`): bold stem, four terse
-    lettered options, centred `A · Direct-acting` — fits, matches slide 90.
-- **16:9 embed** (`?embed=1&visual=1`), slides 001–006: card letterboxes
-  cleanly, captions/notes survive the visual prune (short enough now),
-  no overflow.
-- **16:9 Workshop shell** (`course/index.html`), pages 1, 2, 5, 6, and the
-  check interstitial: nav + slide card + context pane all render; the
-  key-concept `t` text shows in the right rail; "Open the check →"
-  interstitial works. *Shell cosmetic:* the breadcrumb reads "Day
-  undefined" — a `course-data.js` day-key mismatch in the scratch shell,
-  not a slide issue.
+### 5.5 What was inspected — this pass
 
-### 5.4 Composition friction — agent self-checks (labelled as such)
+- **Four stress-test slides** (deliberately over-length note / mismatched
+  caption line counts / long takeaway+source / sentence-length answer),
+  raw 4:3, before and after: every defect reproduced before, none after.
+- **Production regression sample**, raw 4:3: figrow 028 / 034 / 035 / 039
+  / 089 / 098 / 103 / 112 / 114, graph 092 / 097, check 090; Template
+  Proof tp-005 / tp-008 / tp-014; Template Gallery tg-005 / tg-010. No
+  regression; the pre-existing logo overlaps on 92/103/112 and caption
+  misalignment on 35/114 are now gone.
+- **om1 deck** re-rendered raw 4:3 + the check view with answer revealed:
+  clean on the new templates.
+- Looked at, each slide: logo/footer overlap, text past the content
+  region, figcaption baseline alignment across cells, SVG containment,
+  table fit, revealed-answer containment.
+
+### 5.6 Two items resolved / for Franz's call
+
+- **"Day undefined" breadcrumb** — root cause: the hand-written scratch
+  `course-data.js` day object was missing `"num"`; `course.js` renders
+  `'Day ' + day.num`. A real course build always emits `num` on every
+  day / chapter / module, so **this cannot recur in a real build**. Fixed
+  in the scratch data.
+- **Graph plot floating with dead space above it** (slide 005 / shipped
+  92) — the plot floor stops it being *crushed*, but the plot still
+  centres in its row leaving a gap above. This is **shipped behaviour on
+  92 / 97 / 102**, not new to B-self. It is a real aesthetic looseness;
+  flagged for Franz to decide whether the plot should hug the title
+  (`align-items:start` on `.tmpl-plot`) rather than asserting it away.
+
+### 5.7 Composition friction — agent self-checks (labelled as such)
 
 These were **generation-agent self-checks** from the first render pass,
 not human review:
@@ -197,17 +230,20 @@ not human review:
 3. **om1-006 force cutaway small/illegible** — matches A's known asset
    issue, not fixed (it is the asset, not the composition).
 
-### 5.5 The honest read on §5
+### 5.8 The honest read on §5
 
-The curriculum layer did its job (retrieval — §6). **Stage 3 markup and
-layout correctness is still unguarded**, and worse, my *reporting* of it
-was unreliable — I called it clean off a check that never looked. Two
-process gaps, not one:
+The curriculum layer did its job (retrieval — §6). **Stage 3 markup
+correctness is still unguarded**; my *reporting* of it was unreliable
+(clean off a check that never looked); and my *first fix* was a content
+workaround. Three lessons:
 
 - **Pipeline gap:** origination Stage 3 needs a real render gate — the raw
   4:3 view and the 16:9 shell, both looked at, before "done."
-- **Reporting gap (mine):** "renders clean" is now only sayable with the
-  view named and the checklist stated. Recorded in memory.
+- **Reporting gap (mine):** "renders clean" is only sayable with the view
+  named and the checklist stated. Recorded in memory.
+- **Fix-discipline gap (mine):** a layout defect gets fixed in the
+  layout, not by trimming the content that exposed it. The template must
+  hold realistic-length content.
 
 ## 6. Honest assessment of the self-executed process
 

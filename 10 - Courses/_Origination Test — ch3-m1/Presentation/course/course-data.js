@@ -10,7 +10,7 @@ window.EW_COURSE = {
   "library": { "base": "../../../../20 - Source Library/", "note": "", "primary": [], "columns": [] },
   "days": [
     {
-      "id": "d1", "title": "Day 1",
+      "id": "d1", "num": 1, "title": "Day 1",
       "chapters": [
         {
           "id": "otch", "title": "Origination Test — ch3-m1", "num": 1, "domain": "maintenance",

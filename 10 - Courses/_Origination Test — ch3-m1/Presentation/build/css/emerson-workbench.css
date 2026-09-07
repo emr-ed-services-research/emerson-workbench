@@ -35,6 +35,15 @@
 
   /* Footer text - normalise the deck's 2023/2024 masters to one year here. */
   --copyright-line: "\00A9 Emerson Educational Services, 2026, All Rights Reserved";
+
+  /* Brand-mark keep-out. `.slide-chrome__logo` is pinned at left:81.4cqw and,
+     with the diamond mark above the wordmark, is ~5.75cqw tall - it occupies
+     the whole bottom-right corner from ~y80cqh down. Any bottom-edge running
+     text (.tmpl-note, .tmpl-source, a graph takeaway) must keep its right
+     edge inside this inset so it can never print under the mark, regardless
+     of how many lines the text wraps to. Used as a `right` / `padding-right`
+     value on those elements. */
+  --logo-keepout: 20cqw;
 }
 
 /* ---------- 2. Deck / viewer shell -------------------------------------- */
@@ -568,13 +577,26 @@
 /*  53 CYK slides in the deck reveal a large answer overlay on click.    */
 .reveal-answer {
   position: absolute;
-  left: 50%; top: 58cqh;
-  transform: translateX(-50%);
-  font-size: 6.82cqw;            /* 54 pt */
+  left: 50%; transform: translateX(-50%);
+  /* occupy the lower band and centre within it, so a terse answer
+     ("A - Direct-acting") reads big and a full-sentence answer wraps and
+     stays on the slide instead of running off both edges. Was a single
+     nowrap line pinned at top:58cqh. (Franz review, layout pass
+     2026-09-07.) */
+  top: 38cqh; bottom: 5cqh;
+  width: 82cqw;
+  display: grid;
+  place-content: center;
+  overflow: hidden;             /* final backstop - never spill off-slide */
+  text-align: center;
+  text-wrap: balance;
+  hyphens: auto;
+  font-size: 5.6cqw;            /* ~44 pt - big for a terse answer, still
+                                   fits the band when a sentence wraps */
+  line-height: 1.15;
   font-weight: 700;
   color: var(--emerson-charcoal);
   text-shadow: 0.12cqw 0.12cqw 0 #fff, -0.06cqw -0.06cqw 0 #fff;
-  white-space: nowrap;
   visibility: hidden;
 }
 .slide.is-revealed .reveal-answer { visibility: visible; }
@@ -701,10 +723,11 @@
   font: 700 1.7cqw/1 var(--font-body);
   display: grid; place-items: center;
 }
-/* source attribution for a figure lifted from the Source Library - always shown */
+/* source attribution for a figure lifted from the Source Library - always shown.
+   right inset keeps a long citation clear of the brand mark (--logo-keepout). */
 .tmpl-source {
   position: absolute;
-  left: 6cqw; bottom: 4.4cqh;
+  left: 6cqw; right: var(--logo-keepout); bottom: 4.4cqh;
   margin: 0;
   font: italic 1.2cqw/1.3 var(--font-body);
   color: var(--emerson-grey);
@@ -771,29 +794,48 @@
    <p class="tmpl-note"> carries one line of teaching emphasis under
    the row. No on-image markers - if a single figure needs parts
    called out, that slide is a .slide--tmpl-diagram instead. */
+/* The row is a 2-track grid - one image band, one caption band - and each
+   .tmpl-cell subgrids onto both. The caption band (row 2, `auto`) is sized
+   once, to the tallest figcaption across ALL cells, so a caption that wraps
+   to two lines in one cell does not shove that cell's image up relative to a
+   one-line neighbour: every heading sits on the same baseline and the tag
+   text flows down into the shared band. (Franz review, 14101 layout pass
+   2026-09-07 - replaces a per-cell flex column that centred image+caption
+   independently.) */
 .slide--tmpl-figrow .tmpl-row {
   position: absolute;
   left: 5.6cqw; right: 5.6cqw; top: 17cqh; bottom: 12cqh;
-  display: flex; gap: 3cqw; align-items: stretch;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  column-gap: 3cqw;
+  grid-template-rows: 1fr auto;
 }
 .slide--tmpl-figrow.is-grid .tmpl-row {
-  flex-wrap: wrap; gap: 2cqh 3cqw;
+  grid-auto-flow: row;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto 1fr auto;
+  row-gap: 2cqh;
 }
 .slide--tmpl-figrow .tmpl-cell {
-  flex: 1 1 0; min-width: 0; margin: 0;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 1.6cqh;
+  min-width: 0; margin: 0;
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 1.6cqh;
 }
-.slide--tmpl-figrow.is-grid .tmpl-cell { flex-basis: calc(50% - 1.5cqw); }
 .slide--tmpl-figrow .tmpl-cell > img,
 .slide--tmpl-figrow .tmpl-cell > svg {
-  flex: 0 1 auto; min-height: 0;
+  grid-row: 1;
+  place-self: center;
+  min-height: 0; min-width: 0;
   max-width: 100%; max-height: 100%; width: auto; height: auto;
   object-fit: contain;
 }
+.slide--tmpl-figrow .tmpl-cell > figcaption { grid-row: 2; }
 /* a lone figure fills the space it is given */
 .slide--tmpl-figrow .tmpl-cell:only-child > img,
-.slide--tmpl-figrow .tmpl-cell:only-child > svg { flex: 1; width: 100%; height: 100%; }
+.slide--tmpl-figrow .tmpl-cell:only-child > svg { place-self: stretch; width: 100%; height: 100%; }
 
 /* has-lead: a table (or short text block) above the figure row - e.g. a
    reference table with the items it tabulates shown beneath it. Flow layout
@@ -813,7 +855,7 @@
   left: auto; right: auto; top: auto; bottom: auto;
 }
 .slide--tmpl-figrow .tmpl-cell figcaption {
-  flex: none; text-align: center; line-height: 1.3;
+  align-self: start; text-align: center; line-height: 1.3;
   font-size: 1.9cqw; color: var(--body-text);
 }
 .slide--tmpl-figrow .tmpl-cell figcaption b {
@@ -823,7 +865,7 @@
 .slide--tmpl-figrow .tmpl-note,
 .slide--tmpl-diagram .tmpl-note {
   position: absolute;
-  left: 5.6cqw; right: 5.6cqw; bottom: 6cqh; margin: 0;
+  left: 5.6cqw; right: var(--logo-keepout); bottom: 6cqh; margin: 0;
   font-size: 1.7cqw; line-height: 1.35; color: var(--emerson-charcoal);
   padding-left: 2cqw; border-left: 0.35cqw solid var(--emerson-cyan);
 }
@@ -854,7 +896,7 @@
 }
 .slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-note {
   position: static;
-  margin: 1.6cqh 5.6cqw 6cqh;
+  margin: 1.6cqh var(--logo-keepout) 6cqh 5.6cqw;
   flex: none;
 }
 
@@ -1087,7 +1129,11 @@
 .slide--tmpl-graph {
   display: grid;
   grid-template-columns: 54cqw 27cqw;
-  grid-template-rows: 15cqh minmax(0, 1fr) auto auto;
+  /* plot row has a floor (min 42cqh) so a takeaway or source that wraps to
+     two or three lines cannot squeeze the plot to nothing - the grid
+     overflows the slide bottom visibly instead of silently crushing the
+     graph. (Franz review, 14101 layout pass 2026-09-07.) */
+  grid-template-rows: 15cqh minmax(42cqh, 1fr) auto auto;
   justify-content: center;
   column-gap: 3cqw;
 }
@@ -1173,9 +1219,14 @@
   opacity: 0.3;
 }
 
+/* takeaway + source span the grid but are capped and left-anchored so their
+   running text stops well short of the brand mark - a right-edge inset is
+   unreliable here because the centred grid's own edge position varies. */
 .slide--tmpl-graph .tmpl-takeaway {
   grid-column: 1 / -1;
   grid-row: 3;
+  justify-self: start;
+  max-width: 72cqw;
   margin: 1.8cqh 0 0 0;
   padding-left: 1.7cqw;
   border-left: 0.5cqw solid var(--emerson-orange);
@@ -1188,6 +1239,8 @@
   position: static;   /* the global .tmpl-source is absolute; here it's a grid row */
   grid-column: 1 / -1;
   grid-row: 4;
+  justify-self: start;
+  max-width: 72cqw;
   margin: 1.2cqh 0 4.4cqh 0;   /* bottom = the global .tmpl-source bottom inset */
 }
 
