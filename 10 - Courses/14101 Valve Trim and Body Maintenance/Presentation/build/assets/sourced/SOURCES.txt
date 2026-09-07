@@ -179,3 +179,20 @@ cvh6-fig1-6-bonnet-packing-box.png
   4. Valve Stem") whited out top-right. Final 556x596 (AR 0.933). Used on slide 51
   with the is-sourced diagram variant (as slide 27). Replaces an earlier
   hand-drawn SVG whose bonnet-wall proportions were wrong. 2026-08-31.
+
+benchset-fig4-redraw.svg  [PENDING FRANZ REVIEW — not yet placed on a slide]
+  House-style SVG redraw of Fisher 657/667 Instruction Manual (D100306X012)
+  Figure 4 "Bench Set Adjustment" (drawing 40A8715-B). Figure 4 used as the
+  geometric source; simplified for legibility per Style Guide §5.8 (source
+  figure confirmed hard to parse by a subject-matter expert — Franz, 2026-09-06).
+  Two panels for the lower / upper bench-set loading-pressure states; keeps the
+  spring adjuster, both stem marks, and the rated-travel dimension; drops the
+  hatched yoke sections, the "OPEN" travel-indicator scales, the FIELDVUE/DVC
+  bracket, and the ①②③④ numbered-note web (folded into two plain captions).
+  A shared horizontal reference line (not in Fig 4 — added to make "the first
+  mark travelled with the stem" legible) carries mark-1's height from state A
+  into state B. Direct-acting (657) direction shown; a 667 stem retracts, same
+  procedure. Serves prim.mnt.actuator.set-travel.spring (currently status:
+  pending). Review artifact for the pending→exists call built 2026-09-06.
+  2026-09-06 (Phase 4 follow-on — redraw pass under the standing redraw policy,
+  NOT a Stage 3 authoring-gate action).

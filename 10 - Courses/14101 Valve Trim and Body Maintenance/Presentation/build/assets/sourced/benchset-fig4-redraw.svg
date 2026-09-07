@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 860 400" font-family="'Helvetica Neue', Arial, sans-serif" role="img" aria-label="Bench-set adjustment off the valve, shown in two states. State A, lower bench-set loading pressure: the actuator stem makes its first movement and is marked level with a fixed reference at the spring-adjuster face. State B, upper bench-set loading pressure: the stem has extended, carrying the first mark below the reference, and a second mark is made at the reference. The distance between the two marks on the stem must equal the rated travel span printed on the nameplate.">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="7.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 1 L9 5 L0 9 Z" fill="#C8571B"/>
+    </marker>
+  </defs>
+  <rect x="0" y="0" width="860" height="400" fill="#ffffff"/>
+  <style>
+    .yoke  { fill:#eceeeb; stroke:#2b2b2b; stroke-width:2.4; stroke-linejoin:round; }
+    .adj   { fill:#dfe1de; stroke:#2b2b2b; stroke-width:2.4; }
+    .stem  { stroke:#2b2b2b; stroke-width:6; stroke-linecap:round; }
+    .mark  { stroke:#004B8D; stroke-width:7.5; stroke-linecap:round; }
+    .ref   { stroke:#9aa09c; stroke-width:1.6; stroke-dasharray:7 5; }
+    .refx  { stroke:#b6bbb7; stroke-width:1.3; stroke-dasharray:3 3; }
+    .A     { fill:#1a1a1a; font-size:16px; font-weight:800; }
+    .st    { fill:#2b2b2b; font-size:13.5px; font-weight:600; }
+    .cap   { fill:#2b2b2b; font-size:13px; font-weight:500; }
+    .capb  { font-weight:800; }
+    .capn  { fill:#004B8D; font-weight:800; }
+    .tag   { fill:#004B8D; font-size:12px; font-weight:800; }
+    .reflbl{ fill:#7d827e; font-size:11.5px; font-weight:600; }
+    .dimt  { fill:#C8571B; font-size:14px; font-weight:800; }
+    .take  { fill:#1a1a1a; font-size:14px; font-weight:800; }
+    .sub   { fill:#4a4a4a; font-size:12px; font-weight:500; }
+    .src   { fill:#6a6f6c; font-size:10.5px; font-weight:500; }
+  </style>
+
+  <!-- shared reference line: the height of the first mark, held across both states -->
+  <line class="ref" x1="95" y1="150" x2="470" y2="150"/>
+  <text class="reflbl" x="90" y="154" text-anchor="end">reference</text>
+
+  <!-- ============ STATE A ============ -->
+  <g>
+    <text class="A" x="230" y="40" text-anchor="middle">A</text>
+    <text class="st" x="230" y="58" text-anchor="middle">Lower bench-set pressure</text>
+
+    <path class="yoke" d="M175 78 h110 v14 h-14 v10 h-82 v-10 h-14 z"/>
+    <rect class="adj" x="206" y="102" width="48" height="26" rx="2"/>
+    <text class="reflbl" x="264" y="119">spring adjuster</text>
+    <line class="stem" x1="230" y1="70" x2="230" y2="214"/>
+    <line class="mark" x1="217" y1="150" x2="243" y2="150"/>
+    <text class="tag" x="252" y="167">mark 1</text>
+  </g>
+
+  <!-- ============ STATE B ============ -->
+  <g>
+    <text class="A" x="450" y="40" text-anchor="middle">B</text>
+    <text class="st" x="450" y="58" text-anchor="middle">Upper bench-set pressure</text>
+
+    <path class="yoke" d="M395 78 h110 v14 h-14 v10 h-82 v-10 h-14 z"/>
+    <rect class="adj" x="426" y="102" width="48" height="26" rx="2"/>
+    <!-- stem extended down by the travel amount (56 px) -->
+    <line class="stem" x1="450" y1="70" x2="450" y2="250"/>
+    <!-- mark 2 is new at the reference; mark 1 has moved down with the stem -->
+    <line class="mark" x1="437" y1="150" x2="463" y2="150"/>
+    <line class="mark" x1="437" y1="206" x2="463" y2="206"/>
+    <text class="tag" x="472" y="146">mark 2</text>
+    <text class="tag" x="472" y="210">mark 1</text>
+
+    <!-- travel dimension -->
+    <line class="refx" x1="463" y1="150" x2="560" y2="150"/>
+    <line class="refx" x1="463" y1="206" x2="560" y2="206"/>
+    <line stroke="#C8571B" stroke-width="2.6" x1="552" y1="150" x2="552" y2="206" marker-start="url(#ar)" marker-end="url(#ar)"/>
+    <text class="dimt" x="568" y="173">rated</text>
+    <text class="dimt" x="568" y="190">travel</text>
+  </g>
+
+  <!-- ============ captions ============ -->
+  <text class="cap" x="40" y="298">Raise loading pressure to the <tspan class="capn">lower</tspan></text>
+  <text class="cap" x="40" y="316">bench-set value from the nameplate.</text>
+  <text class="cap" x="40" y="334">The stem shows its <tspan class="capb">first movement</tspan> &#8212;</text>
+  <text class="cap" x="40" y="352">mark the stem at a fixed reference.</text>
+
+  <text class="cap" x="320" y="298">Raise to the <tspan class="capn">upper</tspan> bench-set value.</text>
+  <text class="cap" x="320" y="316">The stem <tspan class="capb">extends fully</tspan>; the first</text>
+  <text class="cap" x="320" y="334">mark drops with it. Mark the stem</text>
+  <text class="cap" x="320" y="352">again at the same reference.</text>
+
+  <!-- ============ takeaway ============ -->
+  <line x1="600" y1="284" x2="600" y2="358" stroke="#d8dad5" stroke-width="1.4"/>
+  <text class="take" x="622" y="300">measured travel</text>
+  <text class="take" x="622" y="319">= <tspan fill="#C8571B">rated travel</tspan></text>
+  <text class="sub" x="622" y="337">on the nameplate.</text>
+  <text class="sub" x="622" y="354">short or long &#8594; re-adjust the</text>
+  <text class="sub" x="622" y="370">spring adjuster and repeat.</text>
+
+  <text class="sub" x="40" y="376" font-size="11.5" font-style="italic">Direct-acting (657) shown; a reverse-acting (667) stem retracts &#8212; same procedure.</text>
+  <line x1="40" y1="386" x2="820" y2="386" stroke="#e2e4e0" stroke-width="1.2"/>
+  <text class="src" x="40" y="400">Redrawn after Fisher 657 / 667 IM Figure 4 "Bench Set Adjustment" (40A8715-B) &#8212; simplified for legibility, geometry preserved.</text>
+</svg>
