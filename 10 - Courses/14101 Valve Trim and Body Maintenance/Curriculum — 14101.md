@@ -275,7 +275,9 @@ Phase 4** below.
     Style Guide §5.8. Keeps spring adjuster / both stem marks / rated-travel
     dimension; drops the yoke hatching, travel-indicator scales, DVC bracket,
     and the ①②③④ note web. Selected over the shipped deck photos and Fig 4
-    as-is (Franz, 2026-09-06). NOT yet placed on a slide — separate go-ahead.
+    as-is (Franz, 2026-09-06). PLACED on slide 1400-098 (Ch3 › Fisher 657
+    Identify & Bench Set › page 5 of 5) 2026-09-06, inline visual-only per
+    the slide-97 house SVG pattern; render-check clean 4:3 + 16:9.
   variantTag: spring
 
 - id: prim.mnt.actuator.mount-on-valve.photo

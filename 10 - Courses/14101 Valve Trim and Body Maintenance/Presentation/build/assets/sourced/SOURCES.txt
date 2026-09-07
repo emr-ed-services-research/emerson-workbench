@@ -194,8 +194,11 @@ benchset-fig4-redraw.svg  [APPROVED — Franz selected it over both prior option
   into state B. Direct-acting (657) direction shown; a 667 stem retracts, same
   procedure. Is the asset for prim.mnt.actuator.set-travel.spring
   (status: exists). Selected over the shipped deck photos (image159 +
-  benchset-measure-travel.png) and Fig 4 as-is. NOT yet placed on a slide —
-  wiring it onto Ch3 › Fisher 657 Identify & Bench Set › page 5 of 5
-  (replacing the two deck photos) awaits its own slide-edit go-ahead.
-  2026-09-06 (Phase 4 follow-on — redraw pass under the standing redraw policy,
-  NOT a Stage 3 authoring-gate action).
+  benchset-measure-travel.png) and Fig 4 as-is. PLACED on slide 1400-098
+  (Ch3 › Fisher 657 Identify & Bench Set › page 5 of 5) 2026-09-06,
+  replacing the two deck photos — inline, visual-only, per the slide-97
+  house SVG pattern (procedure text is the .tmpl-note). Franz's explicit
+  slide-edit go-ahead. 2026-09-06 (Phase 4 follow-on — standing redraw
+  policy, NOT a Stage 3 authoring-gate action).
+  The two replaced deck photos (image159, benchset-measure-travel.png) are
+  retained in assets/ — no longer used by any slide.
