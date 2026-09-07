@@ -485,6 +485,16 @@
       '</div>';
   }
   window.__openCheck = function (pg) {
+    // The check route's own hash doesn't change here (it was already
+    // "#module/check" before this click), so render()'s own
+    // page-view toggle (route.view === "page") never re-runs and never
+    // applies to this transition. Without this, the check slide's iframe
+    // falls back to the unscoped .stage__card / .stage__scroll rules
+    // instead of the ones that shrink a slide to fit the viewport with no
+    // scrolling - it can render taller than the visible stage, "out of
+    // frame," requiring the page itself to scroll to see the whole slide
+    // (Franz, 2026-09-07). Set it explicitly here, same as a real page.
+    document.body.classList.add("page-view");
     el.card.className = "stage__card stage__card--page";
     el.card.innerHTML = '<iframe class="page__frame" src="' + C.slideBase + C._slidePrefix + pad3(pg) + '.html?embed=1" title="Check"></iframe>';
   };
