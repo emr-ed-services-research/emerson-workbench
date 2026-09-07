@@ -289,65 +289,115 @@ The model **describes every ch3-m2 / m3 content slide**: each maps to one
 competency and one primitive, no competency is orphaned, and no primitive
 was invented. Two schema gaps and five content notes came out of it.
 
+Slides are named by their **Workshop label** — Chapter 3 is
+*"Sliding-Stem Spring & Diaphragm Actuator Maintenance"*; the two modules
+are *"Fisher 657 — Identify & Bench Set"* (5 pages) and *"Fisher 657 —
+Mount & Service"* (5 pages). Internal pipeline numbers are in parens for
+file reference only.
+
 ### Schema gaps — need a decision before Phase 3
 
 **FINDING 1 — Check slides don't fit "one edge, one primitive."**
-Slides 100 and 108 assess a module's competencies but teach none and use no
-primitive. The retrofit models them as an `applies` edge naming several
-competencies with `primitive: null`. Options: (a) accept `primitive: null`
-on assessment edges; (b) add an `assessment-item` primitive type; (c) model
-checks outside the competency graph entirely. Recommend (a) — smallest,
-and a check genuinely *is* an application of its module's competencies.
+The Check Your Knowledge slides after *"Fisher 657 — Identify & Bench Set"*
+(`1400-100`) and *"Fisher 657 — Mount & Service"* (`1400-108`) assess a
+module's competencies but teach none and use no primitive. The retrofit
+models them as an `applies` edge naming several competencies with
+`primitive: null`. Options: (a) accept `primitive: null` on assessment
+edges; (b) add an `assessment-item` primitive type; (c) model checks
+outside the competency graph entirely. Recommend (a) — smallest, and a
+check genuinely *is* an application of its module's competencies.
 
-**FINDING 2 — Multi-asset slides.** Slides 98, 101, and 106 are two-figure
-`figrow` layouts. The retrofit treats each as **one primitive whose `asset`
-is a list**, on the basis that a figrow is one authored layout. Confirm the
+**FINDING 2 — Multi-asset slides.** Three slides are two-figure `figrow`
+layouts: *"Fisher 657 — Identify & Bench Set"* page 5 of 5 (`1400-098`),
+*"Fisher 657 — Mount & Service"* page 1 of 5 (`1400-101`) and page 5 of 5
+(`1400-106`). The retrofit treats each as **one primitive whose `asset` is
+a list**, on the basis that a figrow is one authored layout. Confirm the
 `asset` field may be a list, or split these into one primitive per figure
 with a shared competency.
 
 ### Content notes — not model problems, logged for the owner
 
-**FINDING 3 — Slide 98 asset vs. the Phase 1 worked example.** The Phase 1
-worked example gave `prim.mnt.actuator.set-travel.spring` the asset
-`657-benchset-adjustment-fig4.png` (Fisher IM Fig 4) — which is what the
-template proof `tp-017` uses and what the Component Index recommends
-(`delivery: existing figure (crop) — 657 IM Fig 4`). Production **slide 98
-actually uses two deck photos** (`image159.png` + `benchset-measure-travel.png`).
-Which asset is canonical for this primitive is a human call. If Fig 4 wins,
-slide 98 is a candidate rebuild; if the photos win, the Phase 1 worked
-example needs the one-line correction.
+**FINDING 3 — Slide-98 asset vs. the Phase 1 worked example.** See the
+dedicated resolution below — the deadband premise it turned on did not hold
+on inspection, so this is now a plain medium choice, not a canonical-asset
+or ordered-sequence question.
 
 **FINDING 4 — `used-by` staleness.** `ch3-cmp-benchset-adjustment-setup`
-lists `used-by: [98, 99, 114]`; slide 99 was folded into 98 during the
-ch3-m2 consolidation. Once placement edges exist, `used-by` is derivable
-from them and the hand-maintained list can be dropped or regenerated.
+lists `used-by: [98, 99, 114]`; the slide that was `1400-099` was folded
+into *"Fisher 657 — Identify & Bench Set"* page 5 of 5 (`1400-098`) during
+the ch3-m2 consolidation. Once placement edges exist, `used-by` is
+derivable from them and the hand-maintained list can be dropped or
+regenerated.
 
 **FINDING 5 — Duplicate caution.** `mnt.actuator.relieve-spring-before-casing`
-is taught on slide 95 (ch3-m2, `introduces`) and again on slide 105
-(ch3-m3, modelled `develops`). If slide 105 adds nothing beyond the
+is taught on *"Fisher 657 — Identify & Bench Set"* page 2 of 5 (`1400-095`,
+`introduces`) and again on *"Fisher 657 — Mount & Service"* page 4 of 5
+(`1400-105`, modelled `develops`). If the second adds nothing beyond the
 disassembly-sequence framing, it is `applies`, not `develops` — or the two
-slides consolidate. (Slide 110 carries the same warning in a later module,
-out of Phase 2 scope.)
+consolidate. (A later Chapter 3 module, out of Phase 2 scope, carries the
+same warning a third time — `1400-110`.)
 
-**FINDING 6 — Borderline competency.** Slide 102's "on the valve, full
-travel occurs at bench set plus friction ÷ diaphragm area" is modelled as
-`mnt.actuator.bench-set` `develops`. It could instead be its own
-competency (`mnt.actuator.friction-effect`). Judgment call — kept under
-`bench-set` for now because the graph is the same lineage and the slide
-title is "Re-Checking Travel on the Valve."
+**FINDING 6 — Borderline competency.** *"Fisher 657 — Mount & Service"*
+page 2 of 5 (`1400-102`, *"Re-Checking Travel on the Valve"*) — "on the
+valve, full travel occurs at bench set plus friction ÷ diaphragm area" — is
+modelled as `mnt.actuator.bench-set` `develops`. It could instead be its
+own competency (`mnt.actuator.friction-effect`). Judgment call — kept under
+`bench-set` for now because the graph is the same lineage.
 
-**FINDING 7 — Known slide-content bug carried forward.** Slide 103's "fine
-travel adjustment at the locknut and jam nut" is not Fisher IM terminology
-(already flagged in the ch3 Component Index notes). Slide-content fix for
-whoever next touches ch3-m3; not a curriculum-layer issue.
+**FINDING 7 — Known slide-content bug carried forward.** *"Fisher 657 —
+Mount & Service"* page 3 of 5 (`1400-103`) — "fine travel adjustment at the
+locknut and jam nut" is not Fisher IM terminology (already flagged in the
+ch3 Component Index notes). Slide-content fix for whoever next touches
+that module; not a curriculum-layer issue.
+
+### FINDING 3 — resolution
+
+Franz's first read was that Fisher IM **Figure 4** covers deadband and the
+deck photos cover only basic travel measurement, which would make the two a
+*simple-then-complete* teaching sequence. **On inspection the premise does
+not hold.** Four sources agree:
+
+- **The 657 IM itself** (D100306X012): *"Figure 4. Bench Set Adjustment"*
+  sits inside the *Spring Verification* section (pp 5–7) — apply the lower
+  bench-set pressure, check for first stem movement, adjust the spring
+  adjuster, mark the valve stem. *"Figure 5. Typical Valve Response to
+  Deadband"* is a **different figure** in the separate *Deadband
+  Measurement* section (p 10).
+- **The ch3 Component Index**: `ch3-cmp-benchset-adjustment-setup` labels
+  Figure 4 as SPRING ADJUSTER / LOWER-UPPER BENCH SET LOADING PRESSURE /
+  RATED VALVE TRAVEL MEASURE / MARK VALVE STEM HERE. Deadband is a separate
+  component citing Figure 5.
+- **The bench-set-657 topic index** (full 32-page read): same split.
+- **The slide itself**: *"Fisher 657 — Identify & Bench Set"* page 5 of 5
+  (`1400-098`) — its own comment earmarks both the deck photos and Figure 4
+  to the same component; the slide teaches "mark at lower bench set /
+  measure at upper = rated travel." No deadband.
+
+Figure 4 and the deck photos teach the **same procedure at the same
+depth** — off-valve bench-set travel verification — differing only in
+medium (2018 line drawing vs. two photos). So:
+
+- **No ordered-sequence schema construct is motivated by this slide.**
+- The genuine "building in depth" arc that does exist —
+  `mnt.actuator.bench-set` across *"Actuator Action, Fail Mode & Bench Set"*
+  → *"Identify & Bench Set"* page 4 of 5 → *"Mount & Service"* page 2 of 5
+  → the ch3-m6 deadband slide — is already expressed by `progression`
+  (`introduces → develops`) on placement edges, one primitive variant per
+  step. No new construct needed there either.
+- What remains is a **medium choice** for `prim.mnt.actuator.set-travel.spring`:
+  the two deck photos that shipped (and that Franz approved in the ch3-m2
+  consolidation), Figure 4 (the template-proof and origination-test
+  choice), or both under Finding 2's `asset`-list.
 
 ## Gate verdict
 
 The schema **held** — it describes finished content with no invented
 structure. It is **not "wrong"** in the sense the pathway's stop condition
-means. But Findings 1 and 2 are genuine unspecified constructs (assessment
+means. Findings 1 and 2 are genuine unspecified constructs (assessment
 items, composite figures) that Phase 3 will hit immediately, so they want a
-decision now. Findings 3–7 are content-owner items, not blockers.
+decision now. Finding 3 turned out not to need a schema change — the
+ordered-sequence idea it raised is not motivated once the deadband premise
+is dropped. Findings 4–7 are content-owner items, not blockers.
 
-**Recommend:** resolve Findings 1 and 2, note the call on Finding 3, then
-open Phase 3.
+**Recommend:** resolve Findings 1 and 2, make the medium call on Finding 3's
+primitive, then open Phase 3.
