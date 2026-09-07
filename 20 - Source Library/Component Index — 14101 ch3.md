@@ -84,7 +84,7 @@ teaches: >
   pushes the stem down; the spring returns it up. Fails up (retracts) on loss of air.
 concept-tags: [actuator action, direct-acting, Fisher 657, spring return, loading pressure]
 status: current
-serves: [mnt.actuator.direct-acting-principle]  # competency taught in ch3-m1; ch3-m2 applies it
+serves: [mnt.actuator.explain-actuator-action]  # competency taught in ch3-m1; ch3-m2 applies it
 source:
   - doc: Control Valve Handbook 6th ed. (D101881X012)
     locator: "§3.8.1, Figure 3.43 (left panel) — 'Diaphragm Actuators'"

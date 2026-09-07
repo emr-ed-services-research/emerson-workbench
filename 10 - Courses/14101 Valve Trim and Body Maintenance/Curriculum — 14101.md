@@ -10,96 +10,193 @@ updated: 2026-09-06
 
 # Curriculum Registry — 14101
 
-> [!note] Status — Phase 2 of the Instructional Primitives Pathway
-> This is the **ch3 retrofit**: the already-built, already-reviewed content
-> of modules **ch3-m2** and **ch3-m3** expressed in the curriculum schema
-> (`00 - Project/curriculum-development.md`). It authors **nothing** — every
-> competency, primitive, and edge below describes a slide that already
-> shipped. Its job is to prove the schema holds against real content and to
-> surface where it doesn't. Phase 3 extends this file to the full Day-One
-> arc.
+> [!note] Status — Phase 3 of the Instructional Primitives Pathway (Option C)
+> The **Day-One competency map**. Phase 2 retrofitted the two built 657
+> modules (ch3-m2, ch3-m3) to prove the schema; Phase 3 extends the map to
+> the rest of the buildable Day-One arc, keeping the existing module
+> structure (Option C, Franz 2026-09-06). Schema in
+> `00 - Project/curriculum-development.md`.
 >
-> **Scope:** ch3-m2 (slides 94–98, check 100) and ch3-m3 (slides 101, 102,
-> 103, 105, 106, check 108). ch3-m1 and ch3-m4/m5/m6 are out of scope
-> (m4–m6 under the full stop).
+> **In scope — full map:** ch1-m1, ch2-m1…m7, ch3-m1, ch3-m2, ch3-m3.
+> **Named, no edges (full stop):** ch3-m4, ch3-m5, ch3-m6 — the 667 modules
+> and Deadband; their competencies are listed so the arc is complete, but no
+> placement edges are authored.
+> **Stubs only (`status: outline`, not built):** ch4-m1…m3 — the piston /
+> double-acting actuator modules.
+> "Mechanism type" (Direct- / Reverse- / Double-Acting) is carried as a
+> **grouping tag** over the ch3/ch4 modules, not a structural rename.
 
-The schema: a **competency** is a flat skill ID (`mnt.actuator.set-travel`).
-A **primitive** is one authored figure for one `competency × asset-variant`.
-A **placement edge** is `module × roles × competency × progression →
-primitive`. See `curriculum-development.md` for the full record shapes and
-the four roles.
+The schema: a **competency** is a flat skill ID (`mnt.actuator.set-travel`,
+`mnt.valve-body.lap-metal-seat`). A **primitive** is one authored figure for
+one `competency × asset-variant`. A **placement edge** is
+`module × roles × competency × progression → primitive`. Assessment (check)
+edges carry `progression: applies` and `primitive: null`. See
+`curriculum-development.md` for the record shapes and the four roles.
 
-**Role assumption for this retrofit:** ch3 is Day-One content, which serves
-all four roles, so every edge below carries
-`roles: [maint-tech, inst-tech, sizing-eng, operator]`. Phase 3 confirms
-role routing per module.
+**Role routing** is resolved in its own section below — not assumed
+per-edge. The Phase 2 edges were written `roles: [all four]` provisionally;
+that is revisited there.
+
+---
+
+## Module map (Option C scope)
+
+| Module | Workshop title | Group | Phase-3 treatment |
+| --- | --- | --- | --- |
+| `ch1-m1` | Reading a Valve's Specifications | valve-body | full map |
+| `ch2-m1` | Valve Bodies, Plugs & Seating | valve-body | full map |
+| `ch2-m2` | Plug Guiding, Cages & Flow Characteristics | valve-body | full map |
+| `ch2-m3` | easy-e Trim Seals & Packing | valve-body | full map |
+| `ch2-m4` | Body Disassembly & Seal Replacement | valve-body | full map |
+| `ch2-m5` | Valve Lapping | valve-body | full map |
+| `ch2-m6` | Packing Replacement & Adjustment | valve-body | full map |
+| `ch2-m7` | Reassembly & Gaskets | valve-body | full map |
+| `ch3-m1` | Actuator Action, Fail Mode & Bench Set | actuator | full map |
+| `ch3-m2` | Fisher 657 — Identify & Bench Set | actuator · Direct-Acting | full map (Phase 2) |
+| `ch3-m3` | Fisher 657 — Mount & Service | actuator · Direct-Acting | full map (Phase 2) |
+| `ch3-m4` | Fisher 667 — Identify & Bench Set | actuator · Reverse-Acting | named, no edges — **full stop** |
+| `ch3-m5` | Fisher 667 — Mount & Service | actuator · Reverse-Acting | named, no edges — **full stop** |
+| `ch3-m6` | Deadband | actuator | named, no edges — **full stop** |
+| `ch4-m1` | Piston actuator operation & fail action | actuator · Double-Acting | stub — `outline` |
+| `ch4-m2` | Fisher 585C / 685 double-acting actuators | actuator · Double-Acting | stub — `outline` |
+| `ch4-m3` | 585C maintenance & travel setting | actuator · Double-Acting | stub — `outline` |
+
+ch1 and the Day-1 workshop (`ch14-m1`) sit outside the actuator/valve-body
+arc; `ch1-m1` is included because its specs-reading competencies are
+`assumed` by the ch2 modules.
 
 ---
 
 ## Competencies
 
-All under `mnt.actuator.*`. Eight, derived from the ch3-m2/m3 key concepts.
+Grouped by area. Statements are one line; `bloom` reuses the Stage 2
+cognitive-level axis.
+
+### `mnt.valve-body.*`
 
 ```yaml
-- id: mnt.actuator.direct-acting-principle
-  statement: >
-    Explain how a direct-acting, spring-opposed diaphragm actuator strokes
-    under loading pressure and why its stem fails up on loss of air.
-  bloom: understand
+# ch1-m1 — Reading a Valve's Specifications
+- { id: mnt.valve-body.identify-assembly-stackup, bloom: remember,
+    statement: "Name the parts of an assembled control valve top to bottom — actuator, bonnet, body between the pipe flanges — and locate the flange-to-flange job scope on a P&ID." }
+- { id: mnt.valve-body.read-pressure-class, bloom: apply,
+    statement: "Read the ASME class and body material off the nameplate and look up the working pressure for the service temperature (ASME B16.34 pressure–temperature table)." }
+- { id: mnt.valve-body.read-leakage-class, bloom: understand,
+    statement: "State the shutoff a valve's ANSI/FCI 70-2 seat-leakage class allows, and that Class I means no test was performed." }
 
-- id: mnt.actuator.identify-sd-construction
-  statement: >
-    Name the parts of a spring-and-diaphragm actuator top to bottom — the
-    two diaphragm casings, diaphragm and plate, spring and spring seat,
-    spring adjuster in the yoke — and state what the spring adjuster sets.
-  bloom: remember
+# ch2-m1 — Valve Bodies, Plugs & Seating
+- { id: mnt.valve-body.identify-trim-parts, bloom: remember,
+    statement: "Name the trim parts in the flow path (plug, seat ring, cage, stem, stem pin) and distinguish them from the pressure boundary (body, bonnet)." }
+- { id: mnt.valve-body.contrast-pdtc-pdto, bloom: understand,
+    statement: "Distinguish push-down-to-close (direct-acting) from push-down-to-open (reverse-acting) body orientation and state how it sets the assembly's fail action once an actuator is fitted." }
+- { id: mnt.valve-body.contrast-balanced-unbalanced-plug, bloom: understand,
+    statement: "Explain how balanced and unbalanced plugs differ in stem force, number of leak paths, and temperature limits." }
+- { id: mnt.valve-body.identify-seat-and-tip-types, bloom: remember,
+    statement: "Distinguish standard (chamfered, re-lappable) from radius (rounded, re-machined) plug tips, and metal from soft (PTFE-insert) seat rings." }
 
-- id: mnt.actuator.relieve-spring-before-casing
-  statement: >
-    Relieve all actuator-spring compression with the spring adjuster before
-    removing any diaphragm-casing cap screw.
-  bloom: apply
+# ch2-m2 — Plug Guiding, Cages & Flow Characteristics
+- { id: mnt.valve-body.contrast-cage-post-guiding, bloom: understand,
+    statement: "Distinguish cage-guided from post-guided trim and the service each suits (clean vs viscous/dirty/non-lubricating)." }
+- { id: mnt.valve-body.explain-cage-functions, bloom: understand,
+    statement: "State the cage's three jobs — guide the plug, clamp the seat ring, set the flow characteristic through its window shape." }
+- { id: mnt.valve-body.explain-flow-characteristic, bloom: understand,
+    statement: "Explain inherent flow characteristic (Cv vs travel at constant ΔP) and how quick-opening / linear / equal-percentage are set by cage-window or formed-plug geometry." }
 
-- id: mnt.actuator.read-nameplate
-  statement: >
-    Read an actuator nameplate for the values that define a correct bench
-    set: type and size, bench-set range, rated travel, maximum valve stem
-    diameter.
-  bloom: remember
+# ch2-m3 — easy-e Trim Seals & Packing
+- { id: mnt.valve-body.identify-easye-types, bloom: remember,
+    statement: "Match the easy-e valve types (ES / ED / ET / EZ) to their guiding, plug balance, seat, piston seal, and shutoff class." }
+- { id: mnt.valve-body.select-piston-seal, bloom: apply,
+    statement: "Select the piston seal — graphite rings vs two-piece or spring-loaded PTFE — by service temperature." }
+- { id: mnt.valve-body.identify-packing-box, bloom: remember,
+    statement: "State that stem packing seals along the stem inside the packing box (the bored recess, not the bonnet casting), compressed by the packing flange and nuts." }
+- { id: mnt.valve-body.select-stem-packing, bloom: apply,
+    statement: "Select stem packing — PTFE, graphite, HIGH-SEAL, ENVIRO-SEAL — by service temperature, friction tolerance, and fugitive-emissions requirement." }
 
-- id: mnt.actuator.bench-set
-  statement: >
-    Explain bench set as the friction-free initial spring compression that
-    fixes the diaphragm-pressure range for rated travel, and read the lower
-    and upper bench-set pressures on a travel-vs-pressure plot.
-  bloom: understand
+# ch2-m4 — Body Disassembly & Seal Replacement
+- { id: mnt.valve-body.disassemble-body, bloom: apply,
+    statement: "Disassemble an easy-e valve body to the safe fixed order: isolate, depressurise both sides, drain, lock out, pull the actuator, back off the packing-flange nuts, loosen the body-to-bonnet nuts." }
+- { id: mnt.valve-body.assess-trim-reuse, bloom: analyze,
+    statement: "Decide which trim parts can be reused — verify seating surfaces, stems, and plug grooves; a sound unbalanced plug is reusable, a gouged one is machined or replaced." }
+- { id: mnt.valve-body.replace-piston-seal, bloom: apply,
+    statement: "Replace the balanced-plug piston seal in its three easy-e forms — ED graphite ring (fitted in two or three pieces), ET two-piece PTFE, ET spring-loaded PTFE (cold-flow slowly, no jerks) — and reinstall the plug square to the cage entrance chamfer." }
 
-- id: mnt.actuator.set-travel
-  statement: >
-    Set an actuator's stroke so the travel between the end-of-travel marks
-    equals the nameplate rated travel.
-  bloom: apply
+# ch2-m5 — Valve Lapping
+- { id: mnt.valve-body.lap-metal-seat, bloom: apply,
+    statement: "Lap a metal-seated easy-e valve to a solid, even continuous contact band — plug under its own weight, back-and-forth part-turns, lift and rotate 90° periodically — in a partial assembly that holds the plug true." }
+- { id: mnt.valve-body.recognise-no-lap-cases, bloom: understand,
+    statement: "Recognise when lapping is not the fix: radius (spherical) seats (re-machine), deep gouges, bellows-seal bonnets." }
+- { id: mnt.valve-body.avoid-lapping-damage, bloom: understand,
+    statement: "Identify the trim damage poor lapping practice causes — retained grit galls the plug and cage in service; a crooked or out-of-sequence bonnet cocks the cage." }
 
-- id: mnt.actuator.mount-on-valve
-  statement: >
-    Mount a spring-and-diaphragm actuator on the bonnet — valve plug and
-    stem pushed down, actuator hoisted on, yoke locknut run down, actuator
-    and valve stems not yet connected.
-  bloom: apply
+# ch2-m6 — Packing Replacement & Adjustment
+- { id: mnt.valve-body.remove-packing, bloom: apply,
+    statement: "Remove old packing by pulling the bonnet and pushing the rings out the top with a non-marring rod — never from below — then inspect the stem threads and the packing bore." }
+- { id: mnt.valve-body.build-packing-stack, bloom: apply,
+    statement: "Build the packing stack one ring at a time, each seated with the follower, with the end adaptors and lantern ring in the correct orientation." }
+- { id: mnt.valve-body.adjust-packing, bloom: apply,
+    statement: "Set each packing type to its own compression method — spring-loaded PTFE (follower bottoms), jam PTFE / graphite (torque, two-step for graphite), HIGH-SEAL (load scale), ENVIRO-SEAL (spring-flat method)." }
 
-- id: mnt.actuator.install-stem-connector
-  statement: >
-    Install the two-piece stem connector with at least one stem diameter of
-    thread engagement on each stem, then confirm full stroke against rated
-    travel.
-  bloom: apply
-
-- id: mnt.actuator.torque-diaphragm-casing
-  statement: >
-    Reassemble the diaphragm casing clean and dry to the manual's crossing
-    pattern and two-round final torque.
-  bloom: apply
+# ch2-m7 — Reassembly & Gaskets
+- { id: mnt.valve-body.select-and-place-gaskets, bloom: apply,
+    statement: "Replace every disturbed gasket with the correct kind in the correct place — graphite flat sheet, spiral-wound (a live element that stays loaded through thermal cycling), seat-ring gasket — stacked bottom-up." }
+- { id: mnt.valve-body.torque-bonnet, bloom: apply,
+    statement: "Torque the bonnet down by the correct method — clean and lubricate the bolting, align the match marks, tighten crosswise in progressive steps, use only the serial-card bolt grade." }
 ```
+
+### `mnt.actuator.*`
+
+```yaml
+# ch3-m1 — Actuator Action, Fail Mode & Bench Set
+- { id: mnt.actuator.explain-actuator-action, bloom: understand,
+    statement: "Explain actuator action — direct-acting (657: air on top of the diaphragm pushes the stem down, spring lifts it) vs reverse-acting (667) — and why the stem fails up or down on loss of air." }
+- { id: mnt.actuator.determine-fail-mode, bloom: analyze,
+    statement: "Determine an assembly's fail mode (plug position on loss of air) from actuator action combined with body orientation (PDTC / PDTO)." }
+- { id: mnt.actuator.select-action-for-failsafe, bloom: evaluate,
+    statement: "Given a required fail-safe result, select actuator action and body orientation together to achieve it." }
+- { id: mnt.actuator.explain-excluded-forces, bloom: understand,
+    statement: "State the in-service valve forces bench set deliberately excludes — static plug unbalance (A), seat load (B), packing friction (C), dynamic (D)." }
+
+# ch3-m1 / ch3-m2 / ch3-m3 — from the Phase 2 retrofit (statements unchanged)
+- { id: mnt.actuator.bench-set, bloom: understand,
+    statement: "Explain bench set as the friction-free initial spring compression that fixes the diaphragm-pressure range for rated travel, and read the lower and upper bench-set pressures on a travel-vs-pressure plot." }
+- { id: mnt.actuator.identify-sd-construction, bloom: remember,
+    statement: "Name the parts of a spring-and-diaphragm actuator top to bottom — the two diaphragm casings, diaphragm and plate, spring and spring seat, spring adjuster in the yoke — and state what the spring adjuster sets." }
+- { id: mnt.actuator.read-nameplate, bloom: remember,
+    statement: "Read an actuator nameplate for the values that define a correct bench set — type and size, bench-set range, rated travel, maximum valve stem diameter." }
+- { id: mnt.actuator.relieve-spring-before-casing, bloom: apply,
+    statement: "Relieve all actuator-spring compression with the spring adjuster before removing any diaphragm-casing cap screw." }
+- { id: mnt.actuator.set-travel, bloom: apply,
+    statement: "Set an actuator's stroke so the travel between the end-of-travel marks equals the nameplate rated travel." }
+- { id: mnt.actuator.mount-on-valve, bloom: apply,
+    statement: "Mount a spring-and-diaphragm actuator on the bonnet — valve plug and stem pushed down, actuator hoisted on, yoke locknut run down, actuator and valve stems not yet connected." }
+- { id: mnt.actuator.install-stem-connector, bloom: apply,
+    statement: "Install the two-piece stem connector with at least one stem diameter of thread engagement on each stem, then confirm full stroke against rated travel." }
+- { id: mnt.actuator.torque-diaphragm-casing, bloom: apply,
+    statement: "Reassemble the diaphragm casing clean and dry to the manual's crossing pattern and two-round final torque." }
+
+# ch3-m6 — Deadband (named, no edges — full stop)
+- { id: mnt.actuator.measure-deadband, bloom: apply,
+    statement: "Measure the span and percent of deadband from the pressure difference at a common travel-reference point on the rising and falling strokes." }
+
+# ch4 — Double-acting / piston (stub competencies — not built)
+- { id: mnt.actuator.explain-piston-operation, bloom: understand,
+    statement: "Explain how a double-acting piston actuator strokes (loading pressure on both sides of the piston) and how its fail action is determined." }
+- { id: mnt.actuator.identify-piston-construction, bloom: remember,
+    statement: "Name the parts of a Fisher 585C / 685 piston actuator." }
+- { id: mnt.actuator.service-piston-actuator, bloom: apply,
+    statement: "Disassemble, inspect, and reassemble a 585C piston actuator." }
+```
+
+`mnt.actuator.set-travel` also gets a `develops` edge at `ch4-m3` (piston
+variant) — matching the `prim.mnt.actuator.set-travel.piston` primitive
+stub. `mnt.actuator.determine-fail-mode` and
+`mnt.actuator.explain-actuator-action` carry into ch3-m4 and ch4-m1 as
+`develops` / `applies`.
+
+**Total: 25 `mnt.valve-body.*` + 16 `mnt.actuator.*` = 41 competencies.**
+Four actuator competencies are **named-only** — their modules are under the
+full stop or unbuilt: `measure-deadband` (ch3-m6), and
+`explain-piston-operation` / `identify-piston-construction` /
+`service-piston-actuator` (ch4).
 
 ---
 
@@ -200,21 +297,25 @@ One per `competency × asset-variant`. The retrofit invents none — nine are
   redrawRecord: house diagram of the torque sequence
 ```
 
-Ten primitives for nine competencies: `mnt.actuator.bench-set` and
-`mnt.actuator.relieve-spring-before-casing` each carry two variants (both
-flagged below). `mnt.actuator.direct-acting-principle` carries **none** —
-it is taught in ch3-m1 and only *applied* here (see edges).
-`mnt.actuator.set-travel` has one primitive, currently `pending`.
+Ten primitives, covering seven of the ch3-m2/m3 competencies:
+`mnt.actuator.bench-set` and `mnt.actuator.relieve-spring-before-casing`
+each carry two variants (both flagged below); `mnt.actuator.set-travel` has
+one, currently `pending`. `mnt.actuator.explain-actuator-action` carries
+**none** — it is taught in ch3-m1 and only *applied* in ch3-m2 (see edges).
+Primitives for the ch1-m1 / ch2 / ch3-m1 competencies are Phase 4 work.
 
 ---
 
-## Placement edges
+## Placement edges — Phase 2 (ch3-m2 / m3, full detail)
+
+Written with primitives because the ch3-m2 / m3 assets already exist. The
+`roles: [all four]` on these was provisional — see Role routing below.
 
 ### ch3-m2 — "Fisher 657 — Identify & Bench Set" (slides 94–98)
 
 ```yaml
 - { module: ch3-m2, roles: [maint-tech, inst-tech, sizing-eng, operator],
-    competency: mnt.actuator.direct-acting-principle, progression: applies,
+    competency: mnt.actuator.explain-actuator-action, progression: applies,
     primitive: null, slide: 94, note: "carried from ch3-m1 (slide 88); not re-taught" }
 
 - { module: ch3-m2, roles: [maint-tech, inst-tech, sizing-eng, operator],
@@ -230,8 +331,9 @@ it is taught in ch3-m1 and only *applied* here (see edges).
     primitive: prim.mnt.actuator.read-nameplate.plate, slide: 96 }
 
 - { module: ch3-m2, roles: [maint-tech, inst-tech, sizing-eng, operator],
-    competency: mnt.actuator.bench-set, progression: introduces,
-    primitive: prim.mnt.actuator.bench-set.graph-friction-free, slide: 97 }
+    competency: mnt.actuator.bench-set, progression: develops, slide: 97,
+    primitive: prim.mnt.actuator.bench-set.graph-friction-free,
+    note: "RECONCILED — ch3-m1 introduces bench-set (generic, slide 92); this develops it for direct-acting off the valve" }
 
 - { module: ch3-m2, roles: [maint-tech, inst-tech, sizing-eng, operator],
     competency: mnt.actuator.set-travel, progression: introduces,
@@ -286,9 +388,220 @@ Added to `20 - Source Library/Component Index — 14101 ch3.md`:
 | `ch3-cmp-mounting-components` | `mnt.actuator.mount-on-valve` |
 | `ch3-cmp-stem-connector` | `mnt.actuator.install-stem-connector` |
 | `ch3-cmp-casing-torque-pattern` | `mnt.actuator.torque-diaphragm-casing` |
-| `ch3-cmp-da-schematic` | `mnt.actuator.direct-acting-principle` *(competency lives in ch3-m1; ch3-m2 applies it)* |
+| `ch3-cmp-da-schematic` | `mnt.actuator.explain-actuator-action` *(renamed from `direct-acting-principle` 2026-09-06; competency lives in ch3-m1, ch3-m2 applies it. The `serves:` line in the Component Index is updated to match.)* |
 
 ---
+
+## Placement edges — Phase 3 (progression only)
+
+For ch1-m1, ch2, and ch3-m1 the primitives do not exist yet (Phase 4), so
+these edges give **module × competency × progression** only; `primitive:
+pending`. Slides referenced by their Workshop page-of-total. Assessment
+edges omitted for brevity — every module with a `check` gets one
+`progression: applies, primitive: null` edge naming the competencies it
+tests.
+
+### ch1-m1 — Reading a Valve's Specifications
+
+```yaml
+- { module: ch1-m1, competency: mnt.valve-body.identify-assembly-stackup, progression: introduces }
+- { module: ch1-m1, competency: mnt.valve-body.read-pressure-class,       progression: introduces }
+- { module: ch1-m1, competency: mnt.valve-body.read-leakage-class,        progression: introduces }
+```
+
+### ch2-m1 — Valve Bodies, Plugs & Seating
+
+```yaml
+- { module: ch2-m1, competency: mnt.valve-body.identify-assembly-stackup,           progression: applies }
+- { module: ch2-m1, competency: mnt.valve-body.identify-trim-parts,                 progression: introduces }
+- { module: ch2-m1, competency: mnt.valve-body.contrast-pdtc-pdto,                  progression: introduces }
+- { module: ch2-m1, competency: mnt.valve-body.contrast-balanced-unbalanced-plug,   progression: introduces }
+- { module: ch2-m1, competency: mnt.valve-body.identify-seat-and-tip-types,         progression: introduces }
+```
+
+### ch2-m2 — Plug Guiding, Cages & Flow Characteristics
+
+```yaml
+- { module: ch2-m2, competency: mnt.valve-body.identify-trim-parts,            progression: applies }
+- { module: ch2-m2, competency: mnt.valve-body.contrast-cage-post-guiding,     progression: introduces }
+- { module: ch2-m2, competency: mnt.valve-body.explain-cage-functions,         progression: introduces }
+- { module: ch2-m2, competency: mnt.valve-body.explain-flow-characteristic,    progression: introduces }
+```
+
+### ch2-m3 — easy-e Trim Seals & Packing
+
+```yaml
+- { module: ch2-m3, competency: mnt.valve-body.contrast-balanced-unbalanced-plug, progression: applies }
+- { module: ch2-m3, competency: mnt.valve-body.identify-seat-and-tip-types,       progression: applies }
+- { module: ch2-m3, competency: mnt.valve-body.identify-easye-types,             progression: introduces }
+- { module: ch2-m3, competency: mnt.valve-body.select-piston-seal,               progression: introduces }
+- { module: ch2-m3, competency: mnt.valve-body.identify-packing-box,             progression: introduces }
+- { module: ch2-m3, competency: mnt.valve-body.select-stem-packing,              progression: introduces }
+```
+
+### ch2-m4 — Body Disassembly & Seal Replacement
+
+```yaml
+- { module: ch2-m4, competency: mnt.valve-body.identify-easye-types,   progression: applies }
+- { module: ch2-m4, competency: mnt.valve-body.disassemble-body,       progression: introduces }
+- { module: ch2-m4, competency: mnt.valve-body.assess-trim-reuse,      progression: introduces }
+- { module: ch2-m4, competency: mnt.valve-body.select-piston-seal,     progression: applies }
+- { module: ch2-m4, competency: mnt.valve-body.replace-piston-seal,    progression: introduces }
+```
+
+### ch2-m5 — Valve Lapping
+
+```yaml
+- { module: ch2-m5, competency: mnt.valve-body.identify-seat-and-tip-types,  progression: applies }
+- { module: ch2-m5, competency: mnt.valve-body.lap-metal-seat,               progression: introduces }
+- { module: ch2-m5, competency: mnt.valve-body.recognise-no-lap-cases,       progression: introduces }
+- { module: ch2-m5, competency: mnt.valve-body.avoid-lapping-damage,         progression: introduces }
+```
+
+### ch2-m6 — Packing Replacement & Adjustment
+
+```yaml
+- { module: ch2-m6, competency: mnt.valve-body.identify-packing-box,   progression: applies }
+- { module: ch2-m6, competency: mnt.valve-body.select-stem-packing,    progression: applies }
+- { module: ch2-m6, competency: mnt.valve-body.remove-packing,         progression: introduces }
+- { module: ch2-m6, competency: mnt.valve-body.build-packing-stack,    progression: introduces }
+- { module: ch2-m6, competency: mnt.valve-body.adjust-packing,         progression: introduces }
+```
+
+### ch2-m7 — Reassembly & Gaskets
+
+```yaml
+- { module: ch2-m7, competency: mnt.valve-body.disassemble-body,           progression: applies }
+- { module: ch2-m7, competency: mnt.valve-body.select-and-place-gaskets,   progression: introduces }
+- { module: ch2-m7, competency: mnt.valve-body.torque-bonnet,              progression: introduces }
+```
+
+### ch3-m1 — Actuator Action, Fail Mode & Bench Set
+
+```yaml
+- { module: ch3-m1, competency: mnt.valve-body.contrast-pdtc-pdto,               progression: applies, note: "body orientation, from ch2-m1" }
+- { module: ch3-m1, competency: mnt.actuator.explain-actuator-action,            progression: introduces }
+- { module: ch3-m1, competency: mnt.actuator.determine-fail-mode,                progression: introduces }
+- { module: ch3-m1, competency: mnt.actuator.select-action-for-failsafe,         progression: introduces }
+- { module: ch3-m1, competency: mnt.actuator.bench-set,                          progression: introduces, note: "generic friction-free definition, slide 92" }
+- { module: ch3-m1, competency: mnt.actuator.explain-excluded-forces,            progression: introduces }
+```
+
+### ch3-m4 / m5 / m6 — named only (full stop)
+
+No edges authored. When the full stop lifts, the expected progression is:
+
+| Module | Competency | Progression |
+| --- | --- | --- |
+| ch3-m4 (667 Identify & Bench Set) | `identify-sd-construction` | `develops` (reverse-acting) |
+| | `read-nameplate` | `applies` |
+| | `bench-set` | `develops` (reverse-acting) |
+| | `set-travel` | `develops` (screwdriver-scale method) |
+| ch3-m5 (667 Mount & Service) | `mount-on-valve`, `install-stem-connector`, `torque-diaphragm-casing` | `develops` (667) |
+| | `relieve-spring-before-casing` | `applies` |
+| ch3-m6 (Deadband) | `measure-deadband` | `introduces` |
+| | `bench-set` | `develops` (adds the decreasing-pressure line + deadband bracket) |
+
+### ch4-m1 / m2 / m3 — stubs (`status: outline`)
+
+| Module | Competency | Progression |
+| --- | --- | --- |
+| ch4-m1 | `explain-piston-operation` | `introduces` |
+| | `determine-fail-mode` | `develops` (double-acting) |
+| ch4-m2 | `identify-piston-construction` | `introduces` |
+| ch4-m3 | `service-piston-actuator` | `introduces` |
+| | `set-travel` | `develops` (piston — no bench set; travel stops + scale; `prim.mnt.actuator.set-travel.piston`) |
+
+---
+
+## Axis-C scoping pass
+
+Each module's spine walked against the Axis-C role vocabulary
+(`nomenclature` / `mechanism` / `procedure` / `application` / `contrast` /
+`caution` / `check`) to catch a load-bearing teaching component with no
+competency behind it. **No gaps found** in the in-scope modules — every
+"yes" below already has a competency.
+
+| Module | nomen. | mech. | proc. | appl. | contrast | caution | check |
+| --- | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
+| ch1-m1 | ✓ | — | ✓ | — | — | — | ✓ |
+| ch2-m1 | ✓ | — | — | — | ✓ | — | ✓ |
+| ch2-m2 | ✓ | ✓ | — | — | ✓ | — | ✓ |
+| ch2-m3 | ✓ | — | — | ✓ | — | — | — |
+| ch2-m4 | — | — | ✓ | ✓ | — | ✓¹ | — |
+| ch2-m5 | — | ✓ | ✓ | ✓ | — | ✓ | ✓ |
+| ch2-m6 | ✓ | — | ✓ | — | — | — | ✓ |
+| ch2-m7 | ✓ | ✓² | ✓ | — | — | ✓³ | ✓ |
+| ch3-m1 | ✓ | ✓ | — | ✓ | ✓ | — | ✓ |
+| ch3-m2 | ✓ | ✓ | ✓ | — | — | ✓ | ✓ |
+| ch3-m3 | — | — | ✓ | ✓ | — | ✓ | ✓ |
+
+¹ `avoid-lapping-damage` and the disassembly-order framing in
+`disassemble-body` carry the caution content; not a standalone caution
+slide. ² the spiral-wound "live element" behaviour in
+`select-and-place-gaskets` is the mechanism content. ³ "never pull the
+bonnet straight to final torque" — carried inside `torque-bonnet`, not a
+separate caution.
+
+**One watch item, not a gap:** ch2-m4's disassembly-safety content
+(isolate / depressurise / lock out) is folded into
+`mnt.valve-body.disassemble-body` rather than split out as its own
+`caution` competency. That mirrors how `mnt.actuator.relieve-spring-before-casing`
+*is* split out on the actuator side. Consistent-enough for now; flag if a
+review wants valve-body disassembly safety as its own competency.
+
+---
+
+## Role routing
+
+**The open question for this gate.** Franz's framing: hands-on depth never
+flexes by role, but role decides *which competencies a course routes a
+cohort toward*, and "operator training stays bounded to the same core
+actuator / instrument competencies the other three roles already need."
+
+Two readings of what 14101 routes to `operator`:
+
+- **(R1) All four roles → every competency.** 14101 is a maintenance
+  course; anyone who enrols does the whole bench programme. Simplest;
+  matches "the curriculum does not flex down."
+- **(R2) `operator` → a core subset.** Operators get the actuator arc
+  (`mnt.actuator.*` — action, fail mode, bench set, travel) and the
+  valve-body *identification / contrast* competencies, but not the deep
+  rebuild procedures (`lap-metal-seat`, `build-packing-stack`,
+  `replace-piston-seal`, `torque-bonnet`). Matches "bounded to the core
+  competencies," and reflects that an operator is unlikely to be sent to
+  re-lap a seat.
+
+Recommend **R1 for 14101 specifically** — it is a single hands-on course
+with a fixed bench programme, and Franz was explicit that taking the course
+means doing all of it. R2 is really a statement about *which course an
+operator is enrolled in*, not about filtering inside one. If R2 is wanted,
+the filter is a short `operator`-excludes list on ~6 procedure
+competencies.
+
+Until this is called, the placement edges above omit `roles` (Phase 3 is
+progression-level); the Phase 2 ch3-m2/m3 edges keep their provisional
+`[all four]`.
+
+---
+
+## Phase 2 → Phase 3 reconciliations
+
+1. **`mnt.actuator.direct-acting-principle` → `mnt.actuator.explain-actuator-action`.**
+   ch3-m1's actuator-action concept covers direct *and* reverse acting, so
+   the competency is the general one. ch3-m1 `introduces`; ch3-m2
+   `applies`. The ch3 Component Index `serves:` line on `ch3-cmp-da-schematic`
+   needs the same rename.
+2. **`mnt.actuator.bench-set` progression.** Phase 2 had ch3-m2
+   `introduces` it. ch3-m1 is where it is first taught (generic,
+   friction-free, slide 92), so ch3-m1 `introduces`, ch3-m2 `develops`
+   (direct-acting off the valve), ch3-m3 `develops` (on-valve friction
+   shift). ch3-m2 edge updated above.
+3. **Finding 6 becomes a live call.** With ch3-m1 introducing `bench-set`
+   and ch3-m3 developing it for friction, the on-valve friction content
+   (ch3-m3 page 2 of 5) sits more comfortably as `bench-set` `develops`
+   than as a separate `friction-effect` competency. Leaving it merged;
+   Finding 6 downgraded from "judgment call" to "resolved — merged."
 
 ## Phase 2 findings
 
@@ -342,12 +655,13 @@ disassembly-sequence framing, it is `applies`, not `develops` — or the two
 consolidate. (A later Chapter 3 module, out of Phase 2 scope, carries the
 same warning a third time — `1400-110`.)
 
-**FINDING 6 — Borderline competency.** *"Fisher 657 — Mount & Service"*
-page 2 of 5 (`1400-102`, *"Re-Checking Travel on the Valve"*) — "on the
-valve, full travel occurs at bench set plus friction ÷ diaphragm area" — is
-modelled as `mnt.actuator.bench-set` `develops`. It could instead be its
-own competency (`mnt.actuator.friction-effect`). Judgment call — kept under
-`bench-set` for now because the graph is the same lineage.
+**FINDING 6 — Borderline competency. RESOLVED in Phase 3 — merged.**
+*"Fisher 657 — Mount & Service"* page 2 of 5 (`1400-102`, *"Re-Checking
+Travel on the Valve"*) — the on-valve friction content. With Phase 3's map,
+`mnt.actuator.bench-set` is `introduced` in ch3-m1 and `developed`
+progressively (ch3-m2 direct-acting off the valve → ch3-m3 on-valve
+friction → ch3-m6 full deadband). The friction content is one `develops`
+step in that arc, not a separate `mnt.actuator.friction-effect` competency.
 
 **FINDING 7 — Known slide-content bug carried forward.** *"Fisher 657 —
 Mount & Service"* page 3 of 5 (`1400-103`) — "fine travel adjustment at the
@@ -415,7 +729,9 @@ Tracked, not blocking. These are content tasks, not schema decisions.
 | **Finding 6** — `mnt.actuator.bench-set` `develops` vs. a new `mnt.actuator.friction-effect` competency for *"Mount & Service"* page 2 of 5 (`1400-102`). | ch3-m3 | judgment call, deferred |
 | **Finding 7** — "jam nut" terminology on *"Mount & Service"* page 3 of 5 (`1400-103`) is not Fisher IM wording. | ch3-m3 | slide-content fix |
 
-## Gate verdict — Phase 2 closed (Franz, 2026-09-06)
+## Gate log
+
+### Phase 2 — closed (Franz, 2026-09-06)
 
 The schema **held** — it describes every ch3-m2 / m3 content slide with no
 invented structure. The two schema gaps are resolved and folded into
@@ -424,5 +740,27 @@ invented structure. The two schema gaps are resolved and folded into
 list, for parallel figrows only). Finding 3 needed no schema change — it is
 a tracked content gap. Findings 4–7 are content-owner items.
 
-**Phase 3 is clear to proceed.** The `mnt.actuator.set-travel` asset gap is
-an open content item, not a Phase 3 blocker.
+### Phase 3 — at gate (awaiting Franz approve/flag)
+
+**Delivered:** the Day-One competency map under Option C — module map,
+**41 competencies** (25 `mnt.valve-body.*`, 16 `mnt.actuator.*`),
+progression edges (`introduces` / `develops` / `applies`) for ch1-m1,
+ch2-m1…m7, ch3-m1, plus the Phase 2 detail for ch3-m2/m3; named-only
+competencies for ch3-m4/m5/m6 (full stop) and ch4 (`outline`); the Axis-C
+scoping pass (no gaps); and three Phase 2 reconciliations.
+
+**Coverage check:** every module `objective` in `course.json` for the
+in-scope modules is covered by at least one `introduces` competency —
+confirmed by walking each objective against its module's competency list.
+
+**The one open decision:** *Role routing* (see that section) — R1 (all four
+roles → every competency, recommended for a single fixed-programme hands-on
+course) vs R2 (`operator` gets a core subset). Progression edges are
+role-free pending this call; nothing else in the map depends on it.
+
+**Not done, by design:** primitives for ch1/ch2/ch3-m1 (Phase 4); any Day
+Two/Three content; the ch3-m4/m5/m6 edges (full stop); ch4 detail
+(`outline`).
+
+**Gate question for Franz:** approve the map, or flag modules. A flagged
+module holds the gate; the rest can move to Phase 4.
