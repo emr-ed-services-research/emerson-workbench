@@ -1003,21 +1003,22 @@
    each other instead of two independently-anchored boxes that can collide
    if either one's content runs long. .tmpl-note keeps its original
    right:47cqw column width (as a margin now) so it still stops short of
-   the figure/list area on the right, exactly as before. */
-.slide--tmpl-diagram:has(> .tmpl-note):has(> .tmpl-source) {
-  display: flex;
-  flex-direction: column;
-}
-.slide--tmpl-diagram:has(> .tmpl-note):has(> .tmpl-source) .tmpl-note {
-  position: static;
-  margin: auto 47cqw 0.8cqh 5.6cqw;
-  flex: none;
-}
-.slide--tmpl-diagram:has(> .tmpl-note):has(> .tmpl-source) .tmpl-source {
-  position: static;
-  margin: 0 var(--logo-keepout) 6cqh 5.6cqw;
-  flex: none;
-}
+   the figure/list area on the right, exactly as before.
+
+   REVERTED 2026-09-08 (Franz): this whole diagram-specific block, and the
+   figure enlarge/center rule that followed it, were built chasing the
+   wrong reference. `_Template Gallery/Presentation/build/css/gallery.css`
+   already solves this exact class of problem (note/source collisions,
+   fixed-offset figure sizing) structurally, via CSS Grid, specifically
+   BECAUSE hand-patching .tmpl-* offsets kept reproducing it - see that
+   file's own header comment. om1-003/004/006 are being re-authored against
+   the Template Gallery's role templates (.slide--role-mechanism /
+   .slide--role-nomenclature, matching their Stage 2 Axis C role tags)
+   instead of .slide--tmpl-diagram, so this template's own CSS goes back to
+   its pre-today state rather than carrying dead rules for a path this
+   content no longer takes. The figrow fix and the general .tmpl-source
+   containment (max-height/line-clamp) elsewhere in this file are unrelated
+   to this revert and stay - they were never diagram-specific. */
 
 /* .tmpl-fig + .tmpl-note collision fix (Franz review, 14101 ch3-m4 rework
    2026-09-04). Same root-cause CLASS as the .tmpl-row/.tmpl-note fix above,
