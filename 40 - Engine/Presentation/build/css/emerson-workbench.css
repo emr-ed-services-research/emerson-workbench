@@ -762,14 +762,28 @@
    per-template override below (.slide--tmpl-figrow, .slide--tmpl-diagram,
    .slide--tmpl-graph) changes position/placement only and does not reset
    max-height/overflow/display, so this containment applies everywhere
-   .tmpl-source appears without being repeated per template. */
+   .tmpl-source appears without being repeated per template.
+
+   CORRECTION (same day, caught live in the Workshop card, not the raw QA
+   viewer): the first cut set max-height:3.4cqh, sized as if cqh and cqw
+   were the same magnitude. They are not, for a 16:9 box - the font is set
+   in cqw (1.2cqw), but cqh is the SMALLER unit here (height < width), so
+   1cqw = 16/9 ≈ 1.78cqh. 3.4cqh only bought about 1.2 real lines at this
+   font/line-height, so max-height was cutting into the middle of the
+   second line before -webkit-line-clamp's own 2-line ellipsis ever got to
+   run - confirmed via getComputedStyle in the live iframe (max-height
+   resolved to 16.6px against a 54px scrollHeight, well under two real
+   13.6px line-boxes). Correct value for two full lines at 1.2cqw/1.3,
+   converted through the 16:9 aspect: 2 * 1.2 * 1.3 * (16/9) ≈ 5.5cqh;
+   6cqh below gives a small margin so line-clamp's own ellipsis is what
+   truncates a third line, not this box cutting into the second. */
 .tmpl-source {
   position: absolute;
   left: 6cqw; right: var(--logo-keepout); bottom: 4.4cqh;
   margin: 0;
   font: italic 1.2cqw/1.3 var(--font-body);
   color: var(--emerson-grey);
-  max-height: 3.4cqh;
+  max-height: 6cqh;
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 2;
