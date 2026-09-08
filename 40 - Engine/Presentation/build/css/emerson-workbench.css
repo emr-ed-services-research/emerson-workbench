@@ -743,13 +743,37 @@
   display: grid; place-items: center;
 }
 /* source attribution for a figure lifted from the Source Library - always shown.
-   right inset keeps a long citation clear of the brand mark (--logo-keepout). */
+   right inset keeps a long citation clear of the brand mark (--logo-keepout).
+
+   Hard containment (2026-09-08, Franz directive after three separate
+   per-template collisions - figrow, diagram, graph - all traced to the same
+   cause: an over-long citation growing past whatever fixed space a
+   template reserved for it). A citation is metadata, not content - it must
+   never be able to push into or overlap a template's actual teaching
+   content, regardless of how long the text is. max-height plus overflow
+   hidden, applied ONCE here on the shared class rather than per template,
+   makes that a structural guarantee instead of a per-template arithmetic
+   exercise: whatever grows past two lines is clipped with an ellipsis, not
+   allowed to expand the box. This is a backstop, not the primary fix - the
+   real fix is that origination-composed citations should never approach
+   two lines in the first place (buildStage3OriginatePrompt now states the
+   one-line Style Guide §5.9 format explicitly) - but the cap holds
+   regardless of what any future template or prompt gets wrong. Every
+   per-template override below (.slide--tmpl-figrow, .slide--tmpl-diagram,
+   .slide--tmpl-graph) changes position/placement only and does not reset
+   max-height/overflow/display, so this containment applies everywhere
+   .tmpl-source appears without being repeated per template. */
 .tmpl-source {
   position: absolute;
   left: 6cqw; right: var(--logo-keepout); bottom: 4.4cqh;
   margin: 0;
   font: italic 1.2cqw/1.3 var(--font-body);
   color: var(--emerson-grey);
+  max-height: 3.4cqh;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 /* -- Template 3 + 4: table cards ---------------------------------- */
@@ -915,7 +939,69 @@
 }
 .slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-note {
   position: static;
-  margin: 1.6cqh var(--logo-keepout) 6cqh 5.6cqw;
+  margin: 1.6cqh var(--logo-keepout) 0.8cqh 5.6cqw;
+  flex: none;
+}
+/* .tmpl-source joining the same collision fix (2026-09-08, ch3-m1
+   origination review, PipelineConsole attempt 11): a plain figrow slide
+   crediting a Component Index citation carries a THIRD sibling,
+   .tmpl-source, which the fix above never accounted for - it stayed
+   position:absolute; bottom:4.4cqh (its global rule), unaware that
+   .tmpl-note is now flex:none inside a column where .tmpl-row is flex:1 1
+   auto. That lands .tmpl-note at the very bottom of the flex column,
+   directly under .tmpl-source's own independent fixed anchor, so a wrapped
+   citation collides with the note's text. First hit on a slide combining
+   .tmpl-note with .tmpl-source on a plain (non-has-lead) figrow - not
+   previously exercised in any shipped course. .slide-chrome is unaffected
+   either way: its own children are positioned relative to .slide, not to
+   their immediate parent's place in the flex flow, exactly like the
+   .tmpl-row/.tmpl-note fix above already relies on. Fix: fold .tmpl-source
+   into the same flex column as a third item when .tmpl-note is present.
+   CORRECTION (same day): the first cut of this fix gave .tmpl-note a
+   bottom margin of 6cqh (correct when .tmpl-note was the last content item)
+   and then appended .tmpl-source after it with bottom:0 - which put
+   .tmpl-source's own text inside the 6cqh gap that was reserved as empty
+   clearance before .slide-chrome, so the overlap moved from
+   note-vs-source to source-vs-chrome instead of resolving. .tmpl-note's
+   bottom margin is now just a small gap to the next item; .tmpl-source, now
+   the actual last content item, carries the 6cqh chrome clearance instead. */
+.slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-source {
+  position: static;
+  margin: 0 var(--logo-keepout) 6cqh 5.6cqw;
+  flex: none;
+}
+
+/* .tmpl-note + .tmpl-source collision on .slide--tmpl-diagram (2026-09-08,
+   confirmed by screenshot on ch3-m1 om1-003/004/006 - a different mechanism
+   than the figrow case above, not something the figrow fix touches).
+   .tmpl-diagram's .tmpl-note stays position:absolute; bottom:6cqh
+   unconditionally, only 1.6cqh above .tmpl-source's own bottom:4.4cqh
+   anchor. A .tmpl-source citation that wraps to 2+ lines grows upward from
+   its fixed bottom straight into .tmpl-note's text - visually confirmed on
+   all three om1 diagram slides, each citing multiple Component Index
+   entries in one longer paragraph than any shipped course's diagram slide
+   has needed so far. .tmpl-fig and .tmpl-list stay position:absolute
+   throughout and are entirely unaffected by this (absolutely positioned
+   elements never participate in a flex container's layout regardless of
+   the container's own display) - only .tmpl-note and .tmpl-source, when
+   BOTH are present, become flex items in a column pinned to the bottom of
+   the article via margin-top:auto, so they always stack directly on top of
+   each other instead of two independently-anchored boxes that can collide
+   if either one's content runs long. .tmpl-note keeps its original
+   right:47cqw column width (as a margin now) so it still stops short of
+   the figure/list area on the right, exactly as before. */
+.slide--tmpl-diagram:has(> .tmpl-note):has(> .tmpl-source) {
+  display: flex;
+  flex-direction: column;
+}
+.slide--tmpl-diagram:has(> .tmpl-note):has(> .tmpl-source) .tmpl-note {
+  position: static;
+  margin: auto 47cqw 0.8cqh 5.6cqw;
+  flex: none;
+}
+.slide--tmpl-diagram:has(> .tmpl-note):has(> .tmpl-source) .tmpl-source {
+  position: static;
+  margin: 0 var(--logo-keepout) 6cqh 5.6cqw;
   flex: none;
 }
 
