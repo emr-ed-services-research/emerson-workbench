@@ -1386,3 +1386,111 @@
   .ew-stage { display: block; padding: 0; }
   .slide { width: 11in; max-width: none; page-break-after: always; box-shadow: none; }
 }
+
+/* ---------- 9. Lightbox --------------------------------------------
+   Click any real figure image in .tpl-content to open it full-size in a
+   darkened overlay. Visual language deliberately mirrors this project's
+   own Claude-artifact cards: rounded corners, a fat black border (not a
+   hairline), a small blue accent block in the bottom-left corner, caption
+   underneath the image inside the card. Built and driven entirely by
+   slides.js (see its "Lightbox" section) - this stylesheet only supplies
+   the look; DOM creation, image collection, and all keyboard behaviour
+   live in the script. */
+.ew-lightbox-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(10, 10, 10, 0.86);
+  align-items: center; justify-content: center;
+  padding: 4vh 4vw;
+}
+.ew-lightbox-overlay.is-open { display: flex; }
+
+.ew-lightbox-card {
+  position: relative;
+  background: var(--emerson-white);
+  border: 0.5rem solid var(--emerson-charcoal);
+  border-radius: 1.1rem;
+  max-width: min(92vw, 1400px);
+  max-height: 92vh;
+  padding: 1.4rem 1.4rem 1.1rem;
+  display: flex; flex-direction: column; gap: 0.7rem;
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.5);
+}
+
+/* the small blue accent block, bottom-left, sitting astride the border */
+.ew-lightbox-card::before {
+  content: "";
+  position: absolute;
+  left: -0.5rem; bottom: -0.5rem;
+  width: 2.6rem; height: 1.6rem;
+  background: var(--emerson-blue);
+  border-radius: 0 0.5rem 0.55rem 0;
+}
+
+.ew-lightbox-figure {
+  flex: 1; min-height: 0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.ew-lightbox-figure img, .ew-lightbox-figure svg {
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  object-fit: contain;
+}
+
+.ew-lightbox-caption {
+  flex: none;
+  font: italic 0.95rem/1.4 var(--font-body, Arial, sans-serif);
+  color: var(--emerson-grey);
+  text-align: center;
+  max-width: 100%;
+}
+
+.ew-lightbox-count {
+  position: absolute;
+  top: 0.6rem; right: 0.9rem;
+  font: 700 0.8rem/1 var(--font-body, Arial, sans-serif);
+  color: var(--emerson-grey);
+  letter-spacing: 0.02em;
+}
+
+.ew-lightbox-close {
+  position: absolute;
+  top: 0.5rem; left: 0.7rem;
+  width: 1.9rem; height: 1.9rem;
+  border: none; border-radius: 50%;
+  background: transparent;
+  color: var(--emerson-charcoal);
+  font-size: 1.3rem; line-height: 1;
+  cursor: pointer;
+}
+.ew-lightbox-close:hover { background: color-mix(in srgb, var(--emerson-charcoal) 10%, transparent); }
+
+/* clickable figures get an affordance on hover, applied by slides.js via
+   this class rather than a bare selector so decorative/non-figure images
+   are never accidentally made to look clickable */
+.ew-lightbox-trigger { cursor: zoom-in; }
+.ew-lightbox-trigger:hover { filter: brightness(1.03); }
+
+/* live, clickable label text over a lightbox detail asset (see slides.js
+   showDetail) -- same visual language as the diagram-cleanup module's
+   own callout-box overlay proof: transparent by default, a light blue
+   click-to-highlight state, real text rather than anything baked into
+   the image. */
+.ew-lightbox-callout {
+  position: absolute; margin: 0; padding: 1px 4px;
+  background: transparent; border: 1.5px dashed transparent; border-radius: 3px;
+  font: 700 11px/1 Arial, sans-serif; letter-spacing: 0.01em; color: #23262b;
+  white-space: nowrap; overflow: visible;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.ew-lightbox-callout:hover, .ew-lightbox-callout:focus-visible {
+  border-color: color-mix(in srgb, var(--emerson-blue) 55%, transparent); outline: none;
+}
+.ew-lightbox-callout.is-active {
+  background: color-mix(in srgb, var(--emerson-blue) 18%, #fff);
+  border-color: var(--emerson-blue);
+  box-shadow: 0 0 0 1px var(--emerson-blue);
+}
