@@ -79,10 +79,17 @@ correction touched ~2,000 references):
 | `actuator` | spring-and-diaphragm and piston actuators — mechanism, maintenance, calibration, travel |
 | `valve-body` | globe / rotary valve bodies — trim, packing, disassembly, reassembly |
 | `positioner` | positioners and digital valve controllers — mounting, configuration, calibration |
+| `orientation` | *(`ife` only, added 2026-09-09)* reading a training solution, the TLO/ELOs, the Five Tenets framework itself — what the instructor receives and orients from |
+| `preparation` | *(`ife` only)* JSA, risk level, safety requirements, training-area setup |
+| `delivery` | *(`ife` only)* TPCD, Show–Tell–Do, communication, questioning, training aids, checking student learning |
+| `development` | *(`ife` only)* self-observation, feedback, the instructor development plan |
 
 An area may appear under more than one domain (`mnt.positioner.*` for bench
 maintenance, `inst.positioner.*` for configuration). The domain says what
-kind of work; the area says on what.
+kind of work; the area says on what. The four `ife` areas trace directly to
+the Five Tenets' own "Where it lives" grouping — the organizing structure
+IfE's own vault already uses — the same way `actuator`/`valve-body`/
+`positioner` trace to real equipment categories.
 
 **Slug** — a short kebab-case skill name, verb-led where natural
 (`set-travel`, `identify-trim`, `configure-dvc`).
@@ -164,6 +171,15 @@ primitiveId: prim.mnt.actuator.set-travel.spring       # null on an assessment e
 four; when a competency is routed to a subset, the edge names the subset.
 There is no implicit default to interpret later.
 
+**`roles: null`** (added 2026-09-09, for `ife`) — the defined value for an
+edge in a domain that doesn't route across the four roles at all, not an
+omission. `mnt`/`inst`/`eng` are role-routed domains and their edges keep
+`roles` mandatory and explicit exactly as above; `ife` is not role-routed
+(see "IfE does not get a fifth role" below) and its edges carry
+`roles: null` instead — asserting explicitly that no role-routing
+relationship exists here, the same way `primitiveId: null` already asserts
+"no primitive" on an assessment edge rather than the field being left out.
+
 **Assessment (Check Your Knowledge) edges** carry `progression: applies`,
 `primitiveId: null`, and a `competencyId` list naming every competency the
 check tests. A check is an application of its module's competencies, not a
@@ -234,25 +250,16 @@ worked cleanly, with no friction. It also surfaced gaps this schema
 doesn't cover yet — logged here so they aren't rediscovered from scratch
 by the next IfE work:
 
-- The Axis-3 role vocabulary (`nomenclature`, `contrast`, and by
-  implication most of `instructional-design.js`'s `CONCEPT_ROLES`) is
-  written around technical/mechanical content — a figure, a procedure, a
-  cutaway. `nomenclature` assumes a labelled physical figure;
-  `contrast`'s only built template is an image pair, though its own
-  `treatment` text already names "a comparison table" as an option the
-  code hasn't caught up to. `check` is the one role that is already
-  content-agnostic and needed no override.
-
-  **Proposed fix (2026-09-09, awaiting decision — not applied):** widen
-  `CONCEPT_ROLES.nomenclature.treatment` to name `.slide--tmpl-table` as
-  an alternative when the concept has no physical figure, the same way
-  `contrast`'s treatment already names "a comparison table" as an
-  alternative to the image-pair layout. No new template — `.slide--tmpl-
-  table` already exists and is already proven for this exact case (both
-  Five Tenets slides). `contrast` needs no code change at all: its
-  treatment text already permits this, the gap there was only that no
-  content had used the table option yet — the Five Tenets module is that
-  first use.
+- ~~The Axis-3 role vocabulary (`nomenclature`, `contrast`...) is written
+  around technical/mechanical content~~ — **closed 2026-09-09.**
+  `CONCEPT_ROLES.nomenclature.treatment` in `instructional-design.js`
+  widened to name `.slide--tmpl-table` as an alternative when the concept
+  has no physical figure to label — no new template, reusing what already
+  existed and was already proven (both Five Tenets slides). `contrast`
+  needed no code change: its treatment already named "a comparison table"
+  as an option, the gap was only that nothing had used it — the Five
+  Tenets module is that first real use. `instructional-design.test.js`
+  (6/6) still passes after the change.
 - ~~`DOMAINS` / `DOMAIN_VERBS` in `PipelineConsole/src/main/
   instructional-design.js` has no `ife` entry~~ — **closed 2026-09-09**,
   same day, as its own directive. `ife` now has a real verb menu (proposed
@@ -262,43 +269,25 @@ by the next IfE work:
   manual read-through) — passes cleanly, no rewording needed — and the
   existing `instructional-design.test.js` suite (6/6) still passes. See
   `PILOT-NOTES.md` Finding 3 for the verification transcript.
-- A placement edge's `roles` field is "explicit and mandatory — no 'all'
-  default," and IfE has no honest value to put there (see "IfE does not
-  get a fifth role" above, which already flagged this as real follow-up
-  work — the pilot is that follow-up moment).
+- ~~A placement edge's `roles` field is "explicit and mandatory — no 'all'
+  default," and IfE has no honest value to put there~~ — **closed
+  2026-09-09.** `roles: null` is now the defined value for a non-role-
+  routed domain's edges, documented in "Placement edge" above and applied
+  to the real IfE registry. `servesRoles` on the module record itself is
+  still open — see "IfE does not get a fifth role" above.
+- ~~IfE has no enumerated `area` vocabulary the way `mnt`/`inst` do~~ —
+  **closed 2026-09-09.** Four areas added to the Areas table above
+  (`orientation`, `preparation`, `delivery`, `development`), traced to the
+  Five Tenets' own "Where it lives" column. The pilot's placeholder
+  competency ID (`ife.methodology.five-tenets-framework`) is renamed to
+  `ife.orientation.five-tenets-framework` in the real registry
+  (`Curriculum — IfE.md`); the pilot's own record stays as originally
+  written — a historical snapshot, not rewritten in place.
 
-  **Proposed fix (2026-09-09, awaiting decision — not applied):** define
-  `roles: null` as an explicit, meaningful value for an edge in a
-  non-role-routed domain (currently just `ife`) — asserting "no role-
-  routing relationship exists for this edge," not an omission. This
-  mirrors the schema's own existing idiom: `primitiveId: null` is already
-  a defined, meaningful value on an assessment edge, not a gap. `roles`
-  stays mandatory and explicit for every edge in a role-routed domain
-  (`mnt`, `inst`, `eng`) exactly as today; only a non-role-routed domain's
-  edges get the new value.
-- IfE has no enumerated `area` vocabulary the way `mnt`/`inst` do.
-
-  **Proposed fix (2026-09-09, awaiting decision — not applied):** four
-  areas, traced directly to the Five Tenets' own "Where it lives"
-  column — the same organizing structure IfE's own vault already uses,
-  the way `actuator`/`valve-body`/`positioner` trace to real equipment
-  categories:
-
-  | Area | Covers | Tenet |
-  | --- | --- | --- |
-  | `orientation` | Reading a training solution, the TLO/ELOs, the Five Tenets framework itself — content the instructor *receives* and orients from | Context to Content, Training Objectives |
-  | `preparation` | JSA, risk level, safety requirements, training-area setup | Student Preparation |
-  | `delivery` | TPCD, Show–Tell–Do, communication, questioning, training aids, checking student learning | Course Delivery |
-  | `development` | Self-observation, feedback, the instructor development plan | Acuminating Instructor Skills |
-
-  If approved, `ife.methodology.five-tenets-framework` (this module's
-  placeholder ID) renames to `ife.orientation.five-tenets-framework` — one
-  competency, cheap to rename now before anything else references it.
-
-None of these are applied — proposed only, per this stretch's standing
-rule (propose before building on a real schema decision). The domain-verb
-engine gap is the one item from this list that was closed, as its own
-separate directive.
+All four gaps listed above are now closed. One further pilot finding not
+listed here (`PILOT-NOTES.md` Finding 6 — the primitive `asset` field
+being stretched by pure-table content with no figure at all) stays open:
+flagged, not actioned, nothing broke, no fix proposed yet.
 
 ---
 
@@ -338,6 +327,12 @@ the schema (does `servesRoles` even apply to an IfE module? almost
 certainly not, since it has nothing to do with routing technical
 competencies) is real follow-up work once IfE's first real primitives are
 authored, not resolved here.
+
+**Follow-up resolved (2026-09-09), placement-edge half only:** a
+placement edge's `roles` field now has a defined answer for `ife` —
+`roles: null`, see "Placement edge" above. `servesRoles` on the *module*
+record is still unresolved; `ife` modules simply haven't carried it either
+way yet.
 
 ---
 

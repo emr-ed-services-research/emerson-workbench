@@ -168,6 +168,17 @@ concrete instance of that — not the roles table itself, but the role
 *treatment* vocabulary one layer down, which nobody had reason to touch
 until content with no figure showed up.
 
+**Both findings RESOLVED 2026-09-09, same day, approved before being
+wired in.** `CONCEPT_ROLES.nomenclature.treatment` widened to name
+`.slide--tmpl-table` as an alternative to the figure-based template — no
+new template invented, reusing what already existed and was already
+proven here. `contrast` needed no code change: its treatment already
+permitted the table option, the gap was only that nothing had used it —
+this pilot is that first use. `instructional-design.test.js` (6/6) still
+passes. The real production copy of this module
+(`10 - Courses/IfE - Instructing for Emerson/`) carries the same slides
+under this now-sanctioned treatment, not a hand override.
+
 ### Finding 3 — the `ife` domain code wasn't wired into the engine — RESOLVED 2026-09-09
 
 Originally logged here as: `curriculum-development.md`'s domain table has
@@ -208,7 +219,7 @@ verb..."*) — it does not check each `keyConcept`'s `t` prose, which is
 descriptive text, not an objective statement. Confirmed by reading the
 function, not assumed.
 
-### Finding 4 — the `roles` field has no honest value for an IfE edge
+### Finding 4 — the `roles` field has no honest value for an IfE edge — RESOLVED 2026-09-09
 
 `curriculum-development.md`: every placement edge's `roles` list is
 *"explicit and mandatory — no 'all' default."* IfE doesn't route a cohort
@@ -225,7 +236,16 @@ IfE's first real primitives are authored") — this pilot is that moment,
 and the honest answer right now is: the schema has no third option
 between "wrong" and "silently broken," and needs one.
 
-### Finding 5 — IfE has no enumerated `area` vocabulary
+**Resolved same day:** `roles: null` is now the defined value for an edge
+in a non-role-routed domain, documented in `curriculum-development.md`'s
+"Placement edge" section — the third option this finding said the schema
+needed. Mirrors the schema's own existing `primitiveId: null` idiom. The
+real registry's edges (`Curriculum — IfE.md`) carry it explicitly; this
+pilot's own registry is left as originally written (omitted, not
+backfilled) since it's the historical record of the gap being found, not
+the fix.
+
+### Finding 5 — IfE has no enumerated `area` vocabulary — RESOLVED 2026-09-09
 
 The competency ID `ife.methodology.five-tenets-framework` needed an area
 segment (`<domain>.<area>.<slug>`), and `methodology` isn't one of the
@@ -236,6 +256,15 @@ values up front rather than retrofit later — IfE's real area vocabulary
 needs the same kind of enumeration pass `actuator`/`valve-body`/
 `positioner` already got, once there's enough real IfE competency content
 to see what the areas actually are.
+
+**Resolved same day:** four areas enumerated (`orientation`,
+`preparation`, `delivery`, `development`), traced to the Five Tenets' own
+"Where it lives" column — see `curriculum-development.md`'s Areas table.
+This module's real registry renames the competency to
+`ife.orientation.five-tenets-framework`; this pilot's own record keeps
+`ife.methodology.five-tenets-framework`, unchanged — the historical
+snapshot of what the placeholder actually looked like before the area
+vocabulary existed.
 
 ### Finding 6 — the primitive `asset` field is being stretched, not broken
 
@@ -265,21 +294,27 @@ check once more non-technical content exists to compare against.
   objective validates against it via the real `objectiveVerbOk` check, not
   a manual read-through. Closed same-day as its own directive; was an open
   gap earlier in this document, now resolved — see Finding 3.
-- **Two of the eight Axis-3 roles (`nomenclature`, `contrast`) have no
-  clean template fit for content with no figure** — worked around by hand
-  per-slide, documented per-slide and in `course.json`, same discipline as
-  ch3-m2's own role/template override, not silently absorbed.
-- **`roles` on a placement edge has no honest value for IfE** — omitted,
-  not defaulted or invented. This is the concrete surfacing of the
-  question `curriculum-development.md` already flagged as unresolved.
-- **IfE's `area` vocabulary is unenumerated** — one value picked by hand
-  for this pilot only, not a decision.
+- **Two of the eight Axis-3 roles (`nomenclature`, `contrast`) had no
+  clean template fit for content with no figure — resolved same day.**
+  `nomenclature`'s treatment widened to permit `.slide--tmpl-table`;
+  `contrast`'s already did. No new template invented.
+- **`roles` on a placement edge had no honest value for IfE — resolved
+  same day.** `roles: null` is now the defined value for a non-role-routed
+  domain's edges, mirroring the existing `primitiveId: null` idiom.
+- **IfE's `area` vocabulary was unenumerated — resolved same day.** Four
+  areas added (`orientation`, `preparation`, `delivery`, `development`),
+  traced to the Five Tenets' own structure.
 - **The primitive `asset` field is stretched** by pure-table content with
-  no figure at all — held, but worth a real look later.
+  no figure at all — still open, no fix proposed, held but worth a real
+  look later.
 - Two composition defects (a sparse short table, an uneven-wrapping row)
   were caught by the generation agent's own self-check against real
   screenshots, **not** by `render-check.mjs` and **not** by independent
   human review — no one else has looked at these slides yet.
+- **All four schema gaps this pilot found that had a proposed fix are now
+  closed**, same day, after Franz's review and approval — see the four
+  "RESOLVED 2026-09-09" notes above for the applied fix and the real
+  registry each one landed in.
 
 **What this means for the recommended next step (Five Tenets pilot before
 full IfE authoring, per the Part B report):** the isolation worked as

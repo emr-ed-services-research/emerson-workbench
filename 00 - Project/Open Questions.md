@@ -187,21 +187,25 @@ module be piloted first?
   production `course.json` copy. The pilot folder stays on record as the
   test that proved the mechanism; content is not duplicated as "done"
   twice, only the registry entry is real.
-- **Proposed fixes for the three still-open schema gaps** (nomenclature/
-  contrast template fit, the `roles` field, the `area` vocabulary) are now
-  written up in `curriculum-development.md`'s pilot-findings note, each
-  marked proposed and awaiting a decision — **not applied**. The fourth
-  gap (the primitive `asset` field being stretched by pure-table content)
-  has no proposed fix yet — flagged, not actioned, nothing broke.
+- **2026-09-09, approved and wired in:** the three proposed fixes
+  (nomenclature/contrast template fit, the `roles` field, the `area`
+  vocabulary) are all applied, not just proposed — `instructional-
+  design.js` widened and re-tested (6/6 pass), `roles: null` written into
+  the real registry's edges, four `ife` areas enumerated in
+  `curriculum-development.md` and the pilot's placeholder competency ID
+  renamed in the real registry (`ife.orientation.five-tenets-framework`;
+  the pilot's own record stays as originally written). One gap remains
+  unaddressed: the primitive `asset` field being stretched by pure-table
+  content — flagged, not actioned, nothing broke, no fix proposed.
 - **Not yet done:** a second module against real 14101 slice content,
-  which is where cross-course `provenance` and the `roles` question both
-  get exercised for real — this first module deliberately isolated
-  `provenance: original` alone and didn't touch that case.
+  which is where cross-course `provenance` gets exercised for real — this
+  first module deliberately isolated `provenance: original` alone and
+  didn't touch that case.
 
-**Status:** open — one real module authored and reviewed by the model;
-three gap-fix proposals awaiting Franz's decision; a cross-course module
-and the `asset`-field question are the remaining work. Franz has not yet
-reviewed the pilot or the real module.
+**Status:** open — one real module authored; all four schema gaps the
+pilot surfaced are either closed or flagged with no fix proposed. A
+cross-course module (real 14101 slice content) is the remaining work.
+Franz has not yet reviewed the pilot or the real module.
 
 ## Add new questions below
 

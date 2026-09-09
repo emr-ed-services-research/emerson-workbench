@@ -1,7 +1,7 @@
 {
   "course": "Instructing for Emerson (IfE)",
   "slidePrefix": "ife-",
-  "_note": "First real content module, authored 2026-09-09 after the origination pilot (_Origination Test — ife-five-tenets/) proved provenance: original and the ife domain-verb menu. Module ID (d1-m1) and slide prefix (ife-) are working identifiers, not a finalised scheme — IfE's real module-ID convention is still open, the same way 14101's was before its own Phase 3. Competency area (ife.methodology.*) is likewise a placeholder pending the area-vocabulary proposal in Open Questions.md.",
+  "_note": "First real content module, authored 2026-09-09 after the origination pilot (_Origination Test — ife-five-tenets/) proved provenance: original and the ife domain-verb menu. Module ID (d1-m1) and slide prefix (ife-) are working identifiers, not a finalised scheme — IfE's real module-ID convention is still open, the same way 14101's was before its own Phase 3. Competency area is ife.orientation.* — one of four ife areas enumerated 2026-09-09 in curriculum-development.md; see Curriculum — IfE.md for the full registry.",
   "days": [
     {
       "id": "d1",

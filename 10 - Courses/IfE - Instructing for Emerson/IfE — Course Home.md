@@ -49,24 +49,24 @@ IfE Vault first; this folder tracks it.
       deliberately not attempted by the Five Tenets module
 - [ ] Bench Notes / Bench Book (Stage 2 context authoring — not started)
 
-## Open schema items affecting this course
+## Schema items surfaced by this course
 
-Tracked in `00 - Project/Open Questions.md` and
-`00 - Project/curriculum-development.md`'s pilot-findings note:
-
-- Two Axis-3 roles (`nomenclature`, `contrast`) have no clean template fit
-  for content with no figure — worked around by hand per-slide so far.
-- The placement-edge `roles` field has no honest value for a non-role-
-  routed domain like `ife` — currently omitted, not defaulted.
-- IfE has no enumerated competency-area vocabulary — `ife.methodology.*`
-  is a placeholder, not a decision.
+Tracked in `00 - Project/curriculum-development.md`'s pilot-findings
+note — **all four resolved 2026-09-09**: the `nomenclature`/`contrast`
+role-template fit (widened `CONCEPT_ROLES.nomenclature.treatment`, no new
+template), the placement-edge `roles` field (`roles: null` now a defined
+value for non-role-routed domains), and IfE's competency-area vocabulary
+(four areas enumerated: `orientation`, `preparation`, `delivery`,
+`development`). One item stays open, unresolved, no fix proposed: the
+primitive `asset` field is stretched by pure-table content with no figure
+at all (`PILOT-NOTES.md` Finding 6).
 
 ## Modules
 
 | # | Module | Domain area | Status |
 | --- | --- | --- | --- |
-| d1-m1 | The Five Tenets of IfE | `methodology` (placeholder) | ready |
+| d1-m1 | The Five Tenets of IfE | `orientation` | ready |
 
-`d1-m1` and the `ife-` slide prefix are working identifiers — IfE's real
-module-ID scheme is still open, the same way 14101's was before its own
-Phase 3.
+`d1-m1` and the `ife-` slide prefix are still working identifiers — IfE's
+real module-ID scheme is the one item from the pilot's placeholders left
+open, the same way 14101's was before its own Phase 3.

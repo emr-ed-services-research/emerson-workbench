@@ -19,6 +19,13 @@ updated: 2026-09-09
 > IfE's cross-course-primitive case (practice-slice content borrowed from
 > 14101) — that is a separate, larger follow-on test, not attempted here.
 > See `PILOT-NOTES.md` for the full verification record and findings.
+>
+> **Superseded 2026-09-09** by the real registry —
+> `10 - Courses/IfE - Instructing for Emerson/Curriculum — IfE.md`. The
+> competency below (`ife.methodology.five-tenets-framework`) is renamed
+> there to `ife.orientation.five-tenets-framework` now that IfE's area
+> vocabulary is decided; this page is left exactly as originally written,
+> the historical record of the pilot, not updated in place.
 
 The schema this exercises: a **competency** is a flat skill ID
 (`ife.methodology.five-tenets-framework`). A **primitive** is one authored

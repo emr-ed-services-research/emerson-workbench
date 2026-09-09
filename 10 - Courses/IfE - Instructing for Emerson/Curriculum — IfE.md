@@ -20,30 +20,31 @@ updated: 2026-09-09
 > Day 1–8 module. Schema in `00 - Project/curriculum-development.md`.
 
 The schema: a **competency** is a flat skill ID
-(`ife.methodology.five-tenets-framework`). A **primitive** is one authored
+(`ife.orientation.five-tenets-framework`). A **primitive** is one authored
 artifact for one `competency × asset-variant`, `provenance: original`
 here because there is no external source to cite. A **placement edge** is
 `module × roles × competency × progression → primitive`.
 
-**Known placeholders in this first entry — not decisions:**
-- `ife.methodology.*` — `methodology` is not an enumerated IfE area (only
-  `mnt`/`inst` have areas defined). A real area-vocabulary proposal is
-  logged in `Open Questions.md`; if approved differently, this competency
-  ID renames (`ife.orientation.five-tenets-framework` is the current
-  proposal's candidate) — cheap now, before anything else references it.
-- `d1-m1` (module ID) and `ife-` (slide prefix) are working identifiers,
-  not a finalised scheme, the same way 14101's Day-One module IDs were
-  "illustrative" before its own Phase 3.
-- `roles` is omitted from every edge below, not defaulted — see the open
-  proposal in `Open Questions.md` for a real fix (`roles: null` as a
-  defined value for non-role-routed domains).
+**Resolved 2026-09-09** (were placeholders in this entry's first draft,
+now decided — see `curriculum-development.md`'s pilot-findings note):
+- **Area:** `orientation` — one of four `ife` areas now enumerated in
+  `curriculum-development.md`'s Areas table. The competency ID below is
+  the renamed form (`ife.orientation.*`, was `ife.methodology.*` in the
+  origination pilot — the pilot's own record stays as originally written,
+  a historical snapshot, not rewritten in place).
+- **`roles`:** every edge below carries `roles: null` explicitly — the
+  defined value for a non-role-routed domain, not an omission.
+
+**Still a working identifier, not decided:** `d1-m1` (module ID) and
+`ife-` (slide prefix) — the same footing 14101's Day-One module IDs had
+before its own Phase 3.
 
 ---
 
 ## Competency
 
 ```yaml
-- id: ife.methodology.five-tenets-framework
+- id: ife.orientation.five-tenets-framework
   bloom: understand
   statement: >
     Restate the Five Tenets of IfE and distinguish which the instructor
@@ -57,16 +58,16 @@ here because there is no external source to cite. A **placement edge** is
 ## Primitives
 
 ```yaml
-- id: prim.ife.methodology.five-tenets-framework.overview
-  competencyId: ife.methodology.five-tenets-framework
+- id: prim.ife.orientation.five-tenets-framework.overview
+  competencyId: ife.orientation.five-tenets-framework
   status: exists
   asset: inline-table (slide ife-001)
   provenance: original
   redrawRecord: not applicable — provenance: original
   variantTag: overview
 
-- id: prim.ife.methodology.five-tenets-framework.received-vs-performed
-  competencyId: ife.methodology.five-tenets-framework
+- id: prim.ife.orientation.five-tenets-framework.received-vs-performed
+  competencyId: ife.orientation.five-tenets-framework
   status: exists
   asset: inline-table (slide ife-002)
   provenance: original
@@ -78,21 +79,24 @@ here because there is no external source to cite. A **placement edge** is
 
 ```yaml
 - moduleId: d1-m1
-  competencyId: ife.methodology.five-tenets-framework
+  roles: null   # ife is not role-routed — see curriculum-development.md "Placement edge"
+  competencyId: ife.orientation.five-tenets-framework
   progression: introduces
-  primitiveId: prim.ife.methodology.five-tenets-framework.overview
+  primitiveId: prim.ife.orientation.five-tenets-framework.overview
   slide: ife-001
 
 - moduleId: d1-m1
-  competencyId: ife.methodology.five-tenets-framework
+  roles: null
+  competencyId: ife.orientation.five-tenets-framework
   progression: develops
-  primitiveId: prim.ife.methodology.five-tenets-framework.received-vs-performed
+  primitiveId: prim.ife.orientation.five-tenets-framework.received-vs-performed
   slide: ife-002
   note: "same competency, not re-introduced — ife-002 develops the same
     understanding with the received/performed split"
 
 - moduleId: d1-m1
-  competencyId: [ife.methodology.five-tenets-framework]
+  roles: null
+  competencyId: [ife.orientation.five-tenets-framework]
   progression: applies
   primitiveId: null
   slide: ife-003
