@@ -1,0 +1,56 @@
+{
+  "course": "Origination Pilot — IfE Five Tenets",
+  "slidePrefix": "ift-",
+  "_note": "PILOT — Instructing for Emerson (IfE), Day 1 opening module. NOT a real course; not wired into the IfE vault or the Workshop nav. Originated cold from 'IfE Vault/02 Methodology/Five Tenets of IfE.md' (Steve's own framework — provenance: original, no external manual behind it). Built 2026-09-09 to test the `ife` domain code and the `provenance: original` schema value approved that same day in curriculum-development.md, in isolation from the cross-course-primitive case (IfE's practice-slice content, borrowed from 14101, is a separate follow-on test — not attempted here). See PILOT-NOTES.md for the verification record and findings.",
+  "days": [
+    {
+      "id": "d1",
+      "title": "Day 1",
+      "chapters": [
+        {
+          "id": "ifech",
+          "title": "Origination Pilot",
+          "num": 1,
+          "domain": "ife",
+          "modules": [
+            {
+              "id": "ift-m1",
+              "title": "The Five Tenets of IfE",
+              "status": "ready",
+              "visual": true,
+              "domain": "ife",
+              "levelTarget": "understand",
+              "stakes": "An instructor who doesn't know which tenets they're actually responsible for spends prep time on the wrong things — over-preparing content framing that already comes with the slice, under-preparing the delivery skill the Instructor Observation Rubric actually scores.",
+              "objective": "Restate the Five Tenets of IfE and distinguish which the instructor receives with the assigned slice (context, objectives) from which the instructor performs and is scored on (preparation, delivery, self-development).",
+              "keyConcepts": [
+                {
+                  "t": "The Five Tenets are IfE's organizing framework: Context to Content, Training Objectives, Student Preparation, Course Delivery, Acuminating Instructor Skills — one line each on what it means for a delivering instructor and where it is built in the course.",
+                  "pages": [1],
+                  "level": "remember",
+                  "role": "nomenclature",
+                  "sourceNote": "provenance: original — Steve's own framework (IfE Vault, 02 Methodology/Five Tenets of IfE.md), no external source to cite. Role tag is the closest cognitive fit; the template used deviates from the role's usual figure-based markup — see PILOT-NOTES.md finding 1."
+                },
+                {
+                  "t": "Tenets 1-2 are inputs the instructor receives — context and objectives come with the slice. Tenets 3-5 are what the instructor does. IfE spends its time on 3-5 because that is what the Instructor Observation Rubric measures.",
+                  "pages": [2],
+                  "level": "understand",
+                  "role": "contrast",
+                  "sourceNote": "provenance: original — same vault note, its own 'The through-line' section. Role tag is the closest cognitive fit; the template used deviates from the role's usual two-image-panel markup — see PILOT-NOTES.md finding 2."
+                },
+                {
+                  "t": "Formative check: given a described instructor behavior (setting up the training area before students arrive), the learner identifies which of the Five Tenets it demonstrates.",
+                  "pages": [3],
+                  "level": "evaluate",
+                  "role": "check",
+                  "sourceNote": "no figure — situation stem; provenance: original, same as concepts 1-2"
+                }
+              ],
+              "pages": [1, 2],
+              "check": [3]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

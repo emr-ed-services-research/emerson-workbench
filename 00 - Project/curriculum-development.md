@@ -5,7 +5,7 @@ tags:
   - project
   - design
   - curriculum
-updated: 2026-09-06
+updated: 2026-09-09
 ---
 
 # Emerson Workbench — Curriculum Development Layer
@@ -68,6 +68,7 @@ separate relationship (see Placement edges).
 | `mnt` | maintenance |
 | `inst` | instrumentation |
 | `eng` | engineering (sizing and selection — "engineering courses" internally) |
+| `ife` | instructing/pedagogy — how to *deliver* technical training, not a technical skill itself. Added 2026-09-09 for the IfE (Instructing for Emerson) course. Kept specific to IfE rather than a generic `trg` — generalize only if a second instructor-development course actually shows up (per the project's own "bake in known values, don't guess ahead of real demand" convention). |
 
 **Areas** — the three are known and enumerable, so they are fixed now, not
 deferred (retrofitting an ID scheme is expensive — the `1400 → 14101`
@@ -133,6 +134,16 @@ variantTag: cutaway                         # optional; only when a competency h
 - `status: pending` primitives carry `assetRef`, `provenance`, and
   `redrawRecord` as `TBD` until authored; a `status: exists` primitive must
   name a real asset and a real Component Index entry.
+- **`provenance: original`** (added 2026-09-09, for IfE) — the one exception
+  to "must name a real Component Index entry." Every primitive built so far
+  traces to an external source figure being redrawn or reused; IfE's own
+  methodology content (a TPCD diagram, a Five-Tenets summary graphic) has no
+  such external source — Steve invented the pedagogical model itself. A
+  primitive with `provenance: original` is asserting exactly that: authored
+  fresh for this course, nothing to cite, `redrawRecord` not applicable.
+  This does **not** apply to IfE's practice-slice content, which traces to
+  real 14101 Component Index entries exactly like any other course's
+  primitives — see "Cross-course provenance" below.
 
 A new primitive is created **only** for a genuinely new `competency ×
 asset-variant`. It is a human-curated call: an agent may propose "new
@@ -196,6 +207,61 @@ That is the entire change to the Source Library. It is not restructured;
 indexing simply becomes competency-driven rather than deck-driven from
 Phase 3 on.
 
+### Cross-course provenance (added 2026-09-09, for IfE)
+
+A primitive's `provenance` naming a Component Index entry does **not**
+require the primitive and the Component Index entry to belong to the same
+course. This was already the shared-library point — one Component Index
+entry can back primitives in any number of courses' own registries — but
+until IfE it had never actually happened; the oil-and-gas catalogue (144
+figures, zero primitives) was the proof that the *library* side works, with
+no second course yet drawing from it. IfE's practice-slice primitives are
+the first real instance of the *consuming* side: an IfE primitive's
+`provenance` names an existing 14101 Component Index entry directly — no
+new Component Index entries are created for content IfE borrows from
+14101, only for IfE's own source material (the rubric, the outline — see
+[[Source Library]] conventions; IfE gets its own Component Index entries
+the same way any course's source manual does).
+
+---
+
+## Findings from the Five Tenets pilot (2026-09-09)
+
+A bounded origination-mode pilot (`10 - Courses/_Origination Test —
+ife-five-tenets/`, full report in that folder's `PILOT-NOTES.md`) put one
+real IfE competency through this schema end to end. `provenance: original`
+worked cleanly, with no friction. It also surfaced gaps this schema
+doesn't cover yet — logged here so they aren't rediscovered from scratch
+by the next IfE work:
+
+- The Axis-3 role vocabulary (`nomenclature`, `contrast`, and by
+  implication most of `instructional-design.js`'s `CONCEPT_ROLES`) is
+  written around technical/mechanical content — a figure, a procedure, a
+  cutaway. `nomenclature` assumes a labelled physical figure;
+  `contrast`'s only built template is an image pair, though its own
+  `treatment` text already names "a comparison table" as an option the
+  code hasn't caught up to. `check` is the one role that is already
+  content-agnostic and needed no override. **Still open.**
+- ~~`DOMAINS` / `DOMAIN_VERBS` in `PipelineConsole/src/main/
+  instructional-design.js` has no `ife` entry~~ — **closed 2026-09-09**,
+  same day, as its own directive. `ife` now has a real verb menu (proposed
+  and approved before being wired in), grounded in vocabulary already used
+  across the IfE vault. Verified against the Five Tenets pilot's own
+  hand-written objective via the real `objectiveVerbOk` check (not a
+  manual read-through) — passes cleanly, no rewording needed — and the
+  existing `instructional-design.test.js` suite (6/6) still passes. See
+  `PILOT-NOTES.md` Finding 3 for the verification transcript.
+- A placement edge's `roles` field is "explicit and mandatory — no 'all'
+  default," and IfE has no honest value to put there (see "IfE does not
+  get a fifth role" above, which already flagged this as real follow-up
+  work — the pilot is that follow-up moment). **Still open.**
+- IfE has no enumerated `area` vocabulary the way `mnt`/`inst` do. **Still
+  open.**
+
+Three of the four gaps found are still open — each has a logged, by-hand
+workaround, but none are decided. The domain-verb engine gap is now
+closed.
+
 ---
 
 ## Roles
@@ -220,6 +286,20 @@ Operator platforms (DeltaV, Ovation) are not roles and not separate
 curricula — they are the console an operator happens to sit at. Operator
 training stays bounded to the same core actuator / instrument competencies
 the other three roles already need.
+
+**IfE does not get a fifth role (decided 2026-09-09).** An IfE participant
+isn't a new kind of technician being routed toward a subset of technical
+competencies — they're learning to *teach* people who hold these roles.
+Forcing that into the existing role list would blur what role has always
+meant here (a routing filter over technical competencies). IfE sits at a
+different tier of the schema instead: a course *about* instructing, whose
+own competencies live under the new `ife` domain rather than under any of
+the four technical roles. This is a decision, not yet a fully worked-out
+consequence — how a "different tier" actually interacts with the rest of
+the schema (does `servesRoles` even apply to an IfE module? almost
+certainly not, since it has nothing to do with routing technical
+competencies) is real follow-up work once IfE's first real primitives are
+authored, not resolved here.
 
 ---
 

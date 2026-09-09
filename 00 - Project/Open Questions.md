@@ -4,7 +4,7 @@ type: reference
 tags:
   - project
   - decisions
-updated: 2026-08-28
+updated: 2026-09-09
 ---
 
 # Open Questions
@@ -131,6 +131,67 @@ origination-mode dry run against `ch3-m1`. Only Ch 1–2 carry `status:
   anyone reading `course.json` directly.
 
 **Status:** open — logged, not resolved.
+
+## IfE origination-mode pilot scope
+
+**Question:** Now that the IfE schema decisions are real (`ife` domain code,
+no fifth role — IfE is a different schema tier, `provenance: original` for
+Steve's invented pedagogical diagrams, cross-course `provenance` confirmed
+for IfE's practice-slice primitives pointing at existing 14101 Component
+Index entries), should IfE content actually be authored through the
+pipeline as one full cold-start origination attempt, or should a smaller
+module be piloted first?
+
+- Raised 2026-09-09 as decision point #4 of the IfE Part B directive, left
+  explicitly to my judgment by Franz: *"Your call — tell me which you'd
+  recommend and why, then proceed."*
+- **Recommendation: pilot one small module first, not a full cold-start.**
+  IfE has never run through Stage 1/2/3 origination mode at all — the only
+  precedent is `ch3-m1` (a *technical-skill* module, `mnt` domain, backed by
+  the Component Index/template-gallery machinery this session's schema work
+  extended to a second tier for the first time). Piling a brand-new domain
+  tier, a brand-new provenance value, and a brand-new cross-course-primitive
+  pattern all onto one full-course attempt at once repeats exactly the shape
+  of risk the project's own precedents exist to avoid (16-example template
+  proof before trusting Stage 3 authoring; the bounded ch3-m2 A/B test
+  before trusting origination mode on real content at all). A single module
+  isolates whether the *schema* decisions hold up against real content
+  before the *volume* of authoring the rest of IfE compounds any gap found.
+- **Candidate module: "Five Tenets of IfE"** (`02 Methodology/Five Tenets of
+  IfE.md`). Self-contained, short, almost entirely `provenance: original`
+  (Steve's own framework, no 14101 source to reconcile), so it tests the new
+  provenance value cleanly before mixing it with the cross-course-primitive
+  case. A module with real 14101 slice content (e.g. a Day 5/6 Teach-Back
+  day) would be the next pilot after this one clears, since that's where
+  cross-course `provenance` actually gets exercised end to end.
+- **Executed 2026-09-09.** `10 - Courses/_Origination Test — ife-five-tenets/`
+  — one competency, two `provenance: original` primitives, three placement
+  edges, three slides, all passing `render-check.mjs` clean in 4:3 and 16:9
+  and confirmed by eye. `provenance: original` itself worked with **zero
+  friction**. The pilot also surfaced five real schema gaps — none fatal,
+  all logged with a worked-around instance, none silently papered over.
+  Full detail in
+  `10 - Courses/_Origination Test — ife-five-tenets/PILOT-NOTES.md`.
+- **2026-09-09, same day, closed as its own directive:** the domain-verb
+  engine gap — `ife` now has a real verb menu in
+  `PipelineConsole/src/main/instructional-design.js` (proposed and
+  approved before being wired in), verified against the pilot's own
+  hand-written objective via the real `objectiveVerbOk` check and the
+  existing test suite (6/6 passing, no regression).
+- **Still open, unaddressed:** two of the eight Axis-3 roles
+  (`nomenclature`, `contrast`) have no template fit for content with no
+  figure; a placement edge's `roles` field has no honest value for an IfE
+  module (omitted, not defaulted); IfE has no enumerated `area`
+  vocabulary; the primitive `asset` field is stretched by pure-table
+  content with no figure at all.
+- **Not yet done:** a second pilot against a module with real 14101 slice
+  content, which is where cross-course `provenance` and the `roles`
+  question both get exercised for real — this first pilot deliberately
+  isolated `provenance: original` alone and didn't touch that case.
+
+**Status:** open — first pilot run and reviewed by the model; a second,
+cross-course pilot and the five logged schema gaps are the remaining work.
+Franz has not yet reviewed the pilot output.
 
 ## Add new questions below
 

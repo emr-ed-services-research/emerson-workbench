@@ -1,0 +1,23 @@
+/* ============================================================================
+   tokens.css  -  the EMERSON brand palette, single source.
+
+   Imported by the deck design system (emerson-workbench.css) and by the course
+   shell (course.css). These custom properties must not be redefined anywhere
+   else - that is the drift this file exists to prevent.
+
+   From theme1.xml  <a:clrScheme name="EMERSON">.
+   ========================================================================== */
+
+:root {
+  --emerson-blue:         #004B8D;   /* accent1 / dk2 / tx2 - titles, rules, wedge */
+  --emerson-charcoal:     #3F4040;   /* dk1 / tx1 - body text                      */
+  --emerson-grey:         #959797;   /* lt2 / bg2 - footer, page numbers, captions */
+  --emerson-white:        #FFFFFF;   /* lt1 / bg1 - page background                */
+  --emerson-green:        #62BB46;   /* accent2 */
+  --emerson-cyan:         #00A4D2;   /* accent3 */
+  --emerson-yellow:       #FFCF22;   /* accent4 */
+  --emerson-orange:       #F79428;   /* accent5 */
+  --emerson-purple:       #6E298D;   /* accent6 */
+  --emerson-link:         #00AA7E;   /* hlink   */
+  --emerson-link-visited: #D31245;   /* folHlink */
+}
