@@ -178,20 +178,30 @@ module be piloted first?
   approved before being wired in), verified against the pilot's own
   hand-written objective via the real `objectiveVerbOk` check and the
   existing test suite (6/6 passing, no regression).
-- **Still open, unaddressed:** two of the eight Axis-3 roles
-  (`nomenclature`, `contrast`) have no template fit for content with no
-  figure; a placement edge's `roles` field has no honest value for an IfE
-  module (omitted, not defaulted); IfE has no enumerated `area`
-  vocabulary; the primitive `asset` field is stretched by pure-table
-  content with no figure at all.
-- **Not yet done:** a second pilot against a module with real 14101 slice
-  content, which is where cross-course `provenance` and the `roles`
-  question both get exercised for real — this first pilot deliberately
-  isolated `provenance: original` alone and didn't touch that case.
+- **2026-09-09, same day: the pilot's mechanism promoted to real content.**
+  `10 - Courses/IfE - Instructing for Emerson/` — a real course folder,
+  registered in `Courses.md`, with the same competency/primitives/edges
+  now authored as the real `Curriculum — IfE.md` (not a test artifact) and
+  real slides (`ife-001…003.html`), independently re-verified with
+  `render-check.mjs` and a fresh `objectiveVerbOk` run against the
+  production `course.json` copy. The pilot folder stays on record as the
+  test that proved the mechanism; content is not duplicated as "done"
+  twice, only the registry entry is real.
+- **Proposed fixes for the three still-open schema gaps** (nomenclature/
+  contrast template fit, the `roles` field, the `area` vocabulary) are now
+  written up in `curriculum-development.md`'s pilot-findings note, each
+  marked proposed and awaiting a decision — **not applied**. The fourth
+  gap (the primitive `asset` field being stretched by pure-table content)
+  has no proposed fix yet — flagged, not actioned, nothing broke.
+- **Not yet done:** a second module against real 14101 slice content,
+  which is where cross-course `provenance` and the `roles` question both
+  get exercised for real — this first module deliberately isolated
+  `provenance: original` alone and didn't touch that case.
 
-**Status:** open — first pilot run and reviewed by the model; a second,
-cross-course pilot and the five logged schema gaps are the remaining work.
-Franz has not yet reviewed the pilot output.
+**Status:** open — one real module authored and reviewed by the model;
+three gap-fix proposals awaiting Franz's decision; a cross-course module
+and the `asset`-field question are the remaining work. Franz has not yet
+reviewed the pilot or the real module.
 
 ## Add new questions below
 

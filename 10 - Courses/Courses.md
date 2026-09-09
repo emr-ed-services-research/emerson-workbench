@@ -16,6 +16,7 @@ folder layout each course follows.
 | Course | Stage | Status | Home |
 | --- | --- | --- | --- |
 | 14101 Valve Trim and Body Maintenance | Stage 1 pilot | Migration in progress | [[14101 — Course Home]] |
+| Instructing for Emerson (IfE) | Origination | Content started — 1 module | [[IfE — Course Home]] |
 
 ## Adding a course
 

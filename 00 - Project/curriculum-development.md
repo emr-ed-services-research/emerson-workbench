@@ -241,7 +241,18 @@ by the next IfE work:
   `contrast`'s only built template is an image pair, though its own
   `treatment` text already names "a comparison table" as an option the
   code hasn't caught up to. `check` is the one role that is already
-  content-agnostic and needed no override. **Still open.**
+  content-agnostic and needed no override.
+
+  **Proposed fix (2026-09-09, awaiting decision — not applied):** widen
+  `CONCEPT_ROLES.nomenclature.treatment` to name `.slide--tmpl-table` as
+  an alternative when the concept has no physical figure, the same way
+  `contrast`'s treatment already names "a comparison table" as an
+  alternative to the image-pair layout. No new template — `.slide--tmpl-
+  table` already exists and is already proven for this exact case (both
+  Five Tenets slides). `contrast` needs no code change at all: its
+  treatment text already permits this, the gap there was only that no
+  content had used the table option yet — the Five Tenets module is that
+  first use.
 - ~~`DOMAINS` / `DOMAIN_VERBS` in `PipelineConsole/src/main/
   instructional-design.js` has no `ife` entry~~ — **closed 2026-09-09**,
   same day, as its own directive. `ife` now has a real verb menu (proposed
@@ -254,13 +265,40 @@ by the next IfE work:
 - A placement edge's `roles` field is "explicit and mandatory — no 'all'
   default," and IfE has no honest value to put there (see "IfE does not
   get a fifth role" above, which already flagged this as real follow-up
-  work — the pilot is that follow-up moment). **Still open.**
-- IfE has no enumerated `area` vocabulary the way `mnt`/`inst` do. **Still
-  open.**
+  work — the pilot is that follow-up moment).
 
-Three of the four gaps found are still open — each has a logged, by-hand
-workaround, but none are decided. The domain-verb engine gap is now
-closed.
+  **Proposed fix (2026-09-09, awaiting decision — not applied):** define
+  `roles: null` as an explicit, meaningful value for an edge in a
+  non-role-routed domain (currently just `ife`) — asserting "no role-
+  routing relationship exists for this edge," not an omission. This
+  mirrors the schema's own existing idiom: `primitiveId: null` is already
+  a defined, meaningful value on an assessment edge, not a gap. `roles`
+  stays mandatory and explicit for every edge in a role-routed domain
+  (`mnt`, `inst`, `eng`) exactly as today; only a non-role-routed domain's
+  edges get the new value.
+- IfE has no enumerated `area` vocabulary the way `mnt`/`inst` do.
+
+  **Proposed fix (2026-09-09, awaiting decision — not applied):** four
+  areas, traced directly to the Five Tenets' own "Where it lives"
+  column — the same organizing structure IfE's own vault already uses,
+  the way `actuator`/`valve-body`/`positioner` trace to real equipment
+  categories:
+
+  | Area | Covers | Tenet |
+  | --- | --- | --- |
+  | `orientation` | Reading a training solution, the TLO/ELOs, the Five Tenets framework itself — content the instructor *receives* and orients from | Context to Content, Training Objectives |
+  | `preparation` | JSA, risk level, safety requirements, training-area setup | Student Preparation |
+  | `delivery` | TPCD, Show–Tell–Do, communication, questioning, training aids, checking student learning | Course Delivery |
+  | `development` | Self-observation, feedback, the instructor development plan | Acuminating Instructor Skills |
+
+  If approved, `ife.methodology.five-tenets-framework` (this module's
+  placeholder ID) renames to `ife.orientation.five-tenets-framework` — one
+  competency, cheap to rename now before anything else references it.
+
+None of these are applied — proposed only, per this stretch's standing
+rule (propose before building on a real schema decision). The domain-verb
+engine gap is the one item from this list that was closed, as its own
+separate directive.
 
 ---
 
