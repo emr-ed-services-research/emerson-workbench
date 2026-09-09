@@ -1410,10 +1410,16 @@
   background: var(--emerson-white);
   border: 0.5rem solid var(--emerson-charcoal);
   border-radius: 1.1rem;
-  max-width: min(92vw, 1400px);
-  max-height: 92vh;
+  width: min(92vw, 1400px);
+  height: 92vh;
   padding: 1.4rem 1.4rem 1.1rem;
-  display: flex; flex-direction: column; gap: 0.7rem;
+  /* explicit rows, not absolutely-positioned close/count floating over the
+     figure: a header row the image can never grow into and cover, a
+     flexible figure row, a fixed caption row - the structural fix for the
+     close button getting visually clipped/covered by a large image. */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  row-gap: 0.5rem;
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.5);
 }
 
@@ -1427,42 +1433,55 @@
   border-radius: 0 0.5rem 0.55rem 0;
 }
 
+.ew-lightbox-head {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 1.9rem;
+}
+
 .ew-lightbox-figure {
-  flex: 1; min-height: 0;
+  position: relative;   /* pixel-positioned detail-wrap children anchor here */
+  min-height: 0; min-width: 0;
   display: flex; align-items: center; justify-content: center;
   overflow: hidden;
 }
-.ew-lightbox-figure img, .ew-lightbox-figure svg {
+.ew-lightbox-figure > img, .ew-lightbox-figure > svg {
   max-width: 100%; max-height: 100%;
   width: auto; height: auto;
   object-fit: contain;
 }
+/* the detail-asset wrapper fills the whole figure row; slides.js computes
+   the image's real letterboxed rect within it in JS (layoutFigure) and
+   sizes/positions both the <img> and every .ew-lightbox-callout in real
+   pixels against that rect, which is what keeps callouts aligned
+   regardless of the card's actual size - including a full-viewport-sized
+   lightbox on a very wide or very tall source image, not just whatever a
+   slide-container-sized box happened to be. */
+.ew-lightbox-detail-wrap { position: absolute; inset: 0; }
+.ew-lightbox-detail-wrap > img { position: absolute; object-fit: contain; }
 
 .ew-lightbox-caption {
-  flex: none;
   font: italic 0.95rem/1.4 var(--font-body, Arial, sans-serif);
   color: var(--emerson-grey);
   text-align: center;
   max-width: 100%;
+  max-height: 4.2em;
+  overflow: hidden;
 }
 
 .ew-lightbox-count {
-  position: absolute;
-  top: 0.6rem; right: 0.9rem;
   font: 700 0.8rem/1 var(--font-body, Arial, sans-serif);
   color: var(--emerson-grey);
   letter-spacing: 0.02em;
 }
 
 .ew-lightbox-close {
-  position: absolute;
-  top: 0.5rem; left: 0.7rem;
   width: 1.9rem; height: 1.9rem;
   border: none; border-radius: 50%;
   background: transparent;
   color: var(--emerson-charcoal);
   font-size: 1.3rem; line-height: 1;
   cursor: pointer;
+  flex: none;
 }
 .ew-lightbox-close:hover { background: color-mix(in srgb, var(--emerson-charcoal) 10%, transparent); }
 
