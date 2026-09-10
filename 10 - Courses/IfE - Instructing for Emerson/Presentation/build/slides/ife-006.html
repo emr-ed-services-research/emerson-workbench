@@ -5,37 +5,71 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>IfE &middot; Day 1 &mdash; Received vs. Performed</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
-<link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
   <!-- Day 1, concept 2 [understand]. Concept: tenets 1-2 are inputs the
        instructor receives with the assigned slice; tenets 3-5 are what the
-       instructor performs and is scored on. Source: same vault note, its
-       own "The through-line" section. provenance: original.
-       Role tag is "contrast" (a genuine this-vs-that split); built on
-       production .slide--tmpl-table — CONCEPT_ROLES.contrast.treatment in
-       instructional-design.js already names "a comparison table" as a
-       valid option, this is its first real use. Promoted from the
-       origination pilot (PILOT-NOTES.md finding 2), unchanged in content. -->
-  <article class="slide slide--tmpl-table" data-slide="6" data-deck="ife">
+       instructor delivers; the Rubric scores that. provenance: original.
+       REBUILT 2026-09-09 as an original flow diagram (visual-concept
+       check, Course Porting Pipeline.md) — first pass approved on concept,
+       rejected on execution (inconsistent box sizes, broken baseline,
+       three unrelated fill styles, centered list text, no bullets,
+       cramped takeaway). This is the corrected pass: one shared box
+       template (same size, same white fill, same grey border, same
+       header-bar structure) reused three times, with color used once,
+       meaningfully — the orange header on the third box is the only
+       color signal in the diagram, marking it as the graded stage.
+       Reuses .slide--tmpl-graph's frame (title / figure / takeaway) as
+       the closest existing "one diagram + one-line takeaway" container;
+       this is a flow diagram, not a data graph — a structural reuse, not
+       a semantic claim. Row 4 (.tmpl-source) is unused here, so the
+       takeaway gets an explicit bottom margin below (it would otherwise
+       sit flush against the card edge with nothing to absorb the space
+       .tmpl-source normally would). -->
+  <article class="slide slide--tmpl-graph" data-slide="6" data-deck="ife">
     <h1 class="slide-title">Received vs. Performed</h1>
-    <div class="tmpl-wrap" style="display:flex; flex-direction:column; justify-content:center">
-      <table class="tmpl-table" data-ref="ife-received-vs-performed" style="font-size:2.1cqw; table-layout:fixed">
-        <colgroup><col style="width:34%"><col style="width:66%"></colgroup>
-        <thead>
-          <tr><th>Tenet</th><th>Instructor's relationship to it</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Context to Content</td><td>Received &mdash; comes with the slice</td></tr>
-          <tr><td>Training Objectives</td><td>Received &mdash; comes with the slice</td></tr>
-          <tr><td>Student Preparation</td><td>Performed &mdash; built &amp; scored</td></tr>
-          <tr><td>Course Delivery</td><td>Performed &mdash; built &amp; scored</td></tr>
-          <tr><td>Acuminating Instructor Skills</td><td>Performed &mdash; built &amp; scored</td></tr>
-        </tbody>
-      </table>
-    </div>
+    <figure class="tmpl-plot">
+      <svg viewBox="0 0 940 300" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Flow diagram: Context to Content and Training Objectives are received with the slice, flowing into Student Preparation, Course Delivery, and Acuminating Instructor Skills, which the instructor delivers, flowing into the Instructor Observation Rubric, which scores it.">
+        <g font-family="Arial, Helvetica, sans-serif">
+          <!-- Box 1: Received -->
+          <rect x="10" y="40" width="260" height="220" rx="6" fill="#fff" stroke="var(--emerson-grey)" stroke-width="1.5"/>
+          <rect x="10" y="40" width="260" height="42" rx="6" fill="var(--emerson-blue)"/>
+          <rect x="10" y="70" width="260" height="12" fill="var(--emerson-blue)"/>
+          <text x="140" y="66" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.7" fill="#fff">RECEIVED WITH THE SLICE</text>
+          <text x="30" y="158" font-size="16" fill="var(--emerson-charcoal)">&#8226;&#160;&#160;Context to Content</text>
+          <text x="30" y="196" font-size="16" fill="var(--emerson-charcoal)">&#8226;&#160;&#160;Training Objectives</text>
+
+          <!-- Arrow 1 -->
+          <path d="M270 150 H322" stroke="var(--emerson-grey)" stroke-width="3" fill="none"/>
+          <polygon points="322,142 336,150 322,158" fill="var(--emerson-grey)"/>
+
+          <!-- Box 2: Delivered -->
+          <rect x="340" y="40" width="260" height="220" rx="6" fill="#fff" stroke="var(--emerson-grey)" stroke-width="1.5"/>
+          <rect x="340" y="40" width="260" height="42" rx="6" fill="var(--emerson-blue)"/>
+          <rect x="340" y="70" width="260" height="12" fill="var(--emerson-blue)"/>
+          <text x="470" y="66" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.7" fill="#fff">DELIVERED BY THE INSTRUCTOR</text>
+          <text x="360" y="132" font-size="16" fill="var(--emerson-charcoal)">&#8226;&#160;&#160;Student Preparation</text>
+          <text x="360" y="168" font-size="16" fill="var(--emerson-charcoal)">&#8226;&#160;&#160;Course Delivery</text>
+          <text x="360" y="204" font-size="16" fill="var(--emerson-charcoal)">&#8226;&#160;&#160;Acuminating</text>
+          <text x="382" y="228" font-size="16" fill="var(--emerson-charcoal)">Instructor Skills</text>
+
+          <!-- Arrow 2 -->
+          <path d="M600 150 H652" stroke="var(--emerson-grey)" stroke-width="3" fill="none"/>
+          <polygon points="652,142 666,150 652,158" fill="var(--emerson-grey)"/>
+
+          <!-- Box 3: Scored — the one meaningful color signal in the diagram -->
+          <rect x="670" y="40" width="260" height="220" rx="6" fill="#fff" stroke="var(--emerson-grey)" stroke-width="1.5"/>
+          <rect x="670" y="40" width="260" height="42" rx="6" fill="var(--emerson-orange)"/>
+          <rect x="670" y="70" width="260" height="12" fill="var(--emerson-orange)"/>
+          <text x="800" y="66" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="0.7" fill="#fff">SCORED BY</text>
+          <text x="800" y="163" text-anchor="middle" font-size="17" font-weight="700" fill="var(--emerson-charcoal)">Instructor Observation</text>
+          <text x="800" y="191" text-anchor="middle" font-size="17" font-weight="700" fill="var(--emerson-charcoal)">Rubric</text>
+        </g>
+      </svg>
+    </figure>
+    <p class="tmpl-takeaway" style="margin-bottom:4.2cqh">Tenets 1&ndash;2 come with the slice. IfE spends its time on 3&ndash;5 because that is what gets scored.</p>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">6</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
 </main>

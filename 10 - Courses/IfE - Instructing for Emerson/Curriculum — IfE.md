@@ -69,9 +69,23 @@ before its own Phase 3.
 - id: prim.ife.orientation.five-tenets-framework.received-vs-performed
   competencyId: ife.orientation.five-tenets-framework
   status: exists
-  asset: inline-table (slide ife-006)
+  asset: inline-svg diagram (slide ife-006)
   provenance: original
-  redrawRecord: not applicable — provenance: original
+  redrawRecord: >
+    Original house diagram — no source figure exists (Steve's own
+    framework). Rebuilt 2026-09-09 from a comparison table: the Stage 3
+    visual-concept check (Course Porting Pipeline.md) found this concept
+    is a real input -> action -> assessment flow (received with the slice
+    -> delivered by the instructor -> scored by the Rubric), not a second
+    tenet-vs-tenet comparison, and a table was defaulted onto it the
+    first time without that question being asked. Execution rebuilt a
+    second time same day (Franz review: inconsistent box sizes, broken
+    baseline, three unrelated fill styles, centered list text, no
+    bullets, cramped takeaway) to one shared box template used three
+    times, color used once and meaningfully (orange marks the graded
+    stage). The middle stage's label was also corrected from "Performed"
+    to "Delivered by the instructor" — "performed" carried an unwanted
+    stage-actor connotation the concept didn't intend.
   variantTag: received-vs-performed
 ```
 
@@ -125,7 +139,8 @@ $ node "40 - Engine/render/render-check.mjs" --course "IfE - Instructing for Eme
   [ok]   ife-003.html   (facility & safety)
   [ok]   ife-004.html   (sign-in & housekeeping)
   [ok]   ife-005.html   (Five Tenets)
-  [ok]   ife-006.html   (Received vs. Performed)
+  [ok]   ife-006.html   (Received vs. Performed — rebuilt 2026-09-09 as an
+                          original flow diagram, see the primitive record above)
   [ok]   ife-007.html   (Check)
 RENDER: 7 slides rendered, 0 warn
 ```

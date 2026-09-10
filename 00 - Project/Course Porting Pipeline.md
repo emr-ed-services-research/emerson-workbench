@@ -346,6 +346,19 @@ intro card's `stakes`; a missing formative `check` is noted (a first-class
 formative-check slide is a deferred Layer-2 change). A full re-fire also carries
 any open Stage-3 review flags for the module to resolve.
 
+**The visual-concept check** (added 2026-09-09, from the IfE Foundations
+review — `ife-006` was the miss that surfaced it): before a concept with no
+source figure defaults onto a table or text-list template, ask explicitly —
+does this concept describe a relationship, hierarchy, process, or framework
+between its parts that could be drawn, not just named or tabulated? If yes,
+propose an original diagram (house-designed, `provenance: original` where
+applicable) before falling back to a table. If the content is genuinely a
+flat set of separate facts with no natural visual shape, a table or short
+list is the correct, honest answer — say so explicitly rather than landing
+there by default either way. This is a propose-, not force-, rule: "no
+natural visual shape" stays a fully legitimate outcome, not a failure to
+find one. See Part 4 checklist item 4 for the render-time half of this check.
+
 **Ground rules:**
 
 - Re-cropping a deck image to its teaching subject, splitting a composite figure
@@ -390,8 +403,11 @@ in; the render confirms it rather than discovers it.
 4. **Template fit.** 2–4 things compared side by side → horizontal `figrow`
    (`.slide--tmpl-figrow`). A reference table plus the items it tabulates →
    table with the items in a row beneath it (`.has-lead`). One diagram with
-   parts to name → `.slide--tmpl-diagram`. Never a vertical stack of images in
-   an aside.
+   parts to name → `.slide--tmpl-diagram`. A relationship, process, or
+   framework with no source figure but a real drawable shape → an original
+   diagram, not a default table — reached only when the visual-concept check
+   above (Stage 3 composition) was actually asked, not skipped. Never a
+   vertical stack of images in an aside.
 5. **Both aspect ratios.** Render the slide standalone (4:3) **and** in the
    course shell (16:9, `?embed=1&visual=1`); check for collisions and clipping
    in each.
