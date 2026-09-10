@@ -40,7 +40,16 @@ IfE Vault first; this folder tracks it.
       menu, via a bounded origination pilot
       (`10 - Courses/_Origination Test — ife-five-tenets/`)
 - [x] **First real module authored** — Day 1, "The Five Tenets of IfE"
-      (`Curriculum — IfE.md`, `Presentation/build/slides/ife-001…003.html`)
+      (`Curriculum — IfE.md`, `Presentation/build/slides/ife-005…007.html`)
+- [x] **Module 0 built** — title slide, course roadmap (Week One/Week Two,
+      confirmed 4+4 day split), facility & safety, sign-in & housekeeping
+      (`Presentation/build/slides/ife-001…004.html`), reworked from
+      14101's own front matter, not ported as-is
+- [x] **Title-slide boot order** — a fresh load of the course shell opens
+      directly on the branded title slide (`ife-001.html`) instead of the
+      generic overview card, with a Continue button revealing the overview
+      afterward. Shared-engine change (`course.js`); 14101 gets the same
+      fix, verified on both.
 - [ ] Remaining Day 1 content (Show–Tell–Do overview, TPCD overview,
       reading a training solution)
 - [ ] Days 2–8
@@ -65,6 +74,7 @@ at all (`PILOT-NOTES.md` Finding 6).
 
 | # | Module | Domain area | Status |
 | --- | --- | --- | --- |
+| m0 | Before We Start (title, roadmap, facility & safety, sign-in) | — front matter, no competency | ready |
 | d1-m1 | The Five Tenets of IfE | `orientation` | ready |
 
 `d1-m1` and the `ife-` slide prefix are still working identifiers — IfE's

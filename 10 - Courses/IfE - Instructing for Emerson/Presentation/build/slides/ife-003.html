@@ -3,32 +3,61 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>IfE &middot; Day 1 &mdash; Check Your Knowledge</title>
+<title>IfE &middot; Slide 003 &mdash; Facility &amp; Safety</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
-<link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- Day 1, concept 3 [evaluate], check. Formative retrieval over
-       concepts 1-2. No primitive — assessment edges carry primitiveId:
-       null. Uses .slide--role-check, the one Axis-3 role with a clean
-       template fit (text-only, no figure assumption) — no override
-       needed. Promoted from the origination pilot, unchanged in content. -->
-  <article class="slide slide--role-check" data-slide="3" data-deck="ife">
-    <h1 class="slide-title">Check Your Knowledge</h1>
-    <div class="tpl-content">
-      <p class="tpl-prompt">An instructor spends their break before class checking tools, staging consumables, and confirming the training area meets the safety brief &mdash; before the first student arrives. Which tenet are they demonstrating?</p>
-      <ul class="tpl-options">
-        <li>A.&nbsp;&nbsp;Context to Content</li>
-        <li>B.&nbsp;&nbsp;Training Objectives</li>
-        <li>C.&nbsp;&nbsp;Student Preparation</li>
-        <li>D.&nbsp;&nbsp;Acuminating Instructor Skills</li>
-      </ul>
-      <p class="tpl-reveal">C. Student Preparation &mdash; preparing the learner and the environment before they arrive.</p>
+  <!-- Module 0, page 3 — Facility & Safety, reworked from 14101's
+       1400-008.html ("Learning Environment – Facility and Emergency
+       Safety Plans"). That slide's raw .slide--title-only layout (a
+       composite clip-art icon dump, half the slide empty, fill-in-blank
+       emergency-contact fields baked into the slide) is used as SOURCE
+       MATERIAL only, not ported as-is (Franz, 2026-09-09: "it looks like
+       crap"). Rebuilt on the proven .slide--tmpl-figrow template with one
+       captioned house-redrawn pictogram per item (Style Guide §5.8 — the
+       source composite has no per-icon crop to reuse). The emergency
+       contact / phone fill-in fields are deliberately NOT on this slide —
+       they are venue-specific, not teaching content; they belong in
+       instructor speaker notes / a printed handout (see <aside class="notes">
+       below), consistent with the project's slides-are-visual-only rule. -->
+  <article class="slide slide--tmpl-figrow" data-slide="3" data-deck="ife">
+    <h1 class="slide-title">Facility &amp; Safety</h1>
+    <div class="tmpl-row">
+      <figure class="tmpl-cell">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Exit sign, white text on red">
+          <rect x="4" y="30" width="112" height="60" rx="4" fill="#c8102e"/>
+          <text x="60" y="70" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" fill="#fff">EXIT</text>
+        </svg>
+        <figcaption><b>Exits</b>marked at every corner of the room</figcaption>
+      </figure>
+      <figure class="tmpl-cell">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Severe weather icon, a cloud with a lightning bolt">
+          <g fill="#3a3a3a">
+            <circle cx="40" cy="58" r="16"/>
+            <circle cx="62" cy="44" r="20"/>
+            <circle cx="84" cy="58" r="15"/>
+            <rect x="26" y="58" width="68" height="22" rx="11"/>
+          </g>
+          <polygon points="68,58 52,84 62,84 54,102 80,72 66,72" fill="var(--emerson-orange)"/>
+        </svg>
+        <figcaption><b>Severe weather</b>gathering point &mdash; instructor will point it out</figcaption>
+      </figure>
+      <figure class="tmpl-cell">
+        <svg viewBox="0 0 120 120" role="img" aria-label="Restrooms sign, two figures on blue">
+          <rect x="4" y="4" width="112" height="112" rx="6" fill="var(--emerson-blue)"/>
+          <circle cx="42" cy="34" r="10" fill="#fff"/>
+          <path d="M42 48 L30 90 L38 90 L42 68 L46 90 L54 90 Z" fill="#fff"/>
+          <circle cx="80" cy="34" r="10" fill="#fff"/>
+          <path d="M68 50 L92 50 L92 78 L84 78 L84 96 L76 96 L76 78 L68 78 Z" fill="#fff"/>
+        </svg>
+        <figcaption><b>Restrooms</b>down the hall, both sides</figcaption>
+      </figure>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">3</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
+  <aside class="notes"><p>Fill in and post before class: Emergency Contact name and phone number, the actual severe-weather gathering point for this venue, and the nearest fire exit route. This is venue-specific — do not leave the generic version on screen; brief it and provide it on the handout.</p></aside>
 </main>
 </body>
 </html>

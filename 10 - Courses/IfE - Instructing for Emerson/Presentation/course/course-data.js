@@ -1,4 +1,4 @@
-{
+window.EW_COURSE = {
   "course": {
     "code": "IfE",
     "title": "Instructing for Emerson",
@@ -14,7 +14,12 @@
     "id": "m0",
     "title": "Before We Start",
     "summary": "The title slide, the course roadmap, and the facility, safety, and sign-in logistics. Complete once at the start of Day 1 — after that it is done and out of the way.",
-    "pages": [1, 2, 3, 4]
+    "pages": [
+      1,
+      2,
+      3,
+      4
+    ]
   },
   "days": [
     {
@@ -40,32 +45,43 @@
               "keyConcepts": [
                 {
                   "t": "The Five Tenets are IfE's organizing framework: Context to Content, Training Objectives, Student Preparation, Course Delivery, Acuminating Instructor Skills — one line each on what it means for a delivering instructor and where it is built in the course.",
-                  "pages": [5],
+                  "pages": [
+                    5
+                  ],
                   "level": "remember",
                   "role": "nomenclature",
                   "sourceNote": "provenance: original — Steve's own framework (IfE Vault, 02 Methodology/Five Tenets of IfE.md), no external source to cite."
                 },
                 {
                   "t": "Tenets 1-2 are inputs the instructor receives — context and objectives come with the slice. Tenets 3-5 are what the instructor does. IfE spends its time on 3-5 because that is what the Instructor Observation Rubric measures.",
-                  "pages": [6],
+                  "pages": [
+                    6
+                  ],
                   "level": "understand",
                   "role": "contrast",
                   "sourceNote": "provenance: original — same vault note, its own 'The through-line' section."
                 },
                 {
                   "t": "Formative check: given a described instructor behavior (setting up the training area before students arrive), the learner identifies which of the Five Tenets it demonstrates.",
-                  "pages": [7],
+                  "pages": [
+                    7
+                  ],
                   "level": "evaluate",
                   "role": "check",
                   "sourceNote": "no figure — situation stem; provenance: original, same as concepts 1-2"
                 }
               ],
-              "pages": [5, 6],
-              "check": [7]
+              "pages": [
+                5,
+                6
+              ],
+              "check": [
+                7
+              ]
             }
           ]
         }
       ]
     }
   ]
-}
+};

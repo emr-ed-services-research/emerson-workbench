@@ -1379,6 +1379,90 @@
   margin: 1.2cqh 0 4.4cqh 0;   /* bottom = the global .tmpl-source bottom inset */
 }
 
+/* -- Template 8: course roadmap  .slide--tmpl-roadmap ----------------
+   A course-level (or day-level) two-column week overview: a short note
+   line, then Week columns side by side, each a stack of day cards (a
+   number badge + weekday/topic). Added 2026-09-09 for IfE's Module 0 —
+   the instructor's live "shape of the whole course" walkthrough right
+   after the title slide. Card-based rather than a flat list so the eye
+   groups by week at a glance; no click-to-expand interactivity — two
+   plain columns already read as the roadmap moment without adding a
+   new interaction pattern nothing else in the deck has.
+
+   <article class="slide slide--tmpl-roadmap">
+     <h1 class="slide-title">Course Roadmap</h1>
+     <p class="tmpl-roadnote">…one line of framing…</p>
+     <div class="tmpl-weeks">
+       <div class="tmpl-week">
+         <div class="tmpl-week__hd">Week One</div>
+         <div class="tmpl-day"><span class="tmpl-day__n">1</span>
+           <div class="tmpl-day__body"><b>Tuesday · Foundations</b><span>…topic…</span></div>
+         </div>
+         … one .tmpl-day per day …
+       </div>
+       <div class="tmpl-week">… Week Two, same shape …</div>
+     </div>
+   </article>                                                        */
+.slide--tmpl-roadmap .tmpl-roadnote {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 18.2cqh;
+  margin: 0;
+  font-size: 1.35cqw;
+  color: var(--emerson-grey);
+}
+.slide--tmpl-roadmap .tmpl-weeks {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 23.6cqh; bottom: 5cqh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3cqw;
+}
+.slide--tmpl-roadmap .tmpl-week {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15cqh;
+}
+.slide--tmpl-roadmap .tmpl-week__hd {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.9cqw;
+  color: var(--emerson-blue);
+  border-bottom: max(1px, 0.14cqh) solid var(--emerson-blue);
+  padding-bottom: 0.7cqh;
+  margin-bottom: 0.2cqh;
+}
+.slide--tmpl-roadmap .tmpl-day {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  background: color-mix(in srgb, var(--emerson-blue) 5%, #fff);
+  border: 1px solid var(--emerson-grey);
+  border-radius: 0.5cqw;
+  padding: 1cqh 1.2cqw;
+}
+.slide--tmpl-roadmap .tmpl-day__n {
+  flex: none;
+  width: 3.1cqw; height: 3.1cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.5cqw;
+  display: grid; place-items: center;
+}
+.slide--tmpl-roadmap .tmpl-day__body { min-width: 0; }
+.slide--tmpl-roadmap .tmpl-day__body b {
+  display: block;
+  font-size: 1.42cqw;
+  color: var(--body-text);
+  font-weight: 700;
+}
+.slide--tmpl-roadmap .tmpl-day__body span {
+  display: block;
+  font-size: 1.24cqw;
+  color: var(--emerson-grey);
+}
+
 /* ---------- 8. Print / export -------------------------------------- */
 @page { size: 11in 8.5in; margin: 0; }
 @media print {

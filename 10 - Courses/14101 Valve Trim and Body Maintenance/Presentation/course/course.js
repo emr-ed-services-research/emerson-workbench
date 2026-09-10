@@ -12,6 +12,14 @@
   var CHS_BY_ID = {};            // ch.id   -> chapter (chapter-intro cards)
   var STORE_KEY = null;          // set in boot(): "ew<course.code>.progress"
   var progress = { seen: {}, done: {} };
+  // Title splash (2026-09-09): a fresh page load lands on Module 0's own first
+  // page (the branded title slide) instead of the generic course-overview
+  // card - "what's on screen when the door opens", not a click away. In-
+  // memory only, not persisted: reset on every reload on purpose, since a
+  // fresh load is exactly the "walking in" moment this exists for. The
+  // overview card is not removed - Continue reveals it exactly as before;
+  // every other route (day/chapter/module/page) is unaffected.
+  var splashDismissed = false;
 
   var el = {
     toc: byId("toc"), ctx: byId("ctx"),
@@ -240,7 +248,10 @@
   function render() {
     var route = parseHash();
     document.body.classList.toggle("view-home", route.view === "home");
-    if (route.view === "home") return renderHome();
+    if (route.view === "home") {
+      if (C.moduleZero && C.moduleZero.pages && C.moduleZero.pages.length && !splashDismissed) return renderTitleSplash();
+      return renderHome();
+    }
     if (route.view === "day") return renderDay(route.day);
     if (route.view === "chapter") return renderChapter(route.ch);
 
@@ -272,6 +283,30 @@
     scrollTop();
   }
 
+  /* First paint on a fresh load: Module 0's own first page (the branded
+     title slide), full-bleed, with a Continue button over it. Reuses the
+     exact same iframe pattern renderPage() uses for a real page - this IS
+     a real authored slide, not a special splash asset - so it renders
+     identically wherever it's opened from. */
+  function renderTitleSplash() {
+    var m = C.moduleZero;
+    el.hdDay.textContent = "";
+    el.crumbs.innerHTML = "";
+    el.stageNav.style.display = "none";
+    document.body.classList.remove("page-view");
+    var pg = m.pages[0];
+    el.card.className = "stage__card stage__card--page";
+    el.card.innerHTML =
+      '<iframe class="page__frame" src="' + C.slideBase + C._slidePrefix + pad3(pg) + '.html?embed=1&visual=1" title="' + esc(m.title) + '"></iframe>' +
+      '<button class="ov__start" style="position:fixed;left:50%;bottom:34px;transform:translateX(-50%);z-index:5" onclick="window.__ewSplashContinue()">Continue →</button>';
+    el.ctxHere.textContent = "";
+    el.ctxMod.textContent = "";
+    el.ctxObj.textContent = "";
+    el.ctxConcepts.innerHTML = "";
+    el.ctxCheckWrap.hidden = true;
+  }
+  window.__ewSplashContinue = function () { splashDismissed = true; render(); };
+
   function renderHome() {
     el.hdDay.textContent = "";
     el.crumbs.innerHTML = '<b>Course overview</b>';
@@ -296,7 +331,7 @@
         '<div class="ov__kicker">Emerson Workbench · Course</div>' +
         '<h1 class="ov__title">' + esc(C.course.code + " " + C.course.title) + '</h1>' +
         '<div class="ov__rule"></div>' +
-        '<p class="ov__objective">A three-day course on the Fisher control-valve families — sliding stem, rotary, and positioners — with a hands-on workshop each day.</p>' +
+        (C.course.summary ? '<p class="ov__objective">' + esc(C.course.summary) + '</p>' : "") +
         (C.moduleZero ? '<a class="home__m0" href="#' + C.moduleZero.id + '"><b>Module 0 · ' + esc(C.moduleZero.title) + '</b><br>' + esc(C.moduleZero.summary) + '</a>' : "") +
         '<button class="ov__start" onclick="location.hash=\'#' + first.id + '\'">Start the course →</button>' +
         '<div class="home__days">' + daysHtml + '</div>' +

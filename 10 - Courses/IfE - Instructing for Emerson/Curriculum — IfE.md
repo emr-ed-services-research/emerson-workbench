@@ -61,7 +61,7 @@ before its own Phase 3.
 - id: prim.ife.orientation.five-tenets-framework.overview
   competencyId: ife.orientation.five-tenets-framework
   status: exists
-  asset: inline-table (slide ife-001)
+  asset: inline-table (slide ife-005)
   provenance: original
   redrawRecord: not applicable — provenance: original
   variantTag: overview
@@ -69,11 +69,17 @@ before its own Phase 3.
 - id: prim.ife.orientation.five-tenets-framework.received-vs-performed
   competencyId: ife.orientation.five-tenets-framework
   status: exists
-  asset: inline-table (slide ife-002)
+  asset: inline-table (slide ife-006)
   provenance: original
   redrawRecord: not applicable — provenance: original
   variantTag: received-vs-performed
 ```
+
+**Slide renumbering (2026-09-09):** the Five Tenets slides moved from
+`ife-001…003` to `ife-005…007` when Module 0 (title slide, roadmap,
+facility & safety, sign-in — pages 1–4) was added ahead of them. No
+competency, primitive, or edge content changed — only which file each
+`slide:` reference names.
 
 ## Placement edges
 
@@ -83,15 +89,15 @@ before its own Phase 3.
   competencyId: ife.orientation.five-tenets-framework
   progression: introduces
   primitiveId: prim.ife.orientation.five-tenets-framework.overview
-  slide: ife-001
+  slide: ife-005
 
 - moduleId: d1-m1
   roles: null
   competencyId: ife.orientation.five-tenets-framework
   progression: develops
   primitiveId: prim.ife.orientation.five-tenets-framework.received-vs-performed
-  slide: ife-002
-  note: "same competency, not re-introduced — ife-002 develops the same
+  slide: ife-006
+  note: "same competency, not re-introduced — ife-006 develops the same
     understanding with the received/performed split"
 
 - moduleId: d1-m1
@@ -99,23 +105,37 @@ before its own Phase 3.
   competencyId: [ife.orientation.five-tenets-framework]
   progression: applies
   primitiveId: null
-  slide: ife-003
+  slide: ife-007
   note: "check-your-knowledge — assessment edge, primitiveId null, per
     curriculum-development.md Finding 1 (14101 Phase 2)"
 ```
 
 No Component Index back-pointer — `provenance: original` primitives are
-exempt.
+exempt. Module 0's own content (title, roadmap, facility & safety,
+sign-in) carries no competency/primitive/edge at all — it is compliance
+and orientation front matter, not instructional content, the same way
+14101's Module 0 has none.
 
 ## Verification
 
 ```
 $ node "40 - Engine/render/render-check.mjs" --course "IfE - Instructing for Emerson"
-  [ok]   ife-001.html
-  [ok]   ife-002.html
-  [ok]   ife-003.html
-RENDER: 3 slides rendered, 0 warn
+  [ok]   ife-001.html   (title)
+  [ok]   ife-002.html   (roadmap)
+  [ok]   ife-003.html   (facility & safety)
+  [ok]   ife-004.html   (sign-in & housekeeping)
+  [ok]   ife-005.html   (Five Tenets)
+  [ok]   ife-006.html   (Received vs. Performed)
+  [ok]   ife-007.html   (Check)
+RENDER: 7 slides rendered, 0 warn
 ```
+
+Also verified: the shared engine's title-splash boot order (`course.js`,
+2026-09-09) opens this course directly on `ife-001.html` (the branded
+title slide) on a fresh load, with a Continue button revealing the normal
+course-overview card — confirmed live in headless Chrome, not assumed,
+on both this course and 14101 (same shared code path). No console errors
+on either.
 
 Both 4:3 and 16:9, confirmed by eye against `_verify-shots/`, not just the
 automated pass. `objectiveVerbOk('ife', 'understand')` against this

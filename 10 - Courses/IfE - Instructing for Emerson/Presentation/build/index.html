@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Instructing for Emerson (IfE)</title>
+<title>14101 Valve Trim and Body Maintenance</title>
 <style>
   :root { color-scheme: dark; }
   * { box-sizing: border-box; }
@@ -23,8 +23,23 @@
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   header .pos { color: #bdbdbd; font-variant-numeric: tabular-nums; }
 
-  .viewport { flex: 1; min-height: 0; position: relative; background: #1b1b1b; }
+  .viewport { flex: 1; min-height: 0; position: relative; z-index: 10; background: #1b1b1b; }
   iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
+  /* A slide's own lightbox runs inside its iframe, so CSS position:fixed
+     there can only ever cover the iframe's own rectangle (the .viewport
+     area) -- it can never reach outside to this page's header/scrub bar.
+     Full-page darkening needs this parent frame's own cooperation: the
+     slide posts {ew:'lightbox', open} when its lightbox opens/closes (see
+     slides.js), and this dim layer -- explicitly BELOW .viewport's z-index
+     but ABOVE header/scrub, which have no z-index of their own -- covers
+     everywhere except where .viewport (opaque, on top) already sits. */
+  .dim-overlay {
+    display: none;
+    position: fixed; inset: 0; z-index: 9;
+    background: rgba(10, 10, 10, 0.86);
+  }
+  .dim-overlay.is-on { display: block; }
 
   .scrub { display: flex; align-items: center; gap: .6rem;
     padding: .35rem .9rem; background: #101010; border-top: 1px solid #2c2c2c; }
@@ -58,7 +73,7 @@
 <body>
 
 <header>
-  <span class="title">Instructing for Emerson (IfE)</span>
+  <span class="title">14101 Valve Trim and Body Maintenance</span>
   <span class="section" id="section"></span>
   <span class="pos" id="pos"></span>
 </header>
@@ -67,6 +82,7 @@
   <iframe id="frame" title="slide"></iframe>
   <div class="jump" id="jump"><h2>Jump to slide &mdash; press G to close</h2><ol id="jumpList"></ol></div>
 </div>
+<div class="dim-overlay" id="dimOverlay"></div>
 
 <script src="manifest.js"></script>
 
@@ -90,6 +106,7 @@
   var range = document.getElementById('range');
   var jump = document.getElementById('jump');
   var jumpList = document.getElementById('jumpList');
+  var dimOverlay = document.getElementById('dimOverlay');
   var MAN = [];
   var i = 0;
   var notesOn = false;
@@ -132,6 +149,8 @@
     } else if (d.ew === 'ready') {
       if (notesOn) sendNotes();
       if (reviewOn) sendReview();
+    } else if (d.ew === 'lightbox') {
+      dimOverlay.classList.toggle('is-on', !!d.open);
     }
   });
   document.addEventListener('keydown', function (e) {

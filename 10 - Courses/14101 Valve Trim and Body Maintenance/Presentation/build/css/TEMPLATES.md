@@ -1,10 +1,12 @@
 # Reusable slide templates
 
-Seven templates for the 14101 course. The CSS lives in
+Eight templates, course-agnostic. The CSS lives in
 `emerson-workbench.css` (the hand-maintained design system); this file is the
 usage reference. Introduced with the Chapter 1 rebuild (2026-08-29) and reusable
 course-wide. Template 7 (`.slide--tmpl-graph`) was added 2026-09-05 for the
-Style Guide §5 diagram/graph conventions.
+Style Guide §5 diagram/graph conventions. Template 8 (`.slide--tmpl-roadmap`)
+was added 2026-09-09 for IfE's course-roadmap slide — the first template not
+first proven on 14101.
 
 Every template carries the standard `.slide` frame (title box, divider rule,
 footer chrome). None use `.slide-body`, so nothing is stripped in visual mode —
@@ -344,4 +346,49 @@ lines in place. It is a production port of the gallery
 - `.tmpl-takeaway` is optional — one line, an orange left rule. `.tmpl-source`
   is required and names the source figure and what changed (§5.9).
 - The context pane still carries the concept as normal.
+
+---
+
+## Template 8 — course roadmap  `.slide--tmpl-roadmap`
+
+A two-column week overview: a short framing line, then Week One / Week Two
+side by side, each a stack of day cards (number badge + weekday and topic).
+Added 2026-09-09 for IfE's Module 0 — the slide the instructor uses live,
+right after the title slide, to walk the whole class through the shape of
+the course before teaching anything. Card-based rather than a flat list so
+the eye groups by week at a glance.
+
+```html
+<article class="slide slide--tmpl-roadmap" data-slide="2" data-deck="ife">
+  <h1 class="slide-title">Course Roadmap</h1>
+  <p class="tmpl-roadnote">Two teaching weeks, four days each.</p>
+  <div class="tmpl-weeks">
+    <div class="tmpl-week">
+      <div class="tmpl-week__hd">Week One</div>
+      <div class="tmpl-day">
+        <span class="tmpl-day__n">1</span>
+        <div class="tmpl-day__body"><b>Tuesday · Foundations</b><span>Five Tenets · Show–Tell–Do</span></div>
+      </div>
+      <!-- one .tmpl-day per day -->
+    </div>
+    <div class="tmpl-week">
+      <div class="tmpl-week__hd">Week Two</div>
+      <!-- same shape -->
+    </div>
+  </div>
+  <div class="slide-chrome">…</div>
+</article>
+```
+
+- Exactly two `.tmpl-week` columns; each holds one `.tmpl-day` per teaching
+  day. Keep the topic (`<span>`) to a short phrase — this is a map, not a
+  syllabus; full detail lives in each day's own intro card and context pane.
+- **No click-to-expand.** Nothing else in the template system has drill-down
+  interactivity, and a side-by-side overview already delivers the "shape of
+  the whole course" moment on its own. If a week ever needs its own detail
+  view, add a second slide (e.g. "Week One Detail") and reach it by ordinary
+  Next-slide sequencing — not a new interaction pattern on this one.
+- Day numbering and weekday labels are the module's own data — travel days
+  bookending the two weeks are not teaching days and are not cards here;
+  name them in the framing line (`.tmpl-roadnote`) instead if relevant.
 

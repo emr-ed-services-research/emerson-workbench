@@ -743,13 +743,51 @@
   display: grid; place-items: center;
 }
 /* source attribution for a figure lifted from the Source Library - always shown.
-   right inset keeps a long citation clear of the brand mark (--logo-keepout). */
+   right inset keeps a long citation clear of the brand mark (--logo-keepout).
+
+   Hard containment (2026-09-08, Franz directive after three separate
+   per-template collisions - figrow, diagram, graph - all traced to the same
+   cause: an over-long citation growing past whatever fixed space a
+   template reserved for it). A citation is metadata, not content - it must
+   never be able to push into or overlap a template's actual teaching
+   content, regardless of how long the text is. max-height plus overflow
+   hidden, applied ONCE here on the shared class rather than per template,
+   makes that a structural guarantee instead of a per-template arithmetic
+   exercise: whatever grows past two lines is clipped with an ellipsis, not
+   allowed to expand the box. This is a backstop, not the primary fix - the
+   real fix is that origination-composed citations should never approach
+   two lines in the first place (buildStage3OriginatePrompt now states the
+   one-line Style Guide §5.9 format explicitly) - but the cap holds
+   regardless of what any future template or prompt gets wrong. Every
+   per-template override below (.slide--tmpl-figrow, .slide--tmpl-diagram,
+   .slide--tmpl-graph) changes position/placement only and does not reset
+   max-height/overflow/display, so this containment applies everywhere
+   .tmpl-source appears without being repeated per template.
+
+   CORRECTION (same day, caught live in the Workshop card, not the raw QA
+   viewer): the first cut set max-height:3.4cqh, sized as if cqh and cqw
+   were the same magnitude. They are not, for a 16:9 box - the font is set
+   in cqw (1.2cqw), but cqh is the SMALLER unit here (height < width), so
+   1cqw = 16/9 ≈ 1.78cqh. 3.4cqh only bought about 1.2 real lines at this
+   font/line-height, so max-height was cutting into the middle of the
+   second line before -webkit-line-clamp's own 2-line ellipsis ever got to
+   run - confirmed via getComputedStyle in the live iframe (max-height
+   resolved to 16.6px against a 54px scrollHeight, well under two real
+   13.6px line-boxes). Correct value for two full lines at 1.2cqw/1.3,
+   converted through the 16:9 aspect: 2 * 1.2 * 1.3 * (16/9) ≈ 5.5cqh;
+   6cqh below gives a small margin so line-clamp's own ellipsis is what
+   truncates a third line, not this box cutting into the second. */
 .tmpl-source {
   position: absolute;
   left: 6cqw; right: var(--logo-keepout); bottom: 4.4cqh;
   margin: 0;
   font: italic 1.2cqw/1.3 var(--font-body);
   color: var(--emerson-grey);
+  max-height: 6cqh;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 }
 
 /* -- Template 3 + 4: table cards ---------------------------------- */
@@ -915,9 +953,72 @@
 }
 .slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-note {
   position: static;
-  margin: 1.6cqh var(--logo-keepout) 6cqh 5.6cqw;
+  margin: 1.6cqh var(--logo-keepout) 0.8cqh 5.6cqw;
   flex: none;
 }
+/* .tmpl-source joining the same collision fix (2026-09-08, ch3-m1
+   origination review, PipelineConsole attempt 11): a plain figrow slide
+   crediting a Component Index citation carries a THIRD sibling,
+   .tmpl-source, which the fix above never accounted for - it stayed
+   position:absolute; bottom:4.4cqh (its global rule), unaware that
+   .tmpl-note is now flex:none inside a column where .tmpl-row is flex:1 1
+   auto. That lands .tmpl-note at the very bottom of the flex column,
+   directly under .tmpl-source's own independent fixed anchor, so a wrapped
+   citation collides with the note's text. First hit on a slide combining
+   .tmpl-note with .tmpl-source on a plain (non-has-lead) figrow - not
+   previously exercised in any shipped course. .slide-chrome is unaffected
+   either way: its own children are positioned relative to .slide, not to
+   their immediate parent's place in the flex flow, exactly like the
+   .tmpl-row/.tmpl-note fix above already relies on. Fix: fold .tmpl-source
+   into the same flex column as a third item when .tmpl-note is present.
+   CORRECTION (same day): the first cut of this fix gave .tmpl-note a
+   bottom margin of 6cqh (correct when .tmpl-note was the last content item)
+   and then appended .tmpl-source after it with bottom:0 - which put
+   .tmpl-source's own text inside the 6cqh gap that was reserved as empty
+   clearance before .slide-chrome, so the overlap moved from
+   note-vs-source to source-vs-chrome instead of resolving. .tmpl-note's
+   bottom margin is now just a small gap to the next item; .tmpl-source, now
+   the actual last content item, carries the 6cqh chrome clearance instead. */
+.slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-source {
+  position: static;
+  margin: 0 var(--logo-keepout) 6cqh 5.6cqw;
+  flex: none;
+}
+
+/* .tmpl-note + .tmpl-source collision on .slide--tmpl-diagram (2026-09-08,
+   confirmed by screenshot on ch3-m1 om1-003/004/006 - a different mechanism
+   than the figrow case above, not something the figrow fix touches).
+   .tmpl-diagram's .tmpl-note stays position:absolute; bottom:6cqh
+   unconditionally, only 1.6cqh above .tmpl-source's own bottom:4.4cqh
+   anchor. A .tmpl-source citation that wraps to 2+ lines grows upward from
+   its fixed bottom straight into .tmpl-note's text - visually confirmed on
+   all three om1 diagram slides, each citing multiple Component Index
+   entries in one longer paragraph than any shipped course's diagram slide
+   has needed so far. .tmpl-fig and .tmpl-list stay position:absolute
+   throughout and are entirely unaffected by this (absolutely positioned
+   elements never participate in a flex container's layout regardless of
+   the container's own display) - only .tmpl-note and .tmpl-source, when
+   BOTH are present, become flex items in a column pinned to the bottom of
+   the article via margin-top:auto, so they always stack directly on top of
+   each other instead of two independently-anchored boxes that can collide
+   if either one's content runs long. .tmpl-note keeps its original
+   right:47cqw column width (as a margin now) so it still stops short of
+   the figure/list area on the right, exactly as before.
+
+   REVERTED 2026-09-08 (Franz): this whole diagram-specific block, and the
+   figure enlarge/center rule that followed it, were built chasing the
+   wrong reference. `_Template Gallery/Presentation/build/css/gallery.css`
+   already solves this exact class of problem (note/source collisions,
+   fixed-offset figure sizing) structurally, via CSS Grid, specifically
+   BECAUSE hand-patching .tmpl-* offsets kept reproducing it - see that
+   file's own header comment. om1-003/004/006 are being re-authored against
+   the Template Gallery's role templates (.slide--role-mechanism /
+   .slide--role-nomenclature, matching their Stage 2 Axis C role tags)
+   instead of .slide--tmpl-diagram, so this template's own CSS goes back to
+   its pre-today state rather than carrying dead rules for a path this
+   content no longer takes. The figrow fix and the general .tmpl-source
+   containment (max-height/line-clamp) elsewhere in this file are unrelated
+   to this revert and stay - they were never diagram-specific. */
 
 /* .tmpl-fig + .tmpl-note collision fix (Franz review, 14101 ch3-m4 rework
    2026-09-04). Same root-cause CLASS as the .tmpl-row/.tmpl-note fix above,
@@ -1278,10 +1379,221 @@
   margin: 1.2cqh 0 4.4cqh 0;   /* bottom = the global .tmpl-source bottom inset */
 }
 
+/* -- Template 8: course roadmap  .slide--tmpl-roadmap ----------------
+   A course-level (or day-level) two-column week overview: a short note
+   line, then Week columns side by side, each a stack of day cards (a
+   number badge + weekday/topic). Added 2026-09-09 for IfE's Module 0 —
+   the instructor's live "shape of the whole course" walkthrough right
+   after the title slide. Card-based rather than a flat list so the eye
+   groups by week at a glance; no click-to-expand interactivity — two
+   plain columns already read as the roadmap moment without adding a
+   new interaction pattern nothing else in the deck has.
+
+   <article class="slide slide--tmpl-roadmap">
+     <h1 class="slide-title">Course Roadmap</h1>
+     <p class="tmpl-roadnote">…one line of framing…</p>
+     <div class="tmpl-weeks">
+       <div class="tmpl-week">
+         <div class="tmpl-week__hd">Week One</div>
+         <div class="tmpl-day"><span class="tmpl-day__n">1</span>
+           <div class="tmpl-day__body"><b>Tuesday · Foundations</b><span>…topic…</span></div>
+         </div>
+         … one .tmpl-day per day …
+       </div>
+       <div class="tmpl-week">… Week Two, same shape …</div>
+     </div>
+   </article>                                                        */
+.slide--tmpl-roadmap .tmpl-roadnote {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 18.2cqh;
+  margin: 0;
+  font-size: 1.35cqw;
+  color: var(--emerson-grey);
+}
+.slide--tmpl-roadmap .tmpl-weeks {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 23.6cqh; bottom: 5cqh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3cqw;
+}
+.slide--tmpl-roadmap .tmpl-week {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15cqh;
+}
+.slide--tmpl-roadmap .tmpl-week__hd {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.9cqw;
+  color: var(--emerson-blue);
+  border-bottom: max(1px, 0.14cqh) solid var(--emerson-blue);
+  padding-bottom: 0.7cqh;
+  margin-bottom: 0.2cqh;
+}
+.slide--tmpl-roadmap .tmpl-day {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  background: color-mix(in srgb, var(--emerson-blue) 5%, #fff);
+  border: 1px solid var(--emerson-grey);
+  border-radius: 0.5cqw;
+  padding: 1cqh 1.2cqw;
+}
+.slide--tmpl-roadmap .tmpl-day__n {
+  flex: none;
+  width: 3.1cqw; height: 3.1cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.5cqw;
+  display: grid; place-items: center;
+}
+.slide--tmpl-roadmap .tmpl-day__body { min-width: 0; }
+.slide--tmpl-roadmap .tmpl-day__body b {
+  display: block;
+  font-size: 1.42cqw;
+  color: var(--body-text);
+  font-weight: 700;
+}
+.slide--tmpl-roadmap .tmpl-day__body span {
+  display: block;
+  font-size: 1.24cqw;
+  color: var(--emerson-grey);
+}
+
 /* ---------- 8. Print / export -------------------------------------- */
 @page { size: 11in 8.5in; margin: 0; }
 @media print {
   .ew-deck { background: #fff; }
   .ew-stage { display: block; padding: 0; }
   .slide { width: 11in; max-width: none; page-break-after: always; box-shadow: none; }
+}
+
+/* ---------- 9. Lightbox --------------------------------------------
+   Click any real figure image in .tpl-content to open it full-size in a
+   darkened overlay. Visual language deliberately mirrors this project's
+   own Claude-artifact cards: rounded corners, a fat black border (not a
+   hairline), a small blue accent block in the bottom-left corner, caption
+   underneath the image inside the card. Built and driven entirely by
+   slides.js (see its "Lightbox" section) - this stylesheet only supplies
+   the look; DOM creation, image collection, and all keyboard behaviour
+   live in the script. */
+.ew-lightbox-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(10, 10, 10, 0.86);
+  align-items: center; justify-content: center;
+  padding: 4vh 4vw;
+}
+.ew-lightbox-overlay.is-open { display: flex; }
+
+.ew-lightbox-card {
+  position: relative;
+  background: var(--emerson-white);
+  border: 0.5rem solid var(--emerson-charcoal);
+  border-radius: 1.1rem;
+  width: min(92vw, 1400px);
+  height: 92vh;
+  padding: 1.4rem 1.4rem 1.1rem;
+  /* explicit rows, not absolutely-positioned close/count floating over the
+     figure: a header row the image can never grow into and cover, a
+     flexible figure row, a fixed caption row - the structural fix for the
+     close button getting visually clipped/covered by a large image. */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  row-gap: 0.5rem;
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.5);
+}
+
+/* the small blue accent block, bottom-left, sitting astride the border */
+.ew-lightbox-card::before {
+  content: "";
+  position: absolute;
+  left: -0.5rem; bottom: -0.5rem;
+  width: 2.6rem; height: 1.6rem;
+  background: var(--emerson-blue);
+  border-radius: 0 0.5rem 0.55rem 0;
+}
+
+.ew-lightbox-head {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 1.9rem;
+}
+
+.ew-lightbox-figure {
+  position: relative;   /* pixel-positioned detail-wrap children anchor here */
+  min-height: 0; min-width: 0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.ew-lightbox-figure > img, .ew-lightbox-figure > svg {
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  object-fit: contain;
+}
+/* the detail-asset wrapper fills the whole figure row; slides.js computes
+   the image's real letterboxed rect within it in JS (layoutFigure) and
+   sizes/positions both the <img> and every .ew-lightbox-callout in real
+   pixels against that rect, which is what keeps callouts aligned
+   regardless of the card's actual size - including a full-viewport-sized
+   lightbox on a very wide or very tall source image, not just whatever a
+   slide-container-sized box happened to be. */
+.ew-lightbox-detail-wrap { position: absolute; inset: 0; }
+.ew-lightbox-detail-wrap > img { position: absolute; object-fit: contain; }
+
+.ew-lightbox-caption {
+  font: italic 0.95rem/1.4 var(--font-body, Arial, sans-serif);
+  color: var(--emerson-grey);
+  text-align: center;
+  max-width: 100%;
+  max-height: 4.2em;
+  overflow: hidden;
+}
+
+.ew-lightbox-count {
+  font: 700 0.8rem/1 var(--font-body, Arial, sans-serif);
+  color: var(--emerson-grey);
+  letter-spacing: 0.02em;
+}
+
+.ew-lightbox-close {
+  width: 1.9rem; height: 1.9rem;
+  border: none; border-radius: 50%;
+  background: transparent;
+  color: var(--emerson-charcoal);
+  font-size: 1.3rem; line-height: 1;
+  cursor: pointer;
+  flex: none;
+}
+.ew-lightbox-close:hover { background: color-mix(in srgb, var(--emerson-charcoal) 10%, transparent); }
+
+/* clickable figures get an affordance on hover, applied by slides.js via
+   this class rather than a bare selector so decorative/non-figure images
+   are never accidentally made to look clickable */
+.ew-lightbox-trigger { cursor: zoom-in; }
+.ew-lightbox-trigger:hover { filter: brightness(1.03); }
+
+/* live, clickable label text over a lightbox detail asset (see slides.js
+   showDetail) -- same visual language as the diagram-cleanup module's
+   own callout-box overlay proof: transparent by default, a light blue
+   click-to-highlight state, real text rather than anything baked into
+   the image. */
+.ew-lightbox-callout {
+  position: absolute; margin: 0; padding: 1px 4px;
+  background: transparent; border: 1.5px dashed transparent; border-radius: 3px;
+  font: 700 11px/1 Arial, sans-serif; letter-spacing: 0.01em; color: #23262b;
+  white-space: nowrap; overflow: visible;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.ew-lightbox-callout:hover, .ew-lightbox-callout:focus-visible {
+  border-color: color-mix(in srgb, var(--emerson-blue) 55%, transparent); outline: none;
+}
+.ew-lightbox-callout.is-active {
+  background: color-mix(in srgb, var(--emerson-blue) 18%, #fff);
+  border-color: var(--emerson-blue);
+  box-shadow: 0 0 0 1px var(--emerson-blue);
 }

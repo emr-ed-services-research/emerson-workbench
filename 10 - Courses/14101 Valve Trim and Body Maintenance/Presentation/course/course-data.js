@@ -2,6 +2,7 @@ window.EW_COURSE = {
   "course": {
     "code": "14101",
     "title": "Valve Trim and Body Maintenance",
+    "summary": "A three-day course on the Fisher control-valve families — sliding stem, rotary, and positioners — with a hands-on workshop each day.",
     "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential",
     "domain": "maintenance",
     "tier": "introductory"
