@@ -243,6 +243,26 @@ reworked:
    treatment includes a mark, a callout, a comparison, or an illustration that
    carries part of the concept, that element is in scope for the slide
    whether or not the current draft has room for it.
+
+   **A third legitimate source, named explicitly (added 2026-09-10):**
+   established general instructional-design or subject-matter knowledge —
+   real techniques, their rationale, their common pitfalls, a worked example
+   grounded in the course's own practice vehicle — on the same footing as
+   "the deck" above, for content that has neither a deck nor a Source
+   Library figure behind it (origination's `provenance: original` case,
+   e.g. IfE's Show-Tell-Do, Ask-Pause-Direct, or any established method
+   named in Steve's own framework). Before this addition, an origination
+   module had exactly one named legitimate source — the Source Library —
+   which is the same shape of gap the Content-Depth investigation found in
+   Stage 1/2's slide-count heuristic: a rule fit for one mode (conversion,
+   which always has a deck or a technical source) silently narrowing to
+   something too strict for the other (origination, which often has
+   neither) because the second mode was never explicitly written in. This
+   does not license inventing a fact, a source, or an example — it licenses
+   explaining what a real, established technique is, why it works, and how
+   it applies, the way any competent instructional designer would, instead
+   of treating the vault's own stub-level source note as the ceiling of
+   what may be said about it.
 2. **Measure the slide against that bar, not against a volume target.** An
    element — a diagram, a callout, an illustration like a bench-set graph's
    travel-stop marks — **stays, or gets added,** because it is load-bearing

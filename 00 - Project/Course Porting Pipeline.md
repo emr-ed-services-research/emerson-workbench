@@ -139,6 +139,18 @@ first surfaced them.
    bench-set graph missing its travel-stop marks; callouts placed plausibly
    rather than verified). Part 3 of Stage 3 (below) is amended accordingly.
 
+   **Widened 2026-09-10** (Content-Depth follow-up, checking Stage 3 for the
+   same floor-vs-ceiling conflation found in Stage 1/2's slide-count
+   heuristic): a third legitimate source, on the same footing as "the
+   deck" above — established general instructional-design or
+   subject-matter knowledge, for origination content with neither a deck
+   nor a Source Library figure behind it (`provenance: original`). Before
+   this, an origination module's completeness bar named only the Source
+   Library, which is too strict for content like IfE's Show-Tell-Do or
+   Five Tenets — real, established, non-vault-exclusive material this
+   pipeline is expected to draw on, not invent. See
+   [[teaching-philosophy]] for the full statement.
+
 ## Where we are (updated 2026-08-31)
 
 - **14101 fully converted** — all 418 slides on the component-extraction model
