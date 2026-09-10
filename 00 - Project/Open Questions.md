@@ -4,7 +4,7 @@ type: reference
 tags:
   - project
   - decisions
-updated: 2026-09-09
+updated: 2026-09-10
 ---
 
 # Open Questions
@@ -206,6 +206,28 @@ module be piloted first?
 pilot surfaced are either closed or flagged with no fix proposed. A
 cross-course module (real 14101 slice content) is the remaining work.
 Franz has not yet reviewed the pilot or the real module.
+
+## Is the chapter/module distinction ever real, or always 1:1?
+
+**Question:** Does any chapter, in 14101 or anywhere planned for IfE,
+actually hold more than one module? If a chapter never holds more than
+one module anywhere in the vault, the chapter/module tier distinction in
+`course.js`'s schema may be worth collapsing engine-wide — one less layer
+to model and navigate through.
+
+- Raised 2026-09-10 during IfE Day 1's structural fix: Day 1's
+  "Foundations" chapter was first built with 8 modules (wrong — collapsed
+  to 1, see `Curriculum — IfE.md`), which is what surfaced the question
+  of whether the two-tier chapter → module nesting is pulling its weight
+  anywhere, or whether it's structurally always going to be 1:1 in
+  practice (14101's ch1 was itself consolidated to one module for the
+  same "no modules of only one or two slides" reason).
+- **Explicitly not investigated or acted on** — flagged only, per Franz's
+  own instruction, as a known open question for a future session. Would
+  need a real look at whether 14101's shipped chapters (ch2, ch3, etc.)
+  ever hold 2+ modules before concluding anything either way.
+
+**Status:** open — flagged, not investigated.
 
 ## Add new questions below
 

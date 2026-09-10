@@ -814,9 +814,14 @@
 }
 .tmpl-table thead th,
 .tmpl-table tr:first-child th {
-  background: var(--emerson-blue);
-  color: var(--emerson-white);
+  /* IfE-only, Geist color-as-meaning rule (2026-09-10, Franz-approved):
+     a header row is structural, not a meaningful highlight. Was solid
+     Emerson-blue fill + white text on every table. Diverges from
+     14101/the shared engine on purpose — see tokens.css note above. */
+  background: color-mix(in srgb, var(--emerson-charcoal) 6%, #fff);
+  color: var(--emerson-charcoal);
   font-weight: 700;
+  border-bottom: 2px solid var(--emerson-charcoal);
 }
 .tmpl-table td.num, .tmpl-table th.num {
   text-align: right;
@@ -1435,9 +1440,15 @@
   display: flex;
   align-items: center;
   gap: 1cqw;
-  background: color-mix(in srgb, var(--emerson-blue) 5%, #fff);
-  border: 1px solid var(--emerson-grey);
-  border-radius: 0.5cqw;
+  /* IfE-only, Geist color-as-meaning rule (2026-09-10): 8 day-cards are
+     equals, none more important than another, so none gets a colored
+     fill (was a 5% blue tint on every one). The numbered badge stays
+     blue: a consistent role marker ("this is a day"), not differentiation
+     among unequal things. Diverges from 14101 on purpose. */
+  background: var(--emerson-white);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-base);
+  box-shadow: var(--shadow-base);
   padding: 1cqh 1.2cqw;
 }
 .slide--tmpl-roadmap .tmpl-day__n {

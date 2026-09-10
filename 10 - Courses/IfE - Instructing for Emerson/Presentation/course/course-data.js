@@ -9,7 +9,7 @@ window.EW_COURSE = {
   },
   "slideBase": "../build/slides/",
   "slidePrefix": "ife-",
-  "_note": "First real content module, authored 2026-09-09 after the origination pilot (_Origination Test — ife-five-tenets/) proved provenance: original and the ife domain-verb menu. Module ID (d1-m1) and slide prefix (ife-) are working identifiers, not a finalised scheme — IfE's real module-ID convention is still open, the same way 14101's was before its own Phase 3. Competency area is ife.orientation.* — one of four ife areas enumerated 2026-09-09 in curriculum-development.md; see Curriculum — IfE.md for the full registry. Top-level shape (course as an object, slideBase) corrected 2026-09-09 to match what course.js actually reads — the original draft used a flatter shape borrowed from the origination-pilot format, which the real Workshop shell does not accept. moduleZero (title slide, roadmap, facility & safety, sign-in) added 2026-09-09, reworked from 14101's own front matter per Franz's directive — see PILOT-NOTES.md/session log, not a copy of 14101's HTML. Real content pages renumbered 1-4 -> 5-7 to make room.",
+  "_note": "Day 1 built out in full 2026-09-10, pulled from the IfE Vault's Day 1 - Foundations.md (status: stub — a draft flow, not a finished script; built proportionate to that, not padded). STRUCTURAL FIX same day: Day 1's 8 sub-topics (Welcome, Five Tenets, Show-Tell-Do, Reading a Training Solution, Prime Question, Objectives, Myths, Meet Your Slice) were originally built as 8 separate modules under the Foundations chapter — wrong; the vault states one single unified 'Module objective' for all of Day 1, and 14101's own ch1 precedent already established 'no modules of only one or two slides'. Collapsed into ONE module (d1-foundations, display title 'Contents' — deliberately not 'Foundations' again, to read as distinct from the chapter card of the same name) holding all 9 real pages + the one check as a single keyConcepts sequence. Slide content itself untouched. The 4 real competencies (Five Tenets, Show-Tell-Do, Reading-a-Training-Solution, Objectives) all place against this one moduleId now, matching the already-shipped 14101 ch3-m1 precedent (one module, six placement edges) — this is not a new pattern. Module ID (d1-foundations) and slide prefix (ife-) are working identifiers, not a finalised scheme. Competency areas are the four enumerated 2026-09-09 in curriculum-development.md; see Curriculum — IfE.md for the full registry. moduleZero (title slide, roadmap, facility & safety, sign-in) is a separate top-level construct, unaffected by this fix — it was already 'one container, many slides'. Open question, not acted on: does any chapter anywhere (14101 or planned IfE) actually hold more than one module? If never, the chapter/module distinction may be worth collapsing engine-wide later — flagged in Open Questions.md, not decided here. CONTENT-DEPTH FIX (2026-09-10): Franz found this module reads as ~10-15min of content against a scheduled half-day. Root cause confirmed by reading the actual pipeline code: origination Stage 1 (buildStage1OriginatePrompt, PipelineConsole/src/main/runners/prompts.js) had NO concept of clock time, only a slide-count heuristic ('typically 4-6 slides'), completely decoupled from the scheduled block length. Fixed: a minutesTarget field (see curriculum-development.md 'Module additions') now feeds Stage 1 a real duration to budget slot count/depth against, plus a softer Stage-2 nudge toward worked examples/discussion prompts over bare statements. minutesTarget: 180 here is PROVISIONAL/ROUGH — sourced from the vault's own 'Half a day of instruction, then a working afternoon' (Day 1 - Foundations.md), a standard half-day training block net of one break, NOT Steve's sign-off; will change once the real 8-day conversion timing is finalized. Applying the new mechanism surfaced a real tension worth flagging, not silently resolving: the SAME vault file states this exact block is meant to be 'a lens, not a lecture series' with Tenets 3-5 and Show-Tell-Do's real development explicitly deferred to Days 2-6 — so most of this module's thinness may be intentional design, not a pipeline gap, and the other ~165 minutes of the half-day may legitimately be live-facilitated time (discussion, the 'walk the 1400 deck live' exercise for Reading-a-Training-Solution) never meant to be represented as slide/context-pane volume at all (teaching-philosophy.md: 'the class is the instructor... not the slide deck'). One concrete, well-sourced enrichment applied as a demonstration: ife-006's Five Tenets table gained a Rubric-section column, pulled from real unused source data in Five Tenets of IfE.md, not invented. Deliberately did NOT add new practice/application slots or expand the check to a multi-item set (that would need a real template-gallery change to gallery.css's single-question .slide--role-check layout, not a content edit) pending Franz's read on the lens-vs-lecture tension above.",
   "moduleZero": {
     "id": "m0",
     "title": "Before We Start",
@@ -34,19 +34,29 @@ window.EW_COURSE = {
           "domain": "ife",
           "modules": [
             {
-              "id": "d1-m1",
-              "title": "The Five Tenets of IfE",
+              "id": "d1-foundations",
+              "title": "Contents",
               "status": "ready",
               "visual": true,
               "domain": "ife",
               "levelTarget": "understand",
               "stakes": "An instructor who doesn't know which tenets they're actually responsible for spends prep time on the wrong things — over-preparing content framing that already comes with the slice, under-preparing the delivery skill the Instructor Observation Rubric actually scores.",
-              "objective": "Restate the Five Tenets of IfE and distinguish which the instructor receives with the assigned slice (context, objectives) from which the instructor performs and is scored on (preparation, delivery, self-development).",
+              "objective": "Restate the objectives and standard for your assigned slice, explain the Five Tenets, and tell need-to-know from nice-to-know content.",
+              "minutesTarget": 180,
               "keyConcepts": [
+                {
+                  "t": "Most people teaching an Emerson course were asked, not trained, to teach it — the accidental-trainer problem. IfE exists to close that gap. 'Good' isn't stage presence; it's the Instructor Observation Rubric, the same standard every capstone is scored against.",
+                  "pages": [
+                    5
+                  ],
+                  "level": "understand",
+                  "role": "prime",
+                  "sourceNote": "provenance: original — IfE Vault, 03 Course Design/Day 1 - Foundations.md, 'Welcome / why IfE' block (source: Outline Digest Module 1, 'why training, why it must change'). Framing only — no formal competency, same treatment as Module 0's own content."
+                },
                 {
                   "t": "The Five Tenets are IfE's organizing framework: Context to Content, Training Objectives, Student Preparation, Course Delivery, Acuminating Instructor Skills — one line each on what it means for a delivering instructor and where it is built in the course.",
                   "pages": [
-                    5
+                    6
                   ],
                   "level": "remember",
                   "role": "nomenclature",
@@ -55,7 +65,7 @@ window.EW_COURSE = {
                 {
                   "t": "Tenets 1-2 are inputs the instructor receives — context and objectives come with the slice. Tenets 3-5 are what the instructor does. IfE spends its time on 3-5 because that is what the Instructor Observation Rubric measures.",
                   "pages": [
-                    6
+                    7
                   ],
                   "level": "understand",
                   "role": "contrast",
@@ -64,19 +74,131 @@ window.EW_COURSE = {
                 {
                   "t": "Formative check: given a described instructor behavior (setting up the training area before students arrive), the learner identifies which of the Five Tenets it demonstrates.",
                   "pages": [
-                    7
+                    8
                   ],
                   "level": "evaluate",
                   "role": "check",
                   "sourceNote": "no figure — situation stem; provenance: original, same as concepts 1-2"
+                },
+                {
+                  "t": "Show-Tell-Do is the core delivery method: Show (demonstrate the whole task at normal pace, then slow with narration), Tell (explain the key points — the why, the standard, the failure points), Do (the learner performs; immediate specific feedback; repeat to proficiency). One ELO is roughly one Show-Tell-Do cycle, and it is what happens inside TPCD's Body.",
+                  "pages": [
+                    9
+                  ],
+                  "level": "understand",
+                  "role": "mechanism",
+                  "sourceNote": "provenance: original — IfE Vault, 02 Methodology/Show-Tell-Do.md. Introduced here as a lens; Days 2-3 (Course Delivery, TPCD) develop it in real reps."
+                },
+                {
+                  "t": "A training solution already gives you: the TLO/ELOs and performance objectives (written 'Define…', 'Describe…', 'Perform…'), a Check-Your-Knowledge question bank, a built hands-on exercise or workshop, and a modeled safety brief. Walked live against the real 1400 deck (its own safety brief is slides 9-10) — this is what you're looking for, not memorizing.",
+                  "pages": [
+                    10
+                  ],
+                  "level": "understand",
+                  "role": "nomenclature",
+                  "sourceNote": "provenance: original — IfE Vault, 05 Practice Vehicle - 1400/1400 Course Overview.md, 'Why it works as the vehicle' + 'Use in IfE: Day 1'."
+                },
+                {
+                  "t": "“What does success look like?” is the one piece of Context-to-Content that survives — everything else (UTL→EWAL, the T+30 filters, task categories) is cut because participants never do their own analysis. Ask it before planning anything.",
+                  "pages": [
+                    11
+                  ],
+                  "level": "remember",
+                  "role": "prime",
+                  "sourceNote": "provenance: original — IfE Vault, Decisions Log D8. Framing only — no formal competency."
+                },
+                {
+                  "t": "A training objective has three elements: Action (what the learner will do), Conditions (given what), Standard (to what standard). Example from the IfE course TLO itself: Action — deliver a one-hour block; Conditions — given a pre-carved slice, the real equipment, standard prep time; Standard — passes the Instructor Observation Rubric.",
+                  "pages": [
+                    12
+                  ],
+                  "level": "understand",
+                  "role": "nomenclature",
+                  "sourceNote": "provenance: original — IfE Vault, 02 Methodology/Instructional Design Positions.md (action/condition/standard, mainstream ISD alignment) + 03 Course Design/Terminal and Enabling Objectives.md (the worked course-TLO example)."
+                },
+                {
+                  "t": "Three myths IfE pushes against: learning styles (visual/auditory/kinesthetic matching has no credible supporting evidence); the learning pyramid (the famous 'people remember 90% of...' percentages have no real empirical source); PowerPoint is the training (1400 is slide-heavy on purpose — teach the part, not the slide).",
+                  "pages": [
+                    13
+                  ],
+                  "level": "understand",
+                  "role": "contrast",
+                  "sourceNote": "provenance: original — IfE Vault, 02 Methodology/Instructional Design Positions.md, 'Pushes against common training-world habits'. Framing only — no formal competency."
+                },
+                {
+                  "t": "The afternoon workshop: (1) slice assignment — you get your slice and prep packet; (2) deep-dive — read the 1400 slides and instruction manual for your slice, walk the real equipment, identify every ELO; (3) knowledge-gap list — write down what you don't yet know well enough to teach; (4) start the build — first pass sequencing your slice into a TPCD; (5) homework — finish reading, refine your gap list, bring questions to Day 2.",
+                  "pages": [
+                    14
+                  ],
+                  "level": "understand",
+                  "role": "procedure",
+                  "sourceNote": "provenance: original — IfE Vault, 03 Course Design/Day 1 - Foundations.md, 'Draft flow — Afternoon'. Hands-on/live activity, not lecture content — framing only, no formal competency, same treatment as Module 0."
+                }
+              ],
+              "activities": [
+                {
+                  "id": "d1-tenets-sort",
+                  "type": "discussion",
+                  "afterConcept": 2,
+                  "minutes": 18,
+                  "title": "Tenet Sort",
+                  "description": "In pairs, sort five short instructor-behavior scenario cards (one per tenet) by which tenet each demonstrates; 2-3 minutes of individual/pair sorting, then a facilitated class debrief on the ambiguous ones before the individual formative check.",
+                  "materials": [
+                    "Five scenario cards, one per tenet"
+                  ],
+                  "sourceNote": "Cards are the Five Tenets table's own 'Instructor's move' column (ife-006) restated as behavior scenarios, plus the already-established check-item scenario for Student Preparation (ife-008) — no new facts, a live group application of what's already sourced. General ID grounding: concept-sorting/classification exercises build schema before individual retrieval, a standard pre-assessment technique."
+                },
+                {
+                  "id": "d1-stad-worked-657",
+                  "type": "application-exercise",
+                  "afterConcept": 4,
+                  "minutes": 30,
+                  "title": "Show-Tell-Do Worked Walkthrough: Bench-Setting a Fisher 657",
+                  "description": "Cadre demonstrates the real 8-step Spring Verification bench-set procedure (Fisher 657 IM) on a staged 657 bench setup at normal pace, then again slowly narrated (SHOW). Cadre explains why bench set matters (it defines the diaphragm-pressure range that strokes the actuator through rated travel), the standard (measured travel must equal the nameplate rated-travel value), and the real common failure: bench set is defined friction-free, so adjusting it after the actuator is connected to the valve and packing is tightened requires correcting for friction, or on-valve travel will read wrong (TELL). Participants rotate in small groups across the staged 657/667 stations (already confirmed staged per Day 1 Materials — this is one of the six real slice topics) to identify first-stem-movement and measure the mark-to-stem distance themselves, with cadre feedback (DO).",
+                  "materials": [
+                    "Staged Fisher 657/667 bench-set setup(s)",
+                    "Sample nameplate",
+                    "1400 deck slides 92, 96-99 (Bench Set Definition through Measure Actuator Travel High Bench Set) projected as the visual anchor"
+                  ],
+                  "sourceNote": "Procedure: Fisher 657 Instruction Manual (D100306X012), 'Discussion of Bench Set' + the 8-step Spring Verification procedure + 'Friction Discussion', all catalogued in 20 - Source Library/Component Index — bench-set-657.md (bs657-cmp-bench-set-adjustment, bs657-cmp-friction-discussion). Slide numbers verified directly against 10 - Courses/14101.../Presentation/build/_generator/tmp/dryrun/slides/1400-092/096-100.html. General ID grounding: Show-Tell-Do's own documented common failures (IfE Vault, 02 Methodology/Show-Tell-Do.md) — narrating during Show instead of just demonstrating; Tell that explains everything instead of separating need-to-know from nice-to-know; Do that moves on before proficiency."
+                },
+                {
+                  "id": "d1-read-ch3-live",
+                  "type": "case-walkthrough",
+                  "afterConcept": 5,
+                  "minutes": 20,
+                  "title": "Live Walkthrough: 1400 Chapter 3",
+                  "description": "Cadre projects the real 1400 deck live and walks Chapter 3 (Fisher Sliding-Stem Spring & Diaphragm Actuator Maintenance) against the checklist just taught: the chapter-opening performance objectives slide, the Check-Your-Knowledge items scattered through the chapter, the bench-set hands-on procedure, and the safety brief pattern. Participants follow along on the ife-010 checklist as their own worksheet.",
+                  "materials": [
+                    "1400 deck, Chapter 3 (slides 87-108) projected",
+                    "ife-010 checklist as a follow-along worksheet"
+                  ],
+                  "sourceNote": "Real chapter content verified directly: slide 87 is the chapter-opening objectives slide ('After completing this module the student will be able to: ...7 objectives...'), slide 100 is 'Check Your Knowledge 2: Bench Set'. This formalizes what the vault's own Day 1 - Foundations.md already specifies ('Walk the 1400 deck live... this is what you'll be handed') as a scheduled activity rather than an unstated assumption."
+                },
+                {
+                  "id": "d1-objectives-practice",
+                  "type": "application-exercise",
+                  "afterConcept": 7,
+                  "minutes": 15,
+                  "title": "Objectives Practice: Real 1400 Objectives",
+                  "description": "Using the real 7 performance objectives from 1400 Chapter 3's own opening slide (already seen in the walkthrough above), participants pick 2 and identify the Action each names — then, in pairs, propose what Conditions and Standard they'd add to teach it (the 1400 objectives are written as bare Action statements, unlike the course's own TLO on ife-012, which already states all three explicitly). Class debriefs 2-3 pairs' answers.",
+                  "materials": [
+                    "1400 Chapter 3's 7 objectives (slide 87), printed or projected"
+                  ],
+                  "sourceNote": "Real objective text, same source as the walkthrough activity above (1400 slide 87) — e.g. objective 5, 'Define Bench Set and describe the procedure for setting bench set', ties directly to the Show-Tell-Do worked example already run. No invented example; the analytical task (propose Conditions/Standard) is the practice, not a claim about what the 1400 objective 'really' means."
                 }
               ],
               "pages": [
                 5,
-                6
-              ],
-              "check": [
-                7
+                6,
+                7,
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14
               ]
             }
           ]

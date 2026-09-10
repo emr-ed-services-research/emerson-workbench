@@ -202,7 +202,67 @@ between *re-taught-with-variation* (`develops`) and *merely-exercised*
 ```yaml
 assumes: [14101/easy-e-valve-body]     # prerequisite modules — this one does not re-teach their competencies
 servesRoles: [maint-tech, inst-tech, sizing-eng, operator]
+minutesTarget: 180   # real scheduled classroom minutes — supplied, never estimated
 ```
+
+`minutesTarget` (added 2026-09-10) — the missing input that let origination-mode
+Stage 1 author IfE Day 1's "Contents" module to ~10-15 minutes of content
+against a half-day block. Stage 1's only volume control before this was a
+topic-coverage heuristic ("how many concepts does the objective need"),
+completely decoupled from how long the module is actually scheduled for; it
+had nothing to budget against. This field is that budget. It must come from
+the course's own design docs (a vault day/module time breakdown, a schedule
+Franz/Steve supply) — never estimated by the pipeline itself, the same rule
+`objective`/`levelTarget`/`stakes` already follow. May also be set per
+chapter or per day (`days[].minutesTarget`) for a cold-start arc cut that has
+no pre-scoped modules yet; a module-level value always wins when both are
+present. Omit entirely when no real number exists yet — Stage 1 falls back
+to the old slide-count heuristic rather than guessing a number itself. See
+`buildStage1OriginatePrompt`/`buildStage1OriginateArcPrompt`/
+`buildStage2OriginatePrompt` in `PipelineConsole/src/main/runners/prompts.js`
+for exactly how it's used.
+
+### Module additions — `activities[]`
+
+```yaml
+activities:
+  - id: "d1-tenets-sort"
+    type: discussion   # discussion | small-group | application-exercise | case-walkthrough | qa
+    afterConcept: 2    # 0-based index into keyConcepts this activity runs after
+    minutes: 18
+    title: "Tenet Sort"
+    description: >
+      In pairs, sort five short instructor-behavior scenario cards by which
+      tenet each demonstrates; class debriefs the ambiguous ones.
+    materials: ["Scenario cards (one per tenet)"]
+    sourceNote: "Cards derived from the Five Tenets table's own 'Instructor's move' column — no new facts, a live application of what's already sourced."
+```
+
+Added 2026-09-10, same directive as `minutesTarget` (Content-Depth fix),
+explicit follow-up: a real half-day of instructor-led delivery is not
+made of slide/context-pane volume alone — most of a live session's time is
+discussion, demonstration, and guided practice that a slide deck was never
+meant to carry (`teaching-philosophy.md`: "the class is the instructor and
+the hardware... not the slide deck"). Before this field existed, that time
+had no home in the schema at all — a module's schedule was implicitly "the
+instructor will talk," which is not a design, it's an unexamined assumption.
+
+`activities[]` is a **sibling of `keyConcepts`**, not a slide — it does NOT
+get its own `ife-NNN.html` file or page number; `afterConcept` places it in
+the taught sequence for scheduling purposes (the Day 1 schedule table in
+`Curriculum — <course>.md`), not in the live shell's page sequence. Whether
+and how an activity should ever render as its own interstitial in the
+course shell (`course.js`) is a separate, larger question, **not decided
+here** — this field is data for planning/facilitator reference today, the
+same way a module's `stakes` field is prose that never becomes a slide.
+
+Every activity must be **additive and sourced**, same standard as slide
+content: a real discussion/application/case-walkthrough design, tied to
+real source material where it makes a claim (the course's own practice
+vehicle, a Component Index entry, established general instructional-design
+technique) — never invented busywork, and never a fabricated example, fact,
+or quote. `sourceNote` names what grounds it, the same role `sourceNote`
+plays on a `keyConcepts` entry.
 
 ### Course additions
 

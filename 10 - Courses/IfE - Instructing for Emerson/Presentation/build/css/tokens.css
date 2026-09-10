@@ -20,4 +20,17 @@
   --emerson-purple:       #6E298D;   /* accent6 */
   --emerson-link:         #00AA7E;   /* hlink   */
   --emerson-link-visited: #D31245;   /* folHlink */
+
+  /* IfE-only, adopted 2026-09-10 (Franz-approved after a real before/after
+     preview — not yet applied to 40 - Engine/ or 14101; see
+     "IfE — Course Home.md" Design direction). Geist structure + Emerson
+     blue as the single accent. Intentional divergence from the shared
+     engine copy — build-course.ps1's own drift-guard will flag this
+     course's css as DIVERGED on a future run and skip overwriting it,
+     which is correct; do not -Force it back to parity with 14101. */
+  --radius-base: 0.6cqw;   /* ~6px at slide width — everyday surfaces */
+  --radius-lift: 1.15cqw;  /* ~12px — a raised/emphasized element */
+  --shadow-base: 0 1px 2px rgba(0,0,0,.04), 0 1px 1px rgba(0,0,0,.03);
+  --shadow-lift: 0 4px 14px rgba(0,0,0,.08), 0 1px 3px rgba(0,0,0,.05);
+  --hairline: color-mix(in srgb, var(--emerson-charcoal) 14%, #fff);
 }
