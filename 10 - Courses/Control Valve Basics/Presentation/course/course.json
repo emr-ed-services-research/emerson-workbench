@@ -9,7 +9,7 @@
   },
   "slideBase": "../build/slides/",
   "slidePrefix": "cvb-",
-  "_note": "Stage 1 ORIGINATION at ARC SCALE (buildStage1OriginateArcPrompt), run by hand 2026-09-11 as the Phase 1 review-checkpoint proving-ground — see PipelineConsole 'Real reviewable outputs at Stage 1 and Stage 2' discussion. Scope is bounded to Steve's four requested Control Valve Handbook chapters (1, 3, 4, 2, in that teaching order — a real reordering of the source book's own 1-2-3-4 sequence, since Steve wants valve/actuator types and accessories taught before the performance chapter that assumes familiarity with both), not the whole 15-chapter book. Course-chapter ids below (cvb-ch1..cvb-ch4) are this course's own teaching order and do NOT match CVH's chapter numbers 1:1 — cvb-ch2 = CVH ch3, cvb-ch3 = CVH ch4, cvb-ch4 = CVH ch2; see each chapter's own note for its real source chapter. No real schedule (day count, minutesTarget) exists yet for this course — Steve specified the four chapters and their order, nothing about duration — so this arc is built as a single placeholder Day 1 holding all four chapters, using the generic slide-count/module budget (the schema's own honest fallback for 'no real number yet'; see curriculum-development.md 'minutesTarget'). This is intentionally NOT a final schedule; it should be split into real teaching sessions once Steve supplies one. Domain 'product-literacy' is a new addition to instructional-design.js's DOMAIN_VERBS (recognition-level identify/explain/select vocabulary) — none of the three existing technical domains (maintenance, instrumentation, selection-sizing) fit an overview/recognition course with no hands-on procedure, wiring, or sizing-calculation content; same kind of gap the 'ife' domain filled for the Five Tenets pilot. Every keyConcepts slot cites real Control Valve Handbook figures already catalogued in the four Component Index files built as this run's Phase 0 precondition (Component Index — Control Valve Handbook ch1/ch2/ch3/ch4.md) — no invented facts, no figure not already verified against the source PDF. Several competency ids are deliberately reused across chapters with progression 'develops' where the SAME skill is taught again with new depth (e.g. cvb.intro.body-style-variants, cvb.intro.bonnet-packing-arrangement, cvb.intro.actuator-types, cvb.characteristic.inherent-curves, cvb.performance.deadband) — never a fresh id for the same skill twice, per the arc-scale prompt's own rule. Deliberately left out of this Basics cut, named rather than silently dropped: the deep VOC/LDAR measurement-frequency and ISO 15848-1/FCI 91-1 leakage-class regulatory tables (ch2's packing chapter catalogues 5 such figures; only 2 are cited here as an awareness-level touch), the redundant-SOV and three-way-manual-reset/manifold hardware variants in the accessories chapter (cvh-cmp-4.21/4.22/4.23), and the SIS partial-stroke-testing DVC figure (cvh-cmp-4.9) — all judged too deep/niche for an intro course, all real catalogued components a future advanced course could pull from directly. keyConcepts are SLOTS ONLY at this stage (competencyId/progression/role/level/pages) — no 't' prose, no 'sources', no 'template'; those are Stage 2's job, not yet run. Stage 1 Outline doc: 'Stage 1 Outline — Control Valve Basics.md', generated from this file.",
+  "_note": "Stage 1 (arc-scale origination, run by hand 2026-09-11) approved by Franz; Stage 2 (author the context layer) run by hand 2026-09-11 immediately after, same proving-ground course for the review-checkpoint mechanism. Scope: Steve's four requested Control Valve Handbook chapters (1, 3, 4, 2, in that teaching order), not the whole 15-chapter book. Course-chapter ids (cvb-ch1..cvb-ch4) are this course's own teaching order, not CVH's chapter numbers — cvb-ch2 = CVH ch3, cvb-ch3 = CVH ch4, cvb-ch4 = CVH ch2; see each chapter's own '_source' note. No real schedule exists yet — everything sits under one placeholder Day 1. Domain 'product-literacy' is a new addition to instructional-design.js's DOMAIN_VERBS (recognition-level identify/explain/select vocabulary). Every keyConcepts slot's 't'/'sources' trace to a real figure already catalogued in the four Component Index files (Phase 0) — no invented facts. Three concepts originally cut with role 'prime' (cvb.intro.feedback-loop, cvb.rotary.overview, cvb.performance.process-variability) were reassigned to 'mechanism'/'nomenclature' during Stage 2 authoring: the Gallery's prime shape is a text-only hook line with NO figure ('nothing else on the slide'), but each of these three concepts needs to show a real source figure (a block diagram, an overview photo, a distribution graph) as its actual content — a genuine Stage-1 role misjudgment, caught and fixed here rather than forced into a template it doesn't fit. Their modules now open directly on real content with no separate prime slide, which is schema-legal (moduleStage2Completeness's 'no prime concept' check is advisory, not blocking) and consistent with the framework's own stated design: module 'stakes' is already the opening hook, a literal prime slide is optional. Several competency ids are deliberately reused across chapters with progression 'develops' (e.g. cvb.intro.body-style-variants, cvb.intro.bonnet-packing-arrangement, cvb.intro.actuator-types, cvb.characteristic.inherent-curves, cvb.performance.deadband) — never a fresh id for the same skill twice. Deliberately left out of this Basics cut, named rather than silently dropped: the deep VOC/LDAR and ISO 15848-1/FCI 91-1 emissions-compliance tables (only 2 of 5 catalogued figures cited, at awareness level), the redundant-SOV/three-way-manual-reset/SOV-manifold hardware variants, and the SIS partial-stroke-testing DVC figure. `template` values are Template Gallery classes (gallery.css `.slide--role-*`), chosen by role and content shape per ROLE_GALLERY (PipelineConsole prompts.js) — Stage 3 (slide composition) has NOT run; these are forward-looking hints, not yet-built slides. Stage 1 Outline docs: 'Stage 1 Outline — Control Valve Basics — <chapterId>.md' (one per chapter). Stage 2 Attachments doc: 'Stage 2 Attachments — Control Valve Basics — <chapterId>.md' (one per chapter, generated from this file).",
   "days": [
     {
       "id": "d1",
@@ -26,19 +26,102 @@
             {
               "id": "cvb-ch1-m1",
               "title": "Sliding-Stem Valve Anatomy",
-              "status": "outline",
+              "status": "ready",
               "domain": "product-literacy",
               "levelTarget": "understand",
               "stakes": "A technician who can't name a valve's parts can't read a parts list, order the right seal kit, or follow a maintenance procedure written against that nomenclature.",
               "objective": "Identify a sliding-stem control valve's major parts from a cutaway or photo, and name its body-style, bonnet, and actuator variations.",
               "buildsOn": [],
               "keyConcepts": [
-                { "competencyId": "cvb.intro.feedback-loop", "progression": "introduces", "role": "prime", "level": "understand", "pages": [1] },
-                { "competencyId": "cvb.intro.sliding-stem-overview", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [2] },
-                { "competencyId": "cvb.intro.sliding-stem-parts", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [3] },
-                { "competencyId": "cvb.intro.body-style-variants", "progression": "introduces", "role": "contrast", "level": "understand", "pages": [4] },
-                { "competencyId": "cvb.intro.bonnet-packing-arrangement", "progression": "introduces", "role": "contrast", "level": "understand", "pages": [5] },
-                { "competencyId": "cvb.intro.actuator-types", "progression": "introduces", "role": "contrast", "level": "understand", "pages": [6] }
+                {
+                  "competencyId": "cvb.intro.feedback-loop",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    1
+                  ],
+                  "t": "A control valve is the final control element in a feedback loop — a process condition is measured, compared to a setpoint, and the valve's stem position is adjusted to correct it.",
+                  "sources": [
+                    "cvh-cmp-feedback-control-loop"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.intro.sliding-stem-overview",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    2
+                  ],
+                  "t": "A sliding-stem valve moves its plug straight up and down through a globe- or angle-style body — the most common control valve construction.",
+                  "sources": [
+                    "cvh-cmp-sliding-stem-valve-photo"
+                  ],
+                  "template": "slide--role-nomenclature"
+                },
+                {
+                  "competencyId": "cvb.intro.sliding-stem-parts",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    3
+                  ],
+                  "t": "From actuator to body: stem, packing flange, bonnet, piston ring, plug, cage, and seat ring stack in that order — the assembly sequence every sliding-stem valve follows.",
+                  "sources": [
+                    "cvh-cmp-sliding-stem-exploded"
+                  ],
+                  "template": "slide--role-nomenclature"
+                },
+                {
+                  "competencyId": "cvb.intro.body-style-variants",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    4
+                  ],
+                  "t": "An angle body turns the flow path 90° for erosive or high-pressure-drop service; a three-way body combines or diverts flow through a single valve instead of the straight-through path a standard globe body uses.",
+                  "sources": [
+                    "cvh-cmp-angle-valve-photo",
+                    "cvh-cmp-three-way-globe-valve"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.intro.bonnet-packing-arrangement",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    5
+                  ],
+                  "t": "A conventional bonnet packs the stem with PTFE or graphite rings in the packing box; a bellows-seal bonnet replaces packing entirely with a welded metal bellows for zero-leakage service on hazardous or toxic process fluids.",
+                  "sources": [
+                    "cvh-cmp-bonnet-assembly",
+                    "cvh-cmp-bellows-seal-bonnet",
+                    "cvh-cmp-stem-packing-types"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.intro.actuator-types",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    6
+                  ],
+                  "t": "A direct-acting actuator pushes the stem down with loading pressure and returns it with the spring; a reverse-acting actuator does the opposite. A piston actuator trades the spring for a second pressure connection, for higher thrust and faster stroking.",
+                  "sources": [
+                    "cvh-cmp-direct-acting-actuator",
+                    "cvh-cmp-reverse-acting-actuator",
+                    "cvh-cmp-piston-actuator"
+                  ],
+                  "template": "slide--role-contrast"
+                }
               ],
               "activities": [
                 {
@@ -48,29 +131,121 @@
                   "minutes": 15,
                   "title": "Parts Walk",
                   "description": "In small groups at a real bench-mounted sliding-stem valve/actuator assembly (or a cutaway training aid), name each labelled part — body, bonnet, packing, actuator casing, spring, stem — checking against the exploded and cutaway figures just taught.",
-                  "materials": ["A real sliding-stem valve/actuator on the bench, or a cutaway training aid", "Figures 1.3, 1.6, 1.9 printed as a job aid"],
+                  "materials": [
+                    "A real sliding-stem valve/actuator on the bench, or a cutaway training aid",
+                    "Figures 1.3, 1.6, 1.9 printed as a job aid"
+                  ],
                   "sourceNote": "Grounded in the exploded/cutaway figures just taught (cvh-cmp-sliding-stem-exploded, cvh-cmp-bonnet-assembly, cvh-cmp-direct-acting-actuator) — a live application of what was just shown, not an invented scenario."
                 }
               ],
-              "pages": [1, 2, 3, 4, 5, 6],
-              "check": [7]
+              "pages": [
+                1,
+                2,
+                3,
+                4,
+                5,
+                6
+              ],
+              "check": [
+                7
+              ]
             },
             {
               "id": "cvb-ch1-m2",
               "title": "Rotary Valves & Flow Characteristics",
-              "status": "outline",
+              "status": "ready",
               "domain": "product-literacy",
               "levelTarget": "analyze",
               "stakes": "Specifying the wrong flow characteristic for a control loop causes a valve that's twitchy near shutoff or sluggish near full-open — a loop-tuning problem that traces back to a valve-selection decision, not the controller.",
               "objective": "Identify a rotary control valve's closure-member types and actuator, and explain how closure-member shape and cage design set a valve's inherent flow characteristic.",
               "buildsOn": [],
               "keyConcepts": [
-                { "competencyId": "cvb.rotary.overview", "progression": "introduces", "role": "prime", "level": "understand", "pages": [8] },
-                { "competencyId": "cvb.rotary.closure-members", "progression": "introduces", "role": "contrast", "level": "understand", "pages": [9] },
-                { "competencyId": "cvb.rotary.actuator-mechanism", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [10] },
-                { "competencyId": "cvb.characteristic.cage-shape", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [11] },
-                { "competencyId": "cvb.characteristic.inherent-curves", "progression": "introduces", "role": "application", "level": "analyze", "pages": [12] },
-                { "competencyId": "cvb.performance.deadband", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [13] }
+                {
+                  "competencyId": "cvb.rotary.overview",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "understand",
+                  "pages": [
+                    8
+                  ],
+                  "t": "A rotary control valve turns a ball, disk, or plug across the flow path instead of sliding a stem through it — the same final-control-element job, a different motion.",
+                  "sources": [
+                    "cvh-cmp-rotary-valve-photo"
+                  ],
+                  "template": "slide--role-nomenclature"
+                },
+                {
+                  "competencyId": "cvb.rotary.closure-members",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    9
+                  ],
+                  "t": "A segmented ball, a V-notch ball, and an eccentric disk are the three standard rotary closure members — the V-notch's contoured cut gives it the widest rangeability of the three.",
+                  "sources": [
+                    "cvh-cmp-segmented-ball",
+                    "cvh-cmp-v-notch-ball",
+                    "cvh-cmp-eccentric-disk-valve"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.rotary.actuator-mechanism",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    10
+                  ],
+                  "t": "A rotary actuator's lever and shaft convert the same linear stem motion a sliding-stem actuator produces into the disk or ball rotation the closure member actually needs.",
+                  "sources": [
+                    "cvh-cmp-rotary-actuator-cutaway"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.characteristic.cage-shape",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    11
+                  ],
+                  "t": "A cage's window shape — linear, equal-percentage, or quick-opening — sets how flow changes as the valve strokes, independent of the body style around it.",
+                  "sources": [
+                    "cvh-cmp-cage-types"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.characteristic.inherent-curves",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    12
+                  ],
+                  "t": "Quick-opening gives maximum flow change near the closed position, linear gives equal flow change per unit of travel, and equal-percentage gives equal PERCENTAGE change per unit of travel — read the curve to tell which characteristic a valve has.",
+                  "sources": [
+                    "cvh-cmp-inherent-characteristics-graph"
+                  ],
+                  "template": "slide--role-application"
+                },
+                {
+                  "competencyId": "cvb.performance.deadband",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    13
+                  ],
+                  "t": "Deadband is the range a controller's output can reverse through before the valve produces any observable change — friction and backlash are its usual causes.",
+                  "sources": [
+                    "cvh-cmp-deadband-graph"
+                  ],
+                  "template": "slide--role-mechanism"
+                }
               ],
               "activities": [
                 {
@@ -80,12 +255,24 @@
                   "minutes": 15,
                   "title": "Characteristic Match",
                   "description": "Given three short process scenarios (a tight on/off-style isolation duty, a constant-gain flow loop, a large-rangeability blending duty), match each to the inherent flow characteristic (quick-opening, linear, equal-percentage) that fits, using the inherent-characteristics curve.",
-                  "materials": ["Figure 1.19 inherent-characteristics graph, printed", "Three scenario cards"],
+                  "materials": [
+                    "Figure 1.19 inherent-characteristics graph, printed",
+                    "Three scenario cards"
+                  ],
                   "sourceNote": "Directly built on the inherent-characteristics curve and cage-shape mechanism just taught (cvh-cmp-inherent-characteristics-graph, cvh-cmp-cage-types) — applies the real curve, not an invented rule of thumb."
                 }
               ],
-              "pages": [8, 9, 10, 11, 12, 13],
-              "check": [14]
+              "pages": [
+                8,
+                9,
+                10,
+                11,
+                12,
+                13
+              ],
+              "check": [
+                14
+              ]
             }
           ]
         },
@@ -99,52 +286,245 @@
             {
               "id": "cvb-ch2-m1",
               "title": "Body Styles & End Connections",
-              "status": "outline",
+              "status": "ready",
               "domain": "product-literacy",
               "levelTarget": "apply",
               "stakes": "Body style sets a valve's pressure-drop capability, noise/cavitation resistance, and maintainability — picking the wrong one for the service means re-specifying (and re-buying) the valve later.",
               "objective": "Distinguish globe and rotary valve body styles by construction and typical service, and identify the two standard end-connection types.",
-              "buildsOn": ["cvb-ch1-m1", "cvb-ch1-m2"],
+              "buildsOn": [
+                "cvb-ch1-m1",
+                "cvb-ch1-m2"
+              ],
               "keyConcepts": [
-                { "competencyId": "cvb.bodystyle.globe-variants", "progression": "introduces", "role": "contrast", "level": "understand", "pages": [15] },
-                { "competencyId": "cvb.intro.body-style-variants", "progression": "develops", "role": "application", "level": "understand", "pages": [16] },
-                { "competencyId": "cvb.intro.body-style-variants", "progression": "develops", "role": "application", "level": "understand", "pages": [17] },
-                { "competencyId": "cvb.rotary.closure-members", "progression": "develops", "role": "contrast", "level": "understand", "pages": [18] },
-                { "competencyId": "cvb.rotary.closure-members", "progression": "develops", "role": "contrast", "level": "understand", "pages": [19] },
-                { "competencyId": "cvb.bodystyle.special-purpose", "progression": "introduces", "role": "application", "level": "apply", "pages": [20] },
-                { "competencyId": "cvb.bodystyle.end-connections", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [21] }
+                {
+                  "competencyId": "cvb.bodystyle.globe-variants",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    15
+                  ],
+                  "t": "Single-ported globe bodies are the simplest and tightest-shutoff; double-ported (reverse-acting) bodies balance plug forces across two ports for less required thrust; cage-style balanced-plug bodies use the cage itself to balance pressure and can carry a soft seat for bubble-tight shutoff.",
+                  "sources": [
+                    "cvh-cmp-single-ported-globe-valve-body",
+                    "cvh-cmp-cage-style-trim-balanced-plug-soft-seat",
+                    "cvh-cmp-double-ported-globe-valve-body-reverse-acting"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.intro.body-style-variants",
+                  "progression": "develops",
+                  "role": "application",
+                  "level": "understand",
+                  "pages": [
+                    16
+                  ],
+                  "t": "Angle and bar-stock bodies extend the basic globe body for specialty service (erosive/slurry flow, high-purity or highly corrosive fluids); a three-way body combines two inlet streams or diverts one inlet to either of two outlets, one body doing the job two two-way valves and a manifold would otherwise do.",
+                  "sources": [
+                    "cvh-cmp-flanged-angle-valve-body",
+                    "cvh-cmp-bar-stock-valve-body",
+                    "cvh-cmp-three-way-globe-valve"
+                  ],
+                  "template": "slide--role-application"
+                },
+                {
+                  "competencyId": "cvb.rotary.closure-members",
+                  "progression": "develops",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    17
+                  ],
+                  "t": "An offset-shaft butterfly disk swings clear of the seat as it opens, reducing seat wear versus a centered shaft; a high-performance butterfly adds a second, radial offset for a tighter, longer-wearing seal at higher pressure.",
+                  "sources": [
+                    "cvh-cmp-butterfly-shaft-offset-disc-center",
+                    "cvh-cmp-butterfly-control-valve",
+                    "cvh-cmp-high-performance-butterfly-valve"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.rotary.closure-members",
+                  "progression": "develops",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    18
+                  ],
+                  "t": "A full-port ball valve (on trunnion mounts, for larger sizes) gives an unrestricted straight-through bore when open; an eccentric plug swings out of the seat on an off-center shaft, the same wear-reducing idea a butterfly's offset shaft uses.",
+                  "sources": [
+                    "cvh-cmp-segmented-v-notch-ball",
+                    "cvh-cmp-eccentric-plug-valve-body",
+                    "cvh-cmp-full-port-ball-control-valve",
+                    "cvh-cmp-full-port-ball-valve-trunnion"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.bodystyle.special-purpose",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "apply",
+                  "pages": [
+                    19
+                  ],
+                  "t": "Anti-cavitation and low-noise trim options quiet or eliminate the damage a high pressure-drop can cause; a multi-port flow-selector valve routes flow among several destinations from one body; a pressure-assisted seal uses process pressure itself to improve shutoff.",
+                  "sources": [
+                    "cvh-cmp-ball-valve-cavitation-noise-options",
+                    "cvh-cmp-multi-port-flow-selector-valve",
+                    "cvh-cmp-pressure-assisted-seal-configuration"
+                  ],
+                  "template": "slide--role-application"
+                },
+                {
+                  "competencyId": "cvb.bodystyle.end-connections",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    20
+                  ],
+                  "t": "Bolted-flange connections bolt to mating pipe flanges and can be unbolted for service; welded connections are welded directly into the pipeline, for higher pressure or leak-critical service, at the cost of cutting the valve out to service it.",
+                  "sources": [
+                    "cvh-cmp-bolted-flange-end-connections",
+                    "cvh-cmp-welded-end-connections"
+                  ],
+                  "template": "slide--role-nomenclature"
+                }
               ],
               "activities": [
                 {
                   "id": "cvb-ch2-m1-act1",
                   "type": "small-group",
-                  "afterConcept": 4,
+                  "afterConcept": 3,
                   "minutes": 15,
                   "title": "Body Style ID",
                   "description": "Sort a mixed set of real valve photos/cutaways (globe: single-ported, double-ported, cage-style; rotary: butterfly, ball, eccentric plug) by body-style family and name the family's typical service advantage.",
-                  "materials": ["Body-style figures from Batch 1, printed as sorting cards"],
+                  "materials": [
+                    "Body-style figures from Batch 1, printed as sorting cards"
+                  ],
                   "sourceNote": "Directly built on the body-style construction figures just taught in this module."
                 }
               ],
-              "pages": [15, 16, 17, 18, 19, 20, 21],
-              "check": [22]
+              "pages": [
+                15,
+                16,
+                17,
+                18,
+                19,
+                20
+              ],
+              "check": [
+                21
+              ]
             },
             {
               "id": "cvb-ch2-m2",
               "title": "Bonnets, Packing & Environmental Sealing",
-              "status": "outline",
+              "status": "ready",
               "domain": "product-literacy",
               "levelTarget": "evaluate",
               "stakes": "Picking the wrong packing system for a VOC-regulated or cryogenic service means a fugitive-emissions failure discovered on an audit, not on the bench.",
               "objective": "Identify bonnet and packing-system variants, and select an appropriate packing system for a given service and emissions requirement.",
-              "buildsOn": ["cvb-ch1-m1"],
+              "buildsOn": [
+                "cvb-ch1-m1"
+              ],
               "keyConcepts": [
-                { "competencyId": "cvb.sealing.bonnet-types", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [23] },
-                { "competencyId": "cvb.sealing.bellows-bonnet", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [24] },
-                { "competencyId": "cvb.intro.bonnet-packing-arrangement", "progression": "develops", "role": "contrast", "level": "understand", "pages": [25] },
-                { "competencyId": "cvb.sealing.environmental-packing", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [26] },
-                { "competencyId": "cvb.sealing.packing-selection", "progression": "introduces", "role": "application", "level": "evaluate", "pages": [27] },
-                { "competencyId": "cvb.sealing.emissions-standards-awareness", "progression": "introduces", "role": "caution", "level": "understand", "pages": [28] }
+                {
+                  "competencyId": "cvb.sealing.bonnet-types",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    22
+                  ],
+                  "t": "A standard bonnet bolts to the body with stud bolts; bonnet variations extend that basic shape for extra clearance or insulation; a fabricated extension bonnet lengthens the packing box away from the process fluid, for cryogenic or very hot service.",
+                  "sources": [
+                    "cvh-cmp-typical-bonnet-flange-stud-bolts",
+                    "cvh-cmp-bonnet-variations",
+                    "cvh-cmp-fabricated-extension-bonnet"
+                  ],
+                  "template": "slide--role-nomenclature"
+                },
+                {
+                  "competencyId": "cvb.sealing.bellows-bonnet",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    23
+                  ],
+                  "t": "A welded-leaf bellows stacks thin metal diaphragms into a flexible seal; a mechanically-formed bellows is hydroformed from tubing instead — both give a fully welded, zero-leakage path around the stem.",
+                  "sources": [
+                    "cvh-cmp-enviroseal-bellows-seal-bonnet",
+                    "cvh-cmp-welded-leaf-bellows",
+                    "cvh-cmp-mechanically-formed-bellows"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.intro.bonnet-packing-arrangement",
+                  "progression": "develops",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    24
+                  ],
+                  "t": "A single PTFE V-ring packing arrangement is the simple baseline; the full packing-material arrangement (rings, followers, springs) shown in cross-section is what actually loads and maintains that seal as the stem strokes and wears.",
+                  "sources": [
+                    "cvh-cmp-packing-material-arrangements-globe",
+                    "cvh-cmp-single-ptfe-vring-packing"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.sealing.environmental-packing",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    25
+                  ],
+                  "t": "ENVIRO-SEAL packing systems add a live-loaded spring to a PTFE, duplex (PTFE-plus-graphite), or graphite ULF (ultra-low fugitive) arrangement — for sliding-stem or rotary valves alike — to hold sealing force as packing wears, instead of relying on a one-time bolt torque.",
+                  "sources": [
+                    "cvh-cmp-enviroseal-ptfe-packing-system",
+                    "cvh-cmp-enviroseal-duplex-packing-system",
+                    "cvh-cmp-enviroseal-graphite-ulf-packing-system",
+                    "cvh-cmp-enviroseal-graphite-packing-rotary"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.sealing.packing-selection",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    26
+                  ],
+                  "t": "Match the packing system to the service: standard PTFE for general-purpose duty, an ENVIRO-SEAL live-loaded system where emissions matter, graphite where temperature rules PTFE out — sliding-stem and rotary valves each have their own selection chart.",
+                  "sources": [
+                    "cvh-cmp-sliding-stem-environmental-packing-selection",
+                    "cvh-cmp-rotary-environmental-packing-selection"
+                  ],
+                  "template": "slide--role-application"
+                },
+                {
+                  "competencyId": "cvb.sealing.emissions-standards-awareness",
+                  "progression": "introduces",
+                  "role": "caution",
+                  "level": "understand",
+                  "pages": [
+                    27
+                  ],
+                  "t": "VOC/LDAR programs periodically test valves for fugitive emissions; ISO 15848-1 is the qualification standard packing systems are tested against — a packing choice that isn't qualified for the service can mean a failed test, not just a leak.",
+                  "sources": [
+                    "cvh-cmp-voc-ldar-measurement-frequency",
+                    "cvh-cmp-iso15848-1-qualification-requirements"
+                  ],
+                  "template": "slide--tmpl-caution"
+                }
               ],
               "activities": [
                 {
@@ -154,29 +534,131 @@
                   "minutes": 18,
                   "title": "Packing Selection Case",
                   "description": "Given three real service scenarios (general-purpose hydrocarbon, VOC-regulated process, cryogenic), select an appropriate packing system and justify the choice against the selection figures just taught.",
-                  "materials": ["Packing-selection figures, printed", "Three service-scenario cards"],
+                  "materials": [
+                    "Packing-selection figures, printed",
+                    "Three service-scenario cards"
+                  ],
                   "sourceNote": "Directly built on the selection-by-service figures just taught (cvh-cmp-sliding-stem-environmental-packing-selection, cvh-cmp-rotary-environmental-packing-selection)."
                 }
               ],
-              "pages": [23, 24, 25, 26, 27, 28],
-              "check": [29]
+              "pages": [
+                22,
+                23,
+                24,
+                25,
+                26,
+                27
+              ],
+              "check": [
+                28
+              ]
             },
             {
               "id": "cvb-ch2-m3",
               "title": "Flow Characterization, Trim & Actuator Variety",
-              "status": "outline",
+              "status": "ready",
               "domain": "product-literacy",
               "levelTarget": "understand",
               "stakes": "Misreading which characteristic a trim actually delivers, or which actuator type is installed, means the wrong replacement part gets ordered or the wrong control behavior gets expected from the loop.",
               "objective": "Explain how cage and plug contour shape a valve's flow characteristic, and identify actuator variants beyond the basic spring-and-diaphragm and piston types.",
-              "buildsOn": ["cvb-ch1-m1", "cvb-ch1-m2"],
+              "buildsOn": [
+                "cvb-ch1-m1",
+                "cvb-ch1-m2"
+              ],
               "keyConcepts": [
-                { "competencyId": "cvb.characteristic.inherent-curves", "progression": "develops", "role": "mechanism", "level": "understand", "pages": [30] },
-                { "competencyId": "cvb.characteristic.contoured-plug", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [31] },
-                { "competencyId": "cvb.trim.guiding-and-capacity", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [32] },
-                { "competencyId": "cvb.intro.actuator-types", "progression": "develops", "role": "mechanism", "level": "understand", "pages": [33] },
-                { "competencyId": "cvb.intro.actuator-types", "progression": "develops", "role": "mechanism", "level": "understand", "pages": [34] },
-                { "competencyId": "cvb.actuator.manual-electric", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [35] }
+                {
+                  "competencyId": "cvb.characteristic.inherent-curves",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    29
+                  ],
+                  "t": "A characterized cage shapes its window profile to produce a specific curve directly — the physical mechanism behind the quick-opening/linear/equal-percentage curves already introduced.",
+                  "sources": [
+                    "cvh-cmp-characterized-cages-globe",
+                    "cvh-cmp-inherent-flow-characteristic-curves"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.characteristic.contoured-plug",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    30
+                  ],
+                  "t": "A contoured plug shapes the same curve types by varying its own profile against a fixed seat, rather than through a cage window; quick-opening construction is the simplest case — a flat-faced plug that uncovers flow area almost immediately.",
+                  "sources": [
+                    "cvh-cmp-plug-contour-flow-characterization",
+                    "cvh-cmp-quick-opening-construction"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.trim.guiding-and-capacity",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    31
+                  ],
+                  "t": "Cage-guided trim rides inside the cage bore; plug-guided trim rides in machined guides in the body itself — two different ways of keeping the plug centered on its seat. A reduced-capacity adapter lets one body size handle a smaller trim than its full-size rating.",
+                  "sources": [
+                    "cvh-cmp-cage-guiding-plug-guiding-cross-section",
+                    "cvh-cmp-adapter-reduced-flow-capacity"
+                  ],
+                  "template": "slide--role-nomenclature"
+                },
+                {
+                  "competencyId": "cvb.intro.actuator-types",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    32
+                  ],
+                  "t": "A field-reversible actuator can be converted between direct- and reverse-acting in the field, without a different casting; the same spring-and-diaphragm principle drives a rotary valve's diaphragm actuator, just converted to rotation through a lever.",
+                  "sources": [
+                    "cvh-cmp-field-reversible-multi-spring-actuator",
+                    "cvh-cmp-diaphragm-actuator-rotary-valve"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.intro.actuator-types",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    33
+                  ],
+                  "t": "A double-acting piston actuator uses supply pressure on both sides for higher thrust in either direction; a scotch-yoke piston actuator converts that linear piston motion into rotation for a rotary valve, the piston equivalent of a diaphragm actuator's lever.",
+                  "sources": [
+                    "cvh-cmp-double-acting-piston-actuator",
+                    "cvh-cmp-scotch-yoke-piston-actuator"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.actuator.manual-electric",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    34
+                  ],
+                  "t": "A handwheel gives manual override on a sliding-stem or rotary actuator without pneumatic supply; a rack-and-pinion actuator is a compact pneumatic option for rotary valves; an electric actuator replaces pneumatic supply with a motor, for sites with no air system.",
+                  "sources": [
+                    "cvh-cmp-manual-actuator-sliding-stem",
+                    "cvh-cmp-manual-actuator-rotary",
+                    "cvh-cmp-rack-and-pinion-actuator",
+                    "cvh-cmp-electric-actuator-sliding-stem",
+                    "cvh-cmp-electric-actuator-rotary"
+                  ],
+                  "template": "slide--role-nomenclature"
+                }
               ],
               "activities": [
                 {
@@ -186,12 +668,23 @@
                   "minutes": 12,
                   "title": "Characteristic Selection",
                   "description": "Given a process scenario (e.g. a valve that must hold near-constant gain across a wide travel range vs. one needing tight shutoff-adjacent control), discuss whether a cage-characterized, contoured-plug, or quick-opening trim fits best, and why.",
-                  "materials": ["Inherent-characteristic and contoured-plug figures, printed"],
+                  "materials": [
+                    "Inherent-characteristic and contoured-plug figures, printed"
+                  ],
                   "sourceNote": "Built directly on the characterization figures just taught (cvh-cmp-inherent-flow-characteristic-curves, cvh-cmp-plug-contour-flow-characterization)."
                 }
               ],
-              "pages": [30, 31, 32, 33, 34, 35],
-              "check": [36]
+              "pages": [
+                29,
+                30,
+                31,
+                32,
+                33,
+                34
+              ],
+              "check": [
+                35
+              ]
             }
           ]
         },
@@ -205,18 +698,86 @@
             {
               "id": "cvb-ch3-m1",
               "title": "Positioners, Transducers & Boosters",
-              "status": "outline",
+              "status": "ready",
               "domain": "product-literacy",
               "levelTarget": "understand",
               "stakes": "A tech who can't tell a positioner from a transducer from a booster can't explain why a valve isn't reaching command, or which accessory to check first.",
               "objective": "Identify a positioner, digital valve controller, I/P transducer, and volume booster, and explain each one's role in getting a command signal to the valve stem.",
               "buildsOn": [],
               "keyConcepts": [
-                { "competencyId": "cvb.accessory.positioner-mechanism", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [37] },
-                { "competencyId": "cvb.accessory.analog-ip-positioner", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [38] },
-                { "competencyId": "cvb.accessory.digital-valve-controller", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [39] },
-                { "competencyId": "cvb.accessory.ip-transducer", "progression": "introduces", "role": "contrast", "level": "understand", "pages": [40] },
-                { "competencyId": "cvb.accessory.volume-booster", "progression": "introduces", "role": "application", "level": "understand", "pages": [41] }
+                {
+                  "competencyId": "cvb.accessory.positioner-mechanism",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    36
+                  ],
+                  "t": "A pneumatic positioner closes its own local loop: it compares actual stem position (fed back through a cam and beam) to the command signal at a flapper/nozzle, and drives a relay until the two agree.",
+                  "sources": [
+                    "cvh-cmp-4.1"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.accessory.analog-ip-positioner",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    37
+                  ],
+                  "t": "An analog I/P positioner runs the same feedback loop from a 4-20 mA current signal instead of a pneumatic one, converting current to pneumatic output through the same nozzle/flapper/relay stages.",
+                  "sources": [
+                    "cvh-cmp-4.2",
+                    "cvh-cmp-4.3"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.accessory.digital-valve-controller",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    38
+                  ],
+                  "t": "A digital valve controller replaces the positioner's mechanical feedback linkage with a microprocessor — same job (drive the valve to command), added diagnostics.",
+                  "sources": [
+                    "cvh-cmp-4.4"
+                  ],
+                  "template": "slide--role-nomenclature"
+                },
+                {
+                  "competencyId": "cvb.accessory.ip-transducer",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    39
+                  ],
+                  "t": "An I/P transducer converts a current signal to a pneumatic one with no position feedback at all — simpler and cheaper than a positioner, appropriate where high positioning accuracy isn't required.",
+                  "sources": [
+                    "cvh-cmp-4.5",
+                    "cvh-cmp-4.6"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.accessory.volume-booster",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "understand",
+                  "pages": [
+                    40
+                  ],
+                  "t": "A volume booster amplifies the pneumatic flow available to the actuator without changing the signal's pressure — needed when a large or fast-stroking actuator would otherwise starve the positioner's own limited output capacity.",
+                  "sources": [
+                    "cvh-cmp-4.7",
+                    "cvh-cmp-4.8"
+                  ],
+                  "template": "slide--role-application"
+                }
               ],
               "activities": [
                 {
@@ -226,28 +787,115 @@
                   "minutes": 15,
                   "title": "Signal Path Trace",
                   "description": "Given a real assembled valve/actuator/DVC photo, trace the signal path from the control-room command to stem motion, naming each accessory (positioner or transducer, booster if present) and what it does at each hop.",
-                  "materials": ["Assembled valve/actuator/DVC photo, printed (Figure 4.4)"],
+                  "materials": [
+                    "Assembled valve/actuator/DVC photo, printed (Figure 4.4)"
+                  ],
                   "sourceNote": "Grounded directly in the digital-valve-controller and booster-installation figures just taught (cvh-cmp-4.4, cvh-cmp-4.7, cvh-cmp-4.8)."
                 }
               ],
-              "pages": [37, 38, 39, 40, 41],
-              "check": [42]
+              "pages": [
+                36,
+                37,
+                38,
+                39,
+                40
+              ],
+              "check": [
+                41
+              ]
             },
             {
               "id": "cvb-ch3-m2",
               "title": "Controllers, Position Feedback & Safety Accessories",
-              "status": "outline",
+              "status": "ready",
               "domain": "product-literacy",
               "levelTarget": "understand",
               "stakes": "Confusing a spring-return SOV for a double-acting one, or not recognizing a trip valve's tripped state, means a safety-shutdown component gets mishandled during a routine visit.",
               "objective": "Identify a pneumatic controller's role as a standalone local controller, and distinguish solenoid-valve types and safety-accessory hardware used in a safety instrumented system.",
-              "buildsOn": ["cvb-ch3-m1"],
+              "buildsOn": [
+                "cvb-ch3-m1"
+              ],
               "keyConcepts": [
-                { "competencyId": "cvb.accessory.pneumatic-controller", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [43] },
-                { "competencyId": "cvb.accessory.position-transmitter", "progression": "introduces", "role": "contrast", "level": "understand", "pages": [44] },
-                { "competencyId": "cvb.safety.solenoid-valve-types", "progression": "introduces", "role": "contrast", "level": "understand", "pages": [45] },
-                { "competencyId": "cvb.safety.voting-architecture", "progression": "introduces", "role": "application", "level": "understand", "pages": [46] },
-                { "competencyId": "cvb.safety.trip-and-manual-override", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [47] }
+                {
+                  "competencyId": "cvb.accessory.pneumatic-controller",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    42
+                  ],
+                  "t": "A standalone pneumatic controller closes an entire control loop locally — no DCS or PLC required — comparing a measured process input to a set point and driving the valve directly; adding reset and rate elements to a proportional-only design corrects steady-state offset and speeds response to a changing load.",
+                  "sources": [
+                    "cvh-cmp-4.10",
+                    "cvh-cmp-4.11",
+                    "cvh-cmp-4.12"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.accessory.position-transmitter",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    43
+                  ],
+                  "t": "A position transmitter reports actual valve position back to the control system — 4-20 mA if wired, a 0-100% digital signal if wireless — so the control room can see where the valve really is, not just where it was told to go.",
+                  "sources": [
+                    "cvh-cmp-4.13"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.safety.solenoid-valve-types",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    44
+                  ],
+                  "t": "A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol). Separately, a direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.",
+                  "sources": [
+                    "cvh-cmp-4.14",
+                    "cvh-cmp-4.15",
+                    "cvh-cmp-4.17",
+                    "cvh-cmp-4.18"
+                  ],
+                  "template": "slide--role-contrast"
+                },
+                {
+                  "competencyId": "cvb.safety.voting-architecture",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "understand",
+                  "pages": [
+                    45
+                  ],
+                  "t": "A 1oo2 (one-out-of-two) architecture trips if either of two SOVs sees a demand — favoring safety, more nuisance trips. A 2oo2 architecture needs both to agree — favoring uptime, at the cost of a slower response to a real single-SOV failure.",
+                  "sources": [
+                    "cvh-cmp-4.16",
+                    "cvh-cmp-4.19",
+                    "cvh-cmp-4.20"
+                  ],
+                  "template": "slide--role-application"
+                },
+                {
+                  "competencyId": "cvb.safety.trip-and-manual-override",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    46
+                  ],
+                  "t": "A trip valve shows a distinct physical state once a safety system actually trips it; a switching valve routes pneumatic signal for control logic rather than process flow. A side- or top-mounted handwheel lets a technician manually stroke an actuator with no air supply at all.",
+                  "sources": [
+                    "cvh-cmp-4.24",
+                    "cvh-cmp-4.25",
+                    "cvh-cmp-4.26",
+                    "cvh-cmp-4.27"
+                  ],
+                  "template": "slide--role-nomenclature"
+                }
               ],
               "activities": [
                 {
@@ -257,12 +905,22 @@
                   "minutes": 15,
                   "title": "SOV Actuation ID",
                   "description": "Given labelled photos of a direct-acting and a pilot-operated solenoid valve, plus the 3-port/4-port schematic symbols, identify actuation type and port count for each.",
-                  "materials": ["Figures 4.14, 4.15, 4.17, 4.18, printed"],
+                  "materials": [
+                    "Figures 4.14, 4.15, 4.17, 4.18, printed"
+                  ],
                   "sourceNote": "Directly built on the SOV figures just taught (cvh-cmp-4.14, cvh-cmp-4.15, cvh-cmp-4.17, cvh-cmp-4.18)."
                 }
               ],
-              "pages": [43, 44, 45, 46, 47],
-              "check": [48]
+              "pages": [
+                42,
+                43,
+                44,
+                45,
+                46
+              ],
+              "check": [
+                47
+              ]
             }
           ]
         },
@@ -276,19 +934,98 @@
             {
               "id": "cvb-ch4-m1",
               "title": "Why Performance Varies — Variability, Deadband & Response",
-              "status": "outline",
+              "status": "ready",
               "domain": "product-literacy",
               "levelTarget": "analyze",
               "stakes": "A tech who reads 'the valve is slow' as one problem misses that deadband, response time, and installed gain are three separate, separately-fixable causes — with three different remedies.",
               "objective": "Explain process variability as a measure of loop performance, and trace deadband, response time, and installed gain as the design factors that cause it.",
-              "buildsOn": ["cvb-ch1-m2", "cvb-ch2-m1"],
+              "buildsOn": [
+                "cvb-ch1-m2",
+                "cvb-ch2-m1"
+              ],
               "keyConcepts": [
-                { "competencyId": "cvb.performance.process-variability", "progression": "introduces", "role": "prime", "level": "understand", "pages": [49] },
-                { "competencyId": "cvb.performance.test-loop", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [50] },
-                { "competencyId": "cvb.performance.deadband", "progression": "develops", "role": "mechanism", "level": "understand", "pages": [51] },
-                { "competencyId": "cvb.performance.response-time", "progression": "introduces", "role": "application", "level": "understand", "pages": [52] },
-                { "competencyId": "cvb.performance.installed-gain", "progression": "introduces", "role": "mechanism", "level": "analyze", "pages": [53] },
-                { "competencyId": "cvb.bodystyle.control-range-by-style", "progression": "introduces", "role": "application", "level": "analyze", "pages": [54] }
+                {
+                  "competencyId": "cvb.performance.process-variability",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    48
+                  ],
+                  "t": "Process variability is the width of the distribution of a measured value around its target, not where the target itself sits — a tightly-controlled loop has a narrow distribution, a poorly-controlled one a wide one, both centered the same place.",
+                  "sources": [
+                    "cvh-cmp-process-variability-distributions"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.performance.test-loop",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    49
+                  ],
+                  "t": "Every performance number in this chapter — deadband, response time, gain, the economics — comes from real bench testing on a physical test loop, not a simulation.",
+                  "sources": [
+                    "cvh-cmp-performance-test-loop-photo"
+                  ],
+                  "template": "slide--role-nomenclature"
+                },
+                {
+                  "competencyId": "cvb.performance.deadband",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    50
+                  ],
+                  "t": "Testing three real valve designs open-loop shows deadband directly: each valve's output lags its command by a different amount before it moves at all — the same deadband concept already introduced, now measured and compared.",
+                  "sourceNote": "CVH ch2 Figure 2.3 'Effect of Deadband on Valve Performance' — the same figure is already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Component Index (a different course); cross-referenced, not duplicated as a new id, per Component Index — Control Valve Handbook ch2.md's own Open Items.",
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.performance.response-time",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "understand",
+                  "pages": [
+                    51
+                  ],
+                  "t": "Dead time and 63%-response time both vary by valve/actuator/positioner combination — a faster positioner or a smaller actuator generally responds quicker, but the only way to know a specific configuration's numbers is to test it.",
+                  "sources": [
+                    "cvh-cmp-valve-response-time-summary-table"
+                  ],
+                  "template": "slide--role-application"
+                },
+                {
+                  "competencyId": "cvb.performance.installed-gain",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "analyze",
+                  "pages": [
+                    52
+                  ],
+                  "t": "Installed gain is the slope of the installed flow-characteristic curve at a given travel — where that slope changes sharply across the travel range, the loop's tuning has to compromise between the high-gain and low-gain regions.",
+                  "sources": [
+                    "cvh-cmp-installed-characteristic-and-gain"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.bodystyle.control-range-by-style",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    53
+                  ],
+                  "t": "A globe valve holds a usable, controllable gain over a wider share of its travel than a butterfly valve does for the same duty — a wider control range, read directly off the installed-gain comparison.",
+                  "sources": [
+                    "cvh-cmp-valve-style-control-range-comparison"
+                  ],
+                  "template": "slide--role-application"
+                }
               ],
               "activities": [
                 {
@@ -298,27 +1035,92 @@
                   "minutes": 15,
                   "title": "Performance Read",
                   "description": "Read a real installed-gain graph and a valve-style-comparison graph, and predict which of two valve styles gives the better control range for a stated service.",
-                  "materials": ["Figures 2.5, 2.6, printed"],
+                  "materials": [
+                    "Figures 2.5, 2.6, printed"
+                  ],
                   "sourceNote": "Built directly on the installed-gain and valve-style-comparison graphs just taught (cvh-cmp-installed-characteristic-and-gain, cvh-cmp-valve-style-control-range-comparison)."
                 }
               ],
-              "pages": [49, 50, 51, 52, 53, 54],
-              "check": [55]
+              "pages": [
+                48,
+                49,
+                50,
+                51,
+                52,
+                53
+              ],
+              "check": [
+                54
+              ]
             },
             {
               "id": "cvb-ch4-m2",
               "title": "Proving Performance — Economics & the Signature Series",
-              "status": "outline",
+              "status": "ready",
               "domain": "product-literacy",
               "levelTarget": "evaluate",
               "stakes": "Without a Signature Series baseline, rising friction in a valve looks like normal wear until it's already a control problem — the baseline is what turns 'it seems sluggish' into a measured, defensible finding.",
               "objective": "Explain how a Signature Series factory test establishes a performance baseline, and justify replacing a valve on economic grounds using that baseline.",
-              "buildsOn": ["cvb-ch4-m1"],
+              "buildsOn": [
+                "cvb-ch4-m1"
+              ],
               "keyConcepts": [
-                { "competencyId": "cvb.performance.economics-of-control", "progression": "introduces", "role": "application", "level": "evaluate", "pages": [56] },
-                { "competencyId": "cvb.performance.signature-series-testing", "progression": "introduces", "role": "mechanism", "level": "understand", "pages": [57] },
-                { "competencyId": "cvb.performance.signature-diagnosis", "progression": "introduces", "role": "application", "level": "apply", "pages": [58] },
-                { "competencyId": "cvb.performance.valvelink-interface", "progression": "introduces", "role": "nomenclature", "level": "remember", "pages": [59] }
+                {
+                  "competencyId": "cvb.performance.economics-of-control",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    55
+                  ],
+                  "t": "Across three real valve designs under the same random load disturbance, the better-controlling valve holds process variability closer to the theoretical minimum as tuning gets more aggressive — a measurable economic argument for choosing it, not just a qualitative one.",
+                  "sources": [
+                    "cvh-cmp-closed-loop-disturbance-summary"
+                  ],
+                  "template": "slide--role-application"
+                },
+                {
+                  "competencyId": "cvb.performance.signature-series-testing",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    56
+                  ],
+                  "t": "A Signature Series factory test runs an assembled valve through ValveLink software, recording its own friction/force signature as a baseline for comparison against a later, in-service test of the same valve.",
+                  "sources": [
+                    "cvh-cmp-signature-series-testing-photo"
+                  ],
+                  "template": "slide--role-mechanism"
+                },
+                {
+                  "competencyId": "cvb.performance.signature-diagnosis",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "apply",
+                  "pages": [
+                    57
+                  ],
+                  "t": "Overlaying a new in-service signature on the original baseline shows an increased span where friction has risen — the same comparison a technician would run to confirm a valve actually needs service, not just guess from symptoms.",
+                  "sources": [
+                    "cvh-cmp-signature-data-comparison-overlay"
+                  ],
+                  "template": "slide--role-application"
+                },
+                {
+                  "competencyId": "cvb.performance.valvelink-interface",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "remember",
+                  "pages": [
+                    58
+                  ],
+                  "t": "ValveLink's Total Scan view shows the signature graph directly; its Valve Step Response view runs and displays a step test — the two diagnostic screens a technician actually works from.",
+                  "sources": [
+                    "cvh-cmp-valvelink-software-screens"
+                  ],
+                  "template": "slide--role-nomenclature"
+                }
               ],
               "activities": [
                 {
@@ -328,12 +1130,21 @@
                   "minutes": 15,
                   "title": "Signature Read",
                   "description": "Given the original-vs-new signature overlay, identify what changed between the two traces and what it indicates about the valve's condition.",
-                  "materials": ["Figure 2.9 signature comparison overlay, printed"],
+                  "materials": [
+                    "Figure 2.9 signature comparison overlay, printed"
+                  ],
                   "sourceNote": "Directly built on the signature-comparison figure just taught (cvh-cmp-signature-data-comparison-overlay)."
                 }
               ],
-              "pages": [56, 57, 58, 59],
-              "check": [60]
+              "pages": [
+                55,
+                56,
+                57,
+                58
+              ],
+              "check": [
+                59
+              ]
             }
           ]
         }

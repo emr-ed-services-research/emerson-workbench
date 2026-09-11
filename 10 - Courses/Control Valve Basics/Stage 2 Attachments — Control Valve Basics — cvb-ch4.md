@@ -1,0 +1,60 @@
+---
+title: Stage 2 Attachments — Control Valve Basics
+type: review
+tags:
+  - stage2-attachments
+  - pipeline
+course: Control Valve Basics
+chapter: cvb-ch4
+updated: 2026-09-11
+---
+
+# Stage 2 Attachments — cvb-ch4 (Control Valve Performance)
+
+> [!note] How to review this document
+> This shows what actually backs each concept Stage 2 authored — the
+> real Component Index record(s) each citation resolves to (what it
+> teaches, its precedence status), or a plain `sourceNote` where no
+> component fits. This is a sourcing-quality review, not an arc-structure
+> one — see the matching `Stage 1 Outline` doc for that. Edit directly
+> (strikethrough, `> [!warning]` callouts, notes) the same way; re-fire
+> Stage 2 as a **REVISE** when done. Stage 3 stays locked until every
+> module below is approved.
+
+### 1. cvb-ch4-m1 — Why Performance Varies — Variability, Deadband & Response
+
+**Objective:** Explain process variability as a measure of loop performance, and trace deadband, response time, and installed gain as the design factors that cause it.
+
+**1. (mechanism · understand, page 48, slide--role-mechanism)** Process variability is the width of the distribution of a measured value around its target, not where the target itself sits — a tightly-controlled loop has a narrow distribution, a poorly-controlled one a wide one, both centered the same place.
+  - `cvh-cmp-process-variability-distributions` (current, Component Index — Control Valve Handbook ch2.md)
+
+**2. (nomenclature · remember, page 49, slide--role-nomenclature)** Every performance number in this chapter — deadband, response time, gain, the economics — comes from real bench testing on a physical test loop, not a simulation.
+  - `cvh-cmp-performance-test-loop-photo` (current, Component Index — Control Valve Handbook ch2.md)
+
+**3. (mechanism · understand, page 50, slide--role-mechanism)** Testing three real valve designs open-loop shows deadband directly: each valve's output lags its command by a different amount before it moves at all — the same deadband concept already introduced, now measured and compared.
+  - _sourceNote:_ CVH ch2 Figure 2.3 'Effect of Deadband on Valve Performance' — the same figure is already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Component Index (a different course); cross-referenced, not duplicated as a new id, per Component Index — Control Valve Handbook ch2.md's own Open Items.
+
+**4. (application · understand, page 51, slide--role-application)** Dead time and 63%-response time both vary by valve/actuator/positioner combination — a faster positioner or a smaller actuator generally responds quicker, but the only way to know a specific configuration's numbers is to test it.
+  - `cvh-cmp-valve-response-time-summary-table` (current, Component Index — Control Valve Handbook ch2.md)
+
+**5. (mechanism · analyze, page 52, slide--role-mechanism)** Installed gain is the slope of the installed flow-characteristic curve at a given travel — where that slope changes sharply across the travel range, the loop's tuning has to compromise between the high-gain and low-gain regions.
+  - `cvh-cmp-installed-characteristic-and-gain` (current, Component Index — Control Valve Handbook ch2.md)
+
+**6. (application · analyze, page 53, slide--role-application)** A globe valve holds a usable, controllable gain over a wider share of its travel than a butterfly valve does for the same duty — a wider control range, read directly off the installed-gain comparison.
+  - `cvh-cmp-valve-style-control-range-comparison` (current, Component Index — Control Valve Handbook ch2.md)
+
+### 2. cvb-ch4-m2 — Proving Performance — Economics & the Signature Series
+
+**Objective:** Explain how a Signature Series factory test establishes a performance baseline, and justify replacing a valve on economic grounds using that baseline.
+
+**1. (application · evaluate, page 55, slide--role-application)** Across three real valve designs under the same random load disturbance, the better-controlling valve holds process variability closer to the theoretical minimum as tuning gets more aggressive — a measurable economic argument for choosing it, not just a qualitative one.
+  - `cvh-cmp-closed-loop-disturbance-summary` (current, Component Index — Control Valve Handbook ch2.md)
+
+**2. (mechanism · understand, page 56, slide--role-mechanism)** A Signature Series factory test runs an assembled valve through ValveLink software, recording its own friction/force signature as a baseline for comparison against a later, in-service test of the same valve.
+  - `cvh-cmp-signature-series-testing-photo` (current, Component Index — Control Valve Handbook ch2.md)
+
+**3. (application · apply, page 57, slide--role-application)** Overlaying a new in-service signature on the original baseline shows an increased span where friction has risen — the same comparison a technician would run to confirm a valve actually needs service, not just guess from symptoms.
+  - `cvh-cmp-signature-data-comparison-overlay` (current, Component Index — Control Valve Handbook ch2.md)
+
+**4. (nomenclature · remember, page 58, slide--role-nomenclature)** ValveLink's Total Scan view shows the signature graph directly; its Valve Step Response view runs and displays a step test — the two diagnostic screens a technician actually works from.
+  - `cvh-cmp-valvelink-software-screens` (current, Component Index — Control Valve Handbook ch2.md)

@@ -32,12 +32,12 @@ level target: `understand` · domain: `product-literacy`
 
 | # | Item | Pages | Detail |
 | --- | --- | --- | --- |
-| 1 | cvb.intro.feedback-loop (introduces) | 1 | role: prime · level: understand |
-| 2 | cvb.intro.sliding-stem-overview (introduces) | 2 | role: nomenclature · level: remember |
-| 3 | cvb.intro.sliding-stem-parts (introduces) | 3 | role: nomenclature · level: remember |
-| 4 | cvb.intro.body-style-variants (introduces) | 4 | role: contrast · level: understand |
-| 5 | cvb.intro.bonnet-packing-arrangement (introduces) | 5 | role: contrast · level: understand |
-| 6 | cvb.intro.actuator-types (introduces) | 6 | role: contrast · level: understand |
+| 1 | A control valve is the final control element in a feedback loop — a process condition is measured, compared to a setpoint, and the valve's stem position is adjusted to correct it. | 1 | role: mechanism · level: understand · cvh-cmp-feedback-control-loop |
+| 2 | A sliding-stem valve moves its plug straight up and down through a globe- or angle-style body — the most common control valve construction. | 2 | role: nomenclature · level: remember · cvh-cmp-sliding-stem-valve-photo |
+| 3 | From actuator to body: stem, packing flange, bonnet, piston ring, plug, cage, and seat ring stack in that order — the assembly sequence every sliding-stem valve follows. | 3 | role: nomenclature · level: remember · cvh-cmp-sliding-stem-exploded |
+| 4 | An angle body turns the flow path 90° for erosive or high-pressure-drop service; a three-way body combines or diverts flow through a single valve instead of the straight-through path a standard globe body uses. | 4 | role: contrast · level: understand · cvh-cmp-angle-valve-photo, cvh-cmp-three-way-globe-valve |
+| 5 | A conventional bonnet packs the stem with PTFE or graphite rings in the packing box; a bellows-seal bonnet replaces packing entirely with a welded metal bellows for zero-leakage service on hazardous or toxic process fluids. | 5 | role: contrast · level: understand · cvh-cmp-bonnet-assembly, cvh-cmp-bellows-seal-bonnet, cvh-cmp-stem-packing-types |
+| 6 | A direct-acting actuator pushes the stem down with loading pressure and returns it with the spring; a reverse-acting actuator does the opposite. A piston actuator trades the spring for a second pressure connection, for higher thrust and faster stroking. | 6 | role: contrast · level: understand · cvh-cmp-direct-acting-actuator, cvh-cmp-reverse-acting-actuator, cvh-cmp-piston-actuator |
 | 7 | **→ Activity — Parts Walk** | — | small-group · 15 min — In small groups at a real bench-mounted sliding-stem valve/actuator assembly (or a cutaway training aid), name each labelled part — body, bonnet, packing, actuator casing, spring, stem — checking against the exploded and cutaway figures just taught. |
 | 8 | Check — knowledge check | 7 | — |
 
@@ -51,11 +51,11 @@ level target: `analyze` · domain: `product-literacy`
 
 | # | Item | Pages | Detail |
 | --- | --- | --- | --- |
-| 1 | cvb.rotary.overview (introduces) | 8 | role: prime · level: understand |
-| 2 | cvb.rotary.closure-members (introduces) | 9 | role: contrast · level: understand |
-| 3 | cvb.rotary.actuator-mechanism (introduces) | 10 | role: mechanism · level: understand |
-| 4 | cvb.characteristic.cage-shape (introduces) | 11 | role: mechanism · level: understand |
-| 5 | cvb.characteristic.inherent-curves (introduces) | 12 | role: application · level: analyze |
+| 1 | A rotary control valve turns a ball, disk, or plug across the flow path instead of sliding a stem through it — the same final-control-element job, a different motion. | 8 | role: nomenclature · level: understand · cvh-cmp-rotary-valve-photo |
+| 2 | A segmented ball, a V-notch ball, and an eccentric disk are the three standard rotary closure members — the V-notch's contoured cut gives it the widest rangeability of the three. | 9 | role: contrast · level: understand · cvh-cmp-segmented-ball, cvh-cmp-v-notch-ball, cvh-cmp-eccentric-disk-valve |
+| 3 | A rotary actuator's lever and shaft convert the same linear stem motion a sliding-stem actuator produces into the disk or ball rotation the closure member actually needs. | 10 | role: mechanism · level: understand · cvh-cmp-rotary-actuator-cutaway |
+| 4 | A cage's window shape — linear, equal-percentage, or quick-opening — sets how flow changes as the valve strokes, independent of the body style around it. | 11 | role: mechanism · level: understand · cvh-cmp-cage-types |
+| 5 | Quick-opening gives maximum flow change near the closed position, linear gives equal flow change per unit of travel, and equal-percentage gives equal PERCENTAGE change per unit of travel — read the curve to tell which characteristic a valve has. | 12 | role: application · level: analyze · cvh-cmp-inherent-characteristics-graph |
 | 6 | **→ Activity — Characteristic Match** | — | small-group · 15 min — Given three short process scenarios (a tight on/off-style isolation duty, a constant-gain flow loop, a large-rangeability blending duty), match each to the inherent flow characteristic (quick-opening, linear, equal-percentage) that fits, using the inherent-characteristics curve. |
-| 7 | cvb.performance.deadband (introduces) | 13 | role: mechanism · level: understand |
+| 7 | Deadband is the range a controller's output can reverse through before the valve produces any observable change — friction and backlash are its usual causes. | 13 | role: mechanism · level: understand · cvh-cmp-deadband-graph |
 | 8 | Check — knowledge check | 14 | — |

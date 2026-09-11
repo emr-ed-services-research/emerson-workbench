@@ -17,7 +17,7 @@ folder layout each course follows.
 | --- | --- | --- | --- |
 | 14101 Valve Trim and Body Maintenance | Stage 1 pilot | Migration in progress | [[14101 — Course Home]] |
 | Instructing for Emerson (IfE) | Origination | Content started — 1 module | [[IfE — Course Home]] |
-| Control Valve Basics | Origination — Stage 1 only | Stage 1 arc-cut done (cold-start, run by hand 2026-09-11) for all 4 chapters — 9 modules, 42 competencies, 9 Hands-First activities; awaiting Franz's review of the outline docs. No Course Home page, Source Deck, or Bench Notes/Book yet — this is a Stage-1-only proving-ground run for the PipelineConsole review-checkpoint mechanism, not a full course scaffold. | [[Curriculum — Control Valve Basics]] |
+| Control Valve Basics | Origination — Stage 2 done | Stage 1 arc-cut Franz-approved; Stage 2 context authoring done same day (run by hand 2026-09-11) — 9 modules, 42 competencies, 59 slides, 9 Hands-First activities, all sourced against the CVH Component Index. No Course Home page, Source Deck, or Bench Notes/Book yet — this is a proving-ground run for the PipelineConsole review-checkpoint mechanism, not a full course scaffold. | [[Curriculum — Control Valve Basics]] |
 
 ## Adding a course
 

@@ -10,19 +10,22 @@ updated: 2026-09-11
 
 # Curriculum Registry — Control Valve Basics
 
-> [!note] Status — Stage 1 (arc-scale origination) only, run by hand 2026-09-11
+> [!note] Status — Stage 1 approved, Stage 2 run by hand 2026-09-11
 > This is the invented competency catalogue Stage 1 in ORIGINATION mode, ARC
 > SCALE (`buildStage1OriginateArcPrompt`, `PipelineConsole/src/main/runners/
 > prompts.js`) is required to write when there is no pre-existing catalogue
 > to select from — see `curriculum-development.md`. Run by hand (proof-
-> discipline, matching the ch3-m2 origination test) as the Phase 1
-> proving-ground for the "Real reviewable outputs at Stage 1 and Stage 2"
-> review-checkpoint mechanism. **Scope: Stage 1 only.** Stage 2 (authoring
-> `t`/sources/template against these competencies) has not run — so, unlike
-> `Curriculum — IfE.md`, this file has no "Primitives" or "Placement edges"
-> section yet; neither exists until Stage 2 does. See `Stage 1 Outline —
-> Control Valve Basics — <chapterId>.md` (one per chapter) for the reviewable
-> arc cut itself; this file is the flat competency list that arc draws from.
+> discipline, matching the ch3-m2 origination test) as the proving-ground for
+> the "Real reviewable outputs at Stage 1 and Stage 2" review-checkpoint
+> mechanism. Franz approved Stage 1's arc cut; Stage 2 (authoring
+> `t`/sources/`template` against every competency below) ran immediately
+> after, same course, same day. **Still no "Primitives" or "Placement
+> edges" section, unlike `Curriculum — IfE.md`** — those record real SLIDE
+> assets (`asset: inline-table (slide ife-006)`), and Stage 3 (slide
+> composition) has not run; nothing exists yet to record. See `Stage 1
+> Outline — Control Valve Basics — <chapterId>.md` for the arc cut and
+> `Stage 2 Attachments — Control Valve Basics — <chapterId>.md` for the
+> sourcing-quality review (both one file per chapter).
 
 ## Scope and source
 
@@ -257,16 +260,21 @@ a future advanced course could pull from directly.
 | 4 | Control Valve Performance (`cvb-ch4`) | CVH ch2 | cvb-ch4-m1 (Variability, Deadband & Response), cvb-ch4-m2 (Economics & the Signature Series) |
 
 See each chapter's own `Stage 1 Outline — Control Valve Basics — <chapterId>.md`
-for the full reviewable arc cut — concept sequence, sourcing, and Hands-First
-activity placement, in taught order.
+for the reviewable arc cut (concept sequence, sourcing, Hands-First activity
+placement) and `Stage 2 Attachments — Control Valve Basics — <chapterId>.md`
+for the sourcing-quality review (every concept's `t` alongside what actually
+backs it) — both one file per chapter, in taught order.
 
 ## Not yet built
 
-- **Primitives / Placement edges** — Stage 2 has not run; no `t` (concept
-  prose), sources, or slide template has been chosen for any competency yet.
+- **Primitives / Placement edges** — these record real SLIDE assets
+  (`asset: inline-table (slide ife-006)`, per `Curriculum — IfE.md`'s own
+  registry); Stage 3 (slide composition) has not run, so there is no real
+  asset yet to record for any competency.
 - **A real schedule** — no `minutesTarget`/day count exists for this course;
   everything sits under one placeholder Day 1. See `course.json`'s own
   `_note` field.
-- **Slides, a Component Index cross-check inside Stage 2, and Stage 3
-  composition** — none of these have run. This registry and the four
-  chapter outline docs are Stage 1's complete output.
+- **Slides and Stage 3 composition** — not run. Stage 1 (arc cut, Franz-
+  approved) and Stage 2 (context authoring — `t`/sources/template for all 42
+  competencies, 59 slides, all strict completeness checks passing) are this
+  course's complete output so far.
