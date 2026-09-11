@@ -303,10 +303,92 @@
     }, "*");
   }
 
-  /* click-to-reveal for "Check Your Knowledge" answer overlays */
+  /* click-to-reveal for "Check Your Knowledge" answer overlays (legacy
+     one-column template) */
   document.addEventListener("click", function (e) {
     var s = e.target.closest ? e.target.closest(".slide") : null;
     if (s && s.querySelector(".reveal-answer")) s.classList.toggle("is-revealed");
+  });
+
+  /* ------------------------------------------------------------------
+     Canvas Phase 1 (2026-09-10) — generic, class/attribute-driven
+     interactivity for the four templates added from the unconstrained
+     Foundations preview review. Every handler below is scoped to a class
+     that no template predating this pass uses, so this is purely
+     additive: a slide built against any of the original eight templates
+     runs through this file completely unaffected. No per-slide <script>
+     is ever needed — Stage 3 (or a human) authors the markup shape
+     gallery.css documents for the role, and the behaviour below is
+     already wired to it, the same way the lightbox above already works
+     off .tpl-content img/svg with no per-slide script. */
+
+  /* role-check, interactive: click an option -> right/wrong in place,
+     then reveal the reasoning. Retry-friendly (click a different option
+     any number of times); "wrong" is a neutral dim, not a red/error
+     color the design system does not otherwise define. */
+  document.addEventListener("click", function (e) {
+    var li = e.target.closest ? e.target.closest(".slide--role-check .tpl-options li") : null;
+    if (!li) return;
+    var list = li.closest(".tpl-options");
+    Array.prototype.forEach.call(list.querySelectorAll("li"), function (o) {
+      o.classList.remove("is-right", "is-wrong");
+    });
+    li.classList.add(li.getAttribute("data-correct") === "true" ? "is-right" : "is-wrong");
+    var reveal = li.closest(".tpl-content").querySelector(".tpl-reveal");
+    if (reveal) reveal.classList.add("is-shown");
+  });
+
+  /* role-nomenclature-reveal: click an item -> open it, show its detail
+     pane (matched by position; each item's Nth position pairs with the
+     Nth detail pane, no id bookkeeping needed in the authored markup). */
+  document.addEventListener("click", function (e) {
+    var item = e.target.closest ? e.target.closest(".tpl-reveal-grid .tpl-reveal-item") : null;
+    if (!item) return;
+    var grid = item.closest(".tpl-reveal-grid");
+    var items = Array.prototype.slice.call(grid.querySelectorAll(".tpl-reveal-item"));
+    var idx = items.indexOf(item);
+    items.forEach(function (n) { n.classList.remove("is-open"); });
+    item.classList.add("is-open");
+    var detail = grid.parentElement.querySelector(".tpl-reveal-detail");
+    if (!detail) return;
+    var panes = detail.querySelectorAll(".tpl-reveal-detail__pane");
+    Array.prototype.forEach.call(panes, function (p, i) {
+      p.classList.toggle("is-active", i === idx);
+    });
+  });
+
+  /* role-procedure-worked: click a Show/Tell/Do tab -> swap the active
+     pane. Positional pairing, same as the reveal grid above. */
+  document.addEventListener("click", function (e) {
+    var tab = e.target.closest ? e.target.closest(".tpl-tabs .tpl-tab") : null;
+    if (!tab) return;
+    var tabs = tab.closest(".tpl-tabs");
+    var tabList = Array.prototype.slice.call(tabs.querySelectorAll(".tpl-tab"));
+    var idx = tabList.indexOf(tab);
+    tabList.forEach(function (t) { t.classList.remove("is-active"); });
+    tab.classList.add("is-active");
+    var panes = tabs.parentElement.querySelectorAll(".tpl-tabpane");
+    Array.prototype.forEach.call(panes, function (p, i) {
+      p.classList.toggle("is-active", i === idx);
+    });
+  });
+
+  /* role-application-case: click a filmstrip frame -> swap the active
+     detail pane. Positional pairing, same pattern as above. */
+  document.addEventListener("click", function (e) {
+    var frame = e.target.closest ? e.target.closest(".tpl-filmstrip .tpl-frame") : null;
+    if (!frame) return;
+    var strip = frame.closest(".tpl-filmstrip");
+    var frames = Array.prototype.slice.call(strip.querySelectorAll(".tpl-frame"));
+    var idx = frames.indexOf(frame);
+    frames.forEach(function (f) { f.classList.remove("is-active"); });
+    frame.classList.add("is-active");
+    var detail = strip.parentElement.querySelector(".tpl-frame-detail");
+    if (!detail) return;
+    var panes = detail.querySelectorAll(".tpl-frame-detail__pane");
+    Array.prototype.forEach.call(panes, function (p, i) {
+      p.classList.toggle("is-active", i === idx);
+    });
   });
 
   /* runner asks to show / hide speaker notes or the review ribbons */

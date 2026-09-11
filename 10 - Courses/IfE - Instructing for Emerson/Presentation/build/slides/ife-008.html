@@ -21,7 +21,12 @@
        prompt/options/reveal group and would overflow or misalign with
        three stacked — a real multi-item variant of this template is a
        template-gallery change, not a content edit, so left for a
-       separate pass rather than shipping unverified. -->
+       separate pass rather than shipping unverified.
+       data-correct="true" added 2026-09-10 (Canvas Phase 1 sync): the
+       shared slides.js now hides .tpl-reveal until an option is clicked,
+       showing right/wrong in place — without this attribute every option
+       would read as wrong, since none was marked. Content and the
+       revealed answer are otherwise unchanged. -->
   <article class="slide slide--role-check" data-slide="8" data-deck="ife">
     <h1 class="slide-title">Check Your Knowledge</h1>
     <div class="tpl-content">
@@ -29,7 +34,7 @@
       <ul class="tpl-options">
         <li>A.&nbsp;&nbsp;Context to Content</li>
         <li>B.&nbsp;&nbsp;Training Objectives</li>
-        <li>C.&nbsp;&nbsp;Student Preparation</li>
+        <li data-correct="true">C.&nbsp;&nbsp;Student Preparation</li>
         <li>D.&nbsp;&nbsp;Acuminating Instructor Skills</li>
       </ul>
       <p class="tpl-reveal">C. Student Preparation &mdash; preparing the learner and the environment before they arrive.</p>
