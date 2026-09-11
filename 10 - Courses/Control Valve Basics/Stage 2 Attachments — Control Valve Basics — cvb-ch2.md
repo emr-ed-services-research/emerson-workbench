@@ -103,17 +103,17 @@ updated: 2026-09-11
   - `cvh-cmp-cage-guiding-plug-guiding-cross-section` (current, Component Index — Control Valve Handbook ch3.md)
   - `cvh-cmp-adapter-reduced-flow-capacity` (current, Component Index — Control Valve Handbook ch3.md)
 
-**4. (mechanism · understand, page 32, slide--role-mechanism)** A field-reversible actuator can be converted between direct- and reverse-acting in the field, without a different casting; the same spring-and-diaphragm principle drives a rotary valve's diaphragm actuator, just converted to rotation through a lever.
+**4. (mechanism · understand, page 32, 33, slide--role-mechanism)** A field-reversible actuator can be converted between direct- and reverse-acting in the field, without a different casting, and the same spring-and-diaphragm principle drives a rotary valve's diaphragm actuator, just converted to rotation through a lever. A double-acting piston actuator uses supply pressure on both sides for higher thrust in either direction; its rotary equivalent, a scotch-yoke piston actuator, converts that same linear motion into rotation the piston way, just as the diaphragm actuator does through its lever.
   - `cvh-cmp-field-reversible-multi-spring-actuator` (current, Component Index — Control Valve Handbook ch3.md)
   - `cvh-cmp-diaphragm-actuator-rotary-valve` (current, Component Index — Control Valve Handbook ch3.md)
-
-**5. (mechanism · understand, page 33, slide--role-mechanism)** A double-acting piston actuator uses supply pressure on both sides for higher thrust in either direction; a scotch-yoke piston actuator converts that linear piston motion into rotation for a rotary valve, the piston equivalent of a diaphragm actuator's lever.
   - `cvh-cmp-double-acting-piston-actuator` (current, Component Index — Control Valve Handbook ch3.md)
   - `cvh-cmp-scotch-yoke-piston-actuator` (current, Component Index — Control Valve Handbook ch3.md)
 
-**6. (nomenclature · remember, page 34, slide--role-nomenclature)** A handwheel gives manual override on a sliding-stem or rotary actuator without pneumatic supply; a rack-and-pinion actuator is a compact pneumatic option for rotary valves; an electric actuator replaces pneumatic supply with a motor, for sites with no air system.
+**5. (nomenclature · remember, page 34, slide--role-nomenclature)** A handwheel gives manual override on a sliding-stem or rotary actuator without pneumatic supply; an electric actuator replaces pneumatic supply with a motor, for sites with no air system.
   - `cvh-cmp-manual-actuator-sliding-stem` (current, Component Index — Control Valve Handbook ch3.md)
   - `cvh-cmp-manual-actuator-rotary` (current, Component Index — Control Valve Handbook ch3.md)
-  - `cvh-cmp-rack-and-pinion-actuator` (current, Component Index — Control Valve Handbook ch3.md)
   - `cvh-cmp-electric-actuator-sliding-stem` (current, Component Index — Control Valve Handbook ch3.md)
   - `cvh-cmp-electric-actuator-rotary` (current, Component Index — Control Valve Handbook ch3.md)
+
+**6. (mechanism · understand, page 34, slide--role-mechanism)** A rack-and-pinion actuator is a compact, economical pneumatic option for rotary valves — but its backlash limits it to on/off service, not the precision continuous throttling a diaphragm or piston actuator handles.
+  - `cvh-cmp-rack-and-pinion-actuator` (current, Component Index — Control Valve Handbook ch3.md)

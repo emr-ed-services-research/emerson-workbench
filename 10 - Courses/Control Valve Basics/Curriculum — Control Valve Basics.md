@@ -25,7 +25,16 @@ updated: 2026-09-11
 > composition) has not run; nothing exists yet to record. See `Stage 1
 > Outline — Control Valve Basics — <chapterId>.md` for the arc cut and
 > `Stage 2 Attachments — Control Valve Basics — <chapterId>.md` for the
-> sourcing-quality review (both one file per chapter).
+> sourcing-quality review (both one file per chapter). **2026-09-11
+> addendum:** every competency below now carries a `competencyStatus`
+> (provisional/confirmed/revised) in `course.json`, from a full hand-audit
+> of all 50 pre-split concept rows — 49 confirmed clean, one
+> (`cvb.actuator.manual-electric`) genuinely needed correction and was
+> **split** (see its own note in the Competencies list below), not renamed.
+> A concept-granularity advisory (3+ cited components — a flag, never a
+> blocking failure) now also runs on every module. See
+> `Instructional Packet — Control Valve Basics — <chapterId>.md` (new, one
+> file per chapter) for the reviewable rendering of both.
 
 ## Scope and source
 
@@ -215,7 +224,25 @@ a future advanced course could pull from directly.
 
 - id: cvb.actuator.manual-electric
   bloom: remember
-  statement: Identify manual (sliding-stem and rotary), rack-and-pinion, and electric actuators.
+  statement: Identify manual (sliding-stem and rotary) and electric (sliding-stem and rotary) actuators.
+  # SPLIT 2026-09-11 (Franz): this statement originally also named a
+  # rack-and-pinion actuator — a real content/id mismatch caught by the
+  # provisional/confirmed/revised competency audit. Manual and electric are
+  # both actuation-POWER types; rack-and-pinion is a mechanism-design detail
+  # that happens to be pneumatic, a third power type this id never named —
+  # not the same axis, so folding it into a longer id would repeat the same
+  # bundling mistake under a different name. Split, not renamed: this id
+  # keeps manual+electric only; see cvb.actuator.rack-and-pinion below for
+  # the pneumatic content, cut on its own. Both post-split rows read as
+  # competencyStatus "confirmed" (a split, not a same-id correction).
+
+- id: cvb.actuator.rack-and-pinion
+  bloom: understand
+  statement: Explain why a rack-and-pinion actuator's backlash limits it to on/off rotary service rather than precision continuous throttling.
+  # NEW 2026-09-11 — split out of cvb.actuator.manual-electric (see its own
+  # note above). Content sourced fresh from cvh-cmp-rack-and-pinion-
+  # actuator's own "teaches" text (the backlash / on-off-vs-throttling
+  # point), not carried over as the original one-clause fragment.
 
 - id: cvb.accessory.positioner-mechanism
   bloom: understand
@@ -319,6 +346,9 @@ backs it) — both one file per chapter, in taught order.
   everything sits under one placeholder Day 1. See `course.json`'s own
   `_note` field.
 - **Slides and Stage 3 composition** — not run. Stage 1 (arc cut, Franz-
-  approved) and Stage 2 (context authoring — `t`/sources/template for all 42
-  competencies, 59 slides, all strict completeness checks passing) are this
+  approved) and Stage 2 (context authoring — `t`/sources/template for all 43
+  competencies (42 originally cut, plus `cvb.actuator.rack-and-pinion`, split
+  out 2026-09-11 from `cvb.actuator.manual-electric`), 59 slides unchanged
+  (the split shares its original slide, page 34, as an umbrella rather than
+  adding a new one), all strict completeness checks passing) are this
   course's complete output so far.
