@@ -264,6 +264,44 @@ technique) — never invented busywork, and never a fabricated example, fact,
 or quote. `sourceNote` names what grounds it, the same role `sourceNote`
 plays on a `keyConcepts` entry.
 
+#### `activities[]` is now a required, department-wide element, not an IfE-only addition
+
+**Promoted 2026-09-10**, per [[Hands-First Philosophy|Hands-First]],
+Educational Services' department-wide teaching philosophy: *any time content
+shows or explains something, it must be followed — once that explanation
+actually finishes — by a real doing-activity.* This is the schema field that
+requirement is authored into. See `Course Porting Pipeline.md` Working Rule
+5 for the full statement of the rule, including why it's a topic-completion
+judgment (Stage 1's own call, per module) rather than a slot count, a
+module boundary, or a competency change.
+
+**The bar for "genuinely strong, not a token check-the-box exercise"** —
+stated concretely, against two real activities already built and verified
+this session, not in the abstract:
+
+- **Real, not generic.** The Show-Tell-Do Worked Walkthrough
+  (`procedure-worked` template) doesn't ask a learner to practice an
+  abstract "hands-on skill" — it walks the actual 8-step Spring
+  Verification procedure from the real Fisher 657 Instruction Manual, cites
+  the real friction-correction failure mode from the same source, and has
+  the learner practice on real staged equipment. A generic "now try it
+  yourself" prompt with no real content behind it would fail this bar even
+  if it technically satisfies "an activity follows."
+- **Grounded in what's actually being taught, not a detour.** The Live
+  Walkthrough (`application-case` template) doesn't invent a practice
+  scenario — it's the real 1400 Chapter 3 deck, walked in the sequence a
+  real class would actually see it, using the real chapter-opening
+  objectives and the real Check-Your-Knowledge item already in that
+  chapter.
+- **A real cognitive demand, not a rehash.** Both activities require the
+  learner to do something with the material — perform a procedure, read
+  and apply a real document — not restate what a slide just showed them in
+  slightly different words.
+
+An activity that only reformats the preceding slide's own text into a
+"discussion prompt," or that could be satisfied by a learner who wasn't
+paying attention, does not meet this bar regardless of how it's labeled.
+
 ### Course additions
 
 ```yaml

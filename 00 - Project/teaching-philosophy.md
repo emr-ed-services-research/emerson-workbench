@@ -10,9 +10,25 @@ updated: 2026-09-04
 # Emerson Workbench — Teaching Philosophy and Design Principles
 
 > [!note] Status
-> This is **Franz's current working vision**, not yet department consensus.
-> Treat it as a living north-star document for design decisions until wider
-> department input happens. Revise it as that input comes in.
+> **Updated 2026-09-10:** this document is Emerson Workbench's own
+> operationalization of [[Hands-First Philosophy]] — Educational Services'
+> explicit, department-wide teaching philosophy, set by Steve and defined by
+> Franz. It is no longer a standalone working vision pending department
+> input; that input is Hands-First, and this document now implements it for
+> this pipeline specifically. Where the two ever appear to differ, Hands-First
+> is the authority.
+
+## Governed by Hands-First
+
+Everything below is this pipeline's own working-out of a single department-wide
+principle: **[[Hands-First Philosophy|Hands-First]]** — learning through
+action, student time focused on the actions they will actually perform. This
+document's own "doing-centered, not recall-centered" section (below) is not a
+separate idea arrived at independently; it is what Hands-First requires,
+applied to how Workbench cuts modules, writes objectives, and composes
+slides. Read Hands-First first for the vision and its rationale; read this
+document for how that vision becomes structure, schema, and pipeline
+behavior in Workbench specifically.
 
 ## What this curriculum teaches
 

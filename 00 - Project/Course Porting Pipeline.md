@@ -151,6 +151,35 @@ first surfaced them.
    pipeline is expected to draw on, not invent. See
    [[teaching-philosophy]] for the full statement.
 
+5. **A real doing-activity follows the natural completion of a topic — not a
+   slot count, a module boundary, or a competency change.** (Added
+   2026-09-10, from [[Hands-First Philosophy|Hands-First]], Educational
+   Services' department-wide teaching philosophy.) Whenever content shows or
+   explains something, a genuinely strong, compelling doing-activity follows
+   once that explanation actually finishes — never partway through it, and
+   never a token check-the-box exercise. "Topic" is Stage 1's own judgment
+   about what constitutes one coherent teaching unit; it is deliberately
+   **not** defined by a countable structural signal, because none exists that
+   survives contact with real content. Checked directly before writing this
+   rule, not assumed: a module-boundary proxy fails on IfE's Foundations
+   module, which covers several distinct topics (Five Tenets, Show-Tell-Do,
+   reading a training solution, objectives) in one module — a rule keyed to
+   module boundaries would never fire inside it. A competency-change proxy
+   fails in the opposite direction on 14101's Fisher 657 actuator topic,
+   which genuinely spans several separate competencies (identify, bench-set,
+   mount, service) that must run **uninterrupted** as one continuous arc — a
+   rule keyed to competency changes would fire repeatedly mid-topic, breaking
+   exactly the content this rule exists to protect. See
+   [[curriculum-development]] "Module additions — `activities[]`" for the
+   schema and what counts as a genuinely strong activity, not a token one.
+   **Enforcement is human review for now**, at the same tier as callout
+   accuracy and the polish bar in the Part 4 pre-send checklist below — not a
+   mechanical check. A real automated check would need Stage 1 to author an
+   explicit topic-boundary marker (e.g. a `topicEnd` flag) as part of the
+   same arc-cutting judgment it already makes implicitly; that schema
+   addition is deliberately not built, pending a future decision to actually
+   want this mechanically checkable.
+
 ## Where we are (updated 2026-08-31)
 
 - **14101 fully converted** — all 418 slides on the component-extraction model
