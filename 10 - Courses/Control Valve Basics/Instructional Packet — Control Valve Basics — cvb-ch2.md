@@ -31,7 +31,7 @@ updated: 2026-09-11
 **Objective:** Distinguish globe and rotary valve body styles by construction and typical service, and identify the two standard end-connection types.
 
 **1. cvb.bodystyle.globe-variants** (introduces · confirmed)
-role: contrast · level: understand · pages: 15
+role: application · level: understand · pages: 15
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -42,7 +42,7 @@ role: contrast · level: understand · pages: 15
   - `cvh-cmp-single-ported-globe-valve-body` (current, Component Index — Control Valve Handbook ch3.md) — "A post-guided, single-ported globe-style control valve body — one of the more popular post-guided styles, widely used in process control applications, particularly NPS 1-4 (DN 20-100). Normal flow direction is most often up through the seat ring."
   - `cvh-cmp-cage-style-trim-balanced-plug-soft-seat` (current, Component Index — Control Valve Handbook ch3.md) — "Cage-style trim: the cage provides valve plug guiding, seat ring retention, and flow characterization. In balanced designs (shown here), downstream pressure acts on both the top and bottom sides of the valve plug, nullifying most of the static unbalanced force — this permits operation with a smaller actuator than an unbalanced valve of similar capacity would need. The figure also shows a soft (non-metal) seat."
   - `cvh-cmp-double-ported-globe-valve-body-reverse-acting` (current, Component Index — Control Valve Handbook ch3.md) — "A double-ported globe-style valve body, captioned "reverse-acting" and shown (per the source's own body text) assembled for push-down-to-open valve plug action — double-ported designs can be assembled either push-down-to-open or push-down-to-close. Dynamic force on the plug tends to be balanced, since flow tends to open one port and close the other, which can permit a smaller actuator than an equivalent single-ported unbalanced body. Metal-to-metal seating on these bodies usually provides Class II shutoff (Class III also possible). The industry has predominantly moved away from double-ported designs; they were historically used in refineries on highly viscous fluids or where contaminant/deposit buildup on the trim was a concern."
-  - template: `slide--role-contrast` — **Template mismatch, not fixed:** three distinct globe body constructions (single-ported, double-ported/reverse-acting, cage-style balanced-plug), each with its own real figure, forced into contrast's two-panel shape. Same problem as the actuator-types and closure-members concepts above — recommend `application-case`, re-tagging the role from `contrast` to `application`.
+  - template: `slide--role-application-case` — Three distinct globe body constructions (single-ported, double-ported/reverse-acting, cage-style balanced-plug), each with its own real figure, now shown as application-case's filmstrip instead of forced into contrast's two-panel shape. Re-tagged from contrast to application per the 2026-09-11 template-fit review.
   - slideCount: 1 (stage2)
   - pages: 15
 
@@ -59,7 +59,7 @@ role: application · level: understand · pages: 16
   - `cvh-cmp-flanged-angle-valve-body` (current, Component Index — Control Valve Handbook ch3.md) — "The angle-style control valve body: a single-port, cage-style-construction body commonly used in boiler feedwater and heater drain service and in piping schemes where space is at a premium, where the valve can also serve as an elbow. Other variants may have expanded outlet connections, restricted trim, or outlet liners for erosion, flashing, or cavitation damage reduction."
   - `cvh-cmp-bar-stock-valve-body` (current, Component Index — Control Valve Handbook ch3.md) — "A bar-stock single-port valve body — the alloy-material alternative to a casting or forging, used when exotic corrosion-resistant metal alloys are required and a bar-stock body proves less expensive than a cast one. A polymer-lined variant may also be used for corrosive service."
   - `cvh-cmp-three-way-globe-valve` (current, Component Index — Control Valve Handbook ch1.md) — "A three-way globe valve: a single body with three flow connections, combining or diverting flow rather than the simple two-port throttling shown in the earlier sliding-stem figures."
-  - template: `slide--role-application` — **Template mismatch, not fixed:** three distinct body-style photos (flanged angle, bar-stock, three-way), each independently described, don't fit base application's single-fig-plus-takeaway shape. Recommend `application-case` (filmstrip, one frame per body style) instead — already the right role, just the wrong variant within it.
+  - template: `slide--role-application-case` — Three distinct body-style photos (flanged angle, bar-stock, three-way), each independently described, now shown as application-case's filmstrip — one frame per body style — instead of base application's single-fig shape. Already the right role; only the template variant changed.
   - slideCount: 1 (stage2)
   - pages: 16
 
@@ -84,17 +84,13 @@ role: contrast · level: understand · pages: 17
 **4. cvb.rotary.closure-members** (develops · confirmed)
 role: contrast · level: understand · pages: 18
 
-> [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
-
 - **Primitive** — orientation · introductory
 
   A full-port ball valve (on trunnion mounts, for larger sizes) gives an unrestricted straight-through bore when open; an eccentric plug swings out of the seat on an off-center shaft, the same wear-reducing idea a butterfly's offset shaft uses.
 
-  - `cvh-cmp-segmented-v-notch-ball` (current, Component Index — Control Valve Handbook ch3.md) — "Segmented ball valve construction: similar to a conventional ball valve, but with a patented, contoured V-notch segment in the ball, producing an equal-percentage flow characteristic. Good rangeability, control, and shutoff capability; used in paper, chemical, sewage treatment, power, and petroleum refining industries. The ball stays in contact with the seal during rotation, producing a shearing effect that minimizes clogging — suited to erosive/viscous fluids, paper stock, or slurries with entrained solids or fibers."
   - `cvh-cmp-eccentric-plug-valve-body` (current, Component Index — Control Valve Handbook ch3.md) — "Eccentric plug valve body construction: the rugged body/trim design handles temperatures to 427°C (800°F) and shutoff pressure drops to 1500 psi (103 bar). The path of the eccentric disk minimizes contact with the seat ring on opening, reducing seat wear and friction, prolonging seat life, and improving throttling performance. Self-centering seat ring and rugged disk allow forward or reverse flow with tight shutoff in either direction; disk/seat ring/retainer are available in hardened materials including ceramics and carbides for erosion resistance. Suits erosive, coking, and other hard-to-handle fluids in mining, petroleum refining, power, and pulp/paper industries."
-  - `cvh-cmp-full-port-ball-control-valve` (current, Component Index — Control Valve Handbook ch3.md) — "A full-port ball control valve — as a throttling device it must rotate 15 to 20 degrees in the wide-open position before absorbing significant energy from the system (additional process control lag versus a reduced- bore or attenuated device, which absorbs a small amount of pressure wide open). Full-port ball valves present little or no restriction to flow and allow for pigging when not attenuated."
   - `cvh-cmp-full-port-ball-valve-trunnion` (current, Component Index — Control Valve Handbook ch3.md) — "Special-design, three-piece trunnion-mounted, full-bore control valve for automated control in bypass, batch, monitor, and emergency shutoff service applications — presents little or no flow restriction, and is fire tested and certified for API 6 and 6FA."
-  - template: `slide--role-contrast` — Two-way contrast (full-port trunnion-mounted ball vs. eccentric plug) fits the panel shape using `cvh-cmp-full-port-ball-valve-trunnion` and `cvh-cmp-eccentric-plug-valve-body` as the two panel figures. Flagging, not fixing: `cvh-cmp-segmented-v-notch-ball` is cited here but never mentioned in this concept's `t`, and `cvh-cmp-full-port-ball-control-valve` duplicates the same ball-valve side as the trunnion figure — both look like leftover/stray citations, worth a sourcing cleanup pass separate from this rationale.
+  - template: `slide--role-contrast` — Two-way contrast (full-port trunnion-mounted ball vs. eccentric plug) fits the panel shape using cvh-cmp-full-port-ball-valve-trunnion and cvh-cmp-eccentric-plug-valve-body as the two panel figures. Sourcing cleanup applied 2026-09-11: dropped cvh-cmp-segmented-v-notch-ball (never mentioned in this row's t) and cvh-cmp-full-port-ball-control-valve (duplicated the same ball-valve side as the trunnion figure) - both were stray citations, not a second real panel's worth of content.
   - slideCount: 1 (stage2)
   - pages: 18
 
@@ -113,7 +109,7 @@ role: application · level: apply · pages: 19
   - `cvh-cmp-ball-valve-cavitation-noise-options` (current, Component Index — Control Valve Handbook ch3.md) — "Ball valve trim options for moderate noise and cavitation protection — Emerson's additional options for segmented ball control valves used in erosive/viscous/slurry service."
   - `cvh-cmp-multi-port-flow-selector-valve` (current, Component Index — Control Valve Handbook ch3.md) — "A multi-port flow selector valve: connects to eight input lines, allowing isolation, diversion, and testing of fluid from any individual line through a rotating plug, while the remaining seven lines continue flowing to a common group outlet — enables testing/diversion of one line without disrupting production on the others. Four main components: body, bonnet, rotor plug, and actuator."
   - `cvh-cmp-pressure-assisted-seal-configuration` (current, Component Index — Control Valve Handbook ch3.md) — "A bi-directional pressure-assisted seal ring configuration, offered as an eccentric plug valve option to provide exceptionally tight shutoff."
-  - template: `slide--role-application` — **Template mismatch, not fixed:** three functionally distinct special-purpose options (anti-cavitation/low-noise trim, a multi-port flow-selector body, a pressure-assisted seal), each its own real figure, don't fit base application's single-fig shape. Recommend `application-case`, same fix as `cvb.intro.body-style-variants` above — already the right role.
+  - template: `slide--role-application-case` — Three functionally distinct special-purpose options (anti-cavitation/low-noise trim, a multi-port flow-selector body, a pressure-assisted seal), each its own real figure, now shown as application-case's filmstrip instead of base application's single-fig shape. Already the right role; only the template variant changed.
   - slideCount: 1 (stage2)
   - pages: 19
 

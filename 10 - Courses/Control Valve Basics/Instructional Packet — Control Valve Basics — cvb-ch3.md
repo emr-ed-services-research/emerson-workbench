@@ -71,7 +71,7 @@ role: nomenclature · level: remember · pages: 38
 
 
 **4. cvb.accessory.ip-transducer** (introduces · confirmed)
-role: contrast · level: understand · pages: 39
+role: mechanism · level: understand · pages: 39
 
 - **Primitive** — orientation · introductory
 
@@ -79,7 +79,7 @@ role: contrast · level: understand · pages: 39
 
   - `cvh-cmp-4.5` (verified, Component Index — Control Valve Handbook ch4.md) — "Deflector/nozzle pilot-stage detail inside an I/P transducer — the two-nozzle arrangement and deflector bar that establishes pilot pressure"
   - `cvh-cmp-4.6` (verified, Component Index — Control Valve Handbook ch4.md) — "I/P transducer mounted on a control valve — the physical, no-feedback alternative to a positioner for applications not requiring high positioning accuracy"
-  - template: `slide--role-contrast` — **Template mismatch, not fixed:** the concept's contrast is conceptual (an I/P transducer vs. a positioner, covered two slides earlier), but both cited figures are views of the SAME device (a pilot-stage detail crop and a mounted-unit photo) — there's no second, positioner-side figure to fill a real second panel. This reads more naturally as `mechanism` (detail figure, then the assembled unit, the same schematic-then-hardware sequence used for the analog I/P positioner two slides earlier) than as a two-panel contrast with nothing to put in panel two.
+  - template: `slide--role-mechanism` — Two figures in natural teaching order — a pilot-stage detail crop, then the assembled unit mounted on a valve — the same schematic-then-hardware sequence mechanism's shape already carries for the analog I/P positioner two slides earlier. Re-tagged from contrast to mechanism per the 2026-09-11 template-fit review, since both cited figures are views of the same device, not two different things for a two-panel contrast.
   - slideCount: 1 (stage2)
   - pages: 39
 
@@ -139,25 +139,35 @@ role: contrast · level: understand · pages: 43
 **3. cvb.safety.solenoid-valve-types** (introduces · confirmed)
 role: contrast · level: understand · pages: 44
 
-> [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
-
 - **Primitive** — orientation · introductory
 
-  A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol). Separately, a direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.
+  A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol).
 
   - `cvh-cmp-4.14` (verified, Component Index — Control Valve Handbook ch4.md) — "Spring-return (single-acting) actuator represented in a 3-port SOV schematic symbol, used within SIS architecture diagrams"
   - `cvh-cmp-4.15` (verified, Component Index — Control Valve Handbook ch4.md) — "Double-acting actuator represented in a 4-port SOV schematic symbol, contrasted with the 3-port spring-return symbol in Figure 4.14"
-  - `cvh-cmp-4.17` (verified, Component Index — Control Valve Handbook ch4.md) — "Direct-acting solenoid valve assembly — physical construction of the simpler of the two SOV actuation types"
-  - `cvh-cmp-4.18` (verified, Component Index — Control Valve Handbook ch4.md) — "Pilot-operated solenoid valve — physical construction of the higher-capacity SOV actuation type, contrasted with the direct-acting design in Figure 4.17"
-  - template: `slide--role-contrast` — **Template mismatch, not fixed:** this concept bundles two INDEPENDENT classification axes (spring-return vs. double-acting; separately, direct-acting vs. pilot-operated) into one slot — contrast's shape holds one two-way split, not two separate two-way splits at once. This is the same bundling the granularity advisory already flags for this concept (4 sources). Recommend splitting into two concepts, one per axis, each a clean two-way `contrast` — not a template swap within this concept, since neither half alone is too big for contrast's real shape.
+  - template: `slide--role-contrast` — Two-way contrast (spring-return/single-acting vs. double-acting), each with its own schematic symbol (3-port vs. 4-port) — fits contrast's two-panel shape exactly, once split from the actuation-type axis this id used to also carry.
   - slideCount: 1 (stage2)
   - pages: 44
 
 
+**4. cvb.safety.solenoid-actuation-type** (introduces · confirmed)
+role: contrast · level: understand · pages: 45
+
+- **Primitive** — orientation · introductory
+
+  A direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.
+
+  - `cvh-cmp-4.17` (verified, Component Index — Control Valve Handbook ch4.md) — "Direct-acting solenoid valve assembly — physical construction of the simpler of the two SOV actuation types"
+  - `cvh-cmp-4.18` (verified, Component Index — Control Valve Handbook ch4.md) — "Pilot-operated solenoid valve — physical construction of the higher-capacity SOV actuation type, contrasted with the direct-acting design in Figure 4.17"
+  - template: `slide--role-contrast` — Two-way contrast (direct-acting vs. pilot-operated SOV actuation), each with its own physical-construction photo — fits contrast's two-panel shape exactly, split out of cvb.safety.solenoid-valve-types (which used to bundle this axis with the separate spring-return/double-acting drive-type axis).
+  - slideCount: 1 (stage2)
+  - pages: 45
+
+
 **→ Activity — SOV Actuation ID** small-group · 15 min — Given labelled photos of a direct-acting and a pilot-operated solenoid valve, plus the 3-port/4-port schematic symbols, identify actuation type and port count for each.
 
-**4. cvb.safety.voting-architecture** (introduces · confirmed)
-role: application · level: understand · pages: 45
+**5. cvb.safety.voting-architecture** (introduces · confirmed)
+role: application · level: understand · pages: 46
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -168,13 +178,13 @@ role: application · level: understand · pages: 45
   - `cvh-cmp-4.16` (verified, Component Index — Control Valve Handbook ch4.md) — "Solenoid valve and digital valve controller combined in a 1oo2 ("one-out-of-two") voting configuration for a safety instrumented system"
   - `cvh-cmp-4.19` (verified, Component Index — Control Valve Handbook ch4.md) — "1oo2 solenoid-operated valve architecture — full voting-system schematic showing how either of two SOVs can independently trip the safety function"
   - `cvh-cmp-4.20` (verified, Component Index — Control Valve Handbook ch4.md) — "2oo2 solenoid-operated valve architecture — full voting-system schematic requiring both SOVs to trip before the safety function activates, contrasted with the 1oo2 architecture in Figure 4.19"
-  - template: `slide--role-application` — **Template mismatch, not fixed:** two distinct voting architectures (1oo2, 2oo2), each with its own full schematic and its own tradeoff (nuisance-trip risk vs. slower response), don't fit base application's one-fig shape. Recommend `application-case` (two frames, one per architecture) — already the right role, just the wrong variant, the same fix as `cvb.intro.body-style-variants` and `cvb.bodystyle.special-purpose` above.
+  - template: `slide--role-application-case` — Two distinct voting architectures (1oo2, 2oo2), each with its own full schematic and its own tradeoff, now shown as application-case's two-frame filmstrip instead of base application's single-fig shape. Already the right role; only the template variant changed.
   - slideCount: 1 (stage2)
-  - pages: 45
+  - pages: 46
 
 
-**5. cvb.safety.trip-and-manual-override** (introduces · confirmed)
-role: nomenclature · level: remember · pages: 46
+**6. cvb.safety.trip-and-manual-override** (introduces · confirmed)
+role: nomenclature · level: remember · pages: 47
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -188,7 +198,7 @@ role: nomenclature · level: remember · pages: 46
   - `cvh-cmp-4.27` (verified, Component Index — Control Valve Handbook ch4.md) — "Actuator fitted with a top-mounted handwheel, contrasted with the side-mounted arrangement in Figure 4.26"
   - template: `slide--role-nomenclature` — Four figures resolve into three named items — trip valve, switching valve, and handwheel override (shown in its two mounting variants, side and top) — nomenclature's labelled-list shape holds three named things under one slide comfortably, the handwheel's two photos serving as one list entry's illustration, not two separate items.
   - slideCount: 1 (stage2)
-  - pages: 46
+  - pages: 47
 
 
-**Check** — pages 47 (composed by Stage 3, not authored here)
+**Check** — pages 48 (composed by Stage 3, not authored here)

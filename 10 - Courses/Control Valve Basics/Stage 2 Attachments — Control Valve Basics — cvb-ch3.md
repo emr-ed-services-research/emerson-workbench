@@ -35,7 +35,7 @@ updated: 2026-09-11
 **3. (nomenclature · remember, page 38, slide--role-nomenclature)** A digital valve controller replaces the positioner's mechanical feedback linkage with a microprocessor — same job (drive the valve to command), added diagnostics.
   - `cvh-cmp-4.4` (verified, Component Index — Control Valve Handbook ch4.md) — "Digital valve controller mounted on an assembled control valve — the physical instrument referenced by §4.2.3's description of microprocessor-based positioning"
 
-**4. (contrast · understand, page 39, slide--role-contrast)** An I/P transducer converts a current signal to a pneumatic one with no position feedback at all — simpler and cheaper than a positioner, appropriate where high positioning accuracy isn't required.
+**4. (mechanism · understand, page 39, slide--role-mechanism)** An I/P transducer converts a current signal to a pneumatic one with no position feedback at all — simpler and cheaper than a positioner, appropriate where high positioning accuracy isn't required.
   - `cvh-cmp-4.5` (verified, Component Index — Control Valve Handbook ch4.md) — "Deflector/nozzle pilot-stage detail inside an I/P transducer — the two-nozzle arrangement and deflector bar that establishes pilot pressure"
   - `cvh-cmp-4.6` (verified, Component Index — Control Valve Handbook ch4.md) — "I/P transducer mounted on a control valve — the physical, no-feedback alternative to a positioner for applications not requiring high positioning accuracy"
 
@@ -55,18 +55,20 @@ updated: 2026-09-11
 **2. (contrast · understand, page 43, slide--role-contrast)** A position transmitter reports actual valve position back to the control system — 4-20 mA if wired, a 0-100% digital signal if wireless — so the control room can see where the valve really is, not just where it was told to go.
   - `cvh-cmp-4.13` (verified, Component Index — Control Valve Handbook ch4.md) — "Wireless position monitor mounted on an actuator — a position transmitter reporting a 0–100% digital signal in a wireless installation, vs. a 4–20 mA signal in a wired one"
 
-**3. (contrast · understand, page 44, slide--role-contrast)** A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol). Separately, a direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.
+**3. (contrast · understand, page 44, slide--role-contrast)** A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol).
   - `cvh-cmp-4.14` (verified, Component Index — Control Valve Handbook ch4.md) — "Spring-return (single-acting) actuator represented in a 3-port SOV schematic symbol, used within SIS architecture diagrams"
   - `cvh-cmp-4.15` (verified, Component Index — Control Valve Handbook ch4.md) — "Double-acting actuator represented in a 4-port SOV schematic symbol, contrasted with the 3-port spring-return symbol in Figure 4.14"
+
+**4. (contrast · understand, page 45, slide--role-contrast)** A direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.
   - `cvh-cmp-4.17` (verified, Component Index — Control Valve Handbook ch4.md) — "Direct-acting solenoid valve assembly — physical construction of the simpler of the two SOV actuation types"
   - `cvh-cmp-4.18` (verified, Component Index — Control Valve Handbook ch4.md) — "Pilot-operated solenoid valve — physical construction of the higher-capacity SOV actuation type, contrasted with the direct-acting design in Figure 4.17"
 
-**4. (application · understand, page 45, slide--role-application)** A 1oo2 (one-out-of-two) architecture trips if either of two SOVs sees a demand — favoring safety, more nuisance trips. A 2oo2 architecture needs both to agree — favoring uptime, at the cost of a slower response to a real single-SOV failure.
+**5. (application · understand, page 46, slide--role-application-case)** A 1oo2 (one-out-of-two) architecture trips if either of two SOVs sees a demand — favoring safety, more nuisance trips. A 2oo2 architecture needs both to agree — favoring uptime, at the cost of a slower response to a real single-SOV failure.
   - `cvh-cmp-4.16` (verified, Component Index — Control Valve Handbook ch4.md) — "Solenoid valve and digital valve controller combined in a 1oo2 ("one-out-of-two") voting configuration for a safety instrumented system"
   - `cvh-cmp-4.19` (verified, Component Index — Control Valve Handbook ch4.md) — "1oo2 solenoid-operated valve architecture — full voting-system schematic showing how either of two SOVs can independently trip the safety function"
   - `cvh-cmp-4.20` (verified, Component Index — Control Valve Handbook ch4.md) — "2oo2 solenoid-operated valve architecture — full voting-system schematic requiring both SOVs to trip before the safety function activates, contrasted with the 1oo2 architecture in Figure 4.19"
 
-**5. (nomenclature · remember, page 46, slide--role-nomenclature)** A trip valve shows a distinct physical state once a safety system actually trips it; a switching valve routes pneumatic signal for control logic rather than process flow. A side- or top-mounted handwheel lets a technician manually stroke an actuator with no air supply at all.
+**6. (nomenclature · remember, page 47, slide--role-nomenclature)** A trip valve shows a distinct physical state once a safety system actually trips it; a switching valve routes pneumatic signal for control logic rather than process flow. A side- or top-mounted handwheel lets a technician manually stroke an actuator with no air supply at all.
   - `cvh-cmp-4.24` (verified, Component Index — Control Valve Handbook ch4.md) — "Trip valve shown in its tripped condition — the physical valve state that results when a safety trip system activates"
   - `cvh-cmp-4.25` (verified, Component Index — Control Valve Handbook ch4.md) — "Typical three-way switching valve"
   - `cvh-cmp-4.26` (verified, Component Index — Control Valve Handbook ch4.md) — "Actuator fitted with a side-mounted handwheel — a manual-override mechanism for manipulating the actuator without pneumatic supply"

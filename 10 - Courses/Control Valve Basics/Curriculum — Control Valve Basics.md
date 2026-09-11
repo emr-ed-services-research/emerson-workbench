@@ -276,7 +276,28 @@ a future advanced course could pull from directly.
 
 - id: cvb.safety.solenoid-valve-types
   bloom: understand
-  statement: Distinguish spring-return vs. double-acting, and direct-acting vs. pilot-operated, solenoid-operated valve types.
+  statement: Distinguish spring-return vs. double-acting solenoid-operated valve drive types.
+  # SPLIT 2026-09-11 (Franz, template-fit fixes batch): this statement
+  # originally also covered direct-acting vs. pilot-operated actuation -
+  # a real content/template mismatch caught by the templateRationale
+  # authoring pass. Spring-return/double-acting and direct-acting/pilot-
+  # operated are two INDEPENDENT classification axes bundled into one
+  # contrast slot, which contrast's fixed two-panel shape can't actually
+  # hold at once (also the same concept the granularity advisory already
+  # flagged for 4 sources). Split, not renamed: this id keeps the drive-
+  # type axis only; see cvb.safety.solenoid-actuation-type below for the
+  # actuation-type axis, cut on its own. Both post-split rows read as
+  # competencyStatus "confirmed" (a split, not a same-id correction).
+
+- id: cvb.safety.solenoid-actuation-type
+  bloom: understand
+  statement: Distinguish direct-acting vs. pilot-operated solenoid valve actuation types.
+  # NEW 2026-09-11 - split out of cvb.safety.solenoid-valve-types (see its
+  # own note above). Given its own new slide (page 45, cvb-ch3-m2) rather
+  # than sharing a page with the drive-type axis, since these are two
+  # independent SIS classification schemes, not compatible content that
+  # reasonably shares one slide the way the manual-electric/rack-and-
+  # pinion umbrella does.
 
 - id: cvb.safety.voting-architecture
   bloom: understand
@@ -346,9 +367,20 @@ backs it) — both one file per chapter, in taught order.
   everything sits under one placeholder Day 1. See `course.json`'s own
   `_note` field.
 - **Slides and Stage 3 composition** — not run. Stage 1 (arc cut, Franz-
-  approved) and Stage 2 (context authoring — `t`/sources/template for all 43
+  approved) and Stage 2 (context authoring — `t`/sources/template for all 44
   competencies (42 originally cut, plus `cvb.actuator.rack-and-pinion`, split
-  out 2026-09-11 from `cvb.actuator.manual-electric`), 59 slides unchanged
-  (the split shares its original slide, page 34, as an umbrella rather than
-  adding a new one), all strict completeness checks passing) are this
-  course's complete output so far.
+  out 2026-09-11 from `cvb.actuator.manual-electric` sharing its original
+  slide as an umbrella; plus `cvb.safety.solenoid-actuation-type`, split the
+  same day from `cvb.safety.solenoid-valve-types` onto its OWN new slide),
+  60 slides (was 59 — the solenoid split added one, unlike the
+  manual-electric split which didn't), all strict completeness checks
+  passing) are this course's complete output so far. Migrated to the
+  `primitives[]` shape 2026-09-11; every primitive's `templateRationale` is
+  real, content-grounded prose (not the mechanically-derived placeholder
+  the migration first wrote), reviewed against its actual `t`/sources —
+  8 of the 50 original primitives had a genuine template/role mismatch,
+  flagged and fixed the same day (see this file's own competency notes for
+  `cvb.intro.actuator-types`, `cvb.rotary.closure-members`,
+  `cvb.bodystyle.globe-variants`, `cvb.intro.body-style-variants`,
+  `cvb.bodystyle.special-purpose`, `cvb.safety.voting-architecture`,
+  `cvb.accessory.ip-transducer`, and the solenoid split above).

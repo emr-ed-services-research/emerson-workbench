@@ -101,7 +101,7 @@ role: contrast · level: understand · pages: 5
 
 
 **6. cvb.intro.actuator-types** (introduces · confirmed)
-role: contrast · level: understand · pages: 6
+role: application · level: understand · pages: 6
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -112,7 +112,7 @@ role: contrast · level: understand · pages: 6
   - `cvh-cmp-direct-acting-actuator` (current, Component Index — Control Valve Handbook ch1.md) — "A direct-acting spring-and-diaphragm actuator, fully labelled: diaphragm casing, diaphragm, diaphragm plate, actuator spring, actuator stem, spring seat, spring adjuster, yoke, stem connector, valve stem, travel indicator disk, travel scale — the baseline actuator construction Figure 1.12's reverse-acting variant is built from and contrasted against."
   - `cvh-cmp-reverse-acting-actuator` (current, Component Index — Control Valve Handbook ch1.md) — "A reverse-acting spring-and-diaphragm actuator, fully labelled: diaphragm casing, diaphragm, diaphragm plate, seal bushing and O-rings, actuator spring, actuator stem, spring seat, spring adjuster, yoke, stem connector, travel indicator disk, valve stem, integrated handwheel mounting bosses, integral air passage, integral DVC6200 mounting pad, travel scale — a more detailed 16-part companion to the direct-acting design in Figure 1.9, with action reversed and digital-valve-controller mounting features called out."
   - `cvh-cmp-piston-actuator` (current, Component Index — Control Valve Handbook ch1.md) — "A piston-type actuator, labelled: loading pressure connection, piston, piston seal, cylinder, cylinder closure seal, seal bushing, stem connector — the higher-thrust, higher-stiffness alternative to the spring-and-diaphragm design for high-pressure-drop or fast-stroking service."
-  - template: `slide--role-contrast` — **Template mismatch, not fixed:** the content is a genuine three-way contrast (direct-acting vs. reverse-acting vs. piston actuator, each with its own fully-labelled figure), but contrast's shape is fixed at exactly two panels split by one divider — there is no three-way contrast variant in the Template Gallery. Recommend `application`-role's `application-case` (filmstrip, one frame per real actuator type) instead, which is built for exactly this shape; that would also mean re-tagging this concept's role from `contrast` to `application`, not just swapping a template class within the same role.
+  - template: `slide--role-application-case` — Three distinct actuator constructions, each fully labelled (direct-acting, reverse-acting, piston), now shown as application-case's filmstrip — one frame per actuator type, each carrying its own real detail — instead of forced into contrast's two-panel shape. Re-tagged from contrast to application per the 2026-09-11 template-fit review.
   - slideCount: 1 (stage2)
   - pages: 6
 
@@ -139,7 +139,7 @@ role: nomenclature · level: understand · pages: 8
 
 
 **2. cvb.rotary.closure-members** (introduces · confirmed)
-role: contrast · level: understand · pages: 9
+role: application · level: understand · pages: 9
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -150,7 +150,7 @@ role: contrast · level: understand · pages: 9
   - `cvh-cmp-segmented-ball` (current, Component Index — Control Valve Handbook ch1.md) — "A segmented-ball closure member: a flanged, shaft-mounted ball segment — one of three rotary closure-member types the section introduces (segmented ball, V-notch ball, eccentric disk)."
   - `cvh-cmp-v-notch-ball` (current, Component Index — Control Valve Handbook ch1.md) — "A V-notch ball closure member: a ball with a contoured V-shaped notch cut into it, mounted on a shaft — the rotary closure-member type shaped for improved rangeability and throttling control over a plain segmented ball."
   - `cvh-cmp-eccentric-disk-valve` (current, Component Index — Control Valve Handbook ch1.md) — "An eccentric-disk (butterfly-style) rotary valve with actuator mounted — the disk-type closure member rounding out the section's three rotary closure-member types."
-  - template: `slide--role-contrast` — **Template mismatch, not fixed:** three genuinely distinct closure-member types (segmented ball, V-notch ball, eccentric disk), each with its own real photo, forced into contrast's fixed two-panel shape. Same shape problem as `cvb.intro.actuator-types` above — recommend `application-case` (filmstrip, one frame per closure-member type), which means re-tagging the role from `contrast` to `application`.
+  - template: `slide--role-application-case` — Three distinct rotary closure-member types (segmented ball, V-notch ball, eccentric disk), each with its own real photo, now shown as application-case's filmstrip — one frame per type — instead of forced into contrast's two-panel shape. Re-tagged from contrast to application per the 2026-09-11 template-fit review.
   - slideCount: 1 (stage2)
   - pages: 9
 

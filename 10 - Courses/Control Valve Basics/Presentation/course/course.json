@@ -15,7 +15,7 @@
   },
   "slideBase": "../build/slides/",
   "slidePrefix": "cvb-",
-  "_note": "Stage 1 (arc-scale origination, run by hand 2026-09-11) approved by Franz; Stage 2 (author the context layer) run by hand 2026-09-11 immediately after, same proving-ground course for the review-checkpoint mechanism. Scope: Steve's four requested Control Valve Handbook chapters (1, 3, 4, 2, in that teaching order), not the whole 15-chapter book. Course-chapter ids (cvb-ch1..cvb-ch4) are this course's own teaching order, not CVH's chapter numbers — cvb-ch2 = CVH ch3, cvb-ch3 = CVH ch4, cvb-ch4 = CVH ch2; see each chapter's own '_source' note. No real schedule exists yet — everything sits under one placeholder Day 1. DOMAIN/AUDIENCE-STAGE CORRECTED TWICE, 2026-09-11 — real history, not just the final state: (1) domain was first set to an invented fourth domain, 'product-literacy', mid-Stage-1-authoring, with no prior confirmation — a Bloom-level/verb-menu observation (this course's objectives all sit at remember/understand) misread as a domain problem. (2) Per Franz's authoritative three-domain definition, that was corrected to domain: ['maintenance','instrumentation','selection-sizing'] — genuinely broad across all three — which was a real improvement but STILL WRONG: this course's actual audience is people brand new to the industry, not yet assigned to any of the three roles at all, which is a different claim than 'all three at once.' Corrected again to the real fix: 'domain' is unset entirely (the truthful state — no role assigned yet, not 'every role'), and a new, third axis, 'audienceStage': 'orientation', names this — distinct from domain (which role) and tier (how deep), never forced into either (see instructional-design.js AUDIENCE_STAGES/AUDIENCE_STAGE_GUIDANCE). 'course.sources' (plural, path+description) and 'course.summary' as an explicit course description are real, supplied Stage 1 inputs now too, per Franz's new-input-stage directive — no longer left for Stage 1 to infer. Content was reviewed against AUDIENCE_STAGE_GUIDANCE's depth-floor/reinforcement instruction and three concepts revised for real (cvb.intro.feedback-loop, cvb.sealing.emissions-standards-awareness, cvb.accessory.pneumatic-controller — each assumed unexplained prior context too early); the remaining 48 concept rows were reviewed and already read at an appropriate depth for a first-time-in-industry audience. Tier ('introductory') was already correct; it just had no real validated vocabulary behind it until instructional-design.js gained TIERS/isTier the same day. Every keyConcepts slot's 't'/'sources' trace to a real figure already catalogued in the four Component Index files (Phase 0) — no invented facts. Three concepts originally cut with role 'prime' (cvb.intro.feedback-loop, cvb.rotary.overview, cvb.performance.process-variability) were reassigned to 'mechanism'/'nomenclature' during Stage 2 authoring: the Gallery's prime shape is a text-only hook line with NO figure ('nothing else on the slide'), but each of these three concepts needs to show a real source figure (a block diagram, an overview photo, a distribution graph) as its actual content — a genuine Stage-1 role misjudgment, caught and fixed here rather than forced into a template it doesn't fit. Their modules now open directly on real content with no separate prime slide, which is schema-legal (moduleStage2Completeness's 'no prime concept' check is advisory, not blocking) and consistent with the framework's own stated design: module 'stakes' is already the opening hook, a literal prime slide is optional. Several competency ids are deliberately reused across chapters with progression 'develops' (e.g. cvb.intro.body-style-variants, cvb.intro.bonnet-packing-arrangement, cvb.intro.actuator-types, cvb.characteristic.inherent-curves, cvb.performance.deadband) — never a fresh id for the same skill twice. Deliberately left out of this Basics cut, named rather than silently dropped: the deep VOC/LDAR and ISO 15848-1/FCI 91-1 emissions-compliance tables (only 2 of 5 catalogued figures cited, at awareness level), the redundant-SOV/three-way-manual-reset/SOV-manifold hardware variants, and the SIS partial-stroke-testing DVC figure. `template` values are Template Gallery classes (gallery.css `.slide--role-*`), chosen by role and content shape per ROLE_GALLERY (PipelineConsole prompts.js) — Stage 3 (slide composition) has NOT run; these are forward-looking hints, not yet-built slides. Stage 1 Outline docs: 'Stage 1 Outline — Control Valve Basics — <chapterId>.md' (one per chapter). Stage 2 Attachments doc: 'Stage 2 Attachments — Control Valve Basics — <chapterId>.md' (one per chapter, generated from this file). COMPETENCY AUDIT + SPLIT, 2026-09-11 (the provisional/confirmed/revised mechanism run for real): all 50 pre-split concept rows were checked by hand against their own real t/sources — 49 confirmed clean; one, cvb.actuator.manual-electric, genuinely needed correction (its content included a rack-and-pinion actuator, a third, PNEUMATIC power type the manual/electric id never named — manual and electric are power-TYPE axis, rack-and-pinion is a mechanism-design detail that happens to be pneumatic, not the same axis). Per Franz: split, don't rename — cvb.actuator.manual-electric keeps manual+electric only (now 4 sources, itself flagged by the new granularity advisory since 3+ sources is a flag not a failure, and is a legitimate 2-power-types x 2-motion-types table, not a further split candidate); a new cvb.actuator.rack-and-pinion concept was cut for the pneumatic content, with its 't' rewritten fuller (not just the leftover clause) and grounded directly in cvh-cmp-rack-and-pinion-actuator's own 'teaches' text (the backlash / on-off-vs-throttling point, not previously stated in this course). Both concepts share slide page 34 as an umbrella slide (2026-09-11's Stage 3 flattenOriginateSlidePlan change exists for exactly this) rather than triggering a whole-course page renumber, since Stage 3 has not run yet and the two remain closely related actuator-nomenclature content. Both post-split rows are competencyStatus: \"confirmed\", not \"revised\" — this is a split, not a same-id correction. Every OTHER keyConcept in the course is also now competencyStatus: \"confirmed\", reflecting the completed hand-audit, not a default value. A SECOND, mechanical fix followed the split immediately: it pushed cvb-ch2-m3 to 7 keyConcepts, over moduleStage2Completeness's 4-6 floor. Fixed by merging the module's two existing cvb.intro.actuator-types \"develops\" slots (previously two separate 1-page entries, pages 32 and 33) into ONE concept spanning both pages — exactly the \"primitive spanning multiple slides\" shape built into Stage 3 the same day (flattenOriginateSlidePlan), not a content merge that loses anything. Sources combined to 4 (also flagged by the granularity advisory, also a legitimate case: four real actuator-mechanism variants explained together, not evidence it needs a further split). cvb-ch2-m3 is back to 6 keyConcepts.",
+  "_note": "Stage 1 (arc-scale origination, run by hand 2026-09-11) approved by Franz; Stage 2 (author the context layer) run by hand 2026-09-11 immediately after, same proving-ground course for the review-checkpoint mechanism. Scope: Steve's four requested Control Valve Handbook chapters (1, 3, 4, 2, in that teaching order), not the whole 15-chapter book. Course-chapter ids (cvb-ch1..cvb-ch4) are this course's own teaching order, not CVH's chapter numbers — cvb-ch2 = CVH ch3, cvb-ch3 = CVH ch4, cvb-ch4 = CVH ch2; see each chapter's own '_source' note. No real schedule exists yet — everything sits under one placeholder Day 1. DOMAIN/AUDIENCE-STAGE CORRECTED TWICE, 2026-09-11 — real history, not just the final state: (1) domain was first set to an invented fourth domain, 'product-literacy', mid-Stage-1-authoring, with no prior confirmation — a Bloom-level/verb-menu observation (this course's objectives all sit at remember/understand) misread as a domain problem. (2) Per Franz's authoritative three-domain definition, that was corrected to domain: ['maintenance','instrumentation','selection-sizing'] — genuinely broad across all three — which was a real improvement but STILL WRONG: this course's actual audience is people brand new to the industry, not yet assigned to any of the three roles at all, which is a different claim than 'all three at once.' Corrected again to the real fix: 'domain' is unset entirely (the truthful state — no role assigned yet, not 'every role'), and a new, third axis, 'audienceStage': 'orientation', names this — distinct from domain (which role) and tier (how deep), never forced into either (see instructional-design.js AUDIENCE_STAGES/AUDIENCE_STAGE_GUIDANCE). 'course.sources' (plural, path+description) and 'course.summary' as an explicit course description are real, supplied Stage 1 inputs now too, per Franz's new-input-stage directive — no longer left for Stage 1 to infer. Content was reviewed against AUDIENCE_STAGE_GUIDANCE's depth-floor/reinforcement instruction and three concepts revised for real (cvb.intro.feedback-loop, cvb.sealing.emissions-standards-awareness, cvb.accessory.pneumatic-controller — each assumed unexplained prior context too early); the remaining 48 concept rows were reviewed and already read at an appropriate depth for a first-time-in-industry audience. Tier ('introductory') was already correct; it just had no real validated vocabulary behind it until instructional-design.js gained TIERS/isTier the same day. Every keyConcepts slot's 't'/'sources' trace to a real figure already catalogued in the four Component Index files (Phase 0) — no invented facts. Three concepts originally cut with role 'prime' (cvb.intro.feedback-loop, cvb.rotary.overview, cvb.performance.process-variability) were reassigned to 'mechanism'/'nomenclature' during Stage 2 authoring: the Gallery's prime shape is a text-only hook line with NO figure ('nothing else on the slide'), but each of these three concepts needs to show a real source figure (a block diagram, an overview photo, a distribution graph) as its actual content — a genuine Stage-1 role misjudgment, caught and fixed here rather than forced into a template it doesn't fit. Their modules now open directly on real content with no separate prime slide, which is schema-legal (moduleStage2Completeness's 'no prime concept' check is advisory, not blocking) and consistent with the framework's own stated design: module 'stakes' is already the opening hook, a literal prime slide is optional. Several competency ids are deliberately reused across chapters with progression 'develops' (e.g. cvb.intro.body-style-variants, cvb.intro.bonnet-packing-arrangement, cvb.intro.actuator-types, cvb.characteristic.inherent-curves, cvb.performance.deadband) — never a fresh id for the same skill twice. Deliberately left out of this Basics cut, named rather than silently dropped: the deep VOC/LDAR and ISO 15848-1/FCI 91-1 emissions-compliance tables (only 2 of 5 catalogued figures cited, at awareness level), the redundant-SOV/three-way-manual-reset/SOV-manifold hardware variants, and the SIS partial-stroke-testing DVC figure. `template` values are Template Gallery classes (gallery.css `.slide--role-*`), chosen by role and content shape per ROLE_GALLERY (PipelineConsole prompts.js) — Stage 3 (slide composition) has NOT run; these are forward-looking hints, not yet-built slides. Stage 1 Outline docs: 'Stage 1 Outline — Control Valve Basics — <chapterId>.md' (one per chapter). Stage 2 Attachments doc: 'Stage 2 Attachments — Control Valve Basics — <chapterId>.md' (one per chapter, generated from this file). COMPETENCY AUDIT + SPLIT, 2026-09-11 (the provisional/confirmed/revised mechanism run for real): all 50 pre-split concept rows were checked by hand against their own real t/sources — 49 confirmed clean; one, cvb.actuator.manual-electric, genuinely needed correction (its content included a rack-and-pinion actuator, a third, PNEUMATIC power type the manual/electric id never named — manual and electric are power-TYPE axis, rack-and-pinion is a mechanism-design detail that happens to be pneumatic, not the same axis). Per Franz: split, don't rename — cvb.actuator.manual-electric keeps manual+electric only (now 4 sources, itself flagged by the new granularity advisory since 3+ sources is a flag not a failure, and is a legitimate 2-power-types x 2-motion-types table, not a further split candidate); a new cvb.actuator.rack-and-pinion concept was cut for the pneumatic content, with its 't' rewritten fuller (not just the leftover clause) and grounded directly in cvh-cmp-rack-and-pinion-actuator's own 'teaches' text (the backlash / on-off-vs-throttling point, not previously stated in this course). Both concepts share slide page 34 as an umbrella slide (2026-09-11's Stage 3 flattenOriginateSlidePlan change exists for exactly this) rather than triggering a whole-course page renumber, since Stage 3 has not run yet and the two remain closely related actuator-nomenclature content. Both post-split rows are competencyStatus: \"confirmed\", not \"revised\" — this is a split, not a same-id correction. Every OTHER keyConcept in the course is also now competencyStatus: \"confirmed\", reflecting the completed hand-audit, not a default value. A SECOND, mechanical fix followed the split immediately: it pushed cvb-ch2-m3 to 7 keyConcepts, over moduleStage2Completeness's 4-6 floor. Fixed by merging the module's two existing cvb.intro.actuator-types \"develops\" slots (previously two separate 1-page entries, pages 32 and 33) into ONE concept spanning both pages — exactly the \"primitive spanning multiple slides\" shape built into Stage 3 the same day (flattenOriginateSlidePlan), not a content merge that loses anything. Sources combined to 4 (also flagged by the granularity advisory, also a legitimate case: four real actuator-mechanism variants explained together, not evidence it needs a further split). cvb-ch2-m3 is back to 6 keyConcepts. TEMPLATE-FIT FIXES APPLIED, 2026-09-11 (all 8 confirmed): cvb.intro.actuator-types, cvb.rotary.closure-members (ch1-m2), and cvb.bodystyle.globe-variants re-tagged contrast->application with template slide--role-application-case (three genuinely distinct items each, contrast's two-panel shape couldn't hold them). cvb.intro.body-style-variants, cvb.bodystyle.special-purpose, and cvb.safety.voting-architecture kept their existing application role, template-only change to slide--role-application-case (same three/two-distinct-instance problem, base application's one-fig shape couldn't hold them). cvb.accessory.ip-transducer re-tagged contrast->mechanism (both its cited figures are views of the SAME device, not two different things for a two-panel contrast). cvb.safety.solenoid-valve-types SPLIT into two concepts, one per classification axis: the id keeps the spring-return/double-acting drive-type axis (2 sources); a new cvb.safety.solenoid-actuation-type concept was cut for the direct-acting/pilot-operated actuation-type axis (2 sources), given its own new slide (page 45, cvb-ch3-m2) rather than sharing a page - unlike the manual-electric/rack-and-pinion umbrella, these are two independent SIS classification schemes that each earn a dedicated contrast slide, not compatible content that reasonably shares one. Inserting that new slide shifted every page >=45 up by one across the rest of the course (cvb-ch3-m2's own check and everything in cvb-ch4-m1/m2); course length is now 60 slides, was 59. The module's own cvb-ch3-m2-act1 activity (SOV Actuation ID, which already exercised BOTH axes - actuation type AND port count) was moved from afterConcept:2 to afterConcept:3, to fire after both split concepts are taught instead of just the first. Both split rows are competencyStatus: \"confirmed\", not \"revised\" (a split, not a same-id correction). Sourcing cleanup also applied to cvb.rotary.closure-members's ch2-m1/page-18 row (the full-port-ball/eccentric-plug one, distinct from the ch1-m2/page-9 three-way row that got the application-case re-tag): dropped a stray cvh-cmp-segmented-v-notch-ball citation never mentioned in that row's own t, and a duplicate cvh-cmp-full-port-ball-control-valve citation that repeated the same ball-valve side as the trunnion figure already cited.",
   "days": [
     {
       "id": "d1",
@@ -188,7 +188,7 @@
                 {
                   "competencyId": "cvb.intro.actuator-types",
                   "progression": "introduces",
-                  "role": "contrast",
+                  "role": "application",
                   "level": "understand",
                   "pages": [
                     6
@@ -199,8 +199,8 @@
                       "domainOrAudienceStage": "orientation",
                       "tier": "introductory",
                       "t": "A direct-acting actuator pushes the stem down with loading pressure and returns it with the spring; a reverse-acting actuator does the opposite. A piston actuator trades the spring for a second pressure connection, for higher thrust and faster stroking.",
-                      "template": "slide--role-contrast",
-                      "templateRationale": "**Template mismatch, not fixed:** the content is a genuine three-way contrast (direct-acting vs. reverse-acting vs. piston actuator, each with its own fully-labelled figure), but contrast's shape is fixed at exactly two panels split by one divider — there is no three-way contrast variant in the Template Gallery. Recommend `application`-role's `application-case` (filmstrip, one frame per real actuator type) instead, which is built for exactly this shape; that would also mean re-tagging this concept's role from `contrast` to `application`, not just swapping a template class within the same role.",
+                      "template": "slide--role-application-case",
+                      "templateRationale": "Three distinct actuator constructions, each fully labelled (direct-acting, reverse-acting, piston), now shown as application-case's filmstrip — one frame per actuator type, each carrying its own real detail — instead of forced into contrast's two-panel shape. Re-tagged from contrast to application per the 2026-09-11 template-fit review.",
                       "pages": [
                         6
                       ],
@@ -286,7 +286,7 @@
                 {
                   "competencyId": "cvb.rotary.closure-members",
                   "progression": "introduces",
-                  "role": "contrast",
+                  "role": "application",
                   "level": "understand",
                   "pages": [
                     9
@@ -297,8 +297,8 @@
                       "domainOrAudienceStage": "orientation",
                       "tier": "introductory",
                       "t": "A segmented ball, a V-notch ball, and an eccentric disk are the three standard rotary closure members — the V-notch's contoured cut gives it the widest rangeability of the three.",
-                      "template": "slide--role-contrast",
-                      "templateRationale": "**Template mismatch, not fixed:** three genuinely distinct closure-member types (segmented ball, V-notch ball, eccentric disk), each with its own real photo, forced into contrast's fixed two-panel shape. Same shape problem as `cvb.intro.actuator-types` above — recommend `application-case` (filmstrip, one frame per closure-member type), which means re-tagging the role from `contrast` to `application`.",
+                      "template": "slide--role-application-case",
+                      "templateRationale": "Three distinct rotary closure-member types (segmented ball, V-notch ball, eccentric disk), each with its own real photo, now shown as application-case's filmstrip — one frame per type — instead of forced into contrast's two-panel shape. Re-tagged from contrast to application per the 2026-09-11 template-fit review.",
                       "pages": [
                         9
                       ],
@@ -483,7 +483,7 @@
                 {
                   "competencyId": "cvb.bodystyle.globe-variants",
                   "progression": "introduces",
-                  "role": "contrast",
+                  "role": "application",
                   "level": "understand",
                   "pages": [
                     15
@@ -494,8 +494,8 @@
                       "domainOrAudienceStage": "orientation",
                       "tier": "introductory",
                       "t": "Single-ported globe bodies are the simplest and tightest-shutoff; double-ported (reverse-acting) bodies balance plug forces across two ports for less required thrust; cage-style balanced-plug bodies use the cage itself to balance pressure and can carry a soft seat for bubble-tight shutoff.",
-                      "template": "slide--role-contrast",
-                      "templateRationale": "**Template mismatch, not fixed:** three distinct globe body constructions (single-ported, double-ported/reverse-acting, cage-style balanced-plug), each with its own real figure, forced into contrast's two-panel shape. Same problem as the actuator-types and closure-members concepts above — recommend `application-case`, re-tagging the role from `contrast` to `application`.",
+                      "template": "slide--role-application-case",
+                      "templateRationale": "Three distinct globe body constructions (single-ported, double-ported/reverse-acting, cage-style balanced-plug), each with its own real figure, now shown as application-case's filmstrip instead of forced into contrast's two-panel shape. Re-tagged from contrast to application per the 2026-09-11 template-fit review.",
                       "pages": [
                         15
                       ],
@@ -525,8 +525,8 @@
                       "domainOrAudienceStage": "orientation",
                       "tier": "introductory",
                       "t": "Angle and bar-stock bodies extend the basic globe body for specialty service (erosive/slurry flow, high-purity or highly corrosive fluids); a three-way body combines two inlet streams or diverts one inlet to either of two outlets, one body doing the job two two-way valves and a manifold would otherwise do.",
-                      "template": "slide--role-application",
-                      "templateRationale": "**Template mismatch, not fixed:** three distinct body-style photos (flanged angle, bar-stock, three-way), each independently described, don't fit base application's single-fig-plus-takeaway shape. Recommend `application-case` (filmstrip, one frame per body style) instead — already the right role, just the wrong variant within it.",
+                      "template": "slide--role-application-case",
+                      "templateRationale": "Three distinct body-style photos (flanged angle, bar-stock, three-way), each independently described, now shown as application-case's filmstrip — one frame per body style — instead of base application's single-fig shape. Already the right role; only the template variant changed.",
                       "pages": [
                         16
                       ],
@@ -588,7 +588,7 @@
                       "tier": "introductory",
                       "t": "A full-port ball valve (on trunnion mounts, for larger sizes) gives an unrestricted straight-through bore when open; an eccentric plug swings out of the seat on an off-center shaft, the same wear-reducing idea a butterfly's offset shaft uses.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "Two-way contrast (full-port trunnion-mounted ball vs. eccentric plug) fits the panel shape using `cvh-cmp-full-port-ball-valve-trunnion` and `cvh-cmp-eccentric-plug-valve-body` as the two panel figures. Flagging, not fixing: `cvh-cmp-segmented-v-notch-ball` is cited here but never mentioned in this concept's `t`, and `cvh-cmp-full-port-ball-control-valve` duplicates the same ball-valve side as the trunnion figure — both look like leftover/stray citations, worth a sourcing cleanup pass separate from this rationale.",
+                      "templateRationale": "Two-way contrast (full-port trunnion-mounted ball vs. eccentric plug) fits the panel shape using cvh-cmp-full-port-ball-valve-trunnion and cvh-cmp-eccentric-plug-valve-body as the two panel figures. Sourcing cleanup applied 2026-09-11: dropped cvh-cmp-segmented-v-notch-ball (never mentioned in this row's t) and cvh-cmp-full-port-ball-control-valve (duplicated the same ball-valve side as the trunnion figure) - both were stray citations, not a second real panel's worth of content.",
                       "pages": [
                         18
                       ],
@@ -597,9 +597,7 @@
                         "maturity": "stage2"
                       },
                       "sources": [
-                        "cvh-cmp-segmented-v-notch-ball",
                         "cvh-cmp-eccentric-plug-valve-body",
-                        "cvh-cmp-full-port-ball-control-valve",
                         "cvh-cmp-full-port-ball-valve-trunnion"
                       ]
                     }
@@ -619,8 +617,8 @@
                       "domainOrAudienceStage": "orientation",
                       "tier": "introductory",
                       "t": "Anti-cavitation and low-noise trim options quiet or eliminate the damage a high pressure-drop can cause; a multi-port flow-selector valve routes flow among several destinations from one body; a pressure-assisted seal uses process pressure itself to improve shutoff.",
-                      "template": "slide--role-application",
-                      "templateRationale": "**Template mismatch, not fixed:** three functionally distinct special-purpose options (anti-cavitation/low-noise trim, a multi-port flow-selector body, a pressure-assisted seal), each its own real figure, don't fit base application's single-fig shape. Recommend `application-case`, same fix as `cvb.intro.body-style-variants` above — already the right role.",
+                      "template": "slide--role-application-case",
+                      "templateRationale": "Three functionally distinct special-purpose options (anti-cavitation/low-noise trim, a multi-port flow-selector body, a pressure-assisted seal), each its own real figure, now shown as application-case's filmstrip instead of base application's single-fig shape. Already the right role; only the template variant changed.",
                       "pages": [
                         19
                       ],
@@ -1252,7 +1250,7 @@
                 {
                   "competencyId": "cvb.accessory.ip-transducer",
                   "progression": "introduces",
-                  "role": "contrast",
+                  "role": "mechanism",
                   "level": "understand",
                   "pages": [
                     39
@@ -1263,8 +1261,8 @@
                       "domainOrAudienceStage": "orientation",
                       "tier": "introductory",
                       "t": "An I/P transducer converts a current signal to a pneumatic one with no position feedback at all — simpler and cheaper than a positioner, appropriate where high positioning accuracy isn't required.",
-                      "template": "slide--role-contrast",
-                      "templateRationale": "**Template mismatch, not fixed:** the concept's contrast is conceptual (an I/P transducer vs. a positioner, covered two slides earlier), but both cited figures are views of the SAME device (a pilot-stage detail crop and a mounted-unit photo) — there's no second, positioner-side figure to fill a real second panel. This reads more naturally as `mechanism` (detail figure, then the assembled unit, the same schematic-then-hardware sequence used for the analog I/P positioner two slides earlier) than as a two-panel contrast with nothing to put in panel two.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Two figures in natural teaching order — a pilot-stage detail crop, then the assembled unit mounted on a valve — the same schematic-then-hardware sequence mechanism's shape already carries for the analog I/P positioner two slides earlier. Re-tagged from contrast to mechanism per the 2026-09-11 template-fit review, since both cited figures are views of the same device, not two different things for a two-panel contrast.",
                       "pages": [
                         39
                       ],
@@ -1420,9 +1418,9 @@
                     {
                       "domainOrAudienceStage": "orientation",
                       "tier": "introductory",
-                      "t": "A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol). Separately, a direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.",
+                      "t": "A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol).",
                       "template": "slide--role-contrast",
-                      "templateRationale": "**Template mismatch, not fixed:** this concept bundles two INDEPENDENT classification axes (spring-return vs. double-acting; separately, direct-acting vs. pilot-operated) into one slot — contrast's shape holds one two-way split, not two separate two-way splits at once. This is the same bundling the granularity advisory already flags for this concept (4 sources). Recommend splitting into two concepts, one per axis, each a clean two-way `contrast` — not a template swap within this concept, since neither half alone is too big for contrast's real shape.",
+                      "templateRationale": "Two-way contrast (spring-return/single-acting vs. double-acting), each with its own schematic symbol (3-port vs. 4-port) — fits contrast's two-panel shape exactly, once split from the actuation-type axis this id used to also carry.",
                       "pages": [
                         44
                       ],
@@ -1432,10 +1430,38 @@
                       },
                       "sources": [
                         "cvh-cmp-4.14",
-                        "cvh-cmp-4.15",
+                        "cvh-cmp-4.15"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "cvb.safety.solenoid-actuation-type",
+                  "competencyStatus": "confirmed",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "understand",
+                  "pages": [
+                    45
+                  ],
+                  "primitives": [
+                    {
+                      "domainOrAudienceStage": "orientation",
+                      "tier": "introductory",
+                      "t": "A direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.",
+                      "sources": [
                         "cvh-cmp-4.17",
                         "cvh-cmp-4.18"
-                      ]
+                      ],
+                      "template": "slide--role-contrast",
+                      "templateRationale": "Two-way contrast (direct-acting vs. pilot-operated SOV actuation), each with its own physical-construction photo — fits contrast's two-panel shape exactly, split out of cvb.safety.solenoid-valve-types (which used to bundle this axis with the separate spring-return/double-acting drive-type axis).",
+                      "pages": [
+                        45
+                      ],
+                      "slideCount": {
+                        "estimate": 1,
+                        "maturity": "stage2"
+                      }
                     }
                   ]
                 },
@@ -1445,7 +1471,7 @@
                   "role": "application",
                   "level": "understand",
                   "pages": [
-                    45
+                    46
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1453,10 +1479,10 @@
                       "domainOrAudienceStage": "orientation",
                       "tier": "introductory",
                       "t": "A 1oo2 (one-out-of-two) architecture trips if either of two SOVs sees a demand — favoring safety, more nuisance trips. A 2oo2 architecture needs both to agree — favoring uptime, at the cost of a slower response to a real single-SOV failure.",
-                      "template": "slide--role-application",
-                      "templateRationale": "**Template mismatch, not fixed:** two distinct voting architectures (1oo2, 2oo2), each with its own full schematic and its own tradeoff (nuisance-trip risk vs. slower response), don't fit base application's one-fig shape. Recommend `application-case` (two frames, one per architecture) — already the right role, just the wrong variant, the same fix as `cvb.intro.body-style-variants` and `cvb.bodystyle.special-purpose` above.",
+                      "template": "slide--role-application-case",
+                      "templateRationale": "Two distinct voting architectures (1oo2, 2oo2), each with its own full schematic and its own tradeoff, now shown as application-case's two-frame filmstrip instead of base application's single-fig shape. Already the right role; only the template variant changed.",
                       "pages": [
-                        45
+                        46
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1476,7 +1502,7 @@
                   "role": "nomenclature",
                   "level": "remember",
                   "pages": [
-                    46
+                    47
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1487,7 +1513,7 @@
                       "template": "slide--role-nomenclature",
                       "templateRationale": "Four figures resolve into three named items — trip valve, switching valve, and handwheel override (shown in its two mounting variants, side and top) — nomenclature's labelled-list shape holds three named things under one slide comfortably, the handwheel's two photos serving as one list entry's illustration, not two separate items.",
                       "pages": [
-                        46
+                        47
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1507,7 +1533,7 @@
                 {
                   "id": "cvb-ch3-m2-act1",
                   "type": "small-group",
-                  "afterConcept": 2,
+                  "afterConcept": 3,
                   "minutes": 15,
                   "title": "SOV Actuation ID",
                   "description": "Given labelled photos of a direct-acting and a pilot-operated solenoid valve, plus the 3-port/4-port schematic symbols, identify actuation type and port count for each.",
@@ -1522,10 +1548,11 @@
                 43,
                 44,
                 45,
-                46
+                46,
+                47
               ],
               "check": [
-                47
+                48
               ],
               "audienceStage": "orientation"
             }
@@ -1556,7 +1583,7 @@
                   "role": "mechanism",
                   "level": "understand",
                   "pages": [
-                    48
+                    49
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1567,7 +1594,7 @@
                       "template": "slide--role-mechanism",
                       "templateRationale": "One figure — two stacked distribution curves, same target, different widths — is the direct visual definition of the concept itself (variability is distribution width, not target position), the cleanest possible one-figure mechanism case.",
                       "pages": [
-                        48
+                        49
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1585,7 +1612,7 @@
                   "role": "nomenclature",
                   "level": "remember",
                   "pages": [
-                    49
+                    50
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1596,7 +1623,7 @@
                       "template": "slide--role-nomenclature",
                       "templateRationale": "A single real photo of the physical test rig — establishing 'this chapter's numbers come from real bench testing, not simulation' as a factual, recognition-level claim, the nomenclature role's default figure-plus-claim treatment.",
                       "pages": [
-                        49
+                        50
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1614,7 +1641,7 @@
                   "role": "mechanism",
                   "level": "understand",
                   "pages": [
-                    50
+                    51
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1625,7 +1652,7 @@
                       "template": "slide--role-mechanism",
                       "templateRationale": "The cross-referenced figure (CVH ch2 Figure 2.3, 'Effect of Deadband on Valve Performance') plots three real valve designs' open-loop lag directly — a measured mechanism demonstration, not a schematic, fitting mechanism's role as the demonstrated counterpart to the definition already given in ch1-m2.",
                       "pages": [
-                        50
+                        51
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1641,7 +1668,7 @@
                   "role": "application",
                   "level": "understand",
                   "pages": [
-                    51
+                    52
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1652,7 +1679,7 @@
                       "template": "slide--role-application",
                       "templateRationale": "The source is explicitly a table-shaped summary (dead time / 63%-response time across valve/actuator/positioner configurations) — application's own `.tmpl-table` allowance fits directly, with the one-line takeaway being 'test your specific configuration, don't assume a number.'",
                       "pages": [
-                        51
+                        52
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1670,7 +1697,7 @@
                   "role": "mechanism",
                   "level": "analyze",
                   "pages": [
-                    52
+                    53
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1681,7 +1708,7 @@
                       "template": "slide--role-mechanism",
                       "templateRationale": "One figure — installed characteristic and installed gain plotted together for the same valve — shows gain as the slope of the characteristic curve directly, the visual mechanism behind the analytical claim (tuning has to compromise where slope changes sharply).",
                       "pages": [
-                        52
+                        53
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1699,7 +1726,7 @@
                   "role": "application",
                   "level": "analyze",
                   "pages": [
-                    53
+                    54
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1710,7 +1737,7 @@
                       "template": "slide--role-application",
                       "templateRationale": "One figure — globe vs. butterfly installed-gain behavior plotted together — with a single analytical takeaway (globe holds a usable gain over more of its travel); fits application's one-fig-plus-takeaway shape exactly, reading the same comparison graph as the analytical skill rather than needing two separate valve photos.",
                       "pages": [
-                        53
+                        54
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1738,15 +1765,15 @@
                 }
               ],
               "pages": [
-                48,
                 49,
                 50,
                 51,
                 52,
-                53
+                53,
+                54
               ],
               "check": [
-                54
+                55
               ],
               "audienceStage": "orientation"
             },
@@ -1767,7 +1794,7 @@
                   "role": "application",
                   "level": "evaluate",
                   "pages": [
-                    55
+                    56
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1778,7 +1805,7 @@
                       "template": "slide--role-application",
                       "templateRationale": "One figure — three real valve designs' variability response to the same load disturbance across tuning aggressiveness — carries the whole economic argument (a measurable improvement, not just a qualitative one) as application's single analytical figure plus takeaway.",
                       "pages": [
-                        55
+                        56
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1796,7 +1823,7 @@
                   "role": "mechanism",
                   "level": "understand",
                   "pages": [
-                    56
+                    57
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1807,7 +1834,7 @@
                       "template": "slide--role-mechanism",
                       "templateRationale": "The photo shows the real test procedure in progress (a technician running ValveLink's Signature Series test on an assembled valve) — grounding 'how the baseline actually gets made' as a real process, which is what mechanism's treatment is for even without an internal cutaway.",
                       "pages": [
-                        56
+                        57
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1825,7 +1852,7 @@
                   "role": "application",
                   "level": "apply",
                   "pages": [
-                    57
+                    58
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1836,7 +1863,7 @@
                       "template": "slide--role-application",
                       "templateRationale": "The source figure is itself a worked diagnostic example — an overlay of original vs. new signature traces with 'INCREASED SPAN INDICATES INCREASED FRICTION' called out directly on the image — application's fig-plus-takeaway shape fits perfectly since the figure already does the diagnostic reasoning the concept teaches.",
                       "pages": [
-                        57
+                        58
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1854,7 +1881,7 @@
                   "role": "nomenclature",
                   "level": "remember",
                   "pages": [
-                    58
+                    59
                   ],
                   "competencyStatus": "confirmed",
                   "primitives": [
@@ -1865,7 +1892,7 @@
                       "template": "slide--role-nomenclature",
                       "templateRationale": "Two real software screenshots, each a named diagnostic view (Total Scan, Valve Step Response) — nomenclature's labelled-reference treatment fits directly, naming the two screens a technician actually works from rather than explaining a mechanism.",
                       "pages": [
-                        58
+                        59
                       ],
                       "slideCount": {
                         "estimate": 1,
@@ -1893,13 +1920,13 @@
                 }
               ],
               "pages": [
-                55,
                 56,
                 57,
-                58
+                58,
+                59
               ],
               "check": [
-                59
+                60
               ],
               "audienceStage": "orientation"
             }
