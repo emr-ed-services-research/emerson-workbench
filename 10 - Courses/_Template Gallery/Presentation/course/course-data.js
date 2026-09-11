@@ -17,7 +17,7 @@ window.EW_COURSE = {
     "id": "gallery",
     "title": "Master Slide Templates — Axis C Roles (placeholder content)",
     "visual": true,
-    "summary": "14 mockups. Pages 1-11: one per Axis C concept role (prime, nomenclature, mechanism, procedure x3 variants, application x2 variants, contrast, caution, check). Lorem-ipsum text and generic placeholder graphics only — nothing here is real ch3 content. Built 2026-09-04 in response to the ch3-m4 review findings (wrong callouts, a factual error, a chrome/content collision, a dropped teaching illustration), then revised the same day after sitting with the 'gallery, not canvas' framing: the callout manifests now record verified position FIRST (source, not documentation), Mechanism gained a reserved motion-arrow slot, and Application gained an annotated-curve variant (page 11) — the direct answer to the dropped travel-stop illustrations, which had nowhere reserved to go in the plain single-curve chart. Pages 12-14: Canvas Phase 1 (2026-09-10), added from Franz's direct review of the unconstrained Foundations preview — nomenclature-reveal (click-to-reveal for a figure-less fixed set), procedure-worked (tabbed Show/Tell/Do walkthrough, real content proven in the preview), application-case (sequential clickable case walkthrough). Page 10 (check) upgraded in place to be genuinely interactive rather than a static reveal. Page through with Next / Previous exactly as you would a real module.",
+    "summary": "19 mockups. Pages 1-11: one per Axis C concept role (prime, nomenclature, mechanism, procedure x3 variants, application x2 variants, contrast, caution, check). Lorem-ipsum text and generic placeholder graphics only — nothing here is real ch3 content. Built 2026-09-04 in response to the ch3-m4 review findings (wrong callouts, a factual error, a chrome/content collision, a dropped teaching illustration), then revised the same day after sitting with the 'gallery, not canvas' framing: the callout manifests now record verified position FIRST (source, not documentation), Mechanism gained a reserved motion-arrow slot, and Application gained an annotated-curve variant (page 11) — the direct answer to the dropped travel-stop illustrations, which had nowhere reserved to go in the plain single-curve chart. Pages 12-14: Canvas Phase 1 (2026-09-10) — nomenclature-reveal, procedure-worked, application-case; page 10 (check) upgraded in place to be interactive. Pages 15-18: Canvas Phase 1b (2026-09-10) — prime's dark variant (is-dark, a selectable option not a default), nomenclature-parse (a real sentence broken into named parts), application-pick (select one item, see its analysis — built with an always-present .tpl-howto instruction after Franz's review found the preview's version unclear), procedure-list (a runsheet with no figure at all). Page 19: a STRUCTURAL template, not an Axis-C role and never Stage-3-selected — .slide--divider.is-statement, a dark big-bold-text chapter/module title-card variant, confirmed to belong in emerson-workbench.css's existing cover/divider/breaker layer (not gallery.css) before it was built. Page through with Next / Previous exactly as you would a real module.",
     "pages": [
       1,
       2,
@@ -32,7 +32,12 @@ window.EW_COURSE = {
       11,
       12,
       13,
-      14
+      14,
+      15,
+      16,
+      17,
+      18,
+      19
     ]
   }
 };

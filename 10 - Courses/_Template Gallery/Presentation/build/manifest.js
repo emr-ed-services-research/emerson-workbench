@@ -12,5 +12,10 @@ window.EW_MANIFEST = [
     { "n": 11, "file": "tg-011.html", "family": "role-application-annotated", "section": "Templates", "title": "Role: Application (annotated curve)", "hasNotes": false, "review": "" },
     { "n": 12, "file": "tg-012.html", "family": "role-nomenclature-reveal", "section": "Canvas Phase 1", "title": "Role: Nomenclature (reveal)",       "hasNotes": false, "review": "" },
     { "n": 13, "file": "tg-013.html", "family": "role-procedure-worked",   "section": "Canvas Phase 1", "title": "Role: Procedure (worked walkthrough)", "hasNotes": false, "review": "" },
-    { "n": 14, "file": "tg-014.html", "family": "role-application-case",  "section": "Canvas Phase 1", "title": "Role: Application (sequential case walkthrough)", "hasNotes": false, "review": "" }
+    { "n": 14, "file": "tg-014.html", "family": "role-application-case",  "section": "Canvas Phase 1", "title": "Role: Application (sequential case walkthrough)", "hasNotes": false, "review": "" },
+    { "n": 15, "file": "tg-015.html", "family": "role-prime-dark",        "section": "Canvas Phase 1b", "title": "Role: Prime (dark)",                "hasNotes": false, "review": "" },
+    { "n": 16, "file": "tg-016.html", "family": "role-nomenclature-parse","section": "Canvas Phase 1b", "title": "Role: Nomenclature (parse)",        "hasNotes": false, "review": "" },
+    { "n": 17, "file": "tg-017.html", "family": "role-application-pick", "section": "Canvas Phase 1b", "title": "Role: Application (pick one, analyze)", "hasNotes": false, "review": "" },
+    { "n": 18, "file": "tg-018.html", "family": "role-procedure-list",   "section": "Canvas Phase 1b", "title": "Role: Procedure (runsheet, no figure)", "hasNotes": false, "review": "" },
+    { "n": 19, "file": "tg-019.html", "family": "divider-statement",     "section": "Structural (not Axis-C, not Stage-3-selected)", "title": "Divider (statement) — chapter/module title card", "hasNotes": false, "review": "" }
 ];

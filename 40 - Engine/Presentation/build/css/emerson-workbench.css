@@ -341,6 +341,46 @@
 }
 .slide--divider .divider-objectives li { margin: 0.7cqh 0; padding-left: 0.4cqw; }
 
+/* -- divider, is-statement modifier (Canvas Phase 1b, 2026-09-10) ------
+   Confirmed placement before building, per Franz's directive: chapter/
+   module title cards are a STRUCTURAL layer (.slide--cover/.slide--divider/
+   .slide--breaker, this file), separate from gallery.css's Axis-C content
+   roles — Stage 3 never selects one of these, they're authored wherever
+   a course's day/chapter/module structure itself gets set up. This is
+   where the Foundations preview's "Accidental Trainer" opener actually
+   belongs: still a .slide--divider (same structural role — a chapter or
+   module title card — as the standard numbered-objectives layout above),
+   with a dark, big-bold-statement treatment as a SELECTABLE alternate,
+   not a default: use it for a module whose opening hook is one punchy
+   declarative line, not a numbered objectives list. */
+.slide--divider.is-statement {
+  background: var(--emerson-charcoal);
+}
+.slide--divider.is-statement::before {
+  display: none;   /* no rising-triangle wedge — the dark field is the whole slide */
+}
+.slide--divider.is-statement .divider-number-title,
+.slide--divider.is-statement .divider-lead {
+  left: 6cqw;
+  right: 6cqw;
+  color: var(--emerson-white);
+}
+.slide--divider.is-statement .divider-number-title {
+  top: 30cqh;
+  height: auto;
+  font-size: 5.4cqw;
+  line-height: 1.02;
+  font-weight: 800;
+}
+.slide--divider.is-statement .divider-lead {
+  top: 62cqh;
+  font-size: 1.9cqw;
+  color: var(--emerson-cyan);
+}
+.slide--divider.is-statement .divider-objectives {
+  display: none;   /* a statement opener makes its point in one line — no list */
+}
+
 /* -- title, text, and content (layout20) ------------------------ */
 /*  small title top-left, no rule, one big centred figure/table.     */
 .slide--title-text-content::after { display: none; }

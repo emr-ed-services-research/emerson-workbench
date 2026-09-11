@@ -391,6 +391,45 @@
     });
   });
 
+  /* Canvas Phase 1b (2026-09-10) */
+
+  /* role-nomenclature-parse: click a part key -> highlight the matching
+     tokens in the sentence and show that key's own definition. Fully
+     markup-driven: each key carries its own `data-def`, authored the same
+     way its label text is, so no per-slide script is ever needed. */
+  document.addEventListener("click", function (e) {
+    var key = e.target.closest ? e.target.closest(".tpl-parse-keys .tpl-parse-key") : null;
+    if (!key) return;
+    var keys = key.closest(".tpl-parse-keys");
+    var part = key.getAttribute("data-part");
+    Array.prototype.forEach.call(keys.querySelectorAll(".tpl-parse-key"), function (k) {
+      k.classList.remove("is-active");
+    });
+    key.classList.add("is-active");
+    var content = keys.closest(".tpl-content");
+    Array.prototype.forEach.call(content.querySelectorAll(".tpl-tok"), function (t) {
+      t.classList.toggle("is-on", t.getAttribute("data-part") === part);
+    });
+    var def = content.querySelector(".tpl-parse-def");
+    if (def) def.textContent = key.getAttribute("data-def") || "";
+  });
+
+  /* role-application-pick: click an item -> mark it selected and render
+     its own authored worked-analysis markup (data-work, an HTML string
+     the slide author writes the same way any other slide content is
+     written) into the shared work pane below. */
+  document.addEventListener("click", function (e) {
+    var item = e.target.closest ? e.target.closest(".tpl-pick-list .tpl-pick-item") : null;
+    if (!item) return;
+    var list = item.closest(".tpl-pick-list");
+    Array.prototype.forEach.call(list.querySelectorAll(".tpl-pick-item"), function (i) {
+      i.classList.remove("is-selected");
+    });
+    item.classList.add("is-selected");
+    var work = list.closest(".tpl-content").querySelector(".tpl-pick-work");
+    if (work) work.innerHTML = item.getAttribute("data-work") || "";
+  });
+
   /* runner asks to show / hide speaker notes or the review ribbons */
   window.addEventListener("message", function (e) {
     if (!e.data) return;
