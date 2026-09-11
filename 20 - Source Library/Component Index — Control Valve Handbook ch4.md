@@ -1,0 +1,427 @@
+---
+title: Component Index — Control Valve Handbook ch4
+type: reference
+tags:
+  - source-library
+  - pipeline
+  - component-index
+source: Control Valve Handbook, 6th ed. (D101881X012)
+chapter: 4 — Control Valve Accessories
+updated: 2026-09-11
+---
+
+# Component Index — Control Valve Handbook, Chapter 4 (Control Valve Accessories)
+
+Full-chapter cataloging pass, matching the rigor of the Oil & Gas Sourcebook
+ch1 precedent: every figure in the chapter's real page range is verified
+against the source PDF (`Control Valve Handbook - Sixth Edition.pdf`) and
+recorded here with a real page/section locator. This pass catalogs
+**existence and location only** — no crop/extraction has been performed, so
+each component carries a single `source` citation (doc + locator), not a
+second "already extracted" entry.
+
+Real PDF page range confirmed by direct inspection of the chapter-divider
+pages: **Chapter 4 runs PDF pages 82 (divider) through 97** (content pages
+83–97); **Chapter 5 ("Control Valve Sizing") begins at PDF page 98**. In this
+region of the document, PDF page number and printed page number are
+identical (zero offset) — confirmed against the printed folios visible on
+pages 82, 90, and 98.
+
+One text-extraction artifact was caught and corrected during this pass:
+`pdftotext` rendered the captions for Figures 4.14 through 4.23 with a
+spurious leading "1" (e.g. "Figure 14.16" instead of "Figure 4.16"). This is
+not a real Chapter 14 reference — Chapter 14 ("Piping Reference Data") does
+not begin until much later in this 355-page, 15-chapter book. Confirmed as
+an artifact by reading full page context: the figure numbering is
+unbroken (4.13 → 4.14 → … → 4.23 → 4.24) and every one of these pages
+carries the same "Chapter 4: Control Valve Accessories" running header as
+the rest of the chapter.
+
+No tables are catalogued below — only figures, per the standing
+Component Index rule.
+
+## Precedence
+
+| Source | Edition / ID | Bucket | Notes |
+|---|---|---|---|
+| **Control Valve Handbook, 6th ed.** | D101881X012 · Aug 2023 | `current` | First-party Emerson document; sole source for this chapter. No archive or legacy material was consulted or found relevant to Chapter 4's content — all 27 figures are catalogued directly against this edition. |
+
+## Components
+
+### Introduction & Pneumatic Positioners (printed pp. 83–84)
+
+```yaml
+id: cvh-cmp-4.1
+teaches: Full pneumatic single-acting positioner mechanism — bellows, beam, cam feedback, flapper/nozzle, relay, and the diaphragm-pressure output loop that positions the valve stem
+concept-tags: [positioner, pneumatic positioner, feedback loop, beam-flapper-nozzle, relay, single-acting actuator]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.84, §4.2.1 "Pneumatic Positioners", Figure 4.1
+delivery: not yet determined — labelled schematic, strong candidate for a dedicated diagram slide given its density
+used-by: []
+notes: Fully labelled schematic (Output to Diaphragm, Relay, Instrument, Bellows, Supply, Feedback Axis, Nozzle, Flapper Assembly, Direct/Reverse Action Quadrants, Input Axis, Cam, Beam). The surrounding prose walks the full closed-loop mechanism step by step and is a strong candidate for context-pane material.
+```
+
+### Analog I/P Positioners & Digital Valve Controllers (printed pp. 85–86)
+
+```yaml
+id: cvh-cmp-4.2
+teaches: Analog I/P positioner design — labelled schematic showing the DC input signal, converter, feedback axis, nozzle/flapper, and relay stages that produce a pneumatic output
+concept-tags: [positioner, analog I/P positioner, current-to-pneumatic conversion, feedback axis, nozzle-flapper]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.85, §4.2.2 "Analog I/P Positioners", Figure 4.2
+delivery: not yet determined
+used-by: []
+notes: Companion figure to 4.3 — both illustrate the same analog I/P positioner design; 4.2 is the full labelled schematic (4-20 mA input, Converter, Supply, Output to Actuator, Relay, Rotary Shaft Arm, Feedback Axis, Nozzle, Beam, Direct/Reverse-Acting Quadrant, Flapper Assembly), 4.3 is a photo of the physical unit.
+```
+
+```yaml
+id: cvh-cmp-4.3
+teaches: Physical appearance of an assembled I/P positioner unit, as referenced alongside the schematic in Figure 4.2
+concept-tags: [positioner, analog I/P positioner, physical component identification]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.85, §4.2.2 "Analog I/P Positioners", Figure 4.3
+delivery: not yet determined
+used-by: []
+notes: Photo, not a schematic — pairs with cvh-cmp-4.2 (text cites "Figure 4.2 and 4.3" together).
+```
+
+```yaml
+id: cvh-cmp-4.4
+teaches: Digital valve controller mounted on an assembled control valve — the physical instrument referenced by §4.2.3's description of microprocessor-based positioning
+concept-tags: [positioner, digital valve controller, physical component identification, microprocessor-based positioning]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.86, §4.2.3 "Digital Valve Controllers", Figure 4.4
+delivery: not yet determined
+used-by: []
+notes: Photo of an assembled valve/actuator/DVC stack, not a schematic.
+```
+
+### I/P Transducers & Volume Boosters (printed pp. 87–88)
+
+```yaml
+id: cvh-cmp-4.5
+teaches: Deflector/nozzle pilot-stage detail inside an I/P transducer — the two-nozzle arrangement and deflector bar that establishes pilot pressure
+concept-tags: [transducer, I/P transducer, deflector-nozzle design, pilot stage]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.87, §4.3 "I/P Transducers", Figure 4.5
+delivery: not yet determined
+used-by: []
+notes: Detail/cutaway view, distinct from the whole-unit photo in Figure 4.6.
+```
+
+```yaml
+id: cvh-cmp-4.6
+teaches: I/P transducer mounted on a control valve — the physical, no-feedback alternative to a positioner for applications not requiring high positioning accuracy
+concept-tags: [transducer, I/P transducer, physical component identification]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.88, §4.3 "I/P Transducers", Figure 4.6
+delivery: not yet determined
+used-by: []
+notes: Photo of the assembled transducer on a valve, referenced in the text just before the deflector/nozzle detail (Figure 4.5).
+```
+
+```yaml
+id: cvh-cmp-4.7
+teaches: Volume booster sectional view — internal construction of a booster used to amplify pneumatic flow capacity to the actuator
+concept-tags: [volume booster, sectional view, pneumatic amplification, deadband]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.88, §4.4 "Volume Boosters" (heading not captured on this page but content is contiguous with the booster discussion), Figure 4.7
+delivery: not yet determined
+used-by: []
+notes: Cutaway/sectional diagram, distinct from the installation photo in Figure 4.8. Low confidence only on the exact section-number heading for §4.4 — the heading itself did not appear within the p.87–88 text window read; the booster subject matter and figure sequence are fully verified.
+```
+
+### Booster Installations, SIS, and Pneumatic Controllers (printed pp. 89–90)
+
+```yaml
+id: cvh-cmp-4.8
+teaches: Typical dual-booster installation on a double-acting actuator — one booster feeding each side of the actuator piston
+concept-tags: [volume booster, double-acting actuator, installation, pneumatic volume]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.89, §4.4 "Volume Boosters", Figure 4.8
+delivery: not yet determined
+used-by: []
+notes: Photo of an installed pair of boosters on a double-acting actuator.
+```
+
+```yaml
+id: cvh-cmp-4.9
+teaches: SIS digital valve controller mounted on a safety (on/off) valve — the instrumentation used to take a process loop to a safe state and to run partial stroke testing
+concept-tags: [safety instrumented systems, SIS, digital valve controller, partial stroke testing, safety valve]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.89, §4.5 "Safety Instrumented Systems (SIS)", Figure 4.9
+delivery: not yet determined
+used-by: []
+notes: Photo of a DVC mounted on a safety valve; directly supports the PST (partial stroke testing) discussion in §4.5.1.
+```
+
+```yaml
+id: cvh-cmp-4.10
+teaches: Pneumatic controller mounted on a control valve — a local, standalone controller used when a full DCS/PLC is not needed, driven by a Bourdon tube, bellows, liquid-displacement lever, or temperature bulb input element
+concept-tags: [pneumatic controller, local control, beam-flapper assembly, process measurement input]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.90, §4.7 "Controllers", Figure 4.10
+delivery: not yet determined
+used-by: []
+notes: Photo of the assembled controller on a valve; the internal mechanism it summarizes is shown schematically in Figures 4.11 and 4.12.
+```
+
+### Pneumatic Controller Schematics & Position Transmitters (printed pp. 91–93)
+
+```yaml
+id: cvh-cmp-4.11
+teaches: Full pneumatic controller schematic for proportional-only control — manual/remote set point, proportional bellows, beam-flapper-nozzle-relay loop, and direct/reverse-action quadrants
+concept-tags: [pneumatic controller, proportional control, beam-flapper-nozzle, set point adjustment, relay]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.91, §4.7 "Controllers", Figure 4.11
+delivery: not yet determined
+used-by: []
+notes: Both Figure 4.11 and Figure 4.12 carry the identical caption "Pneumatic Controller Schematic" — same disambiguation situation the Oil & Gas Sourcebook precedent flagged for its own duplicate-captioned figures. Disambiguated here by figure number and by content: 4.11 is the proportional-only schematic (explicitly labelled "Proportional-Only Control" within the diagram itself), 4.12 extends it with reset and rate elements for proportional-plus-reset-plus-rate control. Not the same drawing — a real second, distinct schematic, not a duplicate to merge.
+```
+
+```yaml
+id: cvh-cmp-4.12
+teaches: Pneumatic controller schematic extended with reset and rate elements — anti-reset windup and the differential relief valve for proportional-plus-reset-plus-rate control
+concept-tags: [pneumatic controller, proportional-plus-reset, rate action, anti-reset windup, differential relief valve]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.92, §4.7 "Controllers", Figure 4.12
+delivery: not yet determined
+used-by: []
+notes: See disambiguation note on cvh-cmp-4.11 — same caption text as 4.11 by design (both titled "Pneumatic Controller Schematic"), genuinely different diagrams.
+```
+
+```yaml
+id: cvh-cmp-4.13
+teaches: Wireless position monitor mounted on an actuator — a position transmitter reporting a 0–100% digital signal in a wireless installation, vs. a 4–20 mA signal in a wired one
+concept-tags: [position transmitter, wireless installation, valve position feedback]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.92–93, §4.8 "Position Transmitters", Figure 4.13
+delivery: not yet determined
+used-by: []
+notes: Photo of the assembled wireless position transmitter on an actuator.
+```
+
+### Solenoid Valves & SIS Architectures (printed pp. 93–95)
+
+```yaml
+id: cvh-cmp-4.14
+teaches: Spring-return (single-acting) actuator represented in a 3-port SOV schematic symbol, used within SIS architecture diagrams
+concept-tags: [solenoid-operated valve, SOV, spring-return actuator, schematic symbol, safety instrumented systems]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.93, §4.9 "Solenoid-Operated Valves (SOVs)" (section heading inferred from contiguous content; not directly captured in the read window), Figure 4.14
+delivery: not yet determined
+used-by: []
+notes: Caption rendered by pdftotext as "Figure 14.14" — corrected here to 4.14; see the extraction-artifact note at the top of this file. Low confidence on the exact §4.9 heading wording only — the figure identity and content are fully verified against page context.
+```
+
+```yaml
+id: cvh-cmp-4.15
+teaches: Double-acting actuator represented in a 4-port SOV schematic symbol, contrasted with the 3-port spring-return symbol in Figure 4.14
+concept-tags: [solenoid-operated valve, SOV, double-acting actuator, schematic symbol]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.93, §4.9, Figure 4.15
+delivery: not yet determined
+used-by: []
+notes: Caption corrected from extraction artifact "Figure 14.15" to 4.15. Companion figure to 4.14 — same section, same schematic-symbol treatment, opposite actuator type.
+```
+
+```yaml
+id: cvh-cmp-4.16
+teaches: Solenoid valve and digital valve controller combined in a 1oo2 ("one-out-of-two") voting configuration for a safety instrumented system
+concept-tags: [solenoid-operated valve, SOV, digital valve controller, 1oo2, safety instrumented systems, voting architecture]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.94, Figure 4.16
+delivery: not yet determined
+used-by: []
+notes: Caption corrected from extraction artifact "Figure 14.16" to 4.16. Introduces the 1oo2/2oo2 voting nomenclature that Figures 4.19–4.20 later show as full architecture schematics.
+```
+
+```yaml
+id: cvh-cmp-4.17
+teaches: Direct-acting solenoid valve assembly — physical construction of the simpler of the two SOV actuation types
+concept-tags: [solenoid-operated valve, SOV, direct-acting, physical component identification]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.94, Figure 4.17
+delivery: not yet determined
+used-by: []
+notes: Caption corrected from extraction artifact "Figure 14.17" to 4.17. Paired with Figure 4.18 (pilot-operated) as the two SOV actuation types.
+```
+
+```yaml
+id: cvh-cmp-4.18
+teaches: Pilot-operated solenoid valve — physical construction of the higher-capacity SOV actuation type, contrasted with the direct-acting design in Figure 4.17
+concept-tags: [solenoid-operated valve, SOV, pilot-operated, physical component identification]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.94, Figure 4.18
+delivery: not yet determined
+used-by: []
+notes: Caption corrected from extraction artifact "Figure 14.18" to 4.18.
+```
+
+```yaml
+id: cvh-cmp-4.19
+teaches: 1oo2 solenoid-operated valve architecture — full voting-system schematic showing how either of two SOVs can independently trip the safety function
+concept-tags: [solenoid-operated valve, SOV, 1oo2, voting architecture, safety instrumented systems, schematic]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.95, Figure 4.19
+delivery: not yet determined
+used-by: []
+notes: Caption corrected from extraction artifact "Figure 14.19" to 4.19. Companion figure to 4.20 (2oo2) — the two present the two standard voting architectures side by side.
+```
+
+```yaml
+id: cvh-cmp-4.20
+teaches: 2oo2 solenoid-operated valve architecture — full voting-system schematic requiring both SOVs to trip before the safety function activates, contrasted with the 1oo2 architecture in Figure 4.19
+concept-tags: [solenoid-operated valve, SOV, 2oo2, voting architecture, safety instrumented systems, schematic]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.95, Figure 4.20
+delivery: not yet determined
+used-by: []
+notes: Caption corrected from extraction artifact "Figure 14.20" to 4.20.
+```
+
+```yaml
+id: cvh-cmp-4.21
+teaches: Redundant SOV configuration used in critical trip-system applications
+concept-tags: [solenoid-operated valve, SOV, redundancy, trip systems, safety instrumented systems]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.95, Figure 4.21
+delivery: not yet determined
+used-by: []
+notes: Caption corrected from extraction artifact "Figure 14.21" to 4.21. Text explicitly frames this figure alongside the trip-systems discussion carried into Figure 4.24.
+```
+
+```yaml
+id: cvh-cmp-4.22
+teaches: Three-way manual-reset solenoid-operated valve — an SOV variant requiring manual intervention to reset after a trip
+concept-tags: [solenoid-operated valve, SOV, manual reset, three-way valve, trip systems]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.95, Figure 4.22
+delivery: not yet determined
+used-by: []
+notes: Grep-confirmed as part of the unbroken 4.13–4.24 figure sequence on this page range; full paragraph-level caption context for this specific figure was not independently re-verified beyond sequence position — flagged low-confidence only on caption exactness, not on figure identity or chapter placement.
+```
+
+```yaml
+id: cvh-cmp-4.23
+teaches: SOV manifold assembly — a physical multi-valve manifold consolidating several solenoid-operated valves into one assembly
+concept-tags: [solenoid-operated valve, SOV, manifold, physical component identification]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.95, Figure 4.23
+delivery: not yet determined
+used-by: []
+notes: Same low-confidence caveat as cvh-cmp-4.22 — sequence position and page confirmed, exact caption wording not independently re-verified word-for-word.
+```
+
+### Trip and Switching Valves, Manual Handwheels (printed pp. 96–97)
+
+```yaml
+id: cvh-cmp-4.24
+teaches: Trip valve shown in its tripped condition — the physical valve state that results when a safety trip system activates
+concept-tags: [trip valve, trip systems, safety instrumented systems, physical component identification]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.96, Figure 4.24
+delivery: not yet determined
+used-by: []
+notes: Directly follows the trip-systems and redundant-SOV discussion (Figure 4.21) earlier in the chapter.
+```
+
+```yaml
+id: cvh-cmp-4.25
+teaches: Typical three-way switching valve
+concept-tags: [switching valve, three-way valve, physical component identification]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.96, Figure 4.25
+delivery: not yet determined
+used-by: []
+notes: Paired on the same page as Figure 4.24 (trip valve); both are safety/trip-related accessory hardware.
+```
+
+```yaml
+id: cvh-cmp-4.26
+teaches: Actuator fitted with a side-mounted handwheel — a manual-override mechanism for manipulating the actuator without pneumatic supply
+concept-tags: [handwheel, manual override, actuator, physical component identification]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.97, Figure 4.26
+delivery: not yet determined
+used-by: []
+notes: Companion figure to 4.27 — same section, contrasting handwheel mounting positions (side vs. top).
+```
+
+```yaml
+id: cvh-cmp-4.27
+teaches: Actuator fitted with a top-mounted handwheel, contrasted with the side-mounted arrangement in Figure 4.26
+concept-tags: [handwheel, manual override, actuator, physical component identification]
+status: verified
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: p.97, Figure 4.27
+delivery: not yet determined
+used-by: []
+notes: Last figure in the chapter; Chapter 5 ("Control Valve Sizing") begins on the next page (PDF page 98), confirmed directly against the chapter-divider page.
+```
+
+## Open items
+
+- **Batch coverage**: all 27 figures in the chapter (4.1–4.27) are catalogued, with no gaps in the numeric sequence. Real chapter start (PDF p.82, divider) and end (content through p.97, with Chapter 5 confirmed starting at p.98) were verified directly against the source PDF, not assumed from the table of contents.
+- **Real correction made**: the `pdftotext` extraction artifact that rendered Figures 4.14–4.23 with a spurious leading "1" ("Figure 14.14" etc.) was caught and corrected by reading full page context and confirming the unbroken figure sequence and the consistent chapter-4 running header — see the note at the top of this file.
+- **Low-confidence flags**:
+  - `cvh-cmp-4.7`: the exact section-number/heading for the Volume Boosters section was not captured within the page window read; the figure's identity, content, and page are fully verified.
+  - `cvh-cmp-4.14`: same caveat — the `§4.9` heading text for the Solenoid-Operated Valves section is inferred from contiguous content, not directly read from a heading line.
+  - `cvh-cmp-4.22` and `cvh-cmp-4.23`: figure identity, sequence position, and page are confirmed; the exact caption wording was not independently re-verified beyond the sequence-position check (these two fell in a page region where the full-caption grep returned partial results for other figures on the same page but not these two specifically).
+- **Duplicate-caption pair identified and resolved**: Figures 4.11 and 4.12 both carry the caption "Pneumatic Controller Schematic" — confirmed as two genuinely distinct diagrams (proportional-only vs. proportional-plus-reset-plus-rate), not a duplicate to merge, matching the same disambiguation situation the Oil & Gas Sourcebook ch1 precedent encountered with its own duplicate-captioned figures.
+- **Table exclusion confirmed**: no tables appear in this chapter's figure sequence; all 27 catalogued items are genuine figures (schematics or photos).
+- **Cross-reference check**: `Component Index — 14101 ch3.md` was checked for incidental references into this chapter's figure range. Its Control Valve Handbook citations (Fig 3.43, Fig 8.10, Fig 2.3, §5.11) all fall outside Chapter 4 — no existing `used-by` entries apply to any figure catalogued here.
+- **No archive or legacy material** was found or consulted for this chapter — the 6th-edition Control Valve Handbook is the sole and sufficient source for all 27 figures.

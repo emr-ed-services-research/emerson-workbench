@@ -6,7 +6,7 @@ publisher: Emerson / Fisher Controls International LLC
 edition: Sixth Edition
 tags:
   - source-library
-updated: 2026-09-03
+updated: 2026-09-11
 ---
 
 # Emerson Control Valve Handbook
@@ -53,11 +53,32 @@ Deadband); pull specific section numbers directly from the PDF when citing.
 ## Used by
 
 - [[14101 — Course Home|14101 Valve Trim and Body Maintenance]]
+- Control Valve Basics (Steve's course; chapters 1, 3, 4, 2 in that teaching
+  order) — in planning. Chapters 1–4 are now fully catalogued as the Phase 0
+  precondition for this course's Stage 1 arc-cutting (see below); the course
+  itself has not yet been built.
 
 ## Key sections referenced
 
-Populated as courses cite specific sections (via the per-chapter
-[[Component Index — 14101 ch3|component indexes]]).
+Populated as courses cite specific sections. Two indexing passes exist for
+this handbook, at different grains:
+
+- **14101's own component indexes** ([[Component Index — 14101 ch3|ch3]],
+  [[Component Index — 14101 ch1-ch2|ch1-ch2]]) — built deck-driven, scoped to
+  exactly what 14101's existing slides cite. The table below lists those
+  citations.
+- **Whole-chapter indexes for chapters 1–4** —
+  [[Component Index — Control Valve Handbook ch1|ch1]] (19 components),
+  [[Component Index — Control Valve Handbook ch2|ch2]] (9),
+  [[Component Index — Control Valve Handbook ch3|ch3]] (52),
+  [[Component Index — Control Valve Handbook ch4|ch4]] (27) — built
+  2026-09-11 as standing full-chapter cataloging (every figure and labelled
+  component in each chapter, not just what a course currently cites), the
+  real precondition for Control Valve Basics. 107 components total, plus
+  correct cross-references (not duplicates) to entries already catalogued in
+  14101's own indexes where the two courses cite the same figure. See
+  [[Source Library]] "Three ways a component index gets triggered" for how
+  the two passes relate.
 
 | Section | Topic | Cited from |
 | --- | --- | --- |

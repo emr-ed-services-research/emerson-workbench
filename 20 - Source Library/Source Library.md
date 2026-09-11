@@ -35,10 +35,27 @@ request actually reaches — never a wholesale pre-index of a document:
   components, built 2026-09-06 as the Phase 4 follow-on of the Instructional
   Primitives Pathway. Almost entirely `current` (CVH 6th ed. + current Fisher
   easy-e / ET / packing manuals); no archive content.
+- **Control Valve Handbook, chapters 1–4** — [[Component Index — Control Valve Handbook ch1|ch1]]
+  (19 figures), [[Component Index — Control Valve Handbook ch2|ch2]] (9 new +
+  1 cross-referenced), [[Component Index — Control Valve Handbook ch3|ch3]]
+  (52), [[Component Index — Control Valve Handbook ch4|ch4]] (27) — 107
+  figures catalogued fresh, built 2026-09-11 as Phase 0 of the Stage-1/
+  Stage-2 review-checkpoint work, the real precondition for Steve's Control
+  Valve Basics class (chapters in the order 1, 3, 4, 2). Standing full-chapter
+  cataloging (see "Three ways," below), not deck- or topic-driven — CVH is a
+  `current` first-party Emerson/Fisher document throughout. Real corrections
+  found and documented in place, not silently fixed: a genuine source
+  duplicate (two distinct figures both captioned "Figure 3.24"), a source
+  citation error (§3.8.4 cites the wrong figure number for its own rack-and-
+  pinion photo), a caption/image mismatch in ch2 (Figure 2.8's caption
+  duplicates Figure 2.6's but the image is unrelated), and a real
+  `pdftotext` extraction artifact in ch4 (spurious "14.x" figure numbering)
+  caught and resolved against the actual source rather than reproduced.
 
-**Two ways a component index gets triggered (corrected 2026-09-04 — see
-`Course Porting Pipeline.md` "Origination without a deck").** Both are
-"use-driven," bounded to the request in front of them, never speculative:
+**Three ways a component index gets triggered** (corrected 2026-09-04 — see
+`Course Porting Pipeline.md` "Origination without a deck" — then widened
+2026-09-11 to name a third pattern already in real use, the Oil & Gas
+Sourcebook's own 13-chapter pass, but never previously written down here):
 
 1. **Deck-driven** (the ch3 case above) — a chapter's existing slides define
    the scope; the index is built by cross-referencing what those slides
@@ -48,11 +65,22 @@ request actually reaches — never a wholesale pre-index of a document:
    the scope instead; the index is built by reading the relevant Source
    Library sections for *that topic*, not the whole document. Same
    record shape, same precedence-bucket discipline, same review gate — the
-   only difference is what supplies the boundary of what's in scope. This is
-   **not** "index the whole Handbook so any future topic already has an
-   answer" — that reintroduces the wholesale pre-indexing this section exists
-   to rule out; a topic index is scoped exactly as tightly as a chapter one,
-   built when that topic is actually being authored, not before.
+   only difference is what supplies the boundary of what's in scope.
+3. **Standing full-chapter cataloging** — a whole chapter of a source
+   document is catalogued end to end, ahead of any course or topic actually
+   needing it, when a course is *known* to need broad coverage of that
+   material soon (e.g. Control Valve Basics needing CVH chapters 1–4 whole,
+   not one narrow topic within them). Real precedent: the Oil & Gas
+   Sourcebook's full 13-chapter, 144/144-figure pass, and — added 2026-09-11,
+   Phase 0 of the Stage-1/Stage-2 review-checkpoint work — the Control Valve
+   Handbook's own chapters 1–4 ([[Component Index — Control Valve Handbook ch1|ch1]],
+   [[Component Index — Control Valve Handbook ch2|ch2]],
+   [[Component Index — Control Valve Handbook ch3|ch3]],
+   [[Component Index — Control Valve Handbook ch4|ch4]]).
+   This is still **not** "index the whole Handbook just in case" — every
+   pass here was scoped to specific chapters a specific, real course
+   actually needs, confirmed before the pass started, never speculative
+   coverage of a document with no course behind it at all.
 
 Building either kind of index is real research and editorial judgment — full
 reads of the relevant sources, precedence calls that go to Franz for
