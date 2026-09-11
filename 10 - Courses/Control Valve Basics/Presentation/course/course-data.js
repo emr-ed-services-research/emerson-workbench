@@ -52,7 +52,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Process control means automatically keeping something — a flow, a pressure, a temperature — at the value it should be. A control valve is the part that makes the correction: a sensor reads the real value, it's compared to the target, and the valve's stem moves to close the gap — this loop is what \"process control\" means in practice.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "The source figure (Figure 1.1) is a labelled block diagram of the whole feedback loop — Process, Sensor, Transmitter, Controller, Control Valve blocks connected by the Manipulated/Controlled Variable arrows — exactly the how-it-works schematic the mechanism role calls for, not a photo of hardware.",
                       "pages": [
                         1
                       ],
@@ -81,7 +81,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A sliding-stem valve moves its plug straight up and down through a globe- or angle-style body — the most common control valve construction.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "The source figure is a real product photo of an assembled sliding-stem valve, used here to put a face on the term before the next slide breaks it into labelled parts — a recognition-level nomenclature treatment, not a mechanism explanation.",
                       "pages": [
                         2
                       ],
@@ -110,7 +110,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "From actuator to body: stem, packing flange, bonnet, piston ring, plug, cage, and seat ring stack in that order — the assembly sequence every sliding-stem valve follows.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "The source figure is a numbered exploded-parts diagram (stem, packing flange, actuator locknut, bonnet, bonnet gasket, piston ring, plug, cage, seat ring, bolting, body) — the canonical labelled-parts-figure case the nomenclature role's default treatment is built for.",
                       "pages": [
                         3
                       ],
@@ -139,7 +139,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "An angle body turns the flow path 90° for erosive or high-pressure-drop service; a three-way body combines or diverts flow through a single valve instead of the straight-through path a standard globe body uses.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "Two real photos, each a distinct body style (an angle body vs. a three-way body) — a clean two-way split that fits the contrast role's fixed two-panel shape exactly, one photo per panel.",
                       "pages": [
                         4
                       ],
@@ -169,7 +169,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A conventional bonnet packs the stem with PTFE or graphite rings in the packing box; a bellows-seal bonnet replaces packing entirely with a welded metal bellows for zero-leakage service on hazardous or toxic process fluids.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "Two-way contrast (conventional packed bonnet vs. bellows-seal bonnet) fits the fixed two-panel shape; the third source (stem-packing-types) is a generic packing-type reference figure, not a third contrasted bonnet type — it supports the 'conventional' panel rather than needing a panel of its own.",
                       "pages": [
                         5
                       ],
@@ -200,7 +200,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A direct-acting actuator pushes the stem down with loading pressure and returns it with the spring; a reverse-acting actuator does the opposite. A piston actuator trades the spring for a second pressure connection, for higher thrust and faster stroking.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "**Template mismatch, not fixed:** the content is a genuine three-way contrast (direct-acting vs. reverse-acting vs. piston actuator, each with its own fully-labelled figure), but contrast's shape is fixed at exactly two panels split by one divider — there is no three-way contrast variant in the Template Gallery. Recommend `application`-role's `application-case` (filmstrip, one frame per real actuator type) instead, which is built for exactly this shape; that would also mean re-tagging this concept's role from `contrast` to `application`, not just swapping a template class within the same role.",
                       "pages": [
                         6
                       ],
@@ -269,7 +269,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A rotary control valve turns a ball, disk, or plug across the flow path instead of sliding a stem through it — the same final-control-element job, a different motion.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "The source figure is a real photo of an assembled rotary (butterfly-style) valve with actuator and positioner mounted, used the same way the sliding-stem overview photo is — putting a face on 'rotary control valve' before the section breaks into individual closure-member and actuator figures.",
                       "pages": [
                         8
                       ],
@@ -298,7 +298,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A segmented ball, a V-notch ball, and an eccentric disk are the three standard rotary closure members — the V-notch's contoured cut gives it the widest rangeability of the three.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "**Template mismatch, not fixed:** three genuinely distinct closure-member types (segmented ball, V-notch ball, eccentric disk), each with its own real photo, forced into contrast's fixed two-panel shape. Same shape problem as `cvb.intro.actuator-types` above — recommend `application-case` (filmstrip, one frame per closure-member type), which means re-tagging the role from `contrast` to `application`.",
                       "pages": [
                         9
                       ],
@@ -329,7 +329,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A rotary actuator's lever and shaft convert the same linear stem motion a sliding-stem actuator produces into the disk or ball rotation the closure member actually needs.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "The source figure is a fully labelled cutaway of a rotary actuator (loading pressure connection, diaphragm, spring, lever, shaft, disk, seal) — a genuine how-it-works figure showing the lever/shaft conversion the concept describes, the textbook mechanism-role case.",
                       "pages": [
                         10
                       ],
@@ -358,7 +358,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A cage's window shape — linear, equal-percentage, or quick-opening — sets how flow changes as the valve strokes, independent of the body style around it.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "The source figure is itself a 3-panel photo (linear, equal-percentage, quick-opening cages shown together with flow arrows) — mechanism's shape explicitly allows a `.tpl-flow-arrow` treatment for a figure showing sequential/parallel states of one mechanism, which is exactly this case: one figure, three window shapes, not three separate figures needing their own panels.",
                       "pages": [
                         11
                       ],
@@ -387,7 +387,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Quick-opening gives maximum flow change near the closed position, linear gives equal flow change per unit of travel, and equal-percentage gives equal PERCENTAGE change per unit of travel — read the curve to tell which characteristic a valve has.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "One real figure — the three inherent-characteristic curves plotted on shared axes — with a single analytical takeaway (read the curve to identify which characteristic a valve has). That's exactly base application's one-fig-plus-takeaway shape, not a multi-instance case needing application-case.",
                       "pages": [
                         12
                       ],
@@ -416,7 +416,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Deadband is the range a controller's output can reverse through before the valve produces any observable change — friction and backlash are its usual causes.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "The source figure is a hysteresis-style plot of process variable vs. controller output — a how-it-works diagram of the deadband mechanism itself (the reversal range before observable change), not a photo of hardware, matching the mechanism role's default treatment.",
                       "pages": [
                         13
                       ],
@@ -495,7 +495,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Single-ported globe bodies are the simplest and tightest-shutoff; double-ported (reverse-acting) bodies balance plug forces across two ports for less required thrust; cage-style balanced-plug bodies use the cage itself to balance pressure and can carry a soft seat for bubble-tight shutoff.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "**Template mismatch, not fixed:** three distinct globe body constructions (single-ported, double-ported/reverse-acting, cage-style balanced-plug), each with its own real figure, forced into contrast's two-panel shape. Same problem as the actuator-types and closure-members concepts above — recommend `application-case`, re-tagging the role from `contrast` to `application`.",
                       "pages": [
                         15
                       ],
@@ -526,7 +526,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Angle and bar-stock bodies extend the basic globe body for specialty service (erosive/slurry flow, high-purity or highly corrosive fluids); a three-way body combines two inlet streams or diverts one inlet to either of two outlets, one body doing the job two two-way valves and a manifold would otherwise do.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "**Template mismatch, not fixed:** three distinct body-style photos (flanged angle, bar-stock, three-way), each independently described, don't fit base application's single-fig-plus-takeaway shape. Recommend `application-case` (filmstrip, one frame per body style) instead — already the right role, just the wrong variant within it.",
                       "pages": [
                         16
                       ],
@@ -557,7 +557,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "An offset-shaft butterfly disk swings clear of the seat as it opens, reducing seat wear versus a centered shaft; a high-performance butterfly adds a second, radial offset for a tighter, longer-wearing seal at higher pressure.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "Two-way contrast (standard offset-shaft butterfly vs. high-performance double-offset butterfly) fits the two-panel shape; the third source (a general assembled-butterfly-valve photo) is supporting context for the 'standard' panel, not a third contrasted type.",
                       "pages": [
                         17
                       ],
@@ -588,7 +588,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A full-port ball valve (on trunnion mounts, for larger sizes) gives an unrestricted straight-through bore when open; an eccentric plug swings out of the seat on an off-center shaft, the same wear-reducing idea a butterfly's offset shaft uses.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "Two-way contrast (full-port trunnion-mounted ball vs. eccentric plug) fits the panel shape using `cvh-cmp-full-port-ball-valve-trunnion` and `cvh-cmp-eccentric-plug-valve-body` as the two panel figures. Flagging, not fixing: `cvh-cmp-segmented-v-notch-ball` is cited here but never mentioned in this concept's `t`, and `cvh-cmp-full-port-ball-control-valve` duplicates the same ball-valve side as the trunnion figure — both look like leftover/stray citations, worth a sourcing cleanup pass separate from this rationale.",
                       "pages": [
                         18
                       ],
@@ -620,7 +620,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Anti-cavitation and low-noise trim options quiet or eliminate the damage a high pressure-drop can cause; a multi-port flow-selector valve routes flow among several destinations from one body; a pressure-assisted seal uses process pressure itself to improve shutoff.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "**Template mismatch, not fixed:** three functionally distinct special-purpose options (anti-cavitation/low-noise trim, a multi-port flow-selector body, a pressure-assisted seal), each its own real figure, don't fit base application's single-fig shape. Recommend `application-case`, same fix as `cvb.intro.body-style-variants` above — already the right role.",
                       "pages": [
                         19
                       ],
@@ -651,7 +651,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Bolted-flange connections bolt to mating pipe flanges and can be unbolted for service; welded connections are welded directly into the pipeline, for higher pressure or leak-critical service, at the cost of cutting the valve out to service it.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "Two source figures, each itself showing several named sub-types (bolted-flange: flat-face, raised-face, ring-type joint; welded: socket-weld, butt-weld) — exactly nomenclature's labelled-parts-figure-plus-list shape, just spanning two component figures instead of one.",
                       "pages": [
                         20
                       ],
@@ -720,7 +720,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A standard bonnet bolts to the body with stud bolts; bonnet variations extend that basic shape for extra clearance or insulation; a fabricated extension bonnet lengthens the packing box away from the process fluid, for cryogenic or very hot service.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "Three named bonnet constructions (standard bolted, variations, fabricated extension), each with its own figure — a straightforward nomenclature list-of-named-items case, well within the role's default figure-plus-list shape (three points on a spectrum, not a to-be-decided-between pair, so no forced two-way contrast).",
                       "pages": [
                         22
                       ],
@@ -751,7 +751,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A welded-leaf bellows stacks thin metal diaphragms into a flexible seal; a mechanically-formed bellows is hydroformed from tubing instead — both give a fully welded, zero-leakage path around the stem.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "The bonnet-assembly figure frames the whole mechanism (a fully-welded, zero-leakage bellows path around the stem), then the two construction-method figures (welded-leaf vs. mechanically-formed) show the sequential detail behind that one mechanism — mechanism's shape handles this as a figure sequence, not a two-way contrast, since the two methods are alternative implementations of the SAME mechanism, not two different things being compared.",
                       "pages": [
                         23
                       ],
@@ -782,7 +782,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A single PTFE V-ring packing arrangement is the simple baseline; the full packing-material arrangement (rings, followers, springs) shown in cross-section is what actually loads and maintains that seal as the stem strokes and wears.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "Two real figures, a clean two-way contrast (the simple single-PTFE-V-ring baseline vs. the full packing-material arrangement cross-section showing what actually loads the seal) — fits the two-panel shape exactly.",
                       "pages": [
                         24
                       ],
@@ -812,7 +812,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "ENVIRO-SEAL packing systems add a live-loaded spring to a PTFE, duplex (PTFE-plus-graphite), or graphite ULF (ultra-low fugitive) arrangement — for sliding-stem or rotary valves alike — to hold sealing force as packing wears, instead of relying on a one-time bolt torque.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "Four ENVIRO-SEAL packing variants (PTFE, duplex, graphite ULF, rotary graphite) are parallel implementations of the SAME live-loaded-spring mechanism, differing by material/temperature range rather than by mechanism — fits mechanism's figure-plus-list shape as one mechanism shown across its real variants, not four unrelated things needing separate panels. (This is the same concept the granularity advisory already flags for citing 4 components — the template fits, but it's worth a human glance on whether the four variants earn their own slide each.)",
                       "pages": [
                         25
                       ],
@@ -844,7 +844,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Match the packing system to the service: standard PTFE for general-purpose duty, an ENVIRO-SEAL live-loaded system where emissions matter, graphite where temperature rules PTFE out — sliding-stem and rotary valves each have their own selection chart.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "Two selection charts (sliding-stem, rotary) serve the same evaluative task — matching packing to service — and can be shown as one combined selection-chart table under application's own `.tmpl-table` allowance, with the one-line takeaway naming the deciding factors (emissions, temperature, valve style); doesn't need application-case's multi-frame treatment since both charts answer the same single decision, not two decisions.",
                       "pages": [
                         26
                       ],
@@ -874,7 +874,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Regulations require periodically testing valves for leaks into the air (called fugitive emissions) — the programs that do this are known as VOC/LDAR, and ISO 15848-1 is the standard a packing system has to pass to qualify. Picking an unqualified packing for the service can mean failing that test, not just a leak on the bench.",
                       "template": "slide--tmpl-caution",
-                      "templateRationale": "This is the 'caution' role's default Template Gallery treatment: The caution card (.slide--tmpl-caution): the warning, the failure it prevents, distinct visual weight.",
+                      "templateRationale": "A real compliance warning (an unqualified packing choice can mean failing a mandated leak test, not just a bench leak) — the caution card's warning-plus-consequence shape fits directly; the two source figures (the LDAR monitoring-frequency flowchart and the ISO 15848-1 qualification table) ground the 'why this is a real requirement, not a suggestion' framing the caution card needs.",
                       "pages": [
                         27
                       ],
@@ -945,7 +945,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A characterized cage shapes its window profile to produce a specific curve directly — the physical mechanism behind the quick-opening/linear/equal-percentage curves already introduced.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "Two figures work as a cause-and-effect pair: the characterized-cage window-shape photo (the physical mechanism) and the flow-characteristic curve graph (its effect, already introduced) — mechanism's shape handles this as the same figure-plus-source pattern used for `cvb.characteristic.cage-shape`, now showing the specific cage construction behind it.",
                       "pages": [
                         29
                       ],
@@ -975,7 +975,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A contoured plug shapes the same curve types by varying its own profile against a fixed seat, rather than through a cage window; quick-opening construction is the simplest case — a flat-faced plug that uncovers flow area almost immediately.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "Two figures, one showing how plug contour varies to produce different characteristics and one showing the simplest case (quick-opening) in labelled construction detail — a mechanism figure pair, the plug-based counterpart to the cage-based mechanism two slides earlier.",
                       "pages": [
                         30
                       ],
@@ -1005,7 +1005,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Cage-guided trim rides inside the cage bore; plug-guided trim rides in machined guides in the body itself — two different ways of keeping the plug centered on its seat. A reduced-capacity adapter lets one body size handle a smaller trim than its full-size rating.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "Two figures ground three named items (cage-guiding, plug-guiding, and the reduced-capacity adapter) as a labelled list — nomenclature's shape, not a two-way contrast, since 'guiding method' and 'capacity adapter' are two different facts sitting on the same slide by design (the id's own name says both), not two things being compared against each other.",
                       "pages": [
                         31
                       ],
@@ -1036,7 +1036,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A field-reversible actuator can be converted between direct- and reverse-acting in the field, without a different casting, and the same spring-and-diaphragm principle drives a rotary valve's diaphragm actuator, just converted to rotation through a lever. A double-acting piston actuator uses supply pressure on both sides for higher thrust in either direction; its rotary equivalent, a scotch-yoke piston actuator, converts that same linear motion into rotation the piston way, just as the diaphragm actuator does through its lever.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "This primitive spans two slides (pages 32-33, from last turn's merge) — each slide handles one actuator-mechanism pair as a sequential figure treatment: page 32 (field-reversible actuator, its rotary-diaphragm counterpart), page 33 (double-acting piston, its rotary scotch-yoke counterpart). Mechanism's shape fits each page's own pair; the two pages together cover the full 'actuator types beyond the basic ones' scope the merge was built to hold.",
                       "pages": [
                         32,
                         33
@@ -1069,7 +1069,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A handwheel gives manual override on a sliding-stem or rotary actuator without pneumatic supply; an electric actuator replaces pneumatic supply with a motor, for sites with no air system.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "Four real photos form a clean 2×2 grid — two power types (manual, electric) × two motion types (sliding-stem, rotary) — nomenclature's own carve-out for a 'fixed small set of terms' with a reference-table shape fits this naturally; not a two-way contrast since power type and motion type are two independent axes shown together, matching the split's own reasoning for why rack-and-pinion (a third, different axis) didn't belong here.",
                       "pages": [
                         34
                       ],
@@ -1101,7 +1101,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A rack-and-pinion actuator is a compact, economical pneumatic option for rotary valves — but its backlash limits it to on/off service, not the precision continuous throttling a diaphragm or piston actuator handles.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "A single figure, a single mechanism (the rack-and-pinion conversion itself, with its backlash tradeoff) — the simplest, cleanest mechanism-role case in this module, deliberately narrow after the split gave it its own concept.",
                       "pages": [
                         34
                       ],
@@ -1176,7 +1176,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A pneumatic positioner closes its own local loop: it compares actual stem position (fed back through a cam and beam) to the command signal at a flapper/nozzle, and drives a relay until the two agree.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "One fully labelled schematic (bellows, beam, cam feedback, flapper/nozzle, relay, diaphragm-pressure output) showing the complete closed local loop — the clearest possible mechanism-role case in this module, one figure carrying the whole explanation.",
                       "pages": [
                         36
                       ],
@@ -1205,7 +1205,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "An analog I/P positioner runs the same feedback loop from a 4-20 mA current signal instead of a pneumatic one, converting current to pneumatic output through the same nozzle/flapper/relay stages.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "Two figures in natural teaching order: the labelled schematic (DC input, converter, feedback axis, nozzle/flapper, relay) explaining the mechanism, then the physical unit photo confirming what it actually looks like — the same schematic-then-hardware sequence mechanism's shape is built to carry.",
                       "pages": [
                         37
                       ],
@@ -1235,7 +1235,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A digital valve controller replaces the positioner's mechanical feedback linkage with a microprocessor — same job (drive the valve to command), added diagnostics.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "A single real photo of a digital valve controller mounted on an assembled valve — a straightforward recognition-level nomenclature case, naming the instrument before its own diagnostic capabilities are covered later in the course.",
                       "pages": [
                         38
                       ],
@@ -1264,7 +1264,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "An I/P transducer converts a current signal to a pneumatic one with no position feedback at all — simpler and cheaper than a positioner, appropriate where high positioning accuracy isn't required.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "**Template mismatch, not fixed:** the concept's contrast is conceptual (an I/P transducer vs. a positioner, covered two slides earlier), but both cited figures are views of the SAME device (a pilot-stage detail crop and a mounted-unit photo) — there's no second, positioner-side figure to fill a real second panel. This reads more naturally as `mechanism` (detail figure, then the assembled unit, the same schematic-then-hardware sequence used for the analog I/P positioner two slides earlier) than as a two-panel contrast with nothing to put in panel two.",
                       "pages": [
                         39
                       ],
@@ -1294,7 +1294,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A volume booster amplifies the pneumatic flow available to the actuator without changing the signal's pressure — needed when a large or fast-stroking actuator would otherwise starve the positioner's own limited output capacity.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "Two figures split cleanly by role within the slide: the sectional view grounds the takeaway's mechanism claim (amplifying flow without changing signal pressure), and the dual-booster installation photo is the real case that motivates when you'd need one — fits application's fig-plus-takeaway shape with the installation photo as the primary figure and the sectional view supporting the one-line payoff, not two separate things needing their own panels.",
                       "pages": [
                         40
                       ],
@@ -1362,7 +1362,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A standalone pneumatic controller closes an entire control loop right at the valve, with no central control-room computer system (a DCS or PLC) needed — it compares the measured process value to a set point and drives the valve directly. Adding reset and rate elements to a proportional-only design corrects lingering offset and reacts faster to a changing load.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "Three figures in a genuine build-up sequence — the physical unit, then its proportional-only schematic, then the same schematic extended with reset-and-rate elements — exactly mechanism's own guidance for a figure showing sequential states of one mechanism (add a flow-arrow between the two schematic stages), not three independent things.",
                       "pages": [
                         42
                       ],
@@ -1393,7 +1393,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A position transmitter reports actual valve position back to the control system — 4-20 mA if wired, a 0-100% digital signal if wireless — so the control room can see where the valve really is, not just where it was told to go.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "The single source figure (a wireless position monitor) is captioned against the wired case directly ('reporting a 0-100% digital signal... vs. a 4-20mA signal in a wired one') — a real two-way contrast even from one figure, since the wired case is the baseline already established for every other accessory in this chapter; the wireless photo anchors one panel, the wired baseline anchors the other without needing its own new photograph.",
                       "pages": [
                         43
                       ],
@@ -1422,7 +1422,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol). Separately, a direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.",
                       "template": "slide--role-contrast",
-                      "templateRationale": "This is the 'contrast' role's default Template Gallery treatment: Parallel this-vs-that layout — a figure row or a comparison table.",
+                      "templateRationale": "**Template mismatch, not fixed:** this concept bundles two INDEPENDENT classification axes (spring-return vs. double-acting; separately, direct-acting vs. pilot-operated) into one slot — contrast's shape holds one two-way split, not two separate two-way splits at once. This is the same bundling the granularity advisory already flags for this concept (4 sources). Recommend splitting into two concepts, one per axis, each a clean two-way `contrast` — not a template swap within this concept, since neither half alone is too big for contrast's real shape.",
                       "pages": [
                         44
                       ],
@@ -1454,7 +1454,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A 1oo2 (one-out-of-two) architecture trips if either of two SOVs sees a demand — favoring safety, more nuisance trips. A 2oo2 architecture needs both to agree — favoring uptime, at the cost of a slower response to a real single-SOV failure.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "**Template mismatch, not fixed:** two distinct voting architectures (1oo2, 2oo2), each with its own full schematic and its own tradeoff (nuisance-trip risk vs. slower response), don't fit base application's one-fig shape. Recommend `application-case` (two frames, one per architecture) — already the right role, just the wrong variant, the same fix as `cvb.intro.body-style-variants` and `cvb.bodystyle.special-purpose` above.",
                       "pages": [
                         45
                       ],
@@ -1485,7 +1485,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A trip valve shows a distinct physical state once a safety system actually trips it; a switching valve routes pneumatic signal for control logic rather than process flow. A side- or top-mounted handwheel lets a technician manually stroke an actuator with no air supply at all.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "Four figures resolve into three named items — trip valve, switching valve, and handwheel override (shown in its two mounting variants, side and top) — nomenclature's labelled-list shape holds three named things under one slide comfortably, the handwheel's two photos serving as one list entry's illustration, not two separate items.",
                       "pages": [
                         46
                       ],
@@ -1565,7 +1565,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Process variability is the width of the distribution of a measured value around its target, not where the target itself sits — a tightly-controlled loop has a narrow distribution, a poorly-controlled one a wide one, both centered the same place.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "One figure — two stacked distribution curves, same target, different widths — is the direct visual definition of the concept itself (variability is distribution width, not target position), the cleanest possible one-figure mechanism case.",
                       "pages": [
                         48
                       ],
@@ -1594,7 +1594,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Every performance number in this chapter — deadband, response time, gain, the economics — comes from real bench testing on a physical test loop, not a simulation.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "A single real photo of the physical test rig — establishing 'this chapter's numbers come from real bench testing, not simulation' as a factual, recognition-level claim, the nomenclature role's default figure-plus-claim treatment.",
                       "pages": [
                         49
                       ],
@@ -1623,7 +1623,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Testing three real valve designs open-loop shows deadband directly: each valve's output lags its command by a different amount before it moves at all — the same deadband concept already introduced, now measured and compared.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "The cross-referenced figure (CVH ch2 Figure 2.3, 'Effect of Deadband on Valve Performance') plots three real valve designs' open-loop lag directly — a measured mechanism demonstration, not a schematic, fitting mechanism's role as the demonstrated counterpart to the definition already given in ch1-m2.",
                       "pages": [
                         50
                       ],
@@ -1650,7 +1650,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Dead time and 63%-response time both vary by valve/actuator/positioner combination — a faster positioner or a smaller actuator generally responds quicker, but the only way to know a specific configuration's numbers is to test it.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "The source is explicitly a table-shaped summary (dead time / 63%-response time across valve/actuator/positioner configurations) — application's own `.tmpl-table` allowance fits directly, with the one-line takeaway being 'test your specific configuration, don't assume a number.'",
                       "pages": [
                         51
                       ],
@@ -1679,7 +1679,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Installed gain is the slope of the installed flow-characteristic curve at a given travel — where that slope changes sharply across the travel range, the loop's tuning has to compromise between the high-gain and low-gain regions.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "One figure — installed characteristic and installed gain plotted together for the same valve — shows gain as the slope of the characteristic curve directly, the visual mechanism behind the analytical claim (tuning has to compromise where slope changes sharply).",
                       "pages": [
                         52
                       ],
@@ -1708,7 +1708,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A globe valve holds a usable, controllable gain over a wider share of its travel than a butterfly valve does for the same duty — a wider control range, read directly off the installed-gain comparison.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "One figure — globe vs. butterfly installed-gain behavior plotted together — with a single analytical takeaway (globe holds a usable gain over more of its travel); fits application's one-fig-plus-takeaway shape exactly, reading the same comparison graph as the analytical skill rather than needing two separate valve photos.",
                       "pages": [
                         53
                       ],
@@ -1776,7 +1776,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Across three real valve designs under the same random load disturbance, the better-controlling valve holds process variability closer to the theoretical minimum as tuning gets more aggressive — a measurable economic argument for choosing it, not just a qualitative one.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "One figure — three real valve designs' variability response to the same load disturbance across tuning aggressiveness — carries the whole economic argument (a measurable improvement, not just a qualitative one) as application's single analytical figure plus takeaway.",
                       "pages": [
                         55
                       ],
@@ -1805,7 +1805,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "A Signature Series factory test runs an assembled valve through ValveLink software, recording its own friction/force signature as a baseline for comparison against a later, in-service test of the same valve.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "This is the 'mechanism' role's default Template Gallery treatment: A how-it-works schematic or cutaway (the default for an understand-level concept).",
+                      "templateRationale": "The photo shows the real test procedure in progress (a technician running ValveLink's Signature Series test on an assembled valve) — grounding 'how the baseline actually gets made' as a real process, which is what mechanism's treatment is for even without an internal cutaway.",
                       "pages": [
                         56
                       ],
@@ -1834,7 +1834,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "Overlaying a new in-service signature on the original baseline shows an increased span where friction has risen — the same comparison a technician would run to confirm a valve actually needs service, not just guess from symptoms.",
                       "template": "slide--role-application",
-                      "templateRationale": "This is the 'application' role's default Template Gallery treatment: The mechanism in a concrete situation — a real case or scenario, not an abstract restatement.",
+                      "templateRationale": "The source figure is itself a worked diagnostic example — an overlay of original vs. new signature traces with 'INCREASED SPAN INDICATES INCREASED FRICTION' called out directly on the image — application's fig-plus-takeaway shape fits perfectly since the figure already does the diagnostic reasoning the concept teaches.",
                       "pages": [
                         57
                       ],
@@ -1863,7 +1863,7 @@ window.EW_COURSE = {
                       "tier": "introductory",
                       "t": "ValveLink's Total Scan view shows the signature graph directly; its Valve Step Response view runs and displays a step test — the two diagnostic screens a technician actually works from.",
                       "template": "slide--role-nomenclature",
-                      "templateRationale": "This is the 'nomenclature' role's default Template Gallery treatment: A labelled-parts figure (.slide--tmpl-diagram), recognition-level — or, for a concept with no physical figure to label (a named framework, a fixed small set of terms), a reference table (.slide--tmpl-table). Sequence before the mechanism concepts.",
+                      "templateRationale": "Two real software screenshots, each a named diagnostic view (Total Scan, Valve Step Response) — nomenclature's labelled-reference treatment fits directly, naming the two screens a technician actually works from rather than explaining a mechanism.",
                       "pages": [
                         58
                       ],
