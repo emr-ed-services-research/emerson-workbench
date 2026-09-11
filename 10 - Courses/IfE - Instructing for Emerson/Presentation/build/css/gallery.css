@@ -73,8 +73,20 @@
 }
 
 .placeholder-img {
+  /* PHASE 2 CONSISTENCY FIX (2026-09-10): the stripe colours were raw hex
+     (#E7EAEC/#DADFE3), not tokens — found auditing the original eight
+     against the token discipline Phase 1/1b were built to. Derived from
+     --emerson-grey via color-mix instead, the same idiom every new
+     template's hairline borders already use, so a future grey retheme
+     still cascades here. Deliberately distinct from real content (still
+     a diagonal stripe, not a token used for actual UI), which is the
+     placeholder's entire job — being ON-TOKEN and being visually
+     distinct from real content are not in tension. */
   background: repeating-linear-gradient(135deg,
-    #E7EAEC, #E7EAEC 10px, #DADFE3 10px, #DADFE3 20px);
+    color-mix(in srgb, var(--emerson-grey) 22%, #fff),
+    color-mix(in srgb, var(--emerson-grey) 22%, #fff) 10px,
+    color-mix(in srgb, var(--emerson-grey) 38%, #fff) 10px,
+    color-mix(in srgb, var(--emerson-grey) 38%, #fff) 20px);
   border: 0.1cqw dashed var(--emerson-grey);
   border-radius: 0.5cqw;
   display: flex;
@@ -132,6 +144,25 @@
   font-size: 2.05cqw;
   line-height: 1.4;
   color: var(--body-text);
+}
+
+/* is-dark — a deliberate, SELECTABLE variant (Canvas Phase 1b, 2026-09-10,
+   from Franz's direct review of the unconstrained Foundations preview's
+   Prime Question step). Same shape, dark ground + light text instead of
+   the default light card. This is a real-content authoring choice for
+   the one prime slide per module that genuinely earns a harder pause —
+   not a default applied to every prime slide, and Stage 3 should not
+   reach for it routinely. No image is expected alongside it in practice
+   (a bare .tpl-tagline reads better at this scale), but the modifier
+   itself does not forbid one. */
+.slide--role-prime.is-dark {
+  /* full-bleed, same pattern .slide--cover already uses for its own
+     colour-fill variant — background set on the slide itself, not a
+     nested box, so it actually reaches the edges. */
+  background: var(--emerson-charcoal);
+}
+.slide--role-prime.is-dark .tpl-tagline {
+  color: var(--emerson-white);
 }
 
 /* ---------------------------------------------------------------------- *
@@ -791,6 +822,16 @@
   margin: -0.5cqh -0.7cqw;
   transition: background-color 0.15s, color 0.15s, opacity 0.15s;
 }
+/* PHASE 2 CONSISTENCY FIX: every other clickable card/pill in the gallery
+   (tpl-reveal-item, tpl-tab, tpl-frame, tpl-parse-key, tpl-pick-item) has
+   a hover affordance; check's options were the one interactive element
+   with none. No border to color here by design (a bare list, not a
+   card), so a light blue background tint plays the same "you can click
+   this" role instead — never shown once a real answer state (is-right/
+   is-wrong) is set. */
+.slide--role-check .tpl-options li:hover:not(.is-right):not(.is-wrong) {
+  background: color-mix(in srgb, var(--emerson-blue) 8%, #fff);
+}
 .slide--role-check .tpl-options li.is-right {
   background: var(--emerson-blue);
   color: var(--emerson-white);
@@ -880,7 +921,14 @@
 }
 .slide--role-nomenclature-reveal .tpl-reveal-detail__pane {
   display: none;
-  font-size: 1.7cqw;
+  /* PHASE 2 CONSISTENCY FIX: was 1.7cqw. The three "read a real detail
+     pane" patterns (this, procedure-worked's tabpane, application-case's
+     frame-detail-pane) had drifted to three different sizes (1.7/1.55/1.6)
+     despite being the same register of content; unified to 1.65cqw,
+     matching the reading-text baseline the original eight already
+     established (nomenclature/mechanism .tpl-list li, procedure-callout
+     .tpl-steps li). */
+  font-size: 1.65cqw;
   line-height: 1.4;
   color: var(--body-text);
 }
@@ -932,6 +980,9 @@
   color: var(--body-text);
   transition: background-color 0.15s, color 0.15s, border-color 0.15s;
 }
+.slide--role-procedure-worked .tpl-tab:hover {
+  border-color: var(--emerson-blue);
+}
 .slide--role-procedure-worked .tpl-tab.is-active {
   background: var(--emerson-blue);
   border-color: var(--emerson-blue);
@@ -944,7 +995,9 @@
 }
 .slide--role-procedure-worked .tpl-tabpane {
   display: none;
-  font-size: 1.55cqw;
+  /* PHASE 2 CONSISTENCY FIX: was 1.55cqw — see the identical note on
+     nomenclature-reveal's .tpl-reveal-detail__pane. */
+  font-size: 1.65cqw;
   line-height: 1.4;
   color: var(--body-text);
 }
@@ -964,7 +1017,10 @@
   counter-increment: step;
   position: relative;
   padding-left: 2.6cqw;
-  font-size: 1.4cqw;
+  /* PHASE 2 CONSISTENCY FIX: was 1.4cqw, smaller than every comparable
+     numbered-step list in the original eight (procedure-callout 1.65cqw,
+     procedure-image 1.75cqw) despite being the same register of content. */
+  font-size: 1.6cqw;
   line-height: 1.3;
 }
 .slide--role-procedure-worked .tpl-tabpane .tpl-steps li::before {
@@ -1091,7 +1147,9 @@
 }
 .slide--role-application-case .tpl-frame-detail__pane {
   display: none;
-  font-size: 1.6cqw;
+  /* PHASE 2 CONSISTENCY FIX: was 1.6cqw — see the identical note on
+     nomenclature-reveal's .tpl-reveal-detail__pane. */
+  font-size: 1.65cqw;
   line-height: 1.4;
   color: var(--body-text);
 }
@@ -1106,4 +1164,214 @@
 .slide--role-application-case .tpl-frame-detail__pane li {
   font-size: 1.5cqw;
   line-height: 1.4;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 12. NOMENCLATURE-PARSE — a real sentence, broken into named parts a
+ *    learner picks between (e.g. Action / Conditions / Standard in a
+ *    training objective). No source figure — the "figure" is the
+ *    sentence itself. Added 2026-09-10, Canvas Phase 1b, from the
+ *    Foundations preview's "Objectives, Briefly" step. A third
+ *    nomenclature shape, alongside plain nomenclature (has a figure) and
+ *    nomenclature-reveal (a fixed set, no figure, no single sentence to
+ *    parse) — this one is for naming the parts of ONE real sentence.
+ * ---------------------------------------------------------------------- */
+.slide--role-nomenclature-parse .tpl-content {
+  grid-template-rows: auto auto 1fr;
+  row-gap: 2cqh;
+  align-content: center;
+}
+.slide--role-nomenclature-parse .tpl-parse-keys {
+  display: flex;
+  gap: 0.9cqw;
+}
+.slide--role-nomenclature-parse .tpl-parse-key {
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.3cqw;
+  cursor: pointer;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 999px;
+  padding: 0.7cqh 1.4cqw;
+  color: var(--body-text);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.slide--role-nomenclature-parse .tpl-parse-key:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-nomenclature-parse .tpl-parse-key.is-active {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-nomenclature-parse .tpl-parse-sentence {
+  /* PHASE 2 CONSISTENCY FIX: was 2.1cqw — the biggest body-register text
+     in the whole gallery, bigger even than check's bolded .tpl-prompt
+     (1.9cqw), despite both being "the one big bold statement on this
+     slide." Matched to check's prompt size instead of standing alone. */
+  font-size: 1.9cqw;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--body-text);
+  margin: 0;
+}
+.slide--role-nomenclature-parse .tpl-tok {
+  border-radius: 0.35cqw;
+  padding: 0.05em 0.2em;
+  transition: background-color 0.15s;
+}
+.slide--role-nomenclature-parse .tpl-tok.is-on {
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-nomenclature-parse .tpl-parse-def {
+  font-size: 1.5cqw;
+  color: var(--emerson-grey);
+  min-height: 1.4em;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 13. APPLICATION-PICK — pick one real item from a small set, see a real
+ *    worked analysis of it. Added 2026-09-10, Canvas Phase 1b, from the
+ *    Foundations preview's "Objectives Practice" step — Franz's review
+ *    called the concept good but the on-slide instructions unclear;
+ *    .tpl-howto is a permanent, always-present part of THIS shape (not a
+ *    discretionary box a slide might or might not include), so the
+ *    interaction is legible without anyone standing next to it explaining
+ *    it. A third application shape, alongside plain application (a graph
+ *    or table) and application-case (step through EVERY instance in
+ *    sequence) — this one is SELECT ONE from several, then see its
+ *    analysis; the others are not shown until picked.
+ * ---------------------------------------------------------------------- */
+.slide--role-application-pick .tpl-content {
+  grid-template-rows: auto auto 1fr;
+  row-gap: 1.8cqh;
+}
+.slide--role-application-pick .tpl-howto {
+  display: flex;
+  gap: 0.9cqw;
+  align-items: flex-start;
+  background: var(--emerson-white);
+  border: 0.09cqw solid var(--emerson-blue);
+  border-radius: 0.6cqw;
+  padding: 1.1cqh 1.3cqw;
+  margin: 0;
+  font-size: 1.4cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+.slide--role-application-pick .tpl-howto__badge {
+  flex: none;
+  width: 1.8cqw;
+  height: 1.8cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.1cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-application-pick .tpl-pick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8cqh;
+}
+.slide--role-application-pick .tpl-pick-item {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1.45cqw;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 0.5cqw;
+  padding: 0.9cqh 1.1cqw;
+  color: var(--body-text);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.slide--role-application-pick .tpl-pick-item:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-application-pick .tpl-pick-item.is-selected {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-application-pick .tpl-pick-work {
+  /* PHASE 2 CONSISTENCY FIX: was 1.45cqw. This is the slide's actual
+     payoff — the worked analysis — not supporting text, so it should
+     read at full body size like every other template's primary content,
+     not smaller. */
+  font-size: 1.65cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+  min-height: 0;
+}
+.slide--role-application-pick .tpl-pick-work__placeholder {
+  color: var(--emerson-grey);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 14. PROCEDURE-LIST — a real runsheet: N real steps, title + description
+ *    each, no figure at all. Added 2026-09-10, Canvas Phase 1b, from the
+ *    Foundations preview's "Meet Your Slice" step. A fifth procedure
+ *    shape, for a real sequence with genuinely nothing to photograph or
+ *    diagram (an agenda, a homework list) — do not force a placeholder
+ *    figure into procedure-image just to use a different variant.
+ * ---------------------------------------------------------------------- */
+.slide--role-procedure-list .tpl-content {
+  grid-template-rows: 1fr auto;
+  row-gap: 1.6cqh;
+  align-content: center;
+}
+.slide--role-procedure-list .tpl-runsheet {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.slide--role-procedure-list .tpl-runsheet li {
+  counter-increment: step;
+  position: relative;
+  padding: 1.1cqh 0 1.1cqh 3.2cqw;
+  border-bottom: 0.07cqw solid color-mix(in srgb, var(--emerson-charcoal) 10%, #fff);
+}
+.slide--role-procedure-list .tpl-runsheet li:last-child {
+  border-bottom: none;
+}
+.slide--role-procedure-list .tpl-runsheet li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 1.1cqh;
+  width: 2cqw;
+  height: 2cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.2cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-procedure-list .run-t {
+  display: block;
+  font-weight: 700;
+  font-size: 1.7cqw;
+  color: var(--body-text);
+}
+.slide--role-procedure-list .run-d {
+  display: block;
+  margin-top: 0.3cqh;
+  font-size: 1.4cqw;
+  color: var(--emerson-grey);
+  line-height: 1.3;
 }
