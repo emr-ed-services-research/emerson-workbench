@@ -40,27 +40,52 @@ catalogued in `Component Index — Control Valve Handbook ch1/ch2/ch3/ch4.md`
 (Phase 0 of this same review-checkpoint work) — no invented facts, nothing
 beyond what those indexes verified against the source PDF.
 
-**Domain and tier, corrected 2026-09-11.** Originally set to an invented
-fourth domain, `product-literacy`, mid-Stage-1-authoring — a Bloom-level/
-verb-menu observation (this course's objectives all sit at remember/
-understand) misread as a domain problem, with no prior confirmation. Per
-Franz's authoritative definition — domain names *which student is in the
-class* and what they need from a topic, a closed set of exactly three
-(maintenance, instrumentation, selection-sizing); tier is depth of the
-course, orthogonal to domain (introductory | advanced) — Control Valve
-Basics is correctly modeled as genuinely **broad across all three domains**
-(`domain: ["maintenance", "instrumentation", "selection-sizing"]`) at
-**introductory** tier, matching Franz's own worked contrast: this course
-introduces essentially all topics at a foundational level across every
-domain, unlike 14101 (also introductory, but scoped specifically to
-maintenance). Tier was already the correct value; it had no real validated
-vocabulary behind it until `instructional-design.js` gained `TIERS`/
-`isTier()` the same day. Domain also determines instructional *voice*, not
-just depth — a maintenance tech, an instrumentation tech, and a sizing-
-and-selection engineer are addressed differently, not in one neutral tone
-(`DOMAIN_VOICE` in `instructional-design.js`) — not yet wired into this
-course's actual prose, which stays broad/shared across all three audiences
-for now, matching this course's own "broad, not domain-scoped" definition.
+**Domain, tier, and audience stage — corrected twice, 2026-09-11.** Real
+history, not just the final state:
+
+1. Originally set to an invented fourth domain, `product-literacy`, mid-
+   Stage-1-authoring — a Bloom-level/verb-menu observation (this course's
+   objectives all sit at remember/understand) misread as a domain problem,
+   with no prior confirmation.
+2. Corrected to `domain: ["maintenance", "instrumentation", "selection-
+   sizing"]` — genuinely broad across all three, per Franz's authoritative
+   definition (domain names *which student is in the class* and what they
+   need from a topic, a closed set of exactly three; tier is depth of the
+   course, orthogonal to domain). A real improvement, but **still wrong**:
+   this course's actual audience is people brand new to the industry, not
+   yet settled into any of the three roles at all — a different claim than
+   "all three at once."
+3. **Corrected again to the real fix**: `domain` is unset entirely (the
+   truthful state — no role assigned yet, not "every role"), and a new,
+   third axis, `audienceStage: "orientation"`, names this — distinct from
+   both domain (which role) and tier (how deep, still `introductory`,
+   unchanged and correct throughout). See `instructional-design.js`'s
+   `AUDIENCE_STAGES`/`AUDIENCE_STAGE_GUIDANCE`. This is genuinely different
+   from 14101 (also introductory, but domain-scoped to maintenance — its
+   audience HAS a role, just an introductory depth of it).
+
+`course.sources` (plural, `{path, description}`) and `course.summary` as an
+explicit course description are real, supplied Stage 1 inputs now too, per
+Franz's new-input-stage directive — no longer left for Stage 1 to infer.
+
+Content was reviewed against `AUDIENCE_STAGE_GUIDANCE`'s depth-floor/
+reinforcement instruction (lower depth floor than any technical domain,
+heavier reinforcement) rather than assumed fine as-is: three concepts
+needed real revision (`cvb.intro.feedback-loop` — the course's own opening
+slide, which never actually named "process control" before diving into
+loop terminology; `cvb.sealing.emissions-standards-awareness` and
+`cvb.accessory.pneumatic-controller`, both of which led with unexplained
+acronyms — VOC/LDAR/ISO 15848-1, DCS/PLC — before any plain-language
+framing). The remaining 48 concept rows were reviewed and already read at
+an appropriate depth for a first-time-in-industry audience; the arc's
+existing `develops`-progression reuses (body-style-variants, bonnet-
+packing-arrangement, actuator-types ×2, closure-members ×2, inherent-
+curves, deadband) already provide real structural reinforcement, so no
+further additions were made there. Domain also determines instructional
+*voice*, not just depth (`DOMAIN_VOICE` in `instructional-design.js`) — not
+applicable to this course at all now: an orientation-stage audience has no
+single domain register to write in, the same way it was never really
+"three competing voices" under the (also-wrong) broad-domain reading.
 
 Deliberately left out of this
 Basics cut, named rather than silently dropped: the deep VOC/LDAR and ISO

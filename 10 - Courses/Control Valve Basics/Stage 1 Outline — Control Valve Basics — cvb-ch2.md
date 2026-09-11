@@ -26,7 +26,7 @@ updated: 2026-09-11
 
 **Objective:** Distinguish globe and rotary valve body styles by construction and typical service, and identify the two standard end-connection types.
 
-level target: `apply` · domain: `maintenance`, `instrumentation`, `selection-sizing` · builds on: cvb-ch1-m1, cvb-ch1-m2
+level target: `apply` · audience stage: `orientation` · builds on: cvb-ch1-m1, cvb-ch1-m2
 
 **Stakes (opening hook):** Body style sets a valve's pressure-drop capability, noise/cavitation resistance, and maintainability — picking the wrong one for the service means re-specifying (and re-buying) the valve later.
 
@@ -45,7 +45,7 @@ level target: `apply` · domain: `maintenance`, `instrumentation`, `selection-si
 
 **Objective:** Identify bonnet and packing-system variants, and select an appropriate packing system for a given service and emissions requirement.
 
-level target: `evaluate` · domain: `maintenance`, `instrumentation`, `selection-sizing` · builds on: cvb-ch1-m1
+level target: `evaluate` · audience stage: `orientation` · builds on: cvb-ch1-m1
 
 **Stakes (opening hook):** Picking the wrong packing system for a VOC-regulated or cryogenic service means a fugitive-emissions failure discovered on an audit, not on the bench.
 
@@ -57,14 +57,14 @@ level target: `evaluate` · domain: `maintenance`, `instrumentation`, `selection
 | 4 | ENVIRO-SEAL packing systems add a live-loaded spring to a PTFE, duplex (PTFE-plus-graphite), or graphite ULF (ultra-low fugitive) arrangement — for sliding-stem or rotary valves alike — to hold sealing force as packing wears, instead of relying on a one-time bolt torque. | 25 | role: mechanism · level: understand · cvh-cmp-enviroseal-ptfe-packing-system, cvh-cmp-enviroseal-duplex-packing-system, cvh-cmp-enviroseal-graphite-ulf-packing-system, cvh-cmp-enviroseal-graphite-packing-rotary |
 | 5 | Match the packing system to the service: standard PTFE for general-purpose duty, an ENVIRO-SEAL live-loaded system where emissions matter, graphite where temperature rules PTFE out — sliding-stem and rotary valves each have their own selection chart. | 26 | role: application · level: evaluate · cvh-cmp-sliding-stem-environmental-packing-selection, cvh-cmp-rotary-environmental-packing-selection |
 | 6 | **→ Activity — Packing Selection Case** | — | small-group · 18 min — Given three real service scenarios (general-purpose hydrocarbon, VOC-regulated process, cryogenic), select an appropriate packing system and justify the choice against the selection figures just taught. |
-| 7 | VOC/LDAR programs periodically test valves for fugitive emissions; ISO 15848-1 is the qualification standard packing systems are tested against — a packing choice that isn't qualified for the service can mean a failed test, not just a leak. | 27 | role: caution · level: understand · cvh-cmp-voc-ldar-measurement-frequency, cvh-cmp-iso15848-1-qualification-requirements |
+| 7 | Regulations require periodically testing valves for leaks into the air (called fugitive emissions) — the programs that do this are known as VOC/LDAR, and ISO 15848-1 is the standard a packing system has to pass to qualify. Picking an unqualified packing for the service can mean failing that test, not just a leak on the bench. | 27 | role: caution · level: understand · cvh-cmp-voc-ldar-measurement-frequency, cvh-cmp-iso15848-1-qualification-requirements |
 | 8 | Check — knowledge check | 28 | — |
 
 ### 3. cvb-ch2-m3 — Flow Characterization, Trim & Actuator Variety
 
 **Objective:** Explain how cage and plug contour shape a valve's flow characteristic, and identify actuator variants beyond the basic spring-and-diaphragm and piston types.
 
-level target: `understand` · domain: `maintenance`, `instrumentation`, `selection-sizing` · builds on: cvb-ch1-m1, cvb-ch1-m2
+level target: `understand` · audience stage: `orientation` · builds on: cvb-ch1-m1, cvb-ch1-m2
 
 **Stakes (opening hook):** Misreading which characteristic a trim actually delivers, or which actuator type is installed, means the wrong replacement part gets ordered or the wrong control behavior gets expected from the loop.
 

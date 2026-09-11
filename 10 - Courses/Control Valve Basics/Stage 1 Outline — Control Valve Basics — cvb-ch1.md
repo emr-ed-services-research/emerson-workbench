@@ -26,13 +26,13 @@ updated: 2026-09-11
 
 **Objective:** Identify a sliding-stem control valve's major parts from a cutaway or photo, and name its body-style, bonnet, and actuator variations.
 
-level target: `understand` · domain: `maintenance`, `instrumentation`, `selection-sizing`
+level target: `understand` · audience stage: `orientation`
 
 **Stakes (opening hook):** A technician who can't name a valve's parts can't read a parts list, order the right seal kit, or follow a maintenance procedure written against that nomenclature.
 
 | # | Item | Pages | Detail |
 | --- | --- | --- | --- |
-| 1 | A control valve is the final control element in a feedback loop — a process condition is measured, compared to a setpoint, and the valve's stem position is adjusted to correct it. | 1 | role: mechanism · level: understand · cvh-cmp-feedback-control-loop |
+| 1 | Process control means automatically keeping something — a flow, a pressure, a temperature — at the value it should be. A control valve is the part that makes the correction: a sensor reads the real value, it's compared to the target, and the valve's stem moves to close the gap — this loop is what "process control" means in practice. | 1 | role: mechanism · level: understand · cvh-cmp-feedback-control-loop |
 | 2 | A sliding-stem valve moves its plug straight up and down through a globe- or angle-style body — the most common control valve construction. | 2 | role: nomenclature · level: remember · cvh-cmp-sliding-stem-valve-photo |
 | 3 | From actuator to body: stem, packing flange, bonnet, piston ring, plug, cage, and seat ring stack in that order — the assembly sequence every sliding-stem valve follows. | 3 | role: nomenclature · level: remember · cvh-cmp-sliding-stem-exploded |
 | 4 | An angle body turns the flow path 90° for erosive or high-pressure-drop service; a three-way body combines or diverts flow through a single valve instead of the straight-through path a standard globe body uses. | 4 | role: contrast · level: understand · cvh-cmp-angle-valve-photo, cvh-cmp-three-way-globe-valve |
@@ -45,7 +45,7 @@ level target: `understand` · domain: `maintenance`, `instrumentation`, `selecti
 
 **Objective:** Identify a rotary control valve's closure-member types and actuator, and explain how closure-member shape and cage design set a valve's inherent flow characteristic.
 
-level target: `analyze` · domain: `maintenance`, `instrumentation`, `selection-sizing`
+level target: `analyze` · audience stage: `orientation`
 
 **Stakes (opening hook):** Specifying the wrong flow characteristic for a control loop causes a valve that's twitchy near shutoff or sluggish near full-open — a loop-tuning problem that traces back to a valve-selection decision, not the controller.
 

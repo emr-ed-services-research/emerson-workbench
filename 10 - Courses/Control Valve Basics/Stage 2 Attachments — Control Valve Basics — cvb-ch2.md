@@ -83,7 +83,7 @@ updated: 2026-09-11
   - `cvh-cmp-sliding-stem-environmental-packing-selection` (current, Component Index — Control Valve Handbook ch3.md)
   - `cvh-cmp-rotary-environmental-packing-selection` (current, Component Index — Control Valve Handbook ch3.md)
 
-**6. (caution · understand, page 27, slide--tmpl-caution)** VOC/LDAR programs periodically test valves for fugitive emissions; ISO 15848-1 is the qualification standard packing systems are tested against — a packing choice that isn't qualified for the service can mean a failed test, not just a leak.
+**6. (caution · understand, page 27, slide--tmpl-caution)** Regulations require periodically testing valves for leaks into the air (called fugitive emissions) — the programs that do this are known as VOC/LDAR, and ISO 15848-1 is the standard a packing system has to pass to qualify. Picking an unqualified packing for the service can mean failing that test, not just a leak on the bench.
   - `cvh-cmp-voc-ldar-measurement-frequency` (current, Component Index — Control Valve Handbook ch3.md)
   - `cvh-cmp-iso15848-1-qualification-requirements` (current, Component Index — Control Valve Handbook ch3.md)
 

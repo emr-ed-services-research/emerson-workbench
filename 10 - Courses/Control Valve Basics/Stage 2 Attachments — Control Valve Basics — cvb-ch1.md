@@ -25,7 +25,7 @@ updated: 2026-09-11
 
 **Objective:** Identify a sliding-stem control valve's major parts from a cutaway or photo, and name its body-style, bonnet, and actuator variations.
 
-**1. (mechanism · understand, page 1, slide--role-mechanism)** A control valve is the final control element in a feedback loop — a process condition is measured, compared to a setpoint, and the valve's stem position is adjusted to correct it.
+**1. (mechanism · understand, page 1, slide--role-mechanism)** Process control means automatically keeping something — a flow, a pressure, a temperature — at the value it should be. A control valve is the part that makes the correction: a sensor reads the real value, it's compared to the target, and the valve's stem moves to close the gap — this loop is what "process control" means in practice.
   - `cvh-cmp-feedback-control-loop` (current, Component Index — Control Valve Handbook ch1.md)
 
 **2. (nomenclature · remember, page 2, slide--role-nomenclature)** A sliding-stem valve moves its plug straight up and down through a globe- or angle-style body — the most common control valve construction.
