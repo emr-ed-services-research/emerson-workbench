@@ -26,7 +26,7 @@ updated: 2026-09-11
 
 **Objective:** Identify a positioner, digital valve controller, I/P transducer, and volume booster, and explain each one's role in getting a command signal to the valve stem.
 
-level target: `understand` · domain: `product-literacy`
+level target: `understand` · domain: `maintenance`, `instrumentation`, `selection-sizing`
 
 **Stakes (opening hook):** A tech who can't tell a positioner from a transducer from a booster can't explain why a valve isn't reaching command, or which accessory to check first.
 
@@ -44,7 +44,7 @@ level target: `understand` · domain: `product-literacy`
 
 **Objective:** Identify a pneumatic controller's role as a standalone local controller, and distinguish solenoid-valve types and safety-accessory hardware used in a safety instrumented system.
 
-level target: `understand` · domain: `product-literacy` · builds on: cvb-ch3-m1
+level target: `understand` · domain: `maintenance`, `instrumentation`, `selection-sizing` · builds on: cvb-ch3-m1
 
 **Stakes (opening hook):** Confusing a spring-return SOV for a double-acting one, or not recognizing a trip valve's tripped state, means a safety-shutdown component gets mishandled during a routine visit.
 

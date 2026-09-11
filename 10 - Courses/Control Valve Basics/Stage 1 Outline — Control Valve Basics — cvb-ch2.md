@@ -26,7 +26,7 @@ updated: 2026-09-11
 
 **Objective:** Distinguish globe and rotary valve body styles by construction and typical service, and identify the two standard end-connection types.
 
-level target: `apply` · domain: `product-literacy` · builds on: cvb-ch1-m1, cvb-ch1-m2
+level target: `apply` · domain: `maintenance`, `instrumentation`, `selection-sizing` · builds on: cvb-ch1-m1, cvb-ch1-m2
 
 **Stakes (opening hook):** Body style sets a valve's pressure-drop capability, noise/cavitation resistance, and maintainability — picking the wrong one for the service means re-specifying (and re-buying) the valve later.
 
@@ -45,7 +45,7 @@ level target: `apply` · domain: `product-literacy` · builds on: cvb-ch1-m1, cv
 
 **Objective:** Identify bonnet and packing-system variants, and select an appropriate packing system for a given service and emissions requirement.
 
-level target: `evaluate` · domain: `product-literacy` · builds on: cvb-ch1-m1
+level target: `evaluate` · domain: `maintenance`, `instrumentation`, `selection-sizing` · builds on: cvb-ch1-m1
 
 **Stakes (opening hook):** Picking the wrong packing system for a VOC-regulated or cryogenic service means a fugitive-emissions failure discovered on an audit, not on the bench.
 
@@ -64,7 +64,7 @@ level target: `evaluate` · domain: `product-literacy` · builds on: cvb-ch1-m1
 
 **Objective:** Explain how cage and plug contour shape a valve's flow characteristic, and identify actuator variants beyond the basic spring-and-diaphragm and piston types.
 
-level target: `understand` · domain: `product-literacy` · builds on: cvb-ch1-m1, cvb-ch1-m2
+level target: `understand` · domain: `maintenance`, `instrumentation`, `selection-sizing` · builds on: cvb-ch1-m1, cvb-ch1-m2
 
 **Stakes (opening hook):** Misreading which characteristic a trim actually delivers, or which actuator type is installed, means the wrong replacement part gets ordered or the wrong control behavior gets expected from the loop.
 

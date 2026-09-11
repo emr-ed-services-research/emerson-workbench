@@ -40,10 +40,29 @@ catalogued in `Component Index — Control Valve Handbook ch1/ch2/ch3/ch4.md`
 (Phase 0 of this same review-checkpoint work) — no invented facts, nothing
 beyond what those indexes verified against the source PDF.
 
-Domain: `product-literacy` (new — see `instructional-design.js` DOMAIN_VERBS;
-recognition-level identify/explain/select vocabulary, since this course
-teaches hardware and performance recognition, not a maintenance procedure,
-wiring/configuration, or a sizing calculation). Deliberately left out of this
+**Domain and tier, corrected 2026-09-11.** Originally set to an invented
+fourth domain, `product-literacy`, mid-Stage-1-authoring — a Bloom-level/
+verb-menu observation (this course's objectives all sit at remember/
+understand) misread as a domain problem, with no prior confirmation. Per
+Franz's authoritative definition — domain names *which student is in the
+class* and what they need from a topic, a closed set of exactly three
+(maintenance, instrumentation, selection-sizing); tier is depth of the
+course, orthogonal to domain (introductory | advanced) — Control Valve
+Basics is correctly modeled as genuinely **broad across all three domains**
+(`domain: ["maintenance", "instrumentation", "selection-sizing"]`) at
+**introductory** tier, matching Franz's own worked contrast: this course
+introduces essentially all topics at a foundational level across every
+domain, unlike 14101 (also introductory, but scoped specifically to
+maintenance). Tier was already the correct value; it had no real validated
+vocabulary behind it until `instructional-design.js` gained `TIERS`/
+`isTier()` the same day. Domain also determines instructional *voice*, not
+just depth — a maintenance tech, an instrumentation tech, and a sizing-
+and-selection engineer are addressed differently, not in one neutral tone
+(`DOMAIN_VOICE` in `instructional-design.js`) — not yet wired into this
+course's actual prose, which stays broad/shared across all three audiences
+for now, matching this course's own "broad, not domain-scoped" definition.
+
+Deliberately left out of this
 Basics cut, named rather than silently dropped: the deep VOC/LDAR and ISO
 15848-1/FCI 91-1 emissions-compliance tables (only 2 of 5 catalogued figures
 are cited, at awareness level), the redundant-SOV/three-way-manual-reset/SOV-

@@ -26,7 +26,7 @@ updated: 2026-09-11
 
 **Objective:** Identify a sliding-stem control valve's major parts from a cutaway or photo, and name its body-style, bonnet, and actuator variations.
 
-level target: `understand` · domain: `product-literacy`
+level target: `understand` · domain: `maintenance`, `instrumentation`, `selection-sizing`
 
 **Stakes (opening hook):** A technician who can't name a valve's parts can't read a parts list, order the right seal kit, or follow a maintenance procedure written against that nomenclature.
 
@@ -45,7 +45,7 @@ level target: `understand` · domain: `product-literacy`
 
 **Objective:** Identify a rotary control valve's closure-member types and actuator, and explain how closure-member shape and cage design set a valve's inherent flow characteristic.
 
-level target: `analyze` · domain: `product-literacy`
+level target: `analyze` · domain: `maintenance`, `instrumentation`, `selection-sizing`
 
 **Stakes (opening hook):** Specifying the wrong flow characteristic for a control loop causes a valve that's twitchy near shutoff or sluggish near full-open — a loop-tuning problem that traces back to a valve-selection decision, not the controller.
 

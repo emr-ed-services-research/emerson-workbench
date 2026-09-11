@@ -4,12 +4,16 @@
     "title": "Control Valve Basics",
     "summary": "An introductory, recognition-level course on control valve, actuator, and accessory fundamentals, taught in Steve's requested order — Introduction to Control Valves, Valve and Actuator Types, Control Valve Accessories, then Control Valve Performance — drawn from the Control Valve Handbook, 6th ed. Not a maintenance-procedure course (that is 14101's job); this one is about recognizing and explaining hardware and performance concepts.",
     "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential",
-    "domain": "product-literacy",
+    "domain": [
+      "maintenance",
+      "instrumentation",
+      "selection-sizing"
+    ],
     "tier": "introductory"
   },
   "slideBase": "../build/slides/",
   "slidePrefix": "cvb-",
-  "_note": "Stage 1 (arc-scale origination, run by hand 2026-09-11) approved by Franz; Stage 2 (author the context layer) run by hand 2026-09-11 immediately after, same proving-ground course for the review-checkpoint mechanism. Scope: Steve's four requested Control Valve Handbook chapters (1, 3, 4, 2, in that teaching order), not the whole 15-chapter book. Course-chapter ids (cvb-ch1..cvb-ch4) are this course's own teaching order, not CVH's chapter numbers — cvb-ch2 = CVH ch3, cvb-ch3 = CVH ch4, cvb-ch4 = CVH ch2; see each chapter's own '_source' note. No real schedule exists yet — everything sits under one placeholder Day 1. Domain 'product-literacy' is a new addition to instructional-design.js's DOMAIN_VERBS (recognition-level identify/explain/select vocabulary). Every keyConcepts slot's 't'/'sources' trace to a real figure already catalogued in the four Component Index files (Phase 0) — no invented facts. Three concepts originally cut with role 'prime' (cvb.intro.feedback-loop, cvb.rotary.overview, cvb.performance.process-variability) were reassigned to 'mechanism'/'nomenclature' during Stage 2 authoring: the Gallery's prime shape is a text-only hook line with NO figure ('nothing else on the slide'), but each of these three concepts needs to show a real source figure (a block diagram, an overview photo, a distribution graph) as its actual content — a genuine Stage-1 role misjudgment, caught and fixed here rather than forced into a template it doesn't fit. Their modules now open directly on real content with no separate prime slide, which is schema-legal (moduleStage2Completeness's 'no prime concept' check is advisory, not blocking) and consistent with the framework's own stated design: module 'stakes' is already the opening hook, a literal prime slide is optional. Several competency ids are deliberately reused across chapters with progression 'develops' (e.g. cvb.intro.body-style-variants, cvb.intro.bonnet-packing-arrangement, cvb.intro.actuator-types, cvb.characteristic.inherent-curves, cvb.performance.deadband) — never a fresh id for the same skill twice. Deliberately left out of this Basics cut, named rather than silently dropped: the deep VOC/LDAR and ISO 15848-1/FCI 91-1 emissions-compliance tables (only 2 of 5 catalogued figures cited, at awareness level), the redundant-SOV/three-way-manual-reset/SOV-manifold hardware variants, and the SIS partial-stroke-testing DVC figure. `template` values are Template Gallery classes (gallery.css `.slide--role-*`), chosen by role and content shape per ROLE_GALLERY (PipelineConsole prompts.js) — Stage 3 (slide composition) has NOT run; these are forward-looking hints, not yet-built slides. Stage 1 Outline docs: 'Stage 1 Outline — Control Valve Basics — <chapterId>.md' (one per chapter). Stage 2 Attachments doc: 'Stage 2 Attachments — Control Valve Basics — <chapterId>.md' (one per chapter, generated from this file).",
+  "_note": "Stage 1 (arc-scale origination, run by hand 2026-09-11) approved by Franz; Stage 2 (author the context layer) run by hand 2026-09-11 immediately after, same proving-ground course for the review-checkpoint mechanism. Scope: Steve's four requested Control Valve Handbook chapters (1, 3, 4, 2, in that teaching order), not the whole 15-chapter book. Course-chapter ids (cvb-ch1..cvb-ch4) are this course's own teaching order, not CVH's chapter numbers — cvb-ch2 = CVH ch3, cvb-ch3 = CVH ch4, cvb-ch4 = CVH ch2; see each chapter's own '_source' note. No real schedule exists yet — everything sits under one placeholder Day 1. CORRECTED 2026-09-11: domain was originally set to an invented fourth domain, 'product-literacy', mid-Stage-1-authoring, with no prior confirmation — a Bloom-level/verb-menu observation (this course's objectives all sit at remember/understand) misread as a domain problem. Per Franz's authoritative definition (domain = which student is in the class and what they need from a topic; a closed set of exactly three: maintenance, instrumentation, selection-sizing), Control Valve Basics is correctly modeled as genuinely broad across all three domains at introductory tier — not scoped to one — so 'domain' here is now the array ['maintenance','instrumentation','selection-sizing'], not an invented label. Tier ('introductory') was already the correct value; it just had no real validated vocabulary behind it until now (see instructional-design.js TIERS/isTier). Every keyConcepts slot's 't'/'sources' trace to a real figure already catalogued in the four Component Index files (Phase 0) — no invented facts. Three concepts originally cut with role 'prime' (cvb.intro.feedback-loop, cvb.rotary.overview, cvb.performance.process-variability) were reassigned to 'mechanism'/'nomenclature' during Stage 2 authoring: the Gallery's prime shape is a text-only hook line with NO figure ('nothing else on the slide'), but each of these three concepts needs to show a real source figure (a block diagram, an overview photo, a distribution graph) as its actual content — a genuine Stage-1 role misjudgment, caught and fixed here rather than forced into a template it doesn't fit. Their modules now open directly on real content with no separate prime slide, which is schema-legal (moduleStage2Completeness's 'no prime concept' check is advisory, not blocking) and consistent with the framework's own stated design: module 'stakes' is already the opening hook, a literal prime slide is optional. Several competency ids are deliberately reused across chapters with progression 'develops' (e.g. cvb.intro.body-style-variants, cvb.intro.bonnet-packing-arrangement, cvb.intro.actuator-types, cvb.characteristic.inherent-curves, cvb.performance.deadband) — never a fresh id for the same skill twice. Deliberately left out of this Basics cut, named rather than silently dropped: the deep VOC/LDAR and ISO 15848-1/FCI 91-1 emissions-compliance tables (only 2 of 5 catalogued figures cited, at awareness level), the redundant-SOV/three-way-manual-reset/SOV-manifold hardware variants, and the SIS partial-stroke-testing DVC figure. `template` values are Template Gallery classes (gallery.css `.slide--role-*`), chosen by role and content shape per ROLE_GALLERY (PipelineConsole prompts.js) — Stage 3 (slide composition) has NOT run; these are forward-looking hints, not yet-built slides. Stage 1 Outline docs: 'Stage 1 Outline — Control Valve Basics — <chapterId>.md' (one per chapter). Stage 2 Attachments doc: 'Stage 2 Attachments — Control Valve Basics — <chapterId>.md' (one per chapter, generated from this file).",
   "days": [
     {
       "id": "d1",
@@ -20,14 +24,22 @@
           "id": "cvb-ch1",
           "title": "Introduction to Control Valves",
           "num": 1,
-          "domain": "product-literacy",
+          "domain": [
+            "maintenance",
+            "instrumentation",
+            "selection-sizing"
+          ],
           "_source": "Control Valve Handbook ch1 — see Component Index — Control Valve Handbook ch1.md",
           "modules": [
             {
               "id": "cvb-ch1-m1",
               "title": "Sliding-Stem Valve Anatomy",
               "status": "ready",
-              "domain": "product-literacy",
+              "domain": [
+                "maintenance",
+                "instrumentation",
+                "selection-sizing"
+              ],
               "levelTarget": "understand",
               "stakes": "A technician who can't name a valve's parts can't read a parts list, order the right seal kit, or follow a maintenance procedure written against that nomenclature.",
               "objective": "Identify a sliding-stem control valve's major parts from a cutaway or photo, and name its body-style, bonnet, and actuator variations.",
@@ -154,7 +166,11 @@
               "id": "cvb-ch1-m2",
               "title": "Rotary Valves & Flow Characteristics",
               "status": "ready",
-              "domain": "product-literacy",
+              "domain": [
+                "maintenance",
+                "instrumentation",
+                "selection-sizing"
+              ],
               "levelTarget": "analyze",
               "stakes": "Specifying the wrong flow characteristic for a control loop causes a valve that's twitchy near shutoff or sluggish near full-open — a loop-tuning problem that traces back to a valve-selection decision, not the controller.",
               "objective": "Identify a rotary control valve's closure-member types and actuator, and explain how closure-member shape and cage design set a valve's inherent flow characteristic.",
@@ -280,14 +296,22 @@
           "id": "cvb-ch2",
           "title": "Valve and Actuator Types",
           "num": 2,
-          "domain": "product-literacy",
+          "domain": [
+            "maintenance",
+            "instrumentation",
+            "selection-sizing"
+          ],
           "_source": "Control Valve Handbook ch3 — see Component Index — Control Valve Handbook ch3.md",
           "modules": [
             {
               "id": "cvb-ch2-m1",
               "title": "Body Styles & End Connections",
               "status": "ready",
-              "domain": "product-literacy",
+              "domain": [
+                "maintenance",
+                "instrumentation",
+                "selection-sizing"
+              ],
               "levelTarget": "apply",
               "stakes": "Body style sets a valve's pressure-drop capability, noise/cavitation resistance, and maintainability — picking the wrong one for the service means re-specifying (and re-buying) the valve later.",
               "objective": "Distinguish globe and rotary valve body styles by construction and typical service, and identify the two standard end-connection types.",
@@ -423,7 +447,11 @@
               "id": "cvb-ch2-m2",
               "title": "Bonnets, Packing & Environmental Sealing",
               "status": "ready",
-              "domain": "product-literacy",
+              "domain": [
+                "maintenance",
+                "instrumentation",
+                "selection-sizing"
+              ],
               "levelTarget": "evaluate",
               "stakes": "Picking the wrong packing system for a VOC-regulated or cryogenic service means a fugitive-emissions failure discovered on an audit, not on the bench.",
               "objective": "Identify bonnet and packing-system variants, and select an appropriate packing system for a given service and emissions requirement.",
@@ -557,7 +585,11 @@
               "id": "cvb-ch2-m3",
               "title": "Flow Characterization, Trim & Actuator Variety",
               "status": "ready",
-              "domain": "product-literacy",
+              "domain": [
+                "maintenance",
+                "instrumentation",
+                "selection-sizing"
+              ],
               "levelTarget": "understand",
               "stakes": "Misreading which characteristic a trim actually delivers, or which actuator type is installed, means the wrong replacement part gets ordered or the wrong control behavior gets expected from the loop.",
               "objective": "Explain how cage and plug contour shape a valve's flow characteristic, and identify actuator variants beyond the basic spring-and-diaphragm and piston types.",
@@ -692,14 +724,22 @@
           "id": "cvb-ch3",
           "title": "Control Valve Accessories",
           "num": 3,
-          "domain": "product-literacy",
+          "domain": [
+            "maintenance",
+            "instrumentation",
+            "selection-sizing"
+          ],
           "_source": "Control Valve Handbook ch4 — see Component Index — Control Valve Handbook ch4.md",
           "modules": [
             {
               "id": "cvb-ch3-m1",
               "title": "Positioners, Transducers & Boosters",
               "status": "ready",
-              "domain": "product-literacy",
+              "domain": [
+                "maintenance",
+                "instrumentation",
+                "selection-sizing"
+              ],
               "levelTarget": "understand",
               "stakes": "A tech who can't tell a positioner from a transducer from a booster can't explain why a valve isn't reaching command, or which accessory to check first.",
               "objective": "Identify a positioner, digital valve controller, I/P transducer, and volume booster, and explain each one's role in getting a command signal to the valve stem.",
@@ -808,7 +848,11 @@
               "id": "cvb-ch3-m2",
               "title": "Controllers, Position Feedback & Safety Accessories",
               "status": "ready",
-              "domain": "product-literacy",
+              "domain": [
+                "maintenance",
+                "instrumentation",
+                "selection-sizing"
+              ],
               "levelTarget": "understand",
               "stakes": "Confusing a spring-return SOV for a double-acting one, or not recognizing a trip valve's tripped state, means a safety-shutdown component gets mishandled during a routine visit.",
               "objective": "Identify a pneumatic controller's role as a standalone local controller, and distinguish solenoid-valve types and safety-accessory hardware used in a safety instrumented system.",
@@ -928,14 +972,22 @@
           "id": "cvb-ch4",
           "title": "Control Valve Performance",
           "num": 4,
-          "domain": "product-literacy",
+          "domain": [
+            "maintenance",
+            "instrumentation",
+            "selection-sizing"
+          ],
           "_source": "Control Valve Handbook ch2 — see Component Index — Control Valve Handbook ch2.md",
           "modules": [
             {
               "id": "cvb-ch4-m1",
               "title": "Why Performance Varies — Variability, Deadband & Response",
               "status": "ready",
-              "domain": "product-literacy",
+              "domain": [
+                "maintenance",
+                "instrumentation",
+                "selection-sizing"
+              ],
               "levelTarget": "analyze",
               "stakes": "A tech who reads 'the valve is slow' as one problem misses that deadband, response time, and installed gain are three separate, separately-fixable causes — with three different remedies.",
               "objective": "Explain process variability as a measure of loop performance, and trace deadband, response time, and installed gain as the design factors that cause it.",
@@ -1057,7 +1109,11 @@
               "id": "cvb-ch4-m2",
               "title": "Proving Performance — Economics & the Signature Series",
               "status": "ready",
-              "domain": "product-literacy",
+              "domain": [
+                "maintenance",
+                "instrumentation",
+                "selection-sizing"
+              ],
               "levelTarget": "evaluate",
               "stakes": "Without a Signature Series baseline, rising friction in a valve looks like normal wear until it's already a control problem — the baseline is what turns 'it seems sluggish' into a measured, defensible finding.",
               "objective": "Explain how a Signature Series factory test establishes a performance baseline, and justify replacing a valve on economic grounds using that baseline.",

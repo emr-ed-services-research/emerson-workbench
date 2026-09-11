@@ -26,7 +26,7 @@ updated: 2026-09-11
 
 **Objective:** Explain process variability as a measure of loop performance, and trace deadband, response time, and installed gain as the design factors that cause it.
 
-level target: `analyze` · domain: `product-literacy` · builds on: cvb-ch1-m2, cvb-ch2-m1
+level target: `analyze` · domain: `maintenance`, `instrumentation`, `selection-sizing` · builds on: cvb-ch1-m2, cvb-ch2-m1
 
 **Stakes (opening hook):** A tech who reads 'the valve is slow' as one problem misses that deadband, response time, and installed gain are three separate, separately-fixable causes — with three different remedies.
 
@@ -45,7 +45,7 @@ level target: `analyze` · domain: `product-literacy` · builds on: cvb-ch1-m2, 
 
 **Objective:** Explain how a Signature Series factory test establishes a performance baseline, and justify replacing a valve on economic grounds using that baseline.
 
-level target: `evaluate` · domain: `product-literacy` · builds on: cvb-ch4-m1
+level target: `evaluate` · domain: `maintenance`, `instrumentation`, `selection-sizing` · builds on: cvb-ch4-m1
 
 **Stakes (opening hook):** Without a Signature Series baseline, rising friction in a valve looks like normal wear until it's already a control problem — the baseline is what turns 'it seems sluggish' into a measured, defensible finding.
 
