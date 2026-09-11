@@ -1,9 +1,20 @@
 /* ============================================================================
-   gallery.css — PROPOSAL, not yet approved.
+   gallery.css
 
    Eight master slide templates, one per Axis C concept role (see
    teaching-philosophy.md "Axis 3" / Instructional-Method Review — ch3.md),
    plus three variants for `procedure`. Placeholder content only.
+
+   Phase 1 of the Canvas build (2026-09-10, from Franz's direct review of
+   the unconstrained Foundations preview) added three more shape variants:
+   `nomenclature-reveal` (§9, click-to-reveal for a figure-less fixed set),
+   `procedure-worked` (§10, tabbed Show/Tell/Do worked walkthrough), and
+   `application-case` (§11, a clickable sequential real-case walkthrough)
+   — plus made `check` (§8) genuinely interactive. Same non-overlap-by-
+   construction discipline as every template below; interactivity is
+   driven by generic, class/attribute-based handlers in slides.js, never a
+   per-slide script, so Stage 3 populates these the same mechanical way it
+   populates the original eight.
 
    Design principle (the point of this file): every role template guarantees
    non-overlap STRUCTURALLY, via CSS Grid row/column tracks that reserve space
@@ -757,4 +768,342 @@
   border-top: 0.09cqw solid var(--emerson-grey);
   padding-top: 1.3cqh;
   margin: 0;
+}
+
+/* CHECK — interactive upgrade (2026-09-10, Phase 1 of the Canvas build,
+   from Franz's direct review of the unconstrained Foundations preview).
+   Same shape as above — .tpl-prompt/.tpl-options/.tpl-reveal — the change
+   is behavioural: .tpl-reveal starts hidden and only appears once an
+   option is actually clicked, and the clicked option itself shows
+   right/wrong in place. Mark the correct <li> with `data-correct="true"`;
+   slides.js's generic .tpl-options handler does the rest — no per-slide
+   script. "Wrong" deliberately does NOT get a red treatment: this system
+   has no error/danger token, and inventing one for a single interaction
+   would be exactly the kind of off-system color the Show-Tell-Do palette
+   review just corrected. Right = the one accent (blue fill, white text,
+   the same language the numbered markers already use); wrong = a neutral
+   dim, no color-coding — the reveal line beneath states the right answer
+   either way, which is what actually teaches, not a stoplight color. */
+.slide--role-check .tpl-options li {
+  cursor: pointer;
+  border-radius: 0.45cqw;
+  padding: 0.5cqh 0.7cqw;
+  margin: -0.5cqh -0.7cqw;
+  transition: background-color 0.15s, color 0.15s, opacity 0.15s;
+}
+.slide--role-check .tpl-options li.is-right {
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+}
+.slide--role-check .tpl-options li.is-wrong {
+  background: color-mix(in srgb, var(--emerson-charcoal) 10%, #fff);
+  opacity: 0.6;
+}
+.slide--role-check .tpl-reveal {
+  display: none;
+}
+.slide--role-check .tpl-reveal.is-shown {
+  display: block;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 9. NOMENCLATURE-REVEAL — a fixed named set with NO source figure
+ *    (provenance: original content — a framework, not a photographed
+ *    part), where each item's real meaning is worth a full explanation,
+ *    not a one-line list entry. All N items show their label at once;
+ *    clicking one opens its explanation in the shared detail pane below
+ *    — the standout pattern from the unconstrained Foundations preview
+ *    (Five Tenets), added 2026-09-10 as Phase 1 of the Canvas build.
+ *    Still the `nomenclature` role pedagogically (recognition-level
+ *    naming of a fixed small set) — this is a shape variant for the case
+ *    plain `nomenclature`'s figure-anchored shape does not fit, the same
+ *    way procedure has three shape variants under one role.
+ * ---------------------------------------------------------------------- */
+.slide--role-nomenclature-reveal .tpl-content {
+  grid-template-rows: auto 1fr;
+  row-gap: 2cqh;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 5), 1fr);
+  gap: 1.1cqw;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 0.6cqw;
+  padding: 1.1cqh 1.1cqw;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item.is-open {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7cqw;
+  height: 1.7cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-size: 1.0cqw;
+  font-weight: 700;
+  margin-right: 0.6cqw;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item.is-open .num {
+  background: var(--emerson-white);
+  color: var(--emerson-blue);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item__label {
+  font-size: 1.4cqw;
+  font-weight: 700;
+  color: var(--body-text);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item.is-open .tpl-reveal-item__label {
+  color: var(--emerson-white);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-detail {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-detail__pane {
+  display: none;
+  font-size: 1.7cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-detail__pane.is-active {
+  display: block;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-detail__pane .tpl-cite {
+  display: block;
+  margin-top: 1.2cqh;
+  font-size: 1.25cqw;
+  font-style: italic;
+  color: var(--emerson-grey);
+}
+
+/* ---------------------------------------------------------------------- *
+ * 10. PROCEDURE-WORKED — "here's what it is, now you do it": a real
+ *    worked walkthrough tabbed Show / Tell / Do, paired with ONE fixed
+ *    figure. From the Foundations preview's Show-Tell-Do walkthrough
+ *    (2026-09-10, Phase 1 of the Canvas build). The figure column is a
+ *    FIXED grid track, sized once — not content-driven or sticky-
+ *    positioned — specifically because the preview's version let a tall
+ *    image run past the slide's own bottom edge when the left column's
+ *    content was short (Franz's direct review finding). A fixed track
+ *    makes that structurally impossible, the same guarantee every other
+ *    template in this file already makes for its own figure.
+ * ---------------------------------------------------------------------- */
+.slide--role-procedure-worked .tpl-content {
+  grid-template-columns: 1fr 32cqw;
+  grid-template-rows: auto 1fr auto;
+  column-gap: 3.2cqw;
+  row-gap: 1.6cqh;
+}
+.slide--role-procedure-worked .tpl-tabs {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  gap: 0.8cqw;
+}
+.slide--role-procedure-worked .tpl-tab {
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.3cqw;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 999px;
+  padding: 0.7cqh 1.4cqw;
+  color: var(--body-text);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.slide--role-procedure-worked .tpl-tab.is-active {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-procedure-worked .tpl-tabpanes {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 0;
+}
+.slide--role-procedure-worked .tpl-tabpane {
+  display: none;
+  font-size: 1.55cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+.slide--role-procedure-worked .tpl-tabpane.is-active {
+  display: block;
+}
+.slide--role-procedure-worked .tpl-tabpane .tpl-steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 1cqh 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9cqh;
+}
+.slide--role-procedure-worked .tpl-tabpane .tpl-steps li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 2.6cqw;
+  font-size: 1.4cqw;
+  line-height: 1.3;
+}
+.slide--role-procedure-worked .tpl-tabpane .tpl-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  width: 1.7cqw;
+  height: 1.7cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.0cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-procedure-worked .tpl-callout {
+  margin-top: 1.2cqh;
+  border-left: 0.32cqw solid var(--emerson-orange);
+  padding: 0.4cqh 0 0.4cqh 1.4cqw;
+  font-size: 1.35cqw;
+  line-height: 1.35;
+  color: var(--body-text);
+}
+.slide--role-procedure-worked .tpl-callout .tpl-callout__label {
+  display: block;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.05cqw;
+  letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--emerson-orange) 65%, var(--emerson-charcoal));
+  margin-bottom: 0.3cqh;
+}
+.slide--role-procedure-worked .tpl-fig-wrap {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+}
+.slide--role-procedure-worked .tpl-fig {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 0.6cqw;
+  overflow: hidden;
+}
+.slide--role-procedure-worked .tpl-fig img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slide--role-procedure-worked .tpl-source {
+  grid-column: 1 / span 2;
+  grid-row: 3;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 11. APPLICATION-CASE — a real, sequential case walkthrough: a filmstrip
+ *    of concrete instances (real deck slides, real chapter pages) clicked
+ *    through in order, each revealing its own real detail below. From the
+ *    Foundations preview's "Live Walkthrough: 1400 Chapter 3" (2026-09-10,
+ *    Phase 1 of the Canvas build). `application` because this is applying
+ *    a just-taught skill (reading a real solution) against a real,
+ *    concrete case — not naming a fixed set (nomenclature) and not one
+ *    procedure with fixed steps (procedure).
+ * ---------------------------------------------------------------------- */
+.slide--role-application-case .tpl-content {
+  grid-template-rows: auto 1fr auto;
+  row-gap: 1.8cqh;
+}
+.slide--role-application-case .tpl-filmstrip {
+  display: flex;
+  gap: 1cqw;
+}
+.slide--role-application-case .tpl-frame {
+  flex: 1;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 0.5cqw;
+  padding: 0.8cqh 0.9cqw;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.slide--role-application-case .tpl-frame:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-application-case .tpl-frame.is-active {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+}
+.slide--role-application-case .tpl-frame__tag {
+  display: block;
+  font-size: 1.0cqw;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--emerson-blue);
+}
+.slide--role-application-case .tpl-frame.is-active .tpl-frame__tag {
+  color: var(--emerson-white);
+}
+.slide--role-application-case .tpl-frame__title {
+  display: block;
+  margin-top: 0.3cqh;
+  font-size: 1.25cqw;
+  font-weight: 700;
+  color: var(--body-text);
+  line-height: 1.2;
+}
+.slide--role-application-case .tpl-frame.is-active .tpl-frame__title {
+  color: var(--emerson-white);
+}
+.slide--role-application-case .tpl-frame-detail {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.slide--role-application-case .tpl-frame-detail__pane {
+  display: none;
+  font-size: 1.6cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+.slide--role-application-case .tpl-frame-detail__pane.is-active {
+  display: block;
+}
+.slide--role-application-case .tpl-frame-detail__pane ol,
+.slide--role-application-case .tpl-frame-detail__pane ul {
+  margin: 0.6cqh 0 0;
+  padding-left: 2cqw;
+}
+.slide--role-application-case .tpl-frame-detail__pane li {
+  font-size: 1.5cqw;
+  line-height: 1.4;
 }

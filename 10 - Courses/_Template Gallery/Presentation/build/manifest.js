@@ -8,6 +8,9 @@ window.EW_MANIFEST = [
     { "n": 7,  "file": "tg-007.html", "family": "role-application",        "section": "Templates", "title": "Role: Application (single curve)",      "hasNotes": false, "review": "" },
     { "n": 8,  "file": "tg-008.html", "family": "role-contrast",           "section": "Templates", "title": "Role: Contrast",                        "hasNotes": false, "review": "" },
     { "n": 9,  "file": "tg-009.html", "family": "role-caution",            "section": "Templates", "title": "Role: Caution (Template 6, unchanged)", "hasNotes": false, "review": "" },
-    { "n": 10, "file": "tg-010.html", "family": "role-check",              "section": "Templates", "title": "Role: Check",                           "hasNotes": false, "review": "" },
-    { "n": 11, "file": "tg-011.html", "family": "role-application-annotated", "section": "Templates", "title": "Role: Application (annotated curve)", "hasNotes": false, "review": "" }
+    { "n": 10, "file": "tg-010.html", "family": "role-check",              "section": "Templates", "title": "Role: Check (interactive)",             "hasNotes": false, "review": "" },
+    { "n": 11, "file": "tg-011.html", "family": "role-application-annotated", "section": "Templates", "title": "Role: Application (annotated curve)", "hasNotes": false, "review": "" },
+    { "n": 12, "file": "tg-012.html", "family": "role-nomenclature-reveal", "section": "Canvas Phase 1", "title": "Role: Nomenclature (reveal)",       "hasNotes": false, "review": "" },
+    { "n": 13, "file": "tg-013.html", "family": "role-procedure-worked",   "section": "Canvas Phase 1", "title": "Role: Procedure (worked walkthrough)", "hasNotes": false, "review": "" },
+    { "n": 14, "file": "tg-014.html", "family": "role-application-case",  "section": "Canvas Phase 1", "title": "Role: Application (sequential case walkthrough)", "hasNotes": false, "review": "" }
 ];
