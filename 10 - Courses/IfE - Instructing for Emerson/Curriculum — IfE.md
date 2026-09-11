@@ -5,7 +5,7 @@ tags:
   - curriculum
   - pipeline
 course: Instructing for Emerson (IfE)
-updated: 2026-09-10
+updated: 2026-09-11
 ---
 
 # Curriculum Registry — IfE
@@ -33,10 +33,10 @@ updated: 2026-09-10
 > field, not in `ife-008.html` itself.
 
 The schema: a **competency** is a flat skill ID
-(`ife.orientation.five-tenets-framework`). A **primitive** is one authored
+(`ife.orientation.five-tenets-framework`). An **asset variant** is one authored
 artifact for one `competency × asset-variant`, `provenance: original`
 here because there is no external source to cite. A **placement edge** is
-`module × roles × competency × progression → primitive`.
+`module × roles × competency × progression → asset variant`.
 
 **Structural correction, same day.** Day 1's 8 sub-topics (Welcome, Five
 Tenets, Show-Tell-Do, Reading a Training Solution, The Prime Question,
@@ -75,7 +75,7 @@ plus the check) carry no competency — real content, real slides, but
 none teaches an evaluable skill; they orient. Same treatment Module 0's
 own content has always had. Only 4 concepts (Five Tenets ×2 content
 concepts, Show-Tell-Do, Reading-a-Training-Solution, Objectives) get the
-full competency/primitive/edge treatment below.
+full competency/asset variant/edge treatment below.
 
 **Open question, logged, not acted on here:** does any chapter anywhere
 — 14101 or planned IfE — ever actually hold more than one module? If
@@ -122,10 +122,10 @@ engine-wide later. See `00 - Project/Open Questions.md`.
 
 ---
 
-## Primitives
+## Asset Variants
 
 ```yaml
-- id: prim.ife.orientation.five-tenets-framework.overview
+- id: av.ife.orientation.five-tenets-framework.overview
   competencyId: ife.orientation.five-tenets-framework
   status: exists
   asset: inline-table (slide ife-006)
@@ -133,7 +133,7 @@ engine-wide later. See `00 - Project/Open Questions.md`.
   redrawRecord: not applicable — provenance: original
   variantTag: overview
 
-- id: prim.ife.orientation.five-tenets-framework.received-vs-performed
+- id: av.ife.orientation.five-tenets-framework.received-vs-performed
   competencyId: ife.orientation.five-tenets-framework
   status: exists
   asset: inline-svg diagram (slide ife-007)
@@ -157,7 +157,7 @@ engine-wide later. See `00 - Project/Open Questions.md`.
     slide's own header comment.
   variantTag: received-vs-performed
 
-- id: prim.ife.delivery.show-tell-do-overview.flow
+- id: av.ife.delivery.show-tell-do-overview.flow
   competencyId: ife.delivery.show-tell-do-overview
   status: exists
   asset: inline-svg diagram (slide ife-009)
@@ -172,7 +172,7 @@ engine-wide later. See `00 - Project/Open Questions.md`.
     marker, not a meaning signal.
   variantTag: flow
 
-- id: prim.ife.orientation.read-training-solution.checklist
+- id: av.ife.orientation.read-training-solution.checklist
   competencyId: ife.orientation.read-training-solution
   status: exists
   asset: inline-table (slide ife-010)
@@ -189,7 +189,7 @@ engine-wide later. See `00 - Project/Open Questions.md`.
     one arbitrary chapter as if it were the only example.
   variantTag: checklist
 
-- id: prim.ife.orientation.read-objectives.table
+- id: av.ife.orientation.read-objectives.table
   competencyId: ife.orientation.read-objectives
   status: exists
   asset: inline-table (slide ife-012)
@@ -206,7 +206,7 @@ engine-wide later. See `00 - Project/Open Questions.md`.
 `ife-006…008` (check now `ife-008`) to make room for `ife-005`
 ("Welcome to IfE") ahead of it — the vault's actual agenda order has
 Welcome before Five Tenets, and the historical build order had it
-reversed. No competency, primitive, or edge content changed, only which
+reversed. No competency, asset variant, or edge content changed, only which
 file each `slide:` reference names.
 
 ## Placement edges
@@ -219,30 +219,30 @@ correction above.
   roles: null   # ife is not role-routed — see curriculum-development.md "Placement edge"
   competencyId: ife.orientation.five-tenets-framework
   progression: introduces
-  primitiveId: prim.ife.orientation.five-tenets-framework.overview
+  assetVariantId: av.ife.orientation.five-tenets-framework.overview
   slide: ife-006
 
 - moduleId: d1-foundations
   roles: null
   competencyId: ife.orientation.five-tenets-framework
   progression: develops
-  primitiveId: prim.ife.orientation.five-tenets-framework.received-vs-performed
+  assetVariantId: av.ife.orientation.five-tenets-framework.received-vs-performed
   slide: ife-007
 
 - moduleId: d1-foundations
   roles: null
   competencyId: [ife.orientation.five-tenets-framework]
   progression: applies
-  primitiveId: null
+  assetVariantId: null
   slide: ife-008
-  note: "check-your-knowledge — assessment edge, primitiveId null, per
+  note: "check-your-knowledge — assessment edge, assetVariantId null, per
     curriculum-development.md Finding 1 (14101 Phase 2)"
 
 - moduleId: d1-foundations
   roles: null
   competencyId: ife.delivery.show-tell-do-overview
   progression: introduces
-  primitiveId: prim.ife.delivery.show-tell-do-overview.flow
+  assetVariantId: av.ife.delivery.show-tell-do-overview.flow
   slide: ife-009
   note: "introduces at understand-level; Days 2-3 (not yet built) are
     expected to carry this to develops/applies with real reps"
@@ -251,19 +251,19 @@ correction above.
   roles: null
   competencyId: ife.orientation.read-training-solution
   progression: introduces
-  primitiveId: prim.ife.orientation.read-training-solution.checklist
+  assetVariantId: av.ife.orientation.read-training-solution.checklist
   slide: ife-010
 
 - moduleId: d1-foundations
   roles: null
   competencyId: ife.orientation.read-objectives
   progression: introduces
-  primitiveId: prim.ife.orientation.read-objectives.table
+  assetVariantId: av.ife.orientation.read-objectives.table
   slide: ife-012
 ```
 
 No Component Index back-pointer for any of these — `provenance: original`
-primitives are exempt. The 6 framing-only concepts (Welcome, Prime
+asset variants are exempt. The 6 framing-only concepts (Welcome, Prime
 Question, Myths, Meet Your Slice, plus the check itself) have no edges of
 their own beyond the one check edge above — no competency to place.
 

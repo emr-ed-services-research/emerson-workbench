@@ -5,7 +5,7 @@ tags:
   - project
   - architecture
   - meta
-updated: 2026-09-09
+updated: 2026-09-11
 ---
 
 # System Map
@@ -135,29 +135,41 @@ Console's own build phases (§6) even though both happen to run 0/1 through
 5/6. Don't conflate them: "Phase 5" of the Pathway is a curriculum milestone;
 "build phase 6" is a Console app-shipping milestone.
 
+> [!note] Renamed 2026-09-11 — "primitive" now means something else
+> Franz redefined "primitive" to mean the irreducible, essential content
+> for one concept at one `domain`-or-`audienceStage` × `tier` permutation
+> — a genuinely new concept, living in `course.json`'s `keyConcepts[i].
+> primitives[]` from Stage 1 onward. What this section always meant by
+> "Instructional Primitive" — one authored artifact (a file) for one
+> competency at one asset-variant, created once Stage 3 has chosen it —
+> is a different, older concept that happened to share the word. It is
+> renamed **asset variant** below (id prefix `av.`, not `prim.`); the
+> Pathway's own project name is kept as originally approved, a historical
+> label. See `curriculum-development.md` "Primitives vs. asset variants".
+
 **The core relationship — a shared library, and per-course pointers into it:**
 
-| | Component Index | Instructional Primitive |
+| | Component Index | Asset Variant |
 | --- | --- | --- |
 | **Scope** | Course-agnostic. One entry per real source figure. | Per-course. One entry per `competency × asset-variant`. |
-| **Lives in** | `20 - Source Library/` — reusable by any course. | The specific course's own primitive registry (e.g. `10 - Courses/14101.../Curriculum — 14101.md`). |
+| **Lives in** | `20 - Source Library/` — reusable by any course. | The specific course's own asset-variant registry (e.g. `10 - Courses/14101.../Curriculum — 14101.md`). |
 | **Points to** | The source figure itself (a `serves:` back-pointer to whichever competencies use it). | Back to a Component Index entry via `provenance`. |
-| **Placed by** | Nothing — it's a catalogue, not a lesson. | A **placement edge** (`moduleId, roles, competencyId, primitiveId`) — what actually puts it in a module. One primitive can serve multiple edges. |
+| **Placed by** | Nothing — it's a catalogue, not a lesson. | A **placement edge** (`moduleId, roles, competencyId, assetVariantId`) — what actually puts it in a module. One asset variant can serve multiple edges. |
 
-The relationship is asymmetric on purpose: the Component Index doesn't need a
-primitive to exist, and cataloguing a source is real, useful work on its own.
+The relationship is asymmetric on purpose: the Component Index doesn't need an
+asset variant to exist, and cataloguing a source is real, useful work on its own.
 Proof: the **oil-and-gas sourcebook catalogue** (144/144 figures, 13 chapters,
-committed `79b3dfb`) is Component-Index-only — zero primitive-registry
+committed `79b3dfb`) is Component-Index-only — zero asset-variant-registry
 entries. It sits in the library, fully cited, waiting for whichever future
-course needs one of its components to author a primitive against it.
+course needs one of its components to author an asset variant against it.
 
 Competency IDs are flat and location-independent (`<domain>.<area>.<slug>`,
 e.g. `mnt.actuator.set-travel`); role (`maint-tech` / `inst-tech` /
 `sizing-eng` / `operator`) is a routing filter on which competencies a course
-points toward, never a depth dial, and never lives on a primitive itself.
+points toward, never a depth dial, and never lives on an asset variant itself.
 
 **Status:** Phases 1–4 complete (schema, ch3 retrofit, Day-One competency map,
-the 14101 primitive registry). Phase 5 — wiring origination-mode Stage 1/2 so
+the 14101 asset-variant registry). Phase 5 — wiring origination-mode Stage 1/2 so
 a module can be cut and drafted from objectives alone, no deck to read — has
 run one bounded dry run against `ch3-m1`, reviewed by Franz. A second,
 separate origination trial is in progress in an isolated scratch clone,
@@ -247,7 +259,7 @@ re-publish the infographic:
    ([[Course Porting Pipeline]]).
 5. **The vault structure changes** (§3, and [[Vault Structure]]).
 6. **The Instructional Primitives Pathway advances a phase, or the
-   Component Index / primitive relationship changes** (§5,
+   Component Index / asset-variant relationship changes** (§5,
    `curriculum-development.md`) — keep its phase numbering visibly distinct
    from the Console's own build-phase numbering (§6).
 

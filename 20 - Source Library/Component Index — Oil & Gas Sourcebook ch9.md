@@ -572,5 +572,5 @@ notes: >
 - All eleven records in this file (both batches) are `used-by: []` — this
   is a proactive, use-driven-ahead catalog per `Source Library.md`; no
   course currently references them.
-- No primitive-registry or `Curriculum —` writes were made from this pass —
+- No asset-variant-registry or `Curriculum —` writes were made from this pass —
   out of scope for a standing Component-Index-only cataloging batch.

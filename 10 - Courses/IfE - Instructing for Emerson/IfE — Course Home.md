@@ -128,7 +128,7 @@ template), the placement-edge `roles` field (`roles: null` now a defined
 value for non-role-routed domains), and IfE's competency-area vocabulary
 (four areas enumerated: `orientation`, `preparation`, `delivery`,
 `development`). One item stays open, unresolved, no fix proposed: the
-primitive `asset` field is stretched by pure-table content with no figure
+asset variant's `asset` field is stretched by pure-table content with no figure
 at all (`PILOT-NOTES.md` Finding 6).
 
 ## Modules

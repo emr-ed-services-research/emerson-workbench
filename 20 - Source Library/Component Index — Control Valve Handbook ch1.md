@@ -518,5 +518,5 @@ notes: >
 - Tables were not catalogued as components, matching the Oil & Gas
   precedent's practice — no tables were observed on any page in this
   chapter's range in any case.
-- No primitive-registry or `Curriculum —` writes were made from this pass —
+- No asset-variant-registry or `Curriculum —` writes were made from this pass —
   out of scope for a standing Component-Index-only cataloging batch.

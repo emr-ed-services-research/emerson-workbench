@@ -17,7 +17,7 @@ slides 13–25). **Chapter 2 — Fisher Easy-E Valve Maintenance** (modules
 ch2-m1 … ch2-m7, slides 27–86).
 
 Built 2026-09-06 as the **Phase 4 follow-on** of the Instructional Primitives
-Pathway — to firm up the 11 `mnt.valve-body.*` primitives that
+Pathway — to firm up the 11 `mnt.valve-body.*` asset variants that
 `Curriculum — 14101.md` marked `exists*` (production slide only) to real,
 sourced provenance, matching the standard of
 `Component Index — 14101 ch3.md`. Same method as the ch3 index: each record
@@ -190,7 +190,7 @@ notes: >
   `develops` — the fail-action treatment).** This is the ch3 index's
   `ch3-cmp-pdtc-pdto-bodies` component — the two records describe the same
   image files. See "Discrepancies" — this means `mnt.valve-body.contrast-pdtc-pdto`
-  has **one primitive, two placement edges**, not the two primitives Phase 4
+  has **one asset variant, two placement edges**, not the two asset variants Phase 4
   call 2 provisionally recorded.
 ```
 
@@ -680,16 +680,16 @@ notes: image148 (torque-value table screenshot) dropped — values belong in the
 
 ## Discrepancies found during the index build
 
-1. **`contrast-pdtc-pdto` — one primitive, not two. RESOLVED (Franz,
+1. **`contrast-pdtc-pdto` — one asset variant, not two. RESOLVED (Franz,
    2026-09-06).** `ch2-cmp-pdtc-pdto-sectionals` (this index) and
    `ch3-cmp-pdtc-pdto-bodies` (ch3 index) describe the **same image files**
    (deck image42 / image43). `mnt.valve-body.contrast-pdtc-pdto` is served
-   by **one primitive** (`prim.mnt.valve-body.contrast-pdtc-pdto.body-sections`)
+   by **one asset variant** (`av.mnt.valve-body.contrast-pdtc-pdto.body-sections`)
    at two placement edges — ch2-m1 slide 29 (`introduces`), ch3-m1 slide 93
-   (`develops`). Phase 4 call 2's provisional "two primitives" was wrong;
+   (`develops`). Phase 4 call 2's provisional "two asset variants" was wrong;
    Franz confirmed the collapse and `Curriculum — 14101.md` is updated. The
    two Component-Index records are kept (they carry different `teaches`
-   framing and `used-by`), but they point at one asset and one primitive.
+   framing and `used-by`), but they point at one asset and one asset variant.
 
 2. **`ch1-cmp-valve-assembly-stackup` (slide 14, deck image29)** could be
    upgraded to CVH Fig 1.3 (already sourced, used on slide 27). Minor,
@@ -709,14 +709,14 @@ notes: image148 (torque-value table screenshot) dropped — values belong in the
 
 **Indexed:** 4 ch1-m1 components + 21 ch2 components = **25 components**,
 one or more per `mnt.valve-body.*` competency, each with a source doc +
-locator + precedence bucket + `serves` pointer. The 11 `exists*` primitives
+locator + precedence bucket + `serves` pointer. The 11 `exists*` asset variants
 in `Curriculum — 14101.md` now have real provenance: mostly **`current`**
 (CVH 6th ed., current Fisher easy-e / ET / ENVIRO-SEAL / HIGH-SEAL manuals)
 or **`legacy`** first-party deck sectionals corroborated against a named
 current-manual figure. **No archive content** in ch1/ch2.
 
 **Discrepancy 1 resolved (Franz, 2026-09-06):** `contrast-pdtc-pdto`
-collapsed to one primitive; `Curriculum — 14101.md` updated. Discrepancies
+collapsed to one asset variant; `Curriculum — 14101.md` updated. Discrepancies
 2–4 are logged, no action requested.
 
 **Follow-up:** the `Curriculum — 14101.md` `exists*` rows still cite the

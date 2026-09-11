@@ -5,7 +5,7 @@ tags:
   - project
   - design
   - curriculum
-updated: 2026-09-09
+updated: 2026-09-11
 ---
 
 # Emerson Workbench — Curriculum Development Layer
@@ -29,7 +29,7 @@ and the finite unit of authored content beneath a competency.
 
 The two sit **alongside** each other. Neither supersedes the other. A
 slide is composed per `teaching-philosophy.md`; the competency that slide
-serves, and the primitive it draws on, are described here.
+serves, and the primitive and asset variant it draws on, are described here.
 
 ## The layer model
 
@@ -40,9 +40,31 @@ Foundation to roof:
 | **Purpose** | Teach four roles the skills their jobs need | No — it is the reason the rest exists |
 | **Domain objectives** | Overarching objectives per domain (maintenance, instrumentation, engineering) | Sketched, empty — filled when a second course exists to validate a rollup |
 | **Courses & modules** | A course (14101) and its modules | Yes |
-| **Placement edges** | `module × roles × competency × progression → primitive` | Yes |
-| **Instructional primitives** | `competency × asset-variant` — the finite authored unit | Yes |
-| **Source Library / Component Index** | The assets a primitive wraps | Exists today; gains a `serves:` back-pointer |
+| **Placement edges** | `module × roles × competency × progression → asset variant` | Yes |
+| **Primitives** (added 2026-09-11) | `competency × domain-or-audienceStage × tier` — the irreducible, essential CONTENT unit for one concept at one audience permutation | Yes |
+| **Asset variants** (renamed 2026-09-11 — was "Instructional primitives"; see "Primitives vs. asset variants" below) | `competency × asset-variant` — the finite authored ARTIFACT (which file) | Yes |
+| **Source Library / Component Index** | The assets an asset variant wraps | Exists today; gains a `serves:` back-pointer |
+
+### Primitives vs. asset variants — two different things, not a rename in place (2026-09-11)
+
+Franz's correction: "primitive" was being used for the wrong thing. The word
+now means what it means in any other engineering context — the irreducible,
+essential information that cannot be reduced further and still originate a
+concept, for one specific audience (`domain`-or-`audienceStage` × `tier`
+permutation). This did not exist as a concept in this schema before
+2026-09-11; it lives in `course.json` itself (`keyConcepts[i].primitives[]`
+— see `PipelineConsole/src/main/course-model.js` and Control Valve Basics'
+`Presentation/course/course.json`), from Stage 1 onward.
+
+What this document previously called "Instructional primitive" — one
+authored artifact (a real file) for one competency at one asset-variant,
+created once Stage 3 has actually chosen/rendered it — is a genuinely
+different, older concept that happened to share the same word. It is
+renamed **asset variant** throughout this document (and wherever it's used
+in `Curriculum — 14101.md` / `Curriculum — IfE.md`) — same concept,
+unchanged meaning, new name only. Its id prefix changes from `prim.` to
+`av.`; its placement-edge field changes from `primitiveId` to
+`assetVariantId`.
 
 The **hands-on workshop is the delivery format**, not an enrichment layer
 (`teaching-philosophy.md`). That constraint is why role never dilutes
@@ -115,19 +137,82 @@ bloom: apply                       # remember | understand | apply | analyze | e
 Domain and area are **in the ID**, not repeated as fields. `bloom` reuses
 the existing Stage 2 cognitive-level axis (`instructional-design.js`).
 
-### Instructional primitive
+### Primitive (added 2026-09-11)
 
-One authored artifact for one competency at one asset-variant. **No role,
-no context, no progression** — those live on the placement edge or the
-course.
+The irreducible, essential content for ONE concept at ONE
+`domain`-or-`audienceStage` × `tier` permutation — not a competing
+container to the module or the packet, the actual content living inside
+them. Lives in `course.json` directly: `keyConcepts[i].primitives[]`, one
+array entry per applicable permutation (see `PipelineConsole/src/main/
+course-model.js` and Control Valve Basics' `course.json` for the real
+shape — always an array, even when a concept has exactly one applicable
+audience, per the "don't leave two field shapes for one thing" lesson
+`activities[]`/`competencyId`/`template` already taught this project).
 
 ```yaml
-id: prim.mnt.actuator.identify-sd-construction.cutaway
+# one entry in keyConcepts[i].primitives[] — NOT a separate top-level record;
+# it lives inside the concept, inside the module, inside the course.json
+# chapter/module hierarchy directly (no flat side-index to reconcile back)
+- domainOrAudienceStage: maintenance       # a real domain, or an audienceStage value
+  tier: introductory                       # introductory | advanced
+  t: >                                     # the irreducible content itself, instructor-talking-point voice
+    Disassemble, inspect, and reassemble a 657 actuator; check bench set
+    before returning it to service.
+  sources: [ch3-cmp-657-assembly]           # Component Index id(s) — same Axis-A discipline as today
+  template: slide--role-procedure-worked    # Template Gallery class + rationale (see below)
+  templateRationale: >
+    A real worked walkthrough (Show-Tell-Do), not a plain step list — the
+    procedure has a common failure mode worth calling out mid-sequence.
+  domainVoiceNote: >                       # which DOMAIN_VOICE register was written in, or why none applies
+    Written in the maintenance register — bench language, physical
+    failure-mode framing (DOMAIN_VOICE.maintenance).
+  slideCount:
+    estimate: 3
+    maturity: stage1   # stage1 (rough) | stage2 (tightened) | stage3 (final, delivered)
+```
+
+Two primitives for the SAME competency, scoped to two different audiences,
+is the normal shape when a course serves more than one domain (or when the
+same competency is reused across separately domain-scoped courses) —
+Franz's worked example: the 657 actuator gets a **maintenance** primitive
+(disassembly, inspection, reassembly, bench-set) and a completely separate
+**sizing-and-selection** primitive (sizes, fail-mode, ratings, selection
+criteria) for the exact same concept — different irreducible facts, same
+competency, because the two audiences need genuinely different things from
+it (the same principle the leak-classification example makes for content
+depth, now made structural).
+
+**`slideCount` matures across the pipeline, not discovered cold at Stage
+3**: Stage 1 (arc-cutting time) sets a rough estimate from the concept and
+its permutations; Stage 2 tightens it once real content, sourcing, and
+template+rationale are known; Stage 3 replaces the estimate with the
+actual, final, delivered count. This directly supersedes "one concept per
+slide" (scrapped 2026-09-11 — see `Course Porting Pipeline.md` and
+`instructional-design.js`/`course-model.js`): slide count is driven by what
+a primitive's content actually requires, never a fixed ratio to concepts.
+A primitive can span several slides when its content genuinely needs it
+(three slides for a full disassembly/inspection/reassembly sequence), or
+several concepts can be umbrella'd onto one slide when they belong together
+(IfE's Five Tenets: five concepts, one slide) — a judgment call tied to the
+actual content and Template Gallery shape, not a hardcoded numeric rule.
+
+### Asset variant (renamed 2026-09-11 — was "Instructional primitive")
+
+One authored artifact (a real file) for one competency at one asset-variant,
+created once Stage 3 has actually chosen or rendered it. **No role, no
+context, no progression** — those live on the placement edge or the
+course. Not to be confused with the *primitive* above: a primitive is the
+content, scoped by audience, that exists from Stage 1 onward; an asset
+variant is which specific FILE ended up representing it, an audit/reuse
+record that exists once Stage 3 has run.
+
+```yaml
+id: av.mnt.actuator.identify-sd-construction.cutaway
 competencyId: mnt.actuator.identify-sd-construction
 status: exists                              # exists | pending  (built vs. planned but not yet authored)
 asset: image155.png                         # one filename, OR a list for a true parallel figrow (Finding 2)
 provenance: ch3-cmp-657-assembly            # Component Index entry
-redrawRecord: >                             # the three-reason redraw rule, applied per primitive
+redrawRecord: >                             # the three-reason redraw rule, applied per asset variant
   Existing figure, no redraw — first-party colour sectional, cleaner than
   the IM parts drawings. (Style Guide §5.8 — no redraw reason applies.)
 variantTag: cutaway                         # optional; only when a competency has a real asset split
@@ -137,24 +222,24 @@ variantTag: cutaway                         # optional; only when a competency h
   genuine *parallel* figrow — several figures shown side by side at once, as
   one authored layout (Finding 2). It is **not** for an ordered sequence
   where one figure precedes another for a pedagogical reason; that is a
-  `progression` matter on the placement edge, not a primitive.
-- `status: pending` primitives carry `assetRef`, `provenance`, and
-  `redrawRecord` as `TBD` until authored; a `status: exists` primitive must
+  `progression` matter on the placement edge, not an asset variant.
+- `status: pending` asset variants carry `assetRef`, `provenance`, and
+  `redrawRecord` as `TBD` until authored; a `status: exists` asset variant must
   name a real asset and a real Component Index entry.
 - **`provenance: original`** (added 2026-09-09, for IfE) — the one exception
-  to "must name a real Component Index entry." Every primitive built so far
-  traces to an external source figure being redrawn or reused; IfE's own
+  to "must name a real Component Index entry." Every asset variant built so
+  far traces to an external source figure being redrawn or reused; IfE's own
   methodology content (a TPCD diagram, a Five-Tenets summary graphic) has no
-  such external source — Steve invented the pedagogical model itself. A
-  primitive with `provenance: original` is asserting exactly that: authored
+  such external source — Steve invented the pedagogical model itself. An
+  asset variant with `provenance: original` is asserting exactly that: authored
   fresh for this course, nothing to cite, `redrawRecord` not applicable.
   This does **not** apply to IfE's practice-slice content, which traces to
   real 14101 Component Index entries exactly like any other course's
-  primitives — see "Cross-course provenance" below.
+  asset variants — see "Cross-course provenance" below.
 
-A new primitive is created **only** for a genuinely new `competency ×
+A new asset variant is created **only** for a genuinely new `competency ×
 asset-variant`. It is a human-curated call: an agent may propose "new
-primitive vs. reframe of an existing one"; a person confirms. Precedence is
+asset variant vs. reframe of an existing one"; a person confirms. Precedence is
 never adjudicated live by an agent.
 
 ### Placement edge
@@ -164,7 +249,7 @@ moduleId: 14101/direct-acting-actuator
 roles: [maint-tech, inst-tech, sizing-eng, operator]   # explicit and mandatory — no "all" default
 competencyId: mnt.actuator.set-travel                  # or a list, on an assessment edge
 progression: introduces               # introduces | develops | applies
-primitiveId: prim.mnt.actuator.set-travel.spring       # null on an assessment edge (Finding 1)
+assetVariantId: av.mnt.actuator.set-travel.spring      # null on an assessment edge (Finding 1)
 ```
 
 `roles` is always written out. When a module serves all four, list all
@@ -177,13 +262,13 @@ omission. `mnt`/`inst`/`eng` are role-routed domains and their edges keep
 `roles` mandatory and explicit exactly as above; `ife` is not role-routed
 (see "IfE does not get a fifth role" below) and its edges carry
 `roles: null` instead — asserting explicitly that no role-routing
-relationship exists here, the same way `primitiveId: null` already asserts
-"no primitive" on an assessment edge rather than the field being left out.
+relationship exists here, the same way `assetVariantId: null` already asserts
+"no asset variant" on an assessment edge rather than the field being left out.
 
 **Assessment (Check Your Knowledge) edges** carry `progression: applies`,
-`primitiveId: null`, and a `competencyId` list naming every competency the
+`assetVariantId: null`, and a `competencyId` list naming every competency the
 check tests. A check is an application of its module's competencies, not a
-teaching artifact — so it has no primitive (Finding 1).
+teaching artifact — so it has no asset variant (Finding 1).
 
 **Progression:**
 
@@ -323,14 +408,14 @@ Phase 3 on.
 
 ### Cross-course provenance (added 2026-09-09, for IfE)
 
-A primitive's `provenance` naming a Component Index entry does **not**
-require the primitive and the Component Index entry to belong to the same
+An asset variant's `provenance` naming a Component Index entry does **not**
+require the asset variant and the Component Index entry to belong to the same
 course. This was already the shared-library point — one Component Index
-entry can back primitives in any number of courses' own registries — but
+entry can back asset variants in any number of courses' own registries — but
 until IfE it had never actually happened; the oil-and-gas catalogue (144
-figures, zero primitives) was the proof that the *library* side works, with
-no second course yet drawing from it. IfE's practice-slice primitives are
-the first real instance of the *consuming* side: an IfE primitive's
+figures, zero asset variants) was the proof that the *library* side works, with
+no second course yet drawing from it. IfE's practice-slice asset variants are
+the first real instance of the *consuming* side: an IfE asset variant's
 `provenance` names an existing 14101 Component Index entry directly — no
 new Component Index entries are created for content IfE borrows from
 14101, only for IfE's own source material (the rubric, the outline — see
@@ -383,7 +468,7 @@ by the next IfE work:
   written — a historical snapshot, not rewritten in place.
 
 All four gaps listed above are now closed. One further pilot finding not
-listed here (`PILOT-NOTES.md` Finding 6 — the primitive `asset` field
+listed here (`PILOT-NOTES.md` Finding 6 — the asset variant's `asset` field
 being stretched by pure-table content with no figure at all) stays open:
 flagged, not actioned, nothing broke, no fix proposed yet.
 
@@ -405,7 +490,7 @@ competency gets the same hands-on bench instruction regardless of role —
 performing the work directly is what makes any of the four better at their
 job. Role decides only *which* competencies a course routes a cohort
 toward. It therefore lives on the placement edge (`roles`) and the module
-(`servesRoles`), and **never on a primitive**.
+(`servesRoles`), and **never on an asset variant**.
 
 Operator platforms (DeltaV, Ovation) are not roles and not separate
 curricula — they are the console an operator happens to sit at. Operator
@@ -423,7 +508,7 @@ the four technical roles. This is a decision, not yet a fully worked-out
 consequence — how a "different tier" actually interacts with the rest of
 the schema (does `servesRoles` even apply to an IfE module? almost
 certainly not, since it has nothing to do with routing technical
-competencies) is real follow-up work once IfE's first real primitives are
+competencies) is real follow-up work once IfE's first real asset variants are
 authored, not resolved here.
 
 **Follow-up resolved (2026-09-09), placement-edge half only:** a
@@ -462,10 +547,10 @@ conflate the two; the competency layer keeps them separate. `set-travel`
 was chosen as the worked example precisely because it spans all three
 mechanism types and exercises the placement edge across modules.
 
-### The primitives
+### The asset variants
 
 ```yaml
-- id: prim.mnt.actuator.set-travel.spring
+- id: av.mnt.actuator.set-travel.spring
   competencyId: mnt.actuator.set-travel
   asset: benchset-fig4-redraw.svg
   provenance: ch3-cmp-benchset-adjustment-setup
@@ -481,7 +566,7 @@ mechanism types and exercises the placement edge across modules.
   variantTag: spring
   status: exists           # redraw approved 2026-09-06
 
-- id: prim.mnt.actuator.set-travel.piston
+- id: av.mnt.actuator.set-travel.piston
   competencyId: mnt.actuator.set-travel
   assetRef: TBD             # authored during Phase 4 / ch4 Stage 3
   provenance: TBD           # Component Index entry to be added for the piston procedure
@@ -490,15 +575,15 @@ mechanism types and exercises the placement edge across modules.
   status: pending
 ```
 
-Two primitives, not three. The **spring** primitive covers both
+Two asset variants, not three. The **spring** asset variant covers both
 direct- and reverse-acting actuators — the same procedure appears on the
 reverse-acting screwdriver-method slide as *"the same procedure with a
 marked screwdriver/scale instead of a travel indicator,"* which is a
-slide-level framing difference, not a new primitive. Its asset is a
+slide-level framing difference, not a new asset variant. Its asset is a
 **house redraw of Fisher IM Figure 4**, approved by Franz 2026-09-06 after
 he found neither the shipped deck photos nor Fig 4 as-is adequate
 (`10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/build/assets/sourced/benchset-fig4-redraw.svg`).
-The **piston** primitive is genuinely new: a double-acting actuator has no
+The **piston** asset variant is genuinely new: a double-acting actuator has no
 bench set, sets travel against travel stops and a scale rather than a
 loading-pressure range, and uses a different stem connector — a real
 `competency × asset-variant` split.
@@ -510,19 +595,19 @@ loading-pressure range, and uses a different stem connector — a real
   roles: [maint-tech, inst-tech, sizing-eng, operator]
   competencyId: mnt.actuator.set-travel
   progression: introduces
-  primitiveId: prim.mnt.actuator.set-travel.spring
+  assetVariantId: av.mnt.actuator.set-travel.spring
 
 - moduleId: 14101/reverse-acting-actuator
   roles: [maint-tech, inst-tech, sizing-eng, operator]
   competencyId: mnt.actuator.set-travel
   progression: develops           # reverse-acting variation; screwdriver/scale method
-  primitiveId: prim.mnt.actuator.set-travel.spring   # same primitive, reframed at the slide
+  assetVariantId: av.mnt.actuator.set-travel.spring   # same asset variant, reframed at the slide
 
 - moduleId: 14101/double-acting-actuator
   roles: [maint-tech, inst-tech, sizing-eng, operator]
   competencyId: mnt.actuator.set-travel
   progression: develops           # piston actuator; no bench set, different hardware
-  primitiveId: prim.mnt.actuator.set-travel.piston
+  assetVariantId: av.mnt.actuator.set-travel.piston
 ```
 
 ### The Component Index back-pointer
@@ -539,10 +624,10 @@ serves: [mnt.actuator.set-travel]
   unchanged in three modules — placement is entirely in the edges.
 - `develops` vs `applies` earns its keep: both revisits are
   *re-taught with new content*, not just exercised.
-- The primitive count is bounded and countable: one competency, two
-  primitives, because there are two real asset-variants — not one per
+- The asset-variant count is bounded and countable: one competency, two
+  asset variants, because there are two real asset-variants — not one per
   module, not one per role.
-- A new primitive (`.piston`) is warranted by a mechanism difference a
+- A new asset variant (`.piston`) is warranted by a mechanism difference a
   human can point at, not by a new course or a new role.
 - The Source Library change is one line.
 
@@ -564,9 +649,13 @@ serves: [mnt.actuator.set-travel]
 ## Provenance
 
 Phase 1 of the Instructional Primitives Pathway (Franz-approved
-2026-09-06). Fork resolutions folded in: areas baked in (`actuator` /
-`valve-body` / `positioner`); this doc lives in `00 - Project/` alongside
-`teaching-philosophy.md`; one primitive registry per course; `roles`
+2026-09-06; project name kept as originally approved — the *word*
+"primitive" inside the schema itself was later renamed to "asset variant"
+on 2026-09-11, see "Primitives vs. asset variants" above, but this
+project's own name is a historical label, not re-litigated). Fork
+resolutions folded in: areas baked in (`actuator` / `valve-body` /
+`positioner`); this doc lives in `00 - Project/` alongside
+`teaching-philosophy.md`; one asset-variant registry per course; `roles`
 explicit and mandatory on every edge; Phases 1 and 2 strictly serial.
 Next: Phase 1 gate review, then Phase 2 (retrofit the schema against the
 existing ch3 content).

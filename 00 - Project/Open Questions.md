@@ -137,7 +137,7 @@ origination-mode dry run against `ch3-m1`. Only Ch 1–2 carry `status:
 **Question:** Now that the IfE schema decisions are real (`ife` domain code,
 no fifth role — IfE is a different schema tier, `provenance: original` for
 Steve's invented pedagogical diagrams, cross-course `provenance` confirmed
-for IfE's practice-slice primitives pointing at existing 14101 Component
+for IfE's practice-slice asset variants pointing at existing 14101 Component
 Index entries), should IfE content actually be authored through the
 pipeline as one full cold-start origination attempt, or should a smaller
 module be piloted first?
@@ -150,7 +150,7 @@ module be piloted first?
   precedent is `ch3-m1` (a *technical-skill* module, `mnt` domain, backed by
   the Component Index/template-gallery machinery this session's schema work
   extended to a second tier for the first time). Piling a brand-new domain
-  tier, a brand-new provenance value, and a brand-new cross-course-primitive
+  tier, a brand-new provenance value, and a brand-new cross-course-asset-variant
   pattern all onto one full-course attempt at once repeats exactly the shape
   of risk the project's own precedents exist to avoid (16-example template
   proof before trusting Stage 3 authoring; the bounded ch3-m2 A/B test
@@ -160,12 +160,12 @@ module be piloted first?
 - **Candidate module: "Five Tenets of IfE"** (`02 Methodology/Five Tenets of
   IfE.md`). Self-contained, short, almost entirely `provenance: original`
   (Steve's own framework, no 14101 source to reconcile), so it tests the new
-  provenance value cleanly before mixing it with the cross-course-primitive
+  provenance value cleanly before mixing it with the cross-course-asset-variant
   case. A module with real 14101 slice content (e.g. a Day 5/6 Teach-Back
   day) would be the next pilot after this one clears, since that's where
   cross-course `provenance` actually gets exercised end to end.
 - **Executed 2026-09-09.** `10 - Courses/_Origination Test — ife-five-tenets/`
-  — one competency, two `provenance: original` primitives, three placement
+  — one competency, two `provenance: original` asset variants, three placement
   edges, three slides, all passing `render-check.mjs` clean in 4:3 and 16:9
   and confirmed by eye. `provenance: original` itself worked with **zero
   friction**. The pilot also surfaced five real schema gaps — none fatal,
@@ -180,7 +180,7 @@ module be piloted first?
   existing test suite (6/6 passing, no regression).
 - **2026-09-09, same day: the pilot's mechanism promoted to real content.**
   `10 - Courses/IfE - Instructing for Emerson/` — a real course folder,
-  registered in `Courses.md`, with the same competency/primitives/edges
+  registered in `Courses.md`, with the same competency/asset-variants/edges
   now authored as the real `Curriculum — IfE.md` (not a test artifact) and
   real slides (`ife-001…003.html`), independently re-verified with
   `render-check.mjs` and a fresh `objectiveVerbOk` run against the
@@ -195,7 +195,7 @@ module be piloted first?
   `curriculum-development.md` and the pilot's placeholder competency ID
   renamed in the real registry (`ife.orientation.five-tenets-framework`;
   the pilot's own record stays as originally written). One gap remains
-  unaddressed: the primitive `asset` field being stretched by pure-table
+  unaddressed: the asset variant's `asset` field being stretched by pure-table
   content — flagged, not actioned, nothing broke, no fix proposed.
 - **Not yet done:** a second module against real 14101 slice content,
   which is where cross-course `provenance` gets exercised for real — this

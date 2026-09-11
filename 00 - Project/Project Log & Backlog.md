@@ -76,7 +76,7 @@ B to real HTML. (`5da0a7a`–`ddc3869`)
 corrected across 2,096 occurrences in 505 files — the concrete cost that
 justified baking in ID-scheme values early elsewhere. Curriculum layer
 Phases 1–4 landed same day: schema + worked example, ch3 retrofit, the
-Day-One competency map, and the primitive registry — Phase 5 opened but
+Day-One competency map, and the asset-variant registry — Phase 5 opened but
 held. Component Index extended to 14101 ch1–ch2. The bench-set Figure 4
 redraw approved and wired onto slide 098. (`e5a995c`–`319373b`)
 
@@ -99,7 +99,7 @@ added. (`94cd78e`–`a9914a2`)
 **2026-09-09 — Lightbox, oil-and-gas catalogue, project hub.** The diagram
 lightbox added to `40 - Engine` and fixed same day; the full oil-and-gas
 sourcebook catalogued — 144/144 figures across 13 chapters,
-Component-Index-only (no primitives yet — the shared-library point made
+Component-Index-only (no asset variants yet — the shared-library point made
 concrete). The project hub built and published as a click-to-expand
 artifact; `System Map.md` refreshed; the ch3 `course.json` status drift and
 `curriculum-development.md`'s stale phase header both logged as open

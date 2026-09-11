@@ -163,7 +163,7 @@ used-by: [29, 93]
 notes: >
   Same asset (img/image42+43) as `ch2-cmp-pdtc-pdto-sectionals` in
   `Component Index — 14101 ch1-ch2.md` — used on ch2-m1 slide 29 as well.
-  ONE primitive (`prim.mnt.valve-body.contrast-pdtc-pdto.body-sections`),
+  ONE asset variant (`av.mnt.valve-body.contrast-pdtc-pdto.body-sections`),
   two placement edges: ch2-m1 `introduces`, ch3-m1 `develops` (Franz
   confirmed 2026-09-06). A future redraw would serve both.
 ```

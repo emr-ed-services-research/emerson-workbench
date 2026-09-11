@@ -680,7 +680,7 @@ notes: >
 - All seventeen records in this file (six + six + five across three
   batches) are `used-by: []` — this is a proactive, use-driven-ahead
   catalog per `Source Library.md`; no course currently references them.
-- No primitive-registry or `Curriculum —` writes were made from either
+- No asset-variant-registry or `Curriculum —` writes were made from either
   pass — out of scope for a standing Component-Index-only cataloging batch.
 - **Overlap flagged, not merged:** `ogas-cmp-657-667-diaphragm-actuator-cutaways`
   (Figure 2-1) teaches the same 657/667 construction concept as 14101 ch3's
