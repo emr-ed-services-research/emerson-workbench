@@ -645,23 +645,55 @@ never name a figure other than the one on screen.
   slides in the course used a small `cqw`-relative font size with no way
   to enlarge it, and the lightbox mechanism had never been extended to
   tables at all (`initLightbox` only ever looked for `img`/`svg`). Fixed
-  by making every `table.tmpl-table` a lightbox trigger, rendering an
-  enlarged, top-aligned, real-color clone on click (`.ew-lightbox-table` in
-  `emerson-workbench.css`) — this surfaced two of its own real bugs, worth
-  naming as their own check-worthy failure modes on any future
-  "clone content into the lightbox" mechanism: (1) the clone rendered
-  white-on-white because `.tmpl-table` cells rely on `.slide`'s scoped
-  `color: var(--body-text)`, which a clone living outside `.slide` (in the
-  lightbox overlay) never inherits — always give a cloned element an
-  explicit color rather than assuming inheritance carries over; (2) a
-  table taller than the card overflowed evenly top-and-bottom under the
-  figure box's default centering, hiding the header row with no visual
-  hint — top-align (`align-self: flex-start`) any enlarged content that
-  can overflow, so the overflow is always at the bottom, scrollable, never
-  at the top where it hides the thing the reader looks for first. See
-  `40 - Engine/render/table-lightbox-check.mjs` — confirm every
-  `table.tmpl-table` carries the lightbox trigger class and that its
-  cloned cells resolve to a real (non-white-on-white) computed color.
+  by making every `table.tmpl-table` a lightbox trigger; three real bugs
+  surfaced across two rounds of fixing this, each worth naming as its own
+  check-worthy failure mode for any future "clone content into the
+  lightbox" mechanism:
+  1. The clone rendered white-on-white, because `.tmpl-table` cells rely
+     on `.slide`'s scoped `color: var(--body-text)`, which a clone living
+     outside `.slide` (in the lightbox overlay) never inherits — always
+     give a cloned element an explicit color rather than assuming
+     inheritance carries over.
+  2. A fixed enlarged font-size (the first fix attempt) is NOT the same
+     kind of fix that works for an image. An image scales via
+     width/height percentages and object-fit — genuinely proportional on
+     both axes regardless of box size. A table's height is NOT
+     proportional to its width: cloned into a NARROW lightbox card (the
+     real embedded-iframe case every course page actually renders in —
+     confirmed roughly 650px wide, not the ~1200px a standalone full-page
+     view gives it), a fixed-font table's cells wrapped across 2-3 lines
+     each, multiplying total height to nearly 4x the box and overflowing
+     it by ~800px — completely broken, not just a legibility miss. The
+     real fix (`slides.js` `show()`'s `isTable` branch): render the table
+     unwrapped (`white-space: nowrap`) at a large base size so its natural
+     size reflects real content, measure that with `scrollWidth`/
+     `scrollHeight`, then apply a single `transform: scale()` computed as
+     `min(boxWidth / naturalWidth, boxHeight / naturalHeight)` — by hand,
+     the same "biggest size that still fully fits both axes" behavior
+     `object-fit: contain` gives an image for free. Never reach for a
+     fixed enlarged size as an "images vs. tables" fix without checking
+     whether the content's height is actually independent of its width the
+     way an image's is — a table's isn't, and neither is a paragraph of
+     wrapping text.
+  3. **The methodology gap that let bug 2 ship in the first place:**
+     every check on the first attempt (`table-lightbox-check.mjs`,
+     screenshots) was run against the STANDALONE slide file at a wide
+     viewport, which is not how a student ever actually sees a slide — the
+     real course always embeds it in a much narrower iframe inside
+     `index.html`. That gap alone hid a completely broken feature through
+     an entire round of "verified" fixes. Any check on lightbox/enlarge
+     behavior must run through the real embedded shell
+     (`index.html#<hash>`, finding the slide's own iframe and testing
+     inside it — see `40 - Engine/render/lightbox-containment-check.mjs`)
+     — the standalone file is only a valid substitute for content whose
+     containment genuinely doesn't depend on box size (a plain image,
+     confirmed safe either way).
+  See `40 - Engine/render/table-lightbox-check.mjs` (trigger + color/
+  font-size sanity, standalone file is fine for this part) and
+  `40 - Engine/render/lightbox-containment-check.mjs` (the real
+  containment check, through the embedded shell, generalized to any
+  lightbox content — image, composite panel, or table — flagging any
+  panel whose rendered box extends past its figure box on any edge).
 - **Composite-slide click independence, widened.** The check from the
   prior pass (`composite-click-check.mjs`) verifies a slide already
   converted to the per-panel SVG shape actually works — it does not find a

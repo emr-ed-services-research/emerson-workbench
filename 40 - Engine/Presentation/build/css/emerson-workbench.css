@@ -1583,14 +1583,12 @@
 .ew-lightbox-detail-wrap { position: absolute; inset: 0; }
 .ew-lightbox-detail-wrap > img { position: absolute; object-fit: contain; }
 
-/* A data table enlarged in the lightbox (2026-09-13): the table's own
-   .tmpl-table rules (borders, blue header, zebra striping) apply unchanged
-   - only font-size needs overriding here, since the source table's own
-   size is set in cqw relative to the SLIDE's container and means nothing
-   once cloned into the lightbox card. A fixed rem size reads clearly at
-   presentation scale regardless of row/column count; max-height+auto-
-   scroll is the fallback for a table with more rows than even the large
-   card can show at once, rather than shrinking text back down to fit. */
+/* A data table enlarged in the lightbox (2026-09-13, revised same day
+   after a real containment failure through the actual embedded course
+   shell - see slides.js show()'s isTable branch for the full story). The
+   table's own .tmpl-table rules (borders, blue header, zebra striping)
+   apply unchanged; this class only sets what has to change for the
+   lightbox context. */
 .ew-lightbox-table {
   /* .tmpl-table's own cells never set an explicit color, relying on
      .slide's scoped `color: var(--body-text)` for real dark text - a
@@ -1600,19 +1598,30 @@
      click-through test, 2026-09-13, not just a visual guess). Restoring
      the same color .slide would have given it. */
   color: var(--body-text);
+  /* A large base font: slides.js measures this table's natural (unwrapped)
+     size and scales the WHOLE table down (or up) to fit the figure box on
+     both axes, the same "biggest size that still fully fits" behavior
+     object-fit:contain gives an image - this is the pre-scale size that
+     scale factor is computed against, not the final on-screen size. */
   font-size: 1.5rem !important;
-  max-width: 100%;
-  max-height: 100%;
-  overflow: auto;
-  /* .ew-lightbox-figure centers its children (correct for an image) - a
-     table taller than the available height would then overflow evenly
-     top AND bottom, hiding the header row above the visible area with no
-     visual hint it's there. Top-aligned instead: the header is always the
-     first thing visible, and any overflow scrolls at the bottom only. */
-  align-self: flex-start;
-  margin: 0 auto;
+  /* Unwrapped so the table's natural width reflects its real content, not
+     whatever width it happens to be squeezed into - a table CAN'T scale
+     like an image if its own layout keeps reflowing at every candidate
+     width. width:max-content lets it size to that natural width instead
+     of stretching to fill (and being constrained by) its flex container. */
+  white-space: nowrap;
+  width: max-content;
+  max-width: none;
+  /* The scale transform (set in JS once natural size is measured)
+     guarantees containment; overflow:hidden is the safety net for the one
+     frame before that measurement runs, and for the (should-never-happen)
+     case a scale factor doesn't land - never rely on scroll to contain a
+     table the way the first version of this fix did, since a scrollbar
+     inside an already-small embedded card is not a reliable affordance. */
+  overflow: hidden;
+  transform-origin: center center;
 }
-.ew-lightbox-table th, .ew-lightbox-table td { padding: 0.5em 0.7em; }
+.ew-lightbox-table th, .ew-lightbox-table td { padding: 0.5em 0.7em; white-space: nowrap; }
 
 .ew-lightbox-caption {
   font: italic 0.95rem/1.4 var(--font-body, Arial, sans-serif);

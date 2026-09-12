@@ -208,19 +208,39 @@
       var isSubImage = el.namespaceURI === "http://www.w3.org/2000/svg" && el.tagName.toLowerCase() === "image";
       var isTable = el.tagName.toLowerCase() === "table";
       if (isTable) {
-        /* A table has no "native pixel size" to upscale - object-fit and
-           forced width/height (the image path below) would either do
-           nothing or badly distort row heights. What actually makes a
-           table hard to read at a distance is its own slide-fitted font
-           size (set in cqw, relative to the SLIDE's container, meaningless
-           once cloned into the differently-sized lightbox card) - so the
-           fix is a real, large, fixed font size on the clone, keeping
-           every other .tmpl-table rule (borders, header colour, zebra
-           striping) exactly as authored. */
+        /* A table has no fixed "native pixel size" the way an image does,
+           so it can't scale via width/height percentages or object-fit -
+           and a fixed font-size (the first version of this fix) breaks
+           just as badly the other way: cloned into a NARROW lightbox card
+           (the real, embedded-iframe case every course page actually
+           renders in - not the wide standalone-file view this was first
+           verified against, 2026-09-13), a fixed-size table's cells wrap
+           across 2-3 lines each, multiplying total row height far past
+           the box - unlike an image, shrinking a table's WIDTH can
+           massively INCREASE its height. Confirmed: the same table that
+           fit fine at 1280px wide overflowed its box by ~800px once
+           actually opened through the real course shell's ~650px-wide
+           embedded card.
+           The fix that actually parallels object-fit:contain: render the
+           table at its natural, unwrapped size (white-space:nowrap, so
+           width reflects real content, not whatever width it's squeezed
+           into), measure that real size, then scale the whole table down
+           (or up) by a single factor so it fits the figure box on BOTH
+           axes at once - the same "biggest size that still fully fits"
+           behavior object-fit:contain gives an image, computed by hand
+           since a table has no browser-native equivalent. */
         var tableClone = el.cloneNode(true);
         tableClone.removeAttribute("style");
         tableClone.classList.add("ew-lightbox-table");
         figureBox.appendChild(tableClone);
+        window.requestAnimationFrame(function () {
+          var boxW = figureBox.clientWidth, boxH = figureBox.clientHeight;
+          var natW = tableClone.scrollWidth, natH = tableClone.scrollHeight;
+          if (boxW && boxH && natW && natH) {
+            var scale = Math.min(boxW / natW, boxH / natH);
+            tableClone.style.transform = "scale(" + scale + ")";
+          }
+        });
       } else if (el.hasAttribute("data-lightbox-src")) {
         var w = +el.getAttribute("data-lightbox-w") || 1;
         var h = +el.getAttribute("data-lightbox-h") || 1;
