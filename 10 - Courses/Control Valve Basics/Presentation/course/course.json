@@ -2,7 +2,7 @@
   "course": {
     "code": "CVB",
     "title": "Control Valve Basics",
-    "summary": "An introductory, recognition-level course on control valve, actuator, and accessory fundamentals, taught in Steve's requested order — Introduction to Control Valves, Valve and Actuator Types, Control Valve Accessories, then Control Valve Performance — drawn from the Control Valve Handbook, 6th ed. Not a maintenance-procedure course (that is 14101's job); this one is about recognizing and explaining hardware and performance concepts.",
+    "summary": "An introductory, recognition-level course on control valve, actuator, and accessory fundamentals, covering Introduction to Control Valves, Valve and Actuator Types, Control Valve Accessories, and Control Valve Performance — drawn from the Control Valve Handbook, 6th ed. Not a maintenance-procedure course (that is 14101's job); this one is about recognizing and explaining hardware and performance concepts.",
     "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential",
     "tier": "introductory",
     "audienceStage": "orientation",
@@ -31,7 +31,7 @@
     {
       "id": "d1",
       "num": 1,
-      "title": "Day 1 — Control Valve Basics (placeholder — no real schedule yet)",
+      "title": "Day 1 — Control Valve Basics",
       "chapters": [
         {
           "id": "cvb-ch1",

@@ -204,19 +204,42 @@
       } else if (isSubImage) {
         /* an individual panel with no enhanced detail asset yet - still
            its own navigable item, enlarged from its own source, no
-           callout overlay */
+           callout overlay. Forced to fill the lightbox figure box (not
+           just capped by max-width/max-height) so a modestly-sized source
+           crop actually enlarges to presentation scale instead of
+           displaying at its own native pixel size inside a much bigger
+           card - see the sibling fix below for why this must be forced
+           rather than left to the source image's own sizing. */
         var href = el.getAttribute("href") || el.getAttribute("xlink:href");
         var img = document.createElement("img");
         img.src = href;
         img.alt = el.getAttribute("data-lightbox-caption") || "";
-        img.style.maxWidth = "100%";
-        img.style.maxHeight = "100%";
-        img.style.width = "auto";
-        img.style.height = "auto";
+        img.style.width = "100%";
+        img.style.height = "100%";
         img.style.objectFit = "contain";
         figureBox.appendChild(img);
       } else {
-        figureBox.appendChild(el.cloneNode(true));
+        /* A plain on-page <img>/<svg>, cloned as-is - including whatever
+           inline style/width/height attributes it already carries from
+           its small on-slide figure box. Stage 3 authoring was
+           inconsistent here: some images were written with
+           width:100%;height:100% (fills its container, so it also happens
+           to fill the lightbox), others with max-width/max-height:100%
+           (caps but never upscales, so the clone renders at its own
+           native pixel size no matter how big the lightbox card is - the
+           "not enlarged enough to point things out to a class" bug,
+           2026-09-12). Stripped and re-forced here so every lightbox
+           image fills the figure box the same way regardless of which
+           pattern the source slide happened to use, rather than requiring
+           every slide's markup to be individually consistent. */
+        var clone = el.cloneNode(true);
+        clone.removeAttribute("style");
+        clone.removeAttribute("width");
+        clone.removeAttribute("height");
+        clone.style.width = "100%";
+        clone.style.height = "100%";
+        clone.style.objectFit = "contain";
+        figureBox.appendChild(clone);
       }
       captionEl.textContent = el.getAttribute("data-lightbox-caption") || captionFor(el, !isSubImage);
       countEl.textContent = images.length > 1 ? index + 1 + " / " + images.length : "";

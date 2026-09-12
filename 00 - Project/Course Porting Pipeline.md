@@ -470,18 +470,149 @@ HTML for a shape a template covers) and the data-single-sourcing decision.
 
 ### Stage 4 — Verify & publish
 
-One `verify.ps1` that folds in the checks currently run by hand each pass. This
-is working rule 1's whole-deck render — the same checks the Stage 3 Part 4 gate
-runs per slide, re-run across every slide and shell module at publish time:
+**Definition adopted 2026-09-12**, after the first real Stage 4 pass (a
+verify-and-fix run against the completed Control Valve Basics build) found
+seven confirmed, shipped defects `verify.ps1`'s checks at the time could not
+have caught: an under-enlarging lightbox, composite images with no per-panel
+enlargement, a broken interactive answer-key on four check slides, a factual
+error (a rotary valve described with a cage), internal planning language and
+placeholder schedule text leaked into student-facing content, and a context
+pane rendering empty for a schema-migrated course. Franz's directive was
+explicit that this was not a one-off bugfix list but the occasion to define
+Stage 4 for real — the checklist below is that definition, not a summary of
+one pass. It is additive over time: the next Stage 4 pass that finds a new
+class of defect extends this list, the same way this one did.
 
-- headless-Chrome render of every rebuilt slide and every shell module;
-- HTML tag-balance on changed slides;
-- `course.json` JSON validity;
-- every `keyConcepts` page ref is inside its module's `pages` array;
-- `manifest.js` parses; its titles match the slide `<h1>`s;
+A course build is not "done" until every check below has actually been run
+against it and every finding has been fixed or explicitly accepted (with a
+reason recorded, the same discipline Stage 3's pre-send checklist already
+uses). "Ran clean last time" does not carry forward across a schema change,
+an engine change, or a new authoring pass — re-run the whole checklist.
+
+**A. Automated — structural, via `verify.ps1` (existing)**
+
+- `course.json` is valid JSON.
+- Every `keyConcepts` page ref is inside its module's `pages` array.
+- Slide-HTML tag balance (`article`, `figure`, `table`, `svg`, `ol`, `ul`,
+  `div`) on every changed slide.
+- `manifest.js` parses; its titles match the slides' own `<h1>`s.
 - CSS brace balance.
+- `_engine-lock.json` drift (assembled shared files match the engine source).
+- `data-ref` table drift lint (a reference table repeated across slides
+  stays identical everywhere it's repeated).
+- Headless-Chrome render of every slide (`render-check.mjs`, both 4:3 and
+  16:9/embed modes): page loads clean (no console/page errors, no failed
+  resource loads), every `<img>` decodes (`naturalWidth > 0`), no visible
+  content escapes the `.slide` box (`overflow:hidden`, so an escape is a
+  silent clip).
 
-Then: the 16:9 figure-box tuning pass, `course-data.js` regenerated from
+**B. Automated — new, added from the 2026-09-12 pass (not yet folded into
+`verify.ps1` as of this writing; run via the standalone scripts in
+`40 - Engine/render/` until they are)**
+
+- **In-bounds overlap, not just escape.** Render-check's existing clipping
+  check only catches content that escapes the slide box — it does not catch
+  two elements that both stay inside the box but overlap each other (e.g. a
+  citation or list item visually sitting on top of a figure). Check every
+  text-bearing element (`.tpl-source`, `.tmpl-source`, `.tpl-list li`,
+  `.tpl-content p`, `.tpl-takeaway`, `.panel-caption`, a filmstrip/reveal
+  detail pane) against every image/figure element (`img`, `svg`, `.tpl-fig`,
+  `.placeholder-img`) for a real bounding-box intersection, excluding
+  elements that are deliberately layered (marker dots, lightbox callouts,
+  parse-mode definitions). See `40 - Engine/render/overlap-check.mjs` — run
+  it across a spread of viewport widths (not just one), since a template's
+  actual failure width is not knowable in advance.
+- **Lightbox enlargement.** Click every real figure image open in the
+  lightbox and confirm the DISPLAYED size actually fills the lightbox's
+  figure box (comparable to the card size), not just the source image's own
+  native pixel resolution. A source crop authored with `max-width:100%;
+  max-height:100%` (caps, never upscales) instead of `width:100%;
+  height:100%` (fills its container) will silently under-enlarge in the
+  lightbox even though it looks fine inline — this is a real, confirmed
+  failure mode, not a hypothetical one (see `40 - Engine/render/
+  lightbox-check.mjs`). The engine-level fix (2026-09-12) already forces
+  full-fill on every lightbox image regardless of the source slide's own
+  inline style, but a future lightbox change could regress this — re-check
+  it, don't just trust the fix stays in place.
+- **Composite-image click targets.** Any slide whose figure is several
+  source photos/diagrams pre-combined into one flat raster image (a
+  filename containing "composite" is the usual tell) loses the ability to
+  click into and enlarge one panel on its own — the lightbox's real,
+  working per-panel mechanism (`slides.js`, an `<svg>` wrapping multiple
+  `<image>` children) only activates for that markup shape, never for a
+  flattened PNG. A composite is fine to leave as one flat image ONLY when
+  no individual panel inside it needs its own callouts/legible zoom (Style
+  Guide Sec 5.9's own carve-out); otherwise it needs converting to the
+  SVG-multi-image shape, reusing the individual (pre-composite) crops that
+  Stage 3 almost always already saved to `assets/sourced/` alongside the
+  composite. Check for this on every composite slide, not just the ones a
+  human happens to notice.
+- **Check-slide answer-key validity.** For every `.slide--role-check` slide:
+  exactly one `<li>` in `.tpl-options` carries `data-correct="true"`, and its
+  text is the one the `.tpl-reveal` line actually names. A check slide can
+  render perfectly and still be silently broken if `data-correct="true"` is
+  missing from every option — every click shows "wrong," with no visible
+  sign anything is misconfigured. This is a real, confirmed failure mode
+  (four of nine CVB check slides shipped this way) — the reveal text alone
+  is not a sufficient check, verify the DOM's `data-correct` marker exists
+  and matches.
+- **Context-pane population.** Open the real course shell (not just the raw
+  slide file) at a real module page and confirm the context pane's key-
+  concepts list actually renders non-empty teaching text, not blank
+  bullets. This can pass every slide-level render check and still be
+  completely broken at the shell level if a schema change (e.g. concept
+  text moving into `primitives[]`) outpaces the shell's own rendering code
+  — confirmed on CVB, 2026-09-12. Check it against the real `index.html` +
+  `course-data.js`, not the slide HTML alone (see
+  `40 - Engine/render/ctx-check.mjs`).
+- **Placeholder / undetermined-schedule language scan.** Grep every
+  student-facing `course.json` string field (`course.summary`, every
+  `day.title`/`day.subtitle`, `chapter.summary`, `module.objective`) for
+  placeholder markers — "unscheduled", "TBD", "to be determined",
+  "undetermined", "placeholder", "no real schedule yet" and similar. A
+  course with only one real day should say "Day 1" (or a real theme name,
+  per the day-title convention 14101 and IfE already use) plainly, never a
+  caveat about the schedule not existing yet.
+- **Internal-planning-language scan.** Grep the same student-facing fields
+  for language that describes HOW or WHY the course was built rather than
+  what it teaches — a stakeholder's name, an internal directive ("Steve's
+  requested order"), a reference to the pipeline/Stage machinery itself, a
+  scope-negotiation note. This kind of note belongs in an underscore-
+  prefixed internal field (`_note`, `_source` — confirmed never rendered by
+  `course.js`) or a vault doc, never in `course.summary` or any other field
+  the shell actually displays.
+- **Missing-citation scan.** Every content slide sourced from real figures
+  should carry exactly one `.tpl-source`/`.tmpl-source` citation line (Style
+  Guide Sec 5.9) — Module 0 and check slides are the only legitimate
+  exceptions (no earmarked source to cite). `grep -L "tpl-source\|tmpl-
+  source"` across a course's slides, then confirm each hit is actually a
+  Module-0/check slide and not a real gap — three CVB contrast-role slides
+  shipped with no citation at all, found this way.
+
+**C. Judgment required — factual/pedagogical, not automatable**
+
+- **Factual-content spot-check against source.** A generation pass can
+  produce a fluent, well-templated sentence that is simply wrong — e.g. a
+  rotary valve described with a cage (cages are sliding-stem/globe
+  construction only; a rotary valve's flow characteristic comes from its
+  closure member's own contour). This is not caught by any render check —
+  it requires actually knowing the domain and checking the claim against
+  the Component Index's own `teaches` field (grounded in the real source)
+  or the source document directly. Prioritize checks where two adjacent
+  concepts share vocabulary but describe genuinely different hardware
+  (sliding-stem vs. rotary is the recurring one in this vault; there may be
+  others), and once one instance of a specific conflation is found, grep
+  for the same wording across the rest of the course — it is rarely a
+  one-off (three instances of the cage/rotary conflation were found this
+  way in one pass, not one).
+- **Visual layout quality** beyond hard overlap — awkward whitespace, a
+  figure crop that reads as too small/too large for its teaching point, a
+  template stretched past what its content shape actually fits. Screenshot
+  review by a person or a fresh agent with no authoring-pass investment in
+  the slide looking "done."
+
+Then, once every check above is clean or every finding is fixed/accepted:
+the 16:9 figure-box tuning pass, `course-data.js` regenerated from
 `course.json`, README updated.
 
 ## Infrastructure prerequisites
