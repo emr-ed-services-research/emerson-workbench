@@ -153,9 +153,12 @@ audience, per the "don't leave two field shapes for one thing" lesson
 # one entry in keyConcepts[i].primitives[] — NOT a separate top-level record;
 # it lives inside the concept, inside the module, inside the course.json
 # chapter/module hierarchy directly (no flat side-index to reconcile back)
-- domainOrAudienceStage: maintenance       # a real domain, or an audienceStage value
-  tier: introductory                       # introductory | advanced
-  t: >                                     # the irreducible content itself, instructor-talking-point voice
+- domain: maintenance      # a real domain (maintenance/instrumentation/eng), or
+                           # null — a real, permanent "no domain assigned" value
+                           # (2026-09-14 schema fix), never "TBD" (that stays
+                           # owned by status: "outline")
+  tier: introductory       # introductory | advanced
+  t: >                     # the irreducible content itself, instructor-talking-point voice
     Disassemble, inspect, and reassemble a 657 actuator; check bench set
     before returning it to service.
   sources: [ch3-cmp-657-assembly]           # Component Index id(s) — same Axis-A discipline as today
@@ -163,12 +166,6 @@ audience, per the "don't leave two field shapes for one thing" lesson
   templateRationale: >
     A real worked walkthrough (Show-Tell-Do), not a plain step list — the
     procedure has a common failure mode worth calling out mid-sequence.
-  domainVoiceNote: >                       # which DOMAIN_VOICE register was written in, or why none applies
-    Written in the maintenance register — bench language, physical
-    failure-mode framing (DOMAIN_VOICE.maintenance).
-  slideCount:
-    estimate: 3
-    maturity: stage1   # stage1 (rough) | stage2 (tightened) | stage3 (final, delivered)
 ```
 
 Two primitives for the SAME competency, scoped to two different audiences,
@@ -176,25 +173,55 @@ is the normal shape when a course serves more than one domain (or when the
 same competency is reused across separately domain-scoped courses) —
 Franz's worked example: the 657 actuator gets a **maintenance** primitive
 (disassembly, inspection, reassembly, bench-set) and a completely separate
-**sizing-and-selection** primitive (sizes, fail-mode, ratings, selection
-criteria) for the exact same concept — different irreducible facts, same
-competency, because the two audiences need genuinely different things from
-it (the same principle the leak-classification example makes for content
-depth, now made structural).
+**engineering** primitive (sizes, fail-mode, ratings, selection criteria)
+for the exact same concept — different irreducible facts, same competency,
+because the two audiences need genuinely different things from it (the same
+principle the leak-classification example makes for content depth, now
+made structural). This case is real in the schema (`selectPrimitive` in
+`course-model.js` picks the one matching the target course's own domain +
+tier) but not yet exercised by any shipped course — every real primitive so
+far is the single-primitive-per-concept case.
 
-**`slideCount` matures across the pipeline, not discovered cold at Stage
-3**: Stage 1 (arc-cutting time) sets a rough estimate from the concept and
-its permutations; Stage 2 tightens it once real content, sourcing, and
-template+rationale are known; Stage 3 replaces the estimate with the
-actual, final, delivered count. This directly supersedes "one concept per
-slide" (scrapped 2026-09-11 — see `Course Porting Pipeline.md` and
-`instructional-design.js`/`course-model.js`): slide count is driven by what
-a primitive's content actually requires, never a fixed ratio to concepts.
-A primitive can span several slides when its content genuinely needs it
-(three slides for a full disassembly/inspection/reassembly sequence), or
-several concepts can be umbrella'd onto one slide when they belong together
-(IfE's Five Tenets: five concepts, one slide) — a judgment call tied to the
-actual content and Template Gallery shape, not a hardcoded numeric rule.
+**Slide count has no separate field** — `pages` (an array of the slide
+number(s) this primitive occupies) already answers "how many slides"
+directly; a dedicated `slideCount` field existed briefly (2026-09-11) and
+was removed (2026-09-15) once it was found to always just restate
+`pages.length` with a `maturity` sub-field nothing ever read. This
+directly supersedes "one concept per slide" (scrapped 2026-09-11 — see
+`Course Porting Pipeline.md` and `instructional-design.js`/`course-model.js`):
+slide count is driven by what a primitive's content actually requires,
+never a fixed ratio to concepts. A primitive can span several slides when
+its content genuinely needs it (three slides for a full
+disassembly/inspection/reassembly sequence), or several concepts can be
+umbrella'd onto one slide when they belong together (IfE's Five Tenets:
+five concepts, one slide) — a judgment call tied to the actual content and
+Template Gallery shape, not a hardcoded numeric rule.
+
+**`items` (added 2026-09-15) — optional, only present when `sources` has
+more than one entry.** A primitive whose `t` covers several named things at
+once (three body styles, two voting architectures) can give each one its
+own short breakdown, value-paired to `sources` by id — never by array
+position, so editing `sources` later (dropping a stray or duplicate
+citation, a real recurring edit in this project's own history) can never
+silently desync the pairing:
+
+```yaml
+sources: [ch3-cmp-body-a, ch3-cmp-body-b, ch3-cmp-body-c]
+items:
+  - source: ch3-cmp-body-a
+    t: One or two sentences specific to body A.
+  - source: ch3-cmp-body-b
+    t: One or two sentences specific to body B.
+  - source: ch3-cmp-body-c
+    t: One or two sentences specific to body C.
+```
+
+Stage 3 composes each pane/panel of a multi-item template (a filmstrip, a
+multi-panel contrast, a multi-part list) from its matching `items[i].t` —
+this is the fix for a real shipped defect where a multi-pane slide's
+captions were re-derived from the raw Component Index citation instead,
+bypassing the primitive's own authored content entirely. Most primitives
+(one source) never need `items` at all.
 
 ### Asset variant (renamed 2026-09-11 — was "Instructional primitive")
 

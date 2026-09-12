@@ -5,13 +5,13 @@
     "summary": "An introductory, recognition-level course on control valve, actuator, and accessory fundamentals, covering Introduction to Control Valves, Valve and Actuator Types, Control Valve Accessories, and Control Valve Performance — drawn from the Control Valve Handbook, 6th ed. Not a maintenance-procedure course (that is 14101's job); this one is about recognizing and explaining hardware and performance concepts.",
     "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential",
     "tier": "introductory",
-    "audienceStage": "orientation",
     "sources": [
       {
         "path": "20 - Source Library/Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf",
         "description": "Chapters 1, 3, 4, 2 (in that teaching order) — Introduction to Control Valves, Valve and Actuator Types, Control Valve Accessories, Control Valve Performance. The one source this course draws from; no other document cited."
       }
-    ]
+    ],
+    "domain": null
   },
   "slideBase": "../build/slides/",
   "slidePrefix": "cvb-",
@@ -67,10 +67,6 @@
                       "pages": [
                         5
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-feedback-control-loop"
                       ]
@@ -96,10 +92,6 @@
                       "pages": [
                         6
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-sliding-stem-valve-photo"
                       ]
@@ -125,10 +117,6 @@
                       "pages": [
                         7
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-sliding-stem-exploded"
                       ]
@@ -154,10 +142,6 @@
                       "pages": [
                         8
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-angle-valve-photo",
                         "cvh-cmp-three-way-globe-valve"
@@ -184,10 +168,6 @@
                       "pages": [
                         9
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-bonnet-assembly",
                         "cvh-cmp-bellows-seal-bonnet",
@@ -215,10 +195,6 @@
                       "pages": [
                         10
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-direct-acting-actuator",
                         "cvh-cmp-reverse-acting-actuator",
@@ -284,10 +260,6 @@
                       "pages": [
                         12
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-rotary-valve-photo"
                       ]
@@ -313,10 +285,6 @@
                       "pages": [
                         13
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-segmented-ball",
                         "cvh-cmp-v-notch-ball",
@@ -344,10 +312,6 @@
                       "pages": [
                         14
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-rotary-actuator-cutaway"
                       ]
@@ -373,10 +337,6 @@
                       "pages": [
                         15
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-cage-types"
                       ]
@@ -402,10 +362,6 @@
                       "pages": [
                         16
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-inherent-characteristics-graph"
                       ]
@@ -431,10 +387,6 @@
                       "pages": [
                         17
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-deadband-graph"
                       ]
@@ -510,10 +462,6 @@
                       "pages": [
                         19
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-single-ported-globe-valve-body",
                         "cvh-cmp-cage-style-trim-balanced-plug-soft-seat",
@@ -541,10 +489,6 @@
                       "pages": [
                         20
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-flanged-angle-valve-body",
                         "cvh-cmp-bar-stock-valve-body",
@@ -572,10 +516,6 @@
                       "pages": [
                         21
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-butterfly-shaft-offset-disc-center",
                         "cvh-cmp-butterfly-control-valve",
@@ -603,10 +543,6 @@
                       "pages": [
                         22
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-eccentric-plug-valve-body",
                         "cvh-cmp-full-port-ball-valve-trunnion"
@@ -633,10 +569,6 @@
                       "pages": [
                         23
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-ball-valve-cavitation-noise-options",
                         "cvh-cmp-multi-port-flow-selector-valve",
@@ -664,10 +596,6 @@
                       "pages": [
                         24
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-bolted-flange-end-connections",
                         "cvh-cmp-welded-end-connections"
@@ -733,10 +661,6 @@
                       "pages": [
                         26
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-typical-bonnet-flange-stud-bolts",
                         "cvh-cmp-bonnet-variations",
@@ -764,10 +688,6 @@
                       "pages": [
                         27
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-enviroseal-bellows-seal-bonnet",
                         "cvh-cmp-welded-leaf-bellows",
@@ -795,10 +715,6 @@
                       "pages": [
                         28
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-packing-material-arrangements-globe",
                         "cvh-cmp-single-ptfe-vring-packing"
@@ -825,10 +741,6 @@
                       "pages": [
                         29
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-enviroseal-ptfe-packing-system",
                         "cvh-cmp-enviroseal-duplex-packing-system",
@@ -857,10 +769,6 @@
                       "pages": [
                         30
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-sliding-stem-environmental-packing-selection",
                         "cvh-cmp-rotary-environmental-packing-selection"
@@ -887,10 +795,6 @@
                       "pages": [
                         31
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-voc-ldar-measurement-frequency",
                         "cvh-cmp-iso15848-1-qualification-requirements"
@@ -958,10 +862,6 @@
                       "pages": [
                         33
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-characterized-cages-globe",
                         "cvh-cmp-inherent-flow-characteristic-curves"
@@ -988,10 +888,6 @@
                       "pages": [
                         34
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-plug-contour-flow-characterization",
                         "cvh-cmp-quick-opening-construction"
@@ -1018,10 +914,6 @@
                       "pages": [
                         35
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-cage-guiding-plug-guiding-cross-section",
                         "cvh-cmp-adapter-reduced-flow-capacity"
@@ -1050,10 +942,6 @@
                         36,
                         37
                       ],
-                      "slideCount": {
-                        "estimate": 2,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-field-reversible-multi-spring-actuator",
                         "cvh-cmp-diaphragm-actuator-rotary-valve",
@@ -1082,10 +970,6 @@
                       "pages": [
                         38
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-manual-actuator-sliding-stem",
                         "cvh-cmp-manual-actuator-rotary",
@@ -1114,10 +998,6 @@
                       "pages": [
                         38
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-rack-and-pinion-actuator"
                       ]
@@ -1189,10 +1069,6 @@
                       "pages": [
                         40
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.1"
                       ]
@@ -1218,10 +1094,6 @@
                       "pages": [
                         41
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.2",
                         "cvh-cmp-4.3"
@@ -1248,10 +1120,6 @@
                       "pages": [
                         42
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.4"
                       ]
@@ -1277,10 +1145,6 @@
                       "pages": [
                         43
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.5",
                         "cvh-cmp-4.6"
@@ -1307,10 +1171,6 @@
                       "pages": [
                         44
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.7",
                         "cvh-cmp-4.8"
@@ -1375,10 +1235,6 @@
                       "pages": [
                         46
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.10",
                         "cvh-cmp-4.11",
@@ -1406,10 +1262,6 @@
                       "pages": [
                         47
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.13"
                       ]
@@ -1435,10 +1287,6 @@
                       "pages": [
                         48
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.14",
                         "cvh-cmp-4.15"
@@ -1468,11 +1316,7 @@
                       "templateRationale": "Two-way contrast (direct-acting vs. pilot-operated SOV actuation), each with its own physical-construction photo — fits contrast's two-panel shape exactly, split out of cvb.safety.solenoid-valve-types (which used to bundle this axis with the separate spring-return/double-acting drive-type axis).",
                       "pages": [
                         49
-                      ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      }
+                      ]
                     }
                   ]
                 },
@@ -1495,10 +1339,6 @@
                       "pages": [
                         50
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.16",
                         "cvh-cmp-4.19",
@@ -1526,10 +1366,6 @@
                       "pages": [
                         51
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.24",
                         "cvh-cmp-4.25",
@@ -1607,10 +1443,6 @@
                       "pages": [
                         53
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-process-variability-distributions"
                       ]
@@ -1636,10 +1468,6 @@
                       "pages": [
                         54
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-performance-test-loop-photo"
                       ]
@@ -1665,10 +1493,6 @@
                       "pages": [
                         55
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sourceNote": "CVH ch2 Figure 2.3 'Effect of Deadband on Valve Performance' — the same figure is already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Component Index (a different course); cross-referenced, not duplicated as a new id, per Component Index — Control Valve Handbook ch2.md's own Open Items."
                     }
                   ]
@@ -1692,10 +1516,6 @@
                       "pages": [
                         56
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-valve-response-time-summary-table"
                       ]
@@ -1721,10 +1541,6 @@
                       "pages": [
                         57
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-installed-characteristic-and-gain"
                       ]
@@ -1750,10 +1566,6 @@
                       "pages": [
                         58
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-valve-style-control-range-comparison"
                       ]
@@ -1818,10 +1630,6 @@
                       "pages": [
                         60
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-closed-loop-disturbance-summary"
                       ]
@@ -1847,10 +1655,6 @@
                       "pages": [
                         61
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-signature-series-testing-photo"
                       ]
@@ -1876,10 +1680,6 @@
                       "pages": [
                         62
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-signature-data-comparison-overlay"
                       ]
@@ -1905,10 +1705,6 @@
                       "pages": [
                         63
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-valvelink-software-screens"
                       ]

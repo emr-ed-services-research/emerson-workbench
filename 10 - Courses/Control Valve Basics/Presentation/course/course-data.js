@@ -5,13 +5,13 @@ window.EW_COURSE = {
     "summary": "An introductory, recognition-level course on control valve, actuator, and accessory fundamentals, covering Introduction to Control Valves, Valve and Actuator Types, Control Valve Accessories, and Control Valve Performance — drawn from the Control Valve Handbook, 6th ed. Not a maintenance-procedure course (that is 14101's job); this one is about recognizing and explaining hardware and performance concepts.",
     "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential",
     "tier": "introductory",
-    "audienceStage": "orientation",
     "sources": [
       {
         "path": "20 - Source Library/Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf",
         "description": "Chapters 1, 3, 4, 2 (in that teaching order) — Introduction to Control Valves, Valve and Actuator Types, Control Valve Accessories, Control Valve Performance. The one source this course draws from; no other document cited."
       }
-    ]
+    ],
+    "domain": null
   },
   "slideBase": "../build/slides/",
   "slidePrefix": "cvb-",
@@ -59,7 +59,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Process control means automatically keeping something — a flow, a pressure, a temperature — at the value it should be. A control valve is the part that makes the correction: a sensor reads the real value, it's compared to the target, and the valve's stem moves to close the gap — this loop is what \"process control\" means in practice.",
                       "template": "slide--role-mechanism",
@@ -67,10 +67,6 @@ window.EW_COURSE = {
                       "pages": [
                         5
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-feedback-control-loop"
                       ]
@@ -88,7 +84,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A sliding-stem valve moves its plug straight up and down through a globe- or angle-style body — the most common control valve construction.",
                       "template": "slide--role-nomenclature",
@@ -96,10 +92,6 @@ window.EW_COURSE = {
                       "pages": [
                         6
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-sliding-stem-valve-photo"
                       ]
@@ -117,7 +109,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "From actuator to body: stem, packing flange, bonnet, piston ring, plug, cage, and seat ring stack in that order — the assembly sequence every sliding-stem valve follows.",
                       "template": "slide--role-nomenclature",
@@ -125,10 +117,6 @@ window.EW_COURSE = {
                       "pages": [
                         7
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-sliding-stem-exploded"
                       ]
@@ -146,7 +134,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "An angle body turns the flow path 90° for erosive or high-pressure-drop service; a three-way body combines or diverts flow through a single valve instead of the straight-through path a standard globe body uses.",
                       "template": "slide--role-contrast",
@@ -154,10 +142,6 @@ window.EW_COURSE = {
                       "pages": [
                         8
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-angle-valve-photo",
                         "cvh-cmp-three-way-globe-valve"
@@ -176,7 +160,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A conventional bonnet packs the stem with PTFE or graphite rings in the packing box; a bellows-seal bonnet replaces packing entirely with a welded metal bellows for zero-leakage service on hazardous or toxic process fluids.",
                       "template": "slide--role-contrast",
@@ -184,10 +168,6 @@ window.EW_COURSE = {
                       "pages": [
                         9
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-bonnet-assembly",
                         "cvh-cmp-bellows-seal-bonnet",
@@ -207,7 +187,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A direct-acting actuator pushes the stem down with loading pressure and returns it with the spring; a reverse-acting actuator does the opposite. A piston actuator trades the spring for a second pressure connection, for higher thrust and faster stroking.",
                       "template": "slide--role-application-case",
@@ -215,10 +195,6 @@ window.EW_COURSE = {
                       "pages": [
                         10
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-direct-acting-actuator",
                         "cvh-cmp-reverse-acting-actuator",
@@ -254,7 +230,7 @@ window.EW_COURSE = {
               "check": [
                 11
               ],
-              "audienceStage": "orientation"
+              "domain": null
             },
             {
               "id": "cvb-ch1-m2",
@@ -276,7 +252,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A rotary control valve turns a ball, disk, or plug across the flow path instead of sliding a stem through it — the same final-control-element job, a different motion.",
                       "template": "slide--role-nomenclature",
@@ -284,10 +260,6 @@ window.EW_COURSE = {
                       "pages": [
                         12
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-rotary-valve-photo"
                       ]
@@ -305,7 +277,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A segmented ball, a V-notch ball, and an eccentric disk are the three standard rotary closure members — the V-notch's contoured cut gives it the widest rangeability of the three.",
                       "template": "slide--role-application-case",
@@ -313,10 +285,6 @@ window.EW_COURSE = {
                       "pages": [
                         13
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-segmented-ball",
                         "cvh-cmp-v-notch-ball",
@@ -336,7 +304,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A rotary actuator's lever and shaft convert the same linear stem motion a sliding-stem actuator produces into the disk or ball rotation the closure member actually needs.",
                       "template": "slide--role-mechanism",
@@ -344,10 +312,6 @@ window.EW_COURSE = {
                       "pages": [
                         14
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-rotary-actuator-cutaway"
                       ]
@@ -365,7 +329,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A cage's window shape — linear, equal-percentage, or quick-opening — sets how flow changes as the valve strokes, independent of the body style around it.",
                       "template": "slide--role-mechanism",
@@ -373,10 +337,6 @@ window.EW_COURSE = {
                       "pages": [
                         15
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-cage-types"
                       ]
@@ -394,7 +354,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Quick-opening gives maximum flow change near the closed position, linear gives equal flow change per unit of travel, and equal-percentage gives equal PERCENTAGE change per unit of travel — read the curve to tell which characteristic a valve has.",
                       "template": "slide--role-application",
@@ -402,10 +362,6 @@ window.EW_COURSE = {
                       "pages": [
                         16
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-inherent-characteristics-graph"
                       ]
@@ -423,7 +379,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Deadband is the range a controller's output can reverse through before the valve produces any observable change — friction and backlash are its usual causes.",
                       "template": "slide--role-mechanism",
@@ -431,10 +387,6 @@ window.EW_COURSE = {
                       "pages": [
                         17
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-deadband-graph"
                       ]
@@ -468,10 +420,10 @@ window.EW_COURSE = {
               "check": [
                 18
               ],
-              "audienceStage": "orientation"
+              "domain": null
             }
           ],
-          "audienceStage": "orientation"
+          "domain": null
         },
         {
           "id": "cvb-ch2",
@@ -502,7 +454,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Single-ported globe bodies are the simplest and tightest-shutoff; double-ported (reverse-acting) bodies balance plug forces across two ports for less required thrust; cage-style balanced-plug bodies use the cage itself to balance pressure and can carry a soft seat for bubble-tight shutoff.",
                       "template": "slide--role-application-case",
@@ -510,10 +462,6 @@ window.EW_COURSE = {
                       "pages": [
                         19
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-single-ported-globe-valve-body",
                         "cvh-cmp-cage-style-trim-balanced-plug-soft-seat",
@@ -533,7 +481,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Angle and bar-stock bodies extend the basic globe body for specialty service (erosive/slurry flow, high-purity or highly corrosive fluids); a three-way body combines two inlet streams or diverts one inlet to either of two outlets, one body doing the job two two-way valves and a manifold would otherwise do.",
                       "template": "slide--role-application-case",
@@ -541,10 +489,6 @@ window.EW_COURSE = {
                       "pages": [
                         20
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-flanged-angle-valve-body",
                         "cvh-cmp-bar-stock-valve-body",
@@ -564,7 +508,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "An offset-shaft butterfly disk swings clear of the seat as it opens, reducing seat wear versus a centered shaft; a high-performance butterfly adds a second, radial offset for a tighter, longer-wearing seal at higher pressure.",
                       "template": "slide--role-contrast",
@@ -572,10 +516,6 @@ window.EW_COURSE = {
                       "pages": [
                         21
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-butterfly-shaft-offset-disc-center",
                         "cvh-cmp-butterfly-control-valve",
@@ -595,7 +535,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A full-port ball valve (on trunnion mounts, for larger sizes) gives an unrestricted straight-through bore when open; an eccentric plug swings out of the seat on an off-center shaft, the same wear-reducing idea a butterfly's offset shaft uses.",
                       "template": "slide--role-contrast",
@@ -603,10 +543,6 @@ window.EW_COURSE = {
                       "pages": [
                         22
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-eccentric-plug-valve-body",
                         "cvh-cmp-full-port-ball-valve-trunnion"
@@ -625,7 +561,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Anti-cavitation and low-noise trim options quiet or eliminate the damage a high pressure-drop can cause; a multi-port flow-selector valve routes flow among several destinations from one body; a pressure-assisted seal uses process pressure itself to improve shutoff.",
                       "template": "slide--role-application-case",
@@ -633,10 +569,6 @@ window.EW_COURSE = {
                       "pages": [
                         23
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-ball-valve-cavitation-noise-options",
                         "cvh-cmp-multi-port-flow-selector-valve",
@@ -656,7 +588,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Bolted-flange connections bolt to mating pipe flanges and can be unbolted for service; welded connections are welded directly into the pipeline, for higher pressure or leak-critical service, at the cost of cutting the valve out to service it.",
                       "template": "slide--role-nomenclature",
@@ -664,10 +596,6 @@ window.EW_COURSE = {
                       "pages": [
                         24
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-bolted-flange-end-connections",
                         "cvh-cmp-welded-end-connections"
@@ -701,7 +629,7 @@ window.EW_COURSE = {
               "check": [
                 25
               ],
-              "audienceStage": "orientation"
+              "domain": null
             },
             {
               "id": "cvb-ch2-m2",
@@ -725,7 +653,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A standard bonnet bolts to the body with stud bolts; bonnet variations extend that basic shape for extra clearance or insulation; a fabricated extension bonnet lengthens the packing box away from the process fluid, for cryogenic or very hot service.",
                       "template": "slide--role-nomenclature",
@@ -733,10 +661,6 @@ window.EW_COURSE = {
                       "pages": [
                         26
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-typical-bonnet-flange-stud-bolts",
                         "cvh-cmp-bonnet-variations",
@@ -756,7 +680,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A welded-leaf bellows stacks thin metal diaphragms into a flexible seal; a mechanically-formed bellows is hydroformed from tubing instead — both give a fully welded, zero-leakage path around the stem.",
                       "template": "slide--role-mechanism",
@@ -764,10 +688,6 @@ window.EW_COURSE = {
                       "pages": [
                         27
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-enviroseal-bellows-seal-bonnet",
                         "cvh-cmp-welded-leaf-bellows",
@@ -787,7 +707,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A single PTFE V-ring packing arrangement is the simple baseline; the full packing-material arrangement (rings, followers, springs) shown in cross-section is what actually loads and maintains that seal as the stem strokes and wears.",
                       "template": "slide--role-contrast",
@@ -795,10 +715,6 @@ window.EW_COURSE = {
                       "pages": [
                         28
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-packing-material-arrangements-globe",
                         "cvh-cmp-single-ptfe-vring-packing"
@@ -817,7 +733,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "ENVIRO-SEAL packing systems add a live-loaded spring to a PTFE, duplex (PTFE-plus-graphite), or graphite ULF (ultra-low fugitive) arrangement — for sliding-stem or rotary valves alike — to hold sealing force as packing wears, instead of relying on a one-time bolt torque.",
                       "template": "slide--role-mechanism",
@@ -825,10 +741,6 @@ window.EW_COURSE = {
                       "pages": [
                         29
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-enviroseal-ptfe-packing-system",
                         "cvh-cmp-enviroseal-duplex-packing-system",
@@ -849,7 +761,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Match the packing system to the service: standard PTFE for general-purpose duty, an ENVIRO-SEAL live-loaded system where emissions matter, graphite where temperature rules PTFE out — sliding-stem and rotary valves each have their own selection chart.",
                       "template": "slide--role-application",
@@ -857,10 +769,6 @@ window.EW_COURSE = {
                       "pages": [
                         30
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-sliding-stem-environmental-packing-selection",
                         "cvh-cmp-rotary-environmental-packing-selection"
@@ -879,7 +787,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Regulations require periodically testing valves for leaks into the air (called fugitive emissions) — the programs that do this are known as VOC/LDAR, and ISO 15848-1 is the standard a packing system has to pass to qualify. Picking an unqualified packing for the service can mean failing that test, not just a leak on the bench.",
                       "template": "slide--tmpl-caution",
@@ -887,10 +795,6 @@ window.EW_COURSE = {
                       "pages": [
                         31
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-voc-ldar-measurement-frequency",
                         "cvh-cmp-iso15848-1-qualification-requirements"
@@ -925,7 +829,7 @@ window.EW_COURSE = {
               "check": [
                 32
               ],
-              "audienceStage": "orientation"
+              "domain": null
             },
             {
               "id": "cvb-ch2-m3",
@@ -950,7 +854,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A characterized cage shapes its window profile to produce a specific curve directly — the physical mechanism behind the quick-opening/linear/equal-percentage curves already introduced.",
                       "template": "slide--role-mechanism",
@@ -958,10 +862,6 @@ window.EW_COURSE = {
                       "pages": [
                         33
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-characterized-cages-globe",
                         "cvh-cmp-inherent-flow-characteristic-curves"
@@ -980,7 +880,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A contoured plug shapes the same curve types by varying its own profile against a fixed seat, rather than through a cage window; quick-opening construction is the simplest case — a flat-faced plug that uncovers flow area almost immediately.",
                       "template": "slide--role-mechanism",
@@ -988,10 +888,6 @@ window.EW_COURSE = {
                       "pages": [
                         34
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-plug-contour-flow-characterization",
                         "cvh-cmp-quick-opening-construction"
@@ -1010,7 +906,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Cage-guided trim rides inside the cage bore; plug-guided trim rides in machined guides in the body itself — two different ways of keeping the plug centered on its seat. A reduced-capacity adapter lets one body size handle a smaller trim than its full-size rating.",
                       "template": "slide--role-nomenclature",
@@ -1018,10 +914,6 @@ window.EW_COURSE = {
                       "pages": [
                         35
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-cage-guiding-plug-guiding-cross-section",
                         "cvh-cmp-adapter-reduced-flow-capacity"
@@ -1041,7 +933,7 @@ window.EW_COURSE = {
                   ],
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A field-reversible actuator can be converted between direct- and reverse-acting in the field, without a different casting, and the same spring-and-diaphragm principle drives a rotary valve's diaphragm actuator, just converted to rotation through a lever. A double-acting piston actuator uses supply pressure on both sides for higher thrust in either direction; its rotary equivalent, a scotch-yoke piston actuator, converts that same linear motion into rotation the piston way, just as the diaphragm actuator does through its lever.",
                       "template": "slide--role-mechanism",
@@ -1050,10 +942,6 @@ window.EW_COURSE = {
                         36,
                         37
                       ],
-                      "slideCount": {
-                        "estimate": 2,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-field-reversible-multi-spring-actuator",
                         "cvh-cmp-diaphragm-actuator-rotary-valve",
@@ -1074,7 +962,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A handwheel gives manual override on a sliding-stem or rotary actuator without pneumatic supply; an electric actuator replaces pneumatic supply with a motor, for sites with no air system.",
                       "template": "slide--role-nomenclature",
@@ -1082,10 +970,6 @@ window.EW_COURSE = {
                       "pages": [
                         38
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-manual-actuator-sliding-stem",
                         "cvh-cmp-manual-actuator-rotary",
@@ -1106,7 +990,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A rack-and-pinion actuator is a compact, economical pneumatic option for rotary valves — but its backlash limits it to on/off service, not the precision continuous throttling a diaphragm or piston actuator handles.",
                       "template": "slide--role-mechanism",
@@ -1114,10 +998,6 @@ window.EW_COURSE = {
                       "pages": [
                         38
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-rack-and-pinion-actuator"
                       ]
@@ -1150,10 +1030,10 @@ window.EW_COURSE = {
               "check": [
                 39
               ],
-              "audienceStage": "orientation"
+              "domain": null
             }
           ],
-          "audienceStage": "orientation"
+          "domain": null
         },
         {
           "id": "cvb-ch3",
@@ -1181,7 +1061,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A pneumatic positioner closes its own local loop: it compares actual stem position (fed back through a cam and beam) to the command signal at a flapper/nozzle, and drives a relay until the two agree.",
                       "template": "slide--role-mechanism",
@@ -1189,10 +1069,6 @@ window.EW_COURSE = {
                       "pages": [
                         40
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.1"
                       ]
@@ -1210,7 +1086,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "An analog I/P positioner runs the same feedback loop from a 4-20 mA current signal instead of a pneumatic one, converting current to pneumatic output through the same nozzle/flapper/relay stages.",
                       "template": "slide--role-mechanism",
@@ -1218,10 +1094,6 @@ window.EW_COURSE = {
                       "pages": [
                         41
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.2",
                         "cvh-cmp-4.3"
@@ -1240,7 +1112,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A digital valve controller replaces the positioner's mechanical feedback linkage with a microprocessor — same job (drive the valve to command), added diagnostics.",
                       "template": "slide--role-nomenclature",
@@ -1248,10 +1120,6 @@ window.EW_COURSE = {
                       "pages": [
                         42
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.4"
                       ]
@@ -1269,7 +1137,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "An I/P transducer converts a current signal to a pneumatic one with no position feedback at all — simpler and cheaper than a positioner, appropriate where high positioning accuracy isn't required.",
                       "template": "slide--role-mechanism",
@@ -1277,10 +1145,6 @@ window.EW_COURSE = {
                       "pages": [
                         43
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.5",
                         "cvh-cmp-4.6"
@@ -1299,7 +1163,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A volume booster amplifies the pneumatic flow available to the actuator without changing the signal's pressure — needed when a large or fast-stroking actuator would otherwise starve the positioner's own limited output capacity.",
                       "template": "slide--role-application",
@@ -1307,10 +1171,6 @@ window.EW_COURSE = {
                       "pages": [
                         44
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.7",
                         "cvh-cmp-4.8"
@@ -1343,7 +1203,7 @@ window.EW_COURSE = {
               "check": [
                 45
               ],
-              "audienceStage": "orientation"
+              "domain": null
             },
             {
               "id": "cvb-ch3-m2",
@@ -1367,7 +1227,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A standalone pneumatic controller closes an entire control loop right at the valve, with no central control-room computer system (a DCS or PLC) needed — it compares the measured process value to a set point and drives the valve directly. Adding reset and rate elements to a proportional-only design corrects lingering offset and reacts faster to a changing load.",
                       "template": "slide--role-mechanism",
@@ -1375,10 +1235,6 @@ window.EW_COURSE = {
                       "pages": [
                         46
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.10",
                         "cvh-cmp-4.11",
@@ -1398,7 +1254,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A position transmitter reports actual valve position back to the control system — 4-20 mA if wired, a 0-100% digital signal if wireless — so the control room can see where the valve really is, not just where it was told to go.",
                       "template": "slide--role-contrast",
@@ -1406,10 +1262,6 @@ window.EW_COURSE = {
                       "pages": [
                         47
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.13"
                       ]
@@ -1427,7 +1279,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol).",
                       "template": "slide--role-contrast",
@@ -1435,10 +1287,6 @@ window.EW_COURSE = {
                       "pages": [
                         48
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.14",
                         "cvh-cmp-4.15"
@@ -1457,7 +1305,7 @@ window.EW_COURSE = {
                   ],
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.",
                       "sources": [
@@ -1468,11 +1316,7 @@ window.EW_COURSE = {
                       "templateRationale": "Two-way contrast (direct-acting vs. pilot-operated SOV actuation), each with its own physical-construction photo — fits contrast's two-panel shape exactly, split out of cvb.safety.solenoid-valve-types (which used to bundle this axis with the separate spring-return/double-acting drive-type axis).",
                       "pages": [
                         49
-                      ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      }
+                      ]
                     }
                   ]
                 },
@@ -1487,7 +1331,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A 1oo2 (one-out-of-two) architecture trips if either of two SOVs sees a demand — favoring safety, more nuisance trips. A 2oo2 architecture needs both to agree — favoring uptime, at the cost of a slower response to a real single-SOV failure.",
                       "template": "slide--role-application-case",
@@ -1495,10 +1339,6 @@ window.EW_COURSE = {
                       "pages": [
                         50
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.16",
                         "cvh-cmp-4.19",
@@ -1518,7 +1358,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A trip valve shows a distinct physical state once a safety system actually trips it; a switching valve routes pneumatic signal for control logic rather than process flow. A side- or top-mounted handwheel lets a technician manually stroke an actuator with no air supply at all.",
                       "template": "slide--role-nomenclature",
@@ -1526,10 +1366,6 @@ window.EW_COURSE = {
                       "pages": [
                         51
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-4.24",
                         "cvh-cmp-4.25",
@@ -1565,10 +1401,10 @@ window.EW_COURSE = {
               "check": [
                 52
               ],
-              "audienceStage": "orientation"
+              "domain": null
             }
           ],
-          "audienceStage": "orientation"
+          "domain": null
         },
         {
           "id": "cvb-ch4",
@@ -1599,7 +1435,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Process variability is the width of the distribution of a measured value around its target, not where the target itself sits — a tightly-controlled loop has a narrow distribution, a poorly-controlled one a wide one, both centered the same place.",
                       "template": "slide--role-mechanism",
@@ -1607,10 +1443,6 @@ window.EW_COURSE = {
                       "pages": [
                         53
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-process-variability-distributions"
                       ]
@@ -1628,7 +1460,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Every performance number in this chapter — deadband, response time, gain, the economics — comes from real bench testing on a physical test loop, not a simulation.",
                       "template": "slide--role-nomenclature",
@@ -1636,10 +1468,6 @@ window.EW_COURSE = {
                       "pages": [
                         54
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-performance-test-loop-photo"
                       ]
@@ -1657,7 +1485,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Testing three real valve designs open-loop shows deadband directly: each valve's output lags its command by a different amount before it moves at all — the same deadband concept already introduced, now measured and compared.",
                       "template": "slide--role-mechanism",
@@ -1665,10 +1493,6 @@ window.EW_COURSE = {
                       "pages": [
                         55
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sourceNote": "CVH ch2 Figure 2.3 'Effect of Deadband on Valve Performance' — the same figure is already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Component Index (a different course); cross-referenced, not duplicated as a new id, per Component Index — Control Valve Handbook ch2.md's own Open Items."
                     }
                   ]
@@ -1684,7 +1508,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Dead time and 63%-response time both vary by valve/actuator/positioner combination — a faster positioner or a smaller actuator generally responds quicker, but the only way to know a specific configuration's numbers is to test it.",
                       "template": "slide--role-application",
@@ -1692,10 +1516,6 @@ window.EW_COURSE = {
                       "pages": [
                         56
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-valve-response-time-summary-table"
                       ]
@@ -1713,7 +1533,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Installed gain is the slope of the installed flow-characteristic curve at a given travel — where that slope changes sharply across the travel range, the loop's tuning has to compromise between the high-gain and low-gain regions.",
                       "template": "slide--role-mechanism",
@@ -1721,10 +1541,6 @@ window.EW_COURSE = {
                       "pages": [
                         57
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-installed-characteristic-and-gain"
                       ]
@@ -1742,7 +1558,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A globe valve holds a usable, controllable gain over a wider share of its travel than a butterfly valve does for the same duty — a wider control range, read directly off the installed-gain comparison.",
                       "template": "slide--role-application",
@@ -1750,10 +1566,6 @@ window.EW_COURSE = {
                       "pages": [
                         58
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-valve-style-control-range-comparison"
                       ]
@@ -1786,7 +1598,7 @@ window.EW_COURSE = {
               "check": [
                 59
               ],
-              "audienceStage": "orientation"
+              "domain": null
             },
             {
               "id": "cvb-ch4-m2",
@@ -1810,7 +1622,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Across three real valve designs under the same random load disturbance, the better-controlling valve holds process variability closer to the theoretical minimum as tuning gets more aggressive — a measurable economic argument for choosing it, not just a qualitative one.",
                       "template": "slide--role-application",
@@ -1818,10 +1630,6 @@ window.EW_COURSE = {
                       "pages": [
                         60
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-closed-loop-disturbance-summary"
                       ]
@@ -1839,7 +1647,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "A Signature Series factory test runs an assembled valve through ValveLink software, recording its own friction/force signature as a baseline for comparison against a later, in-service test of the same valve.",
                       "template": "slide--role-mechanism",
@@ -1847,10 +1655,6 @@ window.EW_COURSE = {
                       "pages": [
                         61
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-signature-series-testing-photo"
                       ]
@@ -1868,7 +1672,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "Overlaying a new in-service signature on the original baseline shows an increased span where friction has risen — the same comparison a technician would run to confirm a valve actually needs service, not just guess from symptoms.",
                       "template": "slide--role-application",
@@ -1876,10 +1680,6 @@ window.EW_COURSE = {
                       "pages": [
                         62
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-signature-data-comparison-overlay"
                       ]
@@ -1897,7 +1697,7 @@ window.EW_COURSE = {
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
-                      "domainOrAudienceStage": "orientation",
+                      "domain": null,
                       "tier": "introductory",
                       "t": "ValveLink's Total Scan view shows the signature graph directly; its Valve Step Response view runs and displays a step test — the two diagnostic screens a technician actually works from.",
                       "template": "slide--role-nomenclature",
@@ -1905,10 +1705,6 @@ window.EW_COURSE = {
                       "pages": [
                         63
                       ],
-                      "slideCount": {
-                        "estimate": 1,
-                        "maturity": "stage2"
-                      },
                       "sources": [
                         "cvh-cmp-valvelink-software-screens"
                       ]
@@ -1939,10 +1735,10 @@ window.EW_COURSE = {
               "check": [
                 64
               ],
-              "audienceStage": "orientation"
+              "domain": null
             }
           ],
-          "audienceStage": "orientation"
+          "domain": null
         }
       ]
     }
