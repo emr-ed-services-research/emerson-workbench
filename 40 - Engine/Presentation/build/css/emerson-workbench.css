@@ -1583,13 +1583,52 @@
 .ew-lightbox-detail-wrap { position: absolute; inset: 0; }
 .ew-lightbox-detail-wrap > img { position: absolute; object-fit: contain; }
 
+/* A data table enlarged in the lightbox (2026-09-13): the table's own
+   .tmpl-table rules (borders, blue header, zebra striping) apply unchanged
+   - only font-size needs overriding here, since the source table's own
+   size is set in cqw relative to the SLIDE's container and means nothing
+   once cloned into the lightbox card. A fixed rem size reads clearly at
+   presentation scale regardless of row/column count; max-height+auto-
+   scroll is the fallback for a table with more rows than even the large
+   card can show at once, rather than shrinking text back down to fit. */
+.ew-lightbox-table {
+  /* .tmpl-table's own cells never set an explicit color, relying on
+     .slide's scoped `color: var(--body-text)` for real dark text - a
+     clone living in the lightbox overlay sits outside .slide entirely and
+     falls through to body.ew-deck's `color: var(--emerson-white)`
+     instead, rendering every cell white-on-white/zebra (found via a real
+     click-through test, 2026-09-13, not just a visual guess). Restoring
+     the same color .slide would have given it. */
+  color: var(--body-text);
+  font-size: 1.5rem !important;
+  max-width: 100%;
+  max-height: 100%;
+  overflow: auto;
+  /* .ew-lightbox-figure centers its children (correct for an image) - a
+     table taller than the available height would then overflow evenly
+     top AND bottom, hiding the header row above the visible area with no
+     visual hint it's there. Top-aligned instead: the header is always the
+     first thing visible, and any overflow scrolls at the bottom only. */
+  align-self: flex-start;
+  margin: 0 auto;
+}
+.ew-lightbox-table th, .ew-lightbox-table td { padding: 0.5em 0.7em; }
+
 .ew-lightbox-caption {
   font: italic 0.95rem/1.4 var(--font-body, Arial, sans-serif);
   color: var(--emerson-grey);
   text-align: center;
   max-width: 100%;
-  max-height: 4.2em;
+  /* Structural one-line rule (2026-09-13): max-height:4.2em previously let
+     a caption wrap up to three lines before clipping - a caption that was
+     "too long" just silently ate more of the fixed-height card instead of
+     ever being flagged, which is exactly the space the image itself needs.
+     white-space:nowrap + ellipsis makes any caption that would wrap
+     instead truncate visibly on one line - the overflow is now impossible
+     to miss rather than quietly eating vertical space. */
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ew-lightbox-count {

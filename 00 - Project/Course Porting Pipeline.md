@@ -611,6 +611,95 @@ an engine change, or a new authoring pass — re-run the whole checklist.
   review by a person or a fresh agent with no authoring-pass investment in
   the slide looking "done."
 
+**Round 2 additions (2026-09-13)**, from a manual slide-by-slide walkthrough
+of the same CVB build after the first Stage 4 pass and the composite-crop
+cleanup. The core principle this round surfaced: **the lightbox's whole job
+is a clean, zoomed-in view of one image — anything else appearing inside it
+(a source-page artifact baked into the crop, inherited slide metadata, a
+caption that wraps) fights the image for the same fixed space.** A caption
+in the lightbox, if shown at all, must never wrap past one line and must
+never name a figure other than the one on screen.
+
+**D. Automated — new, added from the 2026-09-13 pass**
+
+- **Lightbox content purity.** For a slide with more than one lightbox-
+  eligible image (several filmstrip/application-case panes, a composite),
+  clicking a panel must never show the WHOLE SLIDE's shared citation — only
+  that panel's own caption, or nothing. This was a real, confirmed
+  regression: `captionFor()`'s whole-slide-citation fallback was written
+  for the single-figure case and had no guard against firing on a
+  multi-image slide, so every pane's lightbox silently showed the same
+  wrong, multi-figure citation regardless of which pane was actually open
+  (six slides shipped this way). Fixed at the engine level (the fallback
+  now only fires when there is exactly one lightbox-eligible item on the
+  whole slide) and structurally enforced in CSS (`white-space: nowrap` +
+  `text-overflow: ellipsis` on `.ew-lightbox-caption` — a caption that
+  would have wrapped now visibly truncates instead of silently consuming
+  another line of the fixed-height card). See
+  `40 - Engine/render/caption-purity-check.mjs` — click every lightbox
+  trigger on a slide and confirm each shows a distinct, single-line,
+  figure-specific caption (or none), never the same oversized text
+  regardless of which panel is open.
+- **Table legibility/expandability.** Confirmed general to the template
+  set, not one instance: every `.tmpl-table` on both real content-table
+  slides in the course used a small `cqw`-relative font size with no way
+  to enlarge it, and the lightbox mechanism had never been extended to
+  tables at all (`initLightbox` only ever looked for `img`/`svg`). Fixed
+  by making every `table.tmpl-table` a lightbox trigger, rendering an
+  enlarged, top-aligned, real-color clone on click (`.ew-lightbox-table` in
+  `emerson-workbench.css`) — this surfaced two of its own real bugs, worth
+  naming as their own check-worthy failure modes on any future
+  "clone content into the lightbox" mechanism: (1) the clone rendered
+  white-on-white because `.tmpl-table` cells rely on `.slide`'s scoped
+  `color: var(--body-text)`, which a clone living outside `.slide` (in the
+  lightbox overlay) never inherits — always give a cloned element an
+  explicit color rather than assuming inheritance carries over; (2) a
+  table taller than the card overflowed evenly top-and-bottom under the
+  figure box's default centering, hiding the header row with no visual
+  hint — top-align (`align-self: flex-start`) any enlarged content that
+  can overflow, so the overflow is always at the bottom, scrollable, never
+  at the top where it hides the thing the reader looks for first. See
+  `40 - Engine/render/table-lightbox-check.mjs` — confirm every
+  `table.tmpl-table` carries the lightbox trigger class and that its
+  cloned cells resolve to a real (non-white-on-white) computed color.
+- **Composite-slide click independence, widened.** The check from the
+  prior pass (`composite-click-check.mjs`) verifies a slide already
+  converted to the per-panel SVG shape actually works — it does not find a
+  slide that STILL needs converting. One was missed by the original pass:
+  a single source PHOTO printing three named items side by side (not
+  several source figures combined into one file by us, which is what the
+  original pass's "composite" search — filenames containing `composite` —
+  was scoped to) had its own `.tpl-marker` overlay and companion list, but
+  was one flat image with no click-through at all. Widen the search: any
+  slide with more than one `.tpl-marker` over a SINGLE plain `<img>` is a
+  candidate — a marker cluster is usually the tell that several named
+  things share one image, whether or not "composite" appears in the
+  filename. Confirming which of those genuinely need splitting (vs. a
+  marker cluster correctly labelling ONE unified figure, like an assembly
+  cutaway) is judgment, not automatable — but finding the candidates to
+  check is.
+
+**E. Judgment required — new, added from the 2026-09-13 pass**
+
+- **Lightbox/base-slide crop completeness.** Whether a crop still shows a
+  source-page artifact — a page number, the printed caption/label, a
+  stray rule line, text cut off mid-sentence from an adjacent paragraph —
+  or cuts off content the slide actually needs (a numbered callout hidden
+  below the crop's own bottom edge). Neither is detectable from the DOM or
+  computed styles; both require actually looking at the rendered image
+  (three real instances found this way in one pass: two crops that
+  included most of the surrounding page, and one that cropped straight
+  through a 14-part callout key, hiding several of its numbers). Re-crop
+  from the source PDF page at 300dpi (600dpi if the source photo itself is
+  low-resolution enough that text/labels in it are still hard to read at
+  300dpi — confirmed to help on at least one real slide) using the
+  iterative crop-test-view-adjust method established across both passes;
+  if a defect turns out to be genuinely how the source book itself prints
+  the page (a truncated label at the printed margin, an intentionally
+  irregular photo silhouette), confirm against the actual source page
+  before concluding it can't be fixed, and say so explicitly rather than
+  leaving it unexplained.
+
 Then, once every check above is clean or every finding is fixed/accepted:
 the 16:9 figure-box tuning pass, `course-data.js` regenerated from
 `course.json`, README updated.

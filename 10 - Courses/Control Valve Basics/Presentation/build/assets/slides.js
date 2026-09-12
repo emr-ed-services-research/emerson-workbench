@@ -83,6 +83,18 @@
         }
       }
     );
+    /* A data table (.tmpl-table, the application role's decision-table
+       variant) is real instructional content sized to fit its slide's
+       fixed-height row via a small cqw font - exactly the case that reads
+       fine up close but not from the back of a room. Tables get the same
+       click-to-enlarge affordance as a figure: same trigger class, same
+       overlay, but shown() renders a font-boosted clone (see below)
+       instead of treating it as an image (2026-09-13, Franz - confirmed
+       this gap is general to every .tmpl-table in the template set, not
+       one slide). */
+    Array.prototype.forEach.call(document.querySelectorAll(".tpl-content table.tmpl-table"), function (el) {
+      images.push(el);
+    });
     if (!images.length) return;
 
     images.forEach(function (el) { el.classList.add("ew-lightbox-trigger"); });
@@ -194,7 +206,22 @@
       var el = images[index];
       figureBox.innerHTML = "";
       var isSubImage = el.namespaceURI === "http://www.w3.org/2000/svg" && el.tagName.toLowerCase() === "image";
-      if (el.hasAttribute("data-lightbox-src")) {
+      var isTable = el.tagName.toLowerCase() === "table";
+      if (isTable) {
+        /* A table has no "native pixel size" to upscale - object-fit and
+           forced width/height (the image path below) would either do
+           nothing or badly distort row heights. What actually makes a
+           table hard to read at a distance is its own slide-fitted font
+           size (set in cqw, relative to the SLIDE's container, meaningless
+           once cloned into the differently-sized lightbox card) - so the
+           fix is a real, large, fixed font size on the clone, keeping
+           every other .tmpl-table rule (borders, header colour, zebra
+           striping) exactly as authored. */
+        var tableClone = el.cloneNode(true);
+        tableClone.removeAttribute("style");
+        tableClone.classList.add("ew-lightbox-table");
+        figureBox.appendChild(tableClone);
+      } else if (el.hasAttribute("data-lightbox-src")) {
         var w = +el.getAttribute("data-lightbox-w") || 1;
         var h = +el.getAttribute("data-lightbox-h") || 1;
         var raw = el.getAttribute("data-lightbox-callouts");
@@ -241,7 +268,25 @@
         clone.style.objectFit = "contain";
         figureBox.appendChild(clone);
       }
-      captionEl.textContent = el.getAttribute("data-lightbox-caption") || captionFor(el, !isSubImage);
+      /* Caption purity (2026-09-13): the lightbox's whole job is a clean,
+         zoomed-in view of ONE image - any other text competes with the
+         image for the same fixed caption row, and on a multi-image slide
+         (several filmstrip/application-case panes, none carrying its own
+         data-lightbox-caption) the only fallback captionFor() could offer
+         was the WHOLE SLIDE's shared citation - wrong for whichever pane
+         wasn't the one it was written for, and often long enough to wrap
+         (found on cvb-010: every pane showed "Figs. 1.9, 1.10, 1.12..."
+         regardless of which one was actually open). Falling back to
+         captionFor's whole-slide citation is only ever correct when this
+         is truly the ONE lightbox-eligible item on the entire slide - the
+         classic single-figure mechanism/nomenclature case that fallback
+         was written for. Anywhere else (multiple panes, a composite),
+         showing no caption is safer than showing a wrong or oversized one;
+         the fix for a specific pane is giving it its own
+         data-lightbox-caption, not stretching this fallback to guess. */
+      var singleFigureSlide = images.length === 1;
+      captionEl.textContent = el.getAttribute("data-lightbox-caption") ||
+        (singleFigureSlide ? captionFor(el, true) : "");
       countEl.textContent = images.length > 1 ? index + 1 + " / " + images.length : "";
     }
 
