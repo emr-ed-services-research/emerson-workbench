@@ -344,6 +344,16 @@ a future advanced course could pull from directly.
 
 ## Chapters, in taught order
 
+**Module 0 — `Before We Start`** (added 2026-09-11, reusing `Curriculum — IfE.md`'s
+real `moduleZero` as the model verbatim: same id `m0`, same title, same summary,
+same 4-page shape — title slide, course roadmap, facility & safety, sign-in &
+housekeeping) plays before Chapter 1. It is a top-level `course.json` field, not
+a chapter/module — no `keyConcepts`, no competencies, and none of the strict
+completeness machinery in `course-model.js` ever sees it (confirmed by reading
+the shared engine and grepping PipelineConsole for `moduleZero`, not assumed).
+Claims pages 1-4; every other slide in the course shifted up by 4 to make room
+(chapter 1 now starts at page 5, the course now ends at page 64).
+
 | # | Course chapter | Source | Modules |
 | --- | --- | --- | --- |
 | 1 | Introduction to Control Valves (`cvb-ch1`) | CVH ch1 | cvb-ch1-m1 (Sliding-Stem Valve Anatomy), cvb-ch1-m2 (Rotary Valves & Flow Characteristics) |
@@ -372,8 +382,8 @@ backs it) — both one file per chapter, in taught order.
   out 2026-09-11 from `cvb.actuator.manual-electric` sharing its original
   slide as an umbrella; plus `cvb.safety.solenoid-actuation-type`, split the
   same day from `cvb.safety.solenoid-valve-types` onto its OWN new slide),
-  60 slides (was 59 — the solenoid split added one, unlike the
-  manual-electric split which didn't), all strict completeness checks
+  64 slides (60 content/check slides across the 9 real teaching modules, plus
+  the 4 new Module 0 slides — see "Chapters, in taught order" above), all strict completeness checks
   passing) are this course's complete output so far. Migrated to the
   `primitives[]` shape 2026-09-11; every primitive's `templateRationale` is
   real, content-grounded prose (not the mechanically-derived placeholder

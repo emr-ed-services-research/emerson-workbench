@@ -6,7 +6,7 @@ tags:
   - pipeline
 course: Control Valve Basics
 chapter: cvb-ch2
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Instructional Packet — cvb-ch2 (Valve and Actuator Types)
@@ -31,7 +31,7 @@ updated: 2026-09-11
 **Objective:** Distinguish globe and rotary valve body styles by construction and typical service, and identify the two standard end-connection types.
 
 **1. cvb.bodystyle.globe-variants** (introduces · confirmed)
-role: application · level: understand · pages: 15
+role: application · level: understand · pages: 19
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -44,11 +44,11 @@ role: application · level: understand · pages: 15
   - `cvh-cmp-double-ported-globe-valve-body-reverse-acting` (current, Component Index — Control Valve Handbook ch3.md) — "A double-ported globe-style valve body, captioned "reverse-acting" and shown (per the source's own body text) assembled for push-down-to-open valve plug action — double-ported designs can be assembled either push-down-to-open or push-down-to-close. Dynamic force on the plug tends to be balanced, since flow tends to open one port and close the other, which can permit a smaller actuator than an equivalent single-ported unbalanced body. Metal-to-metal seating on these bodies usually provides Class II shutoff (Class III also possible). The industry has predominantly moved away from double-ported designs; they were historically used in refineries on highly viscous fluids or where contaminant/deposit buildup on the trim was a concern."
   - template: `slide--role-application-case` — Three distinct globe body constructions (single-ported, double-ported/reverse-acting, cage-style balanced-plug), each with its own real figure, now shown as application-case's filmstrip instead of forced into contrast's two-panel shape. Re-tagged from contrast to application per the 2026-09-11 template-fit review.
   - slideCount: 1 (stage2)
-  - pages: 15
+  - pages: 19
 
 
 **2. cvb.intro.body-style-variants** (develops · confirmed)
-role: application · level: understand · pages: 16
+role: application · level: understand · pages: 20
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -61,11 +61,11 @@ role: application · level: understand · pages: 16
   - `cvh-cmp-three-way-globe-valve` (current, Component Index — Control Valve Handbook ch1.md) — "A three-way globe valve: a single body with three flow connections, combining or diverting flow rather than the simple two-port throttling shown in the earlier sliding-stem figures."
   - template: `slide--role-application-case` — Three distinct body-style photos (flanged angle, bar-stock, three-way), each independently described, now shown as application-case's filmstrip — one frame per body style — instead of base application's single-fig shape. Already the right role; only the template variant changed.
   - slideCount: 1 (stage2)
-  - pages: 16
+  - pages: 20
 
 
 **3. cvb.rotary.closure-members** (develops · confirmed)
-role: contrast · level: understand · pages: 17
+role: contrast · level: understand · pages: 21
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -78,11 +78,11 @@ role: contrast · level: understand · pages: 17
   - `cvh-cmp-high-performance-butterfly-valve` (current, Component Index — Control Valve Handbook ch3.md) — "High-performance butterfly control valve body: provides a linear flow characteristic through 90 degrees of disk rotation. Double offset mounting pulls the disk away from the seal after it begins to open, minimizing seal wear. Available through NPS 48 (DN 1200), compatible with standard ASME flanges. Uses standard spring-and-diaphragm, piston, electric, or electro-hydraulic rotary actuators. Intended for general-service applications, not precision throttling — control range is roughly one third that of ball or globe-style valves."
   - template: `slide--role-contrast` — Two-way contrast (standard offset-shaft butterfly vs. high-performance double-offset butterfly) fits the two-panel shape; the third source (a general assembled-butterfly-valve photo) is supporting context for the 'standard' panel, not a third contrasted type.
   - slideCount: 1 (stage2)
-  - pages: 17
+  - pages: 21
 
 
 **4. cvb.rotary.closure-members** (develops · confirmed)
-role: contrast · level: understand · pages: 18
+role: contrast · level: understand · pages: 22
 
 - **Primitive** — orientation · introductory
 
@@ -92,13 +92,13 @@ role: contrast · level: understand · pages: 18
   - `cvh-cmp-full-port-ball-valve-trunnion` (current, Component Index — Control Valve Handbook ch3.md) — "Special-design, three-piece trunnion-mounted, full-bore control valve for automated control in bypass, batch, monitor, and emergency shutoff service applications — presents little or no flow restriction, and is fire tested and certified for API 6 and 6FA."
   - template: `slide--role-contrast` — Two-way contrast (full-port trunnion-mounted ball vs. eccentric plug) fits the panel shape using cvh-cmp-full-port-ball-valve-trunnion and cvh-cmp-eccentric-plug-valve-body as the two panel figures. Sourcing cleanup applied 2026-09-11: dropped cvh-cmp-segmented-v-notch-ball (never mentioned in this row's t) and cvh-cmp-full-port-ball-control-valve (duplicated the same ball-valve side as the trunnion figure) - both were stray citations, not a second real panel's worth of content.
   - slideCount: 1 (stage2)
-  - pages: 18
+  - pages: 22
 
 
 **→ Activity — Body Style ID** small-group · 15 min — Sort a mixed set of real valve photos/cutaways (globe: single-ported, double-ported, cage-style; rotary: butterfly, ball, eccentric plug) by body-style family and name the family's typical service advantage.
 
 **5. cvb.bodystyle.special-purpose** (introduces · confirmed)
-role: application · level: apply · pages: 19
+role: application · level: apply · pages: 23
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -111,11 +111,11 @@ role: application · level: apply · pages: 19
   - `cvh-cmp-pressure-assisted-seal-configuration` (current, Component Index — Control Valve Handbook ch3.md) — "A bi-directional pressure-assisted seal ring configuration, offered as an eccentric plug valve option to provide exceptionally tight shutoff."
   - template: `slide--role-application-case` — Three functionally distinct special-purpose options (anti-cavitation/low-noise trim, a multi-port flow-selector body, a pressure-assisted seal), each its own real figure, now shown as application-case's filmstrip instead of base application's single-fig shape. Already the right role; only the template variant changed.
   - slideCount: 1 (stage2)
-  - pages: 19
+  - pages: 23
 
 
 **6. cvb.bodystyle.end-connections** (introduces · confirmed)
-role: nomenclature · level: remember · pages: 20
+role: nomenclature · level: remember · pages: 24
 
 - **Primitive** — orientation · introductory
 
@@ -125,17 +125,17 @@ role: nomenclature · level: remember · pages: 20
   - `cvh-cmp-welded-end-connections` (current, Component Index — Control Valve Handbook ch3.md) — "The two common welded end-connection styles: socket weld-ends (the pipe slips into a bored socket, joined with a fillet weld — dimensionally the same regardless of pipe schedule, usually NPS 2 / DN 50 and smaller) and butt weld-ends (beveled ends joined to the pipeline with a full-penetration weld, usable on all valve styles, generally NPS 2-1/2 / DN 65 and larger). Welded ends are leak-tight at all pressures/temperatures and economical, but more difficult to remove from the pipeline than flanged ends."
   - template: `slide--role-nomenclature` — Two source figures, each itself showing several named sub-types (bolted-flange: flat-face, raised-face, ring-type joint; welded: socket-weld, butt-weld) — exactly nomenclature's labelled-parts-figure-plus-list shape, just spanning two component figures instead of one.
   - slideCount: 1 (stage2)
-  - pages: 20
+  - pages: 24
 
 
-**Check** — pages 21 (composed by Stage 3, not authored here)
+**Check** — pages 25 (composed by Stage 3, not authored here)
 
 ### 2. cvb-ch2-m2 — Bonnets, Packing & Environmental Sealing
 
 **Objective:** Identify bonnet and packing-system variants, and select an appropriate packing system for a given service and emissions requirement.
 
 **1. cvb.sealing.bonnet-types** (introduces · confirmed)
-role: nomenclature · level: remember · pages: 22
+role: nomenclature · level: remember · pages: 26
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -148,11 +148,11 @@ role: nomenclature · level: remember · pages: 22
   - `cvh-cmp-fabricated-extension-bonnet` (current, Component Index — Control Valve Handbook ch3.md) — "A fabricated extension bonnet — extension bonnets protect valve stem packing from extreme process temperatures by moving the packing box far enough from the process that packing temperature stays in the recommended range. Fabricated extensions (smooth surfaces, e.g. stainless steel tubing) are preferred for cold service, since heat influx is the major concern there; cast extensions (the alternative, not shown here) offer better high-temperature service via greater heat emissivity / cooling effect. Wall thickness is minimized on either type to cut down heat transfer."
   - template: `slide--role-nomenclature` — Three named bonnet constructions (standard bolted, variations, fabricated extension), each with its own figure — a straightforward nomenclature list-of-named-items case, well within the role's default figure-plus-list shape (three points on a spectrum, not a to-be-decided-between pair, so no forced two-way contrast).
   - slideCount: 1 (stage2)
-  - pages: 22
+  - pages: 26
 
 
 **2. cvb.sealing.bellows-bonnet** (introduces · confirmed)
-role: mechanism · level: understand · pages: 23
+role: mechanism · level: understand · pages: 27
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -165,11 +165,11 @@ role: mechanism · level: understand · pages: 23
   - `cvh-cmp-mechanically-formed-bellows` (current, Component Index — Control Valve Handbook ch3.md) — "The mechanically-formed bellows design — taller than the welded-leaf design, but produced with a more repeatable manufacturing process and therefore higher reliability."
   - template: `slide--role-mechanism` — The bonnet-assembly figure frames the whole mechanism (a fully-welded, zero-leakage bellows path around the stem), then the two construction-method figures (welded-leaf vs. mechanically-formed) show the sequential detail behind that one mechanism — mechanism's shape handles this as a figure sequence, not a two-way contrast, since the two methods are alternative implementations of the SAME mechanism, not two different things being compared.
   - slideCount: 1 (stage2)
-  - pages: 23
+  - pages: 27
 
 
 **3. cvb.intro.bonnet-packing-arrangement** (develops · confirmed)
-role: contrast · level: understand · pages: 24
+role: contrast · level: understand · pages: 28
 
 - **Primitive** — orientation · introductory
 
@@ -179,11 +179,11 @@ role: contrast · level: understand · pages: 24
   - `cvh-cmp-single-ptfe-vring-packing` (current, Component Index — Control Valve Handbook ch3.md) — "Single PTFE V-ring packing arrangement: uses a coil spring between the packing and packing box ring. Meets the 100 ppmv criterion for sliding-stem valves (pressure ≤300 psi / 20.7 bar, temperature -18 to 93°C / 0 to 200°F). Does not meet low-emission criteria for rotary valves. Very good sealing performance with the lowest operating friction of the packing families in this chapter."
   - template: `slide--role-contrast` — Two real figures, a clean two-way contrast (the simple single-PTFE-V-ring baseline vs. the full packing-material arrangement cross-section showing what actually loads the seal) — fits the two-panel shape exactly.
   - slideCount: 1 (stage2)
-  - pages: 24
+  - pages: 28
 
 
 **4. cvb.sealing.environmental-packing** (introduces · confirmed)
-role: mechanism · level: understand · pages: 25
+role: mechanism · level: understand · pages: 29
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -197,11 +197,11 @@ role: mechanism · level: understand · pages: 25
   - `cvh-cmp-enviroseal-graphite-packing-rotary` (current, Component Index — Control Valve Handbook ch3.md) — "ENVIRO-SEAL graphite packing system for rotary valves — designed for environmental applications from -6 to 316°C (20 to 600°F) or where fire safety is a concern, usable to pressures of 1500 psi (103 bar) while still satisfying the 100 ppmv EPA leakage criterion. Can be used up to 371°C (700°F) in non-environmental applications."
   - template: `slide--role-mechanism` — Four ENVIRO-SEAL packing variants (PTFE, duplex, graphite ULF, rotary graphite) are parallel implementations of the SAME live-loaded-spring mechanism, differing by material/temperature range rather than by mechanism — fits mechanism's figure-plus-list shape as one mechanism shown across its real variants, not four unrelated things needing separate panels. (This is the same concept the granularity advisory already flags for citing 4 components — the template fits, but it's worth a human glance on whether the four variants earn their own slide each.)
   - slideCount: 1 (stage2)
-  - pages: 25
+  - pages: 29
 
 
 **5. cvb.sealing.packing-selection** (introduces · confirmed)
-role: application · level: evaluate · pages: 26
+role: application · level: evaluate · pages: 30
 
 - **Primitive** — orientation · introductory
 
@@ -211,13 +211,13 @@ role: application · level: evaluate · pages: 26
   - `cvh-cmp-rotary-environmental-packing-selection` (current, Component Index — Control Valve Handbook ch3.md) — "A comparison table of rotary-valve environmental packing selections (ENVIRO-SEAL PTFE, ENVIRO-SEAL Graphite, ISO-Seal Graphite), same rating columns as the sliding-stem version (Figure 3.35). Single PTFE and graphite ribbon packing arrangements are explicitly noted as not performing well as fugitive-emission sealing solutions for rotary valves."
   - template: `slide--role-application` — Two selection charts (sliding-stem, rotary) serve the same evaluative task — matching packing to service — and can be shown as one combined selection-chart table under application's own `.tmpl-table` allowance, with the one-line takeaway naming the deciding factors (emissions, temperature, valve style); doesn't need application-case's multi-frame treatment since both charts answer the same single decision, not two decisions.
   - slideCount: 1 (stage2)
-  - pages: 26
+  - pages: 30
 
 
 **→ Activity — Packing Selection Case** small-group · 18 min — Given three real service scenarios (general-purpose hydrocarbon, VOC-regulated process, cryogenic), select an appropriate packing system and justify the choice against the selection figures just taught.
 
 **6. cvb.sealing.emissions-standards-awareness** (introduces · confirmed)
-role: caution · level: understand · pages: 27
+role: caution · level: understand · pages: 31
 
 - **Primitive** — orientation · introductory
 
@@ -227,17 +227,17 @@ role: caution · level: understand · pages: 27
   - `cvh-cmp-iso15848-1-qualification-requirements` (current, Component Index — Control Valve Handbook ch3.md) — "ISO 15848-1 qualification requirements table-as-figure: mechanical cycle classes for control valves (CC1/CC2/CC3: 20,000/60,000/100,000 cycles) and isolation valves (CO1/CO2/CO3: 205/1,500/2,500 cycles), each with associated thermal cycle counts and tightness classes (AM/BM/CM), cross-referenced to measured leak concentration thresholds (<50/<100/<500 ppm per EPA Method 21 sniffing)."
   - template: `slide--tmpl-caution` — A real compliance warning (an unqualified packing choice can mean failing a mandated leak test, not just a bench leak) — the caution card's warning-plus-consequence shape fits directly; the two source figures (the LDAR monitoring-frequency flowchart and the ISO 15848-1 qualification table) ground the 'why this is a real requirement, not a suggestion' framing the caution card needs.
   - slideCount: 1 (stage2)
-  - pages: 27
+  - pages: 31
 
 
-**Check** — pages 28 (composed by Stage 3, not authored here)
+**Check** — pages 32 (composed by Stage 3, not authored here)
 
 ### 3. cvb-ch2-m3 — Flow Characterization, Trim & Actuator Variety
 
 **Objective:** Explain how cage and plug contour shape a valve's flow characteristic, and identify actuator variants beyond the basic spring-and-diaphragm and piston types.
 
 **1. cvb.characteristic.inherent-curves** (develops · confirmed)
-role: mechanism · level: understand · pages: 29
+role: mechanism · level: understand · pages: 33
 
 - **Primitive** — orientation · introductory
 
@@ -247,11 +247,11 @@ role: mechanism · level: understand · pages: 29
   - `cvh-cmp-inherent-flow-characteristic-curves` (current, Component Index — Control Valve Handbook ch3.md) — "Rated flow coefficient (%) plotted against rated travel (%) for the three inherent flow characteristics: Quick-Opening (steep initial rise), Linear (straight diagonal), and Equal-Percentage (exponential-shaped rise) — the graph underlying the cage-window shapes shown in Figure 3.37, under constant pressure differential across the valve."
   - template: `slide--role-mechanism` — Two figures work as a cause-and-effect pair: the characterized-cage window-shape photo (the physical mechanism) and the flow-characteristic curve graph (its effect, already introduced) — mechanism's shape handles this as the same figure-plus-source pattern used for `cvb.characteristic.cage-shape`, now showing the specific cage construction behind it.
   - slideCount: 1 (stage2)
-  - pages: 29
+  - pages: 33
 
 
 **2. cvb.characteristic.contoured-plug** (introduces · confirmed)
-role: mechanism · level: understand · pages: 30
+role: mechanism · level: understand · pages: 34
 
 - **Primitive** — orientation · introductory
 
@@ -261,11 +261,11 @@ role: mechanism · level: understand · pages: 30
   - `cvh-cmp-quick-opening-construction` (current, Component Index — Control Valve Handbook ch3.md) — "Labelled construction diagram showing how a quick-opening flow characteristic is provided: stem, valve plug, seat ring, flow area, and port diameter shown in relation to each other."
   - template: `slide--role-mechanism` — Two figures, one showing how plug contour varies to produce different characteristics and one showing the simplest case (quick-opening) in labelled construction detail — a mechanism figure pair, the plug-based counterpart to the cage-based mechanism two slides earlier.
   - slideCount: 1 (stage2)
-  - pages: 30
+  - pages: 34
 
 
 **3. cvb.trim.guiding-and-capacity** (introduces · confirmed)
-role: nomenclature · level: remember · pages: 31
+role: nomenclature · level: remember · pages: 35
 
 - **Primitive** — orientation · introductory
 
@@ -275,13 +275,13 @@ role: nomenclature · level: remember · pages: 31
   - `cvh-cmp-adapter-reduced-flow-capacity` (current, Component Index — Control Valve Handbook ch3.md) — "The adapter method for providing reduced flow capacity in cage-guided trim: valve plug, cage, and seat ring parts from a smaller valve size of similar construction are combined with adapter pieces above the cage and below the seat ring, mating the smaller parts to the larger valve body — avoiding the need for expensive pipeline reducers or a custom-sized body."
   - template: `slide--role-nomenclature` — Two figures ground three named items (cage-guiding, plug-guiding, and the reduced-capacity adapter) as a labelled list — nomenclature's shape, not a two-way contrast, since 'guiding method' and 'capacity adapter' are two different facts sitting on the same slide by design (the id's own name says both), not two things being compared against each other.
   - slideCount: 1 (stage2)
-  - pages: 31
+  - pages: 35
 
 
 **→ Activity — Characteristic Selection** discussion · 12 min — Given a process scenario (e.g. a valve that must hold near-constant gain across a wide travel range vs. one needing tight shutoff-adjacent control), discuss whether a cage-characterized, contoured-plug, or quick-opening trim fits best, and why.
 
 **4. cvb.intro.actuator-types** (develops · confirmed)
-role: mechanism · level: understand · pages: 32, 33
+role: mechanism · level: understand · pages: 36, 37
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -295,11 +295,11 @@ role: mechanism · level: understand · pages: 32, 33
   - `cvh-cmp-scotch-yoke-piston-actuator` (current, Component Index — Control Valve Handbook ch3.md) — "A control valve with a Scotch-yoke piston actuator — a piston-actuator variant (see §3.8.2's general piston-actuator description: high-pressure plant air supply, double-acting or spring-return operation) typically used to convert linear piston motion into rotary valve-shaft motion via the yoke mechanism."
   - template: `slide--role-mechanism` — This primitive spans two slides (pages 32-33, from last turn's merge) — each slide handles one actuator-mechanism pair as a sequential figure treatment: page 32 (field-reversible actuator, its rotary-diaphragm counterpart), page 33 (double-acting piston, its rotary scotch-yoke counterpart). Mechanism's shape fits each page's own pair; the two pages together cover the full 'actuator types beyond the basic ones' scope the merge was built to hold.
   - slideCount: 2 (stage2)
-  - pages: 32, 33
+  - pages: 36, 37
 
 
 **5. cvb.actuator.manual-electric** (introduces · confirmed)
-role: nomenclature · level: remember · pages: 34
+role: nomenclature · level: remember · pages: 38
 
 > [!tip] Umbrella slide — shares this page with #6 `cvb.actuator.rack-and-pinion`. One physical slide, not two.
 
@@ -315,11 +315,11 @@ role: nomenclature · level: remember · pages: 34
   - `cvh-cmp-electric-actuator-rotary` (current, Component Index — Control Valve Handbook ch3.md) — "An electric actuator for a rotary valve — the rotary-valve counterpart to Figure 3.51, same §3.8.5 electric-motor/gear-reduction description."
   - template: `slide--role-nomenclature` — Four real photos form a clean 2×2 grid — two power types (manual, electric) × two motion types (sliding-stem, rotary) — nomenclature's own carve-out for a 'fixed small set of terms' with a reference-table shape fits this naturally; not a two-way contrast since power type and motion type are two independent axes shown together, matching the split's own reasoning for why rack-and-pinion (a third, different axis) didn't belong here.
   - slideCount: 1 (stage2)
-  - pages: 34
+  - pages: 38
 
 
 **6. cvb.actuator.rack-and-pinion** (introduces · confirmed)
-role: mechanism · level: understand · pages: 34
+role: mechanism · level: understand · pages: 38
 
 > [!tip] Umbrella slide — shares this page with #5 `cvb.actuator.manual-electric`. One physical slide, not two.
 
@@ -330,7 +330,7 @@ role: mechanism · level: understand · pages: 34
   - `cvh-cmp-rack-and-pinion-actuator` (current, Component Index — Control Valve Handbook ch3.md) — "A rack-and-pinion actuator — provides a compact and economical solution for rotary valves. Because of backlash, these are typically used for on/off applications or where process variability is not a concern (rather than precision continuous throttling)."
   - template: `slide--role-mechanism` — A single figure, a single mechanism (the rack-and-pinion conversion itself, with its backlash tradeoff) — the simplest, cleanest mechanism-role case in this module, deliberately narrow after the split gave it its own concept.
   - slideCount: 1 (stage2)
-  - pages: 34
+  - pages: 38
 
 
-**Check** — pages 35 (composed by Stage 3, not authored here)
+**Check** — pages 39 (composed by Stage 3, not authored here)

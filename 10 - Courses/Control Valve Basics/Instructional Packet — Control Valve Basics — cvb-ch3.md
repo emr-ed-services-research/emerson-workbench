@@ -6,7 +6,7 @@ tags:
   - pipeline
 course: Control Valve Basics
 chapter: cvb-ch3
-updated: 2026-09-11
+updated: 2026-09-12
 ---
 
 # Instructional Packet — cvb-ch3 (Control Valve Accessories)
@@ -31,7 +31,7 @@ updated: 2026-09-11
 **Objective:** Identify a positioner, digital valve controller, I/P transducer, and volume booster, and explain each one's role in getting a command signal to the valve stem.
 
 **1. cvb.accessory.positioner-mechanism** (introduces · confirmed)
-role: mechanism · level: understand · pages: 36
+role: mechanism · level: understand · pages: 40
 
 - **Primitive** — orientation · introductory
 
@@ -40,11 +40,11 @@ role: mechanism · level: understand · pages: 36
   - `cvh-cmp-4.1` (verified, Component Index — Control Valve Handbook ch4.md) — "Full pneumatic single-acting positioner mechanism — bellows, beam, cam feedback, flapper/nozzle, relay, and the diaphragm-pressure output loop that positions the valve stem"
   - template: `slide--role-mechanism` — One fully labelled schematic (bellows, beam, cam feedback, flapper/nozzle, relay, diaphragm-pressure output) showing the complete closed local loop — the clearest possible mechanism-role case in this module, one figure carrying the whole explanation.
   - slideCount: 1 (stage2)
-  - pages: 36
+  - pages: 40
 
 
 **2. cvb.accessory.analog-ip-positioner** (introduces · confirmed)
-role: mechanism · level: understand · pages: 37
+role: mechanism · level: understand · pages: 41
 
 - **Primitive** — orientation · introductory
 
@@ -54,11 +54,11 @@ role: mechanism · level: understand · pages: 37
   - `cvh-cmp-4.3` (verified, Component Index — Control Valve Handbook ch4.md) — "Physical appearance of an assembled I/P positioner unit, as referenced alongside the schematic in Figure 4.2"
   - template: `slide--role-mechanism` — Two figures in natural teaching order: the labelled schematic (DC input, converter, feedback axis, nozzle/flapper, relay) explaining the mechanism, then the physical unit photo confirming what it actually looks like — the same schematic-then-hardware sequence mechanism's shape is built to carry.
   - slideCount: 1 (stage2)
-  - pages: 37
+  - pages: 41
 
 
 **3. cvb.accessory.digital-valve-controller** (introduces · confirmed)
-role: nomenclature · level: remember · pages: 38
+role: nomenclature · level: remember · pages: 42
 
 - **Primitive** — orientation · introductory
 
@@ -67,11 +67,11 @@ role: nomenclature · level: remember · pages: 38
   - `cvh-cmp-4.4` (verified, Component Index — Control Valve Handbook ch4.md) — "Digital valve controller mounted on an assembled control valve — the physical instrument referenced by §4.2.3's description of microprocessor-based positioning"
   - template: `slide--role-nomenclature` — A single real photo of a digital valve controller mounted on an assembled valve — a straightforward recognition-level nomenclature case, naming the instrument before its own diagnostic capabilities are covered later in the course.
   - slideCount: 1 (stage2)
-  - pages: 38
+  - pages: 42
 
 
 **4. cvb.accessory.ip-transducer** (introduces · confirmed)
-role: mechanism · level: understand · pages: 39
+role: mechanism · level: understand · pages: 43
 
 - **Primitive** — orientation · introductory
 
@@ -81,11 +81,11 @@ role: mechanism · level: understand · pages: 39
   - `cvh-cmp-4.6` (verified, Component Index — Control Valve Handbook ch4.md) — "I/P transducer mounted on a control valve — the physical, no-feedback alternative to a positioner for applications not requiring high positioning accuracy"
   - template: `slide--role-mechanism` — Two figures in natural teaching order — a pilot-stage detail crop, then the assembled unit mounted on a valve — the same schematic-then-hardware sequence mechanism's shape already carries for the analog I/P positioner two slides earlier. Re-tagged from contrast to mechanism per the 2026-09-11 template-fit review, since both cited figures are views of the same device, not two different things for a two-panel contrast.
   - slideCount: 1 (stage2)
-  - pages: 39
+  - pages: 43
 
 
 **5. cvb.accessory.volume-booster** (introduces · confirmed)
-role: application · level: understand · pages: 40
+role: application · level: understand · pages: 44
 
 - **Primitive** — orientation · introductory
 
@@ -95,19 +95,19 @@ role: application · level: understand · pages: 40
   - `cvh-cmp-4.8` (verified, Component Index — Control Valve Handbook ch4.md) — "Typical dual-booster installation on a double-acting actuator — one booster feeding each side of the actuator piston"
   - template: `slide--role-application` — Two figures split cleanly by role within the slide: the sectional view grounds the takeaway's mechanism claim (amplifying flow without changing signal pressure), and the dual-booster installation photo is the real case that motivates when you'd need one — fits application's fig-plus-takeaway shape with the installation photo as the primary figure and the sectional view supporting the one-line payoff, not two separate things needing their own panels.
   - slideCount: 1 (stage2)
-  - pages: 40
+  - pages: 44
 
 
 **→ Activity — Signal Path Trace** case-walkthrough · 15 min — Given a real assembled valve/actuator/DVC photo, trace the signal path from the control-room command to stem motion, naming each accessory (positioner or transducer, booster if present) and what it does at each hop.
 
-**Check** — pages 41 (composed by Stage 3, not authored here)
+**Check** — pages 45 (composed by Stage 3, not authored here)
 
 ### 2. cvb-ch3-m2 — Controllers, Position Feedback & Safety Accessories
 
 **Objective:** Identify a pneumatic controller's role as a standalone local controller, and distinguish solenoid-valve types and safety-accessory hardware used in a safety instrumented system.
 
 **1. cvb.accessory.pneumatic-controller** (introduces · confirmed)
-role: mechanism · level: understand · pages: 42
+role: mechanism · level: understand · pages: 46
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -120,11 +120,11 @@ role: mechanism · level: understand · pages: 42
   - `cvh-cmp-4.12` (verified, Component Index — Control Valve Handbook ch4.md) — "Pneumatic controller schematic extended with reset and rate elements — anti-reset windup and the differential relief valve for proportional-plus-reset-plus-rate control"
   - template: `slide--role-mechanism` — Three figures in a genuine build-up sequence — the physical unit, then its proportional-only schematic, then the same schematic extended with reset-and-rate elements — exactly mechanism's own guidance for a figure showing sequential states of one mechanism (add a flow-arrow between the two schematic stages), not three independent things.
   - slideCount: 1 (stage2)
-  - pages: 42
+  - pages: 46
 
 
 **2. cvb.accessory.position-transmitter** (introduces · confirmed)
-role: contrast · level: understand · pages: 43
+role: contrast · level: understand · pages: 47
 
 - **Primitive** — orientation · introductory
 
@@ -133,11 +133,11 @@ role: contrast · level: understand · pages: 43
   - `cvh-cmp-4.13` (verified, Component Index — Control Valve Handbook ch4.md) — "Wireless position monitor mounted on an actuator — a position transmitter reporting a 0–100% digital signal in a wireless installation, vs. a 4–20 mA signal in a wired one"
   - template: `slide--role-contrast` — The single source figure (a wireless position monitor) is captioned against the wired case directly ('reporting a 0-100% digital signal... vs. a 4-20mA signal in a wired one') — a real two-way contrast even from one figure, since the wired case is the baseline already established for every other accessory in this chapter; the wireless photo anchors one panel, the wired baseline anchors the other without needing its own new photograph.
   - slideCount: 1 (stage2)
-  - pages: 43
+  - pages: 47
 
 
 **3. cvb.safety.solenoid-valve-types** (introduces · confirmed)
-role: contrast · level: understand · pages: 44
+role: contrast · level: understand · pages: 48
 
 - **Primitive** — orientation · introductory
 
@@ -147,11 +147,11 @@ role: contrast · level: understand · pages: 44
   - `cvh-cmp-4.15` (verified, Component Index — Control Valve Handbook ch4.md) — "Double-acting actuator represented in a 4-port SOV schematic symbol, contrasted with the 3-port spring-return symbol in Figure 4.14"
   - template: `slide--role-contrast` — Two-way contrast (spring-return/single-acting vs. double-acting), each with its own schematic symbol (3-port vs. 4-port) — fits contrast's two-panel shape exactly, once split from the actuation-type axis this id used to also carry.
   - slideCount: 1 (stage2)
-  - pages: 44
+  - pages: 48
 
 
 **4. cvb.safety.solenoid-actuation-type** (introduces · confirmed)
-role: contrast · level: understand · pages: 45
+role: contrast · level: understand · pages: 49
 
 - **Primitive** — orientation · introductory
 
@@ -161,13 +161,13 @@ role: contrast · level: understand · pages: 45
   - `cvh-cmp-4.18` (verified, Component Index — Control Valve Handbook ch4.md) — "Pilot-operated solenoid valve — physical construction of the higher-capacity SOV actuation type, contrasted with the direct-acting design in Figure 4.17"
   - template: `slide--role-contrast` — Two-way contrast (direct-acting vs. pilot-operated SOV actuation), each with its own physical-construction photo — fits contrast's two-panel shape exactly, split out of cvb.safety.solenoid-valve-types (which used to bundle this axis with the separate spring-return/double-acting drive-type axis).
   - slideCount: 1 (stage2)
-  - pages: 45
+  - pages: 49
 
 
 **→ Activity — SOV Actuation ID** small-group · 15 min — Given labelled photos of a direct-acting and a pilot-operated solenoid valve, plus the 3-port/4-port schematic symbols, identify actuation type and port count for each.
 
 **5. cvb.safety.voting-architecture** (introduces · confirmed)
-role: application · level: understand · pages: 46
+role: application · level: understand · pages: 50
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -180,11 +180,11 @@ role: application · level: understand · pages: 46
   - `cvh-cmp-4.20` (verified, Component Index — Control Valve Handbook ch4.md) — "2oo2 solenoid-operated valve architecture — full voting-system schematic requiring both SOVs to trip before the safety function activates, contrasted with the 1oo2 architecture in Figure 4.19"
   - template: `slide--role-application-case` — Two distinct voting architectures (1oo2, 2oo2), each with its own full schematic and its own tradeoff, now shown as application-case's two-frame filmstrip instead of base application's single-fig shape. Already the right role; only the template variant changed.
   - slideCount: 1 (stage2)
-  - pages: 46
+  - pages: 50
 
 
 **6. cvb.safety.trip-and-manual-override** (introduces · confirmed)
-role: nomenclature · level: remember · pages: 47
+role: nomenclature · level: remember · pages: 51
 
 > [!warning] 3+ components cited — worth a human check on whether this is genuinely one competency.
 
@@ -198,7 +198,7 @@ role: nomenclature · level: remember · pages: 47
   - `cvh-cmp-4.27` (verified, Component Index — Control Valve Handbook ch4.md) — "Actuator fitted with a top-mounted handwheel, contrasted with the side-mounted arrangement in Figure 4.26"
   - template: `slide--role-nomenclature` — Four figures resolve into three named items — trip valve, switching valve, and handwheel override (shown in its two mounting variants, side and top) — nomenclature's labelled-list shape holds three named things under one slide comfortably, the handwheel's two photos serving as one list entry's illustration, not two separate items.
   - slideCount: 1 (stage2)
-  - pages: 47
+  - pages: 51
 
 
-**Check** — pages 48 (composed by Stage 3, not authored here)
+**Check** — pages 52 (composed by Stage 3, not authored here)
