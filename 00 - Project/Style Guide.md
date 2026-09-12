@@ -713,6 +713,66 @@ numbered features, the friction-free framing moved to the takeaway. Line
 geometry unchanged. 102 matches tp-010 exactly (its proof twin). Held for
 Franz's direct review; the Stage 3 authoring gate is unaffected.
 
+### 5.13 A multi-figure slide gives each figure its own lightbox caption
+
+Added 2026-09-14 (Post-Stage-4 Architecture Bundle, item 1) — moved
+upstream after shipping on six real slides, confirmed on Control Valve
+Basics 2026-09-13.
+
+§5.9's one-line `.tpl-source` citation is written for a slide with ONE
+figure. A slide with several clickable figures — a filmstrip/
+application-case pane, or any other shape with more than one image — must
+give **each figure its own** `data-lightbox-caption="Fig. [N], [what it
+shows]. Component Index: [id]."`, the same one-line shape as `.tpl-source`
+but scoped to that one image. Without it, the click-to-enlarge view falls
+back to the slide's shared citation — correct for whichever figure that
+citation was actually written about, wrong for every other one on the
+slide, and the click-to-enlarge view's whole job is a clean look at ONE
+image, not a citation for figures the viewer isn't looking at. A slide
+with only one figure does not need this — §5.9's citation is already
+unambiguous there.
+
+### 5.14 Several named items in one figure are composed as separate images, never one flattened image
+
+Added 2026-09-14 (Post-Stage-4 Architecture Bundle, item 1), same
+occasion as §5.13.
+
+When a figure shows more than one independently-nameable item — several
+source figures placed together, or one source photo that happens to print
+several named things side by side (three cage styles in one printed
+photo is the real case this was found on) — compose it as several
+separate images inside one `<svg>`, never as one flattened raster image.
+A flattened composite can only ever be enlarged as a single
+undifferentiated block; there is no way to click into "the middle one" on
+its own, which matters most when a student or instructor wants to point
+at exactly one item during class.
+
+Structure:
+
+```html
+<svg viewBox="0 0 W H" width="100%" height="100%"
+     preserveAspectRatio="xMidYMid meet" role="img" aria-label="...">
+  <image href="../assets/sourced/item-a.png" x="0" y="0" width="W1" height="H"
+         data-lightbox-caption="Fig. N, Item A. Component Index: id-a."></image>
+  <image href="../assets/sourced/item-b.png" x="X2" y="0" width="W2" height="H"
+         data-lightbox-caption="Fig. N, Item B. Component Index: id-b."></image>
+</svg>
+```
+
+Scale each source image to a common height (or width, for a vertical
+build-up sequence) and place them left-to-right with a small gap — the
+lightbox mechanism already treats each `<image>` as its own independently
+navigable, enlargeable item once composed this way; there is no additional
+step to "activate" it beyond composing the markup correctly. This is the
+same discipline as §5.13: each image gets its own `data-lightbox-caption`.
+
+The one real exception: a source photo that prints several items as one
+inseparable figure, where cropping each one individually would cut through
+shared context between them (a single continuous mechanism shown once,
+labelled in multiple places, rather than several genuinely separate
+items). That is not a violation of this rule — say so in the Stage 3
+report rather than forcing an artificial split.
+
 ---
 
 ## 6. Callout conventions

@@ -498,9 +498,14 @@ source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1.1.2 Effects of Deadband; Figure 2.3 'Effect of Deadband on Valve Performance' (open-loop step test, three valves)"
 delivery: context-pane support / optional slide figure — CVH Fig 2.3 crop
-used-by: []
-notes: ch3-m6 keyConcept 4 (effect on control). Not currently on a slide;
-  candidate if slide 125 needs a second panel.
+used-by: [cvb-055.html]
+notes: >
+  ch3-m6 keyConcept 4 (effect on control). Candidate if slide 125 needs a
+  second panel. Cross-course citation, 2026-09-14: Control Valve Basics'
+  cvb-055.html is the first slide to actually place this figure (cropped as
+  cvh2-fig2-3-deadband-effect-chart.png in that course's own assets/sourced/,
+  same source document) — cited by this id rather than a duplicate cvh-cmp-*
+  one, per Component Index — Control Valve Handbook ch2.md's own note.
 ```
 
 ---

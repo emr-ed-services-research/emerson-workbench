@@ -76,7 +76,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.84, §4.2.1 "Pneumatic Positioners", Figure 4.1
 delivery: not yet determined — labelled schematic, strong candidate for a dedicated diagram slide given its density
-used-by: []
+used-by: [cvb-040.html]
 notes: Fully labelled schematic (Output to Diaphragm, Relay, Instrument, Bellows, Supply, Feedback Axis, Nozzle, Flapper Assembly, Direct/Reverse Action Quadrants, Input Axis, Cam, Beam). The surrounding prose walks the full closed-loop mechanism step by step and is a strong candidate for context-pane material.
 ```
 
@@ -91,7 +91,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.85, §4.2.2 "Analog I/P Positioners", Figure 4.2
 delivery: not yet determined
-used-by: []
+used-by: [cvb-041.html]
 notes: Companion figure to 4.3 — both illustrate the same analog I/P positioner design; 4.2 is the full labelled schematic (4-20 mA input, Converter, Supply, Output to Actuator, Relay, Rotary Shaft Arm, Feedback Axis, Nozzle, Beam, Direct/Reverse-Acting Quadrant, Flapper Assembly), 4.3 is a photo of the physical unit.
 ```
 
@@ -104,7 +104,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.85, §4.2.2 "Analog I/P Positioners", Figure 4.3
 delivery: not yet determined
-used-by: []
+used-by: [cvb-041.html]
 notes: Photo, not a schematic — pairs with cvh-cmp-4.2 (text cites "Figure 4.2 and 4.3" together).
 ```
 
@@ -117,7 +117,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.86, §4.2.3 "Digital Valve Controllers", Figure 4.4
 delivery: not yet determined
-used-by: []
+used-by: [cvb-042.html]
 notes: Photo of an assembled valve/actuator/DVC stack, not a schematic.
 ```
 
@@ -132,7 +132,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.87, §4.3 "I/P Transducers", Figure 4.5
 delivery: not yet determined
-used-by: []
+used-by: [cvb-043.html]
 notes: Detail/cutaway view, distinct from the whole-unit photo in Figure 4.6.
 ```
 
@@ -145,7 +145,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.88, §4.3 "I/P Transducers", Figure 4.6
 delivery: not yet determined
-used-by: []
+used-by: [cvb-043.html]
 notes: Photo of the assembled transducer on a valve, referenced in the text just before the deflector/nozzle detail (Figure 4.5).
 ```
 
@@ -158,7 +158,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.88, §4.4 "Volume Boosters" (heading not captured on this page but content is contiguous with the booster discussion), Figure 4.7
 delivery: not yet determined
-used-by: []
+used-by: [cvb-044.html]
 notes: Cutaway/sectional diagram, distinct from the installation photo in Figure 4.8. Low confidence only on the exact section-number heading for §4.4 — the heading itself did not appear within the p.87–88 text window read; the booster subject matter and figure sequence are fully verified.
 ```
 
@@ -173,7 +173,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.89, §4.4 "Volume Boosters", Figure 4.8
 delivery: not yet determined
-used-by: []
+used-by: [cvb-044.html]
 notes: Photo of an installed pair of boosters on a double-acting actuator.
 ```
 
@@ -199,7 +199,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.90, §4.7 "Controllers", Figure 4.10
 delivery: not yet determined
-used-by: []
+used-by: [cvb-046.html]
 notes: Photo of the assembled controller on a valve; the internal mechanism it summarizes is shown schematically in Figures 4.11 and 4.12.
 ```
 
@@ -214,7 +214,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.91, §4.7 "Controllers", Figure 4.11
 delivery: not yet determined
-used-by: []
+used-by: [cvb-046.html]
 notes: Both Figure 4.11 and Figure 4.12 carry the identical caption "Pneumatic Controller Schematic" — same disambiguation situation the Oil & Gas Sourcebook precedent flagged for its own duplicate-captioned figures. Disambiguated here by figure number and by content: 4.11 is the proportional-only schematic (explicitly labelled "Proportional-Only Control" within the diagram itself), 4.12 extends it with reset and rate elements for proportional-plus-reset-plus-rate control. Not the same drawing — a real second, distinct schematic, not a duplicate to merge.
 ```
 
@@ -227,8 +227,10 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.92, §4.7 "Controllers", Figure 4.12
 delivery: not yet determined
-used-by: []
-notes: See disambiguation note on cvh-cmp-4.11 — same caption text as 4.11 by design (both titled "Pneumatic Controller Schematic"), genuinely different diagrams.
+used-by: [cvb-046.html]
+notes: >
+  See disambiguation note on cvh-cmp-4.11 — same caption text as 4.11 by design (both titled "Pneumatic Controller Schematic"), genuinely different diagrams.
+  Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the complete three-panel schematic alone.
 ```
 
 ```yaml
@@ -240,7 +242,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.92–93, §4.8 "Position Transmitters", Figure 4.13
 delivery: not yet determined
-used-by: []
+used-by: [cvb-047.html]
 notes: Photo of the assembled wireless position transmitter on an actuator.
 ```
 
@@ -255,7 +257,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.93, §4.9 "Solenoid-Operated Valves (SOVs)" (section heading inferred from contiguous content; not directly captured in the read window), Figure 14.14
 delivery: not yet determined
-used-by: []
+used-by: [cvb-048.html]
 notes: Printed caption confirmed as "Figure 14.14" by direct visual inspection of the rendered PDF page (2026-09-12) — see the corrected note at the top of this file; the earlier "correction" to 4.14 was itself wrong. Low confidence on the exact §4.9 heading wording only — the figure identity and content are fully verified against page context.
 ```
 
@@ -268,7 +270,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.93, §4.9, Figure 14.15
 delivery: not yet determined
-used-by: []
+used-by: [cvb-048.html]
 notes: Printed caption confirmed as "Figure 14.15" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.15 was wrong; see the top-of-file note. Companion figure to 14.14 — same section, same schematic-symbol treatment, opposite actuator type.
 ```
 
@@ -294,7 +296,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.94, Figure 14.17
 delivery: not yet determined
-used-by: []
+used-by: [cvb-049.html]
 notes: Printed caption confirmed as "Figure 14.17" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.17 was wrong; see the top-of-file note. Paired with Figure 14.18 (pilot-operated) as the two SOV actuation types.
 ```
 
@@ -307,7 +309,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.94, Figure 14.18
 delivery: not yet determined
-used-by: []
+used-by: [cvb-049.html]
 notes: Printed caption confirmed as "Figure 14.18" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.18 was wrong; see the top-of-file note.
 ```
 
@@ -320,7 +322,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.95, Figure 14.19
 delivery: not yet determined
-used-by: []
+used-by: [cvb-050.html]
 notes: Printed caption confirmed as "Figure 14.19" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.19 was wrong; see the top-of-file note. Companion figure to 14.20 (2oo2) — the two present the two standard voting architectures side by side.
 ```
 
@@ -333,7 +335,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.95, Figure 14.20
 delivery: not yet determined
-used-by: []
+used-by: [cvb-050.html]
 notes: Printed caption confirmed as "Figure 14.20" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.20 was wrong; see the top-of-file note.
 ```
 
@@ -387,8 +389,10 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.96, Figure 4.24
 delivery: not yet determined
-used-by: []
-notes: Directly follows the trip-systems and redundant-SOV discussion (Figure 14.21 — see that entry's own corrected caption note) earlier in the chapter.
+used-by: [cvb-051.html]
+notes: >
+  Directly follows the trip-systems and redundant-SOV discussion (Figure 14.21 — see that entry's own corrected caption note) earlier in the chapter.
+  Crop corrected 2026-09-14: two printed labels on the left edge of this schematic are genuinely truncated in the source book's own print layout — confirmed by extracting all the way to the page's own printed margin and finding the text still cut off there. Not a cropping defect on our part and not recoverable by re-cropping; the current crop is the best available (captures everything the source actually contains) and excludes the printed caption line, which the original crop had included.
 ```
 
 ```yaml
@@ -400,7 +404,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.96, Figure 4.25
 delivery: not yet determined
-used-by: []
+used-by: [cvb-051.html]
 notes: Paired on the same page as Figure 4.24 (trip valve); both are safety/trip-related accessory hardware.
 ```
 
@@ -413,7 +417,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.97, Figure 4.26
 delivery: not yet determined
-used-by: []
+used-by: [cvb-051.html]
 notes: Companion figure to 4.27 — same section, contrasting handwheel mounting positions (side vs. top).
 ```
 
@@ -426,7 +430,7 @@ source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.97, Figure 4.27
 delivery: not yet determined
-used-by: []
+used-by: [cvb-051.html]
 notes: Last figure in the chapter; Chapter 5 ("Control Valve Sizing") begins on the next page (PDF page 98), confirmed directly against the chapter-divider page.
 ```
 

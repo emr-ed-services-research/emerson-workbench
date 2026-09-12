@@ -102,7 +102,7 @@ source:
       §3.1.1.1 Single-Port Valve Bodies, Figure 3.1 (printed p. 55) —
       "Flanged Angle-Style Control Valve Body."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-020.html]
 notes: >
   A photographic body cutaway/profile, not a labelled-callout diagram — no
   printed field labels to preserve under Style Guide §6.3.
@@ -123,7 +123,7 @@ source:
       §3.1.1.1 Single-Port Valve Bodies, Figure 3.2 (printed p. 56) — "Bar
       Stock Valve Body."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-020.html]
 notes: >
   Sits on the same page as `cvh-cmp-single-ported-globe-valve-body` (Figure
   3.3) — the two are printed side by side as a pair of single-port body
@@ -145,9 +145,10 @@ source:
       §3.1.1.2 Post- and Port-Guided Valve Bodies, Figure 3.3 (printed p. 56)
       — "Single-Ported Globe-Style Valve Body."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-019.html]
 notes: >
   Paired on the same page with `cvh-cmp-bar-stock-valve-body` (Figure 3.2).
+  Crop corrected 2026-09-14: the original crop included a stray, partially-cut fragment of the source page's own printed caption line baked into the image. Re-cropped to the figure alone.
 ```
 
 ```yaml
@@ -167,7 +168,7 @@ source:
       §3.1.1.3 Cage-Style Valve Bodies, Figure 3.4 (printed p. 57) — "Valve
       Body with Cage-Style Trim, Balanced Valve Plug, and Soft Seat."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-019.html]
 notes: >
   Cutaway cross-section; printed side by side on p. 57 with
   `cvh-cmp-double-ported-globe-valve-body-reverse-acting` (Figure 3.5) as a
@@ -196,7 +197,7 @@ source:
       §3.1.1.4 Double-Ported Valve Bodies, Figure 3.5 (printed p. 57) —
       "Reverse-Acting Double-Ported Globe-Style Valve Body."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-019.html]
 notes: >
   The source's own caption ("Reverse-Acting") and its own body-text
   description ("assembled for push-down-to-open valve plug action")
@@ -222,7 +223,7 @@ source:
       §3.1.1.5 Three-Way Valve Bodies, Figure 3.6 (printed p. 58) —
       "Three-Way Globe Valve."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-008.html, cvb-020.html]
 notes: Cutaway cross-section, alone on its page.
 ```
 
@@ -242,7 +243,7 @@ source:
       §3.1.3.1 Butterfly Valve Bodies, Figure 3.7 (printed p. 59) — "Shaft
       Center Line Offset with Disc Center."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-021.html]
 notes: A schematic geometry diagram, not a body cutaway or photo.
 ```
 
@@ -289,7 +290,7 @@ source:
       §3.1.3.1 Butterfly Valve Bodies, Figure 3.9 (printed p. 60) —
       "Butterfly Control Valve."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-021.html]
 notes: Full-body photo/cutaway, the chapter's introductory butterfly-valve image.
 ```
 
@@ -307,7 +308,7 @@ source:
       §3.1.3.2 Segmented Ball Valve Bodies, Figure 3.10 (printed p. 60) —
       "Ball Valve Options."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-023.html]
 notes: Companion figure to `cvh-cmp-segmented-v-notch-ball` (Figure 3.8), same section.
 ```
 
@@ -330,7 +331,7 @@ source:
       §3.1.3.3 High-Performance Butterfly Valve Bodies, Figure 3.11 (printed
       p. 61) — "High-Performance Butterfly Control Valve."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-021.html]
 notes: Full-body photo, alone at the top of its section.
 ```
 
@@ -347,7 +348,7 @@ source:
       §3.1.3.4 Eccentric Plug Valve Bodies, Figure 3.12 (printed p. 61) —
       "Pressure Assisted Seal Configuration."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-023.html]
 notes: A component-level seal detail, not a full valve cutaway.
 ```
 
@@ -372,7 +373,7 @@ source:
       §3.1.3.4 Eccentric Plug Valve Bodies, Figure 3.13 (printed p. 62) —
       "Eccentric Plug Control Valve Body."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-022.html]
 notes: >
   Printed on a dense page alongside `cvh-cmp-full-port-ball-control-valve`
   (Figure 3.14) and `cvh-cmp-full-port-ball-valve-trunnion` (Figure 3.15) —
@@ -420,8 +421,10 @@ source:
       §3.1.3.5 Full-Port Ball Valve Bodies, Figure 3.15 (printed p. 62) —
       "Full-Port Ball Valve."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: See disambiguation note on `cvh-cmp-full-port-ball-control-valve` (Figure 3.14).
+used-by: [cvb-022.html]
+notes: >
+  See disambiguation note on `cvh-cmp-full-port-ball-control-valve` (Figure 3.14).
+  Crop corrected 2026-09-14: the original crop included a truncated fragment of the printed caption ("...ure 3.15 Full-Port Ball Valve") immediately followed by an unrelated stray section heading from later on the same page ("1.3.6 Multi-Port Flow Selector"). Re-cropped to the figure alone.
 ```
 
 ```yaml
@@ -441,7 +444,7 @@ source:
       §3.1.3.6 Multi-Port Flow Selector, Figure 3.16 (printed p. 63) —
       "Multi-Port Flow Selector Valve."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-023.html]
 notes: The last figure of §3.1; §3.2 End Connections begins immediately after on the same printed page.
 ```
 
@@ -464,7 +467,7 @@ source:
       §3.2.2 Bolted Gasketed Flanges, Figure 3.17 (printed p. 64) — "Popular
       Varieties of Bolted Flange Connections."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-024.html]
 notes: >
   Three stacked line-art cross-sections with their own printed labels
   (Flat-Face, Raised-Face, Ring-Type Joint) — Style Guide §6.3 applies if
@@ -491,7 +494,7 @@ source:
       §3.2.3 Welded End Connections, Figure 3.18 (printed p. 65) — "Common
       Welded End Connections."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-024.html]
 notes: >
   Two stacked line-art cross-sections with their own printed labels (Socket
   Weld-Ends, Butt Weld-Ends) — §6.3 applies if ever placed on a slide. Same
@@ -520,8 +523,10 @@ source:
       §3.3 Valve Body Bonnets, Figure 3.19 (printed p. 65) — "Typical
       Bonnet, Flange, and Stud Bolts."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: Opens §3.3; the chapter-boundary anchor figure for the bonnets section.
+used-by: [cvb-026.html]
+notes: >
+  Opens §3.3; the chapter-boundary anchor figure for the bonnets section.
+  Crop corrected 2026-09-14: the original crop included the source page's own printed caption line. Re-cropped to the figure alone.
 ```
 
 ```yaml
@@ -539,7 +544,7 @@ source:
       §3.3.1 Extension Bonnets, Figure 3.20 (printed p. 66) — "Bonnet
       Variations."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-026.html]
 notes: >
   Low-confidence on the specific bonnet variants shown: the source page text
   does not enumerate which individual bonnet styles appear in this
@@ -547,6 +552,7 @@ notes: >
   was not visually inspected (text-extraction only). Flagged in Open Items —
   do not assume specific bonnet types for this figure beyond "a range of
   bonnet constructions" without a direct visual check first.
+  Crop corrected 2026-09-14: the original crop included the printed caption line, and the source photos are inherently modest-resolution (small inset photos, not full-page figures) — re-rendered the source page at 600dpi instead of 300dpi, which measurably sharpens the two caption boxes ("Plain Bonnet" / "Extension bonnet") even though the photos themselves retain the source's own halftone graininess (a print-quality property, not a cropping defect).
 ```
 
 ```yaml
@@ -569,8 +575,10 @@ source:
       §3.3.1 Extension Bonnets, Figure 3.21 (printed p. 66) — "Valve Body
       with Fabricated Extension Bonnet."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: Printed side by side with `cvh-cmp-bonnet-variations` (Figure 3.20) on the same page.
+used-by: [cvb-026.html]
+notes: >
+  Printed side by side with `cvh-cmp-bonnet-variations` (Figure 3.20) on the same page.
+  Crop corrected 2026-09-14: the original crop cut off the top of the valve (bonnet cap and handwheel) and separately included a stray line of body-text from the paragraph above. Re-cropped to the complete figure with no stray text.
 ```
 
 ```yaml
@@ -591,12 +599,13 @@ source:
       §3.3.2 Bellows Seal Bonnets, Figure 3.22 (printed p. 67) —
       "ENVIRO-SEAL Bellows Seal Bonnet."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-027.html]
 notes: >
   Opens §3.3.2; companion to `cvh-cmp-welded-leaf-bellows` (Figure 3.23) and
   `cvh-cmp-mechanically-formed-bellows` (Figure 3.24) — this figure shows the
   full bonnet assembly, the other two show the two bellows-element
   manufacturing styles used inside it.
+  Crop corrected 2026-09-14: the original crop included the printed caption line and cut off the top of the figure. Re-cropped to the complete figure alone.
 ```
 
 ```yaml
@@ -613,8 +622,10 @@ source:
       §3.3.2 Bellows Seal Bonnets, Figure 3.23 (printed p. 67) —
       "Welded-Leaf Bellows."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: Contrast pair with `cvh-cmp-mechanically-formed-bellows` (Figure 3.24, bellows).
+used-by: [cvb-027.html]
+notes: >
+  Contrast pair with `cvh-cmp-mechanically-formed-bellows` (Figure 3.24, bellows).
+  Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the figure alone.
 ```
 
 ```yaml
@@ -631,7 +642,7 @@ source:
       §3.3.2 Bellows Seal Bonnets, Figure 3.24 (printed p. 67) —
       "Mechanically-Formed Bellows."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-027.html]
 notes: >
   This is the FIRST of two real, distinct figures both captioned "Figure
   3.24" in the source document — confirmed by direct page reads: this one is
@@ -641,6 +652,7 @@ notes: >
   in Batch 4). This is a genuine source-document duplicate figure number,
   not an extraction artifact or an error introduced in this catalog — see
   Open Items.
+  Crop corrected 2026-09-14: the original crop included the printed caption line and a stray fragment of the section heading above the figure. Re-cropped to the figure alone.
 ```
 
 ### Batch 4 — Control Valve Packing (printed pp. 68–74)
@@ -662,7 +674,7 @@ source:
       §3.4 Control Valve Packing, Figure 3.24 (printed p. 68) — "Packing
       Material Arrangements for Globe-Style Valve Bodies."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-028.html]
 notes: >
   This is the SECOND of two real, distinct figures both captioned "Figure
   3.24" in the source — see `cvh-cmp-mechanically-formed-bellows` (Batch 3)
@@ -690,8 +702,10 @@ source:
       (printed p. 69) — "Measurement Frequency for Valves Controlling
       Volatile Organic Chemicals (VOC)."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: A flowchart/decision-tree diagram, not a cutaway or photo — falls under Style Guide §5 conventions if placed on a slide.
+used-by: [cvb-031.html]
+notes: >
+  A flowchart/decision-tree diagram, not a cutaway or photo — falls under Style Guide §5 conventions if placed on a slide.
+  Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the complete diagram alone.
 ```
 
 ```yaml
@@ -711,7 +725,7 @@ source:
       §3.4.4 Global Standards for Fugitive Emissions, Figure 3.26 (printed p.
       70) — "ISO 15848-1 Qualification Requirements."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-031.html]
 notes: >
   A data table presented as a figure (not one of the tables this catalog
   otherwise excludes — it carries its own figure number and caption, unlike
@@ -720,6 +734,7 @@ notes: >
   Printed on the same dense page as `cvh-cmp-iso15848-1-measured-leak-rate`
   (Figure 3.27) and `cvh-cmp-iso15848-1-measured-leak-concentration` (Figure
   3.28).
+  Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the complete table alone (right edge, previously suspected truncated, is in fact complete in the source — confirmed against the rendered page).
 ```
 
 ```yaml
@@ -797,7 +812,7 @@ source:
       §3.4.5 Single PTFE V-Ring Packing, Figure 3.30 (printed p. 71) —
       "Single PTFE V-Ring Packing."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-028.html]
 notes: The first of the individual packing-system cutaway figures (3.30–3.34) that follow the ISO/FCI tables.
 ```
 
@@ -817,7 +832,7 @@ source:
       §3.4.6 ENVIRO-SEAL PTFE Packing, Figure 3.31 (printed p. 72) —
       "ENVIRO-SEAL PTFE Packing System."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-029.html]
 notes: >
   Printed on the same page as `cvh-cmp-enviroseal-duplex-packing-system`
   (Figure 3.32) and `cvh-cmp-enviroseal-graphite-ulf-packing-system` (Figure
@@ -932,7 +947,7 @@ source:
       §3.4.15 Rotary Environmental Packing Selection, Figure 3.36 (printed p.
       74) — "Rotary Environmental Packing Selection."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-038.html]
 notes: Direct rotary-valve counterpart to `cvh-cmp-sliding-stem-environmental-packing-selection` (Figure 3.35); the last figure of §3.4.
 ```
 
@@ -955,8 +970,10 @@ source:
       §3.5 Characterization of Cage-Guided Valve Bodies, Figure 3.37 (printed
       p. 74) — "Characterized Cages for Globe-Style Valve Bodies."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: Three side-by-side cage-window silhouettes with their own printed labels; §6.3 applies if placed on a slide.
+used-by: [cvb-033.html]
+notes: >
+  Three side-by-side cage-window silhouettes with their own printed labels; §6.3 applies if placed on a slide.
+  Crop corrected 2026-09-14: the original crop included the printed caption line and the page number. Re-cropped to the complete figure alone.
 ```
 
 ```yaml
@@ -975,11 +992,12 @@ source:
       §3.5 Characterization of Cage-Guided Valve Bodies, Figure 3.38 (printed
       p. 75) — "Inherent Flow Characteristics Curves."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-033.html]
 notes: >
   An analytical graph, not a cutaway — falls under Style Guide §5 (diagram
   & graph conventions) if placed on a slide, same category as the Oil & Gas
   precedent's `ogas-cmp-flow-characteristic-curves`.
+  Crop corrected 2026-09-14: the original crop included the printed caption line and cut off part of the graph's own axis label. Re-cropped to the complete graph alone.
 ```
 
 ```yaml
@@ -999,8 +1017,10 @@ source:
       §3.5.1 Characterized Valve Plugs, Figure 3.39 (printed p. 75) —
       "Various Plug Contour for Different Flow Characterization."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: The plug-characterization counterpart to Figure 3.37's cage-characterization figure.
+used-by: [cvb-034.html]
+notes: >
+  The plug-characterization counterpart to Figure 3.37's cage-characterization figure.
+  Crop corrected 2026-09-14: the original crop included the printed caption line and cut off the left edge of the first plug contour. Re-cropped to the complete figure alone.
 ```
 
 ```yaml
@@ -1017,10 +1037,11 @@ source:
       §3.5.1 Characterized Valve Plugs, Figure 3.40 (printed p. 76) —
       "Typical Construction to Provide Quick-Opening Flow Characteristic."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-034.html]
 notes: >
   Labelled schematic (Stem, Seat Ring, Valve Plug, Flow Area, Port Diameter)
   — §6.3 applies if placed on a slide.
+  Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the complete figure alone.
 ```
 
 ```yaml
@@ -1040,8 +1061,10 @@ source:
       §3.6 Valve Plug Guiding, Figure 3.41 (printed p. 76) — "Cross
       Sectional View of Cage Guiding and Plug Guiding in Globe Valves."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: The whole-chapter's key valve-plug-guiding reference figure, covering all four guiding methods described in §3.6's text.
+used-by: [cvb-035.html]
+notes: >
+  The whole-chapter's key valve-plug-guiding reference figure, covering all four guiding methods described in §3.6's text.
+  Crop corrected 2026-09-14: the original crop included a small stray watermark-like text fragment ("postguid") in the lower-left of the lower diagram, near the source page's own margin. Painted out (genuinely extraneous, not part of either diagram) rather than re-cropped, since cropping tighter would also have cut the lower diagram's own "Flow" label, which sits at nearly the same height.
 ```
 
 ```yaml
@@ -1060,7 +1083,7 @@ source:
       §3.7 Restricted-Capacity Control Valve Trim, Figure 3.42 (printed p.
       77) — "Adapter Method for Providing Reduced Flow Capacity."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-035.html]
 notes: The last figure before §3.8 Actuators begins, on the same printed page.
 ```
 
@@ -1086,13 +1109,14 @@ source:
       §3.8.1 Diaphragm Actuators, Figure 3.44 (printed p. 78) —
       "Field-Reversible Multi-Spring Actuator."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-036.html]
 notes: >
   §3.8.1's body text cites this figure correctly ("Reversible... Figure
   3.44"). §3.8.4 Rack-and-Pinion Actuators' body text ALSO cites "Figure
   3.44" for the rack-and-pinion actuator, which is a different real figure
   (Figure 3.50, `cvh-cmp-rack-and-pinion-actuator`) — a confirmed source-text
   citation mismatch, not an error introduced in this catalog. See Open Items.
+  Crop corrected 2026-09-14: the original crop included the printed caption line and a stray fragment of text from the paragraph above the figure. Re-cropped to the figure alone.
 ```
 
 ```yaml
@@ -1111,8 +1135,10 @@ source:
       §3.8.1 Diaphragm Actuators, Figure 3.45 (printed p. 78) — "Diaphragm
       Actuator for Rotary Valve."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: The rotary-valve counterpart to Figure 3.43's sliding-stem diaphragm actuators.
+used-by: [cvb-036.html]
+notes: >
+  The rotary-valve counterpart to Figure 3.43's sliding-stem diaphragm actuators.
+  Crop corrected 2026-09-14: the original crop included a printed UI "play" icon from the source page's own layout (a real element of the printed/digital page, not a capture artifact) overlapping the bottom-right of the actuator photo. Re-cropped to exclude it while keeping the complete assembly.
 ```
 
 ```yaml
@@ -1132,13 +1158,14 @@ source:
       §3.8.2 Piston Actuators, Figure 3.46 (printed p. 78) — "Control Valve
       with Double-Acting Piston Actuator."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-037.html]
 notes: >
   Text also notes various accessories can position a double-acting piston
   on supply-pressure failure (pneumatic trip valves, lock-up systems), and
   that rotary-valve piston actuator versions use a sliding seal at the lower
   cylinder end to permit lateral stem motion without cylinder-pressure
   leakage.
+  Crop corrected 2026-09-14: the original crop cut off the top of the actuator and included the printed caption line. Re-cropped to the complete figure alone.
 ```
 
 ```yaml
@@ -1157,13 +1184,14 @@ source:
       §3.8.2 Piston Actuators, Figure 3.47 (printed p. 79) — "Control Valve
       with Scotch-Yoke Piston Actuator."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-037.html]
 notes: >
   The source text does not describe the Scotch-yoke mechanism itself beyond
   the general piston-actuator bullets in §3.8.2 — the mechanism description
   above reflects general Scotch-yoke actuator behavior consistent with those
   bullets, not a source quote specific to this figure; flagged for caution
   if a more mechanism-specific teaching claim is ever needed.
+  Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the figure alone.
 ```
 
 ```yaml
@@ -1184,8 +1212,10 @@ source:
       §3.8.3 Manual Actuators, Figure 3.48 (printed p. 79) — "Manual
       Actuator for Sliding-Stem Valves."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: Paired conceptually with `cvh-cmp-manual-actuator-rotary` (Figure 3.49), the rotary-valve version, same section.
+used-by: [cvb-038.html]
+notes: >
+  Paired conceptually with `cvh-cmp-manual-actuator-rotary` (Figure 3.49), the rotary-valve version, same section.
+  Crop corrected 2026-09-14: the original crop included a stray fragment of body text above the figure and the printed caption line below it. Re-cropped to the figure alone.
 ```
 
 ```yaml
@@ -1203,8 +1233,10 @@ source:
       §3.8.3 Manual Actuators, Figure 3.49 (printed p. 79) — "Manual
       Actuator for Rotary Valves."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: See `cvh-cmp-manual-actuator-sliding-stem` (Figure 3.48).
+used-by: [cvb-038.html]
+notes: >
+  See `cvh-cmp-manual-actuator-sliding-stem` (Figure 3.48).
+  Crop corrected 2026-09-14: the original crop cut off the right edge of the handwheel and included a stray line of body text at the top. Re-cropped to the complete figure with full margin.
 ```
 
 ```yaml
@@ -1222,7 +1254,7 @@ source:
       §3.8.4 Rack-and-Pinion Actuators, Figure 3.50 (printed p. 79) —
       "Rack-and-Pinion Actuator."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-038.html]
 notes: >
   §3.8.4's own body text cites "(Figure 3.44)" when introducing rack-and-
   pinion actuators, but Figure 3.44's real caption is "Field-Reversible
@@ -1230,6 +1262,7 @@ notes: >
   `cvh-cmp-field-reversible-multi-spring-actuator`) — this figure, Figure
   3.50, is the real rack-and-pinion photo. Confirmed source-text citation
   mismatch; see Open Items.
+  Crop corrected 2026-09-14: the original crop included the printed caption line, set in an unusually large display font on the source page. Re-cropped to the figure alone.
 ```
 
 ```yaml
@@ -1250,8 +1283,10 @@ source:
       §3.8.5 Electric Actuators, Figure 3.51 (printed p. 80) — "Electric
       Actuator for Sliding-Stem Valve."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
-notes: The last actuator subtype before the chapter's rotary electric-actuator figure (3.52) and the chapter's end.
+used-by: [cvb-038.html]
+notes: >
+  The last actuator subtype before the chapter's rotary electric-actuator figure (3.52) and the chapter's end.
+  Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the figure alone.
 ```
 
 ```yaml
@@ -1267,11 +1302,12 @@ source:
       §3.8.5 Electric Actuators, Figure 3.52 (printed p. 80) — "Electric
       Actuator for Rotary Valve."
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
-used-by: []
+used-by: [cvb-038.html]
 notes: >
   The last figure in Chapter 3 — PDF page 81 carries only "See Additional
   Resources »" with no further figures; Chapter 4 "Control Valve
   Accessories" begins on PDF page 82.
+  Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the figure alone.
 ```
 
 ---

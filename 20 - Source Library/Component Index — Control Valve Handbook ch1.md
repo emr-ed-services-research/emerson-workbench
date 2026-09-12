@@ -67,7 +67,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.1 'Feedback Control Loop,' p. 17"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-005.html]
 notes: >
   An analytical block diagram, not a cutaway or photo — falls under Style
   Guide §5 (diagram & graph conventions) if ever placed on a slide, not §6's
@@ -91,7 +91,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.2 'Sliding-Stem Control Valve,' p. 18"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-006.html]
 notes: >
   Production photo, unlabelled — good as a section-opening overview image,
   not a part-callout source. Same visual family as `cvh-cmp-sliding-stem-exploded`
@@ -112,7 +112,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.3 'Sliding-Stem Control Valve,' p. 18 — 11-part numbered exploded view (1. Stem, 2. Packing Flange, 3. Actuator Locknut, 4. Bonnet, 5. Bonnet Gasket, 6. Piston Ring, 7. Plug, 8. Cage, 9. Seat Ring, 10. Body/Bonnet Bolting, 11. Body)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-007.html]
 notes: >
   Fully labelled with its own printed numbered callouts — Style Guide §6.3
   applies if ever placed on a slide (figures with their own printed field
@@ -137,7 +137,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.4 'Angle Valve,' p. 18"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-008.html]
 notes: >
   Production photo, unlabelled — pairs as a body-style contrast to
   `cvh-cmp-sliding-stem-valve-photo`; both sit on the same source page.
@@ -155,7 +155,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.5 'Bellows Seal Bonnet,' p. 19 — 5-part numbered cutaway (1. Bonnet, 2. Packing, 3. Packing Box, 4. Bellows, 5. Valve Stem)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-009.html]
 notes: >
   Fully labelled with its own printed numbered callouts — Style Guide §6.3
   applies if ever placed on a slide. Direct companion/contrast to
@@ -176,7 +176,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.6 'Bonnet Assembly,' p. 19 — 4-part numbered cutaway (1. Bonnet, 2. Packing, 3. Packing Box, 4. Valve Stem)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-009.html]
 notes: >
   Fully labelled with its own printed numbered callouts — Style Guide §6.3
   applies if ever placed on a slide. **Already in course use:**
@@ -200,12 +200,23 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.7 'Cages (left to right): Linear, Equal-Percentage, Quick-Opening,' p. 19"
-delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+delivery: existing figure (crop) — per Style Guide §5.8 default. THREE
+  INDIVIDUAL CROPS available as of 2026-09-14 (Post-Stage-4 Architecture
+  Bundle item 6, per Style Guide §5.14): cvh1-fig1-7a-linear-cage.png,
+  cvh1-fig1-7b-equal-percentage-cage.png, cvh1-fig1-7c-quick-opening-cage.png
+  (Control Valve Basics' assets/sourced/), split from the single printed
+  photo so each cage is independently clickable/enlargeable — use these
+  three instead of re-cropping the whole photo as one flat image.
+used-by: [cvb-015.html]
 notes: >
   3-panel composite photo; each panel is captioned by cage type (not a
   numbered field callout) — treat as a labelled composite for §6.3 purposes,
   since the panel identifications are printed directly on the source figure.
+  Corrected 2026-09-14: the whole-photo crop was previously delivered as one
+  flat image with no per-panel click-through (Style Guide §5.14 violation,
+  found on Control Valve Basics' cvb-015) — split into the three individual
+  crops named above; the whole-photo crop is no longer the recommended
+  delivery for a slide needing per-panel enlargement.
 ```
 
 ```yaml
@@ -220,7 +231,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.8 'Three-Way Globe Valve,' p. 20"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-008.html, cvb-020.html]
 notes: >
   Unlabelled cutaway/rendered photo, no printed field callouts — a
   body-style overview figure, not a nomenclature source.
@@ -240,7 +251,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.9 'Direct-Acting Actuator,' p. 20 — 12-part numbered cutaway (1. Diaphragm Casing, 2. Diaphragm, 3. Diaphragm Plate, 4. Actuator Spring, 5. Actuator Stem, 6. Spring Seat, 7. Spring Adjuster, 8. Yoke, 9. Stem Connector, 10. Valve Stem, 11. Travel Indicator Disk, 12. Travel Scale)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-010.html]
 notes: >
   Fully labelled with its own printed numbered callouts — Style Guide §6.3
   applies if ever placed on a slide. Direct construction companion to
@@ -262,12 +273,13 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.10 'Piston-Type Actuator,' p. 21 — 7-part numbered cutaway (1. Loading Pressure Connection, 2. Piston, 3. Piston Seal, 4. Cylinder, 5. Cylinder Closure Seal, 6. Seal Bushing, 7. Stem Connector)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-010.html]
 notes: >
   Fully labelled with its own printed numbered callouts — Style Guide §6.3
   applies if ever placed on a slide. Contrasts with the spring-and-diaphragm
   actuators (Figures 1.9/1.12) as the third actuator-type figure in the
   chapter.
+  Crop corrected 2026-09-14: the original crop cut through the start of a heading below the figure and left its "1" callout circle with almost no margin at the top edge — re-cropped with full margin on both ends; the figure and all 7 callouts are unaffected.
 ```
 
 ```yaml
@@ -311,13 +323,14 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.12 'Reverse-Acting Actuator,' p. 22 — 16-part numbered cutaway (1. Diaphragm Casing, 2. Diaphragm, 3. Diaphragm Plate, 4. Seal Bushing and O-rings, 5. Actuator Spring, 6. Actuator Stem, 7. Spring Seat, 8. Spring Adjuster, 9. Yoke, 10. Stem Connector, 11. Travel Indicator Disk, 12. Valve Stem, 13. Integrated Handwheel Mounting Bosses, 14. Integral Air Passage, 15. Integral DVC6200 Mounting Pad, 16. Travel Scale)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-010.html]
 notes: >
   Fully labelled with its own printed numbered callouts — Style Guide §6.3
   applies if ever placed on a slide. Direct construction companion to
   `cvh-cmp-direct-acting-actuator` (Figure 1.9) — same core parts plus four
   additional features (seal bushing/O-rings, handwheel bosses, air passage,
   DVC6200 pad) not called out on the simpler direct-acting figure.
+  Crop corrected 2026-09-14: the original crop included most of the surrounding printed page — header text, both green rules, the printed caption, and the page number — rather than the figure alone. Re-cropped to the figure and its printed key only.
 ```
 
 ---
@@ -337,7 +350,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.13 'Rotary Control Valve,' p. 23"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-012.html]
 notes: >
   Production photo, unlabelled — the rotary counterpart to
   `cvh-cmp-sliding-stem-valve-photo` (Figure 1.2), opening Section 1.3
@@ -356,7 +369,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.14 'Segmented Ball,' p. 24"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-013.html]
 notes: >
   Production photo, unlabelled — pairs with `cvh-cmp-v-notch-ball` (Figure
   1.15) and `cvh-cmp-eccentric-disk-valve` (Figure 1.16) as the section's
@@ -375,7 +388,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.15 'V-Notch Ball,' p. 24"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-013.html]
 notes: >
   Production photo, unlabelled — pairs with `cvh-cmp-segmented-ball` (Figure
   1.14) and `cvh-cmp-eccentric-disk-valve` (Figure 1.16); all three sit on
@@ -394,7 +407,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.16 'Eccentric Disk Valve,' p. 24"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-013.html]
 notes: >
   Production photo, unlabelled — pairs with `cvh-cmp-segmented-ball` (Figure
   1.14) and `cvh-cmp-v-notch-ball` (Figure 1.15); all three sit on the same
@@ -417,7 +430,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.17 'Rotary Control Valve,' p. 25 — 14-part numbered cutaway (1. Loading Pressure Connection, 2. Diaphragm Case, 3. Diaphragm, 4. Diaphragm Plate, 5. Spring, 6. Actuator Stem, 7. Lever, 8. Shaft, 9. Travel Stop, 10. Packing, 11. Disk, 12. Body, 13. Seal, 14. Seal Retainer)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
+used-by: [cvb-014.html]
 notes: >
   Fully labelled with its own printed numbered callouts — Style Guide §6.3
   applies if ever placed on a slide. The last figure in Section 1.3; the
@@ -425,6 +438,7 @@ notes: >
   Characteristics Terminology) with the chapter's own "Bench Set"
   definition — a generic definition, not the same figure as the bench-set
   work already done for the Fisher 657 elsewhere in the vault.
+  Crop corrected 2026-09-14: the original crop was too tight at the bottom, cutting off several of the figure's 14 printed callouts (including "9. Travel Stop" and part of "14. Seal Retainer"). Re-cropped to show the complete drawing and all 14 callouts.
 ```
 
 ---
@@ -444,7 +458,7 @@ source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.18 'Deadband,' p. 29 — Process Variable (%) vs. Controller Output (%) plot showing the open hysteresis loop"
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
-used-by: []
+used-by: [cvb-017.html]
 notes: >
   An analytical graph, not a cutaway — same kind as `cvh-cmp-inherent-characteristics-graph`
   (Figure 1.19). Referenced directly in the adjacent Deadband glossary
