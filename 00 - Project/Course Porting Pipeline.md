@@ -317,7 +317,8 @@ each module.
    it. No indexed component → a short `sourceNote` instead. Stage 3 then pulls
    from these instead of searching source material cold.
 2. **Bloom / domain (Axis B).** Each chapter carries a `domain` (`maintenance` /
-   `instrumentation` / `selection-sizing`); each module a `levelTarget` (Bloom's
+   `instrumentation` / `eng` / `null` — renamed from `selection-sizing`
+   2026-09-14, see the domain/tier schema fix below); each module a `levelTarget` (Bloom's
    revised: remember … create); each concept its own `level`. The objective
    leads with a verb from the domain menu at `levelTarget`.
 3. **Instructional role (Axis C).** Each concept carries a `role` (`prime`,
@@ -330,6 +331,47 @@ each module.
 `moduleStage2Completeness` (strict mode, run by the Console's Stage 2) lints all
 of the above; a missing `prime` or formative `check` is an advisory note, not a
 failure (Stage 3 composes the check slide).
+
+**The domain/tier schema fix (Post-Stage-4 Architecture Bundle item 3, Franz,
+2026-09-14).** Before this fix, a chapter/module tracked whether its audience
+had settled into a domain at all through a separate `audienceStage` field
+(`"orientation"` meaning "no domain yet"), while a primitive tracked the same
+question through a differently-named, conflated field,
+`domainOrAudienceStage`, that could hold either a real domain string or the
+literal `"orientation"`. Both are retired. `domain` is now the single field
+everywhere (chapter, module, and primitive), and **`null` is itself a real,
+permanent value of `domain`** — not a placeholder for "not yet decided." A
+module or chapter with no domain assigned simply carries `domain: null`
+(or omits the field, which collapses to the same `null` at read time — Stage
+2 completeness checking no longer requires a chapter/module to have a
+non-null domain, the way it used to require the `audienceStage: "orientation"`
+exception to excuse one). A primitive is stricter: **the `domain` key must be
+present**, even when its value is `null` — `primitiveCompleteness` checks
+`'domain' in primitive`, not `primitive.domain == null`, so a primitive that
+never set the field at all is still flagged as incomplete, while one that
+explicitly set `domain: null` is not. This is the one invariant the whole fix
+turns on: `domain: null` must never *also* mean "not yet decided" — that
+ambiguity stays owned by `status: "outline"` (module/chapter) or by a
+primitive simply not existing yet in an unauthored concept, never by `domain`
+itself. `instructional-design.js`'s `NULL_DOMAIN_GUIDANCE` (keyed by `tier`)
+replaces the old `AUDIENCE_STAGE_GUIDANCE` (keyed by the single value
+`"orientation"`) as the depth/reinforcement guidance injected into Stage 1/2
+origination prompts when `domain` is `null`.
+
+This fix also builds the **primitive selector** the schema always implied but
+never had: `selectPrimitive(primitives, target)` in `course-model.js`. A
+concept with exactly one primitive (every real course so far) returns it
+directly, no matching needed. A concept with more than one primitive — one
+per applicable `domain` x `tier` permutation, not yet exercised by any real
+course as of this writing — matches on exact `domain` + `tier` equality
+against the target course's own scoping; zero or multiple matches throws a
+descriptive error rather than silently guessing, since a wrong silent guess
+here would ship the wrong depth or voice with no signal anything went wrong.
+Control Valve Basics was migrated to this schema 2026-09-14 (4 chapters, 9
+modules, 51 primitives, all from `audienceStage`/`domainOrAudienceStage:
+"orientation"` to explicit `domain: null`) — the first real course in the
+new shape, same as it was the first real course in the `primitives[]` shape
+itself (2026-09-11).
 
 Requires: readable Source Library PDFs (Poppler's `pdftotext` is at
 `C:\Users\E1552882\poppler\poppler-26.02.0\Library\bin\`; archive scans need

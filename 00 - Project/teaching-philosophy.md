@@ -58,7 +58,10 @@ level (stable), overridable per module.
 - `maintenance` — hands-on disassembly, inspection, repair, reassembly.
 - `instrumentation` — connecting to, configuring, calibrating positioners and
   digital valve controllers.
-- `selection-sizing` — choosing and sizing trim, valves, and accessories.
+- `eng` — engineering: choosing and sizing trim, valves, and accessories, and
+  broader engineering-specific content (deliberately named for room to grow
+  beyond selection/sizing alone, not narrowly scoped to it — renamed from
+  `selection-sizing` 2026-09-14).
 
 ### Axis 2 — cognitive level (Bloom's revised taxonomy)
 
@@ -102,7 +105,7 @@ verb.
 | evaluate | verify · assess · judge |
 | create | configure · design |
 
-**`selection-sizing`**
+**`eng`**
 
 | Level | Verbs |
 | --- | --- |

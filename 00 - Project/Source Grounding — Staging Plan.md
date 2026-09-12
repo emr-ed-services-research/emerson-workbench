@@ -346,7 +346,7 @@ live in `teaching-philosophy.md` "Instructional-design tags"; starters:
 | --- | --- |
 | `maintenance` (hands-on valve/actuator work) | identify, describe, disassemble, assemble, install, mount, replace, torque, lap, mark, inspect, diagnose, verify, determine |
 | `instrumentation` (controls / positioners / DVCs) | identify, explain, mount, wire, configure, range, zero, span, calibrate, interpret, diagnose, verify |
-| `selection-sizing` | recall, explain, calculate, size, compare, select, specify, justify |
+| `eng` (renamed from `selection-sizing` 2026-09-14) | recall, explain, calculate, size, compare, select, specify, justify |
 
 `domain` is a **chapter-level** setting (ch3 = `maintenance`), overridable per
 module. It lives in `teaching-philosophy.md` (a pedagogical framework, reusable
