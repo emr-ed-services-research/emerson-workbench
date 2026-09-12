@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVB &middot; Slide 046 &mdash; How a Pneumatic Controller Works</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cvb-ch3-m2, page 46 — cvb.accessory.pneumatic-controller [understand ·
+       mechanism]. Per the concept's own templateRationale: three figures in
+       a genuine build-up sequence — the physical unit (Fig. 4.10), its
+       proportional-only schematic (Fig. 4.11), then the same schematic
+       extended with reset-and-rate elements (Fig. 4.12) — combined into one
+       composite image, stacked top-to-bottom in that reading order (the
+       same order the source itself uses across pp. 90-92), rather than a
+       drawn .tpl-flow-arrow overlay: the three source figures are separate
+       raster crops, not one shared SVG, so an arrow connecting them would
+       need to be laid over raster content with no verified anchor
+       geometry — flagged in the report rather than improvised. Standard
+       (non-wide) mechanism layout used, not has-wide-fig: the composite is
+       a TALL portrait stack (photo over schematic over schematic), not a
+       landscape figure, so it sits naturally in the fixed 36cqw figure
+       column the same way cvb-042's tall product photo did. Fig. 4.11 and
+       4.12 carry their own printed leader-line labels (Style Guide Sec
+       6.3), so no markers were added on top of them; the list narrates the
+       progression using the figures' own terms. All three source figures
+       newly extracted from the Control Valve Handbook PDF (pp. 90-92,
+       300dpi crop). -->
+  <article class="slide slide--role-mechanism" data-slide="46" data-deck="cvb">
+    <h1 class="slide-title">How a Pneumatic Controller Works</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh4-fig4-10-11-12-controller-buildup-composite.png" style="width:100%;height:100%;object-fit:contain" alt="Top: a photo of an assembled Fisher C1 pneumatic controller mounted on a control valve, with two gauges and a set-point dial on its case. Middle: a labelled schematic of the proportional-only control loop &mdash; manual set point adjustment, process pointer, beam, flapper, nozzle, relay, and output pressure to the final control element. Bottom: three related schematic variants &mdash; proportional-plus-reset control, proportional-plus-reset with anti-reset windup, and differential gap control &mdash; each adding a reset bellows and relief/reset valve to the same relay-and-nozzle loop.">
+        </div>
+      </div>
+      <ol class="tpl-list">
+        <li><span class="num">1</span>A standalone unit, mounted right at the valve &mdash; no central DCS or PLC needed to close the loop</li>
+        <li><span class="num">2</span>Proportional-only: the beam / flapper / nozzle / relay loop compares the process input to the set point and drives output pressure directly to the valve</li>
+        <li><span class="num">3</span>Adding reset removes the lingering offset a proportional-only design settles at; adding rate speeds the response to a changing load</li>
+      </ol>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Figs. 4.10, 4.11, 4.12 &mdash; used directly, combined top to bottom as a build-up sequence. Component Index: cvh-cmp-4.10, cvh-cmp-4.11, cvh-cmp-4.12.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">46</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

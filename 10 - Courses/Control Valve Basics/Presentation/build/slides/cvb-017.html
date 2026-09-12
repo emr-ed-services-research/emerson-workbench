@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVB &middot; Slide 017 &mdash; How Deadband Shows Up on the Loop</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cvb-ch1-m2, page 17 — cvb.performance.deadband [understand ·
+       mechanism]. Fig. 1.18 is exactly the single-series case Style
+       Guide Sec 5.4 describes ("one hysteresis loop &mdash; the shape is
+       the message; axes only; no line labels, no key; the prose carries
+       it") &mdash; verified directly against the rendered source page
+       (p. 29): the figure carries only axis titles and 100% marks, no
+       in-plot text to conflict with the house key convention, so it is
+       used DIRECTLY (crop), not redrawn. No key is added (Sec 5.4: "a
+       key would be decoration" for a genuine single-series figure).
+       No on-image markers either &mdash; same call tp-006 made for chart
+       content carrying no printed callouts of its own: the shape itself
+       is the teaching content, and the companion list explains what the
+       loop means rather than pointing at coordinates on it. -->
+  <article class="slide slide--role-mechanism" data-slide="17" data-deck="cvb">
+    <h1 class="slide-title">How Deadband Shows Up on the Loop</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh1-fig1-18-deadband.png" style="width:100%;height:100%;object-fit:contain" alt="Deadband plot: Process Variable on the vertical axis against Controller Output on the horizontal axis. A blue path runs along the bottom then up the right side to the top-right corner; a dashed path in the middle shows the controller output reversing direction with no immediate change in process variable, forming an open hysteresis loop.">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>The open loop is the controller output reversing direction &mdash; up one path, down another</li>
+        <li><span class="num">2</span>The gap between the paths at any point is deadband &mdash; output changes with no observable process response yet</li>
+        <li><span class="num">3</span>Friction and backlash in the valve assembly are the usual causes</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 1.18 &mdash; used directly; single hysteresis loop, no line labels or key in the source (Style Guide &sect;5.4). Component Index: cvh-cmp-deadband-graph.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">17</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

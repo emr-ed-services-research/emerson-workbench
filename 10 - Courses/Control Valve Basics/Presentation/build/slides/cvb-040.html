@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVB &middot; Slide 040 &mdash; How a Pneumatic Positioner Works</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cvb-ch3-m1, page 40 — cvb.accessory.positioner-mechanism [understand
+       · mechanism]. Per the concept's own templateRationale, Fig. 4.1 is
+       one fully labelled schematic (bellows, beam, cam feedback,
+       flapper/nozzle, relay, diaphragm-pressure output) showing the
+       complete closed local loop already inside the source figure — the
+       cleanest possible mechanism-role case in this module. The source
+       figure already carries its own printed leader-line labels on both
+       panels (the cutaway schematic on the left, the case-interior photo
+       on the right), so per Style Guide Sec 6.3 no markers are added on
+       top of it; the list narrates the loop using the figure's own terms
+       rather than naming parts one by one. has-wide-fig used because the
+       figure is a single, naturally wide two-panel source image (not a
+       composite built for this pass). Source figure newly extracted from
+       the Control Valve Handbook PDF (p. 84, 300dpi crop). -->
+  <article class="slide slide--role-mechanism has-wide-fig" data-slide="40" data-deck="cvb">
+    <h1 class="slide-title">How a Pneumatic Positioner Works</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh4-fig4-1-positioner-mechanism.png" style="width:100%;height:100%;object-fit:contain" alt="Left: a fully labelled schematic of a pneumatic single-acting positioner, showing supply, bellows, beam, feedback axis, cam, pivot, nozzle, flapper assembly, direct- and reverse-action quadrants, relay, and output to diaphragm. Right: a photo of the same mechanism's internal case, labelling the rotary shaft arm, adjusting screw, nozzle, bypass lever, bellows, operating cam, flapper, and screened vent.">
+        </div>
+      </div>
+      <ol class="tpl-list">
+        <li><span class="num">1</span>Beam and feedback axis compare actual stem position (fed back through the cam) to the incoming command signal</li>
+        <li><span class="num">2</span>The flapper moves closer to or farther from the nozzle, changing nozzle back-pressure</li>
+        <li><span class="num">3</span>The relay amplifies that change into the diaphragm output pressure that drives the actuator &mdash; stopping only when actual position matches command</li>
+      </ol>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 4.1 &mdash; used directly; own printed labels retained, no markers added. Component Index: cvh-cmp-4.1.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">40</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

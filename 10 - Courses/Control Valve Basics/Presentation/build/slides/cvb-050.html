@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVB &middot; Slide 050 &mdash; Voting Architectures: 1oo2 vs. 2oo2</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cvb-ch3-m2, page 50 — cvb.safety.voting-architecture [understand ·
+       application-case]. Per the concept's own templateRationale: two
+       distinct voting architectures (1oo2, 2oo2), each with its own full
+       schematic and its own tradeoff, shown as application-case's
+       two-frame filmstrip. Fig. 14.16 (the simpler intro schematic — one SOV
+       + one DVC in a 1oo2 arrangement) introduces the "1 of 2 devices can
+       trip it" nomenclature in the source text but is not itself embedded
+       as a third frame — cited in the source line only, the same handling
+       cvb-029 already uses for a supporting variant figure not shown on the
+       slide.
+       LOW CONFIDENCE / CONCEPT-MAP NOTE: same real printed-numbering finding
+       as cvb-048/049 — the Component Index's cvh-cmp-4.16 / cvh-cmp-4.19 /
+       cvh-cmp-4.20 are actually captioned "Figure 14.16" / "14.19" / "14.20"
+       in the real source (verified against the rendered PDF page); see the
+       report's Concept-map gaps. Cited here by the number actually printed
+       on the page. All three source figures newly extracted from the
+       Control Valve Handbook PDF (pp. 94-95, 300dpi crop). -->
+  <article class="slide slide--role-application-case" data-slide="50" data-deck="cvb">
+    <h1 class="slide-title">Voting Architectures: 1oo2 vs. 2oo2</h1>
+    <div class="tpl-content">
+      <div class="tpl-filmstrip">
+        <button class="tpl-frame is-active" type="button"><span class="tpl-frame__tag">Fig. 14.19</span><span class="tpl-frame__title">1oo2</span></button>
+        <button class="tpl-frame" type="button"><span class="tpl-frame__tag">Fig. 14.20</span><span class="tpl-frame__title">2oo2</span></button>
+      </div>
+      <div class="tpl-frame-detail">
+        <div class="tpl-frame-detail__pane is-active">
+          <img src="../assets/sourced/cvh4-fig14-19-1oo2-architecture-schematic.png" style="display:block;max-width:100%;max-height:32cqh;object-fit:contain;margin:0 auto 1cqh" alt="1oo2 solenoid-operated valve architecture: two 3-port SOVs in series between IA Supply and the actuator, either one can vent the actuator to trip it.">
+          One-out-of-two: either SOV seeing a demand trips the system &mdash; favors safety, at the cost of more nuisance trips from a single spurious signal.
+        </div>
+        <div class="tpl-frame-detail__pane">
+          <img src="../assets/sourced/cvh4-fig14-20-2oo2-architecture-schematic.png" style="display:block;max-width:100%;max-height:32cqh;object-fit:contain;margin:0 auto 1cqh" alt="2oo2 solenoid-operated valve architecture: two 3-port SOVs arranged so both must vent before the actuator sees a trip signal.">
+          Two-out-of-two: both SOVs must agree before the system trips &mdash; favors uptime, at the cost of a slower response if only one SOV actually fails.
+        </div>
+      </div>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Figs. 14.19, 14.20 &mdash; used directly; Fig. 14.16 introduces the 1oo2 nomenclature and is cited but not shown. Component Index: cvh-cmp-4.16, cvh-cmp-4.19, cvh-cmp-4.20.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">50</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -27,15 +27,32 @@ region of the document, PDF page number and printed page number are
 identical (zero offset) — confirmed against the printed folios visible on
 pages 82, 90, and 98.
 
-One text-extraction artifact was caught and corrected during this pass:
-`pdftotext` rendered the captions for Figures 4.14 through 4.23 with a
-spurious leading "1" (e.g. "Figure 14.16" instead of "Figure 4.16"). This is
-not a real Chapter 14 reference — Chapter 14 ("Piping Reference Data") does
-not begin until much later in this 355-page, 15-chapter book. Confirmed as
-an artifact by reading full page context: the figure numbering is
-unbroken (4.13 → 4.14 → … → 4.23 → 4.24) and every one of these pages
-carries the same "Chapter 4: Control Valve Accessories" running header as
-the rest of the chapter.
+**Correction, 2026-09-12 (superseding the note originally here):** this
+pass's own text-extraction-only reading concluded Figures 4.14 through
+4.23 were rendered by `pdftotext` with a spurious leading "1" (e.g.
+"Figure 14.16" instead of "Figure 4.16") and "corrected" every affected
+entry below back to "4.N". That correction was **wrong** — confirmed by a
+later Stage 3 authoring pass that rendered the actual PDF pages as images
+(not just extracted text) and read the captions directly: the source book
+genuinely, visibly prints **"Figure 14.14" through "Figure 14.23"** on
+pp. 93–95 (verified again independently: pages 93 and 96 both rendered and
+inspected). This is not a real Chapter 14 reference — Chapter 14 ("Piping
+Reference Data") does not begin until much later in this 355-page,
+15-chapter book, and every one of these pages still carries the same
+"Chapter 4: Control Valve Accessories" running header as the rest of the
+chapter — but the printed caption number really is "14.N", not "4.N", and
+the body text's own in-line cross-references use the same "14.N" form
+("...see Figures 14.14 and 14.15"). This is the source document's own
+internal caption/cross-reference numbering (most likely carried over
+un-renumbered from a differently-numbered internal or prior edition of
+this material), not a misprint, OCR artifact, or anything introduced by
+this vault's own tooling. Every entry below for `cvh-cmp-4.14` through
+`cvh-cmp-4.23` has been corrected accordingly: the `locator` field and any
+in-slide citation should read "Figure 14.N", not "Figure 4.N" — the
+component `id` itself is unaffected (ids are internal handles, not
+required to mirror the printed figure number, the same convention already
+applied to the confirmed duplicate "Figure 3.24" case in the ch3 index).
+Figures 4.1–4.13 and 4.24 onward are unaffected and print normally.
 
 No tables are catalogued below — only figures, per the standing
 Component Index rule.
@@ -236,23 +253,23 @@ concept-tags: [solenoid-operated valve, SOV, spring-return actuator, schematic s
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.93, §4.9 "Solenoid-Operated Valves (SOVs)" (section heading inferred from contiguous content; not directly captured in the read window), Figure 4.14
+    locator: p.93, §4.9 "Solenoid-Operated Valves (SOVs)" (section heading inferred from contiguous content; not directly captured in the read window), Figure 14.14
 delivery: not yet determined
 used-by: []
-notes: Caption rendered by pdftotext as "Figure 14.14" — corrected here to 4.14; see the extraction-artifact note at the top of this file. Low confidence on the exact §4.9 heading wording only — the figure identity and content are fully verified against page context.
+notes: Printed caption confirmed as "Figure 14.14" by direct visual inspection of the rendered PDF page (2026-09-12) — see the corrected note at the top of this file; the earlier "correction" to 4.14 was itself wrong. Low confidence on the exact §4.9 heading wording only — the figure identity and content are fully verified against page context.
 ```
 
 ```yaml
 id: cvh-cmp-4.15
-teaches: Double-acting actuator represented in a 4-port SOV schematic symbol, contrasted with the 3-port spring-return symbol in Figure 4.14
+teaches: Double-acting actuator represented in a 4-port SOV schematic symbol, contrasted with the 3-port spring-return symbol in Figure 14.14
 concept-tags: [solenoid-operated valve, SOV, double-acting actuator, schematic symbol]
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.93, §4.9, Figure 4.15
+    locator: p.93, §4.9, Figure 14.15
 delivery: not yet determined
 used-by: []
-notes: Caption corrected from extraction artifact "Figure 14.15" to 4.15. Companion figure to 4.14 — same section, same schematic-symbol treatment, opposite actuator type.
+notes: Printed caption confirmed as "Figure 14.15" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.15 was wrong; see the top-of-file note. Companion figure to 14.14 — same section, same schematic-symbol treatment, opposite actuator type.
 ```
 
 ```yaml
@@ -262,10 +279,10 @@ concept-tags: [solenoid-operated valve, SOV, digital valve controller, 1oo2, saf
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.94, Figure 4.16
+    locator: p.94, Figure 14.16
 delivery: not yet determined
 used-by: []
-notes: Caption corrected from extraction artifact "Figure 14.16" to 4.16. Introduces the 1oo2/2oo2 voting nomenclature that Figures 4.19–4.20 later show as full architecture schematics.
+notes: Printed caption confirmed as "Figure 14.16" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.16 was wrong; see the top-of-file note. Introduces the 1oo2/2oo2 voting nomenclature that Figures 14.19–14.20 later show as full architecture schematics.
 ```
 
 ```yaml
@@ -275,23 +292,23 @@ concept-tags: [solenoid-operated valve, SOV, direct-acting, physical component i
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.94, Figure 4.17
+    locator: p.94, Figure 14.17
 delivery: not yet determined
 used-by: []
-notes: Caption corrected from extraction artifact "Figure 14.17" to 4.17. Paired with Figure 4.18 (pilot-operated) as the two SOV actuation types.
+notes: Printed caption confirmed as "Figure 14.17" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.17 was wrong; see the top-of-file note. Paired with Figure 14.18 (pilot-operated) as the two SOV actuation types.
 ```
 
 ```yaml
 id: cvh-cmp-4.18
-teaches: Pilot-operated solenoid valve — physical construction of the higher-capacity SOV actuation type, contrasted with the direct-acting design in Figure 4.17
+teaches: Pilot-operated solenoid valve — physical construction of the higher-capacity SOV actuation type, contrasted with the direct-acting design in Figure 14.17
 concept-tags: [solenoid-operated valve, SOV, pilot-operated, physical component identification]
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.94, Figure 4.18
+    locator: p.94, Figure 14.18
 delivery: not yet determined
 used-by: []
-notes: Caption corrected from extraction artifact "Figure 14.18" to 4.18.
+notes: Printed caption confirmed as "Figure 14.18" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.18 was wrong; see the top-of-file note.
 ```
 
 ```yaml
@@ -301,23 +318,23 @@ concept-tags: [solenoid-operated valve, SOV, 1oo2, voting architecture, safety i
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.95, Figure 4.19
+    locator: p.95, Figure 14.19
 delivery: not yet determined
 used-by: []
-notes: Caption corrected from extraction artifact "Figure 14.19" to 4.19. Companion figure to 4.20 (2oo2) — the two present the two standard voting architectures side by side.
+notes: Printed caption confirmed as "Figure 14.19" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.19 was wrong; see the top-of-file note. Companion figure to 14.20 (2oo2) — the two present the two standard voting architectures side by side.
 ```
 
 ```yaml
 id: cvh-cmp-4.20
-teaches: 2oo2 solenoid-operated valve architecture — full voting-system schematic requiring both SOVs to trip before the safety function activates, contrasted with the 1oo2 architecture in Figure 4.19
+teaches: 2oo2 solenoid-operated valve architecture — full voting-system schematic requiring both SOVs to trip before the safety function activates, contrasted with the 1oo2 architecture in Figure 14.19
 concept-tags: [solenoid-operated valve, SOV, 2oo2, voting architecture, safety instrumented systems, schematic]
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.95, Figure 4.20
+    locator: p.95, Figure 14.20
 delivery: not yet determined
 used-by: []
-notes: Caption corrected from extraction artifact "Figure 14.20" to 4.20.
+notes: Printed caption confirmed as "Figure 14.20" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.20 was wrong; see the top-of-file note.
 ```
 
 ```yaml
@@ -327,10 +344,10 @@ concept-tags: [solenoid-operated valve, SOV, redundancy, trip systems, safety in
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.95, Figure 4.21
+    locator: p.95, Figure 14.21
 delivery: not yet determined
 used-by: []
-notes: Caption corrected from extraction artifact "Figure 14.21" to 4.21. Text explicitly frames this figure alongside the trip-systems discussion carried into Figure 4.24.
+notes: Printed caption confirmed as "Figure 14.21" by direct visual inspection (2026-09-12) — the earlier "correction" to 4.21 was wrong; see the top-of-file note. Text explicitly frames this figure alongside the trip-systems discussion carried into Figure 4.24 (unaffected — normal chapter-4 numbering resumes there).
 ```
 
 ```yaml
@@ -340,10 +357,10 @@ concept-tags: [solenoid-operated valve, SOV, manual reset, three-way valve, trip
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.95, Figure 4.22
+    locator: p.95, Figure 14.22
 delivery: not yet determined
 used-by: []
-notes: Grep-confirmed as part of the unbroken 4.13–4.24 figure sequence on this page range; full paragraph-level caption context for this specific figure was not independently re-verified beyond sequence position — flagged low-confidence only on caption exactness, not on figure identity or chapter placement.
+notes: Grep-confirmed as part of the unbroken figure sequence on this page range; full paragraph-level caption context for this specific figure was not independently re-verified beyond sequence position. The "14.N" printed-caption numbering for this whole 14.14-14.23 range was later confirmed by direct visual page inspection (2026-09-12) — see the top-of-file note; this entry's own exact caption wording is still not independently re-verified word-for-word, only the "14.N" numbering convention it shares with its neighbors.
 ```
 
 ```yaml
@@ -353,10 +370,10 @@ concept-tags: [solenoid-operated valve, SOV, manifold, physical component identi
 status: verified
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
-    locator: p.95, Figure 4.23
+    locator: p.95, Figure 14.23
 delivery: not yet determined
 used-by: []
-notes: Same low-confidence caveat as cvh-cmp-4.22 — sequence position and page confirmed, exact caption wording not independently re-verified word-for-word.
+notes: Same low-confidence caveat as cvh-cmp-4.22 — sequence position and page confirmed, exact caption wording not independently re-verified word-for-word beyond the "14.N" numbering itself (confirmed 2026-09-12, see the top-of-file note).
 ```
 
 ### Trip and Switching Valves, Manual Handwheels (printed pp. 96–97)
@@ -371,7 +388,7 @@ source:
     locator: p.96, Figure 4.24
 delivery: not yet determined
 used-by: []
-notes: Directly follows the trip-systems and redundant-SOV discussion (Figure 4.21) earlier in the chapter.
+notes: Directly follows the trip-systems and redundant-SOV discussion (Figure 14.21 — see that entry's own corrected caption note) earlier in the chapter.
 ```
 
 ```yaml
@@ -416,7 +433,7 @@ notes: Last figure in the chapter; Chapter 5 ("Control Valve Sizing") begins on 
 ## Open items
 
 - **Batch coverage**: all 27 figures in the chapter (4.1–4.27) are catalogued, with no gaps in the numeric sequence. Real chapter start (PDF p.82, divider) and end (content through p.97, with Chapter 5 confirmed starting at p.98) were verified directly against the source PDF, not assumed from the table of contents.
-- **Real correction made**: the `pdftotext` extraction artifact that rendered Figures 4.14–4.23 with a spurious leading "1" ("Figure 14.14" etc.) was caught and corrected by reading full page context and confirming the unbroken figure sequence and the consistent chapter-4 running header — see the note at the top of this file.
+- **Correction reversed, 2026-09-12**: this pass originally treated Figures 4.14–4.23's "Figure 14.N" captions as a `pdftotext` extraction artifact and "corrected" them back to "4.N". That was wrong — a later Stage 3 authoring pass rendered the actual PDF pages as images and confirmed the source book genuinely prints "Figure 14.14" through "Figure 14.23"; every affected entry below (`cvh-cmp-4.14` through `cvh-cmp-4.23`) has been corrected back to the real printed number. See the note at the top of this file for the full explanation and the confirmed boundary (4.13 and earlier, 4.24 and later, both unaffected).
 - **Low-confidence flags**:
   - `cvh-cmp-4.7`: the exact section-number/heading for the Volume Boosters section was not captured within the page window read; the figure's identity, content, and page are fully verified.
   - `cvh-cmp-4.14`: same caveat — the `§4.9` heading text for the Solenoid-Operated Valves section is inferred from contiguous content, not directly read from a heading line.
