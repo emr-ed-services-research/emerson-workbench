@@ -211,6 +211,28 @@ seals; replacing the valve plug, shaft and bearings; adjusting actuator travel;
 changing valve flow direction; changing actuator mounting style. Parts; Appendix
 A on flangeless considerations.
 
+## Rotary packing systems
+
+Added to the Source Library 2026-09-20 — previously cited by name in the
+9500, 8580, Vee-Ball, and V500 manuals above as a separate document this
+vault did not hold. The rotary counterpart to the two sliding-stem packing
+manuals above: adjustment is by Belleville spring geometry, not flange
+torque, and the procedure lives only in this document for the rotary
+product lines it covers.
+
+### Fisher Enhanced ENVIRO-SEAL Packing Systems for Rotary Valves
+`d101643x012.pdf` · D101643X012 · February 2024
+
+Live-loaded ENVIRO-SEAL packing for Fisher rotary valves with 12.7–88.9 mm
+(1/2–3-1/2 inch) shaft diameters — covers the Vee-Ball, Eccentric Plug
+(V500), 8560, A11, 8532, 8580, 8590, and Control-Disk product lines by
+name. **Installation:** removing the actuator; PTFE and graphite packing
+arrangements per product line, each with its own labelled figure; Belleville
+spring stacking order by shaft-diameter band; the shared 20/20 packing-bore
+condition rule and brake-hone cleaning method (same guidance as the
+sliding-stem ENVIRO-SEAL/HIGH-SEAL manuals above). Parts kits (retrofit and
+repair).
+
 ## Digital valve controllers (positioners)
 
 ### Fisher FIELDVUE DVC6200 (HW2) Digital Valve Controller

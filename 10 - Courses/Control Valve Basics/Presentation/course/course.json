@@ -144,7 +144,7 @@
                       ],
                       "sources": [
                         "cvh-cmp-angle-valve-photo",
-                        "cvh-cmp-three-way-globe-valve"
+                        "cvh-cmp-three-way-globe-valve-overview"
                       ]
                     }
                   ]
@@ -492,7 +492,7 @@
                       "sources": [
                         "cvh-cmp-flanged-angle-valve-body",
                         "cvh-cmp-bar-stock-valve-body",
-                        "cvh-cmp-three-way-globe-valve"
+                        "cvh-cmp-three-way-globe-valve-cutaway"
                       ]
                     }
                   ]
@@ -1070,7 +1070,7 @@
                         40
                       ],
                       "sources": [
-                        "cvh-cmp-4.1"
+                        "cvh-cmp-pneumatic-positioner-schematic"
                       ]
                     }
                   ]
@@ -1095,8 +1095,8 @@
                         41
                       ],
                       "sources": [
-                        "cvh-cmp-4.2",
-                        "cvh-cmp-4.3"
+                        "cvh-cmp-analog-ip-positioner-schematic",
+                        "cvh-cmp-analog-ip-positioner-photo"
                       ]
                     }
                   ]
@@ -1121,7 +1121,7 @@
                         42
                       ],
                       "sources": [
-                        "cvh-cmp-4.4"
+                        "cvh-cmp-digital-valve-controller-photo"
                       ]
                     }
                   ]
@@ -1146,8 +1146,8 @@
                         43
                       ],
                       "sources": [
-                        "cvh-cmp-4.5",
-                        "cvh-cmp-4.6"
+                        "cvh-cmp-ip-transducer-pilot-detail",
+                        "cvh-cmp-ip-transducer-photo"
                       ]
                     }
                   ]
@@ -1172,8 +1172,8 @@
                         44
                       ],
                       "sources": [
-                        "cvh-cmp-4.7",
-                        "cvh-cmp-4.8"
+                        "cvh-cmp-volume-booster-sectional",
+                        "cvh-cmp-dual-booster-installation"
                       ]
                     }
                   ]
@@ -1190,7 +1190,7 @@
                   "materials": [
                     "Assembled valve/actuator/DVC photo, printed (Figure 4.4)"
                   ],
-                  "sourceNote": "Grounded directly in the digital-valve-controller and booster-installation figures just taught (cvh-cmp-4.4, cvh-cmp-4.7, cvh-cmp-4.8)."
+                  "sourceNote": "Grounded directly in the digital-valve-controller and booster-installation figures just taught (cvh-cmp-digital-valve-controller-photo, cvh-cmp-volume-booster-sectional, cvh-cmp-dual-booster-installation)."
                 }
               ],
               "pages": [
@@ -1236,9 +1236,9 @@
                         46
                       ],
                       "sources": [
-                        "cvh-cmp-4.10",
-                        "cvh-cmp-4.11",
-                        "cvh-cmp-4.12"
+                        "cvh-cmp-pneumatic-controller-photo",
+                        "cvh-cmp-pneumatic-controller-schematic-proportional",
+                        "cvh-cmp-pneumatic-controller-schematic-reset-rate"
                       ]
                     }
                   ]
@@ -1263,7 +1263,7 @@
                         47
                       ],
                       "sources": [
-                        "cvh-cmp-4.13"
+                        "cvh-cmp-wireless-position-transmitter"
                       ]
                     }
                   ]
@@ -1288,8 +1288,8 @@
                         48
                       ],
                       "sources": [
-                        "cvh-cmp-4.14",
-                        "cvh-cmp-4.15"
+                        "cvh-cmp-sov-3port-spring-return-symbol",
+                        "cvh-cmp-sov-4port-double-acting-symbol"
                       ]
                     }
                   ]
@@ -1309,8 +1309,8 @@
                       "tier": "introductory",
                       "t": "A direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.",
                       "sources": [
-                        "cvh-cmp-4.17",
-                        "cvh-cmp-4.18"
+                        "cvh-cmp-sov-direct-acting-assembly",
+                        "cvh-cmp-sov-pilot-operated-assembly"
                       ],
                       "template": "slide--role-contrast",
                       "templateRationale": "Two-way contrast (direct-acting vs. pilot-operated SOV actuation), each with its own physical-construction photo — fits contrast's two-panel shape exactly, split out of cvb.safety.solenoid-valve-types (which used to bundle this axis with the separate spring-return/double-acting drive-type axis).",
@@ -1340,9 +1340,9 @@
                         50
                       ],
                       "sources": [
-                        "cvh-cmp-4.16",
-                        "cvh-cmp-4.19",
-                        "cvh-cmp-4.20"
+                        "cvh-cmp-sov-1oo2-voting-intro",
+                        "cvh-cmp-sov-1oo2-architecture-schematic",
+                        "cvh-cmp-sov-2oo2-architecture-schematic"
                       ]
                     }
                   ]
@@ -1367,10 +1367,10 @@
                         51
                       ],
                       "sources": [
-                        "cvh-cmp-4.24",
-                        "cvh-cmp-4.25",
-                        "cvh-cmp-4.26",
-                        "cvh-cmp-4.27"
+                        "cvh-cmp-trip-valve-tripped-condition",
+                        "cvh-cmp-three-way-switching-valve",
+                        "cvh-cmp-actuator-side-handwheel",
+                        "cvh-cmp-actuator-top-handwheel"
                       ]
                     }
                   ]
@@ -1387,7 +1387,7 @@
                   "materials": [
                     "Figures 4.14, 4.15, 4.17, 4.18, printed"
                   ],
-                  "sourceNote": "Directly built on the SOV figures just taught (cvh-cmp-4.14, cvh-cmp-4.15, cvh-cmp-4.17, cvh-cmp-4.18)."
+                  "sourceNote": "Directly built on the SOV figures just taught (cvh-cmp-sov-3port-spring-return-symbol, cvh-cmp-sov-4port-double-acting-symbol, cvh-cmp-sov-direct-acting-assembly, cvh-cmp-sov-pilot-operated-assembly)."
                 }
               ],
               "pages": [

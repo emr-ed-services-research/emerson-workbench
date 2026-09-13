@@ -35,11 +35,11 @@ The primary background source across Educational Services courses, including
 | 2 | Control Valve Performance | Process variability; deadband and its causes/effects; friction; actuator and positioner design; valve response time (dead time, dynamic time, supply pressure); valve type and characterization; installed and loop gain; valve sizing; economic results; Signature Series performance testing |
 | 3 | Valve and Actuator Types | Globe valve styles (single-port, post/port-guided, cage-style, double-ported, three-way); rotary styles; actuator types |
 | 4 | Control Valve Accessories | Digital valve controllers; analog positioners; boosters; other accessories |
-| 5 | Control Valve Selection | Comprehensive guide to selecting the best valve for an application |
+| 5 | Control Valve Sizing | Valve dimensions; seat leakage classifications; flow characteristics; actuator/valve sizing for liquids and compressible fluids; representative sizing coefficients; actuator sizing (globe and rotary); cavitation and flashing; noise prediction and control; packing selection; valve body materials; pressure-temperature ratings; non-destructive examination methods |
 | 6 | Special and Severe Service Control Valves | Selection and use of special and severe-service valves |
 | 7 | Steam Conditioning | Desuperheaters; steam conditioning valves; turbine bypass systems |
 | 8 | Installation and Maintenance | Typical control valve installation and maintenance procedures |
-| 9 | Standards and Approval Agencies | Control valve standards and approval agencies worldwide |
+| 9 | Standards and Approvals | Control valve standards and approval agencies worldwide |
 | 10 | Isolation Valves | Isolation / on-off valve types and application |
 | 11 | Sustainability | Fugitive emissions, energy and environmental considerations |
 | 12 | Safety Instrumented Systems | Process safety instrumented systems and the valve's role |
@@ -67,18 +67,44 @@ this handbook, at different grains:
   [[Component Index — 14101 ch1-ch2|ch1-ch2]]) — built deck-driven, scoped to
   exactly what 14101's existing slides cite. The table below lists those
   citations.
-- **Whole-chapter indexes for chapters 1–4** —
+- **Whole-chapter indexes, all 15 chapters — complete.** Chapters 1–4:
   [[Component Index — Control Valve Handbook ch1|ch1]] (19 components),
   [[Component Index — Control Valve Handbook ch2|ch2]] (9),
   [[Component Index — Control Valve Handbook ch3|ch3]] (52),
   [[Component Index — Control Valve Handbook ch4|ch4]] (27) — built
-  2026-09-11 as standing full-chapter cataloging (every figure and labelled
-  component in each chapter, not just what a course currently cites), the
-  real precondition for Control Valve Basics. 107 components total, plus
-  correct cross-references (not duplicates) to entries already catalogued in
-  14101's own indexes where the two courses cite the same figure. See
+  2026-09-11, the real precondition for Control Valve Basics. Chapters
+  5–15: [[Component Index — Control Valve Handbook ch5|ch5]] (19 — 18
+  numbered figures + 1 unnumbered diagram, see below),
+  [[Component Index — Control Valve Handbook ch6|ch6]] (9),
+  [[Component Index — Control Valve Handbook ch7|ch7]] (14),
+  [[Component Index — Control Valve Handbook ch8|ch8]] (11),
+  [[Component Index — Control Valve Handbook ch9|ch9]] (7),
+  [[Component Index — Control Valve Handbook ch10|ch10]] (53),
+  [[Component Index — Control Valve Handbook ch11|ch11]] (3),
+  [[Component Index — Control Valve Handbook ch12|ch12]] (5),
+  [[Component Index — Control Valve Handbook ch13|ch13]],
+  [[Component Index — Control Valve Handbook ch14|ch14]],
+  [[Component Index — Control Valve Handbook ch15|ch15]] (0 each,
+  confirmed by direct page-by-page inspection — reference-table chapters
+  with no numbered figures) — built 2026-09-17 to complete the Handbook.
+  **228 components total** (every figure and labelled component in every
+  chapter, not just what a course currently cites), plus correct
+  cross-references (not duplicates) to entries already catalogued in
+  14101's own indexes where the two courses cite the same figure — this
+  pass also filled two gaps found along the way: Figure 8.2
+  (criss-cross bolt pattern) and Figure 8.10 (bench-set seating force),
+  both already cited by locator in `Component Index — 14101 ch3.md` but
+  never previously given their own library-wide id, now catalogued in
+  ch8's own index with notes pointing back to the existing citations. See
   [[Source Library]] "Three ways a component index gets triggered" for how
-  the two passes relate.
+  the passes relate, including the honest note that chapters 5–15 were a
+  deliberate completeness decision, not all individually course-scoped the
+  way chapters 1–4 were. See [[Source Library]] for the full account of two
+  findings this pass surfaced and resolved: a genuine pre-existing id
+  collision between ch1 and ch3 (now split, every real reference repointed),
+  and the standing convention for cataloguing a real diagram that carries no
+  printed figure number (first applied to ch5's p.100 "Valve Selection
+  Process" flowchart).
 
 | Section | Topic | Cited from |
 | --- | --- | --- |

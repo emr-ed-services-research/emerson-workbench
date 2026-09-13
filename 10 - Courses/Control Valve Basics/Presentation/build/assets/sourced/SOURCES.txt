@@ -451,16 +451,16 @@ cvh4-fig4-1-positioner-mechanism.png
   Fig. 4.1 "Typical Pneumatic, Single-Acting Positioner Design," p. 84 —
   two-panel figure (labelled cutaway schematic + case-interior photo), own
   printed leader-line labels retained, no markers added.
-  Component Index: cvh-cmp-4.1. Used by: cvb-040.html.
+  Component Index: cvh-cmp-pneumatic-positioner-schematic. Used by: cvb-040.html.
 
 cvh4-fig4-2-analog-ip-schematic.png
   Fig. 4.2 "Typical Single-Acting Analog I/P Positioner Design," p. 85 —
   labelled schematic, own printed leader-line labels retained.
-  Component Index: cvh-cmp-4.2. Used by: cvb-041.html (composited).
+  Component Index: cvh-cmp-analog-ip-positioner-schematic. Used by: cvb-041.html (composited).
 
 cvh4-fig4-3-ip-positioner-photo.png
   Fig. 4.3 "I/P Positioner," p. 85 — unlabelled product photo.
-  Component Index: cvh-cmp-4.3. Used by: cvb-041.html (composited).
+  Component Index: cvh-cmp-analog-ip-positioner-photo. Used by: cvb-041.html (composited).
 
 cvh4-fig4-2-3-analog-ip-composite.png
   Figs. 4.2, 4.3 combined side by side (each cropped from source, no
@@ -472,17 +472,17 @@ cvh4-fig4-4-digital-valve-controller.png
   unlabelled overview photo with the source's own zoomed-inset circle;
   markers ours (Style Guide Sec 6.3 does not apply — no printed text
   labels on the figure itself).
-  Component Index: cvh-cmp-4.4. Used by: cvb-042.html.
+  Component Index: cvh-cmp-digital-valve-controller-photo. Used by: cvb-042.html.
 
 cvh4-fig4-5-deflector-nozzle-pilot-stage.png
   Fig. 4.5 "Detail of Deflector / Nozzle Pilot Stage," p. 87 — unlabelled
   cutaway detail illustration.
-  Component Index: cvh-cmp-4.5. Used by: cvb-043.html (composited).
+  Component Index: cvh-cmp-ip-transducer-pilot-detail. Used by: cvb-043.html (composited).
 
 cvh4-fig4-6-transducer-mounted-valve.png
   Fig. 4.6 "Transducer Mounted on a Control Valve," p. 88 — unlabelled
   product photo with the source's own zoomed-inset circle.
-  Component Index: cvh-cmp-4.6. Used by: cvb-043.html (composited).
+  Component Index: cvh-cmp-ip-transducer-photo. Used by: cvb-043.html (composited).
 
 cvh4-fig4-5-6-ip-transducer-composite.png
   Figs. 4.5, 4.6 combined side by side (each cropped from source, no
@@ -496,13 +496,13 @@ cvh4-fig4-7-volume-booster-sectional.png
   Port), own printed labels retained. Low confidence on the exact section
   heading for Sec 4.4 per the Component Index note — figure identity and
   content are fully verified.
-  Component Index: cvh-cmp-4.7. Used by: cvb-044.html (composited).
+  Component Index: cvh-cmp-volume-booster-sectional. Used by: cvb-044.html (composited).
 
 cvh4-fig4-8-boosters-installation.png
   Fig. 4.8 "Typical Boosters Installation with a Double-Acting Actuator,"
   p. 89 — product photo, source's own "Volume Boosters" / "377D Trip
   Valve" annotations retained as printed.
-  Component Index: cvh-cmp-4.8. Used by: cvb-044.html (composited).
+  Component Index: cvh-cmp-dual-booster-installation. Used by: cvb-044.html (composited).
 
 cvh4-fig4-7-8-volume-booster-composite.png
   Figs. 4.7, 4.8 combined side by side — Fig. 4.8 (installation photo)
@@ -535,26 +535,26 @@ throughout confirms "Chapter 4: Control Valve Accessories" — but the
 printed caption number really is "14.x", most likely a legacy
 cross-reference carried over from wherever this SOV-symbol figure set was
 first authored, not an OCR/extraction error). Filenames and citations
-below use the number actually printed on the page for cvh-cmp-4.14 through
-cvh-cmp-4.20; see the report's Concept-map gaps for the recommended
+below use the number actually printed on the page for cvh-cmp-sov-3port-spring-return-symbol through
+cvh-cmp-sov-2oo2-architecture-schematic; see the report's Concept-map gaps for the recommended
 Component Index correction.
 
 cvh4-fig4-10-pneumatic-controller-photo.png
   Fig. 4.10 "Pneumatic Controller on a Control Valve," p.90 — unlabelled
   product photo.
-  Component Index: cvh-cmp-4.10. Used by: cvb-046.html (composited).
+  Component Index: cvh-cmp-pneumatic-controller-photo. Used by: cvb-046.html (composited).
 
 cvh4-fig4-11-controller-schematic-proportional-only.png
   Fig. 4.11 "Pneumatic Controller Schematic," p.91 — proportional-only
   control loop, own printed leader-line labels retained.
-  Component Index: cvh-cmp-4.11. Used by: cvb-046.html (composited).
+  Component Index: cvh-cmp-pneumatic-controller-schematic-proportional. Used by: cvb-046.html (composited).
 
 cvh4-fig4-12-controller-schematic-reset-rate.png
   Fig. 4.12 "Pneumatic Controller Schematic," p.92 — three related
   schematic variants (proportional-plus-reset, proportional-plus-reset
   with anti-reset windup, differential gap control), own printed labels
   retained.
-  Component Index: cvh-cmp-4.12. Used by: cvb-046.html (composited).
+  Component Index: cvh-cmp-pneumatic-controller-schematic-reset-rate. Used by: cvb-046.html (composited).
 
 cvh4-fig4-10-11-12-controller-buildup-composite.png
   Figs. 4.10, 4.11, 4.12 combined top to bottom (each cropped from source,
@@ -570,7 +570,7 @@ cvh4-fig4-10-11-12-controller-buildup-composite.png
 cvh4-fig4-13-wireless-position-monitor.png
   Fig. 4.13 "Wireless Position Monitor Mounted on an Actuator," p.93 —
   unlabelled product photo.
-  Component Index: cvh-cmp-4.13. Used by: cvb-047.html. The slide's wired
+  Component Index: cvh-cmp-wireless-position-transmitter. Used by: cvb-047.html. The slide's wired
   panel has no source photograph (none exists in this chapter's Component
   Index) — rendered as a plain text figure naming the 4-20 mA signal
   convention instead of an invented hardware photo.
@@ -579,63 +579,63 @@ cvh4-fig14-14-spring-return-schematic.png
   Printed "Figure 14.14 Spring-Return Actuator Diagram," p.93 — a 3-port
   SOV schematic symbol driving a single-acting/spring-return actuator. See
   the real printed-numbering finding above; Component Index id
-  cvh-cmp-4.14. Used by: cvb-048.html (left panel).
+  cvh-cmp-sov-3port-spring-return-symbol. Used by: cvb-048.html (left panel).
 
 cvh4-fig14-15-double-acting-schematic.png
   Printed "Figure 14.15 Double-Acting Actuator Diagram," p.93 — a 4-port
   SOV schematic symbol driving a double-acting actuator. Component Index
-  id cvh-cmp-4.15. Used by: cvb-048.html (right panel).
+  id cvh-cmp-sov-4port-double-acting-symbol. Used by: cvb-048.html (right panel).
 
 cvh4-fig14-16-1oo2-sov-dvc-schematic.png
   Printed "Figure 14.16 Solenoid Valve and Digital Valve Controller in a
   1oo2 Configuration," p.94 — introduces the 1oo2 voting nomenclature.
-  Component Index id cvh-cmp-4.16. Cited in cvb-050.html's source line
+  Component Index id cvh-cmp-sov-1oo2-voting-intro. Cited in cvb-050.html's source line
   (introduces the nomenclature, not itself embedded — the slide shows the
   two full architecture schematics, Figs. 14.19/14.20, instead).
 
 cvh4-fig14-17-direct-acting-sov-photo.png
   Printed "Figure 14.17 Direct-Acting Solenoid Valve Assembly," p.94 —
-  unlabelled product photo. Component Index id cvh-cmp-4.17. Used by:
+  unlabelled product photo. Component Index id cvh-cmp-sov-direct-acting-assembly. Used by:
   cvb-049.html (left panel).
 
 cvh4-fig14-18-pilot-operated-sov-photo.png
   Printed "Figure 14.18 Pilot-Operated Solenoid Valve," p.94 — unlabelled
-  product photo. Component Index id cvh-cmp-4.18. Used by: cvb-049.html
+  product photo. Component Index id cvh-cmp-sov-pilot-operated-assembly. Used by: cvb-049.html
   (right panel).
 
 cvh4-fig14-19-1oo2-architecture-schematic.png
   Printed "Figure 14.19 1oo2 Solenoid-Operated Valve Architecture," p.95 —
   full voting-system schematic, own printed labels retained. Component
-  Index id cvh-cmp-4.19. Used by: cvb-050.html (frame 1).
+  Index id cvh-cmp-sov-1oo2-architecture-schematic. Used by: cvb-050.html (frame 1).
 
 cvh4-fig14-20-2oo2-architecture-schematic.png
   Printed "Figure 14.20 2oo2 Solenoid-Operated Valve Architecture," p.95 —
   full voting-system schematic, own printed labels retained. Component
-  Index id cvh-cmp-4.20. Used by: cvb-050.html (frame 2).
+  Index id cvh-cmp-sov-2oo2-architecture-schematic. Used by: cvb-050.html (frame 2).
 
 cvh4-fig4-24-trip-valve-tripped.png
   Fig. 4.24 "Trip Valve Shown in Tripped Condition," p.96 — labelled
   schematic (Upper Cylinder, Lower Cylinder, Positioner, Check Valve, Supply
   Pressure), own printed labels retained. Genuinely captioned "4.24" in the
   real source (the 14.x numbering anomaly does not extend past Fig. 4.21).
-  Component Index: cvh-cmp-4.24. Used by: cvb-051.html (composited).
+  Component Index: cvh-cmp-trip-valve-tripped-condition. Used by: cvb-051.html (composited).
 
 cvh4-fig4-25-switching-valve.png
   Fig. 4.25 "Typical 3-Way Switching Valve," p.96 — labelled cutaway
   (Adjusting Screw, Control Spring, Diaphragm, O-Ring, Port A, Port C,
   Body, Orifice Seat, Valve Stem, Valve Plug, Valve Spring) plus the
   source's own paired assembled-unit photo, own printed labels retained.
-  Component Index: cvh-cmp-4.25. Used by: cvb-051.html (composited).
+  Component Index: cvh-cmp-three-way-switching-valve. Used by: cvb-051.html (composited).
 
 cvh4-fig4-26-side-handwheel.png
   Fig. 4.26 "Actuator with Side-Mounted Handwheel," p.97 — unlabelled
   product photo.
-  Component Index: cvh-cmp-4.26. Used by: cvb-051.html (composited).
+  Component Index: cvh-cmp-actuator-side-handwheel. Used by: cvb-051.html (composited).
 
 cvh4-fig4-27-top-handwheel.png
   Fig. 4.27 "Actuator with Top-Mounted Handwheel," p.97 — unlabelled
   product photo.
-  Component Index: cvh-cmp-4.27. Used by: cvb-051.html (composited).
+  Component Index: cvh-cmp-actuator-top-handwheel. Used by: cvb-051.html (composited).
 
 cvh4-fig4-24-25-26-27-trip-switch-handwheel-composite.png
   Figs. 4.24, 4.25, 4.26, 4.27 combined side by side (each cropped from

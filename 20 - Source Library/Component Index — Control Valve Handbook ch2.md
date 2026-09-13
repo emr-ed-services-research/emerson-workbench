@@ -56,7 +56,7 @@ source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1 Process Variability; Figure 2.1 'Process Variability' (p. 35)"
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
-used-by: [cvb-053.html]
+used-by: [{course: CVB, slide: cvb-053.html}]
 notes: Foundational framing figure for the whole chapter; no companion figure.
 ```
 
@@ -74,7 +74,7 @@ source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.2 Performance Testing; Figure 2.2 'Performance Test Loop' (p. 36)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: [cvb-054.html]
+used-by: [{course: CVB, slide: cvb-054.html}]
 notes: Photo, not a graph; labelled equipment not individually called out in caption.
 ```
 
@@ -114,7 +114,7 @@ source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1.5 Installed Gain; Figure 2.5 'Installed Flow Characteristic and Gain' (p. 44)"
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
-used-by: [cvb-057.html]
+used-by: [{course: CVB, slide: cvb-057.html}]
 notes: Companion pair of stacked graphs sharing one x-axis (valve travel); treat as one figure/one crop.
 ```
 
@@ -131,7 +131,7 @@ source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1.5 Installed Gain; Figure 2.6 'Effect of Valve Style on Control Range' (p. 46)"
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
-used-by: [cvb-058.html]
+used-by: [{course: CVB, slide: cvb-058.html}]
 notes: >
   Same printed caption text as Figure 2.8 in this chapter ("Effect of Valve
   Style on Control Range") — this figure (2.6) is the one that actually
@@ -158,7 +158,7 @@ source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1.6 Economic Results (unlabeled subhead text); Figure 2.7 'Closed Loop Random Load Disturbance Summary' (p. 49)"
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
-used-by: [cvb-060.html]
+used-by: [{course: CVB, slide: cvb-060.html}]
 notes: Feeds directly into the chapter's economics discussion (return on investment from tighter control).
 ```
 
@@ -176,7 +176,7 @@ source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.3 Signature Series Performance Testing; captioned 'Figure 2.8 Effect of Valve Style on Control Range' (p. 50)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: [cvb-061.html]
+used-by: [{course: CVB, slide: cvb-061.html}]
 notes: >
   Caption/content mismatch, confirmed by direct visual inspection of the
   source page (not a transcription error on this pass): the printed caption
@@ -204,7 +204,7 @@ source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.3.3 Signature Series 3 / Data Comparison text; Figure 2.9 'Data Comparision' (p. 51) [sic — source spells 'Comparision']"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: [cvb-062.html]
+used-by: [{course: CVB, slide: cvb-062.html}]
 notes: Caption spelling "Comparision" is the source document's own typo, reproduced verbatim above rather than silently corrected.
 ```
 
@@ -221,7 +221,7 @@ source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.3 closing text 'Take Advantage of the Signature Series'; Figure 2.10 'ValveLink Software' (p. 51)"
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: [cvb-063.html]
+used-by: [{course: CVB, slide: cvb-063.html}]
 notes: Two-screenshot composite under one figure number; treat as one figure/one crop.
 ```
 

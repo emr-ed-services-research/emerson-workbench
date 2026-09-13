@@ -77,7 +77,7 @@ role: contrast · level: understand · pages: 8
   An angle body turns the flow path 90° for erosive or high-pressure-drop service; a three-way body combines or diverts flow through a single valve instead of the straight-through path a standard globe body uses.
 
   - `cvh-cmp-angle-valve-photo` (current, Component Index — Control Valve Handbook ch1.md) — "An angle valve: a grey angle-body sliding-stem valve with inlet and outlet perpendicular to each other, contrasting the straight-through globe body shown in Figures 1.2/1.3."
-  - `cvh-cmp-three-way-globe-valve` (current, Component Index — Control Valve Handbook ch1.md) — "A three-way globe valve: a single body with three flow connections, combining or diverting flow rather than the simple two-port throttling shown in the earlier sliding-stem figures."
+  - `cvh-cmp-three-way-globe-valve-overview` (current, Component Index — Control Valve Handbook ch1.md) — "A three-way globe valve: a single body with three flow connections, combining or diverting flow rather than the simple two-port throttling shown in the earlier sliding-stem figures."
   - template: `slide--role-contrast` — Two real photos, each a distinct body style (an angle body vs. a three-way body) — a clean two-way split that fits the contrast role's fixed two-panel shape exactly, one photo per panel.
   - slideCount: 1 (stage2)
   - pages: 8

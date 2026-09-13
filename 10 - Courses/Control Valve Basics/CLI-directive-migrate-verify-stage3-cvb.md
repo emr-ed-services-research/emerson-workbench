@@ -95,7 +95,7 @@ Each primitive got:
   "t": "An angle body turns the flow path 90° for erosive or high-pressure-drop service; a three-way body combines or diverts flow through a single valve instead of the straight-through path a standard globe body uses.",
   "sources": [
    "cvh-cmp-angle-valve-photo",
-   "cvh-cmp-three-way-globe-valve"
+   "cvh-cmp-three-way-globe-valve-overview"
   ],
   "template": "slide--role-contrast",
   "competencyStatus": "confirmed"
@@ -265,7 +265,7 @@ Each primitive got:
   "sources": [
    "cvh-cmp-flanged-angle-valve-body",
    "cvh-cmp-bar-stock-valve-body",
-   "cvh-cmp-three-way-globe-valve"
+   "cvh-cmp-three-way-globe-valve-cutaway"
   ],
   "template": "slide--role-application",
   "competencyStatus": "confirmed"
@@ -565,7 +565,7 @@ Each primitive got:
   ],
   "t": "A pneumatic positioner closes its own local loop: it compares actual stem position (fed back through a cam and beam) to the command signal at a flapper/nozzle, and drives a relay until the two agree.",
   "sources": [
-   "cvh-cmp-4.1"
+   "cvh-cmp-pneumatic-positioner-schematic"
   ],
   "template": "slide--role-mechanism",
   "competencyStatus": "confirmed"
@@ -581,8 +581,8 @@ Each primitive got:
   ],
   "t": "An analog I/P positioner runs the same feedback loop from a 4-20 mA current signal instead of a pneumatic one, converting current to pneumatic output through the same nozzle/flapper/relay stages.",
   "sources": [
-   "cvh-cmp-4.2",
-   "cvh-cmp-4.3"
+   "cvh-cmp-analog-ip-positioner-schematic",
+   "cvh-cmp-analog-ip-positioner-photo"
   ],
   "template": "slide--role-mechanism",
   "competencyStatus": "confirmed"
@@ -598,7 +598,7 @@ Each primitive got:
   ],
   "t": "A digital valve controller replaces the positioner's mechanical feedback linkage with a microprocessor — same job (drive the valve to command), added diagnostics.",
   "sources": [
-   "cvh-cmp-4.4"
+   "cvh-cmp-digital-valve-controller-photo"
   ],
   "template": "slide--role-nomenclature",
   "competencyStatus": "confirmed"
@@ -614,8 +614,8 @@ Each primitive got:
   ],
   "t": "An I/P transducer converts a current signal to a pneumatic one with no position feedback at all — simpler and cheaper than a positioner, appropriate where high positioning accuracy isn't required.",
   "sources": [
-   "cvh-cmp-4.5",
-   "cvh-cmp-4.6"
+   "cvh-cmp-ip-transducer-pilot-detail",
+   "cvh-cmp-ip-transducer-photo"
   ],
   "template": "slide--role-contrast",
   "competencyStatus": "confirmed"
@@ -631,8 +631,8 @@ Each primitive got:
   ],
   "t": "A volume booster amplifies the pneumatic flow available to the actuator without changing the signal's pressure — needed when a large or fast-stroking actuator would otherwise starve the positioner's own limited output capacity.",
   "sources": [
-   "cvh-cmp-4.7",
-   "cvh-cmp-4.8"
+   "cvh-cmp-volume-booster-sectional",
+   "cvh-cmp-dual-booster-installation"
   ],
   "template": "slide--role-application",
   "competencyStatus": "confirmed"
@@ -648,9 +648,9 @@ Each primitive got:
   ],
   "t": "A standalone pneumatic controller closes an entire control loop right at the valve, with no central control-room computer system (a DCS or PLC) needed — it compares the measured process value to a set point and drives the valve directly. Adding reset and rate elements to a proportional-only design corrects lingering offset and reacts faster to a changing load.",
   "sources": [
-   "cvh-cmp-4.10",
-   "cvh-cmp-4.11",
-   "cvh-cmp-4.12"
+   "cvh-cmp-pneumatic-controller-photo",
+   "cvh-cmp-pneumatic-controller-schematic-proportional",
+   "cvh-cmp-pneumatic-controller-schematic-reset-rate"
   ],
   "template": "slide--role-mechanism",
   "competencyStatus": "confirmed"
@@ -666,7 +666,7 @@ Each primitive got:
   ],
   "t": "A position transmitter reports actual valve position back to the control system — 4-20 mA if wired, a 0-100% digital signal if wireless — so the control room can see where the valve really is, not just where it was told to go.",
   "sources": [
-   "cvh-cmp-4.13"
+   "cvh-cmp-wireless-position-transmitter"
   ],
   "template": "slide--role-contrast",
   "competencyStatus": "confirmed"
@@ -682,10 +682,10 @@ Each primitive got:
   ],
   "t": "A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol). Separately, a direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.",
   "sources": [
-   "cvh-cmp-4.14",
-   "cvh-cmp-4.15",
-   "cvh-cmp-4.17",
-   "cvh-cmp-4.18"
+   "cvh-cmp-sov-3port-spring-return-symbol",
+   "cvh-cmp-sov-4port-double-acting-symbol",
+   "cvh-cmp-sov-direct-acting-assembly",
+   "cvh-cmp-sov-pilot-operated-assembly"
   ],
   "template": "slide--role-contrast",
   "competencyStatus": "confirmed"
@@ -701,9 +701,9 @@ Each primitive got:
   ],
   "t": "A 1oo2 (one-out-of-two) architecture trips if either of two SOVs sees a demand — favoring safety, more nuisance trips. A 2oo2 architecture needs both to agree — favoring uptime, at the cost of a slower response to a real single-SOV failure.",
   "sources": [
-   "cvh-cmp-4.16",
-   "cvh-cmp-4.19",
-   "cvh-cmp-4.20"
+   "cvh-cmp-sov-1oo2-voting-intro",
+   "cvh-cmp-sov-1oo2-architecture-schematic",
+   "cvh-cmp-sov-2oo2-architecture-schematic"
   ],
   "template": "slide--role-application",
   "competencyStatus": "confirmed"
@@ -719,10 +719,10 @@ Each primitive got:
   ],
   "t": "A trip valve shows a distinct physical state once a safety system actually trips it; a switching valve routes pneumatic signal for control logic rather than process flow. A side- or top-mounted handwheel lets a technician manually stroke an actuator with no air supply at all.",
   "sources": [
-   "cvh-cmp-4.24",
-   "cvh-cmp-4.25",
-   "cvh-cmp-4.26",
-   "cvh-cmp-4.27"
+   "cvh-cmp-trip-valve-tripped-condition",
+   "cvh-cmp-three-way-switching-valve",
+   "cvh-cmp-actuator-side-handwheel",
+   "cvh-cmp-actuator-top-handwheel"
   ],
   "template": "slide--role-nomenclature",
   "competencyStatus": "confirmed"
@@ -1008,7 +1008,7 @@ Each primitive got:
     },
     "sources": [
      "cvh-cmp-angle-valve-photo",
-     "cvh-cmp-three-way-globe-valve"
+     "cvh-cmp-three-way-globe-valve-overview"
     ]
    }
   ]
@@ -1318,7 +1318,7 @@ Each primitive got:
     "sources": [
      "cvh-cmp-flanged-angle-valve-body",
      "cvh-cmp-bar-stock-valve-body",
-     "cvh-cmp-three-way-globe-valve"
+     "cvh-cmp-three-way-globe-valve-cutaway"
     ]
    }
   ]
@@ -1857,7 +1857,7 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.1"
+     "cvh-cmp-pneumatic-positioner-schematic"
     ]
    }
   ]
@@ -1887,8 +1887,8 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.2",
-     "cvh-cmp-4.3"
+     "cvh-cmp-analog-ip-positioner-schematic",
+     "cvh-cmp-analog-ip-positioner-photo"
     ]
    }
   ]
@@ -1918,7 +1918,7 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.4"
+     "cvh-cmp-digital-valve-controller-photo"
     ]
    }
   ]
@@ -1948,8 +1948,8 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.5",
-     "cvh-cmp-4.6"
+     "cvh-cmp-ip-transducer-pilot-detail",
+     "cvh-cmp-ip-transducer-photo"
     ]
    }
   ]
@@ -1979,8 +1979,8 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.7",
-     "cvh-cmp-4.8"
+     "cvh-cmp-volume-booster-sectional",
+     "cvh-cmp-dual-booster-installation"
     ]
    }
   ]
@@ -2010,9 +2010,9 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.10",
-     "cvh-cmp-4.11",
-     "cvh-cmp-4.12"
+     "cvh-cmp-pneumatic-controller-photo",
+     "cvh-cmp-pneumatic-controller-schematic-proportional",
+     "cvh-cmp-pneumatic-controller-schematic-reset-rate"
     ]
    }
   ]
@@ -2042,7 +2042,7 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.13"
+     "cvh-cmp-wireless-position-transmitter"
     ]
    }
   ]
@@ -2072,10 +2072,10 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.14",
-     "cvh-cmp-4.15",
-     "cvh-cmp-4.17",
-     "cvh-cmp-4.18"
+     "cvh-cmp-sov-3port-spring-return-symbol",
+     "cvh-cmp-sov-4port-double-acting-symbol",
+     "cvh-cmp-sov-direct-acting-assembly",
+     "cvh-cmp-sov-pilot-operated-assembly"
     ]
    }
   ]
@@ -2105,9 +2105,9 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.16",
-     "cvh-cmp-4.19",
-     "cvh-cmp-4.20"
+     "cvh-cmp-sov-1oo2-voting-intro",
+     "cvh-cmp-sov-1oo2-architecture-schematic",
+     "cvh-cmp-sov-2oo2-architecture-schematic"
     ]
    }
   ]
@@ -2137,10 +2137,10 @@ Each primitive got:
      "maturity": "stage2"
     },
     "sources": [
-     "cvh-cmp-4.24",
-     "cvh-cmp-4.25",
-     "cvh-cmp-4.26",
-     "cvh-cmp-4.27"
+     "cvh-cmp-trip-valve-tripped-condition",
+     "cvh-cmp-three-way-switching-valve",
+     "cvh-cmp-actuator-side-handwheel",
+     "cvh-cmp-actuator-top-handwheel"
     ]
    }
   ]

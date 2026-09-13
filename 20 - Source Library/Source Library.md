@@ -35,22 +35,69 @@ request actually reaches — never a wholesale pre-index of a document:
   components, built 2026-09-06 as the Phase 4 follow-on of the Instructional
   Primitives Pathway. Almost entirely `current` (CVH 6th ed. + current Fisher
   easy-e / ET / packing manuals); no archive content.
-- **Control Valve Handbook, chapters 1–4** — [[Component Index — Control Valve Handbook ch1|ch1]]
-  (19 figures), [[Component Index — Control Valve Handbook ch2|ch2]] (9 new +
-  1 cross-referenced), [[Component Index — Control Valve Handbook ch3|ch3]]
+- **Control Valve Handbook, all 15 chapters — complete.** Chapters 1–4 —
+  [[Component Index — Control Valve Handbook ch1|ch1]] (19 figures),
+  [[Component Index — Control Valve Handbook ch2|ch2]] (9 new + 1
+  cross-referenced), [[Component Index — Control Valve Handbook ch3|ch3]]
   (52), [[Component Index — Control Valve Handbook ch4|ch4]] (27) — 107
   figures catalogued fresh, built 2026-09-11 as Phase 0 of the Stage-1/
   Stage-2 review-checkpoint work, the real precondition for Steve's Control
-  Valve Basics class (chapters in the order 1, 3, 4, 2). Standing full-chapter
-  cataloging (see "Three ways," below), not deck- or topic-driven — CVH is a
-  `current` first-party Emerson/Fisher document throughout. Real corrections
-  found and documented in place, not silently fixed: a genuine source
-  duplicate (two distinct figures both captioned "Figure 3.24"), a source
-  citation error (§3.8.4 cites the wrong figure number for its own rack-and-
-  pinion photo), a caption/image mismatch in ch2 (Figure 2.8's caption
-  duplicates Figure 2.6's but the image is unrelated), and a real
-  `pdftotext` extraction artifact in ch4 (spurious "14.x" figure numbering)
-  caught and resolved against the actual source rather than reproduced.
+  Valve Basics class (chapters in the order 1, 3, 4, 2). Chapters 5–15 —
+  [[Component Index — Control Valve Handbook ch5|ch5]] (19 — 18 numbered
+  figures + 1 unnumbered diagram, see below),
+  [[Component Index — Control Valve Handbook ch6|ch6]] (9),
+  [[Component Index — Control Valve Handbook ch7|ch7]] (14),
+  [[Component Index — Control Valve Handbook ch8|ch8]] (11),
+  [[Component Index — Control Valve Handbook ch9|ch9]] (7),
+  [[Component Index — Control Valve Handbook ch10|ch10]] (53),
+  [[Component Index — Control Valve Handbook ch11|ch11]] (3),
+  [[Component Index — Control Valve Handbook ch12|ch12]] (5),
+  [[Component Index — Control Valve Handbook ch13|ch13]],
+  [[Component Index — Control Valve Handbook ch14|ch14]],
+  [[Component Index — Control Valve Handbook ch15|ch15]] (0 each, confirmed
+  — reference-table chapters with no numbered figures, checked page by page
+  rather than assumed) — 121 more components, built 2026-09-17. **228
+  components total across the whole Handbook.** Standing full-chapter cataloging (see
+  "Three ways," below), not deck- or topic-driven — CVH is a `current`
+  first-party Emerson/Fisher document throughout. Real corrections found and
+  documented in place, not silently fixed: a genuine source duplicate (two
+  distinct figures both captioned "Figure 3.24"), a source citation error
+  (§3.8.4 cites the wrong figure number for its own rack-and-pinion photo), a
+  caption/image mismatch in ch2 (Figure 2.8's caption duplicates Figure
+  2.6's but the image is unrelated), a real `pdftotext` extraction artifact
+  in ch4 (spurious "14.x" figure numbering) caught and resolved against the
+  actual source rather than reproduced, and (ch5) a source captioning error
+  where Figure 5.1's printed caption reads "Feedback Control Loop" but its
+  actual content is the flow-characteristic curve set.
+  **A genuine, pre-existing id collision was found and resolved (2026-09-18).**
+  `cvh-cmp-three-way-globe-valve` had named two different real figures — ch1's
+  Figure 1.8 (p.20, plain overview photo) and ch3's Figure 3.6 (p.58,
+  balanced-plug cutaway) — both authored 2026-09-11 without cross-checking
+  each other, and load-bearing in real, shipped Control Valve Basics slides
+  (`cvb-008.html` genuinely used the ch1 photo, `cvb-020.html` genuinely
+  used the ch3 cutaway) and in all three CVE1 dry-run courses. Split into
+  `cvh-cmp-three-way-globe-valve-overview` (ch1) and
+  `cvh-cmp-three-way-globe-valve-cutaway` (ch3); every real reference
+  repointed per-slide by checking each one's actual image content, not
+  assumed — including confirming CVE1-Verify's own authored `t` text
+  ("mid-travel plug position") matches the ch3 cutaway despite never having
+  a built slide to check an image against. Both `used-by` lists, which had
+  been identically (and wrongly) listing both slides, corrected to the
+  slide each figure actually appears on. Re-swept afterward: the collision
+  is gone, no new one was introduced, `verify.ps1` on Control Valve Basics
+  is clean.
+  **The ch5 p.100 unnumbered "Valve Selection Process" diagram is now
+  catalogued** (`cvh-cmp-valve-selection-process-flowchart`), per the
+  decision that the figures-only rule was meant to exclude tables, not real
+  unnumbered diagrams — a synthetic `"Unnumbered diagram, p. N — ..."`
+  locator is the standing convention for this case going forward, not a
+  one-off. ch5's real component count is therefore 19, not 18.
+  ch4's own schema drift was also fixed in the same pass: `status: verified`
+  (a non-standard value never used elsewhere) corrected to `status: current`
+  across all 27 records, and numeric ids (`cvh-cmp-4.N`) renamed to
+  descriptive slugs — both touched real, shipped Control Valve Basics
+  content (course data, 11 built slide files, an asset manifest), verified
+  clean afterward (`verify.ps1`: 0 FAIL, 0 warn).
 
 **Three ways a component index gets triggered** (corrected 2026-09-04 — see
 `Course Porting Pipeline.md` "Origination without a deck" — then widened
@@ -71,21 +118,41 @@ Sourcebook's own 13-chapter pass, but never previously written down here):
    needing it, when a course is *known* to need broad coverage of that
    material soon (e.g. Control Valve Basics needing CVH chapters 1–4 whole,
    not one narrow topic within them). Real precedent: the Oil & Gas
-   Sourcebook's full 13-chapter, 144/144-figure pass, and — added 2026-09-11,
-   Phase 0 of the Stage-1/Stage-2 review-checkpoint work — the Control Valve
-   Handbook's own chapters 1–4 ([[Component Index — Control Valve Handbook ch1|ch1]],
-   [[Component Index — Control Valve Handbook ch2|ch2]],
-   [[Component Index — Control Valve Handbook ch3|ch3]],
-   [[Component Index — Control Valve Handbook ch4|ch4]]).
-   This is still **not** "index the whole Handbook just in case" — every
-   pass here was scoped to specific chapters a specific, real course
-   actually needs, confirmed before the pass started, never speculative
-   coverage of a document with no course behind it at all.
+   Sourcebook's full 13-chapter, 144/144-figure pass; the Control Valve
+   Handbook's own chapters 1–4, added 2026-09-11 as Phase 0 of the
+   Stage-1/Stage-2 review-checkpoint work; and chapters 5–15, added
+   2026-09-17 to complete the whole Handbook (all 15 chapters:
+   [[Component Index — Control Valve Handbook ch1|ch1]] through
+   [[Component Index — Control Valve Handbook ch15|ch15]]) — the last three
+   chapters (13–15) confirmed to contain zero numbered figures, checked page
+   by page, not skipped on the assumption that reference-table chapters
+   wouldn't have any.
+   Chapters 1–4 held to that rule exactly — scoped to Control Valve Basics'
+   confirmed, immediate need. **Chapters 5–15 are a real exception, made
+   deliberately, not a quiet drift back to "index it all just in case":**
+   Franz explicitly chose to complete the whole Handbook's coverage once
+   chapters 1–4 proved the pass out, rather than wait for each remaining
+   chapter to have its own confirmed course behind it first. Chapters 5–8
+   do have a known near-term claim (a future engineering/sizing-oriented
+   course); chapters 9–15 do not, as of 2026-09-17 — this doc says so
+   plainly rather than retroactively inventing a course need to fit the old
+   rule. If this pattern repeats for another source document, treat it as
+   its own decision each time, not a precedent that completeness is now
+   the default.
 
 Building either kind of index is real research and editorial judgment — full
 reads of the relevant sources, precedence calls that go to Franz for
 review — not a quick lookup or a code change. Treat it with the same weight
 as authoring Stage 2 content, not as pipeline plumbing.
+
+**The actual step-by-step process — file/record schema, the render-and-look
+rigor standard, the mandatory whole-library collision sweep, and how the
+real edge cases get handled — lives in
+[[Component Index — Process & Standards]], not here.** This doc stays the
+overview; that one is what a directive like "index [source]" should point
+at instead of re-deriving scope from scratch. It also governs `used-by`
+(see [[Course Catalog]] for the real courses it can reference) and
+`mediaStatus` (the media-improvement-earmarking field, built 2026-09-18).
 
 See `00 - Project/Source Grounding — Staging Plan.md` for the build plan and how
 this graduates into the permanent pipeline docs.
@@ -96,8 +163,67 @@ this graduates into the permanent pipeline docs.
 | --- | --- | --- | --- |
 | Emerson Control Valve Handbook, 6th Edition | Handbook | 1 | [[Emerson Control Valve Handbook]] |
 | Fisher Control Valve Sourcebooks (Oil & Gas, Power & Severe Service, Refining, Pulp & Paper) | Industry handbooks | 4 | [[Industry Handbooks]] |
-| Fisher / Emerson instruction manuals | Technical publications | 16 | [[Technical Publications]] |
+| Fisher / Emerson instruction manuals | Technical publications | 19 | [[Technical Publications]] |
 | Historic Educational Services training series | Historical archive (unverified) | ~60+ modules | [[Historic Educational Services Training Content]] |
+
+## Component Index coverage
+
+The single place that answers "what's indexed and what isn't," across every
+source. Updated as the explicit closing step of every ingestion pass — see
+[[Component Index — Process & Standards]] — not a separately-remembered
+maintenance task. "Status" and "trigger-type" are read together: a
+deck-/topic-driven index's own "complete" means *matches its scope*
+(the deck or the topic), not *exhausts the source* — don't read "partial"
+on those rows as unfinished work.
+
+| Source / scope | Trigger-type | Status | Components | Last touched |
+| --- | --- | --- | --- | --- |
+| Control Valve Handbook — all 15 chapters | Standing full-chapter | Complete | 228 | 2026-09-18 |
+| Oil & Gas Sourcebook — all 13 chapters | Standing full-chapter | Complete | 144 | 2026-09-08 |
+| 14101 ch1–ch2 ([[Component Index — 14101 ch1-ch2]]) | Deck-driven | Complete (matches the deck) | 25 | 2026-09-06 |
+| 14101 ch3 ([[Component Index — 14101 ch3]]) | Deck-driven | Complete (matches the deck) | 52 | 2026-09-02 |
+| bench-set-657 ([[Component Index — bench-set-657]]) | Topic-driven | Complete (matches the topic) | 6 | 2026-09-06 |
+| Fisher 657 Diaphragm Actuator ([[Component Index — Fisher 657 Diaphragm Actuator]]) — rest of the document beyond bench-set-657's slice | Standing full-document | Complete | 17 | 2026-09-19 |
+| Fisher 667 Diaphragm Actuator | Standing full-document | Complete | 25 | 2026-09-19 |
+| Fisher 585C Series Piston Actuators | Standing full-document | Complete | 16 | 2026-09-19 |
+| Fisher 1051/1052 Rotary Actuators | Standing full-document | Complete | 17 | 2026-09-19 |
+| Fisher 1061 Rotary Actuator | Standing full-document | Complete | 11 | 2026-09-19 |
+| Fisher 2052 Rotary Actuator | Standing full-document | Complete | 10 | 2026-09-19 |
+| Fisher ES/EAS easy-e Valves | Standing full-document | Complete | 16 | 2026-09-19 |
+| Fisher ED easy-e Valve | Standing full-document | Complete | 24 | 2026-09-19 |
+| Fisher ET/EAT easy-e Valves | Standing full-document | Complete | 25 | 2026-09-19 |
+| Fisher EZ easy-e Valve | Standing full-document | Complete | 15 | 2026-09-19 |
+| Fisher ENVIRO-SEAL Packing System | Standing full-document | Complete | 9 | 2026-09-19 |
+| Fisher HIGH-SEAL Packing System | Standing full-document | Complete | 6 | 2026-09-19 |
+| Fisher 9500 Butterfly Valve | Standing full-document | Complete | 7 | 2026-09-19 |
+| Fisher 8580 Rotary Valve | Standing full-document | Complete | 12 | 2026-09-19 |
+| Fisher Vee-Ball V150/200/300 Rotary Valves | Standing full-document | Complete | 35 | 2026-09-19 |
+| Fisher V500 Rotary Globe Valve | Standing full-document | Complete | 16 | 2026-09-19 |
+| Fisher FIELDVUE DVC6200 ([[Component Index — Fisher FIELDVUE DVC6200]]) | Standing full-document | Complete | 39 | 2026-09-19 |
+| Fisher FIELDVUE DVC7K-H ([[Component Index — Fisher FIELDVUE DVC7K-H]]) | Standing full-document | Complete | 42 | 2026-09-19 |
+| Fisher ENVIRO-SEAL Rotary Packing System ([[Component Index — Fisher ENVIRO-SEAL Rotary Packing System]]) — added to the library 2026-09-20 | Standing full-document | Complete | 7 | 2026-09-20 |
+| Power & Severe Service Sourcebook | — | Not started | 0 | — |
+| Refining Sourcebook | — | Not started | 0 | — |
+| Pulp & Paper Sourcebook | — | Not started | 0 | — |
+| Historic Educational Services archive | — | Not started (unverified, `legacy`/`archive-only` territory if ever indexed) | 0 | — |
+
+**19 real Technical Publications manuals are now fully indexed** (18 from
+the original batch plus the ENVIRO-SEAL rotary manual, D101643X012, added
+to the library and indexed 2026-09-20 — previously cited by name from three
+already-catalogued manuals as "not held," now real). The last remaining
+"not started" category (bench-set-657 excepted, which was always a
+deliberate partial slice) is closed. This was indexed deliberately ahead of
+any confirmed course citation, per Franz's own explicit framing that
+library membership itself is the demand signal for this pass — see each
+file's own header for the real per-document rigor and structural findings.
+
+**727 components catalogued across the library today** (228 CVH + 144 Oil &
+Gas + 355 Technical Publications, the last figure being 6 bench-set-657 +
+17 657-completion + 25+16+17+11+10+16+24+25+15+9+6+7+12+35+16 across the 15
+flat-structure manuals + 39 DVC6200 + 42 DVC7K-H + 7 ENVIRO-SEAL rotary),
+plus the 25/52 course-scoped 14101 ones counted in their own rows rather
+than double-counted into that total, since they cite figures the
+whole-chapter/whole-document indexes may already carry separately.
 
 ### Primary sources (current, authoritative)
 

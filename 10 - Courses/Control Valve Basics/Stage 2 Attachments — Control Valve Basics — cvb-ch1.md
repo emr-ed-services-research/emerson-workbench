@@ -36,7 +36,7 @@ updated: 2026-09-12
 
 **4. (contrast · understand, page 8, slide--role-contrast)** An angle body turns the flow path 90° for erosive or high-pressure-drop service; a three-way body combines or diverts flow through a single valve instead of the straight-through path a standard globe body uses.
   - `cvh-cmp-angle-valve-photo` (current, Component Index — Control Valve Handbook ch1.md) — "An angle valve: a grey angle-body sliding-stem valve with inlet and outlet perpendicular to each other, contrasting the straight-through globe body shown in Figures 1.2/1.3."
-  - `cvh-cmp-three-way-globe-valve` (current, Component Index — Control Valve Handbook ch1.md) — "A three-way globe valve: a single body with three flow connections, combining or diverting flow rather than the simple two-port throttling shown in the earlier sliding-stem figures."
+  - `cvh-cmp-three-way-globe-valve-overview` (current, Component Index — Control Valve Handbook ch1.md) — "A three-way globe valve: a single body with three flow connections, combining or diverting flow rather than the simple two-port throttling shown in the earlier sliding-stem figures."
 
 **5. (contrast · understand, page 9, slide--role-contrast)** A conventional bonnet packs the stem with PTFE or graphite rings in the packing box; a bellows-seal bonnet replaces packing entirely with a welded metal bellows for zero-leakage service on hazardous or toxic process fluids.
   - `cvh-cmp-bonnet-assembly` (current, Component Index — Control Valve Handbook ch1.md) — "A conventional bonnet assembly: a labelled cutaway of the bonnet, packing, packing box (the bored recess in the bonnet, not the bonnet casting itself), and valve stem — the baseline packing arrangement Figure 1.5's bellows-seal variant is contrasted against."
