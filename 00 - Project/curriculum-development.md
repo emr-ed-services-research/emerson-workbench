@@ -153,7 +153,7 @@ audience, per the "don't leave two field shapes for one thing" lesson
 # one entry in keyConcepts[i].primitives[] — NOT a separate top-level record;
 # it lives inside the concept, inside the module, inside the course.json
 # chapter/module hierarchy directly (no flat side-index to reconcile back)
-- domain: maintenance      # a real domain (maintenance/instrumentation/eng), or
+- domain: maintenance      # a real domain (maintenance/instrumentation/engineering), or
                            # null — a real, permanent "no domain assigned" value
                            # (2026-09-14 schema fix), never "TBD" (that stays
                            # owned by status: "outline")

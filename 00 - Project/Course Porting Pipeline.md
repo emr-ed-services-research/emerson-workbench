@@ -317,8 +317,9 @@ each module.
    it. No indexed component → a short `sourceNote` instead. Stage 3 then pulls
    from these instead of searching source material cold.
 2. **Bloom / domain (Axis B).** Each chapter carries a `domain` (`maintenance` /
-   `instrumentation` / `eng` / `null` — renamed from `selection-sizing`
-   2026-09-14, see the domain/tier schema fix below); each module a `levelTarget` (Bloom's
+   `instrumentation` / `engineering` / `null` — renamed from `selection-sizing`
+   2026-09-14, spelled out in full 2026-09-17, see the domain/tier schema fix
+   below); each module a `levelTarget` (Bloom's
    revised: remember … create); each concept its own `level`. The objective
    leads with a verb from the domain menu at `levelTarget`.
 3. **Instructional role (Axis C).** Each concept carries a `role` (`prime`,
@@ -868,6 +869,15 @@ Mirror into [[Open Questions]] once reviewed.
 
 - ~~**Engine location**~~ — resolved 2026-08-30: `40 - Engine/`, peer to
   `10 - Courses/`; courses assembled from it by `build-course.ps1`.
+- **Minor: indefinite article on domain names** — `course-model.js`'s
+  `moduleStage2Completeness` builds the message `` `objective should lead
+  with a ${m.domain}/${m.levelTarget}-or-below verb` ``, which always uses
+  "a" regardless of what follows — reads wrong for a vowel-leading domain
+  (`"a engineering/evaluate-or-below verb"` should be "an"). Found 2026-09-17
+  during the Domain Voice / Domain-Tier Depth naming consolidation's real
+  schema-check verification; pre-existing and unrelated to that rename
+  (the same bug already existed for `instrumentation`), left out of scope
+  there. Cosmetic only — no functional effect on the check itself.
 - **Data layer scope** — which tables / values move to a data layer versus stay
   in HTML behind a lint check.
 - **Generator future** — retire it from authored chapters (recommended) versus

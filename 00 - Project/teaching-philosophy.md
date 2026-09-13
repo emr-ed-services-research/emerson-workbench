@@ -105,7 +105,7 @@ verb.
 | evaluate | verify · assess · judge |
 | create | configure · design |
 
-**`eng`**
+**`engineering`**
 
 | Level | Verbs |
 | --- | --- |
