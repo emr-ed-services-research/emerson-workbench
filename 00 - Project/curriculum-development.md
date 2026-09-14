@@ -5,7 +5,7 @@ tags:
   - project
   - design
   - curriculum
-updated: 2026-09-11
+updated: 2026-09-24
 ---
 
 # Emerson Workbench — Curriculum Development Layer
@@ -339,7 +339,7 @@ for exactly how it's used.
 ```yaml
 activities:
   - id: "d1-tenets-sort"
-    type: discussion   # discussion | small-group | application-exercise | case-walkthrough | qa
+    type: discussion   # discussion | small-group | application-exercise | case-walkthrough | qa | task-cold-start
     afterConcept: 2    # 0-based index into keyConcepts this activity runs after
     minutes: 18
     title: "Tenet Sort"
@@ -349,6 +349,26 @@ activities:
     materials: ["Scenario cards (one per tenet)"]
     sourceNote: "Cards derived from the Five Tenets table's own 'Instructor's move' column — no new facts, a live application of what's already sourced."
 ```
+
+**`type: task-cold-start`** (added 2026-09-24, for software-skills
+courses) — the task-first equivalent of hands-first for software content.
+Hands-first works for hardware because a learner can physically
+manipulate a part and wonder what it does before being told; software has
+no equivalent tactile discovery moment. The working equivalent is
+task-first: drop the learner in front of the live software with a real
+task and no instructions ("get this positioner calibrated using
+ValveLink Mobile, starting from a fresh connection"), let them attempt it
+and get stuck, then debrief with the actual path and vocabulary
+afterward — discovery through struggle with a real task, not
+memorization of a click-path diagram. A `task-cold-start` activity's
+`sourceNote` names the `navPath` Component Index id(s) (see `Component
+Index — Process & Standards.md`) it debriefs from once the learner has
+attempted the task — the same relationship an ordinary activity's
+`sourceNote` has to a figure-based Component Index entry, and the same
+relationship components already have to a primitive: the task is
+course-authored pedagogy built from library facts, not a new Source
+Library record type. No new Component Index record is minted for a task
+itself.
 
 Added 2026-09-10, same directive as `minutesTarget` (Content-Depth fix),
 explicit follow-up: a real half-day of instructor-led delivery is not

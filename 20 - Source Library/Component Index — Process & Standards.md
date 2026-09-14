@@ -5,7 +5,7 @@ tags:
   - source-library
   - pipeline
   - component-index
-updated: 2026-09-18
+updated: 2026-09-14
 ---
 
 # Component Index — Process & Standards
@@ -62,6 +62,16 @@ scope unit: `Component Index — <Manual Name>.md`, no `ch<N>` suffix. Real
 precedent: `Component Index — Fisher 667 Diaphragm Actuator.md`, not
 `... ch1.md` — there is no chapter to be chapter 1 of.
 
+**A software manual with a real numbered-chapter structure** uses the
+numbered-chapter file convention (one file per chapter), same as the
+Control Valve Handbook, rather than the flat whole-document form most
+Technical Publications instruction manuals use. Confirmed on the AMS
+Trex User Guide: real numbered chapters (1 intro, 2 hardware, 3 Field
+Communicator application, 4 Loop Diagnostics application, 5 Fieldbus
+Diagnostics application) plus four appendices and a glossary/index —
+check a software manual's own real structure the same way, don't assume
+flat just because most Technical Publications manuals happen to be flat.
+
 ## File structure
 
 Frontmatter: `title`, `type: reference`, `tags: [source-library, pipeline,
@@ -114,8 +124,13 @@ versa:
 
 ## Record schema
 
+**The shape below is `kind: figure`, the default for image-based content.**
+See "Software documentation: `kind: navPath`" further down for the
+no-image record shape used for software navigation/procedure content.
+
 ```yaml
 id: <source-prefix>-cmp-<descriptive-slug>
+kind: figure                          # optional on existing records (implicit default); see navPath below
 teaches: >
   What this component actually teaches — written for someone deciding
   whether to cite it, not a caption restatement.
@@ -189,6 +204,198 @@ cross-reference to the same real image** (see "Cross-reference before
 minting" below), `mediaStatus` lives only on the source-anchored record —
 never duplicated onto the cross-reference, for the same reason `used-by`
 duplication caused real drift once (see "Known open gap" below).
+
+## Software documentation: `kind: navPath` (added 2026-09-24)
+
+A screenshot proves a screen exists; it doesn't teach the skill, which is
+knowing the path to reach a function and what to do once there — and it
+ages against the exact UI it captured in a way a described path doesn't.
+Most of a software manual (app menus, navigation, configuration
+procedures) should be catalogued as a **path plus what happens there**,
+not as an image. Genuine data visualization — an actual diagnostic graph,
+trend plot, or anything where the visual shape of the information is
+itself the content — stays image-based exactly as today.
+
+Every component record now carries a `kind` field:
+
+- **`kind: figure`** — the default, unchanged. Everything catalogued
+  before this addition, and every genuine image-based record going
+  forward, is `figure` (existing files don't need the key added
+  retroactively — same "missing key = the older default" convention
+  `mediaStatus` already established).
+- **`kind: navPath`** — new. No image. `delivery` and `mediaStatus` are
+  **omitted entirely**, not filled with a placeholder — both fields
+  describe image treatment and quality, and neither question applies to a
+  record with no image.
+
+```yaml
+id: <source-prefix>-cmp-<descriptive-slug>
+kind: navPath
+teaches: >
+  What this function actually does and why a learner would need to reach
+  it — same bar as a figure's `teaches`, written for someone deciding
+  whether to cite it.
+concept-tags: [tag, tag, ...]
+status: current
+source:
+  - doc: <full document citation>
+    locator: "Section X.Y 'Title,' p. N"
+path: [Top-level area, Sub-area, Function name]
+action: >
+  What actually happens when you reach this function and use it — the
+  real procedure, in prose, not a restated click list.
+used-by: []
+notes: >
+  Cross-references, disambiguation, confidence caveats.
+screen: <optional — id of an existing kind:figure record if a real screenshot
+  of the relevant screen already exists in this file; omit if none does>
+```
+
+**Word every `path`/`action` at the function level, not a literal,
+assumed-universal click sequence.** Confirmed on the AMS Trex User
+Guide: it is a HART/Device-Description-driven communicator, and its own
+text states plainly that "some devices may not display a Device Setup
+menu or it may display different options... vary widely from device to
+device and are defined in the device description." The menu structure
+itself is generated per connected instrument — a literal click path
+recorded from one device's session may not exist verbatim on a different
+model. Name the function ("Setup > Detailed Setup > wherever calibration
+lives for this device"), not a click sequence asserted to be universal.
+This is a real, confirmed property of DD-driven software (ValveLink,
+AMS Trex today; check any new software product for the same trait before
+assuming a fixed, universal menu tree) — not a generic hedge to apply
+everywhere by default. A genuinely fixed-menu desktop application (no
+per-device DD content) can be worded at the literal-click level if that's
+what the software actually does.
+
+**Grain: one record per the document's own native procedure/function
+unit** — the same "match the source's real structure" principle that
+already governs figure grouping headers, not a fixed rule like "one
+record per screen." Confirmed against AMS Trex's real structure: 113
+independently-numbered "Procedure" blocks across 206 pages (more than its
+97 figures) — each a complete, self-contained function with its own
+heading, e.g. `3.14.4 Change a HART device parameter` and
+`3.14.5 Edit a HART configuration` are two distinct, separately-numbered,
+independently citable procedures that happen to share a parent topic
+area (`3.14 Online HART devices`) — they do NOT get merged into one
+record just because they're adjacent or thematically related.
+
+**A materiality filter applies before minting a record**: a numbered
+subsection that's purely descriptive — a fact about a display option or
+screen element, no numbered steps, nothing a learner actually does — is
+not a procedure and does not get a `navPath` record. Real precedent:
+AMS Trex's `3.15.4 Rename a HART configuration`-style one-line facts
+(check the actual chapter file's own Open Items for its live list) — skip
+these and say so in Open Items, the same honesty the "near-zero-figure
+chapters" rule already requires on the figures side. Don't force a thin
+record into existence just because the source gave it a heading number.
+**Correction, 2026-09-24**: an earlier draft of this rule cited AMS
+Trex's own `3.14.6 Display the HART short tag or long tag` as this
+precedent — confirmed wrong by directly rendering p.92 during the ch3
+cataloguing pass: it's a genuine 3-step procedure with its own Figure
+3-33 ("Tap the device tag"), not a descriptive paragraph. It is
+correctly catalogued as `amstrex-cmp-display-hart-tag` in
+`Component Index — AMS Trex User Guide ch3.md`. The mistake happened
+because a first pass read only the paragraph immediately following the
+section heading and stopped before the "Procedure" block further down
+the same page — a reminder that the rigor standard's "render and look"
+rule means reading the whole page, not the first paragraph under a
+heading.
+
+**Consolidate only when the source itself treats several subsections as
+one continuous procedure**, matching the existing precedent
+(`bs657-cmp-bench-set-adjustment`'s 8-step procedure as one record; the
+ValveLink Mobile QSG's 10-step Trex-powering procedure and 6-page menu
+legend, each bundled as one record) — never to reduce record count for
+its own sake. Two adjacent, independently-numbered, genuinely distinct
+functions stay two records even when closely related.
+
+**`path: physical`** (added 2026-09-14) — for a real, numbered procedure
+with genuine steps but no on-screen menu at all (a physical/mechanical
+task: remove a screw, seat a module, hold a button). This is still
+`kind: navPath` — extend the existing record shape minimally rather than
+inventing a third `kind` for what is still fundamentally "a function plus
+what happens when you do it," just without a menu to walk. Use the
+literal string `path: physical` in place of a breadcrumb array, omit
+`screen` (there is no menu screen to point at), and put the real steps
+directly in `action` as prose instructions — same as any other navPath
+record, just describing hands-on steps instead of taps. Real precedent:
+AMS Trex ch2's `amstrex-cmp-hard-shutdown` (§2.8.2, press and hold the
+power button for 12 seconds) and `amstrex-cmp-replace-stand` (§2.17.1, a
+5-step screwdriver procedure) — both real, teachable procedures that had
+been sitting outside both record kinds until this addition closed the
+gap. Only applies when there is truly no accompanying figure either;
+when a figure already shows the relevant before/after state (e.g. ch2's
+`amstrex-cmp-trex-with-module-removed` for the communication-module
+procedures), that figure remains the sole record and no `path: physical`
+record is added on top of it, to avoid two records teaching the same
+content twice.
+
+**navPath-to-navPath deduplication is a confirmed pattern** (added
+2026-09-14), alongside the existing navPath-to-figure deduplication rule
+above (don't re-record teaching content a figure already carries). When
+one numbered subsection's function is a thin cross-reference to a fuller
+procedure catalogued elsewhere under its own numbered subsection, don't
+mint a second, thinner record for it — cite the fuller record instead.
+Real precedent: AMS Trex ch4's §4.3 names three physical-power
+sub-functions ("Power a transmitter," "Power a positioner," "Simulate a
+transmitter with 4 mA") in passing, each of which is taught fully by a
+later, independently-numbered procedure (§4.6–§4.9, §4.11.4) — only
+"Disable power to a device," which has no fuller section elsewhere, got
+its own record from §4.3 itself.
+
+**Bundling vs. separate records for several short, related unnumbered
+diagrams is chapter-level editorial judgment, not a strict rule** (added
+2026-09-14) — don't treat one pass's bundling choice as binding precedent
+against a later pass's separating choice, or vice versa. Both real cases
+are on record: the ValveLink Mobile QSG's menu-icon legend and AMS Trex
+ch2's touchscreen-gesture legend are each one continuous reference table
+with no per-item headings, bundled as one record; AMS Trex ch4–5's three
+Section 5.3 "Default status labels" diagrams (DC voltage, noise, signal)
+each carry their own bold heading and illustrate a distinct measurement's
+own numeric thresholds, and were catalogued as three separate records.
+The deciding factor is whether the source itself presents the content as
+one continuous thing or as several distinct, separately-headed things —
+judge each real case against the source's own structure, not against
+what a previous pass did with superficially similar content.
+
+**No `kind: navSection` / top-level summary record.** Considered and
+rejected 2026-09-24: AMS Trex's real numbered-chapter structure (Chapter
+3 "Field Communicator application," Chapter 4 "Loop Diagnostics
+application," etc.) already is the top-level layer — it's exactly what
+the existing numbered-chapter grouping-header form represents, and every
+navPath record for that chapter already sits contiguously under its
+header in the file. A separate record summarizing "everything under this
+chapter" would have to duplicate either a prose description (which fits
+as a plain paragraph under the header instead — no id, nothing to
+resync) or a list of child ids (which the header's own contiguous block
+of records already is, and which would drift out of sync the moment a
+leaf record is added, renamed, or split). That second failure mode is
+the same sync-drift risk the topic-first Component Index restructure was
+rejected for. **Instead**: a section may open with a short prose summary
+paragraph under its header, written only when the header name alone
+doesn't make the area's purpose obvious — same texture as every
+Component Index file's own opening intro paragraph, not a new schema
+element.
+
+**Applies to any software product added to the library, not just AMS
+Trex/ValveLink** — QuickLook 3.5, FisherFirst (FF2), ValveLink SNAP-ON,
+and any future software manual all use this convention. Check each new
+product's own real structure (numbered procedure blocks? DD-driven
+per-device menus, or a fixed desktop menu tree?) before applying it
+mechanically — the function-level-wording rule in particular depends on
+whether the software genuinely generates its menu per connected device,
+which is a real, checkable property of the software, not an assumption
+to import from AMS Trex by default.
+
+**Forward-only — no retroactive conversion.** The already-indexed
+ValveLink Mobile Software Quick Start Guide's 11 records (all `kind:
+figure` by the pre-2026-09-24 convention) are not converted now. Convert
+an individual record to `kind: navPath` only at the moment a real course
+actually cites it for production — same reasoning as `mediaStatus`'s
+non-backfill rule: mechanically converting every existing software
+record ahead of real demand would itself be the wholesale pass the
+Component Index's own founding rule exists to avoid.
 
 ## The rigor standard: render and look, don't trust extraction alone
 

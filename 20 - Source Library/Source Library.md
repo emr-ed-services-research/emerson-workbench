@@ -163,7 +163,7 @@ this graduates into the permanent pipeline docs.
 | --- | --- | --- | --- |
 | Emerson Control Valve Handbook, 6th Edition | Handbook | 1 | [[Emerson Control Valve Handbook]] |
 | Fisher Control Valve Sourcebooks (Oil & Gas, Power & Severe Service, Refining, Pulp & Paper) | Industry handbooks | 4 | [[Industry Handbooks]] |
-| Fisher / Emerson instruction manuals | Technical publications | 19 | [[Technical Publications]] |
+| Fisher / Emerson instruction manuals | Technical publications | 27 | [[Technical Publications]] |
 | Historic Educational Services training series | Historical archive (unverified) | ~60+ modules | [[Historic Educational Services Training Content]] |
 
 ## Component Index coverage
@@ -202,28 +202,50 @@ on those rows as unfinished work.
 | Fisher FIELDVUE DVC6200 ([[Component Index — Fisher FIELDVUE DVC6200]]) | Standing full-document | Complete | 39 | 2026-09-19 |
 | Fisher FIELDVUE DVC7K-H ([[Component Index — Fisher FIELDVUE DVC7K-H]]) | Standing full-document | Complete | 42 | 2026-09-19 |
 | Fisher ENVIRO-SEAL Rotary Packing System ([[Component Index — Fisher ENVIRO-SEAL Rotary Packing System]]) — added to the library 2026-09-20 | Standing full-document | Complete | 7 | 2026-09-20 |
+| Fisher 646 Electro-Pneumatic Transducer ([[Component Index — Fisher 646 Electro-Pneumatic Transducer]]) — 1 of 7 manuals acquired for the 17101 gap analysis | Standing full-document | Complete | 11 | 2026-09-21 |
+| Fisher 846 Electro-Pneumatic Transducer ([[Component Index — Fisher 846 Electro-Pneumatic Transducer]]) — 17101 batch | Standing full-document | Complete | 24 | 2026-09-21 |
+| Fisher i2P-100 Electro-Pneumatic Transducer ([[Component Index — Fisher i2P-100 Electro-Pneumatic Transducer]]) — 17101 batch | Standing full-document | Complete | 14 | 2026-09-21 |
+| Fisher 3582/3582i Positioners ([[Component Index — Fisher 3582-3582i Positioners]]) — 17101 batch | Standing full-document | Complete | 25 | 2026-09-21 |
+| Fisher 3610J/3620J Positioners ([[Component Index — Fisher 3610J-3620J Positioners]]) — 17101 batch | Standing full-document | Complete | 31 | 2026-09-21 |
+| ValveLink Mobile Software Quick Start Guide ([[Component Index — ValveLink Mobile Software Quick Start Guide]]) — 17101 batch | Standing full-document | Complete | 11 | 2026-09-21 |
+| Fisher 585CLS Long Stroke Piston Actuator ([[Component Index — Fisher 585CLS Long Stroke Piston Actuator]]) — 17101 batch, `status: current` per a flagged precedence judgment call (see the file's own header) | Standing full-document | Complete | 3 | 2026-09-21 |
+| AMS Trex User Guide ch2 ([[Component Index — AMS Trex User Guide ch2]]) — hardware overview chapter; first pass to apply the `kind: navPath` software-documentation convention | Standing full-chapter | Complete | 57 | 2026-09-14 |
+| AMS Trex User Guide ch3 ([[Component Index — AMS Trex User Guide ch3]]) — Field Communicator application chapter, the densest chapter in the document (HART/FOUNDATION fieldbus connection, configuration, Favorites, Graphics) | Standing full-chapter | Complete | 72 | 2026-09-14 |
+| AMS Trex User Guide ch4-ch5 ([[Component Index — AMS Trex User Guide ch4-ch5]]) — Loop Diagnostics + Fieldbus Diagnostics applications, catalogued together | Standing full-chapter | Complete | 63 | 2026-09-24 |
 | Power & Severe Service Sourcebook | — | Not started | 0 | — |
 | Refining Sourcebook | — | Not started | 0 | — |
 | Pulp & Paper Sourcebook | — | Not started | 0 | — |
 | Historic Educational Services archive | — | Not started (unverified, `legacy`/`archive-only` territory if ever indexed) | 0 | — |
 
-**19 real Technical Publications manuals are now fully indexed** (18 from
-the original batch plus the ENVIRO-SEAL rotary manual, D101643X012, added
-to the library and indexed 2026-09-20 — previously cited by name from three
-already-catalogued manuals as "not held," now real). The last remaining
-"not started" category (bench-set-657 excepted, which was always a
-deliberate partial slice) is closed. This was indexed deliberately ahead of
-any confirmed course citation, per Franz's own explicit framing that
-library membership itself is the demand signal for this pass — see each
-file's own header for the real per-document rigor and structural findings.
+**27 real Technical Publications manuals are now fully indexed** (18 from
+the original batch, plus the ENVIRO-SEAL rotary manual D101643X012 added
+2026-09-20, plus 7 more acquired for the 17101 gap analysis and indexed
+2026-09-21: Fisher 646, Fisher 846, Fisher i2P-100, Fisher 3582/3582i,
+Fisher 3610J/3620J, the ValveLink Mobile Software Quick Start Guide, and
+Fisher 585CLS, plus the AMS Trex Device Communicator User Guide — indexed
+2026-09-24 as the first real build of the `kind: navPath` software-
+documentation convention, catalogued as three chapter files (ch2, ch3,
+ch4-ch5) per its real numbered-chapter structure rather than the flat
+whole-document form most Technical Publications manuals use). This was
+indexed deliberately ahead of any confirmed course citation for the
+first 19, in direct response to a real gap analysis for the 17101 batch
+for the next 7, and as a deliberate proof-of-concept for AMS Trex — see
+each file's own header for the real per-document rigor and structural
+findings.
 
-**727 components catalogued across the library today** (228 CVH + 144 Oil &
-Gas + 355 Technical Publications, the last figure being 6 bench-set-657 +
-17 657-completion + 25+16+17+11+10+16+24+25+15+9+6+7+12+35+16 across the 15
-flat-structure manuals + 39 DVC6200 + 42 DVC7K-H + 7 ENVIRO-SEAL rotary),
-plus the 25/52 course-scoped 14101 ones counted in their own rows rather
-than double-counted into that total, since they cite figures the
-whole-chapter/whole-document indexes may already carry separately.
+**1,038 components catalogued across the library today** (228 CVH + 144
+Oil & Gas + 666 Technical Publications, the last figure being 6
+bench-set-657 + 17 657-completion +
+25+16+17+11+10+16+24+25+15+9+6+7+12+35+16 across the original 15
+flat-structure manuals + 39 DVC6200 + 42 DVC7K-H + 7 ENVIRO-SEAL rotary +
+11 Fisher 646 + 24 Fisher 846 + 14 i2P-100 + 25 Fisher 3582/3582i + 31
+Fisher 3610J/3620J + 11 ValveLink Mobile QSG + 3 Fisher 585CLS + 192 AMS
+Trex User Guide [57 ch2 + 72 ch3 + 63 ch4-ch5, split 84 `kind: figure` /
+108 `kind: navPath` after the 2026-09-14 cleanup pass — see each file's
+own Open Items]), plus the 25/52 course-scoped 14101 ones counted in
+their own rows rather than double-counted into that total, since they
+cite figures the whole-chapter/whole-document indexes may already carry
+separately.
 
 ### Primary sources (current, authoritative)
 

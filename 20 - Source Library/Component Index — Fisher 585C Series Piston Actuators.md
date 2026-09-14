@@ -26,11 +26,46 @@ Services, Principle of Operation, Installation, 585C Handwheels,
 Maintenance (Sizes 25 and 50; Sizes 60-130, including Side-Mounted
 Handwheel Maintenance and disassembly/reassembly), Parts Ordering, Parts
 Kits, Parts List. Note: the 585CLS long-stroke actuator is explicitly
-out of scope of this manual (covered in a separate IM, D103793X012, not
-held in the Source Library).
+out of scope of this manual (covered in a separate IM, D103793X012 — see
+the resolved note below for its current, indexed status).
 
 All figures are numbered flatly (Figure 1 through Figure 16), no chapter
 prefix.
+
+**Resolved, 2026-09-21 — the 585/585CR/double-acting configuration
+question, confirmed directly against this manual's real content, not
+assumed from its title.** This one document covers all three real
+configurations of the base 585 piston actuator, closing the loop so a
+future reader doesn't have to re-derive it:
+
+- **Direct-acting (585C)** — the manual's main narrative throughout
+  (Principle of Operation, Installation, Maintenance).
+- **Reverse-acting (585CR)** — genuinely, separately documented, not just
+  mentioned: its own dedicated **Figure 7** ("Fisher 585CR Size 25 and 50
+  Actuators, spring extends actuator rod"), **Figure 8** (the matching
+  handwheel assembly), and **Tables 6 and 7** (585CR-specific thrust
+  capabilities, U.S. and metric units).
+- **Double-acting (springless)** — real, but easy to miss on a plain text
+  search: the Description states plainly "The 585C actuator uses a
+  double-acting cylinder," with the spring only added on top for sizes
+  25/50's fail-safe action — springless (double-acting) construction is
+  explicitly the **only** option for sizes 60–130, has its own **Table 8**
+  ("Fisher 585C Thrust, springless construction"), and the entire
+  "Sizes 60–130" content thread running through Installation/Maintenance
+  applies to it. **One real, minor asymmetry, not a gap:** unlike 585CR,
+  the springless/double-acting configuration has no dedicated construction
+  *figure* of its own — it shares Figure 1's general product photo rather
+  than an illustrated assembly view.
+
+No new manual is needed for 585, 585CR, or double-acting — this document's
+real scope already covers all three.
+
+**585CLS note corrected, 2026-09-21**: the long-stroke variant, named
+below as out of this manual's scope, is **no longer unheld** — Franz
+acquired it and it's now indexed at
+`Component Index — Fisher 585CLS Long Stroke Piston Actuator.md`, checked
+directly against this manual's own drawing numbers (zero overlap,
+genuinely distinct hardware).
 
 ## Precedence
 
