@@ -2,23 +2,39 @@
 #  publish-site.ps1  -  assemble the GitHub Pages /docs output for one or
 #  more courses, sharing one Source Library folder across all of them.
 #
+#  Publishes the REAL Workshop viewer (Presentation/course/  -  contents pane,
+#  context pane, present mode, the panel), not the flat build/index.html
+#  QA/review surface. course/index.html depends on its sibling build/ folder
+#  at runtime (../build/manifest.js, ../build/assets/...), so build/ ships
+#  alongside it unchanged, preserving that exact relative relationship  - 
+#  every path inside course/ and inside the slide files themselves resolves
+#  completely unchanged. The one thing that DOES need rewriting is
+#  library.base, which in the vault is a "../../../../20 - Source Library/"
+#  escape that only resolves when the whole vault is co-located; the
+#  published copy gets a site-root-absolute "/source-library/" instead.
+#
 #  What it does, per course:
-#    1. Copies Presentation/build/ (slides, css, assets, manifest.js,
-#       index.html) into docs/courses/<slug>/ untouched — its relative
-#       paths (css/..., assets/..., slides/...) keep working as-is.
-#    2. Reads Presentation/course/course.json's own "library" block (the
-#       same data the Workshop shell's 📚 panel already uses locally) and
-#       writes a PUBLISHED variant, docs/courses/<slug>/library.json, with
-#       base rewritten from the vault-relative "../../../../20 - Source
-#       Library/" to the site-root-absolute "/source-library/" — the only
-#       change; the panel's own JS (ported into the engine's build/index.html
-#       template) just concatenates base + file, so no code change needed.
-#    3. Copies each PDF that library block cites into ONE shared
-#       docs/source-library/ tree (deduped — copied once even if several
-#       courses cite the same document), never into the course's own folder.
+#    1. Copies Presentation/course/ (index.html, course.js, course.css,
+#       course-data.js) into docs/courses/<slug>/course/.
+#    2. Copies Presentation/build/ (slides, css, assets, manifest.js) into
+#       docs/courses/<slug>/build/  -  course/'s required sibling.
+#    3. Rewrites library.base to "/source-library/" in the PUBLISHED copy of
+#       course-data.js only (the vault's own copy is untouched)  -  a plain
+#       text substitution, since that exact string is unique in the file.
+#       Also writes build/library.json with the same rewritten shelf, so the
+#       QA viewer's own panel works too if anyone opens it directly.
+#    4. Copies every PDF the course's library block cites into ONE shared
+#       docs/source-library/ tree (deduped  -  copied once even if several
+#       courses cite the same document).
+#
+#  The shelf itself is standing, shared infrastructure, not curated per
+#  course: every course's own library block should list the same real
+#  documents (today: the 21 matching 14101's own primary+columns) so the
+#  panel shows the same shared library everywhere, and this script's own
+#  dedup is what keeps the actual PDF bytes from being copied more than once.
 #
 #  Then writes docs/index.html, a plain landing page listing every published
-#  course.
+#  course (linking to its course/ entry point).
 #
 #  Usage:
 #    .\publish-site.ps1 -Courses "Control Valve Basics"
@@ -33,15 +49,21 @@ $ErrorActionPreference = 'Stop'
 # Windows PowerShell 5.1's Out-File -Encoding utf8 always adds a BOM and,
 # combined with Get-Content's own encoding guesswork, can silently mangle
 # non-ASCII characters (em dash, middot) on a read/write round trip. Write
-# every text output through this instead — real UTF-8, no BOM, no guessing.
+# every text output through this instead  -  real UTF-8, no BOM, no guessing.
 function Write-Utf8NoBom([string]$Path, [string]$Content) {
   [System.IO.File]::WriteAllText($Path, $Content, (New-Object System.Text.UTF8Encoding($false)))
+}
+function Read-Utf8([string]$Path) {
+  [System.IO.File]::ReadAllText($Path, [System.Text.Encoding]::UTF8)
 }
 
 $engineRoot = $PSScriptRoot
 $vault      = Split-Path $engineRoot -Parent
 if (-not $DocsRoot) { $DocsRoot = Join-Path $vault 'docs' }
 $libRoot    = Join-Path $DocsRoot 'source-library'
+
+$VAULT_RELATIVE_BASE  = '../../../../20 - Source Library/'
+$PUBLISHED_BASE       = '/source-library/'
 
 function Slugify([string]$name) {
   ($name.ToLowerInvariant() -replace '[^a-z0-9]+', '-').Trim('-')
@@ -56,7 +78,7 @@ New-Item -ItemType Directory -Force $libRoot  | Out-Null
 function Publish-LibraryDoc($doc, [string]$courseLabel) {
   # Copies one cited PDF into the shared source-library tree (no-op if
   # already there from a previous course) and returns $true if it's now
-  # safe to include in the published library.json.
+  # safe to include in the published library data.
   $srcPdf = Join-Path $vault "20 - Source Library\$($doc.file)"
   if (-not (Test-Path -LiteralPath $srcPdf)) {
     Write-Warning "  [$courseLabel] source PDF not found, dropped from published shelf: $($doc.file)"
@@ -78,22 +100,50 @@ $publishedCourses = @()
 
 foreach ($course in $Courses) {
   $courseRoot     = Join-Path $vault "10 - Courses\$course"
+  $courseSrc      = Join-Path $courseRoot 'Presentation\course'
   $buildSrc       = Join-Path $courseRoot 'Presentation\build'
-  $courseJsonPath = Join-Path $courseRoot 'Presentation\course\course.json'
+  $courseJsonPath = Join-Path $courseSrc 'course.json'
+  $courseDataPath = Join-Path $courseSrc 'course-data.js'
 
+  if (-not (Test-Path -LiteralPath $courseSrc))      { throw "no Presentation/course/ for course: $course" }
   if (-not (Test-Path -LiteralPath $buildSrc))       { throw "no Presentation/build/ for course: $course" }
   if (-not (Test-Path -LiteralPath $courseJsonPath)) { throw "no course.json for course: $course" }
+  if (-not (Test-Path -LiteralPath $courseDataPath)) { throw "no course-data.js for course: $course" }
 
-  $slug = Slugify $course
-  $dst  = Join-Path $DocsRoot "courses\$slug"
-  Write-Host "`nPublishing '$course' -> docs/courses/$slug/"
+  $slug     = Slugify $course
+  $dstCourse = Join-Path $DocsRoot "courses\$slug\course"
+  $dstBuild  = Join-Path $DocsRoot "courses\$slug\build"
+  Write-Host "`nPublishing '$course' -> docs/courses/$slug/course/ (+ sibling build/)"
 
-  if (Test-Path -LiteralPath $dst) { Remove-Item -LiteralPath $dst -Recurse -Force }
-  New-Item -ItemType Directory -Force $dst | Out-Null
+  foreach ($d in @($dstCourse, $dstBuild)) {
+    if (Test-Path -LiteralPath $d) { Remove-Item -LiteralPath $d -Recurse -Force }
+    New-Item -ItemType Directory -Force $d | Out-Null
+  }
 
+  # course/  -  the real Workshop shell
+  Get-ChildItem -LiteralPath $courseSrc -Force |
+    Where-Object { $excludeNames -notcontains $_.Name -and $_.Name -ne 'course.json' } |
+    ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $dstCourse $_.Name) -Recurse -Force }
+
+  # build/  -  course/'s required sibling (manifest.js, css/, assets/, slides/);
+  # its own index.html (the QA viewer) is harmless to include and not linked
+  # from the landing page.
   Get-ChildItem -LiteralPath $buildSrc -Force |
     Where-Object { $excludeNames -notcontains $_.Name } |
-    ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $dst $_.Name) -Recurse -Force }
+    ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $dstBuild $_.Name) -Recurse -Force }
+
+  # Rewrite library.base in the PUBLISHED course-data.js only  -  plain text
+  # substitution; the vault's own copy (and course.json, not published at
+  # all) are untouched.
+  $courseDataText = Read-Utf8 (Join-Path $dstCourse 'course-data.js')
+  $escapedBase = [regex]::Escape('"base": "' + $VAULT_RELATIVE_BASE + '"')
+  $rewritten = [regex]::Replace($courseDataText, $escapedBase, '"base": "' + $PUBLISHED_BASE + '"')
+  if ($rewritten -eq $courseDataText) {
+    Write-Warning "  library.base string not found in course-data.js  -  nothing rewritten (check for drift from the expected vault-relative path)"
+  } else {
+    Write-Utf8NoBom (Join-Path $dstCourse 'course-data.js') $rewritten
+    Write-Host "  rewrote library.base -> $PUBLISHED_BASE in published course-data.js"
+  }
 
   $courseJson = Get-Content -LiteralPath $courseJsonPath -Raw -Encoding UTF8 | ConvertFrom-Json
   $lib = $courseJson.library
@@ -114,15 +164,17 @@ foreach ($course in $Courses) {
       }
     }
 
-    $pubLib = [ordered]@{ base = '/source-library/' }
+    $pubLib = [ordered]@{ base = $PUBLISHED_BASE }
     if ($lib.note)          { $pubLib.note     = $lib.note }
     if ($pubPrimary.Count)  { $pubLib.primary  = $pubPrimary }
     if ($pubColumns.Count)  { $pubLib.columns  = $pubColumns }
 
-    Write-Utf8NoBom (Join-Path $dst 'library.json') ($pubLib | ConvertTo-Json -Depth 8)
-    Write-Host "  wrote library.json ($($pubPrimary.Count) primary, $($pubColumns.Count) column groups)"
+    # build/library.json  -  only consumed by build/index.html's own panel
+    # (the QA viewer), kept working for anyone who opens it directly.
+    Write-Utf8NoBom (Join-Path $dstBuild 'library.json') ($pubLib | ConvertTo-Json -Depth 8)
+    Write-Host "  library shelf: $($pubPrimary.Count) primary, $($pubColumns.Count) column groups"
   } else {
-    Write-Host "  no library block in course.json — 📚 panel stays hidden for this course"
+    Write-Host "  no library block in course.json  -  panel stays hidden for this course"
   }
 
   $publishedCourses += [ordered]@{
@@ -137,7 +189,7 @@ function HtmlEnc([string]$s) { [System.Net.WebUtility]::HtmlEncode($s) }
 
 $cardLines = New-Object System.Collections.Generic.List[string]
 foreach ($c in $publishedCourses) {
-  $cardLines.Add("  <li class=`"course`"><a href=`"courses/$($c.slug)/`">$(HtmlEnc $c.title)</a><p>$(HtmlEnc $c.summary)</p></li>")
+  $cardLines.Add("  <li class=`"course`"><a href=`"courses/$($c.slug)/course/`">$(HtmlEnc $c.title)</a><p>$(HtmlEnc $c.summary)</p></li>")
 }
 $cards = [string]::Join("`n", $cardLines)
 

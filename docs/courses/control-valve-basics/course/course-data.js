@@ -1,4 +1,4 @@
-{
+window.EW_COURSE = {
   "course": {
     "code": "CVB",
     "title": "Control Valve Basics",
@@ -16,7 +16,7 @@
   "slideBase": "../build/slides/",
   "slidePrefix": "cvb-",
   "library": {
-    "base": "../../../../20 - Source Library/",
+    "base": "/source-library/",
     "note": "CVB itself draws from one source document only (see course.sources above) — this shelf is the standing, shared Source Library available from every published course, matching 14101's own library block exactly, not scoped to this course's own citations.",
     "primary": [
       { "id": "cvh6",  "title": "Control Valve Handbook", "meta": "D101881X012 · Sixth Edition", "color": "#004B8D",
@@ -1793,3 +1793,4 @@
     }
   ]
 }
+;
