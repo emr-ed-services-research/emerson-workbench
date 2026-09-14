@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVB &middot; Slide 055 &mdash; Deadband, Measured</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cvb-ch4-m1, page 55 — cvb.performance.deadband [understand ·
+       mechanism]. CROSS-COURSE CITATION, per this run's own instructions:
+       the real figure is CVH ch2 Figure 2.3 "Effect of Deadband on Valve
+       Performance" (p. 37) — already catalogued under a DIFFERENT id,
+       ch3-cmp-deadband-effect-chart, in a DIFFERENT course's index
+       (`20 - Source Library/Component Index — 14101 ch3.md`, "ch3-m6 —
+       Deadband" section), not in this chapter's own
+       Component Index — Control Valve Handbook ch2.md (which explicitly
+       cross-references rather than duplicates it — see that file's Open
+       items). Resolved by opening the 14101 ch3 index directly: "delivery:
+       context-pane support / optional slide figure — CVH Fig 2.3 crop...
+       Not currently on a slide." This is the first slide to actually place
+       it. Standard (non-wide) mechanism layout: the crop is a tall 3-panel
+       vertical stack (670x925 px), not a landscape composite, so it fits
+       the fixed 36cqw column naturally. Figure newly extracted from the
+       Control Valve Handbook PDF (p. 37, 300dpi crop, .NET
+       System.Drawing) — same PDF/document as the rest of this module,
+       simply cross-indexed under 14101's id rather than a new CVH-ch2 id. -->
+  <article class="slide slide--role-mechanism" data-slide="55" data-deck="cvb">
+    <h1 class="slide-title">Deadband, Measured</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh2-fig2-3-deadband-effect-chart.png" style="width:100%;height:100%;object-fit:contain" alt="Three stacked open-loop step-test charts, one per valve (A, B, C), each plotting input signal, actuator position, and filtered flow rate against time across a series of step-size tests from 0.5% to 10%.">
+        </div>
+      </div>
+      <ol class="tpl-list">
+        <li><span class="num">1</span>Same step commands applied to all three valves &mdash; red = input signal, blue = actuator position, green = filtered flow</li>
+        <li><span class="num">2</span>Valve A's blue line tracks its red command almost immediately, at every step size</li>
+        <li><span class="num">3</span>Valves B and C visibly lag before the blue line moves &mdash; more deadband in that assembly</li>
+      </ol>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 2.3 &mdash; used directly. Component Index: ch3-cmp-deadband-effect-chart (Component Index &mdash; 14101 ch3.md).</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">55</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

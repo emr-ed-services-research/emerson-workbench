@@ -34,6 +34,12 @@ desktop.ini
 20 - Source Library/**/*.docx
 20 - Source Library/**/*.lnk
 
+# Narrow exception, 2026-09-14: the one PDF Control Valve Basics actually
+# cites in its published Source Library panel (17MB — small enough to track
+# directly, no LFS needed). Scoped to this single file on purpose — the rest
+# of the ~680MB Source Library stays ignored above.
+!20 - Source Library/Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf
+
 # Historic Educational Services archive — browse-only, unverified, ~140 files
 # in deeply-nested folders (some exceed the Windows path limit). The catalogue
 # note "Historic Educational Services Training Content.md" one level up stays

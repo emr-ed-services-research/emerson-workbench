@@ -68,6 +68,85 @@
   .jump li a .n { color: #7a7a7a; min-width: 3ch; text-align: right; }
   .jump li a.sec { color: #6fb2e6; font-weight: 700; margin-top: .5rem; }
   .jump li a .rev { color: #d9a400; }
+
+  /* source library overlay — a static-build port of the Workshop shell's
+     panel (course.js wireLibrary / course.css .libov*), re-themed to this
+     viewer's own dark palette instead of importing the token system. Stays
+     hidden entirely (see #btnLib below) when no library.json ships next to
+     this file — most builds won't have one; only a published course does. */
+  header #btnLib { margin-left: auto; background: #232323; border: 1px solid #3a3a3a;
+    color: #e8e8e8; border-radius: 5px; padding: .3rem .55rem; font-size: 14px;
+    line-height: 1; cursor: pointer; }
+  header #btnLib:hover { background: #2e2e2e; }
+  .libov {
+    position: fixed; inset: 0; z-index: 30; display: flex; padding: 14px;
+    background: rgba(0, 0, 0, .55);
+    visibility: hidden; opacity: 0;
+    transition: opacity .14s ease, visibility .14s ease;
+  }
+  body.lib-open .libov { visibility: visible; opacity: 1; }
+  .libov__panel {
+    flex: 1; min-width: 0; display: flex; flex-direction: column;
+    background: #1e1e1e; border: 1px solid #333; border-radius: 10px; overflow: hidden;
+    box-shadow: 0 14px 46px rgba(0, 0, 0, .5);
+    transform: translateY(8px); transition: transform .14s ease;
+  }
+  body.lib-open .libov__panel { transform: none; }
+  .libov__bar { flex: none; display: flex; align-items: center; gap: 9px; padding: 9px 12px;
+    background: #101010; border-bottom: 1px solid #2c2c2c; }
+  .libov__title { flex: 1; font-weight: 700; color: #e8e8e8; font-size: 13.5px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .libov__nav { flex: none; border: 1px solid #3a3a3a; background: #232323;
+    color: #e8e8e8; border-radius: 6px; padding: 5px 10px; font-size: 12.5px;
+    line-height: 1; cursor: pointer; text-decoration: none; }
+  .libov__nav:hover { background: #2e2e2e; }
+  .libov__close { font-size: 13px; padding: 5px 9px; }
+  .libov__body { flex: 1; min-height: 0; position: relative; }
+  .libov__index, .libov__doc { position: absolute; inset: 0; background: #1e1e1e; }
+  .libov__index { overflow-y: auto; padding: 18px 20px 26px; container: libidx / inline-size; }
+  .libov__index[hidden], .libov__doc[hidden] { display: block; visibility: hidden; }
+  .libidx__group { font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+    color: #8f8f8f; font-weight: 700; margin: 18px 0 7px; }
+  .libidx__group:first-child { margin-top: 0; }
+  .libidx__covers { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(6px, 1.2cqi, 12px); margin-bottom: 6px; }
+  .libcover { display: flex; flex-direction: column; gap: 4%; cursor: pointer; font: inherit;
+    text-align: left; border: 0; border-radius: 8px;
+    background: var(--cover, #0a67b8); color: #fff;
+    aspect-ratio: 3 / 4; padding: 9% 8%;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .3);
+    transition: transform .12s ease, box-shadow .12s ease;
+    container-type: inline-size;
+  }
+  .libcover:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0, 0, 0, .4); }
+  .libcover__kicker { font-size: clamp(7.5px, 6.5cqi, 9.5px); letter-spacing: .12em; text-transform: uppercase;
+    font-weight: 700; color: rgba(255, 255, 255, .72); line-height: 1.25; }
+  .libcover__title { font-size: clamp(12px, 13cqi, 19px); font-weight: 800; line-height: 1.14; letter-spacing: .005em;
+    margin-top: auto; }
+  .libcover__meta { font-size: clamp(8.5px, 7.5cqi, 10.5px); color: rgba(255, 255, 255, .78); font-variant-numeric: tabular-nums; }
+  .libidx__cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(8px, 1.8cqi, 18px); align-items: start; }
+  .libidx__col-hd { font-size: 11px; letter-spacing: .07em; text-transform: uppercase; font-weight: 700;
+    color: #bdbdbd; margin-bottom: 8px; padding-bottom: 5px; border-bottom: 2px solid #2c2c2c; }
+  .libidx__col-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+  .libidx__doc { width: 100%; text-align: left; display: flex; flex-direction: column; gap: 2px;
+    border: 1px solid #2c2c2c; border-radius: 7px; background: #232323;
+    padding: 9px 11px; cursor: pointer; font: inherit; }
+  .libidx__doc:hover { border-color: #0a67b8; background: #262e36; }
+  .libidx__t { font-weight: 600; font-size: 12.5px; color: #e8e8e8; line-height: 1.3; }
+  .libidx__s { font-size: 10.5px; color: #8f8f8f; font-variant-numeric: tabular-nums; }
+  .libidx__note { margin-top: 22px; font-size: 11px; color: #8f8f8f; font-style: italic; }
+  @container libidx (max-width: 460px) {
+    .libidx__covers { grid-template-columns: 1fr; gap: 10px; }
+    .libcover { aspect-ratio: auto; min-height: 88px; padding: 13px 14px; }
+    .libcover__kicker { font-size: 9px; }
+    .libcover__title { font-size: 17px; margin-top: 6px; }
+    .libcover__meta { font-size: 10px; }
+    .libidx__cols { grid-template-columns: 1fr; gap: 4px; }
+    .libidx__col-hd { margin-top: 14px; }
+  }
+  .libov__frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .libov__frame[data-active="false"] { visibility: hidden; }
 </style>
 </head>
 <body>
@@ -76,6 +155,7 @@
   <span class="title">14101 Valve Trim and Body Maintenance</span>
   <span class="section" id="section"></span>
   <span class="pos" id="pos"></span>
+  <button id="btnLib" hidden title="Source library (L)">&#128218;</button>
 </header>
 
 <div class="viewport">
@@ -83,6 +163,24 @@
   <div class="jump" id="jump"><h2>Jump to slide &mdash; press G to close</h2><ol id="jumpList"></ol></div>
 </div>
 <div class="dim-overlay" id="dimOverlay"></div>
+
+<!-- source library — a reference shelf laid over the viewport. Present only
+     when library.json ships alongside this file (see wireLibrary() below);
+     otherwise #btnLib stays hidden and this markup is simply inert. -->
+<div class="libov" id="libov" aria-label="Source library">
+  <div class="libov__panel">
+    <div class="libov__bar">
+      <button class="libov__nav" id="libBack" hidden>&lsaquo;&nbsp;Library</button>
+      <span class="libov__title" id="libTitle">Source Library</span>
+      <a class="libov__nav" id="libExt" target="_blank" rel="noopener" hidden title="Open in a new tab">Open &#8599;</a>
+      <button class="libov__nav libov__close" id="libClose" title="Close (Esc)">&#10005;</button>
+    </div>
+    <div class="libov__body">
+      <div class="libov__index" id="libIndex"></div>
+      <div class="libov__doc" id="libDoc"></div>
+    </div>
+  </div>
+</div>
 
 <script src="manifest.js"></script>
 
@@ -94,7 +192,7 @@
   <button id="notesBtn" title="Speaker notes (S)">Notes</button>
   <button id="reviewBtn" title="Conversion review notes (R)">Review</button>
   <button id="fsBtn" title="Fullscreen (F)">Full</button>
-  <span class="hint">&larr; &rarr; &nbsp;Space&nbsp; PgUp/PgDn &nbsp;Home/End &nbsp;G &nbsp;S &nbsp;R &nbsp;F</span>
+  <span class="hint">&larr; &rarr; &nbsp;Space&nbsp; PgUp/PgDn &nbsp;Home/End &nbsp;G &nbsp;S &nbsp;R &nbsp;F &nbsp;L</span>
 </div>
 
 <script>
@@ -217,6 +315,134 @@
         'open a slide directly, e.g. <code>slides/1400-001.html</code>.</p>';
     });
   }
+
+  // ---------- source library overlay ----------
+  // A build/course pair only gets this feature if a library.json sits next
+  // to this file (the publish step writes one for a published course; nothing
+  // in the vault's own Presentation/build/ folder does today, so opening this
+  // raw viewer locally leaves #btnLib hidden and the fetch below just fails
+  // quietly). Ported from the Workshop shell's course.js wireLibrary() —
+  // same data shape ({base, note, primary[], columns[]}), same interaction
+  // model, trimmed of the Contents/Context-rail concerns this flat viewer
+  // doesn't have.
+  function wireLibrary() {
+    var btn = document.getElementById('btnLib');
+    fetch('library.json').then(function (r) {
+      if (!r.ok) throw new Error('no library.json');
+      return r.json();
+    }).then(function (LIB) {
+      if (!LIB || (!LIB.primary && !LIB.columns)) return;
+      btn.hidden = false;
+
+      var ov = document.getElementById('libov'), idxEl = document.getElementById('libIndex'),
+          docEl = document.getElementById('libDoc'), elBack = document.getElementById('libBack'),
+          elTitle = document.getElementById('libTitle'), elExt = document.getElementById('libExt'),
+          elClose = document.getElementById('libClose');
+      var frames = {};
+      var byDoc = {};
+      (LIB.primary || []).forEach(function (d) { byDoc[d.id] = d; });
+      (LIB.columns || []).forEach(function (col) { col.docs.forEach(function (d) { byDoc[d.id] = d; }); });
+      var state = { open: false, view: 'index', docId: null };
+
+      function h(html) { var t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstChild; }
+      function esc(s) {
+        return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      if (LIB.primary && LIB.primary.length) {
+        idxEl.appendChild(h('<div class="libidx__group">Primary sources</div>'));
+        var covers = h('<div class="libidx__covers"></div>');
+        LIB.primary.forEach(function (d) {
+          var face = h('<button class="libcover" data-doc="' + esc(d.id) + '"></button>');
+          face.style.setProperty('--cover', d.color || '#0a67b8');
+          if (d.kicker) face.appendChild(h('<span class="libcover__kicker">' + esc(d.kicker) + '</span>'));
+          face.appendChild(h('<span class="libcover__title">' + esc(d.title) + '</span>'));
+          if (d.meta) face.appendChild(h('<span class="libcover__meta">' + esc(d.meta) + '</span>'));
+          covers.appendChild(face);
+        });
+        idxEl.appendChild(covers);
+      }
+      if (LIB.columns && LIB.columns.length) {
+        idxEl.appendChild(h('<div class="libidx__group">Instruction manuals</div>'));
+        var cols = h('<div class="libidx__cols"></div>');
+        LIB.columns.forEach(function (col) {
+          var cEl = h('<div class="libidx__col"></div>');
+          cEl.appendChild(h('<div class="libidx__col-hd">' + esc(col.title) + '</div>'));
+          var ul = h('<ul class="libidx__col-list"></ul>');
+          col.docs.forEach(function (d) {
+            var li = h('<li></li>');
+            li.appendChild(h(
+              '<button class="libidx__doc" data-doc="' + esc(d.id) + '">' +
+                '<span class="libidx__t">' + esc(d.title) + '</span>' +
+                (d.sub ? '<span class="libidx__s">' + esc(d.sub) + '</span>' : '') +
+              '</button>'));
+            ul.appendChild(li);
+          });
+          cEl.appendChild(ul);
+          cols.appendChild(cEl);
+        });
+        idxEl.appendChild(cols);
+      }
+      if (LIB.note) idxEl.appendChild(h('<p class="libidx__note">' + esc(LIB.note) + '</p>'));
+      idxEl.addEventListener('click', function (e) {
+        var b = e.target.closest('[data-doc]');
+        if (b) { state.view = 'doc'; state.docId = b.getAttribute('data-doc'); apply(); }
+      });
+
+      function docURL(d) {
+        return (LIB.base + d.file).split('/').map(function (seg) {
+          return (seg === '' || seg === '.' || seg === '..') ? seg : encodeURIComponent(seg);
+        }).join('/') + '#view=FitH';
+      }
+      function frameFor(d) {
+        if (!frames[d.id]) {
+          var fr = h('<iframe class="libov__frame" title="' + esc(d.title) + '"></iframe>');
+          fr.setAttribute('data-active', 'false');
+          fr.src = docURL(d);
+          docEl.appendChild(fr);
+          frames[d.id] = fr;
+        }
+        return frames[d.id];
+      }
+      function apply() {
+        var doc = state.docId ? byDoc[state.docId] : null;
+        var inDoc = state.open && state.view === 'doc' && !!doc;
+        document.body.classList.toggle('lib-open', state.open);
+        btn.setAttribute('aria-pressed', state.open ? 'true' : 'false');
+        idxEl.hidden = !(state.open && !inDoc);
+        docEl.hidden = !inDoc;
+        elBack.hidden = !inDoc;
+        elTitle.textContent = inDoc ? doc.title : 'Source Library';
+        if (inDoc) {
+          var fr = frameFor(doc);
+          Object.keys(frames).forEach(function (k) { frames[k].setAttribute('data-active', k === doc.id ? 'true' : 'false'); });
+          elExt.hidden = false; elExt.href = fr.src;
+        } else { elExt.hidden = true; elExt.removeAttribute('href'); }
+      }
+      function close() { state.open = false; apply(); }
+      function toggle() { state.open = !state.open; apply(); }
+      btn.onclick = toggle;
+      elClose.onclick = close;
+      elBack.onclick = function () { state.view = 'index'; apply(); };
+      ov.addEventListener('mousedown', function (e) { if (e.target === ov) close(); });
+
+      // Esc/L close the library; while it's open, swallow this viewer's own
+      // slide-navigation keys so browsing the shelf can't advance the deck
+      // underneath.
+      document.addEventListener('keydown', function (e) {
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (!state.open) { if (e.key === 'l' || e.key === 'L') { e.preventDefault(); toggle(); } return; }
+        if (e.key === 'Escape') { e.stopPropagation(); e.preventDefault(); close(); }
+        else if (e.key === 'l' || e.key === 'L') { e.preventDefault(); e.stopPropagation(); close(); }
+        else if (/^(Arrow(Left|Right|Up|Down)|Page(Up|Down)|Home|End| )$/.test(e.key)) { e.stopPropagation(); }
+      }, true);
+
+      apply();
+    }).catch(function () { /* no library.json for this build — #btnLib stays hidden */ });
+  }
+  wireLibrary();
 })();
 </script>
 </body>

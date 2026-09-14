@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVB &middot; Slide 057 &mdash; Installed Gain: Slope of the Characteristic Curve</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cvb-ch4-m1, page 57 — cvb.performance.installed-gain [analyze ·
+       mechanism]. Per the concept's own templateRationale: one figure —
+       installed characteristic and installed gain plotted together for the
+       same valve — shows gain as the slope of the characteristic curve
+       directly, the visual mechanism behind the analytical claim (tuning
+       has to compromise where slope changes sharply). has-wide-fig used:
+       the crop (1377x870 px, aspect ~1.58) is a landscape two-stacked-plot
+       chart, the same "landscape chart" case the has-wide-fig modifier
+       exists for (gallery.css, mechanism has-wide-fig block) — the fixed
+       36cqw standard column would render it illegibly small. Figure newly
+       extracted from the Control Valve Handbook PDF (p. 44, 300dpi crop,
+       .NET System.Drawing). -->
+  <article class="slide slide--role-mechanism has-wide-fig" data-slide="57" data-deck="cvb">
+    <h1 class="slide-title">Installed Gain: Slope of the Characteristic Curve</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh2-fig2-5-installed-characteristic-and-gain.png" style="width:100%;height:100%;object-fit:contain" alt="Two stacked graphs sharing a valve-travel x-axis. Top: flow in gpm rising from 0 to about 850 and flattening as travel increases, labelled Installed Characteristic. Bottom: installed gain, plotted as percent flow per percent input, starting near 2.8 at low travel and falling toward zero at high travel, with a Control Range band and an EnTec Gain Specification bracket marked on the right.">
+        </div>
+      </div>
+      <ol class="tpl-list">
+        <li><span class="num">1</span>Top: installed characteristic &mdash; flow vs. travel for the valve as installed in this loop, not the valve alone</li>
+        <li><span class="num">2</span>Bottom: installed gain &mdash; the top curve's own slope at each point of travel</li>
+        <li><span class="num">3</span>Where the gain curve falls off steeply (low travel here), the loop's tuning has to compromise between the high- and low-gain regions</li>
+      </ol>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 2.5 &mdash; used directly. Component Index: cvh-cmp-installed-characteristic-and-gain.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">57</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

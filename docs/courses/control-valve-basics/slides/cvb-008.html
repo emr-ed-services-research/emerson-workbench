@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVB &middot; Slide 008 &mdash; Angle vs. Three-Way Body Styles</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cvb-ch1-m1, page 8 — cvb.intro.body-style-variants [understand ·
+       contrast]. Two unlabelled overview photos (Fig. 1.4 angle valve,
+       Fig. 1.8 three-way globe valve) fit contrast's fixed two-panel
+       shape directly, one photo per panel.
+       LOW CONFIDENCE: the contrast gallery template (gallery.css Sec 6)
+       has no reserved slot/row for a .tpl-source line — tp-011 (the real
+       ch3 contrast precedent) ships with none at all. The Stage 3 prompt
+       is explicit that every Gallery role gets a one-line citation
+       (Style Guide Sec 5.9), so one is added here via an explicit
+       grid-column span rather than omitted; it lands as an implicit
+       extra row below the panels, which should be safe (explicit tracks
+       are laid out first) but has not been render-checked. Flagged as a
+       genuine template-gap, not a one-off patch: the contrast template
+       may need its own reserved source-line row the way mechanism and
+       nomenclature already have one. -->
+  <article class="slide slide--role-contrast" data-slide="8" data-deck="cvb">
+    <h1 class="slide-title">Angle vs. Three-Way Body Styles</h1>
+    <div class="tpl-content">
+      <div class="tpl-panel" data-side="left">
+        <div class="panel-label">Angle body</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <img src="../assets/sourced/cvh1-fig1-4-angle-valve.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="An angle-body sliding-stem control valve: a metallic cutaway body with inlet and outlet ports perpendicular to each other, actuator stem extending up from the top.">
+        </div>
+        <div class="panel-caption">Flow turns 90&deg; through the body &mdash; for erosive or high-pressure-drop service</div>
+      </div>
+      <div class="tpl-divider"></div>
+      <div class="tpl-panel" data-side="right">
+        <div class="panel-label">Three-way body</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <img src="../assets/sourced/cvh1-fig1-8-three-way-globe-valve.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="A three-way globe valve cutaway with three flow connections meeting at a single shared plug and seat area, instead of one straight-through path.">
+        </div>
+        <div class="panel-caption">Combines or diverts flow through one body &mdash; instead of the straight-through path a standard globe body uses</div>
+      </div>
+      <p class="tpl-source" style="grid-column:1 / -1">After Control Valve Handbook, 6th ed., Figs. 1.4, 1.8 &mdash; used directly. Component Index: cvh-cmp-angle-valve-photo, cvh-cmp-three-way-globe-valve-overview.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">8</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

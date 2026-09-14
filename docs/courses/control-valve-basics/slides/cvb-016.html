@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVB &middot; Slide 016 &mdash; Reading the Inherent Characteristic Curve</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cvb-ch1-m2, page 16 — cvb.characteristic.inherent-curves
+       [analyze · application]. SOURCE-FIGURE-FIRST EVALUATION (Style
+       Guide Sec 5.8): CVH Fig. 1.19 plots the same three curves this
+       slide teaches (verified directly — page 30, PDF render), but its
+       OWN in-plot text ("Quick-Opening", "Linear", "Equal-Percentage")
+       is printed directly on the curves, not in a legend. Style Guide
+       Sec 5.1 names this exact figure type (the CVH's Fig. 3.38/6.8
+       family, "three curves fanning wide from a shared origin to a
+       shared end") as the textbook case where our house convention goes
+       stricter than the CVH: every series name in a key, nothing
+       labelled inline, "removing exactly that kind of per-instance
+       freehand judgment is the point of the template system." A crop of
+       Fig. 1.19 as-is would carry that inline labelling forward, so this
+       is a bounded redraw per Sec 5.8 rather than a direct crop &mdash;
+       geometry (three curves sharing one origin/end point, quick-opening
+       bulging toward the upper-left, equal-percentage toward the
+       lower-right, linear straight between them) transcribed directly
+       from the verified source figure, not invented.
+       Both axes are 0-100% (bounded both ways per Sec 5.7) so neither
+       gets an arrowhead. No gridlines (Sec 5.7 "none by default" &mdash;
+       this slide's teaching point is relative curve position, not
+       precise value read-off).
+       LOW CONFIDENCE: Sec 5.6's colour vocabulary (blue=real/measured,
+       grey dashed=ideal/reference, cyan=second measured) was written for
+       a real-vs-ideal instrument relationship, not three parallel,
+       equally-real curve families. Linear is treated as the "reference"
+       (grey dashed) since it IS the literal 1:1 proportional baseline
+       the other two curves diverge from; quick-opening and
+       equal-percentage take the two remaining compliant swatch styles
+       (blue solid, cyan solid). A reasonable reading of Sec 5.6, but a
+       genuine interpretation call worth a second look. -->
+  <article class="slide slide--role-application" data-slide="16" data-deck="cvb">
+    <h1 class="slide-title">Reading the Inherent Characteristic Curve</h1>
+    <div class="tpl-content">
+      <div class="tpl-chart-wrap">
+        <div class="tpl-chart">
+          <svg viewBox="0 0 520 340" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Graph of rated flow coefficient (0 to 100 percent) against rated travel (0 to 100 percent). Three curves share a common start at the bottom-left and a common end at the top-right: a blue solid quick-opening curve rises steeply near the start; a grey dashed linear curve is a straight diagonal; a cyan solid equal-percentage curve stays low through the middle of travel and rises steeply near the end." font-family="Arial, Helvetica, sans-serif" style="width:100%;height:100%">
+            <g stroke="var(--emerson-charcoal)" stroke-width="2" fill="none" stroke-linecap="round">
+              <path d="M70 20 V290"/>
+              <path d="M70 290 H490"/>
+            </g>
+            <g fill="var(--emerson-charcoal)" font-size="11" text-anchor="end">
+              <text x="64" y="24">100%</text>
+              <text x="64" y="294">0%</text>
+            </g>
+            <g fill="var(--emerson-charcoal)" font-size="11" text-anchor="middle">
+              <text x="70" y="308">0%</text>
+              <text x="490" y="308">100%</text>
+            </g>
+            <text x="280" y="326" fill="var(--emerson-charcoal)" font-size="12.5" font-weight="700" text-anchor="middle">Rated Travel (%)</text>
+            <text x="16" y="155" fill="var(--emerson-charcoal)" font-size="12.5" font-weight="700" text-anchor="middle" transform="rotate(-90 16 155)">Rated Flow Coefficient (%)</text>
+            <!-- three curves, shared origin/end point, geometry transcribed from CVH Fig. 1.19 -->
+            <path d="M70 290 L490 20" fill="none" stroke="var(--emerson-grey)" stroke-width="2.2" stroke-dasharray="7 5"/>
+            <path d="M70 290 C160 80 280 20 490 20" fill="none" stroke="var(--emerson-blue)" stroke-width="3.4"/>
+            <path d="M70 290 C300 290 400 220 490 20" fill="none" stroke="var(--emerson-cyan)" stroke-width="3.4"/>
+          </svg>
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="swatch" style="--swatch-c:var(--emerson-blue)"></span>Quick-opening</li>
+        <li><span class="swatch is-dashed" style="--swatch-c:var(--emerson-grey)"></span>Linear</li>
+        <li><span class="swatch" style="--swatch-c:var(--emerson-cyan)"></span>Equal-percentage</li>
+      </ul>
+      <p class="tpl-takeaway">Quick-opening delivers most of its flow change early in travel, linear changes at a constant rate, and equal-percentage changes slowest near closed and fastest near full-open &mdash; read where a curve sits relative to the straight line to tell which characteristic a valve has.</p>
+      <p class="tpl-source">Redrawn after Control Valve Handbook, 6th ed., Fig. 1.19 &mdash; same three curves sharing one origin/end point; the source's own in-plot curve labels moved into a key per Style Guide &sect;5.1. Component Index: cvh-cmp-inherent-characteristics-graph.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">16</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

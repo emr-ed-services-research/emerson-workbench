@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVB &middot; Slide 002 &mdash; Course Roadmap</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- Module 0, page 2 — Course Roadmap. IfE's own moduleZero roadmap
+       (ife-002.html) uses .tmpl-roadmap's week/day grid because IfE
+       genuinely has an 8-day, two-week schedule to show. CVB has no real
+       day/week schedule at all — course.json's own _note says everything
+       still sits under one placeholder Day 1 — so forcing this course's
+       real structure (four chapters, no day count) into that grid would
+       be exactly the kind of template-shape mismatch this course's own
+       Stage 2 review caught and fixed repeatedly for concept slides.
+       Built on production .slide--tmpl-table instead (the same template
+       page 4 uses) — a real, honest four-row chapter list, not an
+       invented day/week frame the course doesn't have. -->
+  <article class="slide slide--tmpl-table" data-slide="2" data-deck="cvb">
+    <h1 class="slide-title">Course Roadmap</h1>
+    <div class="tmpl-wrap" style="display:flex; flex-direction:column; justify-content:center">
+      <table class="tmpl-table" data-ref="cvb-roadmap" style="font-size:1.7cqw; table-layout:fixed">
+        <colgroup><col style="width:10%"><col style="width:34%"><col style="width:56%"></colgroup>
+        <thead>
+          <tr><th>Ch.</th><th>Chapter</th><th>What it covers</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Introduction to Control Valves</td><td>Sliding-stem valve anatomy, then rotary valves and flow characteristics</td></tr>
+          <tr><td>2</td><td>Valve and Actuator Types</td><td>Body styles, bonnets and packing, flow characterization, and actuator variety</td></tr>
+          <tr><td>3</td><td>Control Valve Accessories</td><td>Positioners, transducers, boosters, controllers, and safety accessories</td></tr>
+          <tr><td>4</td><td>Control Valve Performance</td><td>Variability, deadband, response, and the economics of tighter control</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">2</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -1,0 +1,13 @@
+{
+    "base":  "/source-library/",
+    "note":  "CVB draws from one source document only — see course.sources above.",
+    "primary":  [
+                    {
+                        "id":  "cvh6",
+                        "title":  "Control Valve Handbook",
+                        "meta":  "D101881X012 · Sixth Edition",
+                        "color":  "#004B8D",
+                        "file":  "Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf"
+                    }
+                ]
+}
