@@ -207,15 +207,36 @@ on those rows as unfinished work.
 | Fisher i2P-100 Electro-Pneumatic Transducer ([[Component Index — Fisher i2P-100 Electro-Pneumatic Transducer]]) — 17101 batch | Standing full-document | Complete | 14 | 2026-09-21 |
 | Fisher 3582/3582i Positioners ([[Component Index — Fisher 3582-3582i Positioners]]) — 17101 batch | Standing full-document | Complete | 25 | 2026-09-21 |
 | Fisher 3610J/3620J Positioners ([[Component Index — Fisher 3610J-3620J Positioners]]) — 17101 batch | Standing full-document | Complete | 31 | 2026-09-21 |
-| ValveLink Mobile Software Quick Start Guide ([[Component Index — ValveLink Mobile Software Quick Start Guide]]) — 17101 batch | Standing full-document | Complete | 11 | 2026-09-21 |
 | Fisher 585CLS Long Stroke Piston Actuator ([[Component Index — Fisher 585CLS Long Stroke Piston Actuator]]) — 17101 batch, `status: current` per a flagged precedence judgment call (see the file's own header) | Standing full-document | Complete | 3 | 2026-09-21 |
-| AMS Trex User Guide ch2 ([[Component Index — AMS Trex User Guide ch2]]) — hardware overview chapter; first pass to apply the `kind: navPath` software-documentation convention | Standing full-chapter | Complete | 57 | 2026-09-14 |
-| AMS Trex User Guide ch3 ([[Component Index — AMS Trex User Guide ch3]]) — Field Communicator application chapter, the densest chapter in the document (HART/FOUNDATION fieldbus connection, configuration, Favorites, Graphics) | Standing full-chapter | Complete | 72 | 2026-09-14 |
-| AMS Trex User Guide ch4-ch5 ([[Component Index — AMS Trex User Guide ch4-ch5]]) — Loop Diagnostics + Fieldbus Diagnostics applications, catalogued together | Standing full-chapter | Complete | 63 | 2026-09-24 |
+| AMS Trex ValveLink Diagnostic Concepts ([[Component Index — AMS Trex ValveLink Diagnostic Concepts]]) — topic-driven concept-grain pass, correcting the original AMS Trex navPath pass's over-indexed grain; mined from the Software Reference material below, nothing duplicated | Topic-driven | Complete (matches the topic) | 19 | 2026-09-14 |
 | Power & Severe Service Sourcebook | — | Not started | 0 | — |
 | Refining Sourcebook | — | Not started | 0 | — |
 | Pulp & Paper Sourcebook | — | Not started | 0 | — |
 | Historic Educational Services archive | — | Not started (unverified, `legacy`/`archive-only` territory if ever indexed) | 0 | — |
+
+## Software Reference material (not counted in Component Index totals)
+
+Software navigation/screenshot records are a different kind of fact than
+the physical Component Index above: tied to one app version, high-churn,
+and — per the correction that produced [[Component Index — AMS Trex
+ValveLink Diagnostic Concepts]] — the wrong grain for teaching software
+anyway (a navigation map, not the concepts a technician needs). These rows
+are **mined source material**, not a library deliverable: the files
+themselves are untouched (nothing discarded, nothing renamed), and every
+genuinely durable concept they contained has already been extracted into
+the Component Index proper, cross-referenced by id in both directions.
+Kept as its own table, separate from the headline total, so the two kinds
+of fact are never blended into one number again.
+
+| Source / scope | Trigger-type | Status | Components | Last touched |
+| --- | --- | --- | --- | --- |
+| AMS Trex User Guide ch2 ([[Component Index — AMS Trex User Guide ch2]]) — hardware overview chapter; first pass to apply the `kind: navPath` software-documentation convention | Standing full-chapter | Complete (mined) | 57 | 2026-09-14 |
+| AMS Trex User Guide ch3 ([[Component Index — AMS Trex User Guide ch3]]) — Field Communicator application chapter, the densest chapter in the document (HART/FOUNDATION fieldbus connection, configuration, Favorites, Graphics) | Standing full-chapter | Complete (mined) | 72 | 2026-09-14 |
+| AMS Trex User Guide ch4-ch5 ([[Component Index — AMS Trex User Guide ch4-ch5]]) — Loop Diagnostics + Fieldbus Diagnostics applications, catalogued together | Standing full-chapter | Complete (mined) | 63 | 2026-09-24 |
+| ValveLink Mobile Software Quick Start Guide ([[Component Index — ValveLink Mobile Software Quick Start Guide]]) — 17101 batch | Standing full-document | Complete (mined) | 11 | 2026-09-21 |
+
+**203 software-reference records** (192 AMS Trex + 11 ValveLink Mobile QSG),
+tracked here and excluded from every Component Index total below.
 
 **27 real Technical Publications manuals are now fully indexed** (18 from
 the original batch, plus the ENVIRO-SEAL rotary manual D101643X012 added
@@ -231,21 +252,37 @@ indexed deliberately ahead of any confirmed course citation for the
 first 19, in direct response to a real gap analysis for the 17101 batch
 for the next 7, and as a deliberate proof-of-concept for AMS Trex — see
 each file's own header for the real per-document rigor and structural
-findings.
+findings. **AMS Trex and the ValveLink Mobile QSG's own records now live
+in the Software Reference table above, not the Component Index total
+below** — see "Two totals, not one" immediately following.
 
-**1,038 components catalogued across the library today** (228 CVH + 144
-Oil & Gas + 666 Technical Publications, the last figure being 6
-bench-set-657 + 17 657-completion +
-25+16+17+11+10+16+24+25+15+9+6+7+12+35+16 across the original 15
-flat-structure manuals + 39 DVC6200 + 42 DVC7K-H + 7 ENVIRO-SEAL rotary +
-11 Fisher 646 + 24 Fisher 846 + 14 i2P-100 + 25 Fisher 3582/3582i + 31
-Fisher 3610J/3620J + 11 ValveLink Mobile QSG + 3 Fisher 585CLS + 192 AMS
-Trex User Guide [57 ch2 + 72 ch3 + 63 ch4-ch5, split 84 `kind: figure` /
-108 `kind: navPath` after the 2026-09-14 cleanup pass — see each file's
-own Open Items]), plus the 25/52 course-scoped 14101 ones counted in
-their own rows rather than double-counted into that total, since they
-cite figures the whole-chapter/whole-document indexes may already carry
-separately.
+### Two totals, not one (split 2026-09-14)
+
+The AMS Trex navPath pass over-indexed at the wrong grain (a navigation
+map, not the concepts a technician needs) — see [[Component Index — AMS
+Trex ValveLink Diagnostic Concepts]] for the correction and the full
+reasoning. That correction surfaced a real, durable distinction: physical
+Component Index facts (a valve's construction, an actuator's bench-set
+procedure) don't churn — a figure catalogued in 2026 still teaches the
+same thing years later. Software navigation facts do churn — they're tied
+to one app version and can go stale on the next release. Blending the two
+into one library-wide number hid that difference. From this date forward,
+report both:
+
+**854 components in the Component Index** (228 CVH + 144 Oil & Gas + 482
+Technical Publications — the last figure being 6 bench-set-657 + 17
+657-completion + 25+16+17+11+10+16+24+25+15+9+6+7+12+35+16 across the
+original 15 flat-structure manuals + 39 DVC6200 + 42 DVC7K-H + 7
+ENVIRO-SEAL rotary + 11 Fisher 646 + 24 Fisher 846 + 14 i2P-100 + 25
+Fisher 3582/3582i + 31 Fisher 3610J/3620J + 3 Fisher 585CLS + 19 AMS
+Trex/ValveLink Diagnostic Concepts), plus the 25/52 course-scoped 14101
+ones counted in their own rows rather than double-counted into that
+total, since they cite figures the whole-chapter/whole-document indexes
+may already carry separately. This is the headline number going forward.
+
+**203 records in Software Reference material** (192 AMS Trex + 11
+ValveLink Mobile QSG) — mined, not discarded, tracked separately per the
+table above, excluded from the 854.
 
 ### Primary sources (current, authoritative)
 
