@@ -725,9 +725,10 @@
 
     var ov = byId("libov"), idxEl = byId("libIndex"), docEl = byId("libDoc"),
         elBack = byId("libBack"), elTitle = byId("libTitle"), elExt = byId("libExt"),
-        elClose = byId("libClose");
+        elClose = byId("libClose"), elLoading = byId("libLoading");
     var LKEY = "ew" + C.course.code + ".lib";
     var frames = {};                 // docId -> iframe, kept alive once built
+    var loaded = {};                 // docId -> true once that iframe's "load" has fired
     var byDoc = {};
     (LIB.primary || []).forEach(function (d) { byDoc[d.id] = d; });
     (LIB.columns || []).forEach(function (col) { col.docs.forEach(function (d) { byDoc[d.id] = d; }); });
@@ -799,6 +800,10 @@
       if (!frames[d.id]) {
         var fr = h('<iframe class="libov__frame" title="' + esc(d.title) + '"></iframe>');
         fr.setAttribute("data-active", "false");
+        fr.addEventListener("load", function () {
+          loaded[d.id] = true;
+          if (state.docId === d.id) elLoading.hidden = true;
+        });
         fr.src = docURL(d);
         docEl.appendChild(fr);
         frames[d.id] = fr;
@@ -819,6 +824,9 @@
       elTitle.textContent = inDoc ? doc.title : "Source Library";
 
       if (inDoc) {
+        // Show the spinner before frameFor() so a first-open genuinely
+        // starts loading state visible, not a blank frame for one paint.
+        elLoading.hidden = !!loaded[doc.id];
         var fr = frameFor(doc);
         Object.keys(frames).forEach(function (k) {
           frames[k].setAttribute("data-active", k === doc.id ? "true" : "false");
@@ -828,6 +836,7 @@
       } else {
         elExt.hidden = true;
         elExt.removeAttribute("href");
+        elLoading.hidden = true;
       }
 
       try { localStorage.setItem(LKEY, JSON.stringify({ view: state.view, docId: state.docId })); } catch (e) {}

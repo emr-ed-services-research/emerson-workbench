@@ -105,6 +105,21 @@
   .libov__index, .libov__doc { position: absolute; inset: 0; background: #1e1e1e; }
   .libov__index { overflow-y: auto; padding: 18px 20px 26px; container: libidx / inline-size; }
   .libov__index[hidden], .libov__doc[hidden] { display: block; visibility: hidden; }
+  .libov__loading {
+    position: absolute; inset: 0; z-index: 5; display: flex;
+    flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+    background: #1e1e1e; color: #8f8f8f; font-size: 13px;
+  }
+  .libov__loading[hidden] { display: none; }
+  .libov__spinner {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 3px solid #3a3a3a; border-top-color: #0a67b8;
+    animation: libov-spin .8s linear infinite;
+  }
+  @keyframes libov-spin { to { transform: rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .libov__spinner { animation: none; border-top-color: #3a3a3a; }
+  }
   .libidx__group { font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
     color: #8f8f8f; font-weight: 700; margin: 18px 0 7px; }
   .libidx__group:first-child { margin-top: 0; }
@@ -178,6 +193,10 @@
     <div class="libov__body">
       <div class="libov__index" id="libIndex"></div>
       <div class="libov__doc" id="libDoc"></div>
+      <div class="libov__loading" id="libLoading" hidden>
+        <div class="libov__spinner" aria-hidden="true"></div>
+        <p>Loading document&hellip;</p>
+      </div>
     </div>
   </div>
 </div>
@@ -337,8 +356,9 @@
       var ov = document.getElementById('libov'), idxEl = document.getElementById('libIndex'),
           docEl = document.getElementById('libDoc'), elBack = document.getElementById('libBack'),
           elTitle = document.getElementById('libTitle'), elExt = document.getElementById('libExt'),
-          elClose = document.getElementById('libClose');
+          elClose = document.getElementById('libClose'), elLoading = document.getElementById('libLoading');
       var frames = {};
+      var loaded = {};
       var byDoc = {};
       (LIB.primary || []).forEach(function (d) { byDoc[d.id] = d; });
       (LIB.columns || []).forEach(function (col) { col.docs.forEach(function (d) { byDoc[d.id] = d; }); });
@@ -400,6 +420,10 @@
         if (!frames[d.id]) {
           var fr = h('<iframe class="libov__frame" title="' + esc(d.title) + '"></iframe>');
           fr.setAttribute('data-active', 'false');
+          fr.addEventListener('load', function () {
+            loaded[d.id] = true;
+            if (state.docId === d.id) elLoading.hidden = true;
+          });
           fr.src = docURL(d);
           docEl.appendChild(fr);
           frames[d.id] = fr;
@@ -416,10 +440,11 @@
         elBack.hidden = !inDoc;
         elTitle.textContent = inDoc ? doc.title : 'Source Library';
         if (inDoc) {
+          elLoading.hidden = !!loaded[doc.id];
           var fr = frameFor(doc);
           Object.keys(frames).forEach(function (k) { frames[k].setAttribute('data-active', k === doc.id ? 'true' : 'false'); });
           elExt.hidden = false; elExt.href = fr.src;
-        } else { elExt.hidden = true; elExt.removeAttribute('href'); }
+        } else { elExt.hidden = true; elExt.removeAttribute('href'); elLoading.hidden = true; }
       }
       function close() { state.open = false; apply(); }
       function toggle() { state.open = !state.open; apply(); }

@@ -1,5 +1,5 @@
 {
-    "base":  "/source-library/",
+    "base":  "../../../source-library/",
     "note":  "CVB itself draws from one source document only (see course.sources above) — this shelf is the standing, shared Source Library available from every published course, matching 14101\u0027s own library block exactly, not scoped to this course\u0027s own citations.",
     "primary":  [
                     {

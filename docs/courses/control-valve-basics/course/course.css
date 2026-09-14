@@ -423,6 +423,27 @@ body.lib-open .libov__panel { transform: none; }
    stacking once the pane is genuinely phone-portrait narrow */
 .libov__index { overflow-y: auto; padding: 18px 20px 26px; container: libidx / inline-size; }
 .libov__index[hidden], .libov__doc[hidden] { display: block; visibility: hidden; }
+
+/* Shown over .libov__doc while a just-opened PDF's iframe is still loading
+   (a real, sometimes multi-second wait for a multi-MB file) -- a blank
+   white iframe with no feedback reads as broken, not slow. Sits above the
+   iframe (z-index) but never blocks it once loaded -- toggled off by the
+   iframe's own "load" event, see wireLibrary(). */
+.libov__loading {
+  position: absolute; inset: 0; z-index: 5; display: flex;
+  flex-direction: column; align-items: center; justify-content: center; gap: 12px;
+  background: var(--emerson-white); color: var(--ink-soft); font-size: 13px;
+}
+.libov__loading[hidden] { display: none; }
+.libov__spinner {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 3px solid var(--rail-line); border-top-color: var(--emerson-blue);
+  animation: libov-spin .8s linear infinite;
+}
+@keyframes libov-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .libov__spinner { animation: none; border-top-color: var(--rail-line); }
+}
 .libidx__group {
   font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
   color: var(--ink-soft); font-weight: 700; margin: 18px 0 7px;

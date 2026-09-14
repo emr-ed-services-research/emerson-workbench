@@ -11,21 +11,35 @@
 #  completely unchanged. The one thing that DOES need rewriting is
 #  library.base, which in the vault is a "../../../../20 - Source Library/"
 #  escape that only resolves when the whole vault is co-located; the
-#  published copy gets a site-root-absolute "/source-library/" instead.
+#  published copy gets a PAGE-RELATIVE "../../../source-library/" instead
+#  (NOT a site-root-absolute "/source-library/" - a real bug, confirmed
+#  2026-09-14 by an actual click-through: this is a GitHub Pages PROJECT
+#  site served under a repo-name path prefix, and a root-absolute path
+#  resolves against the domain root instead, skipping that prefix and
+#  404ing - see the note by $PUBLISHED_BASE below).
 #
 #  What it does, per course:
 #    1. Copies Presentation/course/ (index.html, course.js, course.css,
 #       course-data.js) into docs/courses/<slug>/course/.
 #    2. Copies Presentation/build/ (slides, css, assets, manifest.js) into
 #       docs/courses/<slug>/build/  -  course/'s required sibling.
-#    3. Rewrites library.base to "/source-library/" in the PUBLISHED copy of
-#       course-data.js only (the vault's own copy is untouched)  -  a plain
-#       text substitution, since that exact string is unique in the file.
-#       Also writes build/library.json with the same rewritten shelf, so the
-#       QA viewer's own panel works too if anyone opens it directly.
+#    3. Rewrites library.base to the page-relative published path in the
+#       PUBLISHED copy of course-data.js only (the vault's own copy is
+#       untouched)  -  a plain text substitution, since that exact string is
+#       unique in the file. Also writes build/library.json with the same
+#       rewritten shelf, so the QA viewer's own panel works too if anyone
+#       opens it directly.
 #    4. Copies every PDF the course's library block cites into ONE shared
 #       docs/source-library/ tree (deduped  -  copied once even if several
 #       courses cite the same document).
+#    5. Recompresses the published copy of build/assets/sourced/*.png (the
+#       Component-Index PDF crops slides actually reference) into resized,
+#       quality-84 JPEGs, and rewrites the matching <img src> references in
+#       the published slide HTML. This ONLY ever touches the copy already
+#       sitting in docs/ - the vault's own Presentation/build/assets/sourced/
+#       PNGs are never read for writing, only read once to produce the
+#       compressed copy, so an instructor's local working files are
+#       untouched no matter how many times this script runs.
 #
 #  The shelf itself is standing, shared infrastructure, not curated per
 #  course: every course's own library block should list the same real
@@ -62,11 +76,84 @@ $vault      = Split-Path $engineRoot -Parent
 if (-not $DocsRoot) { $DocsRoot = Join-Path $vault 'docs' }
 $libRoot    = Join-Path $DocsRoot 'source-library'
 
+# Real bug, confirmed 2026-09-14 by an actual click-through (a raw curl to
+# the direct file URL had returned 200 and missed this entirely): this site
+# is a GitHub Pages PROJECT site, served under a path prefix matching the
+# repo name (.../emerson-workbench/...), not a user/org root site. A
+# root-absolute path like "/source-library/..." resolves in a browser
+# against the DOMAIN root, not the project's own base path - it silently
+# skips the "/emerson-workbench/" prefix and 404s. A page-relative path has
+# no such problem and needs no knowledge of the domain or repo name at all.
+# Every course page lives at docs/courses/<slug>/course-or-build/ - exactly
+# 3 levels under docs/ - so this same relative path is correct from both
+# course/ and build/ (siblings at the same depth).
 $VAULT_RELATIVE_BASE  = '../../../../20 - Source Library/'
-$PUBLISHED_BASE       = '/source-library/'
+$PUBLISHED_BASE       = '../../../source-library/'
 
 function Slugify([string]$name) {
   ($name.ToLowerInvariant() -replace '[^a-z0-9]+', '-').Trim('-')
+}
+
+Add-Type -AssemblyName System.Drawing
+
+# Same resize + Save-Jpeg approach as 40 - Engine/generator/extract-media.ps1
+# (max-width cap, quality 84) but applied to the sourced/ crop folder that
+# script never touches, and always reading the vault's PNG / writing a JPEG
+# into the docs/ copy only - never the reverse.
+function Save-Jpeg($bmp, $path, $q) {
+  $enc = [System.Drawing.Imaging.ImageCodecInfo]::GetImageEncoders() | Where-Object { $_.MimeType -eq 'image/jpeg' }
+  $pp = New-Object System.Drawing.Imaging.EncoderParameters(1)
+  $pp.Param[0] = New-Object System.Drawing.Imaging.EncoderParameter([System.Drawing.Imaging.Encoder]::Quality, [long]$q)
+  $bmp.Save($path, $enc, $pp)
+}
+function Compress-SourcedImages([string]$publishedBuildDir, [string]$courseLabel) {
+  $sourcedDir = Join-Path $publishedBuildDir 'assets\sourced'
+  if (-not (Test-Path -LiteralPath $sourcedDir)) { return }
+  $pngs = Get-ChildItem -LiteralPath $sourcedDir -Filter '*.png' -File
+  if ($pngs.Count -eq 0) { return }
+
+  $renamed = @{}   # original basename (no ext) -> $true, for the slide-html rewrite pass
+  $beforeTotal = 0; $afterTotal = 0
+  foreach ($png in $pngs) {
+    $beforeBytes = $png.Length
+    $bn = [System.IO.Path]::GetFileNameWithoutExtension($png.Name)
+    $jpgPath = Join-Path $sourcedDir "$bn.jpg"
+    $s = [System.Drawing.Image]::FromFile($png.FullName)
+    $maxW = 1600
+    if ($s.Width -le $maxW) {
+      $d = New-Object System.Drawing.Bitmap($s)
+    } else {
+      $nw = $maxW; $nh = [int]($s.Height * $nw / $s.Width)
+      $d = New-Object System.Drawing.Bitmap($nw, $nh)
+      $g = [System.Drawing.Graphics]::FromImage($d)
+      $g.InterpolationMode = 'HighQualityBicubic'; $g.SmoothingMode = 'HighQuality'
+      $g.DrawImage($s, 0, 0, $nw, $nh); $g.Dispose()
+    }
+    $s.Dispose()
+    Save-Jpeg $d $jpgPath 84
+    $d.Dispose()
+    Remove-Item -LiteralPath $png.FullName -Force   # published copy only - vault PNG untouched
+    $afterBytes = (Get-Item -LiteralPath $jpgPath).Length
+    $beforeTotal += $beforeBytes; $afterTotal += $afterBytes
+    $renamed[$bn] = $true
+  }
+
+  $slidesDir = Join-Path (Split-Path $publishedBuildDir -Parent) 'build\slides'
+  $rewrittenSlides = 0
+  if (Test-Path -LiteralPath $slidesDir) {
+    Get-ChildItem -LiteralPath $slidesDir -Filter '*.html' -File | ForEach-Object {
+      $text = Read-Utf8 $_.FullName
+      $orig = $text
+      foreach ($bn in $renamed.Keys) {
+        $text = $text -replace [regex]::Escape("assets/sourced/$bn.png"), "assets/sourced/$bn.jpg"
+      }
+      if ($text -ne $orig) { Write-Utf8NoBom $_.FullName $text; $rewrittenSlides++ }
+    }
+  }
+
+  $beforeMB = [math]::Round($beforeTotal / 1MB, 1); $afterMB = [math]::Round($afterTotal / 1MB, 1)
+  $pct = [math]::Round((1 - ($afterTotal / $beforeTotal)) * 100, 1)
+  Write-Host "  [$courseLabel] compressed $($pngs.Count) sourced images: ${beforeMB}MB -> ${afterMB}MB ($pct% smaller), $rewrittenSlides slide file(s) rewritten"
 }
 
 # Build-tree entries that are authoring/QA scaffolding, never published.
@@ -131,6 +218,13 @@ foreach ($course in $Courses) {
   Get-ChildItem -LiteralPath $buildSrc -Force |
     Where-Object { $excludeNames -notcontains $_.Name } |
     ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination (Join-Path $dstBuild $_.Name) -Recurse -Force }
+
+  # Publish-only compression: reads the just-copied PNGs (already a copy,
+  # inside docs/), writes resized quality-84 JPEGs over them in that same
+  # copy, and updates the matching <img src> in the published slide HTML.
+  # The vault's own Presentation/build/assets/sourced/*.png are only ever
+  # read (by the copy step above), never written to.
+  Compress-SourcedImages $dstBuild $course
 
   # Rewrite library.base in the PUBLISHED course-data.js only  -  plain text
   # substitution; the vault's own copy (and course.json, not published at
