@@ -115,6 +115,10 @@ notes: >
   silhouette. If ever placed on a slide with the house numbered-marker
   convention, see Style Guide §6.3 (figures with their own printed field
   labels are not re-marked with numbered circles).
+  **Cross-reference (2026-09-14):** identical drawing number (W0992-4) to
+  `pss-cmp-design-et-globe-cutaway` in `Component Index — Power & Severe
+  Service Sourcebook ch1.md` — the same source cutaway reused across both
+  Sourcebooks.
 ```
 
 ```yaml
@@ -169,6 +173,10 @@ notes: >
   Unlabelled silhouette cutaway — same trim family shape as the ET (cage,
   plug, seat ring visible) but heavier body section for the CL2500 rating; no
   printed field callouts.
+  **Cross-reference (2026-09-14):** identical drawing number (W3379) to
+  `pss-cmp-ehd-high-pressure-cutaway` in `Component Index — Power & Severe
+  Service Sourcebook ch1.md` — the same source cutaway reused across both
+  Sourcebooks.
 ```
 
 ```yaml
@@ -228,6 +236,10 @@ notes: >
   INLET SEAL, SEAL PROTECTOR RING OR FLOW RING, FOLLOWER SHAFT) — the ball-
   valve counterpart to `ogas-cmp-et-globe-cutaway`'s labelled globe cutaway.
   Same §6.3 note applies if used on a slide.
+  **Cross-reference (2026-09-14):** identical drawing number (W7169) to
+  `pss-cmp-v250-ball-valve-cutaway` in `Component Index — Power & Severe
+  Service Sourcebook ch1.md` — the same source cutaway reused across both
+  Sourcebooks.
 ```
 
 ---
@@ -300,6 +312,10 @@ notes: >
   `ogas-cmp-v250-ball-valve-cutaway`. Style Guide §6.3 applies (figure's own
   printed field labels are not re-marked with numbered circles) if ever
   placed on a slide.
+  **Cross-reference (2026-09-14):** identical drawing number (W4170-3/IL) to
+  `pss-cmp-v500-eccentric-plug-cutaway` in `Component Index — Power &
+  Severe Service Sourcebook ch1.md` — the same source cutaway reused across
+  both Sourcebooks.
 ```
 
 ```yaml
@@ -331,6 +347,10 @@ notes: >
   RING, TAPER PINS AND HOLLOW PINS, PACKING FOLLOWER, VALVE BODY, DISK,
   BEARING, PTFE V-RING PACKING, SPLINED SHAFT) — a nomenclature source; §6.3
   applies if ever placed on a slide.
+  **Cross-reference (2026-09-14):** identical drawing number (W6235-2/IL) to
+  `pss-cmp-8560-high-perf-butterfly-cutaway` in `Component Index — Power &
+  Severe Service Sourcebook ch1.md` — the same source cutaway reused across
+  both Sourcebooks.
 ```
 
 ```yaml
@@ -393,6 +413,10 @@ notes: >
   (FLAT-FACE, RAISED-FACE, RING-TYPE JOINT) — §6.3 applies if ever placed on
   a slide. Pairs with `ogas-cmp-welded-end-connections` (Figure 1-12) as the
   chapter's two end-connection figures; both sit on the same source page.
+  **Cross-reference (2026-09-14):** identical drawing number (A7098) to
+  `pss-cmp-bolted-flange-end-connections` in `Component Index — Power &
+  Severe Service Sourcebook ch1.md` — the same source cutaway reused across
+  both Sourcebooks.
 ```
 
 ```yaml
@@ -421,6 +445,10 @@ notes: >
   Pairs with `ogas-cmp-bolted-flange-end-connections` (Figure 1-11); both
   sit on printed p. 1-9 (PDF page 15), the flange figure above this one in
   the left column.
+  **Cross-reference (2026-09-14):** identical drawing number (A7099) to
+  `pss-cmp-welded-end-connections` in `Component Index — Power & Severe
+  Service Sourcebook ch1.md` — the same source cutaway reused across both
+  Sourcebooks.
 ```
 
 ---
@@ -521,6 +549,13 @@ notes: >
   re-marked with numbered circles). Pairs with `ogas-cmp-sliding-stem-packing-examples-graphite`
   (Figure 1-16) as the two "Typical Packing Examples for Sliding-Stem
   Valves" figures — together they cover all rows of Table 1-5.
+  **Cross-reference (2026-09-15):** this figure's ENVIRO-SEAL Duplex panel
+  (drawing 24B9310/A6844) is identical to `pp-cmp-enviroseal-duplex-
+  packing-system` in `Component Index — Pulp & Paper Sourcebook ch1.md`
+  and to `ref-cmp-enviroseal-duplex-packing-system` in `Component Index —
+  Refining Sourcebook ch3.md` — the same source cutaway reused across all
+  three Sourcebooks, standalone in the other two vs. one panel of this
+  4-panel composite here.
 ```
 
 ```yaml
@@ -590,6 +625,14 @@ notes: >
   edge) — verified this is a source artifact, not a cropping error on our
   side; carry the full word "PACKING BOX RING" in any list entry that uses
   this callout rather than reproducing the source's own clipping.
+  **Cross-reference (2026-09-15):** this figure's Graphite Packing panel
+  (drawing W6125-1/IL) is identical to `pp-cmp-enviroseal-graphite-
+  packing-rotary` in `Component Index — Pulp & Paper Sourcebook ch1.md`,
+  `ref-cmp-enviroseal-graphite-packing-rotary` in `Component Index —
+  Refining Sourcebook ch3.md`, and `Component Index — Fisher ENVIRO-SEAL
+  Rotary Packing System.md`'s own standalone record — the same source
+  cutaway confirmed reused across all three Sourcebooks plus the
+  standalone instruction manual.
 ```
 
 ---

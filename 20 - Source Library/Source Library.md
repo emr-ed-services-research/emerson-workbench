@@ -209,9 +209,9 @@ on those rows as unfinished work.
 | Fisher 3610J/3620J Positioners ([[Component Index — Fisher 3610J-3620J Positioners]]) — 17101 batch | Standing full-document | Complete | 31 | 2026-09-21 |
 | Fisher 585CLS Long Stroke Piston Actuator ([[Component Index — Fisher 585CLS Long Stroke Piston Actuator]]) — 17101 batch, `status: current` per a flagged precedence judgment call (see the file's own header) | Standing full-document | Complete | 3 | 2026-09-21 |
 | AMS Trex ValveLink Diagnostic Concepts ([[Component Index — AMS Trex ValveLink Diagnostic Concepts]]) — topic-driven concept-grain pass, correcting the original AMS Trex navPath pass's over-indexed grain; mined from the Software Reference material below, nothing duplicated | Topic-driven | Complete (matches the topic) | 19 | 2026-09-14 |
-| Power & Severe Service Sourcebook | — | Not started | 0 | — |
-| Refining Sourcebook | — | Not started | 0 | — |
-| Pulp & Paper Sourcebook | — | Not started | 0 | — |
+| Power & Severe Service Sourcebook — all 14 chapters | Standing full-chapter | Complete | 159 | 2026-09-15 |
+| Refining Sourcebook — all 5 chapters | Standing full-chapter | Complete | 95 | 2026-09-15 |
+| Pulp & Paper Sourcebook — all 18 chapters (chapter 10 has two real lettered sub-parts, 10A/10B) | Standing full-chapter | Complete | 147 | 2026-09-15 |
 | Historic Educational Services archive | — | Not started (unverified, `legacy`/`archive-only` territory if ever indexed) | 0 | — |
 
 ## Software Reference material (not counted in Component Index totals)

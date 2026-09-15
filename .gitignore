@@ -68,6 +68,11 @@ desktop.ini
 # tracked; the archive contents themselves do not need versioning.
 20 - Source Library/Historic Educational Services Training Content/
 
+# Legacy Educational Services course deck — 3.4GB, was completely unprotected
+# (no existing .pptx pattern matched this path). Kept in the vault and
+# browsable, same as the Historic archive above, just never tracked.
+20 - Source Library/Legacy Educational Services Courses/17101 Control Valve Instrumentation - Basic v Jan 2026.pptx
+
 # ── Render-check Node deps (regenerable: npm --prefix "40 - Engine/render" install) ──
 40 - Engine/render/node_modules/
 40 - Engine/render/baseline.txt
