@@ -24,7 +24,7 @@ The primary background source across Educational Services courses, including
 | Publisher | Emerson / Fisher Controls International LLC |
 | Edition | Sixth Edition |
 | Document / printing | D101881X012, August 2023 (© 2005, 2019, 2023) |
-| File | `20 - Source Library/Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf` |
+| File | `20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf` |
 | Format | PDF |
 
 ## Scope by chapter

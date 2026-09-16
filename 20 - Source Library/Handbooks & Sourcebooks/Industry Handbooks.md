@@ -10,7 +10,8 @@ updated: 2026-08-29
 # Industry Handbooks
 
 The **Fisher Control Valve Sourcebook** series held in the Source Library, in
-`20 - Source Library/Industry Specific Sourcebooks/`. Each sourcebook pairs a
+`20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/`.
+Each sourcebook pairs a
 common control-valve fundamentals section with an industry-specific section that
 walks the processes of that industry and identifies the control valves used at
 each point, along with the problem valves to watch.

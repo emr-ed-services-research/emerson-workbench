@@ -22,7 +22,7 @@ updated: 2026-09-03
 > [[Technical Publications|instruction manuals]]. Verify anything taken from it
 > against a current source before using it in a course.
 
-Held in `20 - Source Library/Historic Educational Services Training Content/`.
+Held in `20 - Source Library/Legacy & Archive/Historic Educational Services Training Content/`.
 Roughly 60+ training modules (document numbers D750000–D750336), about 630 MB,
 one folder per module. Catalogued here **at the group level only** — the
 document-by-document rigour applied to the primary sources is not warranted for

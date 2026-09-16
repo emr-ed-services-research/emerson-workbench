@@ -10,7 +10,9 @@ updated: 2026-08-31
 # Technical Publications
 
 Fisher / Emerson instruction manuals held in the Source Library, in
-`20 - Source Library/Technical Publications/`. These are the current
+`20 - Source Library/Equipment Manuals/` (split by hardware family — Actuators,
+Valve Bodies, Positioners, Packing Systems, Software & Diagnostics). These are
+the current
 authoritative maintenance references for the specific hardware taught in the
 [[14101 — Course Home|14101]] course.
 

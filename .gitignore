@@ -40,38 +40,38 @@ desktop.ini
 # curated in 14101's own library block, matching it exactly rather than
 # scoping down per course. 53MB total, no LFS needed. Still a real, named
 # subset — the rest of the ~680MB Source Library stays ignored above.
-!20 - Source Library/Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf
-!20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas.pdf
-!20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Power & Severe Service.pdf
-!20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Refining.pdf
-!20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Pulp & Paper.pdf
-!20 - Source Library/Technical Publications/d100310x012-667-diaphragm-actuator-sizes-30-30i-76-76i-and-87-fisher.pdf
-!20 - Source Library/Technical Publications/instruction-manual-fisher-657-diaphragm-actuator-sizes-30-30i-through-70-70i-87-en-11746662.pdf
-!20 - Source Library/Technical Publications/d102087x012.pdf
-!20 - Source Library/Technical Publications/d100320x012.pdf
-!20 - Source Library/Technical Publications/d100324x012.pdf
-!20 - Source Library/Technical Publications/d103296x012.pdf
-!20 - Source Library/Technical Publications/instruction-manual-fisher-es-eas-easy-e-valves-cl125-through-cl600-en-11745482.pdf
-!20 - Source Library/Technical Publications/d100390x012.pdf
-!20 - Source Library/Technical Publications/d100398x012.pdf
-!20 - Source Library/Technical Publications/d100401x012.pdf
-!20 - Source Library/Technical Publications/d100380x012.pdf
-!20 - Source Library/Technical Publications/d103300x012.pdf
-!20 - Source Library/Technical Publications/d101554x012.pdf
-!20 - Source Library/Technical Publications/d100423x012.pdf
-!20 - Source Library/Technical Publications/instruction-manual-fieldvue-dvc6200-hw2-digital-valve-controller-en.pdf
-!20 - Source Library/Technical Publications/instruction-manual-fisher-fieldvue-dvc7k-h-digital-valve-controller-en.pdf
+!20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf
+!20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas.pdf
+!20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Power & Severe Service.pdf
+!20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Refining.pdf
+!20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Pulp & Paper.pdf
+!20 - Source Library/Equipment Manuals/Actuators/d100310x012-667-diaphragm-actuator-sizes-30-30i-76-76i-and-87-fisher.pdf
+!20 - Source Library/Equipment Manuals/Actuators/instruction-manual-fisher-657-diaphragm-actuator-sizes-30-30i-through-70-70i-87-en-11746662.pdf
+!20 - Source Library/Equipment Manuals/Actuators/d102087x012.pdf
+!20 - Source Library/Equipment Manuals/Actuators/d100320x012.pdf
+!20 - Source Library/Equipment Manuals/Actuators/d100324x012.pdf
+!20 - Source Library/Equipment Manuals/Actuators/d103296x012.pdf
+!20 - Source Library/Equipment Manuals/Valve Bodies/instruction-manual-fisher-es-eas-easy-e-valves-cl125-through-cl600-en-11745482.pdf
+!20 - Source Library/Equipment Manuals/Valve Bodies/d100390x012.pdf
+!20 - Source Library/Equipment Manuals/Valve Bodies/d100398x012.pdf
+!20 - Source Library/Equipment Manuals/Valve Bodies/d100401x012.pdf
+!20 - Source Library/Equipment Manuals/Valve Bodies/d100380x012.pdf
+!20 - Source Library/Equipment Manuals/Valve Bodies/d103300x012.pdf
+!20 - Source Library/Equipment Manuals/Valve Bodies/d101554x012.pdf
+!20 - Source Library/Equipment Manuals/Valve Bodies/d100423x012.pdf
+!20 - Source Library/Equipment Manuals/Positioners/instruction-manual-fieldvue-dvc6200-hw2-digital-valve-controller-en.pdf
+!20 - Source Library/Equipment Manuals/Positioners/instruction-manual-fisher-fieldvue-dvc7k-h-digital-valve-controller-en.pdf
 
 # Historic Educational Services archive — browse-only, unverified, ~140 files
 # in deeply-nested folders (some exceed the Windows path limit). The catalogue
 # note "Historic Educational Services Training Content.md" one level up stays
 # tracked; the archive contents themselves do not need versioning.
-20 - Source Library/Historic Educational Services Training Content/
+20 - Source Library/Legacy & Archive/Historic Educational Services Training Content/
 
 # Legacy Educational Services course deck — 3.4GB, was completely unprotected
 # (no existing .pptx pattern matched this path). Kept in the vault and
 # browsable, same as the Historic archive above, just never tracked.
-20 - Source Library/Legacy Educational Services Courses/17101 Control Valve Instrumentation - Basic v Jan 2026.pptx
+20 - Source Library/Legacy & Archive/Legacy Educational Services Courses/17101 Control Valve Instrumentation - Basic v Jan 2026.pptx
 
 # ── Render-check Node deps (regenerable: npm --prefix "40 - Engine/render" install) ──
 40 - Engine/render/node_modules/
