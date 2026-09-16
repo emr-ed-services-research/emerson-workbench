@@ -114,6 +114,12 @@ correction touched ~2,000 references):
 | `isolation-valves` | *(`eng` only)* on/off isolation valve family and variant selection against failure modes |
 | `sustainability` | *(`eng` only)* emissions-scope classification and decarbonization-technology applicability judgment |
 | `sis` | *(`eng` only)* safety instrumented systems — layer-of-protection identification and SIL/voting architecture |
+| `production` | *(`eng` only, CVE-Industry, added 2026-09-15 — first-pass, not yet Franz-confirmed)* onshore/offshore oil and gas production — facility-siting design tradeoffs |
+| `gas-treatment` | *(`eng` only, CVE-Industry, first-pass)* natural gas treatment process-train control (amine treatment, dehydration, sulfur recovery, tail gas) |
+| `lng` | *(`eng` only, CVE-Industry, first-pass)* LNG liquefaction and receiving-terminal cryogenic service |
+| `transportation` | *(`eng` only, CVE-Industry, first-pass)* oil and gas pipeline transportation control (pump stations, metering, terminals) |
+| `fractionation` | *(`eng` only, CVE-Industry, first-pass)* distillation-column control (deethanizer/depropanizer/debutanizer) |
+| `storage` | *(`eng` only, CVE-Industry, first-pass)* underground natural gas storage — formation-type-driven process design |
 
 An area may appear under more than one domain (`mnt.positioner.*` for bench
 maintenance, `inst.positioner.*` for configuration). The domain says what

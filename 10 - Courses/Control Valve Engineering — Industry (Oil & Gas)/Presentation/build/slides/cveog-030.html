@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE-OG &middot; Slide 030 &mdash; Check Your Knowledge: LNG Liquefaction</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cveog-ch1-m3, page 30 — check-your-knowledge slide (no keyConcepts entry by schema design). -->
+  <article class="slide slide--role-check" data-slide="30" data-deck="cveog">
+    <h1 class="slide-title">Check Your Knowledge: LNG Liquefaction</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">CVE2's severe-service example uses a &minus;101&deg;C frost point. LNG liquefaction cools gas to &minus;161&deg;C. What has to change in the material-selection judgment between the two?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Nothing — colder is just a more extreme version of the same severe-service judgment, no real change</li>
+        <li>B.&nbsp;&nbsp;The judgment doesn't transfer at all — LNG needs an entirely different engineering discipline</li>
+        <li data-correct="true">C.&nbsp;&nbsp;The same material-selection judgment applies, but at a materially colder real number that a learner shouldn't assume tops out near CVE2's example</li>
+        <li>D.&nbsp;&nbsp;Only the trim material changes; body material selection stays identical regardless of temperature</li>
+      </ul>
+      <p class="tpl-reveal">C &middot; The fundamental judgment transfers, but LNG's real &minus;161&deg;C is materially colder than CVE2's example &mdash; assuming the example is the ceiling would be a real mistake.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">30</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>
