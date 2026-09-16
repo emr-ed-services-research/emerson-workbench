@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 009 &mdash; Check Your Knowledge: Real Cv Calculation &amp; Actuator Force Verification</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m1, page 9 — the module's check slide. Tests whether a
+       learner distinguishes a choked-flow failure from an actuator
+       force-margin failure — the module's own central tension. -->
+  <article class="slide slide--role-check" data-slide="9" data-deck="cve2">
+    <h1 class="slide-title">Check Your Knowledge: Real Cv Calculation &amp; Actuator Force Verification</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A calculated Cv satisfies the required flow, and the chosen actuator's rated output exceeds the computed seat load and packing friction with margin. On startup, the valve still won't fully close. Which failure mode does this rule out?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;The Cv exceeded the choked-flow limit (F_F)</li>
+        <li data-correct="true">B.&nbsp;&nbsp;An actuator force-margin shortfall</li>
+        <li>C.&nbsp;&nbsp;An unbalance-area miscalculation</li>
+        <li>D.&nbsp;&nbsp;A packing-friction underestimate</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; Force margin was already verified adequate &mdash; the failure must trace to something else (a choked-flow condition not actually checked, or a real-world friction/seat-load figure that differs from the table value).</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">9</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

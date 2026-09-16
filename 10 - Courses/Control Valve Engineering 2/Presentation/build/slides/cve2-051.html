@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 051 &mdash; Safety Integrity Level: RRF and PFDavg</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m9, page 51 — eng.sis.sil-architecture [understand · mechanism].
+       Real table data verified directly against the source PDF (Figure 12.3,
+       printed p. 253) by WC this pass. cvh-cmp-sil-pfd-rrf-table. Structure
+       corrected by WC's review pass: "slide--tmpl-table" does not exist in
+       gallery.css; the real working pure-table pattern is
+       slide--role-application with .tmpl-table nested inside .tpl-content
+       (:has(.tmpl-table), Style Guide Sec 5.10/9). -->
+  <article class="slide slide--role-application" data-slide="51" data-deck="cve2">
+    <h1 class="slide-title">Safety Integrity Level: RRF and PFDavg</h1>
+    <div class="tpl-content">
+      <div class="tmpl-wrap">
+        <table class="tmpl-table">
+          <thead><tr><th class="num">SIL</th><th>Risk Reduction Factor (RRF)</th><th>PFDavg = 1/RRF</th></tr></thead>
+          <tbody>
+            <tr><td class="num">4</td><td>100,000 to 10,000</td><td>&#8805;10&#8315;&#8309; to &lt;10&#8315;&#8308;</td></tr>
+            <tr><td class="num">3</td><td>10,000 to 1,000</td><td>&#8805;10&#8315;&#8308; to &lt;10&#8315;&#179;</td></tr>
+            <tr><td class="num">2</td><td>1,000 to 100</td><td>&#8805;10&#8315;&#179; to &lt;10&#8315;&#178;</td></tr>
+            <tr><td class="num">1</td><td>100 to 10</td><td>&#8805;10&#8315;&#178; to &lt;10&#8315;&#185;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tpl-source">A target SIL isn&rsquo;t chosen freehand &mdash; it&rsquo;s read off this table against the RRF the application actually needs. Control Valve Handbook, 6th ed., Figure 12.3, p. 253. Component Index: cvh-cmp-sil-pfd-rrf-table.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">51</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

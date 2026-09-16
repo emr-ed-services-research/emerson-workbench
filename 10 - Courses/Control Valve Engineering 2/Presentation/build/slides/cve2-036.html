@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 036 &mdash; Judging a Proposed Substitution</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m6, page 36 — eng.standards.scheme-reconciliation [evaluate · application].
+       Synthesis slide: applies the three real tables from pages 33-35 to a
+       worked substitution judgment. The device/substitute pairing is a
+       worked example built from the real hierarchy rules already sourced —
+       not a new fact requiring its own citation beyond the three tables.
+       Structure corrected by WC's review pass: "slide--tmpl-table" does not
+       exist in gallery.css; the real working pure-table pattern is
+       slide--role-application with .tmpl-table nested inside .tpl-content
+       (:has(.tmpl-table), Style Guide Sec 5.10/9). -->
+  <article class="slide slide--role-application" data-slide="36" data-deck="cve2">
+    <h1 class="slide-title">Judging a Proposed Substitution</h1>
+    <div class="tpl-content">
+      <div class="tmpl-wrap">
+        <table class="tmpl-table">
+          <thead><tr><th>Check</th><th>Required</th><th>Proposed Substitute</th><th>Valid?</th></tr></thead>
+          <tbody>
+            <tr><td>Equipment group direction</td><td>Zone 1, IIB required</td><td>IIA-marked device</td><td>No &mdash; IIA covers only IIA, not IIB</td></tr>
+            <tr><td>EPL / Zone direction</td><td>Zone 1 needs Ga or Gb</td><td>Device rated Gc</td><td>No &mdash; Gc is Zone 2 only</td></tr>
+            <tr><td>ATEX cross-check</td><td>IEC Group II / Gb</td><td>ATEX 2G</td><td>Yes &mdash; 2G is the direct equivalent of Gb</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tpl-source">A substitution that clears the ATEX cross-check alone can still fail the IEC equipment-group or EPL/Zone direction &mdash; both must be checked, not just one. Worked from the equipment-group, zones-vs-EPL, and IEC-vs-ATEX tables (pages 34&ndash;36; cvh-cmp-equipment-groups-table, cvh-cmp-zones-vs-epl-table, cvh-cmp-iec-vs-atex-ratings-table).</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">36</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

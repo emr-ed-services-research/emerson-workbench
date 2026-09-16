@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 008 &mdash; Worked Example: Actuator Force Margin</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m1, page 8 — auto-generated from course.json by
+       the Stage 3 completion pass (WC), same night as Stage 2 authoring.
+       Real cropped source-figure PNG(s), rendered via pdftoppm at 200dpi
+       and cropped with -x/-y/-W/-H, matching CVE1's own established
+       method (functional first-pass crop, not a house redraw). -->
+  <article class="slide slide--role-application-case" data-slide="8" data-deck="cve2">
+    <h1 class="slide-title">Worked Example: Actuator Force Margin</h1>
+    <div class="tpl-content">
+      <div class="tpl-filmstrip">
+        <button class="tpl-frame is-active" type="button"><span class="tpl-frame__tag">1</span><span class="tpl-frame__title">Unbalance Area</span></button>
+        <button class="tpl-frame" type="button"><span class="tpl-frame__tag">2</span><span class="tpl-frame__title">Seat Load</span></button>
+        <button class="tpl-frame" type="button"><span class="tpl-frame__tag">3</span><span class="tpl-frame__title">Packing Friction</span></button>
+      </div>
+      <div class="tpl-frame-detail">
+        <div class="tpl-frame-detail__pane is-active">
+          <img src="../assets/sourced/cvh5-fig5-2-unbalance-area-table.png" style="display:block;max-width:100%;max-height:32cqh;object-fit:contain;margin:0 auto 1cqh" alt="Verify actuator force margin for the same service case: read seat load off the seat-load g">
+        </div>
+        <div class="tpl-frame-detail__pane">
+          <img src="../assets/sourced/cvh5-fig5-3-seat-load-graph.png" style="display:block;max-width:100%;max-height:32cqh;object-fit:contain;margin:0 auto 1cqh" alt="Verify actuator force margin for the same service case: read seat load off the seat-load g">
+        </div>
+        <div class="tpl-frame-detail__pane">
+          <img src="../assets/sourced/cvh5-fig5-5-packing-friction-values-table.png" style="display:block;max-width:100%;max-height:32cqh;object-fit:contain;margin:0 auto 1cqh" alt="Verify actuator force margin for the same service case: read seat load off the seat-load g">
+        </div>
+      </div>
+      <p class="tpl-source">Verify actuator force margin for the same service case: read seat load off the seat-load graph, read packing friction off the friction-values table, compute required force including unbalance area, and compare against the actuator's rated output at its operating supply pressure — a margin failure here means a bigger actuator, not a different Cv. Component Index: cvh-cmp-unbalance-area-table, cvh-cmp-seat-load-graph, cvh-cmp-packing-friction-values-table.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">8</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

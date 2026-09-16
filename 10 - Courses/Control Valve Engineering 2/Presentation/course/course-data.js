@@ -1,0 +1,1492 @@
+window.EW_COURSE = {
+  "course": {
+    "code": "CVE2",
+    "title": "Control Valve Engineering 2",
+    "summary": "An advanced, evaluate-level engineering course developing three foundational CVE1 areas (real ISA/IEC sizing calculation, trim/material-adjacent selection, noise/cavitation mitigation) and introducing six new engineering domains untouched by any prior course: special/severe service, steam conditioning, standards reconciliation, isolation valves, sustainability, and safety instrumented systems. Drawn from Control Valve Handbook ch5-ch12 plus the four sourcebooks' shared liquid-sizing chapters.",
+    "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential",
+    "tier": "advanced",
+    "domain": "engineering",
+    "industryScope": null,
+    "sources": [
+      {
+        "path": "20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf",
+        "description": "Chapters 5 (Sizing), 6 (Special and Severe Service), 7 (Steam Conditioning), 9 (Standards and Approvals), 10 (Isolation Valves — credited to IPT's Pipe Trades Handbook by Robert A. Lee, carried forward per Franz's 2026-09-18 decision), 11 (Sustainability), 12 (Safety Instrumented Systems)."
+      },
+      {
+        "path": "20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas.pdf",
+        "description": "Chapter 3 (Liquid Valve Sizing) — real ISA/IEC F_F methodology and worked graphical method, cross-referenced against Power & Severe Service's own ch3 for the same content."
+      },
+      {
+        "path": "20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Power & Severe Service.pdf",
+        "description": "Chapter 3 (Liquid Valve Sizing) — same F_F methodology as Oil & Gas ch3, confirming the four sourcebooks are genuinely complementary rather than four redundant copies."
+      }
+    ]
+  },
+  "slideBase": "../build/slides/",
+  "slidePrefix": "cve2-",
+  "library": {
+    "base": "../../../../20 - Source Library/",
+    "note": "Standing shared Source Library shelf, matching CVB/14101's own library block.",
+    "primary": [
+      {
+        "id": "cvh6",
+        "title": "Control Valve Handbook",
+        "meta": "D101881X012 · Sixth Edition",
+        "color": "#004B8D",
+        "file": "Handbooks & Sourcebooks/Control Valve Handbook/Control Valve Handbook - Sixth Edition.pdf"
+      },
+      {
+        "id": "sb-og",
+        "kicker": "Control Valve Sourcebook",
+        "title": "Oil & Gas",
+        "meta": "Fisher · 2013",
+        "color": "#12385A",
+        "file": "Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas.pdf"
+      },
+      {
+        "id": "sb-pss",
+        "kicker": "Control Valve Sourcebook",
+        "title": "Power & Severe Service",
+        "meta": "Fisher · Fourth Edition",
+        "color": "#5E2A2E",
+        "file": "Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Power & Severe Service.pdf"
+      },
+      {
+        "id": "sb-ref",
+        "kicker": "Control Valve Sourcebook",
+        "title": "Refining",
+        "meta": "Fisher",
+        "color": "#1D453F",
+        "file": "Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Refining.pdf"
+      },
+      {
+        "id": "sb-pp",
+        "kicker": "Control Valve Sourcebook",
+        "title": "Pulp & Paper",
+        "meta": "Fisher · 2011",
+        "color": "#2E5A38",
+        "file": "Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Pulp & Paper.pdf"
+      }
+    ],
+    "columns": []
+  },
+  "_note": "STAGE 2 ONLY — Stage 3 (real slide composition) NOT run. Franz authorized running CVE1/CVE2/CVE-Industry overnight without live review ('do your own reviews... want to wake up with these courses completed'); this pass is the honest stopping point, not a shortcut. REAL BLOCKER FOUND: this project's slide-rendering model requires a real cropped source-figure PNG per slide (see any CVB build/slides/*.html — e.g. cvb-005.html's img src references a hand-cropped asset under Presentation/build/assets/sourced/). Every asset in every shipped course so far was produced by a human/agent hand-cropping a specific PDF figure per the Style Guide's redraw/crop convention — there is no batch tool for it (extract-media.ps1 only pulls slide images out of an EXISTING .pptx deck; CVE2 is origination-mode with no deck at all, so that tool doesn't apply). Producing ~43 real cropped figure assets for CVE1/CVE2/CVE-Industry combined, to the same quality bar as every other course's assets, is real image-editing work this pass cannot responsibly fabricate around — inventing placeholder images or skipping straight to fake 'verified' slides would violate the core no-fabrication discipline this project runs on. Stopped here rather than push through with fake content. STEAM-CONDITIONING SPLIT (WC decision, this pass): cve2-ch1-m4's original Stage 1 outline had 7 keyConcept-level items — over the 4-6 completeness floor and volume-flagged by the outline itself as needing a split decision. Split into m4 (Desuperheater Design Selection, items 1-6, now 6 concepts) and m5 (Turbine-Protection Loop Architecture, was item 7 alone — expanded to 4 real concepts since 1 concept would fail the floor badly: protection rationale, the Class V shutoff requirement, the 2-4s/1%-accuracy timing requirement, and the actuation-architecture decision itself, all genuinely distinct teaching angles on the same cvh-cmp-turbine-bypass-actuation-package source, not padding). Former m5-m8 renumbered to m6-m9 — the 8 Stage 1 Outline files on disk still use the OLD m1-m8 numbering and have NOT been renamed to match; this is a known, flagged inconsistency for whoever does that renumbering pass, not silently fixed by editing files outside this fork's stated scope. eng.selection.materials-compatibility stays BLOCKED — no module exists for it, per Curriculum — CVE2.md.",
+  "moduleZero": {
+    "id": "m0",
+    "title": "Before We Start",
+    "summary": "The title slide, the course roadmap, and the facility, safety, and sign-in logistics. Complete once at the start of the course — after that it is done and out of the way.",
+    "pages": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "days": [
+    {
+      "id": "d1",
+      "num": 1,
+      "title": "Control Valve Engineering 2",
+      "chapters": [
+        {
+          "id": "cve2-ch1",
+          "title": "Advanced Control Valve Engineering",
+          "num": 1,
+          "_source": "Control Valve Handbook ch5, 6, 7, 9, 10, 11, 12 plus Oil & Gas / Power & Severe Service Sourcebooks ch3 — see Curriculum — CVE2.md",
+          "modules": [
+            {
+              "id": "cve2-ch1-m1",
+              "title": "Real Cv Calculation & Actuator Force Verification",
+              "status": "outline",
+              "levelTarget": "evaluate",
+              "stakes": "CVE1 taught 'calculate a preliminary Cv' as a conceptual step; this module is where a learner discovers that step hides two separate failure modes if done carelessly — a Cv sized correctly for flow but calculated past the choked-flow limit, and a valve sized correctly on paper that an undersized actuator can't actually close against real seat load and packing friction. Both failures look identical on a spec sheet and only show up in the field.",
+              "objective": "Perform a real ISA/IEC liquid Cv calculation for a given service, including a choked-flow check, and verify the actuator has adequate force margin (unbalance area, seat load, packing friction) to actually close against that service.",
+              "buildsOn": [
+                "cve1-ch1-m1"
+              ],
+              "domain": "engineering",
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.sizing.liquid-sizing-calculation",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "apply",
+                  "pages": [
+                    5
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "The liquid critical pressure ratio factor F_F sets the choked-flow ceiling: F_F = 0.96 − 0.28·√(P_v/P_c), read graphically or by formula, used in both q_max and ΔP_max. Past this ceiling, more pressure drop does not produce more flow — it produces cavitation instead.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "The F_F chart is a real graphical read-across figure (enter on vapor pressure, read the curve, read F_F on the ordinate) — a how-it-works mechanism treatment, not a labelled-parts figure.",
+                      "pages": [
+                        5
+                      ],
+                      "sources": [
+                        "ogas-cmp-ff-chart-water",
+                        "pss-cmp-liquid-critical-pressure-ratio-water"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sizing.liquid-sizing-calculation",
+                  "progression": "develops",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    6
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Work a full worked Cv calculation for a real service case: given P1, ΔP, Q, and fluid properties, calculate preliminary Cv, then check it against q_max/ΔP_max via F_F — a Cv that satisfies flow but exceeds the choked-flow limit is not a valid result, it forces a trim-type reconsideration back to CVE1's flowchart step 2→3 judgment, now with real numbers behind it.",
+                      "template": "slide--role-application",
+                      "templateRationale": "A single worked numeric example walked start to finish — the application role's default one-figure worked-case shape.",
+                      "pages": [
+                        6
+                      ],
+                      "sources": [
+                        "ogas-cmp-ff-chart-water",
+                        "ogas-cmp-ff-chart-nonwater"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sizing.liquid-sizing-calculation",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    7
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "A correctly sized Cv is necessary but not sufficient — the actuator must generate enough force to seat against the resulting seat load, overcome packing friction, and account for unbalance area, or the valve won't fully close regardless of how well the Cv math worked out.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Two source tables/graphs shown together as the force-balance mechanism a learner must hold in mind before the worked verification on the next slide.",
+                      "pages": [
+                        7
+                      ],
+                      "sources": [
+                        "cvh-cmp-unbalance-area-table",
+                        "cvh-cmp-seat-load-graph"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sizing.liquid-sizing-calculation",
+                  "progression": "develops",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    8
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Verify actuator force margin for the same service case: read seat load off the seat-load graph, read packing friction off the friction-values table, compute required force including unbalance area, and compare against the actuator's rated output at its operating supply pressure — a margin failure here means a bigger actuator, not a different Cv.",
+                      "template": "slide--role-application",
+                      "templateRationale": "The second half of the same worked case, application role, continuing directly from the sizing calculation.",
+                      "pages": [
+                        8
+                      ],
+                      "sources": [
+                        "cvh-cmp-unbalance-area-table",
+                        "cvh-cmp-seat-load-graph",
+                        "cvh-cmp-packing-friction-values-table"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve2-ch1-m1-act1",
+                  "type": "case-walkthrough",
+                  "afterConcept": 3,
+                  "minutes": 30,
+                  "title": "Full Sizing Case",
+                  "description": "One real service case worked start to finish: Cv calculation, choked-flow check, actuator force-margin verification. Learners work in pairs against a real case, then the class compares results and discusses where a margin came out thinner than expected.",
+                  "materials": [
+                    "Worked-case handout (P1, ΔP, Q, fluid properties)",
+                    "F_F chart and force-margin tables printed as a job aid"
+                  ],
+                  "sourceNote": "Grounded directly in the sourcebooks' own worked-example format (ogas-cmp-ff-chart-water/nonwater) and the CVH ch5 force-margin tables — not an invented exercise."
+                }
+              ],
+              "pages": [
+                5,
+                6,
+                7,
+                8
+              ],
+              "check": [
+                9
+              ]
+            },
+            {
+              "id": "cve2-ch1-m2",
+              "title": "Noise & Cavitation Mitigation Selection",
+              "status": "outline",
+              "levelTarget": "evaluate",
+              "stakes": "CVE1's damage-diagnosis module ended on a real tension — high-recovery valve designs are more cavitation-prone, not less. This module's own tension: none of the four mitigations below fix the same problem the same way, and picking the wrong one for the actual failure mode means paying for an accessory that doesn't address what's actually damaging the trim.",
+              "objective": "Select and justify a specific noise or cavitation mitigation — anti-noise trim, inline or vent diffuser, multi-stage anti-cavitation trim, or inline silencer — against real comparative alternatives for a given service.",
+              "buildsOn": [
+                "cve1-ch1-m2"
+              ],
+              "domain": "engineering",
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.noise-cavitation.mitigation-selection",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    10
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Anti-noise trim (multi-slot cage, two-stage cage) treats noise at the source — inside the valve, before the fluid exits — by breaking the flow into smaller streams before it can generate aerodynamic noise.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Two-panel photo of the multi-slot and two-stage cage designs — a labelled hardware mechanism treatment.",
+                      "pages": [
+                        10
+                      ],
+                      "sources": [
+                        "cvh-cmp-noise-reduction-trim-photo"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.noise-cavitation.mitigation-selection",
+                  "progression": "develops",
+                  "role": "contrast",
+                  "level": "analyze",
+                  "pages": [
+                    11
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Inline and vent diffusers treat noise downstream of the valve, by reducing the pressure ratio across a single stage into several smaller drops spread over the diffuser's length — the diffuser doesn't change what happens inside the valve at all, it's a path-treatment, not a source-treatment, contrasted directly against the source-treatment trim of the prior slide.",
+                      "template": "slide--role-contrast",
+                      "templateRationale": "Two real photos/diagrams, inline vs. vent diffuser, fits the fixed two-panel contrast shape exactly.",
+                      "pages": [
+                        11
+                      ],
+                      "sources": [
+                        "cvh-cmp-valve-inline-diffuser-photo",
+                        "cvh-cmp-valve-vent-diffuser-diagram"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.noise-cavitation.mitigation-selection",
+                  "progression": "develops",
+                  "role": "contrast",
+                  "level": "analyze",
+                  "pages": [
+                    12
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Multi-stage anti-cavitation trim is engineered specifically to stage the pressure drop internally so no single stage's local pressure drops to vapor pressure — this is a cavitation fix, not primarily a noise fix, even though it's catalogued in the same chapter section as the noise trims. Contrasted against the inline silencer, an absorption-type acoustic accessory (a perforated liner inside a housing) that works by sound absorption rather than pressure staging.",
+                      "template": "slide--role-contrast",
+                      "templateRationale": "Two-panel contrast: an internal pressure-staging fix (cavitation-specific) vs. a downstream absorption fix (noise-specific) — the real mechanism-vs-mechanism distinction the competency needs.",
+                      "pages": [
+                        12
+                      ],
+                      "sources": [
+                        "cvh-cmp-cavitation-elimination-valve-design",
+                        "cvh-cmp-inline-silencer-photo"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.noise-cavitation.mitigation-selection",
+                  "progression": "develops",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    13
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Given a real service case and its actual failure mode (aerodynamic noise vs. cavitation, source-side vs. downstream), select and defend one mitigation against the other three — the wrong choice for the mechanism, e.g. an inline diffuser for a cavitation problem, does not fix the actual damage.",
+                      "template": "slide--role-application-case",
+                      "templateRationale": "Four real mitigation options being weighed against one case — filmstrip/application-case shape fits better than a single-figure application slide.",
+                      "pages": [
+                        13
+                      ],
+                      "sources": [
+                        "cvh-cmp-noise-reduction-trim-photo",
+                        "cvh-cmp-valve-inline-diffuser-photo",
+                        "cvh-cmp-cavitation-elimination-valve-design",
+                        "cvh-cmp-inline-silencer-photo"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve2-ch1-m2-act1",
+                  "type": "application-exercise",
+                  "afterConcept": 4,
+                  "minutes": 25,
+                  "title": "Mitigation Selection Case",
+                  "description": "Given 2-3 real service cases (some noise-limited, some cavitation-limited), select and defend one of the four mitigations per case against the other three.",
+                  "materials": [
+                    "2-3 service-case handouts",
+                    "Mitigation comparison job aid"
+                  ],
+                  "sourceNote": "Cases grounded in the same source figures just taught (cvh-cmp-noise-reduction-trim-photo, cvh-cmp-cavitation-elimination-valve-design, etc.) — a live application, not an invented scenario."
+                }
+              ],
+              "pages": [
+                10,
+                11,
+                12,
+                13
+              ],
+              "check": [
+                14
+              ]
+            },
+            {
+              "id": "cve2-ch1-m3",
+              "title": "Severe-Service Design Justification",
+              "status": "outline",
+              "levelTarget": "evaluate",
+              "stakes": "Standard valve construction has real, numbered limits — a threshold pressure drop, a temperature floor, a code classification — and severe service isn't a vague 'extra-tough' category, it's a specific design response to a specific number being exceeded. Naming the category without knowing the number that triggered it is not actually justifying anything.",
+              "objective": "Justify a specific severe-service design choice against a source's own stated numeric limit, for a given category of special/severe service.",
+              "buildsOn": [],
+              "domain": "engineering",
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.severe-service.design-justification",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    15
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "High-capacity service (butterfly >NPS 48, globe >NPS 12, ball >NPS 24) exists because static pressure loads at shutoff increase geometrically as size increases arithmetically — the category is a direct consequence of that scaling, not an arbitrary size cutoff.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "A labelled large-bore valve assembly figure illustrating the scaling problem.",
+                      "pages": [
+                        15
+                      ],
+                      "sources": [
+                        "cvh-cmp-butterfly-valve-fieldvue-assembly"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.severe-service.design-justification",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    16
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Low-flow Cv service uses special trims machined to close tolerances specifically because standard trim tolerances can't hold a flow coefficient as low as 0.03 (standard bodies) or 0.000001 (specialty lab/pilot-plant valves) — the design response is a tolerance problem, not a materials problem.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Low-flow trim figure, mechanism treatment.",
+                      "pages": [
+                        16
+                      ],
+                      "sources": [
+                        "cvh-cmp-low-flow-cv-control-valve"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.severe-service.design-justification",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    17
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Cryogenic extension bonnets exist specifically to keep the packing box above -101°C/-150°F — below that, atmospheric moisture freezes on the stem and packing box and gets drawn through the packing, tearing it. The bonnet's length is set by how far from the process the packing box needs to sit to stay above that number.",
+                      "template": "slide--role-application",
+                      "templateRationale": "A single figure directly grounding the design-to-threshold justification the competency requires.",
+                      "pages": [
+                        17
+                      ],
+                      "sources": [
+                        "cvh-cmp-cryogenic-extension-bonnet"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.severe-service.design-justification",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    18
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Multi-stage anti-cavitation trim rated to 4200 psid pressure drop (DST-style) exists for exactly the pressure-drop range where a standard single-stage trim would cavitate destructively — the 4200 psid figure is the design's stated operating ceiling, not a marketing number.",
+                      "template": "slide--role-application",
+                      "templateRationale": "Single-figure application, same shape as the prior threshold-justification slide.",
+                      "pages": [
+                        18
+                      ],
+                      "sources": [
+                        "cvh-cmp-cavitation-trim-cutaway"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.severe-service.design-justification",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    19
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Nuclear-service valves in U.S. plants are classified ASME Section III Class 1/2/3 by their role in the primary pressure boundary, emergency core cooling, or emergency equipment cooling — the class designation IS the justification for using nuclear-qualified construction. Given a service-condition case (a size, a temperature, a pressure drop, or a plant-role description), identify which severe-service category applies and justify it against the specific numeric threshold that category exists to address.",
+                      "template": "slide--role-application",
+                      "templateRationale": "The synthesis/judgment slide for the module, single figure plus the classification judgment task.",
+                      "pages": [
+                        19
+                      ],
+                      "sources": [
+                        "cvh-cmp-pressurizer-spray-valve-nuclear"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve2-ch1-m3-act1",
+                  "type": "case-walkthrough",
+                  "afterConcept": 5,
+                  "minutes": 25,
+                  "title": "Category Match Case",
+                  "description": "Given 3-4 short service-condition cases, identify which severe-service category applies and justify it against the specific numeric threshold that category exists to address — not just naming the category.",
+                  "materials": [
+                    "3-4 service-condition case cards"
+                  ],
+                  "sourceNote": "Every threshold (4200 psid, -101°C, ASME Section III Class 1/2/3) checked verbatim against Component Index — Control Valve Handbook ch6.md."
+                }
+              ],
+              "pages": [
+                15,
+                16,
+                17,
+                18,
+                19
+              ],
+              "check": [
+                20
+              ]
+            },
+            {
+              "id": "cve2-ch1-m4",
+              "title": "Desuperheater Design Selection",
+              "status": "outline",
+              "levelTarget": "evaluate",
+              "stakes": "Five desuperheater designs exist because no single design covers the full range of rangeability, minimum steam velocity, and pipe size — picking a design outside its stated operating window means either poor atomization or a design that can't hold up structurally.",
+              "objective": "Match a desuperheater design to a service's rangeability/velocity/pipe-size constraints, and defend that choice against the other four designs.",
+              "buildsOn": [],
+              "domain": "engineering",
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    21
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Fixed-geometry nozzle desuperheaters handle rangeability up to 5:1 at steam velocities as low as 25-30 ft/s — the simplest, most constrained design, suited to nearly constant loads.",
+                      "template": "slide--role-mechanism",
+                      "pages": [
+                        21
+                      ],
+                      "sources": [
+                        "cvh-cmp-fixed-geometry-nozzle"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "analyze",
+                  "pages": [
+                    22
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Variable-geometry (backpressure-activated) nozzle desuperheaters extend rangeability to 20:1 at the same minimum velocity as the fixed-geometry design — the mechanical difference (a spring-loaded, backpressure-activated nozzle vs. a fixed orifice) is what buys the extra range.",
+                      "template": "slide--role-contrast",
+                      "pages": [
+                        22
+                      ],
+                      "sources": [
+                        "cvh-cmp-fixed-geometry-nozzle",
+                        "cvh-cmp-variable-geometry-nozzle"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    23
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Self-contained designs package the water flow control element directly onto the desuperheater (rangeability 25:1) — the design choice here is driven by installation constraints (minimizing space/piping modification on an existing line), not primarily by rangeability.",
+                      "template": "slide--role-mechanism",
+                      "pages": [
+                        23
+                      ],
+                      "sources": [
+                        "cvh-cmp-self-contained-desuperheater-design"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "analyze",
+                  "pages": [
+                    24
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Steam-atomized designs use high-pressure steam (≥2x main steam pressure) to atomize spraywater, extending both rangeability (50:1) and the minimum usable steam velocity (down to ~10 ft/s) — the highest-performing design, at the cost of needing a separate atomizing-steam supply and isolation valve.",
+                      "template": "slide--role-mechanism",
+                      "pages": [
+                        24
+                      ],
+                      "sources": [
+                        "cvh-cmp-steam-atomized-desuperheater-design",
+                        "cvh-cmp-steam-assisted-desuperheater-control-loop"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    25
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Geometry-assisted wafer designs exist for a constraint none of the other four address — small pipe (below NPS 6, where an insertion-style desuperheater physically won't fit) — rangeability 20:1 in NPS 1-24 once the wafer form factor is used.",
+                      "template": "slide--role-application",
+                      "pages": [
+                        25
+                      ],
+                      "sources": [
+                        "cvh-cmp-geometry-assisted-wafer-design"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    26
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Given a real service's rangeability, minimum steam velocity, and pipe size, select and defend one of the five designs against the others — a design that meets rangeability but violates the pipe-size constraint (or vice versa) is not a valid answer.",
+                      "template": "slide--role-application-case",
+                      "templateRationale": "Five designs weighed against one case — filmstrip/application-case shape.",
+                      "pages": [
+                        26
+                      ],
+                      "sources": [
+                        "cvh-cmp-fixed-geometry-nozzle",
+                        "cvh-cmp-variable-geometry-nozzle",
+                        "cvh-cmp-self-contained-desuperheater-design",
+                        "cvh-cmp-steam-atomized-desuperheater-design",
+                        "cvh-cmp-geometry-assisted-wafer-design"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve2-ch1-m4-act1",
+                  "type": "case-walkthrough",
+                  "afterConcept": 6,
+                  "minutes": 20,
+                  "title": "Design Selection Case",
+                  "description": "Given 2-3 service cases, select and defend a desuperheater design against the other four.",
+                  "materials": [
+                    "2-3 service-case handouts (rangeability, velocity, pipe size)"
+                  ],
+                  "sourceNote": "All five rangeability/velocity figures checked verbatim against Component Index — Control Valve Handbook ch7.md."
+                }
+              ],
+              "pages": [
+                21,
+                22,
+                23,
+                24,
+                25,
+                26
+              ],
+              "check": [
+                27
+              ]
+            },
+            {
+              "id": "cve2-ch1-m5",
+              "title": "Turbine-Protection Loop Architecture",
+              "status": "outline",
+              "levelTarget": "evaluate",
+              "stakes": "Turbine protection is the highest-stakes case in the whole chapter — a hard numeric bar (Class V, 2-4s, better than 1% accuracy) that a 'good enough' loop simply fails, protecting a critical, costly turbine from transient damage.",
+              "objective": "Architect a full turbine-protection steam-conditioning loop meeting a Class V shutoff requirement and a 2-4 second stroke-response specification.",
+              "buildsOn": [
+                "cve2-ch1-m4"
+              ],
+              "domain": "engineering",
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    28
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "A turbine bypass valve's job — protecting a critical, costly turbine from transient damage while letting the boiler start up independently — is why it carries requirements far beyond an ordinary steam-conditioning valve.",
+                      "template": "slide--role-mechanism",
+                      "pages": [
+                        28
+                      ],
+                      "sources": [
+                        "cvh-cmp-turbine-bypass-actuation-package"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    29
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Class V shutoff is the first hard requirement the loop must meet — a leak-tightness class tight enough that any lesser shutoff class risks steam bypass damage to the turbine during a protection event.",
+                      "template": "slide--role-application",
+                      "pages": [
+                        29
+                      ],
+                      "sources": [
+                        "cvh-cmp-turbine-bypass-actuation-package"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    30
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "The second hard requirement is timing and precision together — 2-4 second full-stroke response with better than 1% positioning accuracy — meeting the speed alone with a sloppy final position, or the accuracy alone too slowly, both fail the protection function.",
+                      "template": "slide--role-application",
+                      "pages": [
+                        30
+                      ],
+                      "sources": [
+                        "cvh-cmp-turbine-bypass-actuation-package"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.steam-conditioning.system-integration",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    31
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Architecting the loop means choosing actuation (pneumatic or hydraulic) and accessories that can actually hit Class V shutoff and the 2-4s/1%-accuracy timing requirement together, not just one — a fast actuator with the wrong shutoff class, or a tight-shutoff design too slow to stroke, both fail the real turbine-protection task.",
+                      "template": "slide--role-application",
+                      "templateRationale": "The synthesis/create-level judgment slide, single figure grounding the architecture decision.",
+                      "pages": [
+                        31
+                      ],
+                      "sources": [
+                        "cvh-cmp-turbine-bypass-actuation-package"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve2-ch1-m5-act1",
+                  "type": "case-walkthrough",
+                  "afterConcept": 4,
+                  "minutes": 30,
+                  "title": "Loop Architecture Case",
+                  "description": "Given the turbine-bypass case, architect the actuation approach that meets both Class V and the 2-4s stroke spec, and identify what would fail if either requirement were dropped.",
+                  "materials": [
+                    "Turbine-bypass case handout"
+                  ],
+                  "sourceNote": "Class V, 2-4s, and 1% accuracy figures all checked verbatim against Component Index — Control Valve Handbook ch7.md."
+                }
+              ],
+              "pages": [
+                28,
+                29,
+                30,
+                31
+              ],
+              "check": [
+                32
+              ]
+            },
+            {
+              "id": "cve2-ch1-m6",
+              "title": "Standards Scheme Reconciliation",
+              "status": "outline",
+              "levelTarget": "evaluate",
+              "stakes": "A naive read of 'IIC, IIB, IIA' looks like three interchangeable tiers of the same rating — the real hierarchy is asymmetric and one-directional. Reading the hierarchy backward means approving a substitution that's actually unsafe, in exactly the direction that's easy to get wrong.",
+              "objective": "Reconcile an IEC 60079 hazardous-area rating against the equivalent ATEX rating and judge whether a substitution is valid, given that the IIC/IIB/IIA gas-group hierarchy is asymmetric.",
+              "buildsOn": [],
+              "domain": "engineering",
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.standards.scheme-reconciliation",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "understand",
+                  "pages": [
+                    33
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "IEC equipment groups IIC/IIB/IIA form a real substitutability hierarchy, not three separate ratings: IIC-marked equipment is suitable for applications requiring IIC, IIB, or IIA; IIB-marked equipment covers IIB or IIA; IIA-marked equipment covers only IIA.",
+                      "template": "slide--role-application",
+                      "templateRationale": "Role/template corrected to application by WC's review pass — the original mechanism role has no pure-table CSS variant in gallery.css (only role-application:has(.tmpl-table) exists); flagged as a real Template Gallery gap, not silently worked around.",
+                      "pages": [
+                        33
+                      ],
+                      "sources": [
+                        "cvh-cmp-equipment-groups-table"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.standards.scheme-reconciliation",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "understand",
+                  "pages": [
+                    34
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Hazardous-area Zones (0/1/2 gas, 20/21/22 dust) map to a default Equipment Protection Level (EPL): Zone 0 requires Ga; Zone 1 allows Ga or Gb; Zone 2 allows Ga, Gb, or Gc — the same 'higher rating covers lower zone' direction as the equipment-group hierarchy.",
+                      "template": "slide--role-application",
+                      "templateRationale": "Role/template corrected to application by WC's review pass — the original mechanism role has no pure-table CSS variant in gallery.css (only role-application:has(.tmpl-table) exists); flagged as a real Template Gallery gap, not silently worked around.",
+                      "pages": [
+                        34
+                      ],
+                      "sources": [
+                        "cvh-cmp-zones-vs-epl-table"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.standards.scheme-reconciliation",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    35
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "IEC 60079 ratings (EPL + Group, by Mines/Gas/Dust) map onto ATEX Directive 2014/34/EU ratings (Equipment Group, Equipment Category & Environment — e.g. 1G/2G/3G for gas) via a real published comparison table — the two schemes are not identical in structure, so reconciling them is a real lookup-plus-judgment task, not a renaming exercise.",
+                      "template": "slide--role-application",
+                      "pages": [
+                        35
+                      ],
+                      "sources": [
+                        "cvh-cmp-iec-vs-atex-ratings-table"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.standards.scheme-reconciliation",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    36
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Given an IEC-rated device and a proposed ATEX-rated substitute (or the reverse), judge whether the substitution is valid by checking the equipment-group direction AND the EPL/Zone direction against the comparison table — a substitution that looks fine on the ATEX side alone can still fail the IEC equipment-group direction.",
+                      "template": "slide--role-application",
+                      "templateRationale": "The synthesis judgment slide combining all three prior tables.",
+                      "pages": [
+                        36
+                      ],
+                      "sources": [
+                        "cvh-cmp-equipment-groups-table",
+                        "cvh-cmp-zones-vs-epl-table",
+                        "cvh-cmp-iec-vs-atex-ratings-table"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve2-ch1-m6-act1",
+                  "type": "case-walkthrough",
+                  "afterConcept": 4,
+                  "minutes": 25,
+                  "title": "Substitution Judgment Case",
+                  "description": "Given 3-4 real IEC/ATEX rating pairs, some valid substitutions and some deliberately invalid in the 'wrong direction', judge each and state which specific rule it violates or satisfies.",
+                  "materials": [
+                    "3-4 IEC/ATEX rating-pair cards"
+                  ],
+                  "sourceNote": "The asymmetric IIC/IIB/IIA hierarchy and IEC-vs-ATEX table both checked verbatim against Component Index — Control Valve Handbook ch9.md."
+                }
+              ],
+              "pages": [
+                33,
+                34,
+                35,
+                36
+              ],
+              "check": [
+                37
+              ]
+            },
+            {
+              "id": "cve2-ch1-m7",
+              "title": "Isolation Valve Variant Justification",
+              "status": "outline",
+              "levelTarget": "evaluate",
+              "stakes": "Every gate-valve variant closes the same basic way — a wedge or disk dropping into a seat — so it's tempting to treat them as interchangeable. Each variant exists because a specific, named failure mode breaks the simpler design.",
+              "objective": "Justify a specific gate-valve variant choice against a named failure mode — chattering, wear/erosion, or excessive actuation torque.",
+              "buildsOn": [],
+              "domain": "engineering",
+              "_attribution": "This entire module's content is credited to IPT's Pipe Trades Handbook by Robert A. Lee, per Franz's 2026-09-18 decision (see Component Index — Control Valve Handbook ch10.md) — every slide citing this chapter must carry that credit forward, not cite the Control Valve Handbook alone.",
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.isolation-valves.variant-justification",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    38
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "The solid wedge gate valve is the simplest, most common design — but its rigid wedge geometry is the baseline every other variant is a response to a specific limitation of. (Content credited to IPT's Pipe Trades Handbook by Robert A. Lee.)",
+                      "template": "slide--role-mechanism",
+                      "pages": [
+                        38
+                      ],
+                      "sources": [
+                        "cvh-cmp-solid-wedge-gate-valve"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.isolation-valves.variant-justification",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    39
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "The flexible wedge disk splits the wedge into two halves joined by a center hub, with guides added on larger sizes specifically to prevent chattering — a failure mode the rigid solid wedge is more prone to at larger sizes. (Content credited to IPT's Pipe Trades Handbook by Robert A. Lee.)",
+                      "template": "slide--role-application",
+                      "pages": [
+                        39
+                      ],
+                      "sources": [
+                        "cvh-cmp-flexible-wedge-disk"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.isolation-valves.variant-justification",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "analyze",
+                  "pages": [
+                    40
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "The split wedge and flexible split-wedge designs address the same problem from a different angle — the flexible split-wedge achieves zero leakage at 6 bar air with lower required torque than a solid wedge, trading a more complex internal geometry for a real, quantified torque reduction. (Content credited to IPT's Pipe Trades Handbook by Robert A. Lee.)",
+                      "template": "slide--role-contrast",
+                      "pages": [
+                        40
+                      ],
+                      "sources": [
+                        "cvh-cmp-split-wedge-gate-valve",
+                        "cvh-cmp-flexible-split-wedge-gate-valve"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.isolation-valves.variant-justification",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "analyze",
+                  "pages": [
+                    41
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "The double disk gate valve is explicitly contrasted against the split-wedge design in the source on friction/wear behavior — closure by two independent, parallel disks rather than a single wedge shape changes how the seating faces wear over repeated cycles. (Content credited to IPT's Pipe Trades Handbook by Robert A. Lee.)",
+                      "template": "slide--role-contrast",
+                      "pages": [
+                        41
+                      ],
+                      "sources": [
+                        "cvh-cmp-double-disk-gate-valve",
+                        "cvh-cmp-split-wedge-gate-valve"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.isolation-valves.variant-justification",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    42
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Given a named failure mode (chattering at large size, high required actuation torque, or wear/erosion from repeated cycling), select and defend the gate-valve variant that addresses it, and explain why the other variants would still exhibit that failure mode. (Content credited to IPT's Pipe Trades Handbook by Robert A. Lee.) Scope note: this module covers gate-valve internal variants only — CVH ch10 catalogues 8+ valve families total; a broader survey was considered and rejected as too shallow to hit the evaluate bar for any single family.",
+                      "template": "slide--role-application-case",
+                      "templateRationale": "Four variants weighed against named failure modes — filmstrip/application-case shape.",
+                      "pages": [
+                        42
+                      ],
+                      "sources": [
+                        "cvh-cmp-solid-wedge-gate-valve",
+                        "cvh-cmp-flexible-wedge-disk",
+                        "cvh-cmp-flexible-split-wedge-gate-valve",
+                        "cvh-cmp-double-disk-gate-valve"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve2-ch1-m7-act1",
+                  "type": "case-walkthrough",
+                  "afterConcept": 5,
+                  "minutes": 25,
+                  "title": "Failure Mode Match",
+                  "description": "Given 3 short failure-mode scenarios (chattering at partial closure, excessive actuator torque, uneven seating-face wear after repeated cycling), select and justify the gate-valve variant that addresses each — grounded directly in the source's own stated design rationale, not invented scenarios.",
+                  "materials": [
+                    "3 failure-mode scenario cards"
+                  ],
+                  "sourceNote": "'Chattering' and 'torque' verbatim in source; 'wear' corrected from an unverified 'uneven seat wear' phrase to the source's real 'friction/wear behavior' framing (double disk vs. split-wedge)."
+                }
+              ],
+              "pages": [
+                38,
+                39,
+                40,
+                41,
+                42
+              ],
+              "check": [
+                43
+              ]
+            },
+            {
+              "id": "cve2-ch1-m8",
+              "title": "Decarbonization Technology Tradeoff",
+              "status": "outline",
+              "levelTarget": "evaluate",
+              "stakes": "The source lists real decarbonization technologies across five categories, and every one of them is a genuine, current industry technology — the trap isn't 'which of these is fake,' it's that most of them have nothing to do with control valves at all.",
+              "objective": "Judge whether a specific emerging decarbonization technology genuinely applies to a control-valve-relevant process, versus one that is plausible-sounding but inapplicable.",
+              "buildsOn": [],
+              "domain": "engineering",
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.sustainability.technology-tradeoff",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "understand",
+                  "pages": [
+                    44
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "The GHG Protocol's three emissions scopes — Scope 1 (direct, owned/controlled sources), Scope 2 (indirect, purchased electricity), Scope 3 (all other indirect, up/downstream value chain) — set the accounting frame every technology below gets evaluated against.",
+                      "template": "slide--role-nomenclature",
+                      "templateRationale": "Table-shaped content, no figure — per teaching-philosophy.md's widened nomenclature treatment for content with no physical figure.",
+                      "pages": [
+                        44
+                      ],
+                      "sources": [
+                        "cvh-cmp-greenhouse-gas-scopes"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sustainability.technology-tradeoff",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "remember",
+                  "pages": [
+                    45
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Five decarbonization technology categories exist in the source: Hydrogen, Decarbonization/Carbon Capture, Alternative Fuel and Biochemical, Renewables, and Electrification and Storage — each real and currently deployed somewhere in industry, none fabricated for this exercise.",
+                      "template": "slide--role-application",
+                      "templateRationale": "The 5-category reference table itself, no figure available — this chapter has only 3 figures across 10 pages, all reference tables/infographics. Role/template corrected to application by WC's review pass — \"slide--tmpl-table\" does not exist in gallery.css; only role-application:has(.tmpl-table) is a real working pure-table pattern, confirmed against shipped precedent (Control Valve Basics' cvb-030.html).",
+                      "pages": [
+                        45
+                      ],
+                      "sources": [
+                        "cvh-cmp-sustainability-decarbonization-table"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sustainability.technology-tradeoff",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "evaluate",
+                  "pages": [
+                    46
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Within Electrification and Storage, actuator electrification is directly control-valve-relevant — it changes what an engineer actually specifies on a valve. Within Renewables, offshore wind is a real, deployed decarbonization technology, but has no direct bearing on control valve engineering work at all. The same 'real but is it relevant to me' judgment applies across all five categories.",
+                      "template": "slide--role-contrast",
+                      "templateRationale": "Two real named items from the same source table, contrasted directly on relevance — the judgment the competency needs, table-driven not hardware-driven.",
+                      "pages": [
+                        46
+                      ],
+                      "sources": [
+                        "cvh-cmp-sustainability-decarbonization-table"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sustainability.technology-tradeoff",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    47
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Given a specific technology from the source's own list, judge which emissions scope(s) it addresses and whether it's genuinely control-valve-relevant or merely real-but-irrelevant to this engineering role — defend the judgment against a plausible counter-argument for the opposite conclusion.",
+                      "template": "slide--role-application",
+                      "pages": [
+                        47
+                      ],
+                      "sources": [
+                        "cvh-cmp-greenhouse-gas-scopes",
+                        "cvh-cmp-sustainability-decarbonization-table"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve2-ch1-m8-act1",
+                  "type": "discussion",
+                  "afterConcept": 4,
+                  "minutes": 20,
+                  "title": "Relevance Judgment",
+                  "description": "Given 4-5 technologies pulled directly from the source's own 5-category list, sort them into 'control-valve-relevant' and 'real but not my job' — then debrief the ambiguous ones as a class discussion.",
+                  "materials": [
+                    "4-5 technology cards from the source's own 5-category table"
+                  ],
+                  "sourceNote": "Per teaching-philosophy.md's CVE test pattern — engagement from the classification judgment itself, no hardware figure to anchor to."
+                }
+              ],
+              "pages": [
+                44,
+                45,
+                46,
+                47
+              ],
+              "check": [
+                48
+              ]
+            },
+            {
+              "id": "cve2-ch1-m9",
+              "title": "SIS Voting Architecture & SIL Compliance",
+              "status": "outline",
+              "levelTarget": "evaluate",
+              "stakes": "OREDA's own failure data says the final control element accounts for roughly half of all SIF failures — sensor (~42%) and logic solver (~8%) combined are barely more than that one component alone. An engineer who spends a redundancy budget on triplicating the sensor while leaving the final element single is solving the wrong half of the problem.",
+              "objective": "Architect a voting configuration meeting a required SIL/PFDavg/RRF target, using OREDA final-element failure data to justify where redundancy actually belongs in the loop.",
+              "buildsOn": [],
+              "domain": "engineering",
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.sis.sil-architecture",
+                  "progression": "introduces",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [
+                    49
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "The layers-of-protection model separates six layers into 'Prevent' (Process Control/BPCS, Operator Intervention, SIS) and 'Mitigate' (Active Protection, Passive Protection, Emergency Response) — an SIS's job is specifically to prevent an emergency shutdown scenario, not to clean up after one starts.",
+                      "template": "slide--role-mechanism",
+                      "pages": [
+                        49
+                      ],
+                      "sources": [
+                        "cvh-cmp-layers-of-protection"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sis.sil-architecture",
+                  "progression": "introduces",
+                  "role": "nomenclature",
+                  "level": "understand",
+                  "pages": [
+                    50
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "An SIS is built from exactly three components in a loop — sensor, logic solver, final control element — the same three-part structure as an ordinary process-control loop, but framed and rated for safety response rather than routine control.",
+                      "template": "slide--role-nomenclature",
+                      "pages": [
+                        50
+                      ],
+                      "sources": [
+                        "cvh-cmp-sis-components-loop"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sis.sil-architecture",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "understand",
+                  "pages": [
+                    51
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "SIL rating (1-4) is set by a required Risk Reduction Factor (RRF) and its corresponding Probability of Failure on Demand (PFDavg) range — a target SIL isn't chosen freehand, it's read off this table against the RRF the application actually needs.",
+                      "template": "slide--role-application",
+                      "templateRationale": "Role/template corrected to application by WC's review pass — \"slide--tmpl-table\" does not exist in gallery.css; only role-application:has(.tmpl-table) is a real working pure-table pattern.",
+                      "pages": [
+                        51
+                      ],
+                      "sources": [
+                        "cvh-cmp-sil-pfd-rrf-table"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sis.sil-architecture",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "analyze",
+                  "pages": [
+                    52
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "OREDA field data attributes SIF failures roughly 42% to the sensor, 8% to the logic solver, and 50% to the final control element — redundancy spent on the final element addresses the largest single failure contributor, not an arbitrary choice among the three components.",
+                      "template": "slide--role-application",
+                      "pages": [
+                        52
+                      ],
+                      "sources": [
+                        "cvh-cmp-oreda-failure-data-chart"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sis.sil-architecture",
+                  "progression": "introduces",
+                  "role": "application",
+                  "level": "evaluate",
+                  "pages": [
+                    53
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "HIPPS is a real, worked example of this exact architecture task: three pressure transmitters in 2oo3 voting, feeding a logic solver, driving two redundant final control elements — explicitly framed in the source as meeting SIL 3. Walking why 2oo3 (not 1oo2, not a single transmitter) meets that target is the model for the module's own architecture exercise.",
+                      "template": "slide--role-application",
+                      "templateRationale": "The source's own ready-made worked example, not just supporting context.",
+                      "pages": [
+                        53
+                      ],
+                      "sources": [
+                        "cvh-cmp-hipps-typical-configuration"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sis.sil-architecture",
+                  "progression": "introduces",
+                  "role": "contrast",
+                  "level": "evaluate",
+                  "pages": [
+                    54
+                  ],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "advanced",
+                      "t": "Given a required SIL/PFDavg/RRF target and the OREDA failure-distribution data, architect a voting configuration (sensor count/voting, final-element redundancy) that meets the target, and justify where the redundancy budget went using the failure data — not evenly splitting redundancy across all three components by default.",
+                      "template": "slide--role-contrast",
+                      "templateRationale": "The create-level synthesis slide, drawing on all prior items in the module — shown as a real two-panel contrast (OREDA failure data + HIPPS configuration side by side), not a single-figure application slide; corrected by WC's review pass (2026-09-16) after the original role-application markup rendered only one of the two panels (the CSS for .tpl-panel/.tpl-divider two-column layout is scoped to .slide--role-contrast only).",
+                      "pages": [
+                        54
+                      ],
+                      "sources": [
+                        "cvh-cmp-sil-pfd-rrf-table",
+                        "cvh-cmp-oreda-failure-data-chart",
+                        "cvh-cmp-hipps-typical-configuration"
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve2-ch1-m9-act1",
+                  "type": "case-walkthrough",
+                  "afterConcept": 6,
+                  "minutes": 30,
+                  "title": "Architecture Design",
+                  "description": "Given a required SIL/RRF target different from the HIPPS example's SIL 3, design a voting configuration that meets it, using the OREDA data to justify where redundancy goes. Compare designs across pairs/groups and discuss why two valid designs might allocate redundancy differently.",
+                  "materials": [
+                    "SIL/RRF target handout",
+                    "OREDA failure-data chart"
+                  ],
+                  "sourceNote": "OREDA 42%/8%/50% breakdown and HIPPS SIL 3/2oo3 framing both checked verbatim against Component Index — Control Valve Handbook ch12.md."
+                }
+              ],
+              "pages": [
+                49,
+                50,
+                51,
+                52,
+                53,
+                54
+              ],
+              "check": [
+                55
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};

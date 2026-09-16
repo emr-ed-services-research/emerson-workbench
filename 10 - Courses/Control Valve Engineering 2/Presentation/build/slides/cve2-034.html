@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 034 &mdash; Zones vs. Equipment Protection Level</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m6, page 34 — eng.standards.scheme-reconciliation [understand · mechanism].
+       Real table data verified directly against the source PDF (Figure 9.2,
+       printed p. 202) by WC this pass. cvh-cmp-zones-vs-epl-table. Structure
+       corrected by WC's review pass: "slide--tmpl-table" does not exist in
+       gallery.css; the real working pure-table pattern is
+       slide--role-application with .tmpl-table nested inside .tpl-content
+       (:has(.tmpl-table), Style Guide Sec 5.10/9). -->
+  <article class="slide slide--role-application" data-slide="34" data-deck="cve2">
+    <h1 class="slide-title">Zones vs. Equipment Protection Level</h1>
+    <div class="tpl-content">
+      <div class="tmpl-wrap">
+        <table class="tmpl-table">
+          <thead><tr><th>Zone</th><th>Equipment Protection Level (EPL)</th></tr></thead>
+          <tbody>
+            <tr><td class="num">0</td><td>Ga</td></tr>
+            <tr><td class="num">1</td><td>Ga or Gb</td></tr>
+            <tr><td class="num">2</td><td>Ga or Gb or Gc</td></tr>
+            <tr><td class="num">20</td><td>Da</td></tr>
+            <tr><td class="num">21</td><td>Da or Db</td></tr>
+            <tr><td class="num">22</td><td>Da or Db or Dc</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., Figure 9.2 &ldquo;Zones vs. Equipment Protection Levels,&rdquo; p. 202. Same &ldquo;higher rating covers lower zone&rdquo; direction as the equipment-group hierarchy on the prior slide. Component Index: cvh-cmp-zones-vs-epl-table.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">34</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

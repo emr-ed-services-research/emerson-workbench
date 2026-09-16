@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 055 &mdash; Check Your Knowledge: SIS Voting Architecture &amp; SIL Compliance</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m9, page 55 — the module's check slide. -->
+  <article class="slide slide--role-check" data-slide="55" data-deck="cve2">
+    <h1 class="slide-title">Check Your Knowledge: SIS Voting Architecture &amp; SIL Compliance</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">OREDA data attributes ~50% of SIF failures to the final control element, ~42% to the sensor, ~8% to the logic solver. A design triplicates the sensor (3 transmitters, 2oo3 voting) but leaves a single final control element. What does the OREDA data say about this design?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;It's well-architected &mdash; the sensor is the most failure-prone component</li>
+        <li data-correct="true">B.&nbsp;&nbsp;The redundancy budget was spent on the wrong component</li>
+        <li>C.&nbsp;&nbsp;It doesn't matter which component gets redundancy, only the total count</li>
+        <li>D.&nbsp;&nbsp;The logic solver should have received the redundancy instead</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; The final control element accounts for roughly half of all SIF failures &mdash; leaving it single while triplicating the sensor (~42%) solves the smaller half of the problem, as HIPPS's own 2oo3-plus-redundant-final-elements architecture demonstrates.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">55</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

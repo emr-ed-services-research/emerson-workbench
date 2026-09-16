@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 032 &mdash; Check Your Knowledge: Turbine-Protection Loop Architecture</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m5, page 32 — the module's check slide. -->
+  <article class="slide slide--role-check" data-slide="32" data-deck="cve2">
+    <h1 class="slide-title">Check Your Knowledge: Turbine-Protection Loop Architecture</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A proposed turbine-bypass loop achieves Class V shutoff but strokes fully in 6 seconds. Does this loop meet the turbine-protection requirement?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Yes &mdash; Class V is the harder requirement, so it's sufficient alone</li>
+        <li data-correct="true">B.&nbsp;&nbsp;No &mdash; both Class V AND 2-4s stroke response are required together</li>
+        <li>C.&nbsp;&nbsp;Yes &mdash; any stroke time under 10 seconds is acceptable for turbine protection</li>
+        <li>D.&nbsp;&nbsp;No &mdash; Class V shutoff is not actually relevant to turbine protection</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; A fast actuator with the wrong shutoff class, or a tight-shutoff design too slow to stroke, both fail the real turbine-protection task &mdash; 6 seconds misses the stated 2-4 second bar.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">32</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

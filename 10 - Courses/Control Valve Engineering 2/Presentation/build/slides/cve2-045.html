@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 045 &mdash; New and Emerging Decarbonization Technologies</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m8, page 45 — eng.sustainability.technology-tradeoff [remember · mechanism].
+       Real table data verified directly against the source PDF (Figure 11.2,
+       printed p. 245) by WC this pass. cvh-cmp-sustainability-decarbonization-table.
+       Structure corrected by WC's own review pass: the original markup used
+       "slide--tmpl-table", a class that does not exist anywhere in gallery.css
+       (course.json's own "template" field carried the same invented value).
+       The one real, working pure-table pattern in this stylesheet is
+       .slide--role-application with .tmpl-table nested inside .tpl-content,
+       gated on :has(.tmpl-table) (Style Guide Sec 5.10/9) — confirmed against
+       real shipped precedent (Control Valve Basics' cvb-030.html). Without
+       this fix the source note rendered above the title with no layout at
+       all, since no CSS rule matched the invented class. -->
+  <article class="slide slide--role-application" data-slide="45" data-deck="cve2">
+    <h1 class="slide-title">New and Emerging Decarbonization Technologies</h1>
+    <div class="tpl-content">
+      <div class="tmpl-wrap">
+        <table class="tmpl-table" style="font-size:0.92cqw">
+          <thead><tr><th>Hydrogen</th><th>Decarbonization / Carbon Capture</th><th>Alternative Fuel &amp; Biochemical</th><th>Renewables</th><th>Electrification &amp; Storage</th></tr></thead>
+          <tbody>
+            <tr><td>Green hydrogen electrolyzers</td><td>Fugitive emissions reduction</td><td>Biofuel / bioenergy / waste-to-energy</td><td>Solar &ndash; polysilicon value chain</td><td>Lithium and nickel mining</td></tr>
+            <tr><td>Blue hydrogen</td><td>Blue hydrogen CCUS</td><td>Renewable fuel &ndash; sustainable diesel (SAF)</td><td>Offshore wind farms</td><td>Battery metal processing</td></tr>
+            <tr><td>Green ammonia</td><td>Energy reduction and efficiency</td><td>Bioplastics</td><td>Geothermal</td><td>Battery recycling</td></tr>
+            <tr><td>Blended hydrogen and natural gas</td><td>Greenhouse gas emissions reduction</td><td>Plastic recycling</td><td>&mdash;</td><td>Actuator electrification</td></tr>
+            <tr><td>Liquefaction / transportation</td><td>&mdash;</td><td>Biodegradable plastics</td><td>&mdash;</td><td>Molten salt reservoirs</td></tr>
+            <tr><td>Hydrogen storage</td><td>&mdash;</td><td>Biogas &ndash; renewable natural gas</td><td>&mdash;</td><td>&mdash;</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tpl-takeaway">Five categories, all real and currently deployed somewhere in industry — none fabricated for this exercise. The next slide asks which of these a control-valve engineer should actually care about.</p>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., Figure 11.2, p. 245. Component Index: cvh-cmp-sustainability-decarbonization-table.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">45</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 033 &mdash; Equipment Groups: A Substitutability Hierarchy</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m6, page 33 — eng.standards.scheme-reconciliation [understand · mechanism].
+       Real table data verified directly against the source PDF (Figure 9.1,
+       printed p. 199) by WC this pass, not transcribed from the Component
+       Index summary alone. cvh-cmp-equipment-groups-table. Structure
+       corrected by WC's review pass: "slide--tmpl-table" does not exist in
+       gallery.css; the real working pure-table pattern is
+       slide--role-application with .tmpl-table nested inside .tpl-content
+       (:has(.tmpl-table), Style Guide Sec 5.10/9) — confirmed against real
+       shipped precedent (Control Valve Basics' cvb-030.html). Without this
+       fix the source note rendered above the title with no layout applied. -->
+  <article class="slide slide--role-application" data-slide="33" data-deck="cve2">
+    <h1 class="slide-title">Equipment Groups: A Substitutability Hierarchy</h1>
+    <div class="tpl-content">
+      <div class="tmpl-wrap">
+        <table class="tmpl-table">
+          <thead><tr><th>Atmosphere</th><th>Equipment Grouping</th><th>Suitable Applications</th></tr></thead>
+          <tbody>
+            <tr><td>Gas</td><td>IIC</td><td>IIC, IIB, IIA</td></tr>
+            <tr><td>Gas</td><td>IIB</td><td>IIB, IIA</td></tr>
+            <tr><td>Gas</td><td>IIA</td><td>IIA</td></tr>
+            <tr><td>Dust</td><td>IIC</td><td>IIC, IIB, IIA</td></tr>
+            <tr><td>Dust</td><td>IIB</td><td>IIB, IIA</td></tr>
+            <tr><td>Dust</td><td>IIA</td><td>IIA</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., Figure 9.1 &ldquo;Equipment Groups,&rdquo; p. 199. Component Index: cvh-cmp-equipment-groups-table.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">33</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

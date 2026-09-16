@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE2 &middot; Slide 035 &mdash; IEC 60079 Ratings vs. ATEX Ratings</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve2-ch1-m6, page 35 — eng.standards.scheme-reconciliation [analyze · application].
+       Real table data verified directly against the source PDF (Figure 9.5,
+       printed p. 204) by WC this pass. cvh-cmp-iec-vs-atex-ratings-table.
+       Structure corrected by WC's review pass: "slide--tmpl-table" does not
+       exist in gallery.css; the real working pure-table pattern is
+       slide--role-application with .tmpl-table nested inside .tpl-content
+       (:has(.tmpl-table), Style Guide Sec 5.10/9). -->
+  <article class="slide slide--role-application" data-slide="35" data-deck="cve2">
+    <h1 class="slide-title">IEC 60079 Ratings vs. ATEX Ratings</h1>
+    <div class="tpl-content">
+      <div class="tmpl-wrap">
+        <table class="tmpl-table">
+          <thead><tr><th>Atmosphere</th><th>IEC Group</th><th>IEC EPL</th><th class="num">ATEX Equipment Group</th><th>ATEX Category &amp; Environment</th></tr></thead>
+          <tbody>
+            <tr><td>Mines</td><td class="num">I</td><td>Ma</td><td class="num">I</td><td>M1</td></tr>
+            <tr><td>Mines</td><td class="num">I</td><td>Mb</td><td class="num">I</td><td>M2</td></tr>
+            <tr><td>Gas</td><td class="num">II</td><td>Ga</td><td class="num">II</td><td>1G</td></tr>
+            <tr><td>Gas</td><td class="num">II</td><td>Gb</td><td class="num">II</td><td>2G</td></tr>
+            <tr><td>Gas</td><td class="num">II</td><td>Gc</td><td class="num">II</td><td>3G</td></tr>
+            <tr><td>Dust</td><td class="num">III</td><td>Da</td><td class="num">II</td><td>1D</td></tr>
+            <tr><td>Dust</td><td class="num">III</td><td>Db</td><td class="num">II</td><td>2D</td></tr>
+            <tr><td>Dust</td><td class="num">III</td><td>Dc</td><td class="num">II</td><td>3D</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., Figure 9.5 &ldquo;IEC Ratings vs. ATEX Ratings,&rdquo; p. 204. The two schemes are not identical in structure &mdash; reconciling them is a real lookup-plus-judgment task, not a renaming exercise. Component Index: cvh-cmp-iec-vs-atex-ratings-table.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">35</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>
