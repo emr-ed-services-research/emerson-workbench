@@ -1,0 +1,1687 @@
+/* ============================================================================
+   emerson-workbench.css
+   Course-agnostic base stylesheet for Emerson Workbench HTML presentations.
+
+   Encodes the design system extracted from
+   "14101 Valve Trim & Body Maintenance.pptx"
+   (theme "Course book Template Mar 2019", colour scheme "EMERSON").
+   See  10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/
+        14101 Presentation.md  section 4.
+
+   Every slide is an <article class="slide slide--{family}"> whose intrinsic
+   size is 1056 x 816 px (11 x 8.5 in at 96 dpi, the deck's real page size).
+   The slide is a CSS container; all interior sizing is expressed in cqw / cqh
+   / % so a slide scales to whatever box it is dropped into with no JavaScript.
+
+   Point sizes from the deck convert to cqw with:  cqw = pt * 0.12626
+   (pt -> px at 96 dpi -> percentage of the 1056 px slide width).
+   ========================================================================== */
+
+/* The EMERSON colour scheme is the single source in tokens.css. */
+@import "tokens.css";
+
+/* ---------- 1. Design tokens ---------------------------------------------- */
+
+:root {
+  --body-text:   var(--emerson-charcoal);
+  --body-text-soft: color-mix(in srgb, var(--emerson-charcoal) 75%, #fff);
+  --bullet-colour:  color-mix(in srgb, #000 50%, #fff);
+
+  /* Type: theme major & minor fonts are both Arial. DTL Argo is the licensed
+     Emerson display face - optional @font-face, Arial fallback is acceptable. */
+  --font-body: "Arial", "Helvetica Neue", Helvetica, "Liberation Sans",
+               system-ui, sans-serif;
+  --font-display: "DTL Argo T", var(--font-body);
+
+  /* Footer text - normalise the deck's 2023/2024 masters to one year here. */
+  --copyright-line: "\00A9 Emerson Educational Services, 2026, All Rights Reserved";
+
+  /* Brand-mark keep-out. `.slide-chrome__logo` is pinned at left:81.4cqw and,
+     with the diamond mark above the wordmark, is ~5.75cqw tall - it occupies
+     the whole bottom-right corner from ~y80cqh down. Any bottom-edge running
+     text (.tmpl-note, .tmpl-source, a graph takeaway) must keep its right
+     edge inside this inset so it can never print under the mark, regardless
+     of how many lines the text wraps to. Used as a `right` / `padding-right`
+     value on those elements. */
+  --logo-keepout: 20cqw;
+}
+
+/* ---------- 2. Deck / viewer shell -------------------------------------- */
+
+.ew-deck {
+  margin: 0;
+  background: #1c1c1c;
+  color: var(--emerson-white);
+  font-family: var(--font-body);
+}
+
+.ew-stage {                      /* centres one slide, letterboxed */
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  padding: 2.5vmin;
+  box-sizing: border-box;
+}
+
+.ew-stage .slide {               /* fit slide to the stage, keep ratio */
+  width: min(100%, calc((100vh - 5vmin) * 1056 / 816));
+}
+
+/* ---------- 3. Slide canvas + master furniture ------------------------- */
+
+.slide {
+  --slide-w: 1056;
+  --slide-h: 816;
+
+  position: relative;
+  box-sizing: border-box;
+  width: 1056px;
+  max-width: 100%;
+  aspect-ratio: var(--slide-w) / var(--slide-h);
+  height: auto;
+  overflow: hidden;
+
+  container-type: size;
+  background: var(--emerson-white);
+  color: var(--body-text);
+  font-family: var(--font-body);
+  font-size: 2.02cqw;            /* base unit; ~16 px at full size          */
+  line-height: 1.2;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Title + full-bleed rule (header treatment).
+   Title box: x 3.44%, y 4.01%, w 93.1%; text sits on the baseline just above
+   the rule at y 16.73%. Rule: 0.75 pt Emerson Blue, full width. */
+.slide-title {
+  position: absolute;
+  left: 3.44cqw;
+  right: 3.44cqw;
+  top: 3.4cqh;
+  height: 13.0cqh;
+  margin: 0;
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.4cqh;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 3.03cqw;           /* 24 pt */
+  line-height: 1.05;
+  color: var(--emerson-blue);
+}
+
+.slide::after {                  /* the title / body divider rule */
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 16.73cqh;
+  border-top: max(1px, 0.09cqh) solid var(--emerson-blue);
+}
+
+/* Footer treatment: copyright left, page number right, logo bottom-right. */
+.slide-chrome__copyright,
+.slide-chrome__pageno {
+  position: absolute;
+  bottom: 2.9cqh;
+  color: var(--emerson-grey);
+  font-family: var(--font-body);
+  line-height: 1;
+}
+.slide-chrome__copyright { left: 3.44cqw; font-size: 1.01cqw; }   /* 8 pt  */
+.slide-chrome__pageno    { right: 2.0cqw; font-size: 0.88cqw; }   /* 7 pt  */
+.slide-chrome__copyright::before { content: var(--copyright-line); }
+
+.slide-chrome__logo {
+  position: absolute;
+  left: 81.4cqw;
+  top: 88.1cqh;
+  width: 12.16cqw;
+  height: auto;
+}
+
+/* Body region - default single column between rule and footer. */
+.slide-body {
+  position: absolute;
+  left: 3.44cqw;
+  right: 3.44cqw;
+  top: 19.4cqh;
+  bottom: 8.0cqh;
+  overflow: hidden;
+}
+
+/* ---------- 4. Body typography (master bodyStyle) --------------------- */
+
+.slide-body ul,
+.slide-cols ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.slide-body li,
+.slide-cols li {
+  position: relative;
+  margin: 0.3cqh 0;
+  padding-left: 1.4cqw;
+  font-size: var(--li-fs, 1.89cqw);   /* 15 pt level 1 default; slides
+                                          override via {--li-fs} */
+  line-height: 1.32;
+  color: var(--body-text);
+}
+.slide-body li::before,
+.slide-cols li::before {         /* level-1 bullet */
+  content: "\2022";
+  position: absolute;
+  left: 0.2cqw;
+  color: var(--bullet-colour);
+}
+.slide-body li[data-level="2"] {
+  margin-left: 2.0cqw;
+  font-size: var(--li-fs-2, 1.58cqw);   /* 12.5 pt */
+}
+.slide-body li[data-level="2"]::before { content: "\2013"; }  /* en dash */
+.slide-body li[data-level="3"]::before { content: "\2022"; }
+.slide-body li[data-level="4"]::before { content: "\2013"; }
+.slide-body li[data-level="5"]::before { content: "\00BB"; }  /* >>       */
+.slide-body li[data-level="3"],
+.slide-body li[data-level="4"],
+.slide-body li[data-level="5"] { font-size: 1.58cqw; }
+.slide-body li[data-level="3"] { margin-left: 4.0cqw; }
+.slide-body li[data-level="4"] { margin-left: 6.0cqw; }
+.slide-body li[data-level="5"] { margin-left: 8.0cqw; }
+
+/* run-level overrides the deck applies per slide */
+.slide-body li[data-bullet="none"] { padding-left: 0; }
+.slide-body li[data-bullet="none"]::before { content: none; }
+.slide-body b, .slide-body strong { font-weight: 700; }
+
+.slide-body p {
+  margin: 0.4cqh 0;
+  font-size: 1.89cqw;
+  line-height: 1.32;
+}
+
+.slide a { color: var(--emerson-link); }
+.slide a:visited { color: var(--emerson-link-visited); }
+
+/* ---------- 5. Figures ------------------------------------------------- */
+
+.slide-figure {                  /* absolutely placed; extractor sets % box */
+  position: absolute;
+  margin: 0;
+}
+.slide-figure > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.fig-caption {
+  margin-top: 0.4cqh;
+  font-size: 1.26cqw;
+  color: var(--emerson-grey);
+  text-align: center;
+}
+.slide-label {                   /* free-positioned caption under a figure */
+  position: absolute;
+  margin: 0;
+  font-size: var(--label-fs, 2.02cqw);
+  color: var(--body-text);
+}
+
+/* ---------- 6. Layout families -------------------------------------- */
+/*  Class            deck layout(s)                         # slides  */
+/*  .slide--cover     Book cover w/ graphic                  1        */
+/*  .slide--divider   Chapter/Section Page                   16       */
+/*  .slide--breaker   Breaker Emerson Blue                   1        */
+/*  .slide--title-only  Title Only                           104      */
+/*  .slide--one-col   1 Column With / Without Logo           113      */
+/*  .slide--two-col   2 Column with Logo                     129      */
+/*  .slide--three-photo 3 Photo 3 Column (with/without logo) 25       */
+/*  .slide--title-text-content  Title, Text, and Content     4        */
+/*  .slide--four-col  4 Column With Subheads                 1        */
+/*  .slide--blank     Blank White                            20       */
+
+/* -- one column ------------------------------------------------------- */
+.slide--one-col .slide-body { column-count: 1; }
+
+/* -- two column (layout8: text left ~44%, picture column right) ------ */
+.slide--two-col .slide-body {           /* text column only */
+  right: auto;
+  width: 43.2cqw;
+}
+.slide--two-col .slide-figure {         /* pictures free-positioned in the
+                                           right column, from their EMU box */
+  position: absolute;
+}
+
+/* -- three photo / three column ------------------------------------- */
+/*  layout12: photo band y 18.5-52.9%, then 3 caption columns y 53.2%+. */
+.slide--three-photo .slide-photos {
+  position: absolute;
+  left: 3.44cqw; right: 3.44cqw;
+  top: 19.4cqh; height: 33.5cqh;
+}
+.slide--three-photo .slide-photos .slide-figure { position: absolute; }
+.slide--three-photo .slide-cols {
+  position: absolute;
+  left: 3.44cqw; right: 3.44cqw;
+  top: 53.5cqh; bottom: 8cqh;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 1.6cqw;
+}
+.slide--three-photo .slide-cols { --li-fs: 1.77cqw; }  /* 14 pt captions */
+.slide--three-photo .slide-cols ul { align-content: start; }
+
+/* -- title only ---------------------------------------------------- */
+.slide--title-only .slide-stage {
+  position: absolute;
+  left: 3.44cqw; right: 3.44cqw;
+  top: 19.4cqh; bottom: 8cqh;
+}
+
+/* -- blank white -------------------------------------------------- */
+.slide--blank .slide-title,
+.slide--blank::after { display: none; }
+.slide--blank .slide-figure--bleed {
+  position: absolute; inset: 0; margin: 0; overflow: hidden;
+}
+.slide--blank .slide-figure--bleed > img {
+  width: 100%; height: 100%; object-fit: cover;
+}
+/* workshop worksheet pages are documents, not photos - letterbox them */
+.slide--blank .slide-figure--bleed[data-fit="contain"] > img {
+  object-fit: contain;
+}
+/* deck rotates some portrait pages 90deg to fill the landscape page */
+.slide--blank .slide-figure--bleed[data-rotate="90"] > img {
+  width: 100cqh; height: 100cqw;
+  position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  object-fit: contain;
+}
+
+/* -- divider (Chapter/Section Page) ------------------------------ */
+.slide--divider { background: var(--emerson-white); }
+.slide--divider .slide-title,
+.slide--divider::after { display: none; }
+.slide--divider::before {           /* the blue rising triangle */
+  content: "";
+  position: absolute;
+  left: 0; top: 31.4cqh; bottom: 0;
+  width: 20.6cqw;
+  background: var(--emerson-blue);
+  clip-path: polygon(0 0, 100% 100%, 0 100%);
+}
+.slide--divider .divider-number-title {
+  position: absolute;
+  left: 41cqw; right: 3.44cqw;
+  top: 11cqh; height: 26cqh;
+  margin: 0;
+  display: flex; align-items: flex-end;
+  font-size: 3.54cqw;              /* 28 pt */
+  line-height: 1.08;
+  color: var(--emerson-blue);
+}
+.slide--divider .divider-lead {
+  position: absolute;
+  left: 41cqw; right: 3.44cqw; top: 40cqh;
+  margin: 0;
+  font-size: 2.02cqw;             /* 16 pt */
+  color: var(--emerson-blue);
+}
+.slide--divider .divider-objectives {
+  position: absolute;
+  left: 41cqw; right: 3.44cqw; top: 45.5cqh; bottom: 7cqh;
+  margin: 0; padding-left: 2.2cqw;
+  font-size: 1.58cqw;            /* 12.5 pt */
+  line-height: 1.3;
+  color: var(--emerson-blue);
+}
+.slide--divider .divider-objectives li { margin: 0.7cqh 0; padding-left: 0.4cqw; }
+
+/* -- divider, is-statement modifier (Canvas Phase 1b, 2026-09-10) ------
+   Confirmed placement before building, per Franz's directive: chapter/
+   module title cards are a STRUCTURAL layer (.slide--cover/.slide--divider/
+   .slide--breaker, this file), separate from gallery.css's Axis-C content
+   roles — Stage 3 never selects one of these, they're authored wherever
+   a course's day/chapter/module structure itself gets set up. This is
+   where the Foundations preview's "Accidental Trainer" opener actually
+   belongs: still a .slide--divider (same structural role — a chapter or
+   module title card — as the standard numbered-objectives layout above),
+   with a dark, big-bold-statement treatment as a SELECTABLE alternate,
+   not a default: use it for a module whose opening hook is one punchy
+   declarative line, not a numbered objectives list. */
+.slide--divider.is-statement {
+  background: var(--emerson-charcoal);
+}
+.slide--divider.is-statement::before {
+  display: none;   /* no rising-triangle wedge — the dark field is the whole slide */
+}
+.slide--divider.is-statement .divider-number-title,
+.slide--divider.is-statement .divider-lead {
+  left: 6cqw;
+  right: 6cqw;
+  color: var(--emerson-white);
+}
+.slide--divider.is-statement .divider-number-title {
+  top: 30cqh;
+  height: auto;
+  font-size: 5.4cqw;
+  line-height: 1.02;
+  font-weight: 800;
+}
+.slide--divider.is-statement .divider-lead {
+  top: 62cqh;
+  font-size: 1.9cqw;
+  color: var(--emerson-cyan);
+}
+.slide--divider.is-statement .divider-objectives {
+  display: none;   /* a statement opener makes its point in one line — no list */
+}
+
+/* -- title, text, and content (layout20) ------------------------ */
+/*  small title top-left, no rule, one big centred figure/table.     */
+.slide--title-text-content::after { display: none; }
+.slide--title-text-content .slide-title {
+  top: 2.1cqh;
+  height: auto;
+  align-items: flex-start;
+  font-size: 2.65cqw;
+}
+.slide--title-text-content .slide-content {
+  position: absolute;
+  left: 4.7cqw; right: 4.7cqw;
+  top: 22cqh; bottom: 12cqh;
+  display: grid;
+  place-items: center;
+}
+.slide--title-text-content .slide-content > img {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+}
+.slide--title-text-content .content-note {   /* OLE / fallback provenance */
+  position: absolute;
+  left: 4.7cqw; bottom: 8.5cqh;
+  font-size: 1.14cqw;
+  color: var(--emerson-grey);
+  font-style: italic;
+}
+
+/* -- four column with subheads (layout21) ---------------------- */
+.slide--four-col .slide-cards {
+  position: absolute;
+  left: 3.44cqw; right: 3.44cqw;
+  top: 19.3cqh; bottom: 9cqh;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 1.8cqw;
+}
+.slide--four-col .card {
+  display: flex;
+  flex-direction: column;
+}
+.slide--four-col .card h2 {
+  margin: 0 0 1cqh;
+  padding: 1cqh 0.9cqw;
+  background: color-mix(in srgb, var(--emerson-cyan) 55%, #fff);
+  border: max(1px, 0.09cqh) solid var(--emerson-cyan);
+  color: var(--emerson-charcoal);
+  font-size: 1.52cqw;
+  font-weight: 700;
+  line-height: 1.15;
+  min-height: 6cqh;
+}
+.slide--four-col .card p {
+  margin: 0 0 0.8cqh;
+  font-size: 1.14cqw;   /* ~9 pt - dense reference slide */
+  line-height: 1.3;
+}
+.slide--four-col .card img {
+  max-width: 100%;
+  max-height: 16cqh;
+  margin-top: 1cqh;
+  object-fit: contain;
+  object-position: left top;
+  align-self: flex-start;
+}
+
+/* -- breaker (Breaker Emerson Blue, layout23) ------------------ */
+/*  blue field over the top ~84%, white strip below; title upper-right. */
+.slide--breaker { background: var(--emerson-white); color: var(--emerson-white); }
+.slide--breaker .slide-title,
+.slide--breaker::after { display: none; }
+.slide--breaker::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 15.9cqh 0;
+  background: var(--emerson-blue);
+}
+.slide--breaker .breaker-title {
+  position: absolute;
+  left: 58.4cqw; right: 3.5cqw;
+  top: 17.7cqh; height: 24cqh;
+  display: flex; align-items: flex-start;
+  margin: 0;
+  font-size: 3.54cqw; font-weight: 700;
+  color: var(--emerson-white);
+}
+.slide--breaker .breaker-footer {
+  position: absolute;
+  left: 3.44cqw; bottom: 1.4cqh;
+  font-size: 0.87cqw;
+  color: var(--emerson-grey);
+}
+.slide--breaker .breaker-pageno {
+  position: absolute;
+  right: 2.0cqw; bottom: 1.4cqh;
+  font-size: 0.87cqw;
+  color: var(--emerson-grey);
+}
+
+/* -- cover (Book cover w/ graphic) --------------------------- */
+.slide--cover { background: var(--emerson-blue); color: var(--emerson-white); }
+.slide--cover .slide-title,
+.slide--cover::after,
+.slide--cover .slide-chrome__copyright,
+.slide--cover .slide-chrome__pageno { display: none; }
+
+.slide--cover .cover-photo {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 45.5cqw;
+  object-fit: cover;
+}
+.slide--cover .cover-panel {           /* blue angled panel over the photo */
+  position: absolute; inset: 0;
+  background: var(--emerson-blue);
+  clip-path: polygon(0 0, 66.1% 0, 100% 100%, 0 100%);
+}
+.slide--cover .cover-title {
+  position: absolute;
+  left: 3.44cqw; width: 44cqw;
+  top: 50cqh;
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 3.54cqw;             /* 28 pt bold */
+  font-weight: 700;
+  color: var(--emerson-white);
+}
+.slide--cover .cover-rule {
+  position: absolute;
+  left: 0; width: 49.2cqw; top: 73.2cqh;
+  border-top: max(1px, 0.12cqh) solid var(--emerson-white);
+}
+.slide--cover .cover-meta {
+  position: absolute;
+  left: 3.44cqw; width: 44cqw; top: 74cqh;
+  font-size: 1.77cqw;
+  color: var(--emerson-white);
+}
+.slide--cover .cover-logo {            /* white Emerson logo, bottom-right */
+  position: absolute;
+  right: 3.0cqw; bottom: 3.4cqh;
+  width: 11.3cqw; height: auto;
+}
+.slide--cover .cover-logo--secondary { /* accreditation badge, bottom-left */
+  position: absolute;
+  left: 4.3cqw; right: auto; bottom: 1.7cqh;
+  width: 13.2cqw; height: auto;
+}
+
+/* -- table of contents (front matter) ------------------------- */
+.slide--toc .slide-body { top: 8cqh; bottom: 6cqh; }
+.slide--toc .slide-body ul { list-style: none; }
+.slide--toc .slide-body li {
+  padding-left: 0;
+  font-size: 1.6cqw;
+  line-height: 1.9;
+  border-bottom: 1px dotted var(--emerson-grey);
+}
+.slide--toc .slide-body li::before { content: none; }
+
+/* ---------- 6b. Shared positioned elements ------------------------ */
+
+/* native vector artwork rebuilt from the deck's DrawingML shapes */
+.slide-vector {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* free-floating text box (callouts, diagram labels, captions) */
+.slide-textbox {
+  position: absolute;
+  margin: 0;
+  color: var(--body-text);
+  line-height: 1.25;
+}
+.slide-textbox p { margin: 0 0 0.3cqh; }
+
+/* tables lifted from the deck */
+.slide-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1.4cqw;
+  background: var(--emerson-white);
+}
+.slide-table td {
+  border: 1px solid var(--emerson-grey);
+  padding: 0.5cqh 0.7cqw;
+  vertical-align: top;
+  line-height: 1.25;
+}
+.slide-table tr:first-child td {
+  background: color-mix(in srgb, var(--emerson-blue) 12%, #fff);
+  font-weight: 700;
+}
+
+/* four-col card body wrapper (generator emits .card-body) */
+.slide--four-col .card-body { display: contents; }
+
+/* speaker notes — hidden until the runner asks for them */
+.notes {
+  display: none;
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  max-height: 40vh; overflow: auto;
+  margin: 0; padding: 1rem 1.4rem;
+  background: #111; color: #eee;
+  font: 15px/1.5 var(--font-body);
+  border-top: 3px solid var(--emerson-blue);
+}
+.show-notes .notes { display: block; }
+
+/* review ribbon — a conversion note for the person checking the deck.
+   Hidden while presenting; shown only in the runner's review mode. */
+.review-ribbon { display: none; }
+.ew-deck.show-review .review-ribbon {
+  display: block;
+  position: absolute;
+  right: 0; top: 3.0cqh;
+  z-index: 6;
+  padding: 0.35cqh 1cqw 0.35cqh 1.4cqw;
+  background: var(--emerson-yellow);
+  color: var(--emerson-charcoal);
+  font-size: 1.0cqw; font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: 3px 0 0 3px;
+}
+.ew-deck.show-review .review-ribbon::before { content: "\26A0  "; }
+
+/* ---------- 7. Click-to-reveal (Check Your Knowledge answers) -------- */
+/*  53 CYK slides in the deck reveal a large answer overlay on click.    */
+.reveal-answer {
+  position: absolute;
+  left: 50%; transform: translateX(-50%);
+  /* occupy the lower band and centre within it, so a terse answer
+     ("A - Direct-acting") reads big and a full-sentence answer wraps and
+     stays on the slide instead of running off both edges. Was a single
+     nowrap line pinned at top:58cqh. (Franz review, layout pass
+     2026-09-07.) */
+  top: 38cqh; bottom: 5cqh;
+  width: 82cqw;
+  display: grid;
+  place-content: center;
+  overflow: hidden;             /* final backstop - never spill off-slide */
+  text-align: center;
+  text-wrap: balance;
+  hyphens: auto;
+  font-size: 5.6cqw;            /* ~44 pt - big for a terse answer, still
+                                   fits the band when a sentence wraps */
+  line-height: 1.15;
+  font-weight: 700;
+  color: var(--emerson-charcoal);
+  text-shadow: 0.12cqw 0.12cqw 0 #fff, -0.06cqw -0.06cqw 0 #fff;
+  visibility: hidden;
+}
+.slide.is-revealed .reveal-answer { visibility: visible; }
+
+/* ---------- 7a. 16:9 aspect, standalone (raw single-slide viewer) -----
+   `.ew-16x9` sets the slide's aspect to 16:9 and refits the letterbox calc
+   used outside the course shell (build/index.html) to that ratio - nothing
+   else changes: chrome stays visible, no text is pruned. This is the QA/
+   review surface (Franz review, 14101 layout pass 2026-09-07: 4:3 is
+   retired as a target - virtually no delivery screen is 4:3 today, and the
+   only reason the raw viewer rendered it was that 1056x816 is the slide's
+   native authoring canvas, inherited unchanged from the source PPTX page
+   size, not a deliberate delivery shape). `.ew-embedded` below also gets
+   16:9 but additionally hides chrome and stretches to fill a pre-sized
+   card - the course shell's job, not this one. All slide geometry is
+   percentage / container-query based, so figures and the title furniture
+   reflow into the new ratio without distortion either way. */
+.ew-16x9 .slide { --slide-h: 594; }            /* 1056 x 594 = 16:9 */
+.ew-16x9 .ew-stage .slide {
+  width: min(100%, calc((100vh - 5vmin) * 1056 / 594));
+}
+
+/* ---------- 7b. Embedded in the course shell ---------------------- */
+/* In the course shell the slide card is a fixed 16:9 shape and scales fluidly
+   to fill whatever space the rail configuration leaves - same 16:9 aspect as
+   .ew-16x9 above, plus hiding the per-slide chrome (the shell supplies its
+   own) and stretching to fill the card instead of letterboxing. Print stays
+   4:3 (11x8.5in handout page - a separate, unaddressed question; see the
+   layout-pass notes). */
+.ew-embedded, .ew-embedded body { height: 100%; }
+.ew-embedded .ew-deck { background: var(--emerson-white); }
+.ew-embedded .ew-stage { min-height: 0; height: 100%; padding: 0; place-items: center; }
+.ew-embedded .slide { --slide-h: 594; }        /* 1056 x 594 = 16:9 */
+.ew-embedded .ew-stage .slide {
+  width: 100%; max-width: none;
+  height: 100%; max-height: 100%;
+}
+.ew-embedded .slide-chrome,
+.ew-embedded .review-ribbon { display: none; }   /* the shell provides branding */
+.ew-embedded .slide::after { /* keep the title rule */ }
+
+/* visual-only: the slide shows, the context pane teaches.
+   Hide the explanatory body (bullets / paragraphs); keep the title, the
+   figures, tables, and free-positioned labels & callouts. */
+.ew-visual .slide-body { display: none; }
+.ew-visual .divider-objectives { display: none; }
+.ew-visual .slide-cols { /* three-photo caption columns stay — they are labels */ }
+.ew-visual .content-note { display: none; }
+
+/* ---------- 7c. Reusable slide templates ------------------------------
+   Card templates, introduced with the Chapter 1 rebuild and reusable
+   course-wide. Documented in css/TEMPLATES.md.
+
+   Template 1  module intro card   — rendered by the course shell, NOT a deck
+                                     slide (see course/course.css .ov / .ctx).
+   Template 2  .slide--tmpl-diagram — labelled diagram: numbered markers on the
+                                     image + an ordered list of labels beside it.
+   Template 3  .slide--tmpl-table   — one reference table as real HTML.
+   Template 4  .slide--tmpl-compare — Template 3 + a highlighted example row and
+                                     an optional paired illustration.
+   Template 5  .slide--tmpl-figrow  — 2-4 captioned figures side by side.
+   Template 6  .slide--tmpl-caution — a safety / failure warning on its own slide
+                                     (keyConcept role: caution).
+   All templates carry the standard slide title + chrome; none use .slide-body,
+   so nothing is stripped in visual mode. */
+
+/* -- Template 2: labelled diagram card ------------------------------
+   Follows the Control Valve Handbook's callout convention: on-image markers
+   sit OUTSIDE the image in a left gutter, each with a thin leader line
+   pointing in at the part. They are small reference numbers - visibly
+   smaller than the numbered circles in the list, where the labels live.
+   A slide whose image already carries its own callouts (e.g. a figure
+   lifted from the Handbook) adds `is-sourced` on the <article> and no
+   .tmpl-marker elements; the .tmpl-fig then uses the full left area. */
+/* The fig box takes the image's OWN aspect ratio (--fig-ar, set per slide).
+   Width is in cqw and height derives from it, so the box is a fixed shape
+   regardless of the canvas ratio - a marker at top:X% always lands on the
+   same point on the image. */
+.slide--tmpl-diagram .tmpl-fig {
+  position: absolute;
+  left: 13cqw;
+  top: 54cqh;
+  transform: translateY(-50%);
+  width: 17cqw;
+  aspect-ratio: var(--fig-ar, 0.6);
+}
+.slide--tmpl-diagram.is-sourced .tmpl-fig { left: 7cqw; width: 26cqw; }
+/* is-wide: a detailed sectional / cutaway that needs room. Bigger figure,
+   markers still in the left gutter, list slides right. */
+.slide--tmpl-diagram.is-wide .tmpl-fig { left: 9cqw; width: 31cqw; }
+.slide--tmpl-diagram.is-wide .tmpl-marker { left: -6.5cqw; }
+.slide--tmpl-diagram.is-wide .tmpl-list { left: 47cqw; }
+.slide--tmpl-diagram .tmpl-fig > img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: contain;
+}
+/* on-image marker - inline style sets  top:<y% of the fig box>  and
+   --lead:<cqw from the marker to the part>                                 */
+.slide--tmpl-diagram .tmpl-marker {
+  position: absolute;
+  left: -7cqw;                      /* outside the image, in the gutter */
+  width: 1.9cqw; height: 1.9cqw;
+  margin-top: -0.95cqw;
+  border-radius: 50%;
+  background: var(--emerson-charcoal);
+  color: var(--emerson-white);
+  font: 700 1.05cqw/1 var(--font-body);
+  display: grid; place-items: center;
+  z-index: 3;
+}
+.slide--tmpl-diagram .tmpl-marker::after {   /* thin leader toward the part */
+  content: "";
+  position: absolute;
+  left: 100%; top: 50%;
+  width: var(--lead, 6cqw);
+  height: max(1px, 0.12cqh);
+  background: var(--emerson-charcoal);
+  transform: translateY(-50%);
+}
+.slide--tmpl-diagram .tmpl-list {
+  position: absolute;
+  left: 53cqw; right: 5.6cqw; top: 17cqh; bottom: 8cqh;
+  margin: 0; padding: 0;
+  list-style: none;
+  counter-reset: tmpl;
+  display: flex; flex-direction: column; justify-content: center; gap: 1.6cqh;
+}
+.slide--tmpl-diagram .tmpl-list li {
+  counter-increment: tmpl;
+  position: relative;
+  padding-left: 4.6cqw;
+  font-size: 2.05cqw; line-height: 1.3;
+  color: var(--body-text);
+}
+.slide--tmpl-diagram .tmpl-list li::before {
+  content: counter(tmpl);
+  position: absolute; left: 0; top: -0.1cqh;
+  width: 3cqw; height: 3cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font: 700 1.7cqw/1 var(--font-body);
+  display: grid; place-items: center;
+}
+/* source attribution for a figure lifted from the Source Library - always shown.
+   right inset keeps a long citation clear of the brand mark (--logo-keepout).
+
+   Hard containment (2026-09-08, Franz directive after three separate
+   per-template collisions - figrow, diagram, graph - all traced to the same
+   cause: an over-long citation growing past whatever fixed space a
+   template reserved for it). A citation is metadata, not content - it must
+   never be able to push into or overlap a template's actual teaching
+   content, regardless of how long the text is. max-height plus overflow
+   hidden, applied ONCE here on the shared class rather than per template,
+   makes that a structural guarantee instead of a per-template arithmetic
+   exercise: whatever grows past two lines is clipped with an ellipsis, not
+   allowed to expand the box. This is a backstop, not the primary fix - the
+   real fix is that origination-composed citations should never approach
+   two lines in the first place (buildStage3OriginatePrompt now states the
+   one-line Style Guide §5.9 format explicitly) - but the cap holds
+   regardless of what any future template or prompt gets wrong. Every
+   per-template override below (.slide--tmpl-figrow, .slide--tmpl-diagram,
+   .slide--tmpl-graph) changes position/placement only and does not reset
+   max-height/overflow/display, so this containment applies everywhere
+   .tmpl-source appears without being repeated per template.
+
+   CORRECTION (same day, caught live in the Workshop card, not the raw QA
+   viewer): the first cut set max-height:3.4cqh, sized as if cqh and cqw
+   were the same magnitude. They are not, for a 16:9 box - the font is set
+   in cqw (1.2cqw), but cqh is the SMALLER unit here (height < width), so
+   1cqw = 16/9 ≈ 1.78cqh. 3.4cqh only bought about 1.2 real lines at this
+   font/line-height, so max-height was cutting into the middle of the
+   second line before -webkit-line-clamp's own 2-line ellipsis ever got to
+   run - confirmed via getComputedStyle in the live iframe (max-height
+   resolved to 16.6px against a 54px scrollHeight, well under two real
+   13.6px line-boxes). Correct value for two full lines at 1.2cqw/1.3,
+   converted through the 16:9 aspect: 2 * 1.2 * 1.3 * (16/9) ≈ 5.5cqh;
+   6cqh below gives a small margin so line-clamp's own ellipsis is what
+   truncates a third line, not this box cutting into the second. */
+.tmpl-source {
+  position: absolute;
+  left: 6cqw; right: var(--logo-keepout); bottom: 4.4cqh;
+  margin: 0;
+  font: italic 1.2cqw/1.3 var(--font-body);
+  color: var(--emerson-grey);
+  max-height: 6cqh;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+
+/* -- Template 3 + 4: table cards ---------------------------------- */
+.slide--tmpl-table .tmpl-wrap,
+.slide--tmpl-compare .tmpl-wrap {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 16cqh; bottom: 7cqh;
+  overflow: auto;
+}
+.slide--tmpl-compare .tmpl-wrap { right: 39cqw; }
+.tmpl-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 1.5cqw;
+  background: var(--emerson-white);
+}
+.tmpl-table th,
+.tmpl-table td {
+  border: 1px solid var(--emerson-grey);
+  padding: 0.65cqh 0.9cqw;
+  line-height: 1.25;
+  text-align: left;
+  vertical-align: top;
+}
+.tmpl-table thead th,
+.tmpl-table tr:first-child th {
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+}
+.tmpl-table td.num, .tmpl-table th.num {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.tmpl-table tbody tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--emerson-blue) 5%, #fff);
+}
+.tmpl-table tr.is-example td {
+  background: color-mix(in srgb, var(--emerson-yellow) 32%, #fff);
+  font-weight: 700;
+  box-shadow: inset 0.32cqw 0 0 var(--emerson-orange);
+}
+.slide--tmpl-compare .tmpl-aside {
+  position: absolute;
+  right: 5.6cqw; width: 31cqw; top: 16cqh; bottom: 7cqh;
+  margin: 0;
+  display: flex; flex-direction: column; justify-content: center; gap: 1.2cqh;
+}
+.slide--tmpl-compare .tmpl-aside img {
+  width: 100%; max-height: 62%; object-fit: contain;
+}
+.slide--tmpl-compare .tmpl-aside figcaption {
+  font-size: 1.3cqw; color: var(--emerson-grey); line-height: 1.35;
+}
+
+/* -- Template 5: figure row  .slide--tmpl-figrow -------------------
+   2-4 captioned figures side by side (or a 2x2 grid with `is-grid`),
+   for comparing valve / trim styles that are shown, not tabulated.
+   Each <figure class="tmpl-cell"> holds one image and a <figcaption>
+   (the part name + a short functional tag). An optional
+   <p class="tmpl-note"> carries one line of teaching emphasis under
+   the row. No on-image markers - if a single figure needs parts
+   called out, that slide is a .slide--tmpl-diagram instead. */
+/* The row is a 2-track grid - one image band, one caption band - and each
+   .tmpl-cell subgrids onto both. The caption band (row 2, `auto`) is sized
+   once, to the tallest figcaption across ALL cells, so a caption that wraps
+   to two lines in one cell does not shove that cell's image up relative to a
+   one-line neighbour: every heading sits on the same baseline and the tag
+   text flows down into the shared band. (Franz review, 14101 layout pass
+   2026-09-07 - replaces a per-cell flex column that centred image+caption
+   independently.) */
+.slide--tmpl-figrow .tmpl-row {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 17cqh; bottom: 12cqh;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr;
+  column-gap: 3cqw;
+  grid-template-rows: 1fr auto;
+}
+.slide--tmpl-figrow.is-grid .tmpl-row {
+  grid-auto-flow: row;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr auto 1fr auto;
+  row-gap: 2cqh;
+}
+.slide--tmpl-figrow .tmpl-cell {
+  min-width: 0; margin: 0;
+  display: grid;
+  grid-row: span 2;
+  grid-template-rows: subgrid;
+  row-gap: 1.6cqh;
+}
+.slide--tmpl-figrow .tmpl-cell > img,
+.slide--tmpl-figrow .tmpl-cell > svg {
+  grid-row: 1;
+  place-self: center;
+  min-height: 0; min-width: 0;
+  max-width: 100%; max-height: 100%; width: auto; height: auto;
+  object-fit: contain;
+}
+.slide--tmpl-figrow .tmpl-cell > figcaption { grid-row: 2; }
+/* a lone figure fills the space it is given */
+.slide--tmpl-figrow .tmpl-cell:only-child > img,
+.slide--tmpl-figrow .tmpl-cell:only-child > svg { place-self: stretch; width: 100%; height: 100%; }
+
+/* has-lead: a table (or short text block) above the figure row - e.g. a
+   reference table with the items it tabulates shown beneath it. Flow layout
+   (not fixed offsets) so the row starts wherever the table actually ends -
+   the table's rendered height differs between the 4:3 deck and 16:9 shell. */
+.slide--tmpl-figrow.has-lead .tmpl-stack {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 16cqh; bottom: 8cqh;
+  display: flex; flex-direction: column; gap: 3.5cqh;
+}
+.slide--tmpl-figrow.has-lead .tmpl-lead {
+  flex: none; display: flex; justify-content: center;
+}
+.slide--tmpl-figrow.has-lead .tmpl-lead .tmpl-table { max-width: 74cqw; }
+.slide--tmpl-figrow.has-lead .tmpl-row {
+  position: static; flex: 1; min-height: 0;
+  left: auto; right: auto; top: auto; bottom: auto;
+}
+.slide--tmpl-figrow .tmpl-cell figcaption {
+  align-self: start; text-align: center; line-height: 1.3;
+  font-size: 1.9cqw; color: var(--body-text);
+}
+.slide--tmpl-figrow .tmpl-cell figcaption b {
+  display: block; color: var(--emerson-blue); font-weight: 700;
+  font-size: 2.05cqw; margin-bottom: 0.3cqh;
+}
+.slide--tmpl-figrow .tmpl-note,
+.slide--tmpl-diagram .tmpl-note {
+  position: absolute;
+  left: 5.6cqw; right: var(--logo-keepout); bottom: 6cqh; margin: 0;
+  font-size: 1.7cqw; line-height: 1.35; color: var(--emerson-charcoal);
+  padding-left: 2cqw; border-left: 0.35cqw solid var(--emerson-cyan);
+}
+.slide--tmpl-diagram .tmpl-note { right: 47cqw; }
+
+/* .tmpl-row + .tmpl-note collision fix (Franz review, 14101 ch3-m3 rework 2026-09-04).
+   The rules above fix the row to a constant bottom:12cqh and the note to a
+   constant bottom:6cqh, sized for a one-line note - a note that wraps to two
+   or more lines grows upward past 12cqh and collides with the figcaptions
+   above it (hand-patched once already on 14101 slide 98 with an inline image
+   max-height; that was a one-slide patch, not a template fix). Where a plain
+   (non has-lead) figure row is followed by a .tmpl-note, lay the pair out as
+   a flow column instead of two independently-positioned absolute boxes: the
+   note's own rendered height then always pushes the row up rather than
+   sitting under it, so the two can never overlap regardless of how many
+   lines the note wraps to at a given aspect ratio. No slide markup changes
+   needed - existing <h1>/.tmpl-row/.tmpl-note/.slide-chrome siblings already
+   fit this layout. */
+.slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) {
+  display: flex;
+  flex-direction: column;
+}
+.slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-row {
+  position: static;
+  margin: 17cqh 5.6cqw 0;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-note {
+  position: static;
+  margin: 1.6cqh var(--logo-keepout) 0.8cqh 5.6cqw;
+  flex: none;
+}
+/* .tmpl-source joining the same collision fix (2026-09-08, ch3-m1
+   origination review, PipelineConsole attempt 11): a plain figrow slide
+   crediting a Component Index citation carries a THIRD sibling,
+   .tmpl-source, which the fix above never accounted for - it stayed
+   position:absolute; bottom:4.4cqh (its global rule), unaware that
+   .tmpl-note is now flex:none inside a column where .tmpl-row is flex:1 1
+   auto. That lands .tmpl-note at the very bottom of the flex column,
+   directly under .tmpl-source's own independent fixed anchor, so a wrapped
+   citation collides with the note's text. First hit on a slide combining
+   .tmpl-note with .tmpl-source on a plain (non-has-lead) figrow - not
+   previously exercised in any shipped course. .slide-chrome is unaffected
+   either way: its own children are positioned relative to .slide, not to
+   their immediate parent's place in the flex flow, exactly like the
+   .tmpl-row/.tmpl-note fix above already relies on. Fix: fold .tmpl-source
+   into the same flex column as a third item when .tmpl-note is present.
+   CORRECTION (same day): the first cut of this fix gave .tmpl-note a
+   bottom margin of 6cqh (correct when .tmpl-note was the last content item)
+   and then appended .tmpl-source after it with bottom:0 - which put
+   .tmpl-source's own text inside the 6cqh gap that was reserved as empty
+   clearance before .slide-chrome, so the overlap moved from
+   note-vs-source to source-vs-chrome instead of resolving. .tmpl-note's
+   bottom margin is now just a small gap to the next item; .tmpl-source, now
+   the actual last content item, carries the 6cqh chrome clearance instead. */
+.slide--tmpl-figrow:not(.has-lead):has(> .tmpl-note) .tmpl-source {
+  position: static;
+  margin: 0 var(--logo-keepout) 6cqh 5.6cqw;
+  flex: none;
+}
+
+/* .tmpl-note + .tmpl-source collision on .slide--tmpl-diagram (2026-09-08,
+   confirmed by screenshot on ch3-m1 om1-003/004/006 - a different mechanism
+   than the figrow case above, not something the figrow fix touches).
+   .tmpl-diagram's .tmpl-note stays position:absolute; bottom:6cqh
+   unconditionally, only 1.6cqh above .tmpl-source's own bottom:4.4cqh
+   anchor. A .tmpl-source citation that wraps to 2+ lines grows upward from
+   its fixed bottom straight into .tmpl-note's text - visually confirmed on
+   all three om1 diagram slides, each citing multiple Component Index
+   entries in one longer paragraph than any shipped course's diagram slide
+   has needed so far. .tmpl-fig and .tmpl-list stay position:absolute
+   throughout and are entirely unaffected by this (absolutely positioned
+   elements never participate in a flex container's layout regardless of
+   the container's own display) - only .tmpl-note and .tmpl-source, when
+   BOTH are present, become flex items in a column pinned to the bottom of
+   the article via margin-top:auto, so they always stack directly on top of
+   each other instead of two independently-anchored boxes that can collide
+   if either one's content runs long. .tmpl-note keeps its original
+   right:47cqw column width (as a margin now) so it still stops short of
+   the figure/list area on the right, exactly as before.
+
+   REVERTED 2026-09-08 (Franz): this whole diagram-specific block, and the
+   figure enlarge/center rule that followed it, were built chasing the
+   wrong reference. `_Template Gallery/Presentation/build/css/gallery.css`
+   already solves this exact class of problem (note/source collisions,
+   fixed-offset figure sizing) structurally, via CSS Grid, specifically
+   BECAUSE hand-patching .tmpl-* offsets kept reproducing it - see that
+   file's own header comment. om1-003/004/006 are being re-authored against
+   the Template Gallery's role templates (.slide--role-mechanism /
+   .slide--role-nomenclature, matching their Stage 2 Axis C role tags)
+   instead of .slide--tmpl-diagram, so this template's own CSS goes back to
+   its pre-today state rather than carrying dead rules for a path this
+   content no longer takes. The figrow fix and the general .tmpl-source
+   containment (max-height/line-clamp) elsewhere in this file are unrelated
+   to this revert and stay - they were never diagram-specific. */
+
+/* .tmpl-fig + .tmpl-note collision fix (Franz review, 14101 ch3-m4 rework
+   2026-09-04). Same root-cause CLASS as the .tmpl-row/.tmpl-note fix above,
+   but the varying dimension is on the other side of the pair: .tmpl-fig is
+   vertically centered at a constant top:54cqh via translateY(-50%) and sized
+   only from its own --fig-ar and width, with no awareness of the .tmpl-note
+   pinned beneath it at a constant bottom:6cqh. A normal-proportioned figure
+   never reaches that low, but a tall/narrow --fig-ar (a slim cutaway) grows
+   the centered box tall enough that its bottom edge lands on the note text
+   (14101 slide 109, --fig-ar:0.549, previously pinned with an inline
+   width:26cqw). Fix: where a .slide--tmpl-diagram carries a .tmpl-note,
+   anchor the figure to the same top the .tmpl-list uses (17cqh) instead of
+   centering it, and cap its width to whichever is smaller - the slide's own
+   template-width ceiling, or the width implied by a fixed 55cqh height
+   budget at the figure's own --fig-ar. Both dimensions stay governed by the
+   one --fig-ar, so the box's aspect ratio is exact (no letterboxing) and
+   every .tmpl-marker top:% still lands on the same point of the image.
+   Anchoring to a known top plus a height cap bounds the figure's reach to
+   17cqh + 55cqh = 72cqh regardless of how many lines the note itself wraps
+   to - unlike centering, which would need the figure's height and the
+   note's height budgeted against each other and re-tuned per slide. A slide
+   using this combination must NOT also pin an inline width on .tmpl-fig
+   (only --fig-ar) - an inline width overrides this rule and reintroduces
+   the bug; see TEMPLATES.md. The .tmpl-list and .tmpl-note rules are
+   untouched - .tmpl-list is an independent column never party to this
+   collision, and .tmpl-note already sits well clear of 72cqh once the
+   figure stops being centered. */
+.slide--tmpl-diagram:has(> .tmpl-note) .tmpl-fig {
+  top: 17cqh;
+  transform: none;
+  width: min(17cqw, 55cqh * var(--fig-ar, 0.6));
+}
+.slide--tmpl-diagram.is-sourced:has(> .tmpl-note) .tmpl-fig {
+  width: min(26cqw, 55cqh * var(--fig-ar, 0.6));
+}
+.slide--tmpl-diagram.is-wide:has(> .tmpl-note) .tmpl-fig {
+  width: min(31cqw, 55cqh * var(--fig-ar, 0.6));
+}
+
+/* -- Standard slide heading ----------------------------------------
+   The course-wide slide-heading treatment. The full-width PowerPoint
+   title rule is dropped for a restrained heading — semibold, held to a
+   modest size, with a short blue accent tick beneath it that echoes the
+   intro card's .ov__rule. Carried by `.slide--hd` on any slide; the
+   production card templates (`.slide--tmpl-*`) and the gallery role
+   templates (`[class*="slide--role-"]`, added 2026-09-06 — they had been
+   falling through to the legacy full-bleed rule) get it automatically. */
+.slide--hd::after,
+.slide--tmpl-diagram::after,
+.slide--tmpl-table::after,
+.slide--tmpl-compare::after,
+.slide--tmpl-figrow::after,
+.slide--tmpl-graph::after,
+.slide--tmpl-caution::after,
+[class*="slide--role-"]::after { display: none; }
+
+.slide--hd .slide-title,
+.slide--tmpl-diagram .slide-title,
+.slide--tmpl-table .slide-title,
+.slide--tmpl-compare .slide-title,
+.slide--tmpl-figrow .slide-title,
+.slide--tmpl-graph .slide-title,
+.slide--tmpl-caution .slide-title,
+[class*="slide--role-"] .slide-title {
+  top: 6cqh;
+  left: 5.6cqw; right: 5.6cqw;
+  height: auto;
+  align-items: flex-start;
+  padding-bottom: 0;
+  line-height: 1.1;
+  color: var(--emerson-blue);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 2.7cqw;
+  letter-spacing: -0.005em;
+}
+.slide--hd .slide-title::after,
+.slide--tmpl-diagram .slide-title::after,
+.slide--tmpl-table .slide-title::after,
+.slide--tmpl-compare .slide-title::after,
+.slide--tmpl-figrow .slide-title::after,
+.slide--tmpl-graph .slide-title::after,
+.slide--tmpl-caution .slide-title::after,
+[class*="slide--role-"] .slide-title::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(100% + 1.25cqh);
+  width: 4.5cqw;
+  height: 0.3cqh;
+  background: var(--emerson-blue);
+}
+
+/* -- Template 6: caution card  .slide--tmpl-caution ------------------
+   A safety / failure warning given its own slide. Warm orange (accent5)
+   carries the signal — a left rule and a triangular mark — against the
+   otherwise blue/near-monochrome deck, so a caution reads as different at
+   a glance without shouting. Structure: the warning as the heading, one
+   .caution-body line saying what goes wrong, and an optional .caution-fig
+   (a photo or diagram of the failure or the safe method). Used for a
+   keyConcept tagged `role: caution` in course.json. */
+.slide--tmpl-caution .slide-title::after { background: var(--emerson-orange); }
+.slide--tmpl-caution .slide-title {
+  padding-left: 6.5cqw;
+  color: var(--emerson-charcoal);
+}
+/* ICON FIX 2026-09-05 (16-example proof, Franz's whole-set review).
+   Was: a CSS border-triangle (::before) with the "!" glyph absolutely
+   positioned over it as a separate sibling — the glyph was oversized
+   (1.9cqw in a 4.2cqw triangle) and pinned by a bare `top` so its dot
+   sat on the base line, and the ::after title rule showed through under
+   the triangle base as stray horizontal marks. This was wrong in
+   production too (1400-095/105/110), not just the proof.
+   Now: the .slide-title__mark span IS the icon — a single element clipped
+   to a triangle, with the "!" as its own centred content, so the glyph
+   can never drift out of the shape. No ::before, and the title rule is
+   suppressed on caution (the triangle + the .caution-body orange left
+   rule already carry the signal). No markup change — the span still just
+   contains "!".
+   GLYPH SIZE 2026-09-06 (Franz): the "!" was proportionally undersized
+   (1.55cqw in a 4.2cqw triangle, ~37 %) and hard to read at a glance.
+   Bumped to 2.2cqw (~52 %) — still centred flex content in the same
+   clipped-triangle structure, so the earlier drift/clip problem does not
+   return; the triangle itself is unchanged. */
+.slide--tmpl-caution .slide-title::before { content: none; }
+.slide--tmpl-caution .slide-title::after { display: none; }
+.slide--tmpl-caution .slide-title__mark {
+  position: absolute;
+  left: 0; top: 0.1cqh;
+  width: 4.8cqw; height: 4.2cqw;
+  box-sizing: border-box;
+  background: var(--emerson-orange);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.42cqw;
+  font: 700 2.2cqw/1 var(--font-display);
+  color: var(--emerson-white);
+}
+/* ROOT-CAUSE FIX 2026-09-05 (16-example template proof, Franz's direct
+   review): .caution-body was position:absolute with an unbounded height
+   (only top:26cqh, no bottom limit), while .caution-fig was independently
+   pinned to a fixed top:48cqh regardless of how tall the body actually
+   rendered — the exact "fixed absolute offset, doesn't account for real
+   content height" class of bug patched three times elsewhere this session
+   (ch3-m2 slide 98, ch3-m3 101/103, ch3-m4 109), sitting undetected here
+   because nothing had exercised a long enough caution-body until this
+   proof's page 13 (a real 3-line caution). Template 6 was never actually
+   built on CSS Grid like the rest of the template system — it predates
+   that pass. Converted: .slide--tmpl-caution itself is now the grid
+   container; the body sits in an `auto` row sized to its own real
+   content, the figure fills the remaining `1fr` — the same structural
+   guarantee every other template in this system already has.
+   REGRESSION FOUND AND FIXED 2026-09-05 (self-caught during a full
+   individual re-review of the proof, not one of Franz's named findings):
+   the first version of this fix put `padding: 26cqh 5.6cqw 12.5cqh 5.6cqw`
+   directly on .slide--tmpl-caution — the SAME element that declares
+   `container-type: size` (on the base .slide rule). That is a
+   self-referencing container-query length use (padding, in units defined
+   BY the container, on the container itself), which is circular; the
+   observed effect was not a layout error on this element but corrupted
+   cqw/cqh resolution for .slide-chrome__logo — a sibling positioned via
+   left/top in cqw/cqh — which rendered at roughly 68%/52% of the slide
+   instead of its correct 81.4%/88.1% (bottom-right corner), landing on
+   top of the caution figure. That is the exact "Emerson logo overlaps
+   live content" defect from the original ch3-m4 crisis, reintroduced by
+   this fix and already propagated to the real production 14101 course
+   before being caught. Fixed by moving all spacing off the container and
+   onto the two grid children as margin instead — .slide-chrome was never
+   actually position:absolute itself (only its children are; an earlier
+   version of this comment wrongly assumed otherwise without checking), so
+   it is a normal static grid item, and a self-referencing container-query
+   property on the container can corrupt cqw/cqh resolution anywhere in
+   the subtree, not just wherever the property itself is used. */
+.slide--tmpl-caution {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+.slide--tmpl-caution .caution-body {
+  margin: 26cqh 5.6cqw 0 5.6cqw;
+  padding-left: 2cqw;
+  border-left: 0.5cqw solid var(--emerson-orange);
+  font-size: 2.3cqw; line-height: 1.35;
+  color: var(--emerson-charcoal);
+  min-height: 0;
+}
+.slide--tmpl-caution .caution-body b { color: var(--emerson-orange); }
+.slide--tmpl-caution .caution-fig {
+  margin: 1.8cqh 5.6cqw 12.5cqh 5.6cqw;
+  display: flex; align-items: center; justify-content: center;
+  min-height: 0;
+  min-width: 0;
+}
+.slide--tmpl-caution .caution-fig > img,
+.slide--tmpl-caution .caution-fig > svg {
+  max-width: 100%; max-height: 100%;
+  object-fit: contain;
+}
+
+/* -- Template 7: keyed graph  .slide--tmpl-graph --------------------
+   A conceptual analytical graph (travel-vs-pressure and the like) laid
+   out to Style Guide §5: the plot on the left carries ONLY axes, data
+   lines/regions, and small numbered feature dots sitting ON the line;
+   every series, region, and feature is named in a vertical key to the
+   right (§5.3). No text is rotated to follow a data line and no leader
+   line crosses the plot (§5.1 / §5.5) — that is the whole reason this
+   template exists instead of .slide--tmpl-figrow, which has no key
+   column and left authors labelling lines in place.
+
+   This is a port of the gallery .slide--role-application design (proven
+   by the template proof, tp-010, which passed direct review). Structure:
+     <figure class="tmpl-plot"><svg>…</svg></figure>
+     <ul class="tmpl-key">
+       <li><span class="swatch" style="--swatch-c:var(--emerson-blue)"></span>…series…</li>
+       <li><span class="swatch is-dashed" style="--swatch-c:var(--emerson-grey)"></span>…reference…</li>
+       <li><span class="num">1</span>…feature…</li>
+     </ul>
+     <p class="tmpl-takeaway">one plain-language line</p>   (optional)
+     <p class="tmpl-source">After …, Fig. … — … . Component Index: … .</p>
+
+   The article is the grid container; every inset is a MARGIN on a child,
+   never cqw/cqh padding on .slide itself (that element declares
+   container-type: size — a self-referencing container-query length there
+   corrupts cqw/cqh for the whole subtree; see the caution-template note
+   above and TEMPLATES.md). A single-series graph with nothing to tell
+   apart (§5.4) omits .tmpl-key and the grid collapses to one column. */
+.slide--tmpl-graph {
+  display: grid;
+  /* GRID TRACKS AND GAP ARE `%`, NOT cqw/cqh. This grid lives on the article,
+     which is itself the `container-type: size` element - a container-query
+     length in an element's OWN properties resolves against the *viewport*
+     (or nearest ancestor container), never against that element, so
+     `54cqw` here came out viewport-scaled: it overflowed the slide on a
+     wide desktop window (4:3 deck view) and undersized inside the narrower
+     16:9 shell iframe. `%` on a grid container resolves against the grid
+     container's own box - exactly .slide's real width/height in each
+     aspect ratio. (Franz review, 14101 layout pass 2026-09-07.) */
+  /* chart gets the big share (matches the gallery original this template was
+     ported from - .slide--role-application:has(.tpl-list) uses `1fr 26cqw`);
+     the earlier port's fixed `54cqw` chart column rendered the plot small
+     with dead space around it, worst in the 16:9 shell. */
+  grid-template-columns: 66% 26%;
+  /* chart row `1fr` with a 45% floor: `1fr` hands the chart all the height
+     left after the title and the takeaway/source, so the plot (aspect
+     1.749, viewBox 640x366) fills the 66% column width in BOTH aspect
+     ratios in the normal case; the 45% floor still stops a takeaway/source
+     that wraps to many lines from crushing the plot - past that the grid
+     overflows the slide bottom visibly instead of the plot vanishing. */
+  grid-template-rows: 15% minmax(45%, 1fr) auto auto;
+  justify-content: center;
+  column-gap: 3%;
+}
+.slide--tmpl-graph:not(:has(.tmpl-key)) {
+  grid-template-columns: 92%;
+}
+
+.slide--tmpl-graph .tmpl-plot {
+  grid-column: 1;
+  grid-row: 2;
+  margin: 0;               /* <figure> — kill the UA 40px side margin */
+  place-self: stretch;     /* fill the whole cell - the SVG's own
+                              preserveAspectRatio="xMidYMid meet" then scales
+                              the drawing to fit and centres it; any letterbox
+                              is inside the <svg>, white on the white slide.
+                              (Sizing the <figure> to the SVG's intrinsic
+                              640x366 instead - via justify-self:center +
+                              width:auto - was what capped the plot at ~640px
+                              on a wide window and left it small elsewhere.) */
+  min-width: 0;
+  min-height: 0;
+}
+.slide--tmpl-graph .tmpl-plot > svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.slide--tmpl-graph .tmpl-key {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 2.2cqh;
+}
+.slide--tmpl-graph .tmpl-key li {
+  /* never display:flex — an inline <b> would split into its own flex item;
+     hanging indent via absolute positioning instead (same as Template 2).
+     Key text is a step smaller than the plot's labels (§5.3) — reference,
+     scanned once; keep entries to a name + a terse tag so they don't wrap. */
+  position: relative;
+  padding-left: 4cqw;
+  font-size: 1.4cqw;
+  line-height: 1.3;
+  color: var(--body-text);
+}
+.slide--tmpl-graph .tmpl-key .num {
+  position: absolute;
+  left: 0;
+  top: 0.02em;
+  width: 2.4cqw;
+  height: 2.4cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);   /* §6.1 — one callout-marker colour */
+  color: var(--emerson-white);
+  font: 700 1.35cqw/1 var(--font-body);
+  display: grid;
+  place-items: center;
+}
+.slide--tmpl-graph .tmpl-key .swatch {
+  /* a sample of the exact stroke the plot uses for that series */
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 3.2cqw;
+  height: 0;
+  border-top: 0.5cqw solid var(--swatch-c, var(--emerson-charcoal));
+}
+.slide--tmpl-graph .tmpl-key .swatch.is-dashed { border-top-style: dashed; }
+.slide--tmpl-graph .tmpl-key .swatch.is-dotted { border-top-style: dotted; }
+.slide--tmpl-graph .tmpl-key .swatch.is-band {
+  /* a region fill, not a line — a small filled bar at the same faint
+     alpha the band uses on the plot, so the key sample actually matches */
+  top: 0.3em;
+  height: 1.7cqw;
+  border: none;
+  background: var(--swatch-c, var(--emerson-yellow));
+  opacity: 0.3;
+}
+
+/* takeaway + source span the grid but are capped and left-anchored so their
+   running text stops well short of the brand mark - a right-edge inset is
+   unreliable here because the centred grid's own edge position varies. */
+.slide--tmpl-graph .tmpl-takeaway {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  justify-self: start;
+  max-width: 72cqw;
+  margin: 1.8cqh 0 0 0;
+  padding-left: 1.7cqw;
+  border-left: 0.5cqw solid var(--emerson-orange);
+  font-size: 1.7cqw;
+  line-height: 1.35;
+  color: var(--body-text);
+}
+
+.slide--tmpl-graph .tmpl-source {
+  position: static;   /* the global .tmpl-source is absolute; here it's a grid row */
+  grid-column: 1 / -1;
+  grid-row: 4;
+  justify-self: start;
+  max-width: 72cqw;
+  margin: 1.2cqh 0 4.4cqh 0;   /* bottom = the global .tmpl-source bottom inset */
+}
+
+/* -- Template 8: course roadmap  .slide--tmpl-roadmap ----------------
+   A course-level (or day-level) two-column week overview: a short note
+   line, then Week columns side by side, each a stack of day cards (a
+   number badge + weekday/topic). Added 2026-09-09 for IfE's Module 0 —
+   the instructor's live "shape of the whole course" walkthrough right
+   after the title slide. Card-based rather than a flat list so the eye
+   groups by week at a glance; no click-to-expand interactivity — two
+   plain columns already read as the roadmap moment without adding a
+   new interaction pattern nothing else in the deck has.
+
+   <article class="slide slide--tmpl-roadmap">
+     <h1 class="slide-title">Course Roadmap</h1>
+     <p class="tmpl-roadnote">…one line of framing…</p>
+     <div class="tmpl-weeks">
+       <div class="tmpl-week">
+         <div class="tmpl-week__hd">Week One</div>
+         <div class="tmpl-day"><span class="tmpl-day__n">1</span>
+           <div class="tmpl-day__body"><b>Tuesday · Foundations</b><span>…topic…</span></div>
+         </div>
+         … one .tmpl-day per day …
+       </div>
+       <div class="tmpl-week">… Week Two, same shape …</div>
+     </div>
+   </article>                                                        */
+.slide--tmpl-roadmap .tmpl-roadnote {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 18.2cqh;
+  margin: 0;
+  font-size: 1.35cqw;
+  color: var(--emerson-grey);
+}
+.slide--tmpl-roadmap .tmpl-weeks {
+  position: absolute;
+  left: 5.6cqw; right: 5.6cqw; top: 23.6cqh; bottom: 5cqh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3cqw;
+}
+.slide--tmpl-roadmap .tmpl-week {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15cqh;
+}
+.slide--tmpl-roadmap .tmpl-week__hd {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.9cqw;
+  color: var(--emerson-blue);
+  border-bottom: max(1px, 0.14cqh) solid var(--emerson-blue);
+  padding-bottom: 0.7cqh;
+  margin-bottom: 0.2cqh;
+}
+.slide--tmpl-roadmap .tmpl-day {
+  display: flex;
+  align-items: center;
+  gap: 1cqw;
+  background: color-mix(in srgb, var(--emerson-blue) 5%, #fff);
+  border: 1px solid var(--emerson-grey);
+  border-radius: 0.5cqw;
+  padding: 1cqh 1.2cqw;
+}
+.slide--tmpl-roadmap .tmpl-day__n {
+  flex: none;
+  width: 3.1cqw; height: 3.1cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.5cqw;
+  display: grid; place-items: center;
+}
+.slide--tmpl-roadmap .tmpl-day__body { min-width: 0; }
+.slide--tmpl-roadmap .tmpl-day__body b {
+  display: block;
+  font-size: 1.42cqw;
+  color: var(--body-text);
+  font-weight: 700;
+}
+.slide--tmpl-roadmap .tmpl-day__body span {
+  display: block;
+  font-size: 1.24cqw;
+  color: var(--emerson-grey);
+}
+
+/* ---------- 8. Print / export -------------------------------------- */
+@page { size: 11in 8.5in; margin: 0; }
+@media print {
+  .ew-deck { background: #fff; }
+  .ew-stage { display: block; padding: 0; }
+  .slide { width: 11in; max-width: none; page-break-after: always; box-shadow: none; }
+}
+
+/* ---------- 9. Lightbox --------------------------------------------
+   Click any real figure image in .tpl-content to open it full-size in a
+   darkened overlay. Visual language deliberately mirrors this project's
+   own Claude-artifact cards: rounded corners, a fat black border (not a
+   hairline), a small blue accent block in the bottom-left corner, caption
+   underneath the image inside the card. Built and driven entirely by
+   slides.js (see its "Lightbox" section) - this stylesheet only supplies
+   the look; DOM creation, image collection, and all keyboard behaviour
+   live in the script. */
+.ew-lightbox-overlay {
+  display: none;
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(10, 10, 10, 0.86);
+  align-items: center; justify-content: center;
+  padding: 4vh 4vw;
+}
+.ew-lightbox-overlay.is-open { display: flex; }
+
+.ew-lightbox-card {
+  position: relative;
+  background: var(--emerson-white);
+  border: 0.5rem solid var(--emerson-charcoal);
+  border-radius: 1.1rem;
+  width: min(92vw, 1400px);
+  height: 92vh;
+  padding: 1.4rem 1.4rem 1.1rem;
+  /* explicit rows, not absolutely-positioned close/count floating over the
+     figure: a header row the image can never grow into and cover, a
+     flexible figure row, a fixed caption row - the structural fix for the
+     close button getting visually clipped/covered by a large image. */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  row-gap: 0.5rem;
+  box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.5);
+}
+
+/* the small blue accent block, bottom-left, sitting astride the border */
+.ew-lightbox-card::before {
+  content: "";
+  position: absolute;
+  left: -0.5rem; bottom: -0.5rem;
+  width: 2.6rem; height: 1.6rem;
+  background: var(--emerson-blue);
+  border-radius: 0 0.5rem 0.55rem 0;
+}
+
+.ew-lightbox-head {
+  display: flex; align-items: center; justify-content: space-between;
+  min-height: 1.9rem;
+}
+
+.ew-lightbox-figure {
+  position: relative;   /* pixel-positioned detail-wrap children anchor here */
+  min-height: 0; min-width: 0;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.ew-lightbox-figure > img, .ew-lightbox-figure > svg {
+  max-width: 100%; max-height: 100%;
+  width: auto; height: auto;
+  object-fit: contain;
+}
+/* the detail-asset wrapper fills the whole figure row; slides.js computes
+   the image's real letterboxed rect within it in JS (layoutFigure) and
+   sizes/positions both the <img> and every .ew-lightbox-callout in real
+   pixels against that rect, which is what keeps callouts aligned
+   regardless of the card's actual size - including a full-viewport-sized
+   lightbox on a very wide or very tall source image, not just whatever a
+   slide-container-sized box happened to be. */
+.ew-lightbox-detail-wrap { position: absolute; inset: 0; }
+.ew-lightbox-detail-wrap > img { position: absolute; object-fit: contain; }
+
+/* A data table enlarged in the lightbox (2026-09-13, revised same day
+   after a real containment failure through the actual embedded course
+   shell - see slides.js show()'s isTable branch for the full story). The
+   table's own .tmpl-table rules (borders, blue header, zebra striping)
+   apply unchanged; this class only sets what has to change for the
+   lightbox context. */
+.ew-lightbox-table {
+  /* .tmpl-table's own cells never set an explicit color, relying on
+     .slide's scoped `color: var(--body-text)` for real dark text - a
+     clone living in the lightbox overlay sits outside .slide entirely and
+     falls through to body.ew-deck's `color: var(--emerson-white)`
+     instead, rendering every cell white-on-white/zebra (found via a real
+     click-through test, 2026-09-13, not just a visual guess). Restoring
+     the same color .slide would have given it. */
+  color: var(--body-text);
+  /* A large base font: slides.js measures this table's natural (unwrapped)
+     size and scales the WHOLE table down (or up) to fit the figure box on
+     both axes, the same "biggest size that still fully fits" behavior
+     object-fit:contain gives an image - this is the pre-scale size that
+     scale factor is computed against, not the final on-screen size. */
+  font-size: 1.5rem !important;
+  /* Unwrapped so the table's natural width reflects its real content, not
+     whatever width it happens to be squeezed into - a table CAN'T scale
+     like an image if its own layout keeps reflowing at every candidate
+     width. width:max-content lets it size to that natural width instead
+     of stretching to fill (and being constrained by) its flex container. */
+  white-space: nowrap;
+  width: max-content;
+  max-width: none;
+  /* The scale transform (set in JS once natural size is measured)
+     guarantees containment; overflow:hidden is the safety net for the one
+     frame before that measurement runs, and for the (should-never-happen)
+     case a scale factor doesn't land - never rely on scroll to contain a
+     table the way the first version of this fix did, since a scrollbar
+     inside an already-small embedded card is not a reliable affordance. */
+  overflow: hidden;
+  transform-origin: center center;
+}
+.ew-lightbox-table th, .ew-lightbox-table td { padding: 0.5em 0.7em; white-space: nowrap; }
+
+.ew-lightbox-caption {
+  font: italic 0.95rem/1.4 var(--font-body, Arial, sans-serif);
+  color: var(--emerson-grey);
+  text-align: center;
+  max-width: 100%;
+  /* Structural one-line rule (2026-09-13): max-height:4.2em previously let
+     a caption wrap up to three lines before clipping - a caption that was
+     "too long" just silently ate more of the fixed-height card instead of
+     ever being flagged, which is exactly the space the image itself needs.
+     white-space:nowrap + ellipsis makes any caption that would wrap
+     instead truncate visibly on one line - the overflow is now impossible
+     to miss rather than quietly eating vertical space. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.ew-lightbox-count {
+  font: 700 0.8rem/1 var(--font-body, Arial, sans-serif);
+  color: var(--emerson-grey);
+  letter-spacing: 0.02em;
+}
+
+.ew-lightbox-close {
+  width: 1.9rem; height: 1.9rem;
+  border: none; border-radius: 50%;
+  background: transparent;
+  color: var(--emerson-charcoal);
+  font-size: 1.3rem; line-height: 1;
+  cursor: pointer;
+  flex: none;
+}
+.ew-lightbox-close:hover { background: color-mix(in srgb, var(--emerson-charcoal) 10%, transparent); }
+
+/* clickable figures get an affordance on hover, applied by slides.js via
+   this class rather than a bare selector so decorative/non-figure images
+   are never accidentally made to look clickable */
+.ew-lightbox-trigger { cursor: zoom-in; }
+.ew-lightbox-trigger:hover { filter: brightness(1.03); }
+
+/* live, clickable label text over a lightbox detail asset (see slides.js
+   showDetail) -- same visual language as the diagram-cleanup module's
+   own callout-box overlay proof: transparent by default, a light blue
+   click-to-highlight state, real text rather than anything baked into
+   the image. */
+.ew-lightbox-callout {
+  position: absolute; margin: 0; padding: 1px 4px;
+  background: transparent; border: 1.5px dashed transparent; border-radius: 3px;
+  font: 700 11px/1 Arial, sans-serif; letter-spacing: 0.01em; color: #23262b;
+  white-space: nowrap; overflow: visible;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.ew-lightbox-callout:hover, .ew-lightbox-callout:focus-visible {
+  border-color: color-mix(in srgb, var(--emerson-blue) 55%, transparent); outline: none;
+}
+.ew-lightbox-callout.is-active {
+  background: color-mix(in srgb, var(--emerson-blue) 18%, #fff);
+  border-color: var(--emerson-blue);
+  box-shadow: 0 0 0 1px var(--emerson-blue);
+}

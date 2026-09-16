@@ -1,0 +1,1406 @@
+/* ============================================================================
+   gallery.css
+
+   Eight master slide templates, one per Axis C concept role (see
+   teaching-philosophy.md "Axis 3" / Instructional-Method Review — ch3.md),
+   plus three variants for `procedure`. Placeholder content only.
+
+   Phase 1 of the Canvas build (2026-09-10, from Franz's direct review of
+   the unconstrained Foundations preview) added three more shape variants:
+   `nomenclature-reveal` (§9, click-to-reveal for a figure-less fixed set),
+   `procedure-worked` (§10, tabbed Show/Tell/Do worked walkthrough), and
+   `application-case` (§11, a clickable sequential real-case walkthrough)
+   — plus made `check` (§8) genuinely interactive. Same non-overlap-by-
+   construction discipline as every template below; interactivity is
+   driven by generic, class/attribute-based handlers in slides.js, never a
+   per-slide script, so Stage 3 populates these the same mechanical way it
+   populates the original eight.
+
+   Design principle (the point of this file): every role template guarantees
+   non-overlap STRUCTURALLY, via CSS Grid row/column tracks that reserve space
+   for what they contain, not via absolute-positioned boxes at hand-picked
+   offsets. A note or caption that grows to two lines pushes grid tracks, it
+   never overlaps a neighbour. Two paired panels (contrast) use `subgrid` so
+   their label/image/caption rows land at the same height on both sides,
+   pixel for pixel, regardless of caption length. This is a direct response to
+   three separate `.tmpl-note` collisions patched by hand across ch3-m2/m3/m4 —
+   the fix belongs in the template's structure, not in per-slide numbers.
+
+   Every template's content area sits inside .tpl-content, which is inset far
+   enough to clear both the title rule (top) AND the slide-chrome logo's fixed
+   corner box (left:81.4cqw top:88.1cqh — see emerson-workbench.css §3) at the
+   bottom-right. ch3-m4 slide 111 overlapped that exact corner; every template
+   here is inset to make that structurally impossible, not just visually
+   checked after the fact.
+
+   Requires emerson-workbench.css to be loaded first (tokens, .slide,
+   .slide-title, .slide-chrome, the title rule). This file only adds the
+   content-area rules below the rule and above the footer. */
+
+.tpl-content {
+  position: absolute;
+  left: 3.44cqw;
+  right: 3.44cqw;
+  top: 19.4cqh;
+  bottom: 12.5cqh;     /* clears the slide-chrome logo box (top:88.1cqh) */
+  display: grid;
+  min-height: 0;
+}
+
+/* GALLERY FIX 2026-09-05 (16-example proof, found immediately on real
+   content): a grid or flex item's default min-height/min-width is `auto`,
+   which means "at least as big as my content" — so a track sized `1fr`
+   still grows past its share the moment a REAL image or SVG (much larger,
+   in real pixels, than a small placeholder box) sits inside it. Every
+   placeholder mockup used small filler boxes with no strong intrinsic
+   size, so this never fired in the template-only review; it fired on the
+   very first real photo tried against Nomenclature (tp-003), Prime
+   (tp-001), Contrast (tp-011), and both Application variants (tp-009/010).
+   Reset to 0 on every grid/flex item that holds a figure, everywhere in
+   this file, so a real asset is always constrained to the space its own
+   track was actually given, never the other way around. */
+.tpl-hero,
+.tpl-fig-wrap,
+.tpl-fig,
+.tpl-chart-wrap,
+.tpl-chart,
+.tpl-panel,
+.tpl-cell,
+.tpl-row,
+.placeholder-img {
+  min-width: 0;
+  min-height: 0;
+}
+
+.placeholder-img {
+  /* PHASE 2 CONSISTENCY FIX (2026-09-10): the stripe colours were raw hex
+     (#E7EAEC/#DADFE3), not tokens — found auditing the original eight
+     against the token discipline Phase 1/1b were built to. Derived from
+     --emerson-grey via color-mix instead, the same idiom every new
+     template's hairline borders already use, so a future grey retheme
+     still cascades here. Deliberately distinct from real content (still
+     a diagonal stripe, not a token used for actual UI), which is the
+     placeholder's entire job — being ON-TOKEN and being visually
+     distinct from real content are not in tension. */
+  background: repeating-linear-gradient(135deg,
+    color-mix(in srgb, var(--emerson-grey) 22%, #fff),
+    color-mix(in srgb, var(--emerson-grey) 22%, #fff) 10px,
+    color-mix(in srgb, var(--emerson-grey) 38%, #fff) 10px,
+    color-mix(in srgb, var(--emerson-grey) 38%, #fff) 20px);
+  border: 0.1cqw dashed var(--emerson-grey);
+  border-radius: 0.5cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--emerson-grey);
+  font-weight: 700;
+  font-size: 1.5cqw;
+  line-height: 1.3;
+  box-sizing: border-box;
+  padding: 1cqw;
+}
+
+.tpl-source {
+  font-size: 1.25cqw;
+  font-style: italic;
+  color: var(--emerson-grey);
+}
+
+/* ---------------------------------------------------------------------- *
+ * 1. PRIME — orient the learner before the detail. One generous image,
+ *    a short header, one line of framing. No callouts, no list — this is
+ *    a hook, not a reference.
+ * ---------------------------------------------------------------------- */
+.slide--role-prime .tpl-content {
+  /* SPARSE-LAYOUT PASS 2026-09-05: was `1fr auto` with align-content:center,
+     which is inert next to a 1fr track — the hero row took all the slack,
+     the image floated in it, and the gap to the tagline read as dead space.
+     Two content-sized rows centred as one group: image and tagline stay
+     together, whitespace splits evenly above and below. */
+  grid-template-rows: auto auto;
+  justify-items: center;
+  align-content: center;
+  row-gap: 3.2cqh;
+}
+.slide--role-prime .tpl-hero {
+  width: 100%;
+  height: 44cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-prime .tpl-hero > img,
+.slide--role-prime .tpl-hero > svg {
+  max-width: 82cqw;
+  max-height: 44cqh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.slide--role-prime .tpl-tagline {
+  max-width: 74cqw;
+  text-align: center;
+  font-size: 2.05cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+
+/* is-dark — a deliberate, SELECTABLE variant (Canvas Phase 1b, 2026-09-10,
+   from Franz's direct review of the unconstrained Foundations preview's
+   Prime Question step). Same shape, dark ground + light text instead of
+   the default light card. This is a real-content authoring choice for
+   the one prime slide per module that genuinely earns a harder pause —
+   not a default applied to every prime slide, and Stage 3 should not
+   reach for it routinely. No image is expected alongside it in practice
+   (a bare .tpl-tagline reads better at this scale), but the modifier
+   itself does not forbid one. */
+.slide--role-prime.is-dark {
+  /* full-bleed, same pattern .slide--cover already uses for its own
+     colour-fill variant — background set on the slide itself, not a
+     nested box, so it actually reaches the edges. */
+  background: var(--emerson-charcoal);
+}
+.slide--role-prime.is-dark .tpl-tagline {
+  color: var(--emerson-white);
+}
+
+/* ---------------------------------------------------------------------- *
+ * 2 & 3. NOMENCLATURE / MECHANISM — a labelled diagram: figure column
+ *    (fixed), list column (fills the rest). The two share one skeleton;
+ *    `mechanism` restyles the markers/list to read as function, not naming.
+ *    Callout verification: every marker's list entry carries a `data-src`
+ *    locator; .tpl-source names the source figure; a hidden JSON manifest
+ *    (script.callout-manifest) is the machine-checkable record a reviewer
+ *    or a future automated pass cross-references against the real source
+ *    figure — a marker is not "placed by eye" and left unverified.
+ * ---------------------------------------------------------------------- */
+.slide--role-nomenclature .tpl-content,
+.slide--role-mechanism .tpl-content {
+  grid-template-columns: 36cqw 1fr;
+  grid-template-rows: 1fr auto;
+  column-gap: 3.6cqw;
+  align-items: center;
+}
+.slide--role-nomenclature .tpl-fig-wrap,
+.slide--role-mechanism .tpl-fig-wrap {
+  grid-row: 1;
+  grid-column: 1;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.slide--role-nomenclature .tpl-fig,
+.slide--role-mechanism .tpl-fig {
+  /* Fills whatever height the grid row actually allocates — do NOT size this
+     from width * aspect-ratio. That derives a fixed height from a width that
+     stays constant across 4:3 / 16:9 (only --slide-h changes), so it fits one
+     canvas shape and overflows the other. Caught exactly this way: this rule
+     used to be `aspect-ratio: 0.72`, which clipped in the 16:9-embedded course
+     view (594 tall) though it fit standalone 4:3 (816 tall) — the two modes
+     were never actually compared against each other until this file was
+     rendered inside the real course shell. A real <img> here uses
+     object-fit: contain to keep ITS OWN aspect ratio inside this box. */
+  width: 100%;
+  height: 100%;
+  position: relative;
+  /* GALLERY FIX 2026-09-05 (16-example proof, page 4): a real image/SVG
+     whose own aspect ratio doesn't match this box's (e.g. a wide, short
+     nameplate SVG) doesn't fill 100% height even with object-fit: contain,
+     and without centering it defaults to sitting at the top — "the image
+     sits high while the text is vertically centered." Centers ANY child
+     that doesn't fill the box, on both axes, regardless of its own shape;
+     absolutely-positioned markers are unaffected (flex ignores them). */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* The box above assumes its <img> child carries its own object-fit: contain
+   (every real precedent file does, as an inline style) — but nothing
+   enforced that, and origination attempt 14 (2026-09-08) proved it isn't
+   reliable: om1-003's <img> omitted it, so a plain flex child with no
+   width/height constraint rendered near its native pixel size (2547×1593 for
+   that slide's source PNG) instead of fitting the box, blowing out of the
+   frame entirely. Promoted into the template itself so this can't be
+   forgotten again — the whole point of a structural guarantee over a
+   per-slide convention. */
+.slide--role-nomenclature .tpl-fig img,
+.slide--role-mechanism .tpl-fig img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+.slide--role-nomenclature .tpl-marker,
+.slide--role-mechanism .tpl-marker {
+  /* ONE callout-marker colour across every role — Style Guide §6.
+     `--emerson-blue`, white number, white halo ring. The halo is what
+     keeps it legible on any background (a dark cutaway, a photo, or a
+     blue/grey data line). Orange stays reserved for caution and for §5.6's
+     semantic regions/brackets, never for a numbered marker. */
+  position: absolute;
+  transform: translate(-50%, -50%);
+  width: 1.9cqw;
+  height: 1.9cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-size: 1.15cqw;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 0 0.22cqw var(--emerson-white);
+}
+/* Reserved, first-class motion indicator — the one thing this frame exists
+   to show that Nomenclature's static labelling does not. Sits under the
+   markers (z-index default stacking: later markup wins, markers come after
+   in source order) so numbered dots stay legible on top of the path. */
+.slide--role-mechanism .tpl-flow-arrow {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.slide--role-nomenclature .tpl-list,
+.slide--role-mechanism .tpl-list {
+  grid-row: 1;
+  grid-column: 2;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5cqh;
+  height: 100%;
+}
+.slide--role-nomenclature .tpl-list li,
+.slide--role-mechanism .tpl-list li {
+  /* GALLERY FIX 2026-09-05 (16-example proof): NOT display:flex. A flex
+     container turns every contiguous text run AND every inline child
+     element (e.g. a real concept's <b>emphasis</b>) into its own separate
+     flex item, laid out side by side instead of flowing as one line of
+     text — invisible with plain text (no inline tags to split on), and it
+     broke immediately on the first real concept that used <b>. Hanging-
+     indent via absolute positioning instead: the .num circle sits in a
+     reserved left margin, the li's own content (any mix of text and inline
+     tags) flows completely normally. */
+  position: relative;
+  padding-left: 2.9cqw;
+  font-size: 1.65cqw;
+  line-height: 1.3;
+}
+.slide--role-nomenclature .tpl-list .num,
+.slide--role-mechanism .tpl-list .num {
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  width: 1.9cqw;
+  height: 1.9cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);   /* §6 — one marker colour */
+  color: var(--emerson-white);
+  font-size: 1.15cqw;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-nomenclature .tpl-source,
+.slide--role-mechanism .tpl-source {
+  grid-row: 2;
+  grid-column: 1 / span 2;
+}
+
+/* .has-wide-fig — a wide figure (a multi-panel comparison row, a landscape
+   chart) that the shared 36cqw fig column would render illegibly small.
+   Same fix as role-procedure-image's own .has-wide-fig below: figure spans
+   the full width on top, the list wraps into a row below it, source last.
+   Added 2026-09-08 after PipelineConsole origination attempt 14 needed a
+   wide figure under role-mechanism three separate times (a 4-panel
+   fail-mode schematic row, a 2-panel actuator comparison, a travel/pressure
+   chart) with no real modifier to reach for — Stage 3 invented an
+   undocumented `is-wide-fig` class plus ad hoc inline CSS each time,
+   working by accident twice and breaking outright the third time (a
+   distorted, cropped figure overlapping the list and the citation). */
+.slide--role-nomenclature.has-wide-fig .tpl-content,
+.slide--role-mechanism.has-wide-fig .tpl-content {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto auto;
+  column-gap: 0;
+  row-gap: 1.4cqh;
+}
+.slide--role-nomenclature.has-wide-fig .tpl-list,
+.slide--role-mechanism.has-wide-fig .tpl-list {
+  grid-row: 2;
+  grid-column: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  height: auto;
+  gap: 0.8cqh 3.2cqw;
+}
+.slide--role-nomenclature.has-wide-fig .tpl-list li,
+.slide--role-mechanism.has-wide-fig .tpl-list li {
+  flex: 1 1 40%;
+}
+.slide--role-nomenclature.has-wide-fig .tpl-source,
+.slide--role-mechanism.has-wide-fig .tpl-source {
+  grid-row: 3;
+  grid-column: 1;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 4a. PROCEDURE — list + single image.
+ * ---------------------------------------------------------------------- */
+.slide--role-procedure-image .tpl-content {
+  grid-template-columns: 1fr 34cqw;
+  grid-template-rows: 1fr auto;
+  column-gap: 3.6cqw;
+  align-items: center;
+}
+.slide--role-procedure-image .tpl-steps { grid-row: 1; grid-column: 1; }
+.slide--role-procedure-image .tpl-fig { grid-row: 1; grid-column: 2; }
+.slide--role-procedure-image .tpl-source { grid-row: 2; grid-column: 1 / span 2; margin: 0; }
+
+/* .has-wide-fig — a wide figure (a 2-panel comparison, a landscape diagram)
+   that a 34cqw side column would render illegibly small. Figure spans the
+   full width on top, steps below it, source last. Added 2026-09-06 for
+   tp-017 (Fisher 657 IM Fig. 4, a 2-panel bench-set diagram). */
+.slide--role-procedure-image.has-wide-fig .tpl-content {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto auto;
+  column-gap: 0;
+  row-gap: 1.4cqh;
+}
+.slide--role-procedure-image.has-wide-fig .tpl-fig { grid-row: 1; grid-column: 1; }
+.slide--role-procedure-image.has-wide-fig .tpl-steps {
+  grid-row: 2; grid-column: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0.8cqh 3.2cqw;
+}
+.slide--role-procedure-image.has-wide-fig .tpl-steps li { font-size: 1.5cqw; flex: 1 1 40%; }
+.slide--role-procedure-image.has-wide-fig .tpl-source { grid-row: 3; }
+.slide--role-procedure-image .tpl-steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.7cqh;
+}
+.slide--role-procedure-image .tpl-steps li {
+  /* Not display:flex — see the identical fix note on nomenclature/mechanism
+     .tpl-list li above. Hanging indent: ::before is absolutely positioned
+     into the reserved left margin instead of being a flex sibling of the
+     step's own text. */
+  counter-increment: step;
+  position: relative;
+  padding-left: 3cqw;
+  font-size: 1.75cqw;
+  line-height: 1.3;
+}
+.slide--role-procedure-image .tpl-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  width: 2cqw;
+  height: 2cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.2cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-procedure-image .tpl-fig {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 4b. PROCEDURE — list + callout diagram. Same skeleton as nomenclature.
+ *    The diagram SUPPORTS the step list (softened 2026-09-06 from "the
+ *    markers ARE the steps"). Where a step happens at a specific place on
+ *    the diagram, a numbered marker there carries that step's number.
+ *    A procedure whose diagram shows a pattern or sub-sequence instead —
+ *    a bolt-torque star, a criss-cross order — is still valid: the markers
+ *    show that sub-sequence and a step names it (tp-016). The structural
+ *    guarantees are unchanged — reserved fig / steps / source slots, no
+ *    overlap, marker positions verified against source; only the framing
+ *    claim was too strict.
+ * ---------------------------------------------------------------------- */
+.slide--role-procedure-callout .tpl-content {
+  grid-template-columns: 36cqw 1fr;
+  grid-template-rows: 1fr auto;
+  column-gap: 3.6cqw;
+  align-items: center;
+}
+.slide--role-procedure-callout .tpl-fig-wrap {
+  grid-row: 1; grid-column: 1;
+  position: relative; height: 100%;
+  display: flex; align-items: center;
+}
+.slide--role-procedure-callout .tpl-fig { width: 100%; height: 100%; position: relative; display: flex; align-items: center; justify-content: center; }
+.slide--role-procedure-callout .tpl-marker {
+  position: absolute; transform: translate(-50%, -50%);
+  width: 1.9cqw; height: 1.9cqw; border-radius: 50%;
+  background: var(--emerson-blue); color: var(--emerson-white);
+  font-size: 1.15cqw; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 0 0.2cqw var(--emerson-white);
+}
+.slide--role-procedure-callout .tpl-steps {
+  grid-row: 1; grid-column: 2;
+  list-style: none; counter-reset: step; margin: 0; padding: 0;
+  display: flex; flex-direction: column; justify-content: center; gap: 1.5cqh;
+}
+.slide--role-procedure-callout .tpl-steps li {
+  /* Not display:flex — same fix as procedure-image/nomenclature/mechanism. */
+  counter-increment: step;
+  position: relative; padding-left: 2.9cqw;
+  font-size: 1.65cqw; line-height: 1.3;
+}
+.slide--role-procedure-callout .tpl-steps li::before {
+  content: counter(step);
+  position: absolute; left: 0; top: 0.05em;
+  width: 1.9cqw; height: 1.9cqw; border-radius: 50%;
+  background: var(--emerson-blue); color: var(--emerson-white);
+  font-weight: 700; font-size: 1.15cqw;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide--role-procedure-callout .tpl-source { grid-row: 2; grid-column: 1 / span 2; }
+
+/* ---------------------------------------------------------------------- *
+ * 4c. PROCEDURE — photo sequence. N image cells in a row, each with its
+ *    own caption directly under it; an optional note sits in its OWN grid
+ *    row below the images, sized to its real content — this is the
+ *    structural fix for the .tmpl-figrow/.tmpl-note collision patched
+ *    twice by hand (ch3-m2 slide 98, ch3-m3 slides 101/103): the note can
+ *    never reach into the row above because it does not share a box with
+ *    it, it owns a track.
+ *
+ *    ROOT-CAUSE FIX 2026-09-05 (16-example proof, Franz's direct review,
+ *    page 8): each .tpl-cell used to size its OWN image/num/caption rows
+ *    independently, so if one cell's description text wrapped to 2 lines
+ *    and its neighbours wrapped to 1, that cell's caption landed lower than
+ *    the others — captions were never actually guaranteed to align, only
+ *    usually did with short placeholder text. Same fix as Contrast: the
+ *    row's three tracks (image / step-num / step-caption) are now defined
+ *    ONCE on .tpl-row, and every cell uses `subgrid` to share them, so all
+ *    N captions sit on the same baseline no matter how any one cell's text
+ *    wraps — this is now a structural guarantee, not a content-dependent
+ *    coincidence.
+ * ---------------------------------------------------------------------- */
+.slide--role-procedure-sequence .tpl-content {
+  grid-template-rows: 1fr auto;
+  row-gap: 2cqh;
+}
+.slide--role-procedure-sequence .tpl-row {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 3), 1fr);
+  grid-template-rows: 1fr auto auto;
+  column-gap: 2.6cqw;
+  height: 100%;
+}
+.slide--role-procedure-sequence .tpl-cell {
+  display: grid;
+  grid-row: 1 / span 3;
+  grid-template-rows: subgrid;
+  row-gap: 0.9cqh;
+}
+.slide--role-procedure-sequence .tpl-cell .placeholder-img { width: 100%; height: 100%; }
+.slide--role-procedure-sequence .step-num {
+  text-align: center;
+  font-weight: 700;
+  color: var(--emerson-blue);
+  font-size: 1.6cqw;
+}
+.slide--role-procedure-sequence .step-caption {
+  text-align: center;
+  font-size: 1.4cqw;
+  color: var(--body-text);
+  line-height: 1.3;
+}
+.slide--role-procedure-sequence .tpl-note {
+  font-size: 1.55cqw;
+  line-height: 1.35;
+  color: var(--body-text);
+  border-left: 0.32cqw solid var(--emerson-cyan);
+  padding-left: 1.6cqw;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 5. APPLICATION — an analytical graph, Style Guide §5. ONE template
+ *    (2026-09-05: the former `application-annotated` variant merged in —
+ *    §5 gives every graph a key by default, so "has anchored features"
+ *    stopped being a distinct template).
+ *
+ *    Graph in a LEFT column; the KEY (`.tpl-list`) a VERTICAL list in a
+ *    RIGHT column, same shape/position as the mechanism list, one step
+ *    smaller than body text (§5.3). Series get a line-sample swatch;
+ *    features a numbered circle identical to the plot marker (point and
+ *    span alike, §5.2). Takeaway + source line own their own full-width
+ *    rows below. The graph's aspect ratio (in the .html) is near-square to
+ *    sit in the left column, not to assume full width. `NOTHING` is
+ *    labelled inline on the plot (§5.1) — this supersedes the old
+ *    rotated-halo-label / free-floating `.tpl-annotation` conventions.
+ *
+ *    The `:has(.tpl-list)` gate: a graph with one series and nothing to
+ *    tell apart (§5.4) carries no key and keeps the full width — as does a
+ *    figure-plus-takeaway with no graph.
+ *
+ *    SECOND VARIANT — a DECISION-TABLE application, gated on
+ *    `:has(.tmpl-table)` (tp-009: a selection table + a corroborating
+ *    figure, `role: application`, `evaluate`). Built 2026-09-05, Style
+ *    Guide §5.10. The table IS the content — an evaluate-level "pick the
+ *    row that meets the requirement"; the figure shows the same cases so
+ *    the pick can be checked against the physical picture. Table styling
+ *    is the production `.tmpl-table` (blue header, 5%-blue zebra, optional
+ *    `tr.is-example`) reused as-is — this block only places it.
+ * ---------------------------------------------------------------------- */
+.slide--role-application .tpl-content {
+  grid-template-rows: 1fr auto;
+  row-gap: 1.6cqh;
+}
+.slide--role-application .tpl-chart {
+  width: 100%;
+  height: 100%;
+}
+.slide--role-application .tpl-takeaway {
+  font-size: 1.6cqw;
+  line-height: 1.35;
+  border-left: 0.35cqw solid var(--emerson-orange);
+  padding-left: 1.7cqw;
+  margin: 0;
+}
+.slide--role-application .tpl-source { margin: 0; }
+
+/* keyed-graph layout — chart left, vertical key right, takeaway + source
+   full-width below */
+.slide--role-application:has(.tpl-list) .tpl-content {
+  grid-template-columns: 1fr 26cqw;
+  grid-template-rows: 1fr auto auto;
+  column-gap: 2.4cqw;
+  row-gap: 1.2cqh;
+  align-items: center;
+}
+.slide--role-application:has(.tpl-list) .tpl-chart-wrap {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+.slide--role-application .tpl-list {
+  grid-column: 2;
+  grid-row: 1;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.5cqh;
+  height: 100%;
+}
+.slide--role-application .tpl-list li {
+  /* hanging indent — same reason as the nomenclature/mechanism list:
+     never display:flex, so inline <b> in an entry still flows as one line */
+  position: relative;
+  padding-left: 3cqw;
+  font-size: 1.3cqw;
+  line-height: 1.3;
+}
+.slide--role-application .tpl-list .num {
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  width: 1.7cqw;
+  height: 1.7cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);   /* §6 — one marker colour (was orange) */
+  color: var(--emerson-white);
+  font-size: 1.0cqw;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-application .tpl-list .swatch {
+  /* a short sample of the actual line style — solid or dashed bar */
+  position: absolute;
+  left: 0;
+  top: 0.62em;
+  width: 2.2cqw;
+  height: 0;
+  border-top: 0.36cqw solid var(--swatch-c, var(--emerson-charcoal));
+}
+.slide--role-application .tpl-list .swatch.is-dashed {
+  border-top-style: dashed;
+}
+.slide--role-application:has(.tpl-list) .tpl-takeaway {
+  grid-column: 1 / span 2;
+  grid-row: 2;
+}
+.slide--role-application:has(.tpl-list) .tpl-source {
+  grid-column: 1 / span 2;
+  grid-row: 3;
+}
+
+/* decision-table variant — table left, corroborating figure right,
+   takeaway + source full-width below. SPARSE-LAYOUT PASS 2026-09-05:
+   `align-content: start` keeps the table + figure tucked under the title
+   with the takeaway/source right below them; the leftover height collects
+   at the bottom as margin rather than as a band in the middle.
+   WHOLE-SET REVIEW FIX 2026-09-05: `align-items: center` on row 1 — this
+   is the same rule the `:has(.tpl-list)` variant and nomenclature/mechanism
+   already carry, and it was not extended to this new variant. Without it
+   the shorter of the table / figure top-aligns against the taller instead
+   of centring beside it. */
+.slide--role-application:has(.tmpl-table) .tpl-content {
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  align-content: start;
+  align-items: center;
+  column-gap: 3cqw;
+  row-gap: 2.4cqh;
+}
+.slide--role-application:has(.tmpl-table) .tmpl-table {
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+}
+.slide--role-application:has(.tmpl-table) .tpl-fig {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  min-width: 0;
+  max-height: 46cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-application:has(.tmpl-table) .tpl-fig img {
+  max-width: 100%;
+  max-height: 46cqh;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+.slide--role-application:has(.tmpl-table) .tpl-takeaway {
+  grid-column: 1 / span 2;
+  grid-row: 2;
+}
+.slide--role-application:has(.tmpl-table) .tpl-source {
+  grid-column: 1 / span 2;
+  grid-row: 3;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 6. CONTRAST — two panels, mirrored. `subgrid` locks the label / image /
+ *    caption rows to the SAME height on both sides — captions align row to
+ *    row even when one wraps to two lines and the other to one, which a
+ *    plain two-column layout (two independent nested grids) cannot
+ *    guarantee.
+ * ---------------------------------------------------------------------- */
+.slide--role-contrast .tpl-content {
+  grid-template-columns: 1fr auto 1fr;
+  /* GALLERY FIX 2026-09-14 (Franz, Post-Stage-4 Architecture Bundle item 5):
+     a 4th row, reserved for .tpl-source, added below the mirrored panels'
+     own 3 rows. Every contrast slide needing a citation (Style Guide §5.9
+     requires one on every sourced slide) had to hand-add
+     style="grid-column:1 / -1" with no reserved row, landing as an
+     unreviewed implicit row — confirmed a real, repeated gap (cvb-008 and
+     others), not a one-off. Panels/divider still span only rows 1-3 (see
+     below) so this new row is exclusively .tpl-source's. */
+  grid-template-rows: auto 1fr auto auto;
+  column-gap: 2.4cqw;
+  row-gap: 1cqh;
+}
+.slide--role-contrast .tpl-panel {
+  display: grid;
+  grid-row: 1 / span 3;
+  grid-template-rows: subgrid;
+  row-gap: 1.1cqh;
+}
+.slide--role-contrast .tpl-panel[data-side="left"]  { grid-column: 1; }
+.slide--role-contrast .tpl-panel[data-side="right"] { grid-column: 3; }
+.slide--role-contrast .tpl-divider {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  width: 0.14cqw;
+  background: var(--emerson-grey);
+  justify-self: center;
+}
+.slide--role-contrast .panel-label {
+  text-align: center;
+  font-weight: 700;
+  color: var(--emerson-blue);
+  font-size: 1.85cqw;
+}
+.slide--role-contrast .panel-caption {
+  text-align: center;
+  font-size: 1.5cqw;
+  line-height: 1.3;
+  color: var(--body-text);
+}
+.slide--role-contrast .tpl-panel .placeholder-img { width: 100%; height: 100%; }
+.slide--role-contrast .tpl-source {
+  grid-row: 4;
+  grid-column: 1 / -1;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 7. CAUTION — not redesigned. Template 6 (.slide--tmpl-caution, already in
+ *    emerson-workbench.css) was not among Franz's flagged defects and is
+ *    kept exactly as-is as the caution role's master template — see
+ *    caution-09.html, which uses the real production class directly rather
+ *    than a parallel gallery rule.
+ * ---------------------------------------------------------------------- */
+
+/* ---------------------------------------------------------------------- *
+ * 8. CHECK — check-your-knowledge. Situation prompt, lettered options,
+ *    reveal-answer footer in its own row.
+ * ---------------------------------------------------------------------- */
+.slide--role-check .tpl-content {
+  grid-template-rows: auto 1fr auto;
+  row-gap: 2.2cqh;
+}
+.slide--role-check .tpl-prompt {
+  font-size: 1.9cqw;
+  font-weight: 700;
+  line-height: 1.35;
+  margin: 0;
+}
+.slide--role-check .tpl-options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.1cqh;
+  /* SPARSE-LAYOUT PASS 2026-09-05: was `align-self: start`, which pinned the
+     options to the top of the stretched middle row and dropped the whole
+     empty band between them and the reveal footer. Centre them in that row
+     so the breathing room splits above and below — reads as a deliberate
+     "think about it" pause, not a dangling gap. */
+  align-self: center;
+}
+.slide--role-check .tpl-options li {
+  /* Not display:flex — same latent risk as the list templates above: any
+     future option text with inline emphasis would split into separate
+     flex items instead of flowing as one line. Plain block flow instead. */
+  font-size: 1.8cqw;
+}
+.slide--role-check .tpl-reveal {
+  font-size: 1.65cqw;
+  font-weight: 700;
+  color: var(--emerson-blue);
+  border-top: 0.09cqw solid var(--emerson-grey);
+  padding-top: 1.3cqh;
+  margin: 0;
+}
+
+/* CHECK — interactive upgrade (2026-09-10, Phase 1 of the Canvas build,
+   from Franz's direct review of the unconstrained Foundations preview).
+   Same shape as above — .tpl-prompt/.tpl-options/.tpl-reveal — the change
+   is behavioural: .tpl-reveal starts hidden and only appears once an
+   option is actually clicked, and the clicked option itself shows
+   right/wrong in place. Mark the correct <li> with `data-correct="true"`;
+   slides.js's generic .tpl-options handler does the rest — no per-slide
+   script. "Wrong" deliberately does NOT get a red treatment: this system
+   has no error/danger token, and inventing one for a single interaction
+   would be exactly the kind of off-system color the Show-Tell-Do palette
+   review just corrected. Right = the one accent (blue fill, white text,
+   the same language the numbered markers already use); wrong = a neutral
+   dim, no color-coding — the reveal line beneath states the right answer
+   either way, which is what actually teaches, not a stoplight color. */
+.slide--role-check .tpl-options li {
+  cursor: pointer;
+  border-radius: 0.45cqw;
+  padding: 0.5cqh 0.7cqw;
+  margin: -0.5cqh -0.7cqw;
+  transition: background-color 0.15s, color 0.15s, opacity 0.15s;
+}
+/* PHASE 2 CONSISTENCY FIX: every other clickable card/pill in the gallery
+   (tpl-reveal-item, tpl-tab, tpl-frame, tpl-parse-key, tpl-pick-item) has
+   a hover affordance; check's options were the one interactive element
+   with none. No border to color here by design (a bare list, not a
+   card), so a light blue background tint plays the same "you can click
+   this" role instead — never shown once a real answer state (is-right/
+   is-wrong) is set. */
+.slide--role-check .tpl-options li:hover:not(.is-right):not(.is-wrong) {
+  background: color-mix(in srgb, var(--emerson-blue) 8%, #fff);
+}
+.slide--role-check .tpl-options li.is-right {
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+}
+.slide--role-check .tpl-options li.is-wrong {
+  background: color-mix(in srgb, var(--emerson-charcoal) 10%, #fff);
+  opacity: 0.6;
+}
+.slide--role-check .tpl-reveal {
+  display: none;
+}
+.slide--role-check .tpl-reveal.is-shown {
+  display: block;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 9. NOMENCLATURE-REVEAL — a fixed named set with NO source figure
+ *    (provenance: original content — a framework, not a photographed
+ *    part), where each item's real meaning is worth a full explanation,
+ *    not a one-line list entry. All N items show their label at once;
+ *    clicking one opens its explanation in the shared detail pane below
+ *    — the standout pattern from the unconstrained Foundations preview
+ *    (Five Tenets), added 2026-09-10 as Phase 1 of the Canvas build.
+ *    Still the `nomenclature` role pedagogically (recognition-level
+ *    naming of a fixed small set) — this is a shape variant for the case
+ *    plain `nomenclature`'s figure-anchored shape does not fit, the same
+ *    way procedure has three shape variants under one role.
+ * ---------------------------------------------------------------------- */
+.slide--role-nomenclature-reveal .tpl-content {
+  grid-template-rows: auto 1fr;
+  row-gap: 2cqh;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 5), 1fr);
+  gap: 1.1cqw;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 0.6cqw;
+  padding: 1.1cqh 1.1cqw;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item.is-open {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item .num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7cqw;
+  height: 1.7cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-size: 1.0cqw;
+  font-weight: 700;
+  margin-right: 0.6cqw;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item.is-open .num {
+  background: var(--emerson-white);
+  color: var(--emerson-blue);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item__label {
+  font-size: 1.4cqw;
+  font-weight: 700;
+  color: var(--body-text);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-item.is-open .tpl-reveal-item__label {
+  color: var(--emerson-white);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-detail {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-detail__pane {
+  display: none;
+  /* PHASE 2 CONSISTENCY FIX: was 1.7cqw. The three "read a real detail
+     pane" patterns (this, procedure-worked's tabpane, application-case's
+     frame-detail-pane) had drifted to three different sizes (1.7/1.55/1.6)
+     despite being the same register of content; unified to 1.65cqw,
+     matching the reading-text baseline the original eight already
+     established (nomenclature/mechanism .tpl-list li, procedure-callout
+     .tpl-steps li). */
+  font-size: 1.65cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+.slide--role-nomenclature-reveal .tpl-reveal-detail__pane.is-active {
+  display: block;
+}
+.slide--role-nomenclature-reveal .tpl-reveal-detail__pane .tpl-cite {
+  display: block;
+  margin-top: 1.2cqh;
+  font-size: 1.25cqw;
+  font-style: italic;
+  color: var(--emerson-grey);
+}
+
+/* ---------------------------------------------------------------------- *
+ * 10. PROCEDURE-WORKED — "here's what it is, now you do it": a real
+ *    worked walkthrough tabbed Show / Tell / Do, paired with ONE fixed
+ *    figure. From the Foundations preview's Show-Tell-Do walkthrough
+ *    (2026-09-10, Phase 1 of the Canvas build). The figure column is a
+ *    FIXED grid track, sized once — not content-driven or sticky-
+ *    positioned — specifically because the preview's version let a tall
+ *    image run past the slide's own bottom edge when the left column's
+ *    content was short (Franz's direct review finding). A fixed track
+ *    makes that structurally impossible, the same guarantee every other
+ *    template in this file already makes for its own figure.
+ * ---------------------------------------------------------------------- */
+.slide--role-procedure-worked .tpl-content {
+  grid-template-columns: 1fr 32cqw;
+  grid-template-rows: auto 1fr auto;
+  column-gap: 3.2cqw;
+  row-gap: 1.6cqh;
+}
+.slide--role-procedure-worked .tpl-tabs {
+  grid-column: 1;
+  grid-row: 1;
+  display: flex;
+  gap: 0.8cqw;
+}
+.slide--role-procedure-worked .tpl-tab {
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.3cqw;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 999px;
+  padding: 0.7cqh 1.4cqw;
+  color: var(--body-text);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.slide--role-procedure-worked .tpl-tab:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-procedure-worked .tpl-tab.is-active {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-procedure-worked .tpl-tabpanes {
+  grid-column: 1;
+  grid-row: 2;
+  min-height: 0;
+}
+.slide--role-procedure-worked .tpl-tabpane {
+  display: none;
+  /* PHASE 2 CONSISTENCY FIX: was 1.55cqw — see the identical note on
+     nomenclature-reveal's .tpl-reveal-detail__pane. */
+  font-size: 1.65cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+.slide--role-procedure-worked .tpl-tabpane.is-active {
+  display: block;
+}
+.slide--role-procedure-worked .tpl-tabpane .tpl-steps {
+  list-style: none;
+  counter-reset: step;
+  margin: 1cqh 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9cqh;
+}
+.slide--role-procedure-worked .tpl-tabpane .tpl-steps li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 2.6cqw;
+  /* PHASE 2 CONSISTENCY FIX: was 1.4cqw, smaller than every comparable
+     numbered-step list in the original eight (procedure-callout 1.65cqw,
+     procedure-image 1.75cqw) despite being the same register of content. */
+  font-size: 1.6cqw;
+  line-height: 1.3;
+}
+.slide--role-procedure-worked .tpl-tabpane .tpl-steps li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 0.05em;
+  width: 1.7cqw;
+  height: 1.7cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.0cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-procedure-worked .tpl-callout {
+  margin-top: 1.2cqh;
+  border-left: 0.32cqw solid var(--emerson-orange);
+  padding: 0.4cqh 0 0.4cqh 1.4cqw;
+  font-size: 1.35cqw;
+  line-height: 1.35;
+  color: var(--body-text);
+}
+.slide--role-procedure-worked .tpl-callout .tpl-callout__label {
+  display: block;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 1.05cqw;
+  letter-spacing: 0.03em;
+  color: color-mix(in srgb, var(--emerson-orange) 65%, var(--emerson-charcoal));
+  margin-bottom: 0.3cqh;
+}
+.slide--role-procedure-worked .tpl-fig-wrap {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+}
+.slide--role-procedure-worked .tpl-fig {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 0.6cqw;
+  overflow: hidden;
+}
+.slide--role-procedure-worked .tpl-fig img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slide--role-procedure-worked .tpl-source {
+  grid-column: 1 / span 2;
+  grid-row: 3;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 11. APPLICATION-CASE — a real, sequential case walkthrough: a filmstrip
+ *    of concrete instances (real deck slides, real chapter pages) clicked
+ *    through in order, each revealing its own real detail below. From the
+ *    Foundations preview's "Live Walkthrough: 1400 Chapter 3" (2026-09-10,
+ *    Phase 1 of the Canvas build). `application` because this is applying
+ *    a just-taught skill (reading a real solution) against a real,
+ *    concrete case — not naming a fixed set (nomenclature) and not one
+ *    procedure with fixed steps (procedure).
+ * ---------------------------------------------------------------------- */
+.slide--role-application-case .tpl-content {
+  grid-template-rows: auto 1fr auto;
+  row-gap: 1.8cqh;
+}
+.slide--role-application-case .tpl-filmstrip {
+  display: flex;
+  gap: 1cqw;
+}
+.slide--role-application-case .tpl-frame {
+  flex: 1;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 0.5cqw;
+  padding: 0.8cqh 0.9cqw;
+  transition: background-color 0.15s, border-color 0.15s;
+}
+.slide--role-application-case .tpl-frame:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-application-case .tpl-frame.is-active {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+}
+.slide--role-application-case .tpl-frame__tag {
+  display: block;
+  font-size: 1.0cqw;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--emerson-blue);
+}
+.slide--role-application-case .tpl-frame.is-active .tpl-frame__tag {
+  color: var(--emerson-white);
+}
+.slide--role-application-case .tpl-frame__title {
+  display: block;
+  margin-top: 0.3cqh;
+  font-size: 1.25cqw;
+  font-weight: 700;
+  color: var(--body-text);
+  line-height: 1.2;
+}
+.slide--role-application-case .tpl-frame.is-active .tpl-frame__title {
+  color: var(--emerson-white);
+}
+.slide--role-application-case .tpl-frame-detail {
+  position: relative;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.slide--role-application-case .tpl-frame-detail__pane {
+  display: none;
+  /* PHASE 2 CONSISTENCY FIX: was 1.6cqw — see the identical note on
+     nomenclature-reveal's .tpl-reveal-detail__pane. */
+  font-size: 1.65cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+/* GALLERY FIX 2026-09-14 (Franz, Post-Stage-4 Architecture Bundle item 5):
+   a documented figure slot, not a text-only pane. Six of Control Valve
+   Basics' real slides needed a labelled figure inside a pane (a case is
+   often "here is the real hardware," not just a paragraph) and every one
+   independently hand-wrote the identical inline style to get it —
+   confirmed a real, repeated content shape, not six unrelated
+   improvisations. Formalized here verbatim from that convergent inline
+   style, so the next course gets the slot instead of reinventing it. */
+.slide--role-application-case .tpl-frame-detail__pane img {
+  display: block;
+  max-width: 100%;
+  max-height: 32cqh;
+  object-fit: contain;
+  margin: 0 auto 1cqh;
+}
+.slide--role-application-case .tpl-frame-detail__pane.is-active {
+  display: block;
+}
+.slide--role-application-case .tpl-frame-detail__pane ol,
+.slide--role-application-case .tpl-frame-detail__pane ul {
+  margin: 0.6cqh 0 0;
+  padding-left: 2cqw;
+}
+.slide--role-application-case .tpl-frame-detail__pane li {
+  font-size: 1.5cqw;
+  line-height: 1.4;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 12. NOMENCLATURE-PARSE — a real sentence, broken into named parts a
+ *    learner picks between (e.g. Action / Conditions / Standard in a
+ *    training objective). No source figure — the "figure" is the
+ *    sentence itself. Added 2026-09-10, Canvas Phase 1b, from the
+ *    Foundations preview's "Objectives, Briefly" step. A third
+ *    nomenclature shape, alongside plain nomenclature (has a figure) and
+ *    nomenclature-reveal (a fixed set, no figure, no single sentence to
+ *    parse) — this one is for naming the parts of ONE real sentence.
+ * ---------------------------------------------------------------------- */
+.slide--role-nomenclature-parse .tpl-content {
+  grid-template-rows: auto auto 1fr;
+  row-gap: 2cqh;
+  align-content: center;
+}
+.slide--role-nomenclature-parse .tpl-parse-keys {
+  display: flex;
+  gap: 0.9cqw;
+}
+.slide--role-nomenclature-parse .tpl-parse-key {
+  font: inherit;
+  font-weight: 700;
+  font-size: 1.3cqw;
+  cursor: pointer;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 999px;
+  padding: 0.7cqh 1.4cqw;
+  color: var(--body-text);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.slide--role-nomenclature-parse .tpl-parse-key:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-nomenclature-parse .tpl-parse-key.is-active {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-nomenclature-parse .tpl-parse-sentence {
+  /* PHASE 2 CONSISTENCY FIX: was 2.1cqw — the biggest body-register text
+     in the whole gallery, bigger even than check's bolded .tpl-prompt
+     (1.9cqw), despite both being "the one big bold statement on this
+     slide." Matched to check's prompt size instead of standing alone. */
+  font-size: 1.9cqw;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--body-text);
+  margin: 0;
+}
+.slide--role-nomenclature-parse .tpl-tok {
+  border-radius: 0.35cqw;
+  padding: 0.05em 0.2em;
+  transition: background-color 0.15s;
+}
+.slide--role-nomenclature-parse .tpl-tok.is-on {
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-nomenclature-parse .tpl-parse-def {
+  font-size: 1.5cqw;
+  color: var(--emerson-grey);
+  min-height: 1.4em;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 13. APPLICATION-PICK — pick one real item from a small set, see a real
+ *    worked analysis of it. Added 2026-09-10, Canvas Phase 1b, from the
+ *    Foundations preview's "Objectives Practice" step — Franz's review
+ *    called the concept good but the on-slide instructions unclear;
+ *    .tpl-howto is a permanent, always-present part of THIS shape (not a
+ *    discretionary box a slide might or might not include), so the
+ *    interaction is legible without anyone standing next to it explaining
+ *    it. A third application shape, alongside plain application (a graph
+ *    or table) and application-case (step through EVERY instance in
+ *    sequence) — this one is SELECT ONE from several, then see its
+ *    analysis; the others are not shown until picked.
+ * ---------------------------------------------------------------------- */
+.slide--role-application-pick .tpl-content {
+  grid-template-rows: auto auto 1fr;
+  row-gap: 1.8cqh;
+}
+.slide--role-application-pick .tpl-howto {
+  display: flex;
+  gap: 0.9cqw;
+  align-items: flex-start;
+  background: var(--emerson-white);
+  border: 0.09cqw solid var(--emerson-blue);
+  border-radius: 0.6cqw;
+  padding: 1.1cqh 1.3cqw;
+  margin: 0;
+  font-size: 1.4cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+.slide--role-application-pick .tpl-howto__badge {
+  flex: none;
+  width: 1.8cqw;
+  height: 1.8cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.1cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-application-pick .tpl-pick-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8cqh;
+}
+.slide--role-application-pick .tpl-pick-item {
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1.45cqw;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 0.5cqw;
+  padding: 0.9cqh 1.1cqw;
+  color: var(--body-text);
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.slide--role-application-pick .tpl-pick-item:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-application-pick .tpl-pick-item.is-selected {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-application-pick .tpl-pick-work {
+  /* PHASE 2 CONSISTENCY FIX: was 1.45cqw. This is the slide's actual
+     payoff — the worked analysis — not supporting text, so it should
+     read at full body size like every other template's primary content,
+     not smaller. */
+  font-size: 1.65cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+  min-height: 0;
+}
+.slide--role-application-pick .tpl-pick-work__placeholder {
+  color: var(--emerson-grey);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 14. PROCEDURE-LIST — a real runsheet: N real steps, title + description
+ *    each, no figure at all. Added 2026-09-10, Canvas Phase 1b, from the
+ *    Foundations preview's "Meet Your Slice" step. A fifth procedure
+ *    shape, for a real sequence with genuinely nothing to photograph or
+ *    diagram (an agenda, a homework list) — do not force a placeholder
+ *    figure into procedure-image just to use a different variant.
+ * ---------------------------------------------------------------------- */
+.slide--role-procedure-list .tpl-content {
+  grid-template-rows: 1fr auto;
+  row-gap: 1.6cqh;
+  align-content: center;
+}
+.slide--role-procedure-list .tpl-runsheet {
+  list-style: none;
+  counter-reset: step;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.slide--role-procedure-list .tpl-runsheet li {
+  counter-increment: step;
+  position: relative;
+  padding: 1.1cqh 0 1.1cqh 3.2cqw;
+  border-bottom: 0.07cqw solid color-mix(in srgb, var(--emerson-charcoal) 10%, #fff);
+}
+.slide--role-procedure-list .tpl-runsheet li:last-child {
+  border-bottom: none;
+}
+.slide--role-procedure-list .tpl-runsheet li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 1.1cqh;
+  width: 2cqw;
+  height: 2cqw;
+  border-radius: 50%;
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+  font-weight: 700;
+  font-size: 1.2cqw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-procedure-list .run-t {
+  display: block;
+  font-weight: 700;
+  font-size: 1.7cqw;
+  color: var(--body-text);
+}
+.slide--role-procedure-list .run-d {
+  display: block;
+  margin-top: 0.3cqh;
+  font-size: 1.4cqw;
+  color: var(--emerson-grey);
+  line-height: 1.3;
+}

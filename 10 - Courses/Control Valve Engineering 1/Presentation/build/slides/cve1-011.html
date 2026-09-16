@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 011 &mdash; Check Your Knowledge: Valve Selection &amp; Sizing Decision</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch1-m1, page 11 — the module's check slide (course.json carries
+       no keyConcepts entry for it by schema design, per CVB precedent).
+       Exercises both eng.sizing.valve-selection-process (the step 2 check)
+       and eng.selection.body-trim-decision (the step 3 trim-type rule)
+       together — answerable only by connecting a failed cavitation check
+       to a cavitation-reduction trim, not standard trim or a bigger valve. -->
+  <article class="slide slide--role-check" data-slide="11" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge: Valve Selection &amp; Sizing Decision</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A preliminary Cv calculation meets the flow requirement, but the Step 2 check shows the cavitation limit is exceeded. Per the flowchart, what should happen next?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Select a larger valve body to raise the flow margin</li>
+        <li data-correct="true">B.&nbsp;&nbsp;Move to Step 3 and select a cavitation-reduction trim</li>
+        <li>C.&nbsp;&nbsp;Recalculate the preliminary Cv with a wider safety factor</li>
+        <li>D.&nbsp;&nbsp;Proceed with standard trim since the flow requirement is already met</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; The failing check (cavitation), not the Cv result, decides the trim type.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">11</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>
