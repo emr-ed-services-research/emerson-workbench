@@ -105,6 +105,15 @@ correction touched ~2,000 references):
 | `preparation` | *(`ife` only)* JSA, risk level, safety requirements, training-area setup |
 | `delivery` | *(`ife` only)* TPCD, Show–Tell–Do, communication, questioning, training aids, checking student learning |
 | `development` | *(`ife` only)* self-observation, feedback, the instructor development plan |
+| `sizing` | *(`eng` only, added 2026-09-15 for the CVE curriculum)* Cv calculation methodology and actuator force-margin verification for control valve selection |
+| `selection` | *(`eng` only)* body style and trim-material selection against process, compatibility, and cost constraints |
+| `noise-cavitation` | *(`eng` only)* noise and cavitation/flashing damage diagnosis and mitigation selection |
+| `severe-service` | *(`eng` only)* special/severe-service categories (high-capacity, low-flow Cv, cryogenic, particulate/erosive, nuclear) and why standard construction fails there |
+| `steam-conditioning` | *(`eng` only)* desuperheater design matching and full steam-conditioning system integration |
+| `standards` | *(`eng` only)* hazardous-area classification and international standards-scheme reconciliation (IEC 60079 / ATEX) |
+| `isolation-valves` | *(`eng` only)* on/off isolation valve family and variant selection against failure modes |
+| `sustainability` | *(`eng` only)* emissions-scope classification and decarbonization-technology applicability judgment |
+| `sis` | *(`eng` only)* safety instrumented systems — layer-of-protection identification and SIL/voting architecture |
 
 An area may appear under more than one domain (`mnt.positioner.*` for bench
 maintenance, `inst.positioner.*` for configuration). The domain says what
@@ -441,7 +450,24 @@ domain: maintenance          # already on chapter records; promoted to the cours
 tier: introductory           # introductory | advanced
 ```
 
-### Component Index addition
+**`industryScope`** (added 2026-09-15, for the CVE curriculum). `domain` +
+`tier` cannot distinguish between separate instances of the same course
+pattern — the CVE-Industry course exists once per industry sourcebook
+(Oil & Gas first, then Power & Severe Service / Pulp & Paper / Refining as
+later instances), and all four instances share `domain: engineering`,
+`tier: advanced`. Rather than invent a fourth tier value or overload
+`domain`, `industryScope` names which of the four Industry Specific
+Sourcebooks a CVE-Industry instance draws its industry-specific content
+from — the same enumerable, bake-in-now values used by the sourcebooks'
+own file names, not deferred as a free-text field:
+
+```yaml
+industryScope: oil-gas        # oil-gas | power-severe-service | pulp-paper | refining
+```
+
+`null` on every course that isn't a CVE-Industry instance (CVE1, CVE2, and
+every existing course) — the same "real, permanent absence" pattern
+`domain: null` already uses on CVB, not an omitted field.
 
 Each existing record gains one forward pointer:
 
