@@ -78,3 +78,16 @@ record.
   checked, and it is sufficient.
 - **No judgment call needing escalation.** The near-zero result was
   unambiguous on direct inspection, same as ch13.
+- **`kind: topic` pass (2026-09-17): zero topic entries added, confirmed
+  by direct inspection, not assumed.** Re-read pp. 303 (§14.1 Pipe
+  Engagement), 304-306 (§14.2 Carbon and Alloy Steel – Stainless Steel),
+  and 315 (§14.3 Flange Thickness for Flange Fittings) directly. Each
+  section's prose is a one-to-two-sentence caption telling the reader how
+  to read the table that follows (e.g. "Dimension A is the sum of L1...
+  and L3..."; "STD, XS, and XXS indicate Standard, Extra Strong, and
+  Double Extra Strong pipe"; "these dimensions apply to steel valves for
+  nominal pipe sizes 1 through 24") — real, but table-reading instructions
+  local to that one table, not a transferable concept a learner would
+  need independent of the table itself. Nothing here rises to a genuine
+  `kind: topic` entry; the chapter stays correctly at zero components of
+  either kind.

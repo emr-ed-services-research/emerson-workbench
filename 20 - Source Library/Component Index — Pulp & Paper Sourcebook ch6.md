@@ -281,3 +281,22 @@ notes: >
 - **Archive/legacy material:** none consulted, none needed — the 2011
   Fisher Sourcebook is the sole and sufficient source for all eight of this
   chapter's components.
+- **`kind: topic` indexing pass (2026-09-17): zero new entries, confirmed
+  correct, not a gap.** Read the full chapter prose directly (all 10 pages,
+  81-90). Content is the same Fisher-authored noise-chapter template already
+  found near-verbatim in three other sourcebooks tonight (Control Valve
+  Handbook, Oil & Gas, Power & Severe Service): identical dBA-weighting
+  explanation, identical line/point-source equations, the same IEC 60534-8-3
+  five-step prediction method in the same order, and the same source/path
+  treatment framework — compared directly against `cvh-topic-noise-
+  generation-and-prediction` and `cvh-topic-noise-control-strategy`
+  (Component Index — Control Valve Handbook ch5.md) before concluding this.
+  Authoring a fourth near-duplicate `pp-topic-*` entry would restate rather
+  than add value. **Independent fourth-source corroboration, not authored
+  here (out of scope — a different chapter's file):** this chapter's closing
+  "Two-Phase Noise" section states the same finding already flagged twice
+  tonight as a candidate CVH enrichment — Emerson field studies found no
+  real two-phase/flashing noise problems, and "a technically appropriate
+  two-phase noise prediction method does not exist." Finding this exact
+  claim in a fourth independent sourcebook makes it a well-corroborated
+  candidate for that future CVH-entry enrichment, not a one-off.

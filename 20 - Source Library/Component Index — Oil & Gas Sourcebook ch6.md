@@ -167,6 +167,102 @@ notes: >
   slide needs it alongside this figure.
 ```
 
+```yaml
+id: ogas-topic-cavitation-flashing-mechanism
+kind: topic
+teaches: >
+  Both cavitation and flashing begin identically: as pressure falls from
+  inlet toward the vena contracta, a point is reached where local fluid
+  pressure equals vapor pressure and the liquid begins turning to vapor
+  (nucleation of bubbles, same phenomenon as boiling but driven by velocity-
+  induced pressure drop rather than temperature). The two phenomena diverge
+  only at recovery: if downstream pressure recovers back above vapor
+  pressure, the vapor bubbles collapse (implode) back to liquid — this is
+  cavitation, a liquid-vapor-liquid phase change. If downstream pressure
+  stays below vapor pressure, the bubbles persist and grow — this is
+  flashing. The distinction matters practically: flashing is a system
+  phenomenon (governed by P2 and Pv alone) that no control valve design can
+  prevent — only its damage can be mitigated by materials/design choices —
+  while cavitation, because it depends on recovery behavior inside/after the
+  valve, CAN be prevented by correct valve selection. The relationship is
+  also expressible via Bernoulli's Equation (equation 6-1) between P1 and
+  the vena contracta: an increase in velocity (kinetic energy) must be
+  offset by a decrease in static pressure.
+concept-tags: [cavitation, flashing, vena contracta, vapor pressure, phase change, Bernoulli, nucleation, system phenomenon, valve-preventable]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" running text, printed pp. 6-1–6-3 (PDF pp. 61-63), between Figures 6-2 and 6-3, and again after Figure 6-3"
+relatedFigures: [ogas-cmp-restriction-pressure-profile, ogas-cmp-velocity-pressure-vena-contracta, ogas-cmp-cavitation-flashing-pressure-recovery]
+relatedTopics: [cvh-topic-cavitation, cvh-topic-flashing, cvh-topic-vena-contracta, ogas-topic-bubble-cycle]
+used-by: []
+notes: >
+  Complements rather than duplicates CVH's cvh-topic-cavitation/
+  cvh-topic-flashing — this sourcebook's real value-add is the explicit
+  "flashing is system-governed, cavitation is valve-preventable" practical
+  distinction and the direct Bernoulli-equation tie-in, not restated
+  elsewhere. Read directly from the real running prose, not inferred from
+  the three figures' own captions.
+```
+
+```yaml
+id: ogas-topic-bubble-cycle
+kind: topic
+teaches: >
+  The bubble cycle names the four sequential phase-change events that occur
+  when a liquid cavitates: (1) nucleation — bubble formation typically
+  seeded by a small entrained noncondensible-gas nucleus of a minimum
+  required size; (2) growth — the bubble grows as it crosses the reduced-
+  pressure region, driven by continually decreasing pressure and increasing
+  vaporization; (3) collapse — pressure recovery halts growth and forces the
+  bubble to implode; (4) rebound — under some conditions, several growth-
+  and-collapse cycles repeat in series before the cycle fully resolves. The
+  cycle's behavior directly drives cavitation's four negative side effects:
+  excessive noise, excessive vibration, material damage, and deterioration
+  of flow effectiveness.
+concept-tags: [cavitation, bubble cycle, nucleation, growth, collapse, rebound, noncondensible gas, cavitation side effects]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" \"Bubble Cycle\" running text, printed p. 6-3 (PDF p. 63)"
+relatedTopics: [ogas-topic-cavitation-flashing-mechanism, cvh-topic-cavitation, ogas-topic-cavitation-damage-mechanism]
+used-by: []
+notes: >
+  No figure anywhere in the chapter names or diagrams this four-stage cycle
+  by name — entirely invisible to the original figures-only pass.
+```
+
+```yaml
+id: ogas-topic-liquid-choked-flow
+kind: topic
+teaches: >
+  Liquid flow through a restriction normally follows Q = Cv·√((P1-P2)/G)
+  (equation 6-2) — flow rate proportional to the square root of pressure
+  drop. This relationship breaks down once enough vapor forms from
+  cavitation: less flow increase is realized per unit of added pressure
+  differential, until flow becomes constant regardless of further pressure-
+  drop increases (choked flow). The exact mechanism isn't fully confirmed,
+  but a parallel exists to gas critical flow: gas chokes when flow velocity
+  equals the acoustic (sonic) wave speed. Pure liquids have a very high
+  acoustic wave speed (so they don't choke this way), but a partially-
+  vaporized two-phase liquid mixture has a much lower acoustic wave speed —
+  actually lower than a pure gas's — making it possible for the mixture
+  velocity to reach that lowered sonic velocity and choke the flow.
+concept-tags: [choked flow, ΔP allowable, Cv, liquid sizing, cavitation, sonic velocity, two-phase flow, acoustic wave speed]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" running text, printed p. 6-3 (PDF p. 63), surrounding Figure 6-4 and equation 6-2"
+relatedFigures: [ogas-cmp-choked-flow-deltaP-allowable]
+relatedTopics: [ogas-topic-cavitation-flashing-mechanism]
+used-by: []
+notes: >
+  Figure 6-4's own catalogued entry explicitly deferred the equation/
+  mechanism explanation as "not separately catalogued" since a Component
+  Index catalogues figures, not equations — this topic entry is exactly
+  that deferred content, now captured for real.
+```
+
 ### Chapter 6 — Cavitation damage mechanics (printed pp. 6-4 – 6-5)
 
 ```yaml
@@ -237,6 +333,66 @@ notes: >
   not a reason to split this record now.
 ```
 
+```yaml
+id: ogas-topic-cavitation-damage-mechanism
+kind: topic
+teaches: >
+  Cavitation damage results from two interacting attack modes on the
+  material surface. Mechanical attack occurs two ways: (1) high-velocity
+  microjets from asymmetric bubble collapse (the dominant, most-supported
+  mechanism, per Figure 6-7) and (2) shock-wave impingement from
+  collapse — analytically estimated as not damaging on initial collapse,
+  but increasingly damaging on later rebound collapses. Chemical attack is
+  secondary but reinforcing: mechanical attack strips protective surface
+  films/oxides, exposing base material to chemical attack it otherwise
+  resists. Four variables influence total damage, several with genuinely
+  OPPOSING effects, not a simple monotonic relationship: air content (more
+  entrained air = more cavitation nuclei = more cavities, but past a point
+  disrupts the mechanical-attack component and reduces total damage);
+  backpressure P2 (lower P2 increases the number of cavities formed — worse —
+  but also lowers the collapse pressure differential P2-Pv — less intense);
+  and pressure changes shift WHERE damage occurs (upstream vs. downstream)
+  as well as how much. Overall damage is a function of cavitation
+  intensity/degree, material of construction, and time of exposure — real
+  influences, not yet fully quantifiable per the source's own admission.
+concept-tags: [cavitation damage, mechanical attack, chemical attack, microjet, shock wave, air content, backpressure, material damage factors]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" running text, printed pp. 6-4–6-5 (PDF pp. 64-65), surrounding Figures 6-6 and 6-7"
+relatedFigures: [ogas-cmp-cavitation-vs-flashing-damage-photos, ogas-cmp-microjet-collapse-mechanism]
+relatedTopics: [ogas-topic-bubble-cycle, ogas-topic-cavitation-flashing-noise-levels]
+used-by: []
+notes: >
+  The two figures in this section catalogue WHAT damage looks like and the
+  microjet mechanism specifically — this topic entry adds the chemical-
+  attack synergy and the four influencing variables (with their opposing
+  trends), none of which appear in either figure's own caption.
+```
+
+```yaml
+id: ogas-topic-cavitation-flashing-noise-levels
+kind: topic
+teaches: >
+  Cavitation noise, while sometimes quite high, is treated as secondary to
+  material-damage risk — if cavitation is prevented, the resulting noise
+  from liquid flow will be less than 90 dBA. Flashing noise is treated
+  separately and more simply: a flashing valve's noise level will be less
+  than 85 dBA regardless of the pressure drop involved in creating the
+  flashing (flashing noise doesn't scale with ΔP the way cavitation
+  intensity does).
+concept-tags: [cavitation noise, flashing noise, dBA, noise prediction, material damage priority]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" \"Noise\" running text, printed p. 6-5 (PDF p. 65)"
+relatedTopics: [ogas-topic-cavitation-damage-mechanism]
+used-by: []
+notes: >
+  A short but entirely un-figured subsection ("Noise") — no figure anywhere
+  in the chapter carries these two real, specific dBA thresholds.
+```
+
 ### Chapter 6 — Hardware choices for flashing and cavitation control (printed pp. 6-6 – 6-10)
 
 ```yaml
@@ -298,6 +454,75 @@ notes: >
   Companion to `ogas-cmp-eas-valve-outlet-liner` (Figure 6-8) — see that
   record's notes. This is a rendered 3D cutaway (no printed part callouts),
   unlike Figure 6-8's labelled line drawing.
+```
+
+```yaml
+id: ogas-topic-flashing-hardware-selection-rationale
+kind: topic
+teaches: >
+  Flashing damage occurs when high-velocity vapor bubbles impinge on a
+  valve's internal surfaces — valve design has no bearing on WHETHER
+  flashing occurs (that's system-governed, see ogas-topic-cavitation-
+  flashing-mechanism) but strongly affects HOW MUCH damage results. Angle
+  valves with a downstream liner (Figure 6-8) work by directing flow into
+  the center of the downstream pipe rather than into the valve body itself —
+  if damage occurs, it's the liner (a comparatively cheap replaceable part)
+  taking it, not the body. Rotary plug valves (Figure 6-9) work by a
+  different mechanism: installed with the plug facing downstream, flashing
+  is pushed to occur downstream of the valve entirely, sometimes using a
+  sacrificial spool piece to absorb it; suited to medium-to-low-pressure
+  flashing applications specifically.
+concept-tags: [flashing, angle valve, rotary plug valve, hardware selection rationale, sacrificial liner, downstream flashing]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" \"Valve Design\" running text, printed p. 6-6 (PDF p. 66), surrounding Figures 6-8 and 6-9"
+relatedFigures: [ogas-cmp-eas-valve-outlet-liner, ogas-cmp-rotary-plug-flashing-resistance]
+relatedTopics: [ogas-topic-cavitation-flashing-mechanism, ogas-topic-cavitation-flashing-materials-selection]
+used-by: []
+notes: >
+  The two hardware figures' own captions name WHAT each design is; this
+  topic entry captures WHY each works (the mechanism the source's running
+  text gives), which neither caption states.
+```
+
+```yaml
+id: ogas-topic-cavitation-flashing-materials-selection
+kind: topic
+teaches: >
+  Material performance in flashing/cavitating service depends on toughness,
+  hardness, and corrosion resistance in the specific application
+  environment. Hardness ranks materials reliably WITHIN one family (e.g.
+  comparing 400-series stainless steels to each other) but does NOT
+  correlate across different material families — cobalt-chromium-tungsten
+  Alloy 6 substantially outperforms hardened 410 or 17-4 stainless steel
+  against cavitation/flashing despite all three having roughly the same
+  hardness, because Alloy 6 has a built-in "energy-absorbing" mechanism
+  shared by cobalt-base alloys generally (though Alloy 6 has a real
+  weakness: accelerated erosion-corrosion attack in amine-treated feedwater
+  service). Common materials for this service: Alloy 6 (solid/overlay),
+  nickel-chromium-boron alloys, hardened 440C/17-4/410/416 stainless. For
+  standard (relatively soft) valve-body materials, resistance correlates
+  with chromium and molybdenum content — chromium-molybdenum alloy steels
+  beat carbon steels, stainless steels beat chromium-molybdenum steels.
+  ASME SA217 grade WC9 has displaced the historically-common grade C5
+  (better casting/welding/manufacturing characteristics) despite lower
+  chromium content (2-1/4% vs. 5%), because its higher molybdenum content
+  (1% vs. 1/2%) compensates.
+concept-tags: [materials selection, Alloy 6, stainless steel, chromium molybdenum, ASME SA217, cavitation resistance, flashing resistance, hardness]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" \"Materials of Construction\" running text, printed pp. 6-6–6-7 (PDF pp. 66-67)"
+relatedTopics: [ogas-topic-flashing-hardware-selection-rationale]
+used-by: []
+notes: >
+  Entirely un-figured subsection — no figure anywhere in this chapter
+  carries any of this real, specific material-comparison content
+  (Alloy 6 vs. stainless, chromium-molybdenum correlation, SA217 grade
+  C5 vs. WC9). Cross-references "Alloy 6 Corrosion" in Chapter 10 — a
+  real forward pointer to another chapter, noted but not resolved here
+  (Chapter 10 is a separate indexing pass).
 ```
 
 ```yaml
@@ -404,6 +629,112 @@ notes: >
   teaching Cavitrol trim end-to-end would likely use all three together.
 ```
 
+```yaml
+id: ogas-topic-cavitation-control-trim-theories
+kind: topic
+teaches: >
+  Seven named design theories underlie Fisher's cavitation-control trim
+  designs: tortuous path, pressure drop staging, expanding flow area,
+  drilled hole design, characterized cage, separation of seating and
+  throttling locations, and cavitation control in lieu of prevention.
+  Pressure drop staging routes flow through multiple restrictions in
+  series, each dissipating energy and presenting a lower inlet pressure to
+  the next stage — for the same total pressure differential, staged trim
+  keeps the vena contracta pressure higher than conventional (single-
+  restriction) trim, and even if the design differential IS exceeded and
+  cavitation occurs anyway, its intensity is reduced because the recovered
+  (collapse-driving) pressure is lower. Expanding flow area is a closely
+  related refinement: each successive restriction has a LARGER flow area
+  than the last, so the final (most cavitation-prone) restriction carries
+  only a small fraction of the total pressure drop — this needs fewer
+  stages than equal-area staging for the same protection. Characterized
+  cages (e.g. Cavitrol III) change their internal design as travel
+  increases — starting pressure-staging, transitioning to straight-through
+  hole design — because "capacity is inversely related to a design's
+  ability to prevent cavitation"; only applicable where pressure drop
+  genuinely decreases as flow/travel increases. Fisher's Dirty Service Trim
+  (DST) addresses a real tradeoff cavitation-control trims otherwise have
+  (fine flow passages plugging with particulate): DST passes particles up
+  to 3/4 inch while still controlling cavitation to 4000 psig drops.
+concept-tags: [Cavitrol trim, pressure drop staging, expanding flow area, characterized cage, drilled hole design, Dirty Service Trim, DST, cavitation control theory]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" \"Hardware Choices for Cavitating Applications\" through \"Characterized Cages,\" running text, printed pp. 6-7–6-9 (PDF pp. 67-69), surrounding Figures 6-10 and 6-11"
+relatedFigures: [ogas-cmp-cavitrol-pressure-staging-graph, ogas-cmp-drilled-hole-cage-designs]
+relatedTopics: [ogas-topic-cavitation-flashing-mechanism, ogas-topic-seating-throttling-separation-rationale]
+used-by: []
+notes: >
+  Figures 6-10/6-11 catalogue the staging graph and hole-design comparison
+  specifically; this topic entry adds the 7-theory organizing taxonomy,
+  the "why staging still helps even past its design point" reasoning, the
+  characterized-cage applicability restriction, and DST — none of which
+  have a figure at all in this chapter.
+```
+
+```yaml
+id: ogas-topic-seating-throttling-separation-rationale
+kind: topic
+teaches: >
+  Most cavitating applications need BOTH cavitation control and tight
+  shutoff — achieved by physically separating the throttling location
+  (where pressure drop happens) from the seating location (where shutoff
+  happens), with seating upstream of throttling so the seat experiences
+  low velocity (velocity is inversely related to pressure, and the seat
+  sees relatively little pressure drop). A real hardware innovation
+  extending this: a softer seating material than the plug material allows
+  slight seat deformation for much better plug/seat contact — enabling
+  Class VI shutoff on trims that also control cavitation.
+concept-tags: [separate seating and throttling, Class VI shutoff, soft seating material, cavitation control, tight shutoff]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" \"Separate Seating and Throttling Locations,\" printed p. 6-9 (PDF p. 69)"
+relatedFigures: [ogas-cmp-cavitrol-iv-trim-cutaway]
+relatedTopics: [ogas-topic-cavitation-control-trim-theories]
+used-by: []
+notes: >
+  Figure 6-12's own caption states WHAT the design does (four-stage
+  pressure drop, all significant drop downstream of shutoff seating); this
+  topic adds WHY (velocity-pressure relationship at the seat) and the
+  soft-seating-material Class VI innovation, neither in the figure caption.
+```
+
+```yaml
+id: ogas-topic-backpressure-device-alternative
+kind: topic
+teaches: >
+  An alternative to specialized cavitation-control trim hardware: a
+  standard trim valve paired with a downstream backpressure device, which
+  raises the valve's downstream pressure (and therefore the vena contracta
+  pressure) enough to stay above vapor pressure, preventing cavitation
+  without special trim. Real, specific tradeoffs against this approach: a
+  larger valve may be needed since the pressure drop across it is lowered;
+  cavitation may simply relocate to the backpressure device itself; the
+  device can only be correctly sized for ONE operating condition — other
+  conditions may still allow cavitation; device wear over time reduces the
+  backpressure and can reintroduce cavitation; and during valve opening
+  against high upstream pressure, before flow reaches and stabilizes at the
+  backpressure device, the valve briefly experiences the FULL system
+  pressure drop — a real, often-overlooked damage-potential window. System
+  design overall (correct sizing/layout) is framed as the most economical
+  prevention method, though even good system design usually still needs
+  some cavitation-type valve.
+concept-tags: [backpressure device, system design, cavitation prevention, vena contracta pressure, cavitation control alternatives]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 6 \"Control Valve Cavitation and Flashing,\" \"Cavitation Control Hardware Alternatives\" and \"System Design,\" printed pp. 6-9–6-11 (PDF pp. 69-71)"
+relatedTopics: [ogas-topic-cavitation-control-trim-theories, ogas-topic-cavitation-flashing-mechanism]
+used-by: []
+notes: >
+  An entire real subsection with no figure at all — invisible to the
+  original figures-only pass. The chapter's closing "Cavitation Control
+  Summary" (p. 6-11) was read directly and confirmed to be a pure recap of
+  concepts already captured across this file's topic entries — not
+  authored as its own separate topic to avoid a content duplicate.
+```
+
 ---
 
 ## Open items
@@ -412,12 +743,30 @@ notes: >
   pages 62–63) directly: the figure sequence in the source runs
   ...6-4, 6-6, 6-7... with no 6-5 anywhere in the chapter. Not a cataloguing
   gap; nothing was skipped.
-- **Figures 6-8 through 6-12 catalogued in the second batch** (this pass) —
-  all five confirmed against the real page text and image before extraction;
-  none were skipped or fabricated. Chapter 6 continues past printed p. 6-10
-  into system-design alternatives and the cavitation-control summary — no
-  further named figures were assigned to this pass; not catalogued here.
-- All eleven records in this file are `used-by: []` — this is a proactive,
+- **Figures 6-8 through 6-12 catalogued in the second batch** — all five
+  confirmed against the real page text and image before extraction; none
+  were skipped or fabricated.
+- **Full-chapter `kind: topic` pass completed 2026-09-17** (third batch,
+  same rigor as the Control Valve Handbook's own full-chapter topic-index
+  pass) — the whole chapter, printed pp. 6-1 through 6-11 (PDF pp. 61-71,
+  confirmed by reading directly through to the real Chapter 7 boundary),
+  was read start to finish via `pdftotext`, not just the sections already
+  holding a figure. 10 new `ogas-topic-*` entries added: the cavitation/
+  flashing mechanism and Bernoulli relationship, the bubble cycle, liquid
+  choked flow, the cavitation damage mechanism (mechanical + chemical
+  attack, four influencing variables), cavitation/flashing noise levels,
+  flashing-hardware selection rationale, materials selection (an entirely
+  un-figured subsection — Alloy 6 vs. stainless, chromium-molybdenum
+  content, ASME SA217 grade choices), the cavitation-control trim design
+  theories (7 named approaches, characterized cages, Dirty Service Trim),
+  the seating/throttling-separation rationale, and the backpressure-device
+  alternative (also entirely un-figured — pp. 6-9–6-11, previously flagged
+  in this file's own second-batch note as "not catalogued here"). The
+  chapter's closing "Cavitation Control Summary" (p. 6-11) was read and
+  confirmed to be a pure recap of already-captured content, not a new
+  concept — deliberately not given its own topic entry to avoid a content
+  duplicate. Chapter total is now 21 components (11 figures + 10 topics).
+- All 21 records in this file are `used-by: []` — this is a proactive,
   use-driven-ahead catalog per `Source Library.md`; no course currently
   references them.
 - No asset-variant-registry or `Curriculum —` writes were made from this pass —

@@ -7,8 +7,8 @@ tags:
   - component-index
 source: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
 chapter: ch10 — Oil and Gas Transportation
-updated: 2026-09-08
-status: closed — both batches complete (Figures 10-1 through 10-9)
+updated: 2026-09-17
+status: closed — figures complete (10-1 through 10-9); topic pass complete (5 kind:topic entries)
 ---
 
 # Teaching-Component Index — Fisher Control Valve Sourcebook, Oil & Gas, Chapter 10
@@ -117,6 +117,71 @@ notes: >
   diagram's blocks.
 ```
 
+### Chapter 10 — Compressor Station (printed p. 10-2)
+
+```yaml
+id: ogas-topic-compressor-station-fundamentals
+kind: topic
+teaches: >
+  A compressor station is "the engine that powers a gas pipeline" —
+  compressing (raising the pressure of) natural gas to move it through the
+  pipeline. Stations are installed roughly every 40 to 100 miles; station
+  size and compressor count depend on pipe diameter and gas volume, but the
+  basic components are similar station to station. Three compressor styles
+  exist, each drivable by electric motor, gas engine, or turbine: (1)
+  centrifugal — low compression ratio but moves large volumes, used on
+  large-capacity mainline compression; (2) reciprocating — limited
+  compression ratio (typically 2:1 or 3:1 per stage, up to four stages on
+  one engine), used on production lines from wellhead to processing plant;
+  (3) screw — historically smaller, now up to 18 MMSCFD capacity, capable
+  of extremely high compression ratios (as high as 100:1). Gas entering the
+  station first passes through a filter/scrubber/strainer unit that removes
+  free liquids and dirt before the compressors.
+concept-tags: [compressor station, centrifugal compressor, reciprocating compressor, screw compressor, compression ratio, gas filtration]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 10 \"Oil and Gas Transportation,\" Compressor Station / Gas Filters / Compressors and Drivers sections, printed p. 10-2 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-gas-transportation-process-flow, ogas-cmp-compressor-system]
+relatedTopics: [ogas-topic-anti-surge-dynamic-response]
+used-by: []
+notes: >
+  This is the real conceptual content behind Figure 10-1's "COMPRESSOR
+  STATION" block — the figure shows where a station sits in the network,
+  this text explains what's inside one and why three compressor styles
+  exist. Distinct from `ogas-cmp-compressor-system` (Figure 10-4), which
+  zooms into ONE station's four numbered control-valve stations, not the
+  compressor equipment itself.
+```
+
+### Chapter 10 — Metering Stations (printed p. 10-2)
+
+```yaml
+id: ogas-topic-metering-station-purpose
+kind: topic
+teaches: >
+  A pipeline company must know how much gas is in its system at all
+  times, a genuinely difficult task since pipeline systems often extend
+  over thousands of miles. Metering stations solve this by measuring all
+  natural gas entering or exiting the pipeline system. A metering station
+  located anywhere gas is removed for local distribution is specifically
+  called an "interconnect" — the term names the metering station's
+  function at that kind of location, not a different piece of equipment.
+concept-tags: [metering station, interconnect, gas measurement, pipeline management]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 10 \"Oil and Gas Transportation,\" Metering Stations section, printed p. 10-2 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-gas-transportation-process-flow, ogas-cmp-metering-station-control-valve-diagram]
+relatedTopics: []
+used-by: []
+notes: >
+  Figure 10-1's own teaches field names the "Metering Station" block but
+  doesn't explain why one exists or what "interconnect" means — this fills
+  that gap. Figure 10-3 (`ogas-cmp-metering-station-control-valve-diagram`)
+  is the hardware zoom-in on this same concept's worker/monitor valve pair.
+```
+
 ### Chapter 10 — Oil Transportation Process (printed p. 10-2)
 
 ```yaml
@@ -148,6 +213,41 @@ notes: >
   further down the chapter — the pump-station figure is separated from this
   process-flow opener by the gas-side application review content that comes
   between them in the source's page order.
+```
+
+### Chapter 10 — Pump Station Fundamentals (printed p. 10-2)
+
+```yaml
+id: ogas-topic-pump-station-fundamentals
+kind: topic
+teaches: >
+  A pump station is "the engine that powers an oil pipeline" — increasing
+  oil pressure to move it through the pipeline. Stations are installed
+  roughly every 25 to 50 miles; station size and pump count depend on pipe
+  diameter and oil volume. Two pump types are commonly used, centrifugal
+  (most common) and reciprocating, most often electricity-driven and
+  sometimes fitted with a variable speed drive (VSD) to throttle outlet
+  pressure. When a VSD is present, a control valve is NOT needed to control
+  outlet pressure during normal operation — one is typically specified only
+  to control outlet pressure when the required pressure falls outside the
+  VSD's own control range. At the end of each pipeline, an oil terminal is
+  a breakout station where personnel perform final metering and route
+  product to storage, another pipeline, or direct truck/vessel loading.
+concept-tags: [pump station, centrifugal pump, reciprocating pump, variable speed drive, VSD, oil terminal]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 10 \"Oil and Gas Transportation,\" Pump Station / Oil Terminal sections, printed p. 10-2 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-oil-transportation-process-flow, ogas-cmp-pump-station-control-valve-diagram]
+relatedTopics: [ogas-topic-compressor-station-fundamentals]
+used-by: []
+notes: >
+  The oil-side counterpart to `ogas-topic-compressor-station-fundamentals`
+  — same "engine that powers the pipeline" framing, parallel structure.
+  The VSD-means-no-control-valve point is a real, control-valve-relevant
+  fact this chapter's figures never state — Figure 10-6 only shows the
+  Pump Discharge Valve that DOES exist when the VSD's range is exceeded,
+  it doesn't explain why a valve is sometimes absent from the loop at all.
 ```
 
 ### Chapter 10 — Gas Transportation Application Review: Metering Station (printed p. 10-3)
@@ -225,6 +325,44 @@ notes: >
   `ogas-cmp-et-class300-whisperflo-spoked-plug` (Figure 10-5, representative
   hardware for item 3, the anti-surge valve — see its own record for the
   Table 10-5 cross-check).
+```
+
+### Chapter 10 — Compressor Anti-surge Dynamic Response (printed pp. 10-3 – 10-4)
+
+```yaml
+id: ogas-topic-anti-surge-dynamic-response
+kind: topic
+teaches: >
+  An anti-surge (recycle) valve's job is preventing compressor shutdown
+  under low suction pressure or high discharge pressure, by opening to
+  route flow from discharge back to suction until pressures normalize —
+  but the source's real requirement goes beyond that static role: the
+  valve "must be able to respond quickly and accurately to changes in set
+  point with minimal travel overshoot" and provide throttling capability
+  across various travel ranges. A trip system associated with the valve is
+  configured to open it to full travel in less than one second in most
+  trip cases. This dynamic-response and trip-integration requirement is
+  driven by the compressor system's own performance criteria, not by the
+  valve in isolation — a control-valve selection consideration Figure
+  10-4's schematic alone doesn't convey.
+concept-tags: [anti-surge valve, recycle valve, trip system, dynamic response, travel overshoot, compressor surge]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 10 \"Oil and Gas Transportation,\" Compressor Anti-surge subsection (item 3), printed pp. 10-3 – 10-4 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-compressor-system, ogas-cmp-et-class300-whisperflo-spoked-plug]
+relatedTopics: [ogas-topic-compressor-station-fundamentals]
+used-by: []
+notes: >
+  `ogas-cmp-compressor-system`'s own teaches field already covers WHAT the
+  anti-surge valve does (routes flow to prevent surge); this topic captures
+  the additional real performance/dynamics requirement the source states
+  separately, which the figure itself doesn't show. The source also
+  references "Chapter 13" for additional compressor-surge-control
+  information — not cross-linked here since that chapter (LNG Liquefaction
+  in this sourcebook's real numbering) has not yet been checked for a
+  matching concept; flagged for whoever indexes that chapter next, not
+  assumed.
 ```
 
 ### Chapter 10 — Gas Transportation Application Review: representative hardware (printed p. 10-4)
@@ -345,6 +483,41 @@ notes: >
   diagram's valves.
 ```
 
+### Chapter 10 — Startup/Pressure-Cut Cavitation Pattern (printed pp. 10-4 – 10-5)
+
+```yaml
+id: ogas-topic-transportation-startup-cavitation
+kind: topic
+teaches: >
+  A recurring pattern across this chapter's oil-side valves: a large,
+  transient pressure drop — the pump discharge valve holding back pressure
+  during pipeline startup, or the oil terminal's Delivery valve taking the
+  pipeline's initial pressure cut — often causes cavitation. The source is
+  explicit that this cavitation is typically NOT damaging to the valve
+  itself (an erosion standpoint), but the resulting noise and vibration can
+  damage other pipeline components — the concern is acoustic/mechanical,
+  not erosive. Hydrodynamic noise-attenuating trim such as a hydrodome is
+  the stated mitigation in both cases.
+concept-tags: [startup cavitation, pressure cut, hydrodome, noise and vibration, non-erosive cavitation]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 10 \"Oil and Gas Transportation,\" Pump Discharge Valve and Delivery Valve subsections, printed pp. 10-4 – 10-5 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-pump-station-control-valve-diagram, ogas-cmp-v260b-hydrodome-attenuator, ogas-cmp-oil-terminal-receiving-unit-diagram]
+relatedTopics: []
+used-by: []
+notes: >
+  Real gap caught while reading this pass: `ogas-cmp-pump-station-control-valve-diagram`'s
+  own teaches field already states the cavitation/hydrodome point for the
+  Pump Discharge Valve, but `ogas-cmp-oil-terminal-receiving-unit-diagram`'s
+  teaches field does NOT — the source states the same cavitation/hydrodome
+  requirement for the Delivery valve (Table 10-8: Trim Type "Hydrodome") but
+  that figure entry never mentions it. This topic entry captures the
+  cross-cutting pattern and closes that gap without editing the existing
+  figure entry itself, per this pass's scope (author new topic entries,
+  not rewrite existing figure entries).
+```
+
 ### Chapter 10 — Oil Transportation Application Review: representative hardware, Pump Discharge Valve (printed p. 10-5)
 
 ```yaml
@@ -448,3 +621,38 @@ notes: >
   references them.
 - No asset-variant-registry or `Curriculum —` writes were made from this pass —
   out of scope for a standing Component-Index-only cataloging batch.
+- **Topic pass (2026-09-17):** applied the `kind: topic` convention (proven
+  on the Control Valve Handbook) to this chapter for the first time in the
+  Oil & Gas Sourcebook. Read the full real chapter text (PDF pp. 127-132)
+  directly, not just the existing figure captions. **5 new topic entries**
+  added: `ogas-topic-compressor-station-fundamentals`,
+  `ogas-topic-metering-station-purpose`,
+  `ogas-topic-pump-station-fundamentals`,
+  `ogas-topic-anti-surge-dynamic-response`,
+  `ogas-topic-transportation-startup-cavitation`. All ten per-valve
+  application-table sections (Tables 10-1 through 10-10) were read but not
+  separately topic-indexed — they're real reference data (typical
+  pressure/temperature/material/trim values per valve), the same "figures
+  only, not tables" boundary the Handbook pass already established,
+  correctly extended here rather than re-litigated. Chapter 10's real
+  component count is therefore 14 (9 figures + 5 topics), not 9.
+- **One real gap closed, not silently absorbed:** `ogas-cmp-oil-terminal-receiving-unit-diagram`'s
+  own `teaches` field never mentions that its Delivery valve (item 1) needs
+  hydrodome trim for startup cavitation, even though the source states this
+  explicitly (Table 10-8) and the sibling Pump Discharge Valve entry
+  already captures the same point for its own valve. Not fixed by editing
+  that entry (out of scope for a topic-only pass) — captured instead in
+  `ogas-topic-transportation-startup-cavitation`, which cites both figures
+  and names the gap directly in its own notes.
+- **Uncited cross-chapter reference, not resolved:** the source's Anti-surge
+  subsection references "Chapter 13" for more compressor-surge-control
+  information. Not linked from `ogas-topic-anti-surge-dynamic-response`
+  since Chapter 13 (LNG Liquefaction, this sourcebook's real chapter 13)
+  has not been checked for a matching concept as of this pass — flagged for
+  whoever indexes that chapter's topics next, not assumed or guessed at.
+- **Integrity check run, not assumed:** 14 total ids in this file, all
+  unique; all `relatedFigures`/`relatedTopics` references (including the
+  intentional self-references among the five new topic entries) verified
+  to resolve to real existing ids in this file. No `Source Library.md` edit
+  made this pass — the coordinating parent consolidates counts across all
+  13 chapters of this sourcebook once the whole batch lands.

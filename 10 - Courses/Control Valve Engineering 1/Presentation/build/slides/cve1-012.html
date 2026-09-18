@@ -3,31 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 012 &mdash; The Vena Contracta</title>
+<title>CVE1 &middot; Slide 012 &mdash; Case C: Near-Zero Leakage</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m2, page 12 — eng.noise-cavitation.damage-diagnosis
-       [understand · mechanism]. Source figure: Control Valve Handbook 6th
-       ed., Figure 5.6 "Vena Contracta Illustration," p.128 — cropped from
-       a real 200dpi render of the source page, not redrawn. -->
+  <!-- cve1-ch1-m3, page 12 — eng.sizing.valve-selection-process [apply ·
+       mechanism, applies]. The Attempt step for tier 3, real numbers,
+       sliding-stem hardware throughout matching the real damage photos. -->
   <article class="slide slide--role-mechanism" data-slide="12" data-deck="cve1">
-    <h1 class="slide-title">The Vena Contracta</h1>
+    <h1 class="slide-title">Case C: Near-Zero Leakage</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig5-6-vena-contracta.png" style="width:100%;height:100%;object-fit:contain" alt="Vena contracta illustration: flow narrows through a restriction to a minimum cross-sectional area just downstream (vena contracta), labelled with P1 upstream and P2 downstream, before recovering.">
+          <img src="../assets/sourced/cvh5-fig-flowchart-steps1-2.png" style="width:100%;height:100%;object-fit:contain" alt="Valve selection flowchart, steps 1-2: determine service conditions, calculate preliminary Cv">
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>Flow narrows through a restriction to its minimum area just downstream &mdash; the vena contracta</li>
-        <li><span class="num">2</span>Pressure inside the valve drops lowest right at this point</li>
-        <li><span class="num">3</span>Flow then recovers toward the downstream pressure, P2</li>
+        <li><span class="num">1</span>Tight-shutoff isolation service: P1 = 400 psig, P2 = 80 psig, &Delta;P = 320 psi, Q = 100 gpm water, Class V shutoff (near-zero leakage, the tightest class Figure 5.3 covers)</li>
+        <li><span class="num">2</span>Preliminary Cv = 100 &times; &radic;(1.0/320) = 100 &times; 0.0559 &asymp; 5.6</li>
+        <li><span class="num">3</span>Unlike Cases A/B, &Delta;P is 80% of P1 &mdash; steps 3-5 require a cavitation check before picking a trim. A streamlined, minimum-restriction sliding-stem trim is selected anyway &mdash; high Cv per dollar, tight gallery space &mdash; without running that check</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., Fig. 5.6, p.128 &mdash; used directly. Component Index: cvh-cmp-vena-contracta-diagram.</p>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100, Steps 1-2 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">12</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

@@ -230,6 +230,45 @@ mediaStatus: unreviewed
 ```
 
 ```yaml
+id: pss-topic-high-temperature-alloy-selection
+kind: topic
+teaches: >
+  Materials of Construction content for flashing/cavitating service in this
+  chapter is near-identical Fisher boilerplate to the Oil & Gas Sourcebook's
+  own Chapter 6 (Alloy 6 vs. stainless-steel hardness comparison,
+  chromium-molybdenum correlation, ASME SA217 grade C5 → WC9 transition — see
+  `ogas-topic-cavitation-flashing-materials-selection`, already indexed,
+  word-for-word identical on those points) — NOT re-indexed here to avoid a
+  duplicate record. This entry captures the one genuinely distinct addition
+  specific to this Power & Severe Service book: ASTM A217 grade C12A, a
+  chromium-molybdenum alloy increasingly common in the power industry
+  specifically for service exceeding 1000°F (538°C), whose higher chromium
+  and molybdenum content (9% Cr, 1% Mo) indicates excellent cavitation
+  resistance for that high-temperature power-plant application — content
+  the Oil & Gas Sourcebook's own materials section does not include, plausibly
+  because power-industry high-temperature service isn't that book's subject
+  matter.
+concept-tags: [ASTM A217, grade C12A, high temperature service, chromium molybdenum alloy, power industry, cavitation resistance]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "\"Materials of Construction\" running text, printed p. 6-7 — no figure, prose only"
+relatedTopics: [ogas-topic-cavitation-flashing-materials-selection]
+used-by: []
+notes: >
+  Verified this is a genuine addition, not assumed: read both this chapter's
+  full running text and Oil & Gas Sourcebook ch6's own materials-selection
+  topic entry directly before concluding the rest of the section is
+  duplicate boilerplate — every other sentence in this chapter's Materials
+  of Construction section (Alloy 6 properties, hardness-doesn't-correlate-
+  across-families point, SA217 C5/WC9 chromium-vs-molybdenum tradeoff) is
+  word-for-word identical to the Oil & Gas entry, including the same real
+  percentages (2-1/4% vs. 5% chromium, 1% vs. 1/2% molybdenum). Only the
+  C12A paragraph is new. `pss-cmp-*` figure ids in this chapter use distinct
+  drawing numbers from Oil & Gas's own ch6 figures (confirmed no collision).
+```
+
+```yaml
 id: pss-cmp-valve-location-flashing-system-design
 teaches: >
   System-design placement of a control valve to control where flashing
@@ -356,3 +395,28 @@ mediaStatus: unreviewed
   W2843, W2842, E0111, W0970, W8359, E0864, A2149-1, E0113-1/IL, W3668-1).
 - **Archive/legacy material**: none consulted, none needed — this is a
   first-party current Fisher/Emerson document throughout.
+- **`kind: topic` conceptual-indexing pass (2026-09-17), real comparison
+  finding, not padded content.** Read the chapter's full real body prose
+  directly (PDF pp.57-67) against Oil & Gas Sourcebook's already-indexed
+  `ogas-topic-*` entries for its own Chapter 6 (same title, same subject).
+  Confirmed this chapter's running prose is word-for-word identical Fisher
+  boilerplate to Oil & Gas ch6 across every section — the vena-contracta/
+  Bernoulli mechanism, the four-stage bubble cycle, the choked-flow equation
+  and liquid/gas-choking parallel, the mechanical+chemical damage-attack
+  model with the same air-content/pressure/backpressure trends, the same
+  90 dBA/85 dBA cavitation/flashing noise thresholds, the same EAS-valve/
+  V500-rotary-plug flashing hardware choices, the same six cavitation-trim
+  design theories (tortuous path through cavitation-control-in-lieu-of-
+  prevention) including the same Cavitrol III characterized-cage caveat, the
+  same seating/throttling separation rationale, and the same backpressure-
+  device/air-injection alternatives section — confirmed by direct
+  side-by-side reading, not assumed from section-header similarity alone.
+  **Deliberately did NOT re-author 9 near-duplicate topic entries** for this
+  reason — doing so would restate already-indexed content with zero new
+  value, the same discipline Oil & Gas's own ch5 pass applied against the
+  Control Valve Handbook's noise topics. **One genuine, book-specific
+  addition found and indexed** (`pss-topic-high-temperature-alloy-selection`
+  — ASTM A217 grade C12A for >1000°F power-industry service, absent from Oil
+  & Gas's version). This chapter's real component count is therefore 13 (12
+  figures + 1 topic), not a larger topic count — a correct, verified
+  outcome for a near-duplicate chapter, not a shortfall.

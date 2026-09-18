@@ -199,6 +199,48 @@ notes: >
   paragraphs).
 ```
 
+```yaml
+id: ref-topic-furnace-temperature-control-philosophy
+kind: topic
+teaches: >
+  The real control-philosophy reasoning behind a furnace's feed and fuel
+  valves, beyond what either PFD figure's valve list states: coking is a
+  non-linear reaction, so an oscillating or inconsistent feed valve (not
+  just a fully failed one) causes excessive coke buildup on radiant tubes,
+  shortening the cycle between decoking procedures and forcing the
+  downstream unit to shut down — a real, gradual failure mode distinct
+  from the fail-open/fail-closed protection the PFD figure already covers.
+  The preferred outlet-temperature control configuration is cascade to the
+  fuel valve's setpoint, not direct manipulation of the fuel valve by the
+  temperature loop — a direct connection is "extremely susceptible to any
+  valve deadband such as that caused by a sticking valve," visible as
+  outlet-temperature oscillation. A FIELDVUE digital valve controller with
+  PD-tier diagnostics is specifically recommended for the fuel valve
+  because monitoring actual valve position on a fail-closed valve gives
+  the DCS real position feedback confirming the valve actually closed on a
+  loop or power failure — operations personnel are otherwise reluctant to
+  run a fuel valve on bypass for any significant time.
+concept-tags: [furnace, coking, cascade control, valve deadband, FIELDVUE, fail closed, temperature control]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.1 Furnace body prose, pp. 4-31–4-32 (PDF pp. 31-32) — running text between the two figures, not itself captioned"
+relatedFigures: [ref-cmp-furnace-pfd]
+relatedTopics: []
+used-by: []
+notes: >
+  This same furnace coking/fail-open paragraph recurs near-verbatim in
+  §4.4's "Feed Valve to Furnace" text (crude unit charge heater) and is
+  referenced directly in §4.6 (Delayed Coker furnace); indexed once here at
+  its canonical occurrence rather than re-authored per section, consistent
+  with this project's standing anti-duplication discipline. The cascade-
+  control and FIELDVUE-diagnostics reasoning is genuinely new relative to
+  `ref-cmp-furnace-pfd`'s own `teaches` field, which only names the 5
+  valves and their fail-open/fail-closed configuration, not why cascade
+  beats direct connection or why position feedback matters specifically
+  here.
+```
+
 ### 4.2 Distillation Column (printed pp. 4-33 – 4-35)
 
 ```yaml
@@ -248,6 +290,40 @@ notes: >
   numbered "1. Feed Valve" through "7. Reboil Valve" application text.
 ```
 
+```yaml
+id: ref-topic-distillation-column-flooding-and-reflux-mechanics
+kind: topic
+teaches: >
+  The real physics/chemistry underlying a distillation column, beyond the
+  seven valve functions the PFD figure names: separation relies on
+  relative volatility (lighter components boil off at lower temperature
+  and rise as heat is added via the bottom reboiler); reflux — sending
+  some overhead liquid product back to the top of the column — improves
+  overhead purity by reducing heavy-component carryover, at the real cost
+  of requiring more reboiler heat to re-vaporize the returned reflux
+  (a genuine purity-vs-energy tradeoff, not a free improvement). Flooding
+  is the column's real failure mode: if vapor/liquid "traffic" through the
+  column becomes too great — caused by too much reflux flow or too much
+  reboil heat, or both — column efficiency drops sharply with a
+  corresponding drop in product purity.
+concept-tags: [distillation column, flooding, reflux, reboil, relative volatility, product purity, energy balance]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.2 Distillation Column body prose, 'Reflux & Reboil' and 'Flooding' subheadings, pp. 4-33–4-34 (PDF pp. 33-34)"
+relatedFigures: [ref-cmp-distillation-column-pfd]
+relatedTopics: []
+used-by: []
+notes: >
+  None of this mechanism — relative volatility, the reflux/energy
+  tradeoff, or flooding as a named failure mode — appears in
+  `ref-cmp-distillation-column-pfd`'s own `teaches` field, which is scoped
+  to the seven numbered valve functions only. Genuinely foundational for
+  every later section built on this column template (§4.4 crude, §4.5
+  vacuum, and the fractionation sections of §4.10 FCC and §4.11
+  alkylation), cross-referenced from there rather than re-explained.
+```
+
 ### 4.3 Gas Plant (printed pp. 4-36 – 4-39)
 
 Figure 4.3.1 "Gas Plant Location" is the consolidated
@@ -278,6 +354,40 @@ notes: >
   own numbered application-review text (wet gas recycle valves, primary
   absorber feed/bottoms, stripper feed, sponge/lean-oil absorber valves,
   debutanizer/depropanizer overhead, reflux, and bottoms valves).
+```
+
+```yaml
+id: ref-topic-gas-plant-light-ends-economics-and-emissions
+kind: topic
+teaches: >
+  Why a gas plant exists at all and a real service-specific valve-selection
+  driver, neither captured by the PFD figure: most reactive refinery
+  processes (delayed cokers and FCC units especially) generate light-end
+  byproducts (hydrogen, methane, ethane, ethylene, propane/propylene,
+  butanes/butenes) alongside their main products. Light-ends are normally
+  low-value refinery fuel gas, but if a unit produces enough of them there
+  is real economic incentive to separate them into saleable component
+  streams via fractionators and absorbers — the gas plant's whole reason
+  for existing. Separately: almost every valve in a light-ends gas plant
+  is a possible fugitive-emissions source, so packing is typically kept
+  very tight, which in turn can cause excessive control-valve deadband —
+  making packing selection and actuator sizing a real performance driver
+  specific to this service, not incidental.
+concept-tags: [gas plant, light ends, fugitive emissions, valve packing, deadband, actuator sizing]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.3 Gas Plant opening body prose, p. 4-36 (PDF p. 36) — before the numbered valve-application text"
+relatedFigures: [ref-cmp-gas-plant-pfd]
+relatedTopics: []
+used-by: []
+notes: >
+  The fugitive-emissions/tight-packing/deadband chain is a real, named
+  service-specific tradeoff distinct from the generic packing guidance
+  found elsewhere in the library (e.g. CVH's own packing-friction
+  content) — worth its own entry because it is stated here as a direct
+  consequence of this particular service's emissions exposure, not a
+  general packing-selection principle.
 ```
 
 ### 4.4 Crude Desalter/Distillation Unit (printed pp. 4-40 – 4-46)
@@ -385,6 +495,69 @@ notes: >
   to Figure 4.4.5") for the stripper bottoms level applications.
 ```
 
+```yaml
+id: ref-topic-crude-distillation-unit-role-and-product-cuts
+kind: topic
+teaches: >
+  The crude distillation unit's (CDU) role in the whole refinery, beyond
+  what the two crude-unit PFD figures show at valve-function level: it is
+  the first processing unit downstream of the desalter and fractionates
+  crude oil into the refinery's basic boiling-point product streams —
+  naphtha, kerosene, diesel, gas oil, heavy gas oil, and residue — with
+  residue routed onward to the vacuum crude unit (§4.5) for further
+  separation under vacuum. These basic cuts vary by refinery operating
+  objectives and are normally sent to downstream units for further
+  processing before reaching product tanks. Because the CDU is common to
+  every refinery, the source explicitly frames it as carrying "certain
+  control valve trends that are beneficial to understand" — the
+  motivation for the section existing at all.
+concept-tags: [crude distillation unit, CDU, boiling point cuts, naphtha, kerosene, diesel, gas oil, residue, refinery flow]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.4 Crude Desalter/Distillation Unit, 'Crude Distillation Unit' subheading, p. 4-40 (PDF p. 40)"
+relatedFigures: [ref-cmp-crude-distillation-column-pfd, ref-cmp-refinery-unit-location-map]
+relatedTopics: []
+used-by: []
+notes: >
+  Complements Chapter 1's own whole-refinery orientation figure and this
+  chapter's own consolidated `ref-cmp-refinery-unit-location-map` record —
+  those show WHERE the CDU sits; this entry states WHAT it produces and
+  WHY, content that lives in running prose, not on either diagram.
+```
+
+```yaml
+id: ref-topic-pump-around-loop-function
+kind: topic
+teaches: >
+  The pump-around loop's real mechanism and failure consequence, stated
+  once in §4.4 and applying equally to §4.5's vacuum column (whose own PFD
+  figure only lists "two pump-around loops feeding the vacuum tower"
+  without explaining the mechanism): a pump-around is a heat-exchanger
+  loop extracting heat from the column specifically to create the
+  separation between the product draws immediately above and below the
+  loop — most real fractionators have more than one. The valves are
+  usually flow controllers; a poorly performing or bypassed pump-around
+  valve increases variability in the quality specification of the
+  product draws around it, and a real valve failure typically creates a
+  process upset lasting 30 minutes to a few hours depending on severity —
+  a concrete, sourced consequence absent from either column's PFD figure.
+concept-tags: [pump-around loop, heat balance, fractionator, product draw, process upset]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.4 Crude Desalter/Distillation Unit, 'Pump-Around Valve Function' subheading, p. 4-42 (PDF p. 42)"
+relatedFigures: [ref-cmp-crude-distillation-column-pfd, ref-cmp-vacuum-crude-column-pfd]
+relatedTopics: [ref-topic-distillation-column-flooding-and-reflux-mechanics]
+used-by: []
+notes: >
+  Genuinely distinct from the flooding/reflux entry above — that entry
+  covers the column's top-level vapor/liquid balance; this one covers a
+  specific intermediate heat-removal mechanism used to control the
+  separation quality at specific draw points. Cross-referenced rather
+  than merged since each is independently teachable.
+```
+
 ### 4.5 Vacuum Crude Column (printed pp. 4-47 – 4-49)
 
 Figure 4.5.1 "Vacuum Distillation Unit" is the consolidated
@@ -487,6 +660,44 @@ notes: >
   "Hard-to-Handle Fluids" panel, `ref-cmp-v500-cv500-hard-to-handle-fluids`).
 ```
 
+```yaml
+id: ref-topic-delayed-coker-drum-cycle-mechanism
+kind: topic
+teaches: >
+  The delayed coker's actual dual-drum cycling procedure — the real
+  mechanism behind the 27-valve PFD figure's isolation/vapor/decoke/switch
+  valve set, which the figure itself only lists by function without
+  explaining the sequence or timing: furnace effluent thermally cracks
+  further inside a coke drum (around a stated cracking temperature) while
+  filling with coke over several hours; when a drum is full, furnace
+  effluent is switched to the alternate drum (a real, named 4-way
+  switching valve plus block valves between the drums — explicitly NOT
+  control valves themselves); the full drum is then steamed to remove
+  residual oil, cooled with water, opened top and bottom, and the coke is
+  removed by hydraulic decoking drills; the drum is then purged, pressure-
+  tested, and made ready to refill. Typical full drum-cycle time is stated
+  as 12 to 24 hours. Decoke water and decoke steam valves are each
+  explicitly non-critical to coker operation, unlike most valves this
+  chapter otherwise treats as critical control loops — a real, stated
+  exception worth preserving.
+concept-tags: [delayed coker, coke drum, drum cycle, switching valve, decoking, thermal cracking, block valve]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.6 Delayed Coker Unit body prose, pp. 4-50–4-51 and the Decoke Water/Steam Valve entries, p. 4-53 (PDF pp. 50-51, 53)"
+relatedFigures: [ref-cmp-delayed-coking-unit-pfd]
+relatedTopics: [ref-topic-furnace-temperature-control-philosophy]
+used-by: []
+notes: >
+  The 4-way switching valve and coke-drum block valves are explicitly
+  named as non-control valves in the source — flagged here since a
+  future course citing this chapter should not mistake them for
+  control-loop elements alongside the 27 numbered valves the PFD figure
+  does catalogue. Cross-referenced to the furnace entry since this
+  section's own furnace/feed-valve text is the same recurring
+  coking/fail-open boilerplate indexed there, not re-authored here.
+```
+
 ### 4.7 Hydrotreater (printed pp. 4-57 – 4-63)
 
 Figure 4.7.1 "Hydrotreater Locations" is the consolidated
@@ -521,6 +732,39 @@ used-by: []
 notes: >
   Line-art schematic, 13 numbered valves (#1–#13) keyed to the section's
   own application-review text.
+```
+
+```yaml
+id: ref-topic-hydrotreating-reaction-mechanism
+kind: topic
+teaches: >
+  The real chemistry behind hydrotreating, absent from the PFD figure's
+  process-flow-level description: hydrogen reacts with sulfur, nitrogen,
+  and certain metal contaminants in a heated catalyst bed, removing them
+  from the feedstock, while olefins and aromatics are converted to
+  saturated hydrocarbons — the mechanism that lets the process meet low-
+  sulfur transportation-fuel specs and protect downstream catalysts from
+  poisoning. Real stated reaction conditions: 300-450°C (500-750°F) at
+  8-150 barg (120-2200 psig), over cobalt-molybdenum, nickel-molybdenum,
+  or alumina catalyst. The reactor effluent's vapor (often amine-treated)
+  recycles through a compressor back to the feed with makeup hydrogen
+  added; the liquid goes to a stripper that sends H2S, ammonia, and
+  light ends overhead, with desulfurized product as stripper bottoms and
+  naphtha as overhead liquid, routed onward to the catalytic reformer,
+  cat cracker, and hydrocracker.
+concept-tags: [hydrotreating, hydrodesulfurization, catalyst, hydrogen, sulfur removal, cobalt-molybdenum, reaction conditions]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.7 Hydrotreater opening body prose, p. 4-57 (PDF p. 57) — before the numbered valve-application text"
+relatedFigures: [ref-cmp-hydrotreater-pfd]
+relatedTopics: []
+used-by: []
+notes: >
+  `ref-cmp-hydrotreater-pfd`'s own `teaches` field names the recycle-gas
+  compressor and stripper train by valve function but states none of the
+  actual reaction chemistry, temperature/pressure ranges, or catalyst
+  types — all read directly from the real prose here, not inferred.
 ```
 
 ### 4.8 Hydrocracker (printed pp. 4-64 – 4-71)
@@ -602,6 +846,41 @@ source:
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Line-art schematic, numbered valves keyed to the section's application text.
+```
+
+```yaml
+id: ref-topic-catalytic-reforming-octane-and-regulatory-history
+kind: topic
+teaches: >
+  The real historical and regulatory reasoning behind catalytic reforming
+  that neither reformer PFD figure states: before catalytic reforming,
+  lead was used as a gasoline octane additive; once lead was found to
+  cause air pollution and became regulated, catalytic reformers were
+  developed as the replacement — they convert long carbon chains into
+  higher-octane aromatics the same way lead once did. The real tradeoff:
+  a common aromatic product, benzene, is a known carcinogen and is itself
+  now highly regulated, so modern reformers must be closely monitored
+  either by controlling feed into the reformer or extracting benzene from
+  the reformate afterward. Separately, the fixed-bed configuration's own
+  evolution is stated as a real historical progression: original 3-reactor
+  units needed all three beds running simultaneously for best conversion,
+  requiring an annual shutdown to clean/regenerate catalyst; the 4-bed
+  upgrade let refiners swap catalyst one reactor at a time, eliminating
+  that annual shutdown.
+concept-tags: [catalytic reformer, octane, benzene, lead additive, regulatory history, fixed bed, catalyst regeneration]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.9 Catalytic Reformer Unit opening body prose, pp. 4-72–4-73 (PDF pp. 72-73) — before the numbered valve-application text"
+relatedFigures: [ref-cmp-fixed-bed-catalytic-reformer-pfd, ref-cmp-continuous-catalytic-reformer-pfd]
+relatedTopics: []
+used-by: []
+notes: >
+  Neither reformer figure's own `teaches` field states the lead/benzene
+  regulatory history or the 3-bed-to-4-bed shutdown-elimination rationale
+  — both figures describe the flow diagrams themselves (fixed vs.
+  continuous catalyst handling), not why the technology exists or evolved
+  this way.
 ```
 
 ### 4.10 Fluidized Catalytic Cracking (printed pp. 4-78 – 4-86)
@@ -723,6 +1002,39 @@ source:
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Line-art schematic, 14 numbered valves (#1–#14) keyed to the section's own application-review text.
+```
+
+```yaml
+id: ref-topic-alkylation-acid-catalyst-rationale
+kind: topic
+teaches: >
+  Why alkylation exists and why it uses a hazardous liquid acid catalyst
+  at all — content neither the HF nor sulfuric-acid PFD figure states:
+  alkylation converts light olefins (propylene or butylene) from an FCC or
+  delayed coker into alkylate, a gasoline blending component valued for
+  combining high octane with low Reid vapor pressure (branched-chain
+  isoheptane/isooctane paraffins). Alkylation is acid-catalyzed rather
+  than catalyzed by the solid catalysts used in most other refining
+  processes; the source states this liquid acid catalyst is efficient but
+  hazardous, and that many attempts over the years to substitute a solid
+  acid catalyst have resulted in reduced conversion and catalyst
+  deactivation — the real reason both process routes in this section
+  (hydrofluoric acid and sulfuric acid) still use a liquid catalyst
+  despite the safety tradeoff.
+concept-tags: [alkylation, alkylate, octane, Reid vapor pressure, liquid acid catalyst, hydrofluoric acid, sulfuric acid]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.11 Alkylation Unit opening body prose, p. 4-87 (PDF p. 87) — before the two acid-route PFD figures"
+relatedFigures: [ref-cmp-hf-alkylation-pfd, ref-cmp-sulfuric-acid-alkylation-pfd]
+relatedTopics: []
+used-by: []
+notes: >
+  Both PFD figures' own `teaches` fields describe and contrast the two
+  acid routes' hardware; neither states why alkylate is valuable or why a
+  hazardous liquid catalyst is used at all instead of a solid one — that
+  reasoning is stated once in the section's shared opening prose, ahead
+  of the acid-specific diagrams.
 ```
 
 ### 4.12 Amine Unit (printed pp. 4-95 – 4-99)
@@ -950,6 +1262,53 @@ notes: >
 
 ## Open Items
 
+- **`kind: topic` pass added 2026-09-18.** This is by far the largest
+  chapter in any of the four Fisher Sourcebooks (79 pages, 15 topically
+  disjoint application-review sections), and its figures already absorb
+  an unusual amount of surrounding valve-application prose into their own
+  `teaches` fields — reducing, but not eliminating, the real conceptual
+  gap this pass targets. Read the real body prose directly for every
+  section and authored 9 new `ref-topic-*` entries for concepts genuinely
+  absent from any figure's own `teaches` field: furnace temperature-control
+  philosophy/coking (§4.1), distillation-column flooding and reflux
+  mechanics (§4.2), gas-plant light-ends economics and fugitive-emissions
+  packing tradeoff (§4.3), the CDU's role and real product cuts (§4.4),
+  pump-around loop mechanism (§4.4, applies to §4.5 too), the delayed
+  coker's real drum-cycle procedure (§4.6), hydrotreating reaction
+  chemistry (§4.7), catalytic reforming's octane/benzene regulatory
+  history (§4.9), and alkylation's liquid-acid-catalyst rationale (§4.11).
+  Each cross-references the figure(s) it complements rather than
+  restating them.
+- **Honest scope disclosure, not a silent gap.** Given this chapter's
+  unusual size, sections §4.5 (beyond the pump-around cross-reference),
+  §4.8, §4.10, §4.12, §4.13, §4.14, and §4.15 were spot-checked for the
+  same figure-vs-prose gap pattern found elsewhere (their process-
+  mechanism content already reads as substantially captured in their own
+  figures' unusually detailed `teaches` fields — e.g. the FCC riser/
+  regenerator loop, the amine treating cycle, the Claus process, and the
+  PSA five-step cycle are all already stated at real mechanism depth in
+  `ref-cmp-fcc-converter-section-pfd`, `ref-cmp-amine-unit-pfd`,
+  `ref-cmp-sulfur-recovery-unit-pfd`, and `ref-cmp-psa-five-step-cycle-
+  diagrams` respectively) but were not read page-by-page with the same
+  exhaustive per-paragraph rigor as §4.1-4.4/4.6/4.7/4.9/4.11 in this
+  pass. A follow-up pass specifically targeting those seven sections'
+  running prose (not just their figures) for any remaining genuine gap is
+  real, flagged future work — not assumed complete here.
+- **Reference-data-only, confirmed not padded.** Every section's "Typical
+  Process Conditions" / "Typical Control Valve Selection" bulleted boxes
+  (fluid, P1/P2, T, Q, valve size/type/material recommendations) are
+  structured spec-sheet reference data, not conceptual prose — correctly
+  excluded from `kind: topic` indexing, the same treatment already applied
+  to numbered tables elsewhere in this project. There are dozens of these
+  boxes across the chapter's 15 sections; none were catalogued
+  individually.
+- **Integrity check, run directly:** 38 total ids in this file after the
+  pass (29 figures + 9 topics), all unique, 38/38 yaml fences balanced.
+  Checked every new id and every `relatedFigures`/`relatedTopics` citation
+  against the whole vault's Component Index namespace (`grep` across every
+  `Component Index*.md` file) — all resolve to real, existing records; no
+  collisions found with any other sourcebook, the Control Valve Handbook,
+  or this book's own Chapters 1–3.
 - **Chapter boundary confirmed directly**: PDF p.30 (divider, 15-section
   mini TOC) through PDF p.108 (printed 4-108, Figure 4.15.2 and §4.15's own
   valve text both closing on this page). PDF p.109 rendered and confirmed

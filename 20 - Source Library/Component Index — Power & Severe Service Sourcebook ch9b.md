@@ -66,6 +66,151 @@ was consulted.
 
 ## Components
 
+### Chapter 9B — Sliding Pressure Control Concept (printed pp. 9B-1 – 9B-2, prose)
+
+```yaml
+id: pss-topic-sliding-pressure-control-mechanism
+kind: topic
+teaches: >
+  The core mechanism distinguishing constant pressure control from sliding
+  pressure control. In constant pressure operation, the boiler is fired to
+  a fixed discharge pressure and turbine control valves regulate turbine
+  inlet pressure by throttling (moving closed as load decreases, either in
+  unison — full arc admission — or sequentially — partial arc admission).
+  This has two adverse effects at large load swings: turbine temperature
+  fluctuations that cause fatigue and shorten turbine life, and reduced net
+  thermal efficiency (heat rate) at lower loads. Sliding pressure control
+  eliminates both by adding pressure-reducing valve(s) upstream of the
+  turbine control valves (between the primary and secondary superheater);
+  these valves absorb the pressure reduction instead, so the turbine
+  control valves stay fully (or nearly) open across the load range and the
+  sliding pressure control valve itself becomes what actually sets plant
+  load. Real listed benefits: full-arc admission, lower turbine thermal
+  stresses, faster load changes, improved overall heat rate, lower minimum
+  load capability. Also explains 70%/100% sliding pressure control as a
+  direct function of how the sliding pressure control valve is sized: sized
+  for the full load range (100%) or only up to some fraction (e.g. 70%),
+  above which turbine throttle valves take back over and the sliding-
+  pressure benefits are lost above that point.
+concept-tags: [sliding pressure control, constant pressure control, turbine control valve, full arc admission, partial arc admission, turbine thermal stress, heat rate]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9B opening prose, printed pp. 9B-1 – 9B-2 (PDF pp. 121-122) — read directly, not inferred from figure captions"
+relatedFigures: [pss-cmp-constant-pressure-control-graph, pss-cmp-100pct-sliding-pressure-control-graph, pss-cmp-70pct-sliding-pressure-control-graph]
+relatedTopics: [pss-topic-sliding-pressure-thermodynamic-basis, pss-topic-supercritical-sliding-pressure-suitability]
+used-by: []
+notes: >
+  Real, confirmed discrepancy found while reading this chapter's real prose
+  for this pass, flagged here rather than silently corrected (out of scope
+  for a topic-only pass to fix the existing figure catalogue): this file's
+  own Open Items state "Figures 9B-1 and 9B-2 do not exist in this
+  chapter — chapter numbering begins at 9B-3." The real PDF text (pp.
+  121-122) shows both figures DO exist and are captioned: "Figure 9B-1.
+  Once-through main steam system -- constant pressure control" and "Figure
+  9B-2. Once-through main steam system -- sliding pressure control" (drawing
+  numbers E0128, E0129). Neither is currently catalogued as a `kind: figure`
+  component. This should be corrected in a future figure-cataloguing pass on
+  this file, not this one.
+```
+
+```yaml
+id: pss-topic-sliding-pressure-thermodynamic-basis
+kind: topic
+teaches: >
+  Why sliding pressure control actually improves turbine efficiency,
+  reasoned from thermodynamics rather than just stated as a fact. For a
+  control valve (a system that does no work), enthalpy upstream must equal
+  enthalpy downstream (h1 = h2); since enthalpy is a function of both
+  pressure and temperature, reducing pressure across a valve also reduces
+  temperature (confirmed via steam tables). What differs between the two
+  control modes is WHERE in the system that pressure/temperature drop
+  happens: in constant pressure operation, the drop occurs at the turbine
+  control valves themselves — right at the turbine inlet — so the turbine
+  receives the resulting lower, uncontrolled steam temperature directly,
+  reducing efficiency and causing wet-steam erosion risk in the later
+  turbine stages. In sliding pressure control, the drop instead occurs
+  upstream of the secondary superheater, so the steam re-enters the
+  secondary superheater and is reheated back up to its full-load
+  temperature limit (around 1005°F in this chapter's system) before
+  reaching the turbine — meaning the turbine sees constant-temperature
+  steam at every plant load, not just at full load.
+concept-tags: [enthalpy, thermodynamics, sliding pressure control, secondary superheater, steam temperature, wet steam erosion]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9B prose, printed p. 9B-2 (PDF p. 122) — read directly"
+relatedFigures: [pss-cmp-constant-pressure-control-graph, pss-cmp-100pct-sliding-pressure-control-graph]
+relatedTopics: [pss-topic-sliding-pressure-control-mechanism]
+used-by: []
+notes: The h1=h2 enthalpy-conservation reasoning is stated explicitly in the source as the basis for the whole chapter's central claim — not paraphrased from outside thermodynamics knowledge.
+```
+
+```yaml
+id: pss-topic-supercritical-sliding-pressure-suitability
+kind: topic
+teaches: >
+  Why this chapter treats sliding pressure control as essentially a
+  supercritical, once-through boiler topic rather than covering drum-style
+  subcritical units in equal depth. The source's own reasoning: supercritical
+  once-through units are typically larger, harder to start up, and more
+  difficult to cycle than drum-style units, so the efficiency and
+  quick-load-change benefits sliding pressure control provides matter more
+  for them — the same benefits exist in principle for drum units, but the
+  magnitude of benefit is smaller, so the chapter deliberately narrows its
+  remaining scope to supercritical boilers only.
+concept-tags: [supercritical boiler, once-through boiler, drum boiler, subcritical, sliding pressure control, boiler cycling]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9B prose, printed p. 9B-2 (PDF p. 122) — read directly"
+relatedTopics: [pss-topic-sliding-pressure-control-mechanism]
+used-by: []
+notes: A real scoping/judgment statement in the source itself, not an inference — explains why every subsequent manufacturer section (B&W, CE, FW) in this chapter is a supercritical once-through system.
+```
+
+```yaml
+id: pss-topic-boiler-bypass-system-purpose
+kind: topic
+teaches: >
+  The general functional reason every manufacturer's startup bypass system
+  in this chapter (B&W, CE, and Foster Wheeler alike) has the same basic
+  shape, even though their specific valve tagging differs. A supercritical
+  boiler must maintain a minimum flow inside the furnace waterwalls to
+  prevent tube overheating, and this minimum flow must be established
+  before firing even begins — before the turbine can accept any steam at
+  all. A bypass system integral with the main steam, condensate, and
+  feedwater systems exists to maintain that minimum design flow at startup
+  and whenever it exceeds actual turbine steam demand. The source lists five
+  concrete functions any such bypass system performs: (1) reduces the
+  steam's pressure and temperature to conditions suitable for the flash
+  tank, condenser, and auxiliary equipment; (2) recovers heat from the
+  bypass feedwater via the feedwater heaters; (3) conditions the water
+  during startup without delaying boiler/turbine warming; (4) protects the
+  secondary superheater from thermal shock from water during startup; (5)
+  relieves excess boiler pressure during a load trip. This is why the B&W,
+  CE, and FW sections all present "one canonical system schematic, then a
+  run of startup-mode redraws" — they're the same underlying requirement
+  solved with manufacturer-specific valve arrangements, not three
+  independently-invented designs.
+concept-tags: [boiler bypass system, minimum waterwall flow, flash tank, startup sequence, thermal shock protection, load trip]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9B prose, printed p. 9B-2 (PDF p. 122) — read directly"
+relatedFigures: [pss-cmp-bw-universal-pressure-bypass-system, pss-cmp-ce-boiler-bypass-system, pss-cmp-fw-flash-tank-sliding-pressure-system, pss-cmp-fw-integral-separator-startup-system]
+relatedTopics: [cvh-topic-turbine-bypass-system-rationale]
+used-by: []
+notes: >
+  The cross-reference to CVH ch7's `cvh-topic-turbine-bypass-system-rationale`
+  is a real functional parallel (both explain why a bypass path around
+  normal steam flow exists) but a genuinely different context — CVH ch7's
+  topic is about turbine PROTECTION bypass during upset conditions in an
+  already-running unit, this topic is about boiler STARTUP bypass before
+  the turbine is even accepting steam. Cross-referenced as related, not
+  merged or treated as the same concept.
+```
+
 ### Chapter 9B — Sliding Pressure Control Concept (printed pp. 9B-2 – 9B-3)
 
 ```yaml

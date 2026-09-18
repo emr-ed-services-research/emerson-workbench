@@ -195,6 +195,48 @@ notes: >
   Genuinely unique to this book — no match found elsewhere in the library.
 ```
 
+```yaml
+id: pp-topic-pulp-stock-sizing-methodology
+kind: topic
+teaches: >
+  Flowing pulp stock behaves differently from water or viscous Newtonian
+  fluids, so standard liquid sizing must be modified for it: Q = Cv·Kp·√ΔP
+  (a modified form of the basic liquid sizing equation), where Kp is the
+  pulp stock correction factor — the ratio of pulp stock flow rate to water
+  flow rate under the same flowing conditions. Kp in theory depends on pulp
+  type, consistency, freeness, fiber length, valve type, and pressure drop,
+  but in practice the dominant effects are just three: pulp type,
+  consistency, and pressure differential — which is why Figures 3-4/3-5/3-6
+  chart Kp against ΔP for exactly three pulp types (Kraft, mechanical,
+  recycled) at several consistencies. Worked example transcribed exactly:
+  1000 gpm of 8% consistency Kraft pulp stock, ΔP = 16 psid, Kp = 0.83 (from
+  Figure 3-5 — the source's own text cites "figure 3-5" for this Kraft
+  example even though Figure 3-4 is the Kraft chart; flagged as a probable
+  source erratum, not corrected here) → Cv = 1000/(0.83·√16) = 301. Once Kp
+  is known, the rest of the calculation is ordinary liquid sizing.
+concept-tags: [pulp stock correction factor, Kp, non-Newtonian sizing, Kraft pulp, mechanical pulp, recycled pulp, consistency]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'Sizing for Pulp Stock,' p. 3-11 (PDF p. 55) — real prose and worked example, not figure-anchored"
+relatedFigures: [pp-cmp-pulp-stock-correction-factors-kraft, pp-cmp-pulp-stock-correction-factors-mechanical, pp-cmp-pulp-stock-correction-factors-recycled]
+relatedTopics: []
+used-by: []
+notes: >
+  Genuinely unique to this book — confirmed by reading the whole chapter
+  directly (PDF pp. 45-58), not assumed. The standard ISA/IEC liquid-sizing
+  methodology this chapter also covers (the six-step procedure, Fp piping-
+  geometry factor, ΔPmax/choked-flow/cavitation-vs-flashing diagnostic, and
+  the identical NPS-3→NPS-4 propane worked example, 8-inch line/800 gpm/
+  ΔP=25 psi) is the same Fisher Sourcebook-series boilerplate already
+  topic-indexed in `cvh-topic-liquid-sizing-methodology` (Control Valve
+  Handbook ch5), `ogas-topic-liquid-sizing-methodology` (Oil & Gas ch3),
+  and `pss-topic-liquid-sizing-methodology` (Power & Severe Service ch3) —
+  all three ids verified real before writing this note. Deliberately not
+  re-authored as a fourth duplicate `pp-topic-*` record; this entry covers
+  only the genuinely book-specific pulp-stock addition.
+```
+
 ## Open Items
 
 - **Chapter boundary confirmed directly**, not merely inherited from any

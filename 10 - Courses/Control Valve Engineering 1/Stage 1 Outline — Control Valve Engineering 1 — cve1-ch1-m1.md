@@ -5,52 +5,126 @@ tags:
   - stage1-outline
   - pipeline
 course: Control Valve Engineering 1
-chapter: cve1-ch1-m1
-updated: 2026-09-15
+chapter: cve1-ch1 (all 3 modules — one continuous case)
+updated: 2026-09-16
 ---
 
-# Stage 1 Outline — cve1-ch1-m1 (Valve Selection & Sizing Decision)
+# Stage 1 Outline — cve1-ch1, "Sizing a Valve for Real Shutoff" (Phase 1 rebuild, ATTEMPT 3)
 
-> [!note] How to review this document — and what's provisional
-> Origination mode: no existing deck, no `course.json`, no moduleZero
-> decision yet. Franz has now confirmed CVE1 Day 1 is **one training day**
-> — following the established half-day = 180 min (net of one break)
-> convention already used for `d1-foundations` in `Curriculum — IfE.md`,
-> that's `days[].minutesTarget: 360` for the whole day, **provisional/rough,
-> not sign-off**, same caveat that entry carries. How that 360 minutes
-> splits between this module and `cve1-ch1-m2` is a Stage 2 decision (needs
-> the relative content depth Stage 1 didn't need to resolve), not decided
-> here. **Page numbers below are provisional
-> placeholders (1–N within this module), not a real page allocation** —
-> nothing has confirmed whether this course gets a moduleZero bookend or
-> how it sequences against cve1-ch1-m2. Edit this the way any Stage 1
-> Outline gets reviewed: strike through anything wrong, add a
-> `> [!warning]` on a boundary/activity you want reconsidered. Both of
-> this module's competencies (see Curriculum — CVE1.md) trace to the
-> **same single source component** — the chapter-opening 6-step
-> flowchart — walked in two judgment stages, not two separate topics.
+> [!warning] SUPERSEDED by attempt 3 (2026-09-17) — this outline describes attempt 2's structure below, kept as historical record
+> Attempt 2's single-scenario, three-module structure (below) was rebuilt
+> again after Franz found no real numbers or term definitions anywhere in
+> the early slides — see `Curriculum — CVE1.md`'s structure section and
+> `Status — CVE1.md`'s attempt-3 entry for the real, current structure:
+> three tiers of increasing difficulty (a fully-worked success, a moderate
+> single-gap failure, then this attempt's hardest two-gap case
+> repositioned last), each with real specific numbers. The module ids
+> (`cve1-ch1-m1/m2/m3`) are reused for the new tiers in `course.json` — the
+> outline below no longer matches the built course, kept for the historical
+> record of what attempt 2 actually contained, same convention as
+> `cve1-ch1-m2.md`'s own superseded-pointer note.
 
-### 1. cve1-ch1-m1 — Valve Selection & Sizing Decision
+> [!warning] Replaces the prior 7-module Stage 1 Outline (same filename, overwritten)
+> Attempt 1 of the Phase 1 rebuild (2026-09-16, morning) failed Franz's
+> rubric review on four root causes: a rotary-trim narrative illustrated
+> with sliding-stem damage photos; the scenario replacing direct
+> instruction instead of framing it; the Vitruvius persona leaking into
+> delivered content; and seven modules imposing artificial scene-breaks.
+> **This document describes ATTEMPT 2** — see `Status — CVE1.md` for the
+> full self-check against all four fixes, with real verification commands.
 
-**Objective:** Work a control valve's selection-and-sizing decision end to end from real service conditions — calculate a preliminary Cv, check it against noise/cavitation limits, and justify the resulting trim-type and body/trim decision.
+## The case
 
-level target: `analyze` · domain: `engineering` · tier: `introductory`
+A learner works a real spec: a control valve for a liquid service with
+Class V (near-zero-leakage) shutoff. Working the flowchart's six steps,
+they commit to a streamlined, minimum-restriction **sliding-stem** trim
+(chosen for Cv efficiency and tight gallery space) and an actuator sized
+only to stroking thrust. A field inspection three weeks later finds two
+independent real failures: cavitation damage on the trim, and a seat leak
+from an actuator that was never checked against Class V's real seat-load
+demand. Both mechanisms are then taught in full — vena contracta and the
+counter-intuitive high-recovery-is-worse-for-cavitation finding; the real
+A+B+C+D actuator-force breakdown — each complete enough to teach on its
+own, each explicitly compared against the original decision. The flowchart
+is re-walked correctly, practiced on new cases with fading support, and
+the learner reflects on the specific gap between their own reasoning and
+the correct reasoning.
 
-**Roles:** `sizing-eng` only — this is desk/calculation judgment, not a hardware task the other three roles' jobs require. **Flagged for review, not locked**: confirm with Franz whether `inst-tech` should also route here given positioner sizing touches instrumentation work.
+**Hardware consistency, checked before writing any scenario text (fix #1):**
+the only real damage-photo evidence in ch5 (`cvh-cmp-flashing-damage-photo`/
+`cvh-cmp-cavitation-damage-photo`) is documented as sliding-stem "valve
+plug/seat ring" damage, and the unbalance-area table
+(`cvh-cmp-unbalance-area-table`) is explicitly framed around "single-seated
+unbalanced valves vs. balanced valves" — sliding-stem-specific language.
+The scenario's hardware is sliding-stem throughout, matching both. The
+high/low-recovery pressure-profile figure (`cvh-cmp-pressure-profile-high-
+low-recovery`) is itself hardware-agnostic (an abstract flow-path diagram,
+no valve body shown), so the cavitation finding holds without needing to
+invoke any particular valve family.
 
-**Stakes (opening hook):** A preliminary Cv calculated in isolation, without checking it against noise and cavitation limits first, produces a valve that's the right size on paper and fails in the field within a year — the flowchart's own step 2→3 branch exists because "big enough" and "right" are two different questions.
+## Module map
 
-| # | Item | Pages | Detail |
+| Module | Pages | Stage | Competencies |
 | --- | --- | --- | --- |
-| 1 | The valve-selection process is one continuous 6-step decision, not six independent topics: service conditions → preliminary Cv → trim type → body/trim size → trim materials → remaining options. Every later section in the chapter is one step of this same sequence. | 1 | role: mechanism · level: understand · cvh-cmp-valve-selection-process-flowchart |
-| 2 | Step 1 fixes the service conditions a preliminary Cv depends on: P1, ΔP, Q, T1, fluid properties, allowable noise, and the required ANSI pressure class — get any one wrong and the Cv that follows is wrong regardless of the arithmetic. | 2 | role: nomenclature · level: understand · cvh-cmp-valve-selection-process-flowchart |
-| 3 | Step 2 is the real branch point: calculate a preliminary Cv, then check it against noise and cavitation limits *before* treating it as final — a Cv that passes the flow requirement but fails either check forces a different trim type in step 3, not a bigger valve. | 3 | role: application · level: analyze · cvh-cmp-valve-selection-process-flowchart |
-| 4 | Step 3's trim-type decision follows directly from step 2's result: standard trim when both checks pass, noise-reduction trim when the noise limit is the one that fails, cavitation-reduction trim when the cavitation check is the one that fails — the failing check, not preference, decides which. | 4 | role: application · level: analyze · cvh-cmp-valve-selection-process-flowchart |
-| 5 | Step 4 selects the actual body and trim size for the required Cv once trim type is fixed — travel, trim group, and shutoff class all follow from this choice, not from the Cv number alone. | 5 | role: mechanism · level: understand · cvh-cmp-valve-selection-process-flowchart |
-| 6 | Step 5 selects trim materials compatible with the process and available within the trim group step 4 already fixed — a material that fits the process but doesn't exist in that trim group is not a real option at this step. | 6 | role: application · level: analyze · cvh-cmp-valve-selection-process-flowchart |
-| 7 | **→ Activity — Selection Walkthrough** | — | case-walkthrough · 25 min — Given a real service-condition case (P1, ΔP, Q, T1, fluid, allowable noise, ANSI class), work steps 1–3 of the flowchart as a class: state the preliminary Cv result, run the noise/cavitation check, and decide whether the case forces a trim-type change — then work steps 4–5 to justify the resulting body/trim/material decision. Grounded directly in the flowchart's own 6 steps (cvh-cmp-valve-selection-process-flowchart); no invented procedure. |
-| 8 | Check — knowledge check | 7 | — |
+| `cve1-ch1-m1` Specifying the Valve | 5-8 | Attempt + real consequence | `eng.sizing.valve-selection-process` (introduces), `eng.sizing.actuator-force-awareness` (introduces), `eng.noise-cavitation.damage-diagnosis` (introduces, evidence only) |
+| `cve1-ch1-m2` The Two Real Mechanisms Behind the Failure | 9-14 | Model, full depth | `eng.noise-cavitation.damage-diagnosis` (introduces, full mechanism), `eng.sizing.actuator-force-awareness` (introduces, full mechanism) |
+| `cve1-ch1-m3` Specifying It Correctly | 15-19 | Model (correct re-walk) → Coach-and-fade → Articulate/Reflect | `eng.sizing.valve-selection-process` (develops), `eng.selection.body-trim-decision` (introduces), `eng.sizing.valve-selection-process`/`eng.sizing.actuator-force-awareness` (applies), `eng.noise-cavitation.damage-diagnosis` (applies) |
 
-**Competency coverage:** `eng.sizing.valve-selection-process` (items 2–3, the step-1/step-2 judgment) and `eng.selection.body-trim-decision` (items 4–6, the step-3/4/5 judgment) — both `progression: introduces`, both against the single verified source `cvh-cmp-valve-selection-process-flowchart`.
+Check: page 20, exercises `eng.sizing.actuator-force-awareness` against the
+real Figure 5.3 seat-load values.
 
-**Open item flagged for Franz:** this module does not calculate a real numeric Cv (the ISA/IEC formula is `eng.sizing.liquid-sizing-calculation`, confirmed CVE2-only, `develops`). Item 3's "calculate a preliminary Cv" is taught as a conceptual step in the decision sequence, not a worked formula — confirm this matches the intended CVE1/CVE2 depth split before Stage 2 authors real slide content, since "calculate" in the competency `statement` could be misread as requiring the actual math this early.
+**Fix #4 in practice:** m1's own attempt and its consequence reveal are one
+uninterrupted module (no scene break between "decision" and "field
+report") — attempt 1 had these as two separate modules with a "Three Weeks
+Later" title card. m2 folds both mechanisms (cavitation and actuator-force)
+into one module rather than two, since neither needs its own scheduling
+unit to be taught at full depth. m3 folds the correct re-walk, the coached
+attempt, the faded attempt, and the reflection into one module — attempt 1
+had these as three separate modules. Every cross-reference between modules
+is by content ("the trim shown earlier"), never a module number.
+
+## Real sources used (all verified against Component Index — Control Valve Handbook ch5.md before use)
+
+- `cvh-cmp-valve-selection-process-flowchart` — shown as two distinct crops
+  (steps 1-2; steps 3-5) plus once as the full diagram (page 17, the
+  coached re-attempt, where the whole decision is genuinely worked at
+  once) — never the same unmodified crop repeated for different concepts.
+- `cvh-cmp-vena-contracta-diagram` (Fig. 5.6, p.128).
+- `cvh-cmp-pressure-profile-high-low-recovery` (Fig. 5.7, p.128) — used
+  without any valve-body-type language; the figure itself shows no
+  hardware.
+- `cvh-cmp-flashing-damage-photo` / `cvh-cmp-cavitation-damage-photo`
+  (Figs. 5.8/5.9, pp.129-130).
+- `cvh-cmp-unbalance-area-table` (Fig. 5.2, p.123).
+- `cvh-cmp-seat-load-graph` (Fig. 5.3, p.124).
+
+## The four fixes, checked directly
+
+1. **Asset-first.** Checked above, before any scenario text was written —
+   see "Hardware consistency."
+2. **Full-depth instruction.** Every mechanism slide (pages 9-14) states
+   the general mechanism completely, then cites the running case as one
+   worked example — removing the case references would still leave a
+   complete explanation of vena contracta, flash/collapse, high/low
+   recovery, damage-signature contrast, the A+B+C+D breakdown, and reading
+   the seat-load graph.
+3. **No Vitruvius, no persona voice.** `grep -il vitruvius build/slides/*.html`
+   returns no matches. The field-consequence device is plain professional
+   narration ("field inspection... finds..."), not a character speaking.
+4. **Modules are scheduling only.** Three modules, `buildsOn` chained
+   m1→m2→m3, no module-number cross-references in delivered text, no
+   fresh-start title-card framing between modules.
+
+## Open items for Franz's rubric review
+
+- `minutesTarget` per module (70/130/130, still totaling 360) is a
+  judgment call, not independently confirmed.
+- Role routing (`sizing-eng` only) is unchanged, still not confirmed.
+- Pages 9-10 still reuse the identical vena-contracta image back to back
+  (flagged directly in `cve1-010.html`'s own authoring comment) — genuinely
+  different teaching content each time (the mechanism itself, then the
+  flash/collapse distinction), but a distinct tighter crop of the collapse
+  point specifically would be a real further improvement, not done in this
+  pass given its scope was the four root-cause fixes.
+- This is Phase 1 — coverage of ch5's other components (§5.1-5.10's
+  dimensional/sizing-formula content) is explicitly Phase 2's job.

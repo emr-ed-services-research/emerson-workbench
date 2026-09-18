@@ -273,9 +273,43 @@ notes: >
 - **Figure 5-7 is now catalogued** (`ogas-cmp-ball-valve-hydrodynamic-attenuator`,
   above) — added 2026-09-08 in a follow-up batch. The earlier note that it
   was out of the first batch's assigned scope is resolved.
-- Chapter 5 continues past printed p. 5-4 (the "Noise Summary" section) —
-  whether further figures follow was not checked; this batch's scope was
-  the six named figures only.
+- **Chapter boundary confirmed, 2026-09-17**: Chapter 5 runs printed pp.
+  5-1–5-4 (PDF pages 56-59) exactly — read the full real text directly
+  (`pdftotext`, PDF pp. 54-61) and confirmed "Chapter 6 / Control Valve
+  Cavitation and Flashing" begins immediately after the "Noise Summary"
+  section closes on p. 5-4, with no further ch5 content. The earlier
+  uncertainty ("whether further figures follow was not checked") is
+  resolved: no further figures exist, and the six already catalogued here
+  cover the chapter's real figure content completely.
+- **`kind: topic` pass run 2026-09-17, zero new entries — a real finding,
+  not a gap.** Read the chapter's full running prose (not just the figure
+  captions) looking for genuine concepts beyond what the six figure
+  entries already teach. Found two real candidates — the source-vs-path
+  noise-control-strategy framework, and the IEC 60534-8-3 five-step
+  aerodynamic noise prediction method — but both turned out to be
+  near-verbatim Fisher boilerplate already captured by the Control Valve
+  Handbook's own topic entries from the same-night full-Handbook pass:
+  `cvh-topic-noise-control-strategy` and
+  `cvh-topic-noise-generation-and-prediction`
+  (`Component Index — Control Valve Handbook ch5.md`) state the identical
+  framework and the identical 5-step chain in the same order, using the
+  same terminology ("acoustic efficiency," "stream power at the vena
+  contracta," etc.) — the same company's own recycled explanatory text
+  across the Handbook and this sourcebook, not two independent sources.
+  Authoring a duplicate `ogas-topic-*` entry for either would restate,
+  not add. A future course drawing on this chapter's noise-control
+  reasoning should cite the CVH topic entries directly rather than a new
+  sourcebook-side duplicate.
+- **One genuine but minor addition identified, not authored as its own
+  entry**: this chapter's hydrodynamic-noise paragraph adds two details
+  beyond what `cvh-topic-noise-generation-and-prediction`'s own
+  hydrodynamic-noise sentence covers — (1) noise character differs between
+  non-choked and choked/cavitating liquid flow, and (2) multi-phase
+  (two-phase/flashing/out-gassing) noise prediction is explicitly
+  unresolved industry-wide, though field surveys suggest it doesn't
+  exceed worker-exposure levels in practice. Flagged here as a candidate
+  enrichment for that existing CVH entry rather than a new sourcebook-side
+  topic — editing another chapter's file is out of this task's scope.
 - All six records in this file are `used-by: []` — this is a proactive,
   use-driven-ahead catalog per `Source Library.md`; no course currently
   references them.

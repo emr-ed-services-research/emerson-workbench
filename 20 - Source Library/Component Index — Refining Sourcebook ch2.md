@@ -713,6 +713,32 @@ notes: >
 
 ## Open Items
 
+- **`kind: topic` pass run 2026-09-18 — zero new entries, confirmed genuinely
+  thin, not a gap.** Read the full real chapter prose directly (all 13
+  pages, PDF pp.5-17), including the four section-opening framing
+  paragraphs ("We have the broadest range of sliding-stem control valves…",
+  "When capacity and performance are the requirements…", "A wide selection
+  of Fisher digital, pneumatic and electronic instruments…", "For decades,
+  we have been providing solutions for severe service…") and pp.2-6–2-9's
+  company/manufacturing/lab-testing/training/software-tool prose. Every
+  substantive claim in the 33 panels is already fully captured verbatim by
+  this file's own existing `kind: figure` entries — each panel's caption
+  *is* its entire teaching content, with no additional explanatory prose
+  elsewhere in the chapter to index separately. The four section-opening
+  paragraphs add no concept beyond "here are the products in this
+  category" (already conveyed by the panels themselves existing under that
+  heading). Pages 2-6–2-9's company-history/manufacturing/lab-testing/
+  training/software-tool content (including the "Sizing and Specification"
+  paragraph on Fisher Specification Manager software) is genuine marketing
+  and tool-navigation copy with no citable engineering concept — consistent
+  with the standing rule against indexing software-navigation-grain content
+  (see `Component Index — AMS Trex ValveLink Diagnostic Concepts.md`'s own
+  correction) and with this file's own prior judgment call to exclude that
+  material from the figures pass. The six unnamed "testing capability"
+  panels on p.2-8 (Precise Actuation, Low-Emissions Performance, etc.) were
+  reconsidered specifically for topic-worthy content and still excluded —
+  each is one promotional sentence tied to no specific named product, not
+  an explained mechanism.
 - **Chapter boundary confirmed directly**: PDF p.5 (divider) through PDF
   p.17 (printed 2-17). PDF p.18 rendered and confirmed to be the Chapter 3
   divider.

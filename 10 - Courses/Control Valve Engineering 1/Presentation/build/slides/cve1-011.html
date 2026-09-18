@@ -3,30 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 011 &mdash; Check Your Knowledge: Valve Selection &amp; Sizing Decision</title>
+<title>CVE1 &middot; Slide 011 &mdash; The Real Total, Worked</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m1, page 11 — the module's check slide (course.json carries
-       no keyConcepts entry for it by schema design, per CVB precedent).
-       Exercises both eng.sizing.valve-selection-process (the step 2 check)
-       and eng.selection.body-trim-decision (the step 3 trim-type rule)
-       together — answerable only by connecting a failed cavitation check
-       to a cavitation-reduction trim, not standard trim or a bigger valve. -->
-  <article class="slide slide--role-check" data-slide="11" data-deck="cve1">
-    <h1 class="slide-title">Check Your Knowledge: Valve Selection &amp; Sizing Decision</h1>
+  <!-- cve1-ch1-m2, page 11 — eng.sizing.actuator-force-awareness [evaluate ·
+       mechanism, develops]. Closes tier 2's Attempt-Consequence-Model cycle. -->
+  <article class="slide slide--role-mechanism" data-slide="11" data-deck="cve1">
+    <h1 class="slide-title">The Real Total, Worked</h1>
     <div class="tpl-content">
-      <p class="tpl-prompt">A preliminary Cv calculation meets the flow requirement, but the Step 2 check shows the cavitation limit is exceeded. Per the flowchart, what should happen next?</p>
-      <ul class="tpl-options">
-        <li>A.&nbsp;&nbsp;Select a larger valve body to raise the flow margin</li>
-        <li data-correct="true">B.&nbsp;&nbsp;Move to Step 3 and select a cavitation-reduction trim</li>
-        <li>C.&nbsp;&nbsp;Recalculate the preliminary Cv with a wider safety factor</li>
-        <li>D.&nbsp;&nbsp;Proceed with standard trim since the flow requirement is already met</li>
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh5-fig5-2-unbalance-area-table.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.2, Typical Unbalance Areas of Control Valves">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Port dia. 1-7/8 in &rarr; unbalance area 2.76 in&sup2; (Fig. 5.2). A = 2.76 &times; 60 psi &asymp; 166 lbf</li>
+        <li><span class="num">2</span>Fig. 5.3 at Class III, 60 psi &asymp; 45 lbf/in. Circumference = &pi; &times; 1.875 = 5.89 in, so B &asymp; 45 &times; 5.89 &asymp; 265 lbf</li>
+        <li><span class="num">3</span>C &asymp; 25 lbf, D &asymp; 10 lbf. Total required = 166 + 265 + 25 + 10 &asymp; 466 lbf &mdash; nearly double the 250 lbf actually rated. B alone (265 lbf) exceeds the whole actuator's rated output</li>
       </ul>
-      <p class="tpl-reveal">B &middot; The failing check (cavitation), not the Cv result, decides the trim type.</p>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., &sect;5.11&ndash;5.11.1.2 and Figure 5.2 &ldquo;Typical Unbalance Areas of Control Valves,&rdquo; p.123. Component Index: cvh-topic-valve-balance, cvh-topic-seat-load, cvh-cmp-unbalance-area-table, cvh-cmp-seat-load-graph.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">11</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

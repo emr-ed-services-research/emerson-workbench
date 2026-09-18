@@ -306,3 +306,210 @@ one; service to the concept is. Treating reduction as inherently good and
 addition as inherently suspect is itself a bias to correct on sight, not a
 safe default — it is what produced the ch3-m4 defects as directly as any
 layout bug did.
+
+## Engagement as the class itself — CVE curriculum test pattern (added 2026-09-15)
+
+**Status: a test pattern for the CVE1 → CVE2 → CVE-Industry curriculum
+specifically, not yet department-wide doctrine.** Raised by Franz while
+scoping that curriculum, on the grounds that these learners are engineers
+with complex degrees, and a flat "one course introduces, the next develops,
+the last applies" progression undersells them — both in how shallow a first
+exposure is allowed to be, and in how thin "applies" is allowed to mean.
+Whether this becomes standing doctrine (alongside Hands-First above) depends
+on how it holds up once tried against real CVE content, the same way
+Hands-First itself was validated before going department-wide.
+
+Franz's own framing: **"Any class is about engagement... That IS the
+class."** Engagement is relational and runs in six directions, not one:
+student → content, content → student, student → instructor, instructor →
+student, content → instructor, instructor → content. A competency authored
+for only one of these (content delivered flat to a student, the default
+shape today) is not fully taught even when it is factually complete.
+
+**What this means for how a competency is built, for CVE1/CVE2/CVE-Industry:**
+
+- **Content → student and student → content:** the content itself should
+  carry a real tension, open question, or non-obvious result the learner
+  has to work with — not a fact stated and moved past. The kind of texture
+  this project already produces for itself when cataloguing a source (*is
+  this one consolidated component or thirteen near-duplicates; this caption
+  contradicts the figure, which is true*) is exactly the analytical grain a
+  degreed-engineer audience should be handed to work through themselves,
+  not just told the answer to.
+- **Content → instructor and instructor → content:** a competency needs
+  enough depth behind it that an instructor can field a real pushback
+  question they did not script for, and enough room that the instructor is
+  expected to adapt and shape the material live, not execute it verbatim.
+  Thin content that only survives a straight read-through fails this
+  direction even if the slide itself is correct.
+- **Student → instructor and instructor → student:** the module needs real
+  room for the student to bring something back — a question, a disagreement,
+  a competing answer — not just a delivery-and-check cycle.
+
+**Progression is not one stage per course.** `introduces` / `develops` /
+`applies` (see the Curriculum Development Layer's competency schema) should
+not be assumed to map one course = one stage for this curriculum. A
+competency can genuinely introduce and develop within CVE1 alone before CVE2
+ever touches it; CVE-Industry's `applies` stage should be held to the same
+engagement bar as `introduces`, not treated as a lighter, later add-on.
+Progression and Bloom's level are already separate axes in the schema —
+nothing requires an `introduces` placement to sit at `remember`/`understand`
+if the audience and content can support entering at `analyze` or `evaluate`
+from the start.
+
+## Instructional method — Cognitive Apprenticeship via Productive Failure (CVE curriculum test pattern, added 2026-09-16)
+
+**Status: a test pattern for the CVE1 → CVE2 → CVE-Industry curriculum
+specifically, same standing as the Engagement section above — not yet
+department-wide doctrine, to be validated against real content before it
+goes further.** This section exists because the Engagement section above
+named a *standard* (real tension, instructor depth, room for pushback)
+without ever naming a *method* for reliably producing it. Bloom's level
+alone doesn't supply that — it classifies the cognitive destination
+(`analyze`, `evaluate`), not the instructional path to get a learner there.
+CVE1's first real build made exactly this gap visible: content labelled
+`level: analyze` delivered as explain-mechanism → explain-mechanism →
+one surprising fact → contrast → activity → check, the same generic
+Template Gallery role sequence every course in this vault defaults to,
+with a single embedded tension standing in for engagement rather than a
+real method producing it throughout.
+
+### The method
+
+Two established, named instructional-design techniques, run together —
+brought in under the standing rule that established instructional-design
+knowledge is a legitimate completeness source in its own right (see "The
+standard is completeness against source" above):
+
+1. **Productive failure** (Kapur) — a learner who generates varied,
+   even wrong, solutions to a real problem *before* being taught the
+   underlying concept learns that concept more deeply than one taught the
+   concept first, because the failed attempt primes them to recognize
+   exactly what their own approach was missing when the real reasoning
+   arrives. The failure phase is not decorative struggle — its function is
+   exposing the specific gap the subsequent instruction then closes.
+2. **Cognitive apprenticeship** (Collins, Brown & Newman) — the sequencing
+   framework Bloom's level alone doesn't provide: **model** the full expert
+   reasoning process on a real case, **coach** the learner through a
+   similar case with support, **fade** that support as competence grows,
+   have the learner **articulate** their own reasoning, then **reflect**
+   against the expert's.
+
+Run together as one repeating cycle, this is an **activity-level
+technique**, not the course's architecture:
+
+**Attempt → Consequence → Model → Coach-and-fade → Articulate/Reflect.**
+
+**Corrected scope (2026-09-17, second correction — this replaces the
+original framing below the line, kept for the record of how the mistake
+happened, not as a live option).** CVE1's rebuild took the cycle above and
+used it to replace the course's actual day/chapter/module structure with
+one continuous scenario spanning the whole course, on the theory that
+module boundaries were "content seams" breaking the narrative. Franz's
+verdict after seeing it built: it stopped being a course at all — "it was
+literally treating scenarios like course modules, which they are not even
+close to." The real error traced back to a narrower, correct finding
+(three tightly-coupled keyConcepts, all tracing to one source diagram,
+had been awkwardly fragmented across two module files) that got
+overgeneralized into "the whole course should be one scenario with no
+module structure." That generalization was never justified by the
+finding, and it produced something unrecognizable as a course.
+
+**The corrected rule: this course keeps the same day/chapter/module/
+keyConcept structure every other course in this vault uses, in full.**
+Modules are real structural *and* content units, not scheduling-only
+containers. A module teaches its competency properly, using genuine
+explanation — now drawn from the Component Index's `kind: topic` entries,
+not narrated results — the same way any module in CVB or 14101 does.
+Productive failure and cognitive apprenticeship are **one activity type
+available inside a module**, alongside (not instead of) the normal
+mechanism/nomenclature/procedure/contrast content: a module can include
+one or more attempt→consequence→model exercises as specific keyConcept or
+activity items, the same way `cve1-ch1-m2`'s original Stage 1 outline had
+a discrete "Activity — Damage Diagnosis" item sitting inside an otherwise
+normal keyConcepts list. It never replaces the module's own real teaching
+content, and it never dissolves the module boundary itself.
+
+**Difficulty must still ramp within an activity sequence, not open cold —
+this part of the original correction (CVE1's first real build,
+2026-09-17) still holds, just scoped to activities now instead of the
+whole course:**
+
+1. **A simple, fully worked success first — no failure at all.** Real
+   numbers, the complete flowchart or procedure walked start to finish,
+   the right answer. Vocabulary (P1, ΔP, Q, Cv, and so on) gets defined
+   here with real, specific values a learner can follow and check, not
+   narrated as something that already happened off-screen. For this
+   opening tier, "Attempt → Consequence" doesn't apply yet — there is
+   nothing to fail against — it is **Model (as a complete worked success)
+   → Articulate/Reflect** only.
+2. **A moderate productive-failure activity next**, reinforcing what the
+   success example just established against a slightly harder case — the
+   first real "Attempt → Consequence → Model" cycle.
+3. **A harder activity after that**, extending further. CVE1's original
+   Class V/cavitation case belongs here, not at the front.
+
+These three tiers can span one module's activities, or a short run of
+modules within a chapter — they are not a license to reintroduce a
+continuous cross-course scenario by another name. Skipping tier 1 doesn't
+make the later tiers harder in a useful way — it removes the floor a
+learner needs to attempt anything at all.
+
+**This only works if these disciplines hold, all flagged directly by
+Franz and RC while designing and then debugging it — not optional
+refinements:**
+
+- **The wrong paths and their consequences must be real, not invented for
+  drama.** They should trace to genuine documented cases — a real
+  counter-intuitive finding already in the Component Index (e.g. the
+  cavitation section's high-recovery-valves-are-more-cavitation-prone
+  result), a real documented failure pattern (e.g. the SIS chapter's OREDA
+  data showing the final control element accounts for roughly half of
+  safety-function failures), or a verified case from Vitruvius (below) —
+  never a strawman wrong answer authored just to be defeated.
+- **The reveal must explicitly contrast the learner's own attempt against
+  the real reasoning, not just state the correct answer.** Comparison is
+  what makes productive failure productive. A cycle that becomes "they
+  guess, then we lecture" has lost the mechanism entirely and is
+  indistinguishable from the flat delivery this method exists to replace.
+- **Every technical term must be defined at or before first use, and
+  every worked step needs real, specific data — never a narrated result.**
+  CVE1's first build used P1, ΔP, Q, Cv, and Class V throughout without
+  defining any of them once, and narrated outcomes ("the calculated Cv
+  was correct," "a streamlined trim was selected") with no actual numbers
+  anywhere a learner could check or compute themselves. A scenario that
+  tells the learner what was decided, instead of giving them what they'd
+  need to decide it, has not implemented the attempt step at all — it has
+  replaced it with a summary.
+
+### Vitruvius — the modeled-expert persona
+
+The "model" step needs a consistent voice, not an anonymous instructor
+aside — **Vitruvius** (named by Franz, 2026-09-16) is that persona: the
+expert whose reasoning gets modeled in a module's productive-failure
+activity, who reports the consequence of a wrong decision within that
+activity, and who verifies that a piece of content pulled from outside
+the Source Library (the web, or the historic archive) is accurate before
+it enters a course. Vitruvius has broad engineering
+experience and judgement to draw on and is explicitly permitted to research
+beyond the Source Library to keep that judgement current — but never
+imports outside-brand hardware as actual course content; the boundary is
+verifying accuracy and modeling reasoning, not expanding what gets taught
+into other manufacturers' equipment.
+
+Vitruvius's own permanent resources are **not** part of the Component
+Index and carry a different, lighter trust tier deliberately: verified
+narrowly, per use, when a specific fact or case is actually pulled in for
+a scenario — not catalogued exhaustively up front the way a Component
+Index chapter pass is. See the persona's own identity/ledger location
+(separate document) for how that verification gets recorded.
+
+### What this does not change
+
+Slides stay visual-only; the context pane still carries the textual
+grounding; none of the composition rules above are superseded. **The day/
+chapter/module/keyConcept structure stays exactly as it is for every
+other course in this vault — this method never replaces it, only supplies
+one activity type available inside it.** This section governs what one
+or more activities inside a module can look like, not what a single slide
+is allowed to show, and not the course's own organizing structure.

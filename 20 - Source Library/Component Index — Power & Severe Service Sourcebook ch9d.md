@@ -165,6 +165,146 @@ notes: >
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-simple-cycle-economics-and-tradeoffs
+kind: topic
+teaches: >
+  Simple-cycle gas turbine plants trade lower efficiency (<30%, versus 50%
+  for combined cycle and 30-35% for conventional steam turbines) for real
+  economic advantages that make them the standard peaking-unit choice:
+  roughly a quarter the capital cost per kW of a conventional coal-fired
+  unit (~$250/kW vs. >$1000/kW), construction periods as short as six
+  months, a very small footprint from their compact modular construction,
+  fast start-up/ramp rates, and excellent cycling capability — advantages
+  that matter specifically because peaking units run under 1000 hours per
+  year, where the coal-fired unit's better fuel efficiency and lower fuel
+  cost are outweighed by its much higher operating/maintenance cost. Fuel
+  cost is 60-70% of any generating unit's total operating cost, the single
+  largest factor; other factors (maintenance, personnel, capital cost,
+  plant type, base-load vs. peaking duty) also contribute. Simple-cycle
+  disadvantages are the mirror image of its advantages: lower efficiency,
+  higher-cost fuels (natural gas/distillate), and gas-supply uncertainty
+  during peak heating/cooling seasons. Manning is correspondingly low —
+  some installations run fully remote, unmanned; a one-shift peaking
+  operation needs only 6-10 personnel.
+concept-tags: [simple cycle, economics, capital cost, operating cost, fuel cost, peaking unit, capacity factor, manning]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Introduction / Cost to Operate / Plant Types / Manning, pp. 9D-1 – 9D-3 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-gas-turbine-simple-cycle-diagram]
+relatedTopics: [pss-topic-gas-turbine-thermal-cycle]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF pp. 159-161), not
+  inferred from any figure caption — this is the chapter's own economic
+  framing for why simple-cycle plants exist at all, distinct from the
+  mechanism content in the next topic entry.
+```
+
+```yaml
+id: pss-topic-gas-turbine-thermal-cycle
+kind: topic
+teaches: >
+  The gas turbine's actual thermal cycle mechanism, beyond what Figure
+  9D-2's labelled cutaway shows: air enters the compressor section and is
+  raised to several times atmospheric pressure (>100 psig) and several
+  hundred degrees above ambient (>800°F) purely from compression; this
+  compressed, heated air is mixed with fuel in the combustion chambers and
+  ignited, raising the temperature further (>2000°F); the combustion gases
+  then expand through the turbine section, converting thermal energy to
+  mechanical energy that drives both the compressor and the generator —
+  typically 30-50% of the turbine section's own power output is consumed
+  just driving its own compressor, with the remainder driving the
+  generator. Exhaust gas leaving the turbine is typically 900-1300°F, hot
+  enough to be useful downstream in a combined-cycle HRSG. Aircraft-derived
+  turbines (typically <20 MW, jet-engine-based, used for smaller/lightweight
+  packages) and industrial turbines (more rugged, capable of lower-grade
+  distillate fuels, over 200 MW in current designs, lower cost per kW, better
+  emissions) are the two commercial design lineages.
+concept-tags: [gas turbine, thermal cycle, compressor, combustion, expansion, exhaust temperature, aircraft-derived turbine, industrial turbine]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Plant Types / Simple Cycle, pp. 9D-2 – 9D-3 — prose beyond Figure 9D-2's own caption"
+relatedFigures: [pss-cmp-gas-turbine-simple-cycle-diagram, pss-cmp-ms7000-gas-turbine-cutaway]
+relatedTopics: [pss-topic-simple-cycle-economics-and-tradeoffs, pss-topic-fuel-control-and-overspeed-protection]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF p. 160). Figure 9D-2's
+  own `teaches` field describes the cutaway's labelled sections; this entry
+  captures the actual physical mechanism (why compression heats the air,
+  where the power split goes) that the figure shows but does not explain
+  in words.
+```
+
+```yaml
+id: pss-topic-fuel-control-and-overspeed-protection
+kind: topic
+teaches: >
+  The fuel control system has two distinct jobs depending on grid
+  connection state: before connecting to the grid, it holds the turbine at
+  the correct rotational speed by positioning the fuel valve; once
+  connected, load control becomes essentially a function of fuel supply —
+  more fuel increases generator load, less decreases it. The system must
+  also react to sudden load rejection (the generator output breaker opening
+  abruptly), which instantaneously removes load and causes the turbine to
+  overspeed unless fuel is cut quickly — modern turbines use multiple
+  electronic sensors to detect overspeed and trip by closing the fuel
+  valves and isolating the fuel system, the OST (over-speed trip) valves
+  shown in Figure 9D-3. Natural gas firing controls NOx via staged fuel
+  control (lowering flame temperature); fuel oil firing achieves the same
+  effect via water or steam injection to atomize and cool the oil droplets.
+  Ball valves were historically used for fuel control but were superseded
+  by sliding-stem valves due to "sloppy" linkage performance issues and
+  increased emissions-control requirements.
+concept-tags: [fuel control, overspeed protection, OST valve, load rejection, staged fuel control, NOx, ball valve, sliding stem]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Application Discussion / Fuel Control, p. 9D-3 — prose beyond Figure 9D-3's own caption"
+relatedFigures: [pss-cmp-fuel-gas-staged-combustion-diagram]
+relatedTopics: [pss-topic-gas-turbine-thermal-cycle]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF p. 161). The historical
+  ball-valve-to-sliding-stem transition detail is a real, specific fact
+  worth preserving — not generic.
+```
+
+```yaml
+id: pss-topic-power-augmentation-and-emissions-injection
+kind: topic
+teaches: >
+  Steam or water injection into the gas turbine serves two purposes
+  simultaneously, not two separate systems: (1) power augmentation —
+  injecting steam pulled from the cold reheat line (combined-cycle) or an
+  outside source (simple cycle) increases mass flow through the turbine,
+  raising both output and efficiency; (2) NOx emissions control — the same
+  injection lowers flame temperature, which the NOx-vs-temperature
+  relationship (Figure 9D-5) shows sharply reduces NOx formation above
+  roughly 2800°F. Water injection (more common in single-cycle plants,
+  since it avoids needing an offsite steam source) uses the same mechanism
+  as steam injection. Because combustion gases can back up into the steam
+  line when augmentation is not active, an isolation valve is paired with
+  the throttle valve specifically to provide tight shutoff in either
+  direction — without it, high combustion-gas temperatures backing up
+  through the throttle valve would cause premature component failure.
+concept-tags: [power augmentation, steam injection, water injection, NOx control, flame temperature, tight shutoff, isolation valve]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Application Discussion / Power Augmentation / Water and Steam Injection, pp. 9D-3 – 9D-4"
+relatedFigures: [pss-cmp-power-augmentation-diagram, pss-cmp-nox-formation-vs-temperature-graph]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF pp. 161-162). The
+  dual-purpose framing (power AND emissions from the same injection) is the
+  real insight here — the two figures on their own each show only half of
+  it.
+```
+
 ---
 
 ### Chapter 9D — Combined Cycle & Co-Generation (printed pp. 9D-6 – 9D-9)
@@ -265,6 +405,102 @@ notes: >
   process-flow block schematic (Process Steam, Exhaust Gas, Feedwater,
   Boiler Feed Pump) — Style Guide §6.3 applies if ever placed on a slide.
 mediaStatus: unreviewed
+```
+
+```yaml
+id: pss-topic-hrsg-mechanism-and-configuration
+kind: topic
+teaches: >
+  The HRSG (heat recovery steam generator) is normally heated entirely by
+  hot gas turbine exhaust, but may include a supplemental natural-gas- or
+  fuel-oil-fired duct burner (Figure 9D-8) for additional steam when more
+  power output or cogeneration steam is needed. HRSG complexity scales with
+  the unit efficiency target: the simplest configurations have only a
+  high-pressure steam drum, generation tubes, and possibly a superheater;
+  as efficiency needs increase, a low-pressure drum, intermediate-pressure
+  drum, multiple economizers (high/intermediate/low pressure), deaerators,
+  and superheaters are progressively added, with tube sections arranged so
+  the hottest gases contact the highest-pressure superheat stages first.
+  A diverter/bypass damper on the gas turbine exhaust duct lets the turbine
+  run in simple-cycle mode by routing hot gases to a bypass stack instead
+  of the HRSG — important when the HRSG or steam turbine is unavailable for
+  maintenance, and sometimes installed on new simple-cycle units
+  specifically to allow a later HRSG retrofit without disturbing the gas
+  turbine.
+concept-tags: [HRSG, duct burner, steam drum, economizer, superheater, deaerator, diverter damper, bypass stack]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Combined Cycle, pp. 9D-6 – 9D-7 — prose beyond Figures 9D-6/9D-8's own captions"
+relatedFigures: [pss-cmp-combined-cycle-generation-diagram, pss-cmp-finned-tubes-diagram, pss-cmp-hrsg-duct-burner-cutaway]
+relatedTopics: [pss-topic-combined-cycle-steam-turbine-differences]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF pp. 164-165). The
+  diverter/bypass damper's dual real-world purpose (maintenance flexibility
+  AND enabling a later HRSG retrofit) is stated explicitly in the source,
+  not inferred.
+```
+
+```yaml
+id: pss-topic-combined-cycle-steam-turbine-differences
+kind: topic
+teaches: >
+  Steam turbines used in combined-cycle plants differ materially from
+  conventional-plant steam turbines: they are typically smaller (10-200 MW,
+  most under 100 MW, versus much larger conventional-unit turbines), are
+  sometimes built without reheat capability (when the associated HRSG
+  cannot supply reheated steam — conventional-unit turbines are always
+  built with reheat for its efficiency benefit), and have little or no
+  steam extraction points because combined-cycle plants rely on the HRSG's
+  finned-tube economizer(s) to raise feedwater temperature instead of the
+  shell-type feedwater heaters conventional plants use, which is what
+  extraction normally feeds.
+concept-tags: [combined cycle, steam turbine, reheat, steam extraction, feedwater heater, economizer]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Combined Cycle, p. 9D-6 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pss-topic-hrsg-mechanism-and-configuration]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF p. 165). Not tied to any
+  figure at all — a comparative concept explaining WHY combined-cycle STs
+  look different, not shown in any diagram.
+```
+
+```yaml
+id: pss-topic-cogeneration-economics
+kind: topic
+teaches: >
+  Cogeneration produces two saleable products (steam for off-site
+  industrial use and electricity) from one fuel input, achieving overall
+  efficiency over 70% — markedly higher than a modern conventional
+  condensing-cycle unit (~35%) or a modern combined-cycle unit (~50%),
+  because using steam directly as an energy source avoids the thermodynamic
+  waste of the condensing cycle; steam used purely for heating (no
+  electricity generation) can approach 90% efficiency. Real configurations
+  vary: all produced steam may be exported off-site (Figure 9D-9), only a
+  portion exported with the rest generating electricity, or all steam
+  routed through a steam turbine first with some later extracted for
+  off-site use. A conventional auxiliary boiler is sometimes needed to
+  supply steam when running the whole cogeneration facility isn't
+  economical — cogenerators must balance electrical generation against
+  their steam customer's actual needs, a real operational constraint
+  traditional generators don't have.
+concept-tags: [cogeneration, dual product, overall efficiency, condensing cycle waste, steam export, auxiliary boiler]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Combined Cycle, pp. 9D-8 – 9D-9 — prose beyond Figure 9D-9's own caption"
+relatedFigures: [pss-cmp-cogeneration-cycle-diagram]
+relatedTopics: [pss-topic-hrsg-mechanism-and-configuration]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF pp. 167-168). The four
+  efficiency numbers (70%/35%/50%/90%) are all stated explicitly in the
+  source in the same paragraph, transcribed exactly.
 ```
 
 ---
@@ -368,6 +604,164 @@ notes: >
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-alloy-6-feedwater-corrosion
+kind: topic
+teaches: >
+  Alloy 6 corrosion problems in feedwater systems are often misdiagnosed —
+  a real, non-obvious diagnostic finding: boiler feedwater is treated with
+  ammonia, hydrazine, or amine derivatives at the deaerator to eliminate
+  excess oxygen, but these same chemicals attack the protective oxide films
+  on Alloy 6 trim, initiating an erosion/corrosion process that degrades
+  Alloy 6 overlays — a mechanism the source states has been "responsible
+  for many valve trim failures previously attributed to poor design or
+  maintenance." The fix is materials selection, not procedure: solid 400
+  series stainless steel trim, or Colmonoy overlays instead of Alloy 6,
+  eliminates the problem.
+concept-tags: [Alloy 6, corrosion, feedwater treatment, erosion-corrosion, trim material selection, Colmonoy, 400 series stainless]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Feedwater System, p. 9D-10 — a highlighted \"Note\" box in the running text, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pss-topic-feedwater-valve-selection-rationale]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF p. 169) — a boxed "Note"
+  callout in the source, not ordinary body text, signalling the source's
+  own emphasis on this being a real, previously-misattributed failure mode.
+  A genuinely valuable materials-selection insight with no figure at all.
+```
+
+```yaml
+id: pss-topic-feedwater-valve-selection-rationale
+kind: topic
+teaches: >
+  Combined-cycle feedwater systems differ from conventional plants in
+  having separate feedwater control valves for each HRSG drum, and combine
+  the startup regulator and main feedwater regulator into one valve (versus
+  separate valves and piping in conventional designs) by using
+  characterized trim: cavitation-protection characterization handles the
+  startup condition as the valve first opens, transitioning to standard
+  holes as travel increases for the necessary flow capacity. Valve mounting
+  location matters: mounting at ground level takes the pressure drop before
+  water reaches the economizer, while mounting near the steam drum risks
+  steam forming in the economizer section, requiring an angle valve with
+  cavitation protection that can also withstand flashing as temperature
+  rises during startup. The feedwater recirc valve maintains net positive
+  suction head on the feedwater pump to prevent pump cavitation — nearly
+  identical to conventional plant designs.
+concept-tags: [feedwater regulator, characterized trim, startup cavitation, HRSG drum, valve mounting location, net positive suction head]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Feedwater System, pp. 9D-9 – 9D-10"
+relatedFigures: []
+relatedTopics: [pss-topic-alloy-6-feedwater-corrosion]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF pp. 168-169). The
+  combined startup+main-regulator design (via characterized trim, replacing
+  separate valves) is the real distinguishing insight versus a conventional
+  plant's feedwater system.
+```
+
+```yaml
+id: pss-topic-turbine-bypass-system-purpose
+kind: topic
+teaches: >
+  The Turbine Bypass System (TBS) is described as probably the most key
+  system in a combined-cycle plant: during initial firing it bypasses steam
+  to atmosphere or the condenser (steam isn't yet suitable for the turbine),
+  and during shutdown it bypasses full steam load to the condenser to
+  protect turbine components. TBS valve sizing depends on plant size, plant
+  type, and whether the unit has reheat — a plant with reheat needs an HP
+  bypass valve (desuperheating HP steam to match cold-reheat conditions
+  before the reheater) plus separate IP and LP bypass valves; the LP bypass
+  valve's job (bypass all LP steam to the condenser) doesn't change based
+  on reheat configuration. TBS valves combine pressure reduction, noise
+  control, and steam conditioning functions in one device — the same
+  product line the source cross-references to its own Steam Conditioning
+  chapter (Chapter 7).
+concept-tags: [turbine bypass system, desuperheating, reheat, steam conditioning, pressure reduction, noise control]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Turbine Bypass System, pp. 9D-10 – 9D-11 — prose beyond Figure 9D-10's own caption"
+relatedFigures: [pss-cmp-turbine-bypass-system-reheat-diagram]
+relatedTopics: [cvh-topic-turbine-bypass-system-rationale, pss-topic-startup-vent-valve-mechanism]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF pp. 169-170). The source
+  itself cross-references its own Chapter 7 (Steam Conditioning) for the
+  TBS valve product line — mirrored here via relatedTopics into CVH's own
+  turbine-bypass topic (verified real: `cvh-topic-turbine-bypass-system-rationale`,
+  Component Index — Control Valve Handbook ch7.md), a genuine cross-book
+  connection, not assumed.
+```
+
+```yaml
+id: pss-topic-startup-vent-valve-mechanism
+kind: topic
+teaches: >
+  Startup vent valves exist because bypassing steam directly through the
+  turbine bypass valves as steam first forms in the HRSG would cause a
+  major shock to the valve and piping systems — so steam is bypassed
+  directly to atmosphere first (through the startup vent valves) to warm
+  the bypass valves before they open. Once closed, startup vent valves must
+  then maintain tight, long-term shutoff despite high pressure-drop
+  requirements — losing steam through them after startup directly costs
+  efficiency and power production. HP applications use a high-pressure
+  valve with C-seal in combination with a vent silencer; Fisher's WhisperFlo
+  vent diffuser can add roughly 10 dBA of additional noise attenuation
+  versus older offerings while being about 35% the size and weight of an
+  equivalent drilled-hole device.
+concept-tags: [startup vent valve, thermal shock, C-seal, tight shutoff, vent silencer, WhisperFlo, noise attenuation]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Startup Vent, pp. 9D-11 – 9D-12 — prose beyond Figures 9D-11/9D-12's own captions"
+relatedFigures: [pss-cmp-hp-vent-startup-system-diagram, pss-cmp-whisperflo-vent-diffuser-photo]
+relatedTopics: [pss-topic-turbine-bypass-system-purpose]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF pp. 170-171). The
+  "why atmosphere first" thermal-shock-avoidance reasoning is the real
+  insight the figures alone don't state.
+```
+
+```yaml
+id: pss-topic-condensate-recirc-cavitation-diagnosis
+kind: topic
+teaches: >
+  A genuinely non-obvious diagnostic point about the condensate recirc
+  valve: service conditions will often indicate the valve should experience
+  flashing (since the recirc line runs to a hot well near atmospheric
+  pressure or vacuum), but the effects of pipe friction, elevation, and
+  condensate sparger backpressure are conventionally ignored in that
+  analysis — accounting for them raises the real outlet pressure the valve
+  sees, which leads to cavitation forming, not flashing. The valve's actual
+  job is protecting the condensate pump from cavitation via net positive
+  suction head, using low-flow anti-cavitation trim (Cavitrol III/2-stage)
+  suited to service conditions that are close to atmospheric/vacuum.
+concept-tags: [condensate recirculation, cavitation vs flashing diagnosis, net positive suction head, pipe friction, backpressure, Cavitrol trim]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9D Condensate System, p. 9D-13 — prose beyond Figure 9D-13's own caption"
+relatedFigures: [pss-cmp-condensate-system-diagram]
+relatedTopics: [cvh-topic-cavitation, cvh-topic-flashing]
+used-by: []
+notes: >
+  Read directly from the real running prose (PDF p. 172). This is a
+  distinct, specific diagnostic pitfall (naive service-condition analysis
+  predicting the wrong failure mode) — genuinely different from the general
+  cavitation/flashing mechanism topics already indexed in the Control Valve
+  Handbook (`cvh-topic-cavitation`/`cvh-topic-flashing`, both verified real
+  in Component Index — Control Valve Handbook ch5.md), cross-referenced
+  rather than duplicated.
+```
+
 ---
 
 ## Open Items
@@ -395,6 +789,22 @@ mediaStatus: unreviewed
   WhisperFlo vent/bypass service-condition tables (p.171, under Figure
   9D-12). None are figure-numbered, so none qualify for cataloguing under
   the figures-only rule.
+- **`kind: topic` pass, added 2026-09-17**: full chapter re-read for genuine
+  conceptual content beyond the 13 figures' own captions, same rigor as the
+  Control Valve Handbook and Oil & Gas Sourcebook passes completed the same
+  night. 12 new `pss-topic-*` entries added, each read directly from real
+  running prose (PDF pp. 159-172, `pdftotext -layout`) — three real,
+  specific finds worth naming: the Alloy-6-feedwater-corrosion Note box
+  (a documented misdiagnosis pattern, no figure at all), the condensate
+  recirc valve's flashing-vs-cavitation diagnostic pitfall (cross-referenced
+  to CVH's cavitation/flashing topics rather than duplicated), and the
+  chapter's own cross-reference to CVH ch7's turbine-bypass content
+  (mirrored via `relatedTopics`). No section was found to have zero
+  conceptual content beyond its tables — every section's real prose
+  supported at least one genuine topic entry. Chapter total is now 25
+  components (13 figures + 12 topics — the divider-page comparison table
+  itself was correctly left uncatalogued as a table, per the existing
+  figures-only exclusion above).
 - **Cross-reference findings**: no overlap found against Oil & Gas
   Sourcebook ch1 or other material already in context — this chapter's
   content (geothermal/combined-cycle/cogeneration plant systems) is

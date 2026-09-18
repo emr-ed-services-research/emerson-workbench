@@ -137,6 +137,74 @@ notes: >
 mediaStatus: unreviewed
 ```
 
+### Chapter 14 — Actuator-Positioner Design (printed pp. 14-3 – 14-6)
+
+```yaml
+id: pss-topic-positioner-gain-mechanism
+kind: topic
+teaches: >
+  Positioner gain for process-variability reduction has two distinct parts.
+  Static gain is sensitivity to small (≤0.125%) input-signal changes,
+  provided by a preamplifier stage (the source's own analogy: "similar in
+  function to the preamplifier contained in high fidelity sound systems") —
+  a nozzle-flapper or similar device in many pneumatic positioners. Dynamic
+  gain is the ability to then rapidly supply enough air volume to the
+  actuator, provided by a power-amplifier stage (a relay or spool valve).
+  Two-stage positioners using relays give high dynamic gain with minimal
+  steady-state air consumption; spool-valve positioners are popular for
+  simplicity but often omit the high-gain preamplifier entirely, giving low
+  static-gain sensitivity and longer dead time — some vendors compensate
+  with enlarged/reduced-overlap spool ports, which recovers dynamic gain but
+  can raise air consumption to 5x that of a comparable two-stage relay
+  positioner.
+concept-tags: [positioner gain, static gain, dynamic gain, preamplifier, power amplifier, spool valve, relay, air consumption]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Actuator-Positioner Design, pp. 14-3 – 14-4 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [cvh-topic-valve-response-time, cvh-topic-deadband]
+used-by: []
+notes: >
+  Checked against the whole vault's Component Index before authoring:
+  Control Valve Handbook's `cvh-topic-valve-response-time` (ch2) mentions
+  "positioner power-amplifier gain" only in passing — this entry's real
+  static-gain/preamplifier mechanism and the spool-valve-vs-relay air-
+  consumption tradeoff are not captured anywhere else in the vault, a
+  genuine addition, not a duplicate.
+```
+
+```yaml
+id: pss-topic-piston-diaphragm-speed-myth
+kind: topic
+teaches: >
+  A documented, counter-intuitive correction to conventional wisdom:
+  piston actuators are widely believed faster than spring-and-diaphragm
+  actuators because they test faster on a full 100%-step stroking-time
+  test — but for small (0.25%-2%) signal changes, the size that actually
+  matters in normal regulatory process control, industry research shows
+  spring-and-diaphragm actuators consistently outperform piston actuators.
+  The mechanism: piston actuators generally carry higher friction (O-ring
+  seals, more guide surfaces, alignment sensitivity, lubrication that fails
+  over time), which specifically hurts small-signal responsiveness even
+  though the piston's higher thrust capability makes a full stroke look
+  fast in isolation.
+concept-tags: [piston actuator, spring-and-diaphragm actuator, stroking time, small-signal response, friction, actuator selection]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Valve Response Time, p. 14-6 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pss-topic-positioner-gain-mechanism]
+used-by: []
+notes: >
+  Checked against the whole vault: this specific myth-correction (full-
+  stroke speed vs. small-signal responsiveness) is not stated anywhere in
+  Control Valve Handbook's response-time or deadband topics — a genuine,
+  distinct teaching point worth its own entry, not folded into the
+  otherwise-duplicated response-time material below.
+```
+
 ### Chapter 14 — Valve Type and Characterization (printed pp. 14-7 – 14-11)
 
 ```yaml
@@ -236,6 +304,40 @@ mediaStatus: unreviewed
 
 ## Open Items
 
+- **`kind: topic` pass (2026-09-17) — this chapter is substantially the
+  same content as Control Valve Handbook ch2 ("Control Valve Performance"),
+  confirmed directly, not assumed from titles alone.** Read this chapter's
+  full real prose (PDF pp. 205-217) before authoring anything. Checked each
+  candidate concept against the whole vault's Component Index and found
+  near-identical existing entries for: deadband and its causes
+  (`cvh-topic-deadband`), valve response time / T63 / dead time including
+  the same asymmetric-stroking-direction finding (`cvh-topic-valve-
+  response-time`), inherent vs. installed characteristic and valve gain
+  (`cvh-topic-installed-vs-inherent-characteristic`), valve oversizing
+  effects (`cvh-topic-valve-oversizing-effects`), and the closed-loop
+  economics argument using the same Valve-A/B/C-on-4-inch-line test setup
+  and the same Manual/Minimum-Variability reference lines
+  (`cvh-topic-closed-loop-economics`) — this is the same underlying
+  Fisher technical-services case study reused across both publications,
+  not independently distinct content. Following the same discipline Oil &
+  Gas Sourcebook ch5 established for its own duplicate noise content:
+  did NOT author near-duplicate `pss-topic-*` entries for any of these —
+  doing so would restate rather than add real value.
+  **Two genuinely distinct additions were authored** (`pss-topic-
+  positioner-gain-mechanism`, `pss-topic-piston-diaphragm-speed-myth`) —
+  real technical depth (the preamplifier/power-amplifier gain mechanism,
+  the piston-vs-diaphragm small-signal-response myth) not captured in any
+  existing CVH entry's summary, confirmed by direct text search before
+  authoring.
+  **One flagged, not fixed, enrichment candidate**: this chapter's real
+  prose includes a specific, fully-worked economic example
+  ($1,103,760/year, derived from 12,096 gal/day at $0.25/gal) that
+  `cvh-topic-closed-loop-economics` does not capture in its own summary —
+  whether that specific number is also present in CVH's own source PDF
+  (making this an incompleteness in CVH's existing summary, not a genuine
+  content difference between the two books) was not checked, since editing
+  another chapter's file is out of scope for this pass. Worth a follow-up
+  look if `cvh-topic-closed-loop-economics` is ever revisited.
 - **Chapter boundary** — confirmed directly by rendering and reading the
   p.205 "Chapter 14" divider, plus pp.217–220 to locate the real end of
   content. Chapter 14 = PDF pp. 205–217 (printed 14-1 through 14-13), zero

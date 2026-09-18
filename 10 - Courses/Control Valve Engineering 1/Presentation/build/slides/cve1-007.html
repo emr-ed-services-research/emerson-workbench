@@ -3,35 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 007 &mdash; Step 2: The Real Branch Point</title>
+<title>CVE1 &middot; Slide 007 &mdash; Four Forces, Not One</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m1, page 7 — eng.sizing.valve-selection-process [analyze ·
-       mechanism]. Re-tagged from application to mechanism during Stage 4
-       render-check review: .slide--role-application has no CSS shape for
-       a real figure (.tpl-fig-wrap/.tpl-fig), only .tpl-chart — using it
-       caused real clipping (verify.ps1 render check). Mechanism's
-       fig+list shape is the one this content (a figure plus a short
-       explanation) actually fits; "analyze" stays the level, independent
-       of role. Same source flowchart, Step 2's own judgment. -->
+  <!-- cve1-ch1-m1, page 7 — eng.sizing.actuator-force-awareness [apply ·
+       mechanism]. Rewritten to cite cvh-topic-valve-balance (WC, rebuild
+       attempt 4) — the real source text explains WHY unbalance area is what
+       it is (net pressure differential x net unbalance area; a balanced
+       trim routes pressure to both sides of the plug to largely, never
+       completely, cancel the net force), not just the lookup step. -->
   <article class="slide slide--role-mechanism" data-slide="7" data-deck="cve1">
-    <h1 class="slide-title">Step 2: The Real Branch Point</h1>
+    <h1 class="slide-title">Four Forces, Not One</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-valve-selection-process-flowchart.png" style="width:100%;height:100%;object-fit:contain" alt="Six-step valve selection flowchart, step 2: Calculate Preliminary Cv Required, check noise and cavitation levels.">
+          <img src="../assets/sourced/cvh5-fig5-2-unbalance-area-table.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.2, Typical Unbalance Areas of Control Valves">
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>Calculate a preliminary Cv</li>
-        <li><span class="num">2</span>Check it against noise and cavitation limits before treating it as final</li>
-        <li><span class="num">3</span>A Cv that fails either check forces a different trim type in Step 3, not a bigger valve</li>
+        <li><span class="num">1</span>Total actuator force = A (unbalance) + B (seat load) + C (packing friction) + D (other) &mdash; stroking thrust covers only part of A</li>
+        <li><span class="num">2</span>A comes from fluid pressure at shutoff: net pressure differential &times; net unbalance area. This valve is single-seated and unbalanced, so its full port area counts &mdash; a balanced trim would route pressure to both sides of the plug to cancel most, but never all, of that force</li>
+        <li><span class="num">3</span>Port dia. 2-5/16 in &rarr; unbalance area 4.20 in&sup2; (Fig. 5.2). A = 4.20 &times; 50 psi = 210 lbf</li>
+        <li><span class="num">4</span>Fig. 5.3 at Class II, 50 psi &asymp; 15 lbf/in. Circumference = &pi; &times; 2.3125 = 7.27 in, so B &asymp; 15 &times; 7.27 = 109 lbf</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100, Step 2 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., &sect;5.11&ndash;5.11.1.1 and Figure 5.2 &ldquo;Typical Unbalance Areas of Control Valves,&rdquo; p.123. Component Index: cvh-topic-valve-balance, cvh-cmp-unbalance-area-table.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">7</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

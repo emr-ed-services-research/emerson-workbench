@@ -3,30 +3,34 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 016 &mdash; Check Your Knowledge: Cavitation and Flashing</title>
+<title>CVE1 &middot; Slide 016 &mdash; Where Both Failures Start</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m2, page 16 — the module's check slide (course.json carries
-       no keyConcepts entry for it by schema design). Exercises the
-       counter-intuitive high-recovery finding (page 14) together with the
-       visual-signature diagnosis (page 15) — answerable only by someone
-       who connects "high-recovery valve" to elevated cavitation risk, not
-       assuming higher recovery is simply better. -->
-  <article class="slide slide--role-check" data-slide="16" data-deck="cve1">
-    <h1 class="slide-title">Check Your Knowledge: Cavitation and Flashing</h1>
+  <!-- cve1-ch1-m3, page 16 — eng.noise-cavitation.damage-diagnosis
+       [analyze · mechanism, develops]. The Model step: full vena-contracta
+       and flash/collapse mechanism, complete and correct on its own.
+       Citations added to cvh-topic-vena-contracta/cvh-topic-cavitation
+       (WC, rebuild attempt 4) — bullet 3's "collapse near solid surfaces"
+       detail and the noise description are the real source's own words,
+       not general knowledge. -->
+  <article class="slide slide--role-mechanism" data-slide="16" data-deck="cve1">
+    <h1 class="slide-title">Where Both Failures Start</h1>
     <div class="tpl-content">
-      <p class="tpl-prompt">A streamlined, high-recovery ball valve and a lower-recovery globe valve see identical upstream and downstream pressures. Which is more prone to cavitation, and why?</p>
-      <ul class="tpl-options">
-        <li>A.&nbsp;&nbsp;The globe valve &mdash; more internal turbulence causes more damage directly</li>
-        <li data-correct="true">B.&nbsp;&nbsp;The ball valve &mdash; its faster, higher pressure recovery is more likely to cross back above vapor pressure</li>
-        <li>C.&nbsp;&nbsp;Neither &mdash; cavitation risk depends only on upstream/downstream pressure, not recovery</li>
-        <li>D.&nbsp;&nbsp;The globe valve &mdash; lower recovery means the vena contracta pressure never drops as low</li>
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh5-fig5-6-vena-contracta.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.6, Vena Contracta Illustration">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Flow narrows through a restriction to a minimum area just downstream &mdash; the vena contracta &mdash; where pressure inside the valve is lowest, before recovering toward P2. This happens at the point of greatest restriction in every valve; what differs by design is how much pressure recovers afterward</li>
+        <li><span class="num">2</span>If that lowest pressure drops to or below the fluid's vapor pressure, the liquid flashes to vapor bubbles there</li>
+        <li><span class="num">3</span>If downstream pressure then recovers above vapor pressure, those bubbles collapse close to where they formed &mdash; releasing energy, producing a noise like gravel flowing through the valve, and tearing away material near solid surfaces. The collapse, not the flashing itself, is what erodes metal</li>
       </ul>
-      <p class="tpl-reveal">B &middot; More recovery means a higher chance of crossing back above vapor pressure &mdash; the counter-intuitive result the source itself states directly.</p>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., &sect;5.14.1 and Figure 5.6 &ldquo;Vena Contracta Illustration,&rdquo; p.128. Component Index: cvh-topic-vena-contracta, cvh-topic-cavitation, cvh-cmp-vena-contracta-diagram.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">16</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

@@ -148,6 +148,41 @@ notes: >
 ```
 
 ```yaml
+id: pp-topic-cavitation-in-pulp-stock
+kind: topic
+teaches: >
+  Cavitation behavior in low-consistency pulp stock (below 4%) is treated as
+  equivalent to water — the standard sizing/selection guidance applies
+  unchanged. Above 4% consistency, cavitation is generally not known to be
+  problematic, because the stock itself absorbs the majority of the energy
+  produced by the cavitating microjets (the same mechanical-attack mechanism
+  Figure 4-8 depicts, but the energy is dissipated into the fibrous stock
+  rather than the metal surface). The chapter's own closing Summary
+  reinforces this with a caveat: pulp stock's multi-phase flow may cause less
+  severe cavitation/flashing/turbulent-flow damage than water would predict,
+  but pulp stock can still drive other problems — erosion and corrosion —
+  depending on the specific process makeup and materials used, so the real
+  process media and conditions still need to be understood case by case, not
+  assumed safe purely from the consistency rule of thumb.
+concept-tags: [cavitation, pulp stock, consistency, microjet energy absorption, erosion, corrosion, industry-specific]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Section 'Cavitation in Pulp Stock,' p. 4-3 (PDF p. 61); reinforced in the chapter's closing 'Summary,' p. 4-14 (PDF p. 72)"
+relatedFigures: [pp-cmp-cavitation-implosion-mechanism, pp-cmp-typical-cavitation-damage-photo]
+relatedTopics: []
+used-by: []
+notes: >
+  Genuinely industry-specific content, not found in CVH ch5, Oil & Gas ch6,
+  or Power & Severe Service ch6's own cavitation/flashing chapters — verified
+  by direct search of all three files for "pulp stock" and related terms
+  before writing this entry (no matches). This is the standout Pulp & Paper-
+  specific addition from this chapter, read directly from both the real
+  mid-chapter passage and the Summary's own reinforcement, not paraphrased
+  from a single sentence in isolation.
+```
+
+```yaml
 id: pp-cmp-pressure-profiles-flashing-cavitating
 kind: figure
 teaches: >
@@ -216,6 +251,41 @@ notes: An analytical graph (3 labeled curves). Checked against the whole library
 ```
 
 ```yaml
+id: pp-topic-viscous-flow-sizing-correction
+kind: topic
+teaches: >
+  The standard liquid-sizing equations assume fully developed turbulent flow.
+  Laminar flow (all fluid particles moving parallel, no mixing) and turbulent
+  flow (highly random local velocity, significant mixing) are the two
+  bounding regimes, distinguished by the Reynolds number — a ratio of inertial
+  to viscous forces: below ~2,000 the flow is laminar/viscous, above ~3,000
+  it is turbulent/inviscid, with a transitional regime in between. This
+  matters for sizing because the available energy losses scale differently
+  by regime — proportional to velocity squared in turbulent flow, linearly
+  proportional to velocity in laminar flow — so the same flow rate produces a
+  different pressure differential depending on regime. The correction is
+  applied as C_v(required) = F_R × C_v(rated), where F_R is read from Figure
+  4-7 against a calculated valve Reynolds number (Re_v, itself a function of
+  Cv, flow rate, and fluid viscosity/density).
+concept-tags: [viscous flow, laminar flow, turbulent flow, Reynolds number, F_R correction factor, non-turbulent sizing]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Section 'Viscous Flow,' pp. 4-4–4-5 (PDF pp. 62-63)"
+relatedFigures: [pp-cmp-viscous-flow-correction-factors]
+relatedTopics: []
+used-by: []
+notes: >
+  Genuinely distinct from CVH ch5, Oil & Gas ch6, and Power & Severe Service
+  ch6's own cavitation/flashing chapters — verified by direct search of all
+  three for "viscous", "Reynolds", before writing this entry (no matches in
+  any). The existing `pp-cmp-viscous-flow-correction-factors` figure entry
+  describes the graph itself (F_R vs. Re_v curves) but not the regime
+  distinction or the reasoning for why the correction is needed — this topic
+  entry fills that gap rather than restating the figure's own caption.
+```
+
+```yaml
 id: pp-cmp-cavitation-implosion-mechanism
 kind: figure
 teaches: >
@@ -240,6 +310,42 @@ notes: >
   6-7) and the corresponding record in `Component Index — Power & Severe
   Service Sourcebook ch6.md` — the same source diagram reused across all
   three Sourcebooks.
+```
+
+```yaml
+id: pp-topic-cavitation-selection-coefficients
+kind: topic
+teaches: >
+  A real, named valve-selection framework distinct from the FL/xT-based
+  choked-flow terminology used earlier in this same chapter: F_L (pressure
+  recovery coefficient), Kc (cavitation coefficient — a valve/trim-style
+  parameter predicting the onset of cavitation-related damage and vibration,
+  ΔP_cavitation = Kc·(P1−Pv)), Ar (Application Ratio — a cavitation index
+  from actual service conditions, Ar = ΔP_flowing / (P1−Pv), indicating
+  flashing if Ar ≥ 1.0 or potential cavitation if Ar ≤ 1.0), and Ki (incipient
+  cavitation coefficient — predicts the onset of vapor-bubble
+  generation/collapse, though specific values are generally not published).
+  The real selection procedure: determine ΔP_flowing, calculate Ar, then
+  compare against a candidate valve/trim's own ΔP limit and Kc index —
+  select a valve/trim whose ΔP limit exceeds the service ΔP_flowing and whose
+  Kc exceeds the service Ar. The guidelines are explicitly caveated as
+  built from broad experience with real exceptions, water-only by default,
+  and not a substitute for local sales-office consultation on detailed
+  cavitating-service selection.
+concept-tags: [cavitation coefficient, Kc, application ratio, incipient cavitation, valve selection procedure, trim selection criteria]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Sections 'Cavitation / Flashing Damage Coefficients and Product Selection,' 'Terminology,' and 'Valve Selection Coefficient Criteria and Selection Procedure,' pp. 4-7–4-8 (PDF pp. 65-66)"
+relatedFigures: []
+relatedTopics: [pp-cmp-generalized-rc-curve]
+used-by: []
+notes: >
+  Genuinely distinct selection methodology, not found in CVH ch5, Oil & Gas
+  ch6, or Power & Severe Service ch6's own cavitation/flashing chapters —
+  verified by direct search of all three for "Application Ratio" and "Kc"
+  before writing this entry (no matches in any). This section has no figure
+  of its own — invisible to the original figures-only pass entirely.
 ```
 
 ### Chapter 4 — Hardware Choices and Cavitation Control Trims (printed pp. 4-9–4-13)

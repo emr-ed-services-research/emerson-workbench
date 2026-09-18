@@ -105,6 +105,190 @@ notes: >
   batch's scope — a future batch should catalogue them.
 ```
 
+### Chapter 9 — genuine conceptual content beyond the figure captions (`kind: topic`, added 2026-09-17)
+
+```yaml
+id: ogas-topic-natural-gas-treatment-plant-overview
+kind: topic
+concept-tags: [natural gas treatment, plant capacity, MMSCFD, fractionation, discharge compression, facility composition]
+status: current
+teaches: >
+  A natural gas treatment facility's real composition and scale, stated in
+  the chapter's own opening prose, not shown in Figure 9-1's block diagram
+  itself: every facility contains a receiving area, a treatment area, a
+  water-removal (dehydration) unit, a sulfur recovery unit, and a discharge
+  compression unit. Capacity in North America typically runs 50-500 MMSCFD;
+  where large reserves exist (e.g. the Middle East) facilities scale to
+  800 MMSCFD-1 BSCFD. Treatment units are sometimes combined with gas
+  fractionation units (separating natural gas liquids) — noted but not
+  covered further in this chapter (see Chapter 11, Fractionation). After
+  treatment, gas is compressed and injected into a high-pressure
+  distribution network at 1,200-1,700 psig for industrial or residential use.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 9 'Natural Gas Treatment,' opening prose and 'Discharge Compression' section, printed pp. 9-1–9-2 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-natural-gas-treatment-process-flow]
+relatedTopics: [ogas-topic-amine-treating-mechanism, ogas-topic-gas-dehydration-methods, ogas-topic-sulfur-recovery-claus-process]
+used-by: []
+notes: >
+  Read directly from the chapter's real running prose (pdftotext -layout,
+  PDF pp. 113-114). This is the plant-level orienting content Figure 9-1's
+  own `teaches` field (already catalogued) does not carry — the figure
+  shows which blocks exist and their order; this topic explains scale,
+  composition, and the discharge-compression endpoint the figure doesn't
+  depict at all (no block for it in Figure 9-1).
+```
+
+```yaml
+id: ogas-topic-amine-treating-mechanism
+kind: topic
+concept-tags: [amine treating, MEA, DEA, MDEA, contactor, lean amine, rich amine, regeneration, stripper, flash tank]
+status: current
+teaches: >
+  Why gas treatment uses a countercurrent contactor plus a regeneration
+  loop, and why amine type is a real selection variable rather than a
+  fixed choice: MEA (monoethanolamine) is used when complete H2S/CO2
+  removal is required; DEA (diethanolamine) is less reactive but tolerates
+  higher acid-gas loadings; MDEA (methyldiethanolamine) can selectively
+  remove H2S to pipeline spec while leaving some CO2 uncaptured. In the
+  contactor, sour gas enters the bottom and flows countercurrent to lean
+  amine entering the top; treated gas leaves the top (still saturated,
+  headed to dehydration) while rich amine (amine plus absorbed acid gases)
+  leaves the bottom. Regeneration: rich amine first enters a flash tank
+  (pressure reduced to flash off dissolved hydrocarbons, usable as fuel gas
+  or further treated), then passes through a heat exchanger into a solvent
+  stripper, where low-pressure steam strips the acid gases back out,
+  returning the amine to its lean state to repeat the cycle. The acid gas
+  driven off in the stripper is *not* disposed of directly — it goes
+  through a further, separate treatment step (typically using a different
+  amine derivative such as MDEA) before sulfur recovery — this is the tail
+  gas treatment system (Figure 9-8), a second application of the same
+  contactor/regeneration mechanism at smaller scale, not a different
+  process.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 9 'Natural Gas Treatment,' 'Gas Treatment' overview prose, printed pp. 9-1–9-2 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-amine-treatment-unit, ogas-cmp-tail-gas-treatment-system-ch9]
+relatedTopics: [ogas-topic-natural-gas-treatment-plant-overview, ogas-topic-sulfur-recovery-claus-process]
+used-by: []
+notes: >
+  Read directly from the chapter's real prose (PDF pp. 113-114). This is
+  the process-mechanism explanation neither `ogas-cmp-amine-treatment-unit`
+  (Figure 9-5) nor `ogas-cmp-tail-gas-treatment-system-ch9` (Figure 9-8)
+  carries in their own `teaches` fields — those catalogue the 12 and 8
+  numbered valve stations respectively, not why the contactor/regeneration
+  cycle works the way it does or why amine type is chosen per application.
+  The explicit statement that tail gas treatment is "very similar to that
+  previously discussed" (i.e. the same mechanism as the primary amine
+  treatment step) is the source's own words, confirmed at PDF p. 121.
+```
+
+```yaml
+id: ogas-topic-gas-dehydration-methods
+kind: topic
+concept-tags: [dehydration, absorption, adsorption, TEG, triethylene glycol, molecular sieve, glycol contactor]
+status: current
+teaches: >
+  Two real dehydration approaches exist, and the chapter explicitly scopes
+  which one it covers: absorption (contacting the gas with a liquid that
+  absorbs water vapor — ethylene glycol, diethylene glycol, or triethylene
+  glycol, TEG being the most popular, typically achieving <10 ppm water) and
+  adsorption (molecular sieves — solids with high surface area that attract
+  water molecules; more costly but yields greater dehydration, typically
+  used in LNG/cryogenic processes). The chapter states it focuses on
+  absorption technology only, despite control valves also existing in
+  molecular-sieve regeneration service. In the TEG process: wet gas passes
+  an inlet scrubber (removing solids/free liquids), enters the bottom of
+  the glycol contactor and flows countercurrent to lean glycol descending
+  from the top; lean glycol absorbs the water and leaves at the bottom
+  while dry gas exits the top. The rich glycol solution is then warmed,
+  flashed in a flash tank to remove dissolved gases, and further heated in
+  a boiler to remove residual water vapor before being cooled and pumped
+  back to the contactor — the same countercurrent-contact-plus-regeneration
+  pattern as amine treating, applied to water instead of acid gas.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 9 'Natural Gas Treatment,' 'Dehydration' overview prose, printed pp. 9-1–9-2 (right column) — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-teg-gas-dehydration-unit-ch9]
+relatedTopics: [ogas-topic-amine-treating-mechanism, ogas-topic-natural-gas-treatment-plant-overview]
+used-by: []
+notes: >
+  Read directly from the chapter's real prose (PDF p. 114, right column).
+  `ogas-cmp-teg-gas-dehydration-unit-ch9` (Figure 9-9) catalogues the 3
+  numbered valve stations on the TEG unit; this topic supplies the "why
+  absorption over adsorption, why TEG, what the countercurrent contact
+  actually does" content the figure entry doesn't carry. The chapter's own
+  explicit scoping-out of adsorption/molecular-sieve control valves is
+  noted so a future course doesn't assume that content exists here.
+```
+
+```yaml
+id: ogas-topic-sulfur-recovery-claus-process
+kind: topic
+concept-tags: [sulfur recovery, Claus process, H2S disposal, elemental sulfur, sulfuric acid, combustion, catalytic conversion]
+status: current
+teaches: >
+  H2S removed during gas treatment must be disposed of; the chapter names
+  two real methods — injection into underground formations (which also
+  enhances product recovery by maintaining well pressure) and conversion to
+  elemental sulfur — and states conversion is the more common method at
+  large treatment units, which is why the chapter focuses on it (most
+  elemental sulfur produced is itself used to make sulfuric acid). The
+  Claus process (or a variant) is the standard conversion method: an
+  initial combustion step in a furnace, then the combustion products pass
+  through a series of catalytic converters; at each converter's exit the
+  gas is condensed to remove the sulfur that has formed, and the vapor
+  leaving the condenser is at the sulfur dew point, requiring reheating
+  before it can pass to any additional converter stage. This combustion→
+  catalytic-conversion→condensation→reheat cycle is the real mechanism
+  Figure 9-10's numbered valve stations (reaction furnace, #1/#2 sulfur
+  condensers, #1/#2 reactor/reheaters) are placed against — the figure
+  entry catalogues what each valve does; this topic explains why the plant
+  is shaped as a repeating condense-then-reheat sequence at all.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 9 'Natural Gas Treatment,' 'Sulfur Recovery' overview prose, printed p. 9-2 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-sulfur-recovery-system, ogas-cmp-design-ed-cutaway]
+relatedTopics: [ogas-topic-amine-treating-mechanism, ogas-topic-natural-gas-treatment-plant-overview]
+used-by: []
+notes: >
+  Read directly from the chapter's real prose (PDF p. 114, right column).
+  Confirms why the chapter's Figure 9-10 has exactly two condenser/reheater
+  stages (#1 and #2) rather than one or three — that's the "additional
+  converters that may be present" language in the source, a real design
+  variable the figure entry alone doesn't explain.
+```
+
+```yaml
+id: ogas-topic-application-review-scaling
+kind: topic
+concept-tags: [valve count scaling, plant capacity, materials selection, sour gas, high nickel alloy, ANSI pressure class]
+status: current
+teaches: >
+  The chapter's "Application Review" section states a real capacity-to-
+  valve-count relationship before walking each numbered valve: a smaller
+  plant (100 MMCFD) uses roughly 50 control valves, while a larger unit
+  (1000 MMCFD) uses up to 300 — valve count scales with treatment capacity,
+  not a fixed design regardless of throughput. Most valves in these plants
+  are CL600 and below, with sizes varying by throughput within that
+  pressure-class ceiling. The chapter also names a real materials trend:
+  because of a global shift toward developing sour gas fields, plants are
+  moving toward high-nickel-alloy materials beyond the standard WCC/316 SST
+  combinations tabulated for each individual valve.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 9 'Natural Gas Treatment,' 'Application Review' introductory prose, printed pp. 9-2–9-3 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [ogas-topic-natural-gas-treatment-plant-overview]
+used-by: []
+notes: >
+  Read directly from the chapter's real prose (PDF pp. 114-115). This
+  framing paragraph precedes every individual valve write-up in the
+  chapter and is not tied to any single figure — it sets the scale/
+  materials context the per-valve tables (9-1 through 9-36) all sit inside,
+  but is itself genuinely orphaned from any one figure entry.
+```
+
 ### Chapter 9 — Inlet Separation (printed pp. 9-3)
 
 ```yaml

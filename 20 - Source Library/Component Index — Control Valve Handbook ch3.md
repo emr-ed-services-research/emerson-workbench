@@ -467,6 +467,94 @@ used-by: [{course: CVB, slide: cvb-023.html}]
 notes: The last figure of §3.1; §3.2 End Connections begins immediately after on the same printed page.
 ```
 
+```yaml
+id: cvh-topic-valve-body-fundamentals
+kind: topic
+concept-tags: [valve body requirements, containment, capacity, end connections, actuator attachment]
+status: current
+teaches: >
+  Every control valve body, regardless of style, must satisfy four
+  fundamental requirements: contain the fluid without external leakage;
+  have adequate capacity for the intended service; withstand the erosive,
+  corrosive, and temperature effects of the process; and incorporate
+  appropriate end connections plus actuator-attachment means to transmit
+  actuator thrust to the valve stem or shaft. Every body-style tradeoff
+  described in the rest of this section is measured against these four.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.1, p.55 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [cvh-topic-globe-valve-body-selection, cvh-topic-rotary-valve-body-selection]
+used-by: []
+notes: Read directly from the chapter's opening prose (PDF p.55) via pdftotext.
+```
+
+```yaml
+id: cvh-topic-globe-valve-body-selection
+kind: topic
+concept-tags: [globe valve, single-port, double-port, three-way, sanitary valve, unbalanced plug, balanced plug]
+status: current
+teaches: >
+  Globe-style valve bodies (single-port, double-port, three-way, sanitary)
+  trade off differently on unbalanced vs. balanced plug force, capacity,
+  and application fit. Single-port is simplest and most common but
+  presents the full unbalanced port area to the actuator unless
+  cage/retainer construction is used; guiding method (stem/port/bonnet)
+  further sets whether the plug is balanced or unbalanced by size.
+  Double-ported designs balance dynamic plug force by opening one port
+  while closing the other, permitting a smaller actuator for the same
+  capacity, but the industry has moved away from them (historically used
+  for viscous or contaminated fluids). Three-way valves converge or
+  diverge flow through three pipeline connections; actuator sizing needs
+  particular care for unbalanced-plug three-way constructions. Sanitary
+  valve bodies trade standard materials/finishes for FDA/3A/USP-certified,
+  self-draining, CIP/SIP-compatible construction for pharmaceutical/
+  biotech service.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.1.1, §3.1.1.1-3.1.1.5, §3.1.2, pp.55-58 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-flanged-angle-valve-body, cvh-cmp-bar-stock-valve-body, cvh-cmp-single-ported-globe-valve-body, cvh-cmp-cage-style-trim-balanced-plug-soft-seat, cvh-cmp-double-ported-globe-valve-body-reverse-acting, cvh-cmp-three-way-globe-valve-cutaway]
+relatedTopics: [cvh-topic-valve-body-fundamentals, cvh-topic-valve-plug-guiding-methods]
+used-by: []
+notes: Read directly from §3.1.1-3.1.2's real prose (PDF pp.55-58) via pdftotext; all six relatedFigures ids confirmed to exist in this same file before citing.
+```
+
+```yaml
+id: cvh-topic-rotary-valve-body-selection
+kind: topic
+concept-tags: [butterfly valve, segmented ball valve, eccentric plug valve, full-port ball valve, rangeability, rotary valve]
+status: current
+teaches: >
+  Rotary valve styles (butterfly, segmented ball, high-performance
+  butterfly, eccentric plug, full-port ball, multi-port selector) trade
+  rangeability, erosion resistance, torque, and cost differently. Standard
+  butterfly valves are economical and compact but exhibit roughly
+  equal-percentage characteristic and can need high-output actuators at
+  large size or high pressure drop; high-performance (double-offset)
+  butterfly valves give linear characteristic through 90° of rotation
+  with reduced seal wear, but a control range only about one-third that
+  of ball or globe valves, requiring careful sizing to avoid control
+  problems as process load changes. Segmented V-notch ball valves give
+  good rangeability (>300:1), control, and shutoff, and suit erosive,
+  viscous, or slurry service; the ball's continuous seal contact produces
+  a shearing, self-cleaning action. Eccentric plug valves minimize seat
+  wear and friction via a disk path that clears the seat on opening,
+  handle high temperature and pressure drop, and are available in
+  hardened/ceramic materials for erosion resistance. Full-port ball
+  valves present little to no flow restriction (allowing pigging) but
+  must rotate 15-20° before absorbing significant pressure drop, so a
+  reduced-bore or attenuated design is typically needed for real
+  throttling duty. Actuator selection must account for these differing
+  torque/force demands in every case.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.1.3, §3.1.3.1-3.1.3.6, pp.58-63 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-butterfly-shaft-offset-disc-center, cvh-cmp-segmented-v-notch-ball, cvh-cmp-butterfly-control-valve, cvh-cmp-ball-valve-cavitation-noise-options, cvh-cmp-high-performance-butterfly-valve, cvh-cmp-pressure-assisted-seal-configuration, cvh-cmp-eccentric-plug-valve-body, cvh-cmp-full-port-ball-control-valve, cvh-cmp-full-port-ball-valve-trunnion, cvh-cmp-multi-port-flow-selector-valve]
+relatedTopics: [cvh-topic-valve-body-fundamentals, cvh-topic-actuator-type-selection]
+used-by: []
+notes: Read directly from §3.1.3's real prose (PDF pp.58-63) via pdftotext; all ten relatedFigures ids confirmed to exist in this same file before citing.
+```
+
 ### Batch 2 — Control Valve End Connections (printed pp. 64–65)
 
 ```yaml
@@ -519,6 +607,37 @@ notes: >
   Weld-Ends, Butt Weld-Ends) — §6.3 applies if ever placed on a slide. Same
   page as `cvh-cmp-typical-bonnet-flange-stud-bolts` (Figure 3.19), which
   opens §3.3 immediately after.
+```
+
+```yaml
+id: cvh-topic-end-connection-selection
+kind: topic
+concept-tags: [screwed ends, flanged ends, welded ends, end connection selection]
+status: current
+teaches: >
+  The three common control valve end-connection methods trade economy
+  against serviceability and temperature range. Screwed (NPT) ends are
+  the most economical, but limited to NPS 2 or smaller, not recommended
+  at elevated temperature, and complicate valve removal since a
+  flanged/union joint elsewhere in the line must be broken to unscrew the
+  body from the pipeline. Bolted gasketed flanges (flat-face, raised-face,
+  ring-type-joint) are easily removed and cover the full working range
+  most control valves are built for, from near absolute zero to ~815°C,
+  and are the only style available on all valve sizes; flat-face suits
+  low-pressure cast-iron/brass bodies, raised-face is standard on
+  steel/alloy bodies, and ring-type-joint suits the highest pressures (to
+  15,000 psig) but not high temperature. Welded ends (socket-weld to NPS
+  2, butt-weld for NPS 2-1/2 and larger) are leak-tight at all
+  pressures/temperatures and economical, but are far harder to remove
+  from the line and limited to weldable materials; low-temperature
+  composition trim must be removed before welding to avoid heat damage.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.2, §3.2.1-3.2.4, pp.63-65 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-bolted-flange-end-connections, cvh-cmp-welded-end-connections]
+relatedTopics: [cvh-topic-valve-body-fundamentals]
+used-by: []
+notes: Read directly from §3.2's real prose (PDF pp.63-65) via pdftotext.
 ```
 
 ### Batch 3 — Valve Body Bonnets (printed pp. 65–67)
@@ -672,6 +791,41 @@ notes: >
   not an extraction artifact or an error introduced in this catalog — see
   Open Items.
   Crop corrected 2026-09-14: the original crop included the printed caption line and a stray fragment of the section heading above the figure. Re-cropped to the figure alone.
+```
+
+```yaml
+id: cvh-topic-bonnet-function-and-types
+kind: topic
+concept-tags: [bonnet, packing box, extension bonnet, bellows seal bonnet, pressure retaining]
+status: current
+teaches: >
+  The bonnet is the part of a globe/angle valve body assembly the plug
+  stem moves through — it is a pressure-retaining component, provides the
+  actuator-mounting means, and houses the packing box; rotary valves
+  generally have no bonnet (packing is housed in the body or a separate
+  bolted component). On cage/retainer-trim bodies, the bonnet also
+  supplies the bolting-up loading force that seals the body-bonnet joint,
+  the cage-top gasket, and the seat-ring-to-body gasket, and it aligns
+  the cage (which in turn guides the plug) to keep plug/seat/packing
+  alignment correct. Extension bonnets move the packing box away from
+  process-temperature extremes so packing temperature stays in its rated
+  range — cast extensions give better high-temperature cooling via
+  emissivity, fabricated (e.g. stainless tubing) extensions suit cold
+  service by minimizing heat influx, and wall thickness is kept thin
+  either way to limit heat transfer. Bellows seal bonnets eliminate stem
+  leakage entirely (<1x10-6 cc/sec helium) for toxic/volatile/radioactive/
+  expensive fluids by sealing the stem from the process with a bellows,
+  backed by a standard/environmental packing box above it as a
+  catastrophic-failure backup; welded-leaf bellows are shorter but may
+  have limited service life, mechanically-formed bellows are taller but
+  more reliable.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.3, §3.3.1, §3.3.2, pp.65-67 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-typical-bonnet-flange-stud-bolts, cvh-cmp-bonnet-variations, cvh-cmp-fabricated-extension-bonnet, cvh-cmp-enviroseal-bellows-seal-bonnet, cvh-cmp-welded-leaf-bellows, cvh-cmp-mechanically-formed-bellows]
+relatedTopics: [cvh-topic-valve-body-fundamentals]
+used-by: []
+notes: Read directly from §3.3's real prose (PDF pp.65-67) via pdftotext.
 ```
 
 ### Batch 4 — Control Valve Packing (printed pp. 68–74)
@@ -970,6 +1124,55 @@ used-by: [{course: CVB, slide: cvb-038.html}]
 notes: Direct rotary-valve counterpart to `cvh-cmp-sliding-stem-environmental-packing-selection` (Figure 3.35); the last figure of §3.4.
 ```
 
+```yaml
+id: cvh-topic-fugitive-emissions-standards
+kind: topic
+concept-tags: [fugitive emissions, LDAR, ISO 15848, ANSI FCI 91-1, leakage class, type testing]
+status: current
+teaches: >
+  Fugitive emissions (non-point-source VOC leaks from equipment,
+  estimated at over 400 million lb/year in the US) are regulated through
+  Leak Detection and Repair (LDAR) programs requiring periodic monitoring
+  of all valves at a 500 ppmv threshold (100 ppmv in some cities); the
+  monitoring interval itself is tied to the percentage of valves found
+  leaking, stepping from monthly down to annual as the leaking fraction
+  drops below 0.5%. Internationally, ISO 15848-1 is a classification and
+  qualification TYPE test — performed once per valve-and-packing design,
+  with the qualification then applying to every valve built to that
+  design — distinct from ISO 15848-2 production testing, a per-assembly
+  qualification test. ISO 15848-1 differs in mechanical-cycle count
+  between control valves (10% of travel cycled on both sides of the 50%
+  position) and isolation valves (full stroke), and its leakage-class
+  measurement methods (a leak-rate-per-stem-perimeter method, or a
+  sniffing-concentration method, denoted H for helium-tested or M for
+  methane-tested classes) are explicitly stated by the standard to have
+  NO correlation to each other, nor to the US EPA Method 21 sniffing
+  approach ANSI/FCI 91-1 uses (100/500 ppm thresholds against defined
+  mechanical/thermal cycle counts). A packing system's real environmental
+  rating is therefore always tied to which specific standard and test
+  method it was qualified against, not one universal number.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.4.3, §3.4.4, pp.68-70 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-voc-ldar-measurement-frequency, cvh-cmp-iso15848-1-qualification-requirements, cvh-cmp-iso15848-1-measured-leak-rate, cvh-cmp-iso15848-1-measured-leak-concentration, cvh-cmp-fci91-1-leakage-class-summary]
+relatedTopics: [cvh-topic-packing-selection-criteria]
+used-by: []
+notes: >
+  Read directly from §3.4.3-3.4.4's real prose (PDF pp.68-70) via
+  pdftotext. `relatedTopics` cross-references `cvh-topic-packing-selection-
+  criteria` in Component Index — Control Valve Handbook ch5.md (cross-
+  chapter link, confirmed that id exists there) — that ch5 topic covers
+  packing-selection criteria (pressure/temperature vs. environmental-service
+  axes); this ch3 topic covers the regulatory/standards landscape those
+  criteria are tested against, a genuinely distinct concept, not a
+  duplicate. Chapter 3's own §3.4.1-3.4.15 packing-material-family content
+  (PTFE/graphite/ENVIRO-SEAL/ISO-Seal variants and their Figure 3.35/3.36
+  comparison tables) substantially overlaps with ch5's existing
+  cvh-topic-packing-selection-criteria and cvh-topic-packing-friction —
+  deliberately NOT re-indexed as a separate topic here to avoid a real
+  duplicate; flagged in this file's own Open Items instead.
+```
+
 ### Batch 5 — Characterization, valve plug guiding, and restricted-capacity trim (printed pp. 74–77)
 
 ```yaml
@@ -1104,6 +1307,88 @@ source:
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-035.html}]
 notes: The last figure before §3.8 Actuators begins, on the same printed page.
+```
+
+```yaml
+id: cvh-topic-flow-characterization-mechanism
+kind: topic
+concept-tags: [flow characteristic, cage window shape, plug contour, linear, equal-percentage, quick-opening]
+status: current
+teaches: >
+  Inherent flow characteristic (linear, equal-percentage, quick-opening)
+  is physically produced by the shape of the flow opening the plug
+  uncovers as it travels — in cage-guided globe bodies, by the window
+  shape cut into the cylindrical cage wall; in non-cage-guided designs,
+  by the contour of the valve plug surface adjacent to the seat ring.
+  Cage-guided construction lets the characteristic be changed by swapping
+  the cage alone, without changing plug or seat ring, and standard cages
+  work with either balanced or unbalanced trim; noise-attenuation or
+  anti-cavitation cages typically force a linear characteristic and
+  require flow in one specific direction, sometimes requiring the body to
+  be reversed in the pipeline. The resulting flow-rate/travel curve
+  itself (the actual linear/equal-percentage/quick-opening shapes) is
+  covered in depth in Chapter 5, not repeated here.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.5, §3.5.1, pp.74-76 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-characterized-cages-globe, cvh-cmp-inherent-flow-characteristic-curves, cvh-cmp-plug-contour-flow-characterization, cvh-cmp-quick-opening-construction]
+relatedTopics: [cvh-topic-flow-characteristics]
+used-by: []
+notes: >
+  Read directly from §3.5-3.5.1's real prose (PDF pp.74-76) via pdftotext,
+  including the source's own explicit line "described further in Chapter
+  5" confirming this is deliberately the mechanism-only half of the
+  concept. `relatedTopics` cross-references `cvh-topic-flow-characteristics`
+  in Component Index — Control Valve Handbook ch5.md (cross-chapter link,
+  confirmed that id exists there).
+```
+
+```yaml
+id: cvh-topic-valve-plug-guiding-methods
+kind: topic
+concept-tags: [cage guiding, top and bottom guiding, stem guiding, port guiding, plug alignment]
+status: current
+teaches: >
+  Accurate plug-to-seat-ring alignment is achieved by one of several
+  self-descriptively-named guiding methods: cage-guiding (the plug OD
+  runs close to the cage's inside wall through the whole travel range, so
+  bonnet/cage/seat-ring self-align as the assembly is built);
+  top-and-bottom-guiding (guide bushings in both the bonnet and a bottom
+  flange, typical of double-ported bodies); top-guiding (a single guide
+  bushing in the bonnet or body, or the packing itself); stem-guiding (a
+  bonnet bushing acting on the stem); and port-guiding (the plug is
+  aligned by the valve body's own port). Which method a given body style
+  uses directly determines its unbalanced-vs-balanced force behavior.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.6, pp.76-77 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-cage-guiding-plug-guiding-cross-section]
+relatedTopics: [cvh-topic-globe-valve-body-selection]
+used-by: []
+notes: Read directly from §3.6's real prose (PDF pp.76-77) via pdftotext.
+```
+
+```yaml
+id: cvh-topic-restricted-capacity-trim
+kind: topic
+concept-tags: [restricted capacity trim, reduced capacity, adapter parts, future flow growth]
+status: current
+teaches: >
+  Restricted- or reduced-capacity trim lets a body sized for future flow
+  growth, or oversized in error, still control properly today — the
+  alternative (an expensive pipeline reducer) is avoided. Cage-guided
+  bodies typically achieve this by fitting plug/cage/seat-ring parts
+  scaled from a smaller valve size, using adapter pieces above the cage
+  and below the seat ring to mate the smaller parts to the larger body;
+  most manufacturers keep these reduced-capacity part combinations as
+  standard offerings since the need is common.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.7, pp.76-77 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-adapter-reduced-flow-capacity]
+relatedTopics: []
+used-by: []
+notes: Read directly from §3.7's real prose (PDF pp.76-77) via pdftotext.
 ```
 
 ### Batch 6 — Actuators (printed pp. 77–80)
@@ -1329,6 +1614,49 @@ notes: >
   Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the figure alone.
 ```
 
+```yaml
+id: cvh-topic-actuator-type-selection
+kind: topic
+concept-tags: [diaphragm actuator, piston actuator, manual actuator, rack-and-pinion actuator, electric actuator, actuator selection]
+status: current
+teaches: >
+  Actuator type is chosen on thrust/speed/cost/failure-mode tradeoffs
+  distinct from the valve-body decision. Spring-and-diaphragm actuators
+  are the most common — dependable, simple, economical — available
+  direct-acting, reverse-acting, field-reversible, or adapted for direct
+  rotary-valve mounting; net thrust is diaphragm force minus opposing
+  spring force, and required thrust plus available supply pressure set
+  the size. Piston actuators use higher supply pressure (to 150 psig) to
+  deliver maximum thrust and the fastest stroking speed, either
+  double-acting (max force both directions, needing accessories like trip
+  valves or lock-up systems to fail safely on supply loss) or
+  spring-return (inherently fail-open or fail-closed); rotary-valve
+  versions add a sliding cylinder seal so the stem can move laterally as
+  well as axially. Manual actuators trade automatic control for low cost
+  and simplicity, commonly used on bypass valves during maintenance or
+  shutdown of the automatic loop. Rack-and-pinion actuators are compact
+  and economical for rotary valves but their backlash confines them to
+  on/off duty, not throttling. Electric actuators (motor plus gear
+  reduction) suit sites lacking instrument air or with too few valves to
+  justify a compressor, traditionally on/off-only though some now support
+  continuous control; brushless motors reduce burnout from frequent
+  on/off cycling, but purchase cost stays above pneumatic actuation.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§3.8, §3.8.1-3.8.5, pp.77-80 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-field-reversible-multi-spring-actuator, cvh-cmp-diaphragm-actuator-rotary-valve, cvh-cmp-double-acting-piston-actuator, cvh-cmp-scotch-yoke-piston-actuator, cvh-cmp-manual-actuator-sliding-stem, cvh-cmp-manual-actuator-rotary, cvh-cmp-rack-and-pinion-actuator, cvh-cmp-electric-actuator-sliding-stem, cvh-cmp-electric-actuator-rotary]
+relatedTopics: [cvh-topic-rotary-valve-body-selection, cvh-topic-actuator-force-selection]
+used-by: []
+notes: >
+  Read directly from §3.8-3.8.5's real prose (PDF pp.77-80) via pdftotext;
+  all nine relatedFigures ids confirmed to exist in this same file before
+  citing. `relatedTopics` cross-references `cvh-topic-actuator-force-
+  selection` in Component Index — Control Valve Handbook ch5.md
+  (cross-chapter link, confirmed that id exists there) — this ch3 topic
+  covers WHICH actuator type to choose; ch5's topic covers HOW MUCH force
+  that actuator must deliver once chosen, a genuinely distinct concept.
+```
+
 ---
 
 ## Open items
@@ -1395,3 +1723,19 @@ notes: >
   references them. No image crops exist yet for any record in this file.
 - No asset-variant-registry or `Curriculum —` writes were made from this pass —
   out of scope for a standing Component-Index-only cataloging batch.
+- **`kind: topic` pass, 2026-09-17 (WC).** Ten new topic entries added,
+  covering every genuine concept found in the chapter's real body prose
+  beyond what a figure caption alone teaches: valve-body fundamentals,
+  globe- and rotary-valve body selection, end-connection selection,
+  bonnet function/types, fugitive-emissions standards, flow-
+  characterization mechanism, plug-guiding methods, restricted-capacity
+  trim, and actuator-type selection. **Deliberately NOT indexed as a
+  separate topic:** §3.4.1-3.4.15's packing-material-family content
+  (PTFE/graphite/ENVIRO-SEAL/ISO-Seal variants and Figures 3.35/3.36's
+  comparison tables) — this substantially overlaps with `cvh-topic-
+  packing-selection-criteria` and `cvh-topic-packing-friction`, already
+  indexed in `Component Index — Control Valve Handbook ch5.md`; adding a
+  third, ch3-scoped version would be a real duplicate, not new coverage.
+  All `relatedFigures`/`relatedTopics` cross-references (including the
+  four cross-chapter links into ch5) were verified to resolve to real
+  existing ids before being cited, not assumed.

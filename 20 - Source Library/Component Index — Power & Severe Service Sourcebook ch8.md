@@ -176,6 +176,61 @@ notes: Retires the tea-kettle stand-in used in every prior sketch in this chapte
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-early-power-plant-context
+kind: topic
+teaches: >
+  Why efficiency is the whole chapter's motivation, stated with real
+  historical numbers: the tea-kettle sketch's efficiency is "close to
+  zero," and the source frames the entire rest of the chapter as the
+  story of engineers improving on it. Until the early 1920s, U.S. electric
+  plants used over three pounds of coal per kilowatt-hour; by the time of
+  writing, the national average was under one pound — a real threefold
+  efficiency gain. In 1985, U.S. coal-fired plants alone burned 693
+  million tons of coal to produce 1,401 billion kWh (64% of steam-
+  generated electricity that year, vs. 5% oil, 13% gas, 18% nuclear); had
+  1985 output been generated at 1920s efficiency, over two billion tons of
+  coal would have been needed instead.
+concept-tags: [power plant primer, efficiency history, fuel mix, coal consumption]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, pp. 8-1 – 8-2 (PDF pp. 85-86) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-basic-kettle-turbine-generator]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly via pdftotext, PDF pp. 85-86. This is the chapter's own
+  stated reason for existing — every later system added to the sketch is
+  presented as one more efficiency improvement — but the specific
+  historical statistics aren't captured in any figure's own `teaches`
+  field.
+```
+
+```yaml
+id: pss-topic-coal-combustion-chemistry
+kind: topic
+teaches: >
+  Why complete combustion matters, at the chemistry level the stoker-
+  firing figure doesn't state: burning carbon with insufficient oxygen
+  produces CO (partially burned, energy still recoverable) rather than
+  CO2 (fully burned); the goal is always maximizing CO2 yield. Achieving
+  this requires supplying more air than the exact stoichiometric
+  requirement (about 11 lb of dry air per lb of dry coal, more in
+  practice given variable coal composition and moisture) — but "excess
+  air" beyond that point actively hurts efficiency by absorbing heat that
+  should have gone to the boiler water.
+concept-tags: [combustion chemistry, excess air, CO CO2 formation, coal firing]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, p. 8-2 (PDF p. 86) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-stoker-fired-boiler]
+relatedTopics: []
+used-by: []
+notes: Read directly via pdftotext, PDF p. 86.
+```
+
 ### Chapter 8 — Feedwater Control and Heat Recovery (printed pp. 8-4 – 8-6)
 
 ```yaml
@@ -399,7 +454,68 @@ notes: >
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-vacuum-and-turbine-work
+kind: topic
+teaches: >
+  Why a vacuum at the turbine exhaust increases usable work, distinct
+  from the vacuum-cube/gallon-can demonstrations' own physics-of-
+  condensation content: steam exiting the turbine must push against
+  roughly 15 psi of atmospheric resistance to escape, and doing that push
+  costs work exactly the way turning the turbine blades does. Removing
+  that resistance (creating a vacuum) means the same steam pressure drop
+  through the turbine yields more usable shaft work — equivalent to
+  raising the inlet steam pressure without actually doing so. This is the
+  reasoning link between "why build a condenser at all" and the
+  cube/can demonstrations that follow it.
+concept-tags: [condenser rationale, turbine backpressure, vacuum, exhaust work]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, pp. 8-6 – 8-7 (PDF pp. 90-91) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-vacuum-cube-demonstration, pss-cmp-primer-condenser-cutaway-concept]
+relatedTopics: []
+used-by: []
+notes: Read directly via pdftotext, PDF pp. 90-91.
+```
+
 ### Chapter 8 — Efficiency and Regenerative Feedwater Heating (printed pp. 8-10 – 8-13)
+
+```yaml
+id: pss-topic-steam-cycle-thermal-efficiency
+kind: topic
+teaches: >
+  The chapter's real thermodynamics core, given as a usable formula with
+  two worked numeric examples: turbine/heat-engine efficiency depends
+  only on the absolute-temperature range the working fluid falls through
+  (E = (T1 − T2)/T1 × 100), not on which fluid is used. A theoretical
+  perfect engine taking 400°F (860°R) steam and exhausting at atmospheric
+  212°F (672°R) is 21.8% efficient; adding a condenser to drop the
+  exhaust to 5 psia (162°F, 622°R) raises that to 27.5% — the same
+  numeric justification for why condensers, high steam pressures, and low
+  exhaust temperatures all matter. The source states this ceiling is a
+  consequence of the second law of thermodynamics: recovering all the
+  fuel's heat would require exhausting at absolute zero, which is
+  physically unreachable (ambient temperature is ~490°F above it), and
+  refrigerating the exhaust would cost more power than it recovers.
+  Real modern superheat/reheat/regenerative-heating cycles reach about
+  32% thermal efficiency; the most efficient conventional plants of the
+  source's era reach about 40%.
+concept-tags: [thermal efficiency, second law of thermodynamics, Carnot-style efficiency formula, condenser rationale, superheat rationale]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, pp. 8-9 – 8-10 and 8-14 – 8-15 (PDF pp. 93-94, 98-99) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-condenser-cutaway-concept, pss-cmp-primer-superheat-reheat-diagram]
+relatedTopics: [pss-topic-vacuum-and-turbine-work]
+used-by: []
+notes: >
+  Read directly via pdftotext, PDF pp. 93-94 and 98-99 (the source
+  revisits this same formula twice, once introducing it and once
+  applying it to the fully-superheated/reheated system). Both worked
+  numeric examples (21.8%→27.5%; the 32%/40% real-plant figures)
+  transcribed exactly, not paraphrased.
+```
 
 ```yaml
 id: pss-cmp-primer-pulverized-coal-firing
@@ -498,6 +614,58 @@ notes: >
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-regenerative-heating-economics
+kind: topic
+teaches: >
+  Why extracting steam mid-turbine for feedwater heating beats letting it
+  all reach the condenser: in even a modern condensing turbine,
+  roughly two-thirds of the steam's heat is still present at the exhaust
+  and is carried away, wasted, by the condenser cooling water. Steam
+  extracted before the condenser and used to heat feedwater wastes none
+  of that heat — it's absorbed directly into the feedwater, reducing
+  heat unit-for-heat-unit what the boiler must supply. This is why more
+  extraction stages keep improving efficiency (each stage heats the
+  water through one more temperature increment with no fuel penalty) —
+  but the source is explicit this has a real economic ceiling: modern
+  stations commonly use four or five stages, some of the most modern use
+  seven or eight, and the total steam that can usefully be extracted is
+  capped by how much heat the feedwater actually needs.
+concept-tags: [regenerative feedwater heating, extraction steam economics, thermal efficiency, diminishing returns]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, pp. 8-11 – 8-13 (PDF pp. 95-97) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-single-extraction-feedwater-heater, pss-cmp-primer-two-stage-regenerative-feedwater-heating, pss-cmp-primer-four-stage-feedwater-heating-diagram]
+relatedTopics: [pss-topic-steam-cycle-thermal-efficiency]
+used-by: []
+notes: Read directly via pdftotext, PDF pp. 95-97.
+```
+
+```yaml
+id: pss-topic-pulverized-coal-control-flexibility
+kind: topic
+teaches: >
+  Why pulverized-coal firing displaced stoker firing in most large modern
+  plants: a stoker always keeps a bed of coal on the grate holding real
+  reserve heat, so even a complete fuel-supply cutoff keeps the boiler
+  burning for a while and limits how large a stoker-fired boiler can
+  practically be built. Pulverized coal (like oil or gas) has no such
+  reservoir — combustion stops essentially instantly when fuel supply
+  stops — which is precisely why it gives much more flexible, responsive
+  control and supports much larger boilers, at the cost of that built-in
+  buffering.
+concept-tags: [pulverized coal, stoker firing, combustion control flexibility, boiler sizing]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, p. 8-10 (PDF p. 94) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-pulverized-coal-firing, pss-cmp-primer-stoker-fired-boiler]
+relatedTopics: []
+used-by: []
+notes: Read directly via pdftotext, PDF p. 94.
+```
+
 ### Chapter 8 — Draft System, Superheat, and Reheat (printed p. 8-14)
 
 ```yaml
@@ -542,6 +710,64 @@ delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Labelled (BOILER, BOILER TUBES, PRIMARY SUPERHEATER, REHEAT, MAIN STEAM, REHEATED STEAM).
 mediaStatus: unreviewed
+```
+
+```yaml
+id: pss-topic-boiler-water-chemistry-and-emissions
+kind: topic
+teaches: >
+  Two real operating-cost pressures on a modern station beyond the core
+  thermal cycle: (1) feedwater purity — oxygen in hot boiler water is
+  highly corrosive and scale-forming minerals foul boiler heating
+  surfaces at the tremendous throughput rates (millions of pounds/hour,
+  continuous) modern high-pressure boilers run at, driving evaporator,
+  ion-exchange demineralizer, or chemical-precipitation treatment systems
+  plus a deaerating heater to boil off dissolved oxygen; continuous or
+  periodic boiler "blowdown" is required to keep impurity concentration
+  from building up as water recycles, with continuous-blowdown systems
+  recovering the discarded heat via a heat exchanger rather than losing
+  it outright; and (2) emissions — fine ash/dust removal (electrostatic
+  precipitators charging and collecting particles, or cyclone/water-spray
+  systems) and flue gas desulfurization for sulfur oxides, both described
+  as expensive, high-skill systems that add real operating complexity
+  beyond the thermal cycle itself.
+concept-tags: [feedwater treatment, boiler blowdown, deaerating heater, electrostatic precipitator, flue gas desulfurization, emissions control]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, pp. 8-15 – 8-16 and 8-18 (PDF pp. 99-100, 102) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-complete-plant-diagram]
+relatedTopics: []
+used-by: []
+notes: Read directly via pdftotext, PDF pp. 99-100 and 102.
+```
+
+```yaml
+id: pss-topic-auxiliary-turbine-desuperheating-rationale
+kind: topic
+teaches: >
+  Why the boiler feed pump's own drive turbine receives reduced,
+  desuperheated steam rather than the main superheated header steam: an
+  auxiliary turbine like this doesn't need the main turbine's thermal
+  efficiency (its exhaust heat is returned to the system anyway), and the
+  metals capable of handling superheated steam are expensive — so it is
+  more economical to first drop the main header steam's pressure through
+  a reducing valve, then desuperheat it by spraying in water, delivering
+  low-pressure saturated steam to the auxiliary turbine instead.
+concept-tags: [auxiliary turbine, boiler feed pump turbine, desuperheater, reducing valve, steam conditioning rationale]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, p. 8-18 (PDF p. 102) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-complete-plant-diagram]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly via pdftotext, PDF p. 102. This is the real reasoning
+  behind the "desuperheater" and "reducing valve" labels the complete-
+  plant-diagram figure's own notes already flag as connecting to Chapter
+  7's desuperheater content — that figure names the components, this
+  topic entry is the "why" behind them.
 ```
 
 ### Chapter 8 — The Complete Plant (printed pp. 8-17 – 8-19)
@@ -608,10 +834,83 @@ notes: Labelled (TO SOURCE OF D-C, BRUSHES, COLLECTOR RINGS, MAGNET). Last figur
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-generator-excitation-and-voltage-control
+kind: topic
+teaches: >
+  Why a real generator uses an electromagnet rather than the simple
+  permanent bar magnet shown in the chapter's early sketches (a permanent
+  magnet can't produce a strong enough field), and how that changes what
+  can be controlled: the exciter circuit (a separate small DC generator
+  on the same shaft, supplying current to the field coils via the
+  collector rings) controls generator output VOLTAGE by varying field
+  excitation current, while the steam-turbine governor separately
+  controls generator SPEED — and that speed control is so precise that
+  generator frequency serves as the time standard behind synchronous
+  electric clocks. Also covers why transmission voltage is stepped up via
+  transformers (modern generators produce 13,000-26,000 V directly;
+  transformers, some over 99% efficient, step this up for long-distance
+  transmission).
+concept-tags: [generator excitation, exciter circuit, voltage control, turbine governor, speed control, transformer, synchronous clocks]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, pp. 8-17 and 8-19 – 8-20 (PDF pp. 101, 103-104) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-generator-exciter-collector-rings]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly via pdftotext, PDF pp. 101, 103-104. Substantially extends
+  the exciter/collector-rings figure's own physical-mechanism description
+  with the functional voltage-vs-speed control distinction, which the
+  figure's own `teaches` field already gestures at but doesn't fully
+  state.
+```
+
+```yaml
+id: pss-topic-turbogenerator-overspeed-protection
+kind: topic
+teaches: >
+  Why protective instrumentation on a large turbogenerator is taken so
+  seriously, with a real quantified danger: a 40-ton generator rotor
+  spinning at 3600 rpm carries about 650 million foot-pounds of
+  rotational energy — the source's own comparison: roughly the kinetic
+  energy of a 40-ton jet airliner at 500 mph. If load suddenly drops and
+  the turbine governor fails to respond, the machine can overspeed and
+  explode from centrifugal force within seconds, which is why stations
+  run continuous instrumentation for shaft speed, eccentricity, vibration,
+  and axial expansion, plus differential relays guarding against internal
+  electrical failure.
+concept-tags: [overspeed protection, turbine governor failure, rotational energy, turbogenerator instrumentation]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Body prose, p. 8-19 (PDF p. 103) — not anchored to any single diagram"
+relatedFigures: [pss-cmp-primer-complete-plant-diagram]
+relatedTopics: [pss-topic-generator-excitation-and-voltage-control]
+used-by: []
+notes: Read directly via pdftotext, PDF p. 103.
+```
+
 ---
 
 ## Open Items
 
+- **`kind: topic` pass, added 2026-09-17.** Ten real topic entries added
+  after all 20 real pages were re-read directly (not assumed from this
+  file's own existing figure descriptions) — this chapter turned out to
+  carry substantially more real conceptual/thermodynamic content than its
+  progressively-elaborated-sketch structure initially suggested,
+  including a full worked Carnot-style efficiency derivation
+  (`pss-topic-steam-cycle-thermal-efficiency`), real historical fuel-mix
+  statistics, and combustion chemistry — none of it captured in the
+  existing figure entries' own `teaches` fields, which describe the
+  sketches themselves, not the surrounding reasoning. One candidate
+  (superheat/reheat's efficiency-and-blade-erosion rationale) was
+  deliberately NOT re-indexed as its own topic since the existing
+  `pss-cmp-primer-superheat-reheat-diagram` figure entry already states
+  both reasons directly. This chapter's real component count is
+  therefore 31 (21 figures + 10 topics), not 21.
 - **Chapter boundary**, confirmed directly: Chapter 8 divider = PDF p. 85;
   Chapter 9A divider = PDF p. 105. Chapter 8 = PDF pp. 85–104 (printed pp.
   8-1 through 8-20), zero page offset, no trailing blank page. Every page in

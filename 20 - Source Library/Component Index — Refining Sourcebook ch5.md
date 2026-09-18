@@ -65,6 +65,22 @@ consulted.
 
 ## Open Items
 
+- **`kind: topic` pass run 2026-09-18 — zero new entries, confirmed correct.**
+  Read real text directly across the chapter's full range (PDF pp.109-119:
+  the divider/TOC, all of §5.1 Refining Terminology, and a representative
+  spread across §5.3 Sliding-Stem and the run into §5.4/5.5 valve-function
+  terminology). Every one of the roughly 150 entries across all five
+  sections — general refining terms (Acid Gas, Adsorbents, Catalytic
+  Cracking...), process-control terms, and valve-specific terms (Actuator
+  Spring, Angle Valve, Shaft Wind-Up...) alike — is a single self-contained
+  one-to-three-sentence bolded-term/definition pair, with no worked
+  examples, mechanism-depth explanation, chemistry, or numeric data of the
+  kind every genuine `kind: topic` entry elsewhere in this vault carries.
+  This is a flat glossary — structurally reference data, the prose
+  equivalent of a table, not conceptual teaching content — so zero new
+  entries is the correct outcome here, the same discipline already applied
+  to this vault's zero-figure/zero-topic reference-only chapters, not an
+  oversight or a skipped pass.
 - **Chapter boundary confirmed directly**: PDF p.109 (divider, own 5-part
   mini TOC) through PDF p.119 (printed 5-119, the book's own final content
   page — the glossary ends mid-entry-run at "Vena Contracta," immediately

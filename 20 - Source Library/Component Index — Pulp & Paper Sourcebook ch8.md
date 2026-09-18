@@ -39,6 +39,161 @@ only — it does not crop or extract images. Record shape: `id` · `kind` ·
 
 ## Components
 
+### Chapter 8 — Mill Process Factors (printed p. 8-1)
+
+```yaml
+id: pp-topic-mill-process-factors
+kind: topic
+teaches: >
+  The mill's process choice is driven by four named factors: wood type
+  (hardwood vs. softwood), the paper/paperboard grade produced, mill age,
+  and water availability. The book scopes itself specifically to the Kraft
+  (sulfate) process as the dominant chemical pulping method — the real
+  reason later chapters (9, 11-14) all assume Kraft rather than covering
+  every pulping chemistry equally.
+concept-tags: [Kraft process, sulfate process, process selection factors, mill scoping]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§ Process Overview, opening paragraph, p. 8-1 (PDF p. 105) — prose, not figure-anchored"
+relatedFigures: [pp-cmp-kraft-pulp-paper-mill-process-overview]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real prose (pdftotext -layout, PDF p. 105). This
+  is the book's own stated scoping decision, not an inference — it directly
+  explains why this whole book, and every later chapter built on it, is
+  Kraft-specific.
+```
+
+### Chapter 8 — Wood Preparation / Woodyard (printed p. 8-1)
+
+```yaml
+id: pp-topic-wood-preparation-woodyard
+kind: topic
+teaches: >
+  The woodyard converts logs to pulping-ready chips through a real
+  mechanical sequence: crane unloading and sorting → optional slasher
+  segmenting → mechanical debarking (rotating barking drum, bark tumbled
+  free through slots, used as boiler fuel) → chipping (high-speed rotating
+  blades) → vibratory screening (oversize/undersize rejects returned for
+  rechipping, acceptable chips stored in piles or silos). No dedicated
+  later chapter covers wood preparation — this overview is the book's only
+  treatment of it.
+concept-tags: [woodyard, debarking, chipping, screening, wood preparation]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§ Wood Preparation, p. 8-1 (PDF p. 105) — prose, not figure-anchored"
+relatedFigures: [pp-cmp-kraft-pulp-paper-mill-process-overview]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real prose. Genuinely standalone — no chapter in
+  this book's table of contents (9, 11-18) revisits wood preparation at
+  greater depth; this is the one place the mechanism is explained.
+```
+
+### Chapter 8 — Kraft Recovery Cycle: Three-Step Synthesis (printed p. 8-2)
+
+```yaml
+id: pp-topic-kraft-recovery-cycle-synthesis
+kind: topic
+teaches: >
+  The Kraft recovery cycle exists because pulping chemicals (sodium and
+  sulfur) are expensive enough that recovering and regenerating them has
+  real economic weight, plus a secondary heat/steam-recovery objective from
+  burning wood organics in the black liquor itself. The book explicitly
+  frames the whole cycle as three steps — evaporation, burning
+  (combustion in the recovery boiler), and causticizing (regeneration back
+  to cooking-strength white liquor) — which is the organizing logic that
+  Chapters 11 (evaporation), 12 (the recovery boiler/burning), and 13
+  (causticizing) each independently develop at full depth. This three-step
+  framing itself is not restated in any of those three chapters (confirmed
+  by comparing this text against Figure 8-2's own entry) — it exists only
+  here, at the whole-cycle level.
+concept-tags: [Kraft recovery cycle, evaporation, burning, causticizing, chemical recovery economics]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§ Recovery of Kraft Pulping Liquors, p. 8-2 (PDF p. 106) — prose, not figure-anchored"
+relatedFigures: [pp-cmp-kraft-recovery-cycle-overview]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real prose. This is a genuine synthesis/framing
+  concept distinct from the mechanism-level detail Chapters 11-13 will
+  cover — deliberately scoped to just the organizing "why three steps"
+  logic, not the mechanisms themselves, to avoid pre-empting those
+  chapters' own topic-indexing passes.
+```
+
+### Chapter 8 — Mill Utilities Overview (printed p. 8-5)
+
+```yaml
+id: pp-topic-mill-utilities-overview
+kind: topic
+teaches: >
+  Water and electricity are the mill's two other major raw materials
+  beyond wood. Water requires treatment (sedimentation, filtration, and —
+  for boiler feed specifically — demineralization via ion-exchange resins,
+  since dissolved minerals cause sludge/scale buildup) before use; a
+  typical condensate return rate to the boiler is about 50%, which matters
+  because demineralized water is expensive to produce. Electricity is
+  supplied by a combination of own-make (steam turbines fed by the power
+  and recovery boilers, dual-purpose "cogeneration" of heat and power) and
+  a grid utility tie, which also provides continuity if mill generation is
+  curtailed. Typical steam split: ~185 psig to the digester/turbine, ~80
+  psig to the steam room.
+concept-tags: [mill utilities, water treatment, demineralization, cogeneration, steam turbine, utility tie]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§ Utilities, p. 8-5 (PDF p. 109) — prose, not figure-anchored"
+relatedFigures: [pp-cmp-mill-utilities-overview]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real prose, expanding Figure 8-3's own caption
+  with the real numbers (50% return rate, 185/80 psig split) and the
+  cogeneration rationale the figure alone doesn't state. No dedicated
+  later chapter in this book covers mill utilities as its own subject —
+  Chapter 18 ("Boilers – Water/Steam Cycle") is the closest, but drills
+  into boiler-specific water/steam cycle detail, not the whole-utilities
+  water-and-electricity framing this section provides.
+```
+
+### Chapter 8 — Waste Treatment Overview (printed p. 8-6)
+
+```yaml
+id: pp-topic-waste-treatment-overview
+kind: topic
+teaches: >
+  Two waste streams matter for a mill: water effluent (treated in
+  sedimentation clarifiers and/or aeration lagoons before return to the
+  source river or lake — the trend is toward closed systems with no
+  effluent stream at all) and air emissions, split into particulate (fine
+  sodium-compound particulate from the recovery boiler, coarser wood-waste
+  particulate from the power boiler, controlled via scrubbers or
+  electrostatic precipitators) and odor (sulfur gases collectively called
+  TRS — Total Reduced Sulfur — which are not dangerous but are treated
+  anyway via in-process reduction or wet-scrubber absorption, since odor
+  pollution itself is difficult to treat after the fact).
+concept-tags: [waste treatment, effluent, TRS, particulate emissions, odor control]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§ Waste Treatment, p. 8-6 (PDF p. 110) — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real prose. No dedicated later chapter in this
+  book (9, 11-18) covers waste treatment as its own subject — this
+  overview section is this book's only treatment of it, genuinely
+  standalone.
+```
+
 ### Chapter 8 — Whole-Mill Process Overview (printed pp. 8-7–8-9)
 
 ```yaml
@@ -163,3 +318,26 @@ notes: >
 - **Archive/legacy material:** none consulted, none needed — the 2011
   Fisher Sourcebook is the sole and sufficient source for all three of this
   chapter's components.
+- **`kind: topic` pass (2026-09-17):** 5 new topic entries added
+  (`pp-topic-mill-process-factors`, `pp-topic-wood-preparation-woodyard`,
+  `pp-topic-kraft-recovery-cycle-synthesis`, `pp-topic-mill-utilities-overview`,
+  `pp-topic-waste-treatment-overview`), all read directly from the real
+  prose on pp. 8-1–8-6 (PDF 105-110) — the pages this file's own earlier
+  pass already confirmed are prose-only with no figures.
+- **Deliberate scope decision, not an oversight:** this chapter's prose also
+  narrates pulping (mechanical vs. chemical, RMP/TMP/CTMP, batch vs.
+  continuous digesters), bleaching (chlorine vs. chlorine dioxide, dioxin
+  history, O2 delignification), stock preparation (consistency, broke pulp,
+  chemical additives, beating/refining), and the paper machine (wet-end
+  approach system, headbox, press section, dryers, calender) at real but
+  introductory depth. Deliberately did NOT author topic entries for these —
+  Chapters 9 (Pulping), 14 (Bleaching), 15 (Stock Preparation), 16 (Wet-End
+  Chemistry), and 17 (Paper Machine) each own that ground at full teaching
+  depth (per this book's own real chapter list), and this overview's
+  treatment is explicitly a preview, not independent content. Authoring
+  topics here would risk pre-empting or duplicating those dedicated
+  chapters' own topic-indexing passes, several of which are running in
+  parallel tonight. The five topics actually indexed above were chosen
+  specifically because no dedicated later chapter owns their ground (wood
+  preparation, mill utilities, waste treatment, and the two
+  overview/framing-level synthesis concepts).

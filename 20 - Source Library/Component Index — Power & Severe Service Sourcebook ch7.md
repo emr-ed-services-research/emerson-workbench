@@ -92,6 +92,44 @@ notes: >
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-steam-thermodynamics-and-desuperheat-rationale
+kind: topic
+teaches: >
+  Highly superheated steam (900-1100°F) is generated to do mechanical work,
+  but superheated steam is a poor heat-transfer medium — a 10°F temperature
+  drop in superheated steam only liberates 4.7 BTU/lb, versus over 976
+  BTU/lb for the same 10°F drop once the steam has been desuperheated to
+  near saturation, because most of the thermal energy (970 BTU/lb) is the
+  latent heat of vaporization, released only near the saturation line, not
+  spread evenly across the superheated region. A genuinely counter-intuitive
+  real worked example: 165 psia/370°F steam (only 4°F of superheat, saturation
+  temp 366°F) throttled through a pressure-reducing valve (an isenthalpic —
+  constant-enthalpy — process) down to 45 psia comes out at 328°F, which
+  looks cooler, but the saturation temperature at 45 psia has also dropped
+  to 274°F — so the steam now has 54°F of superheat, MORE than before the
+  throttling, not less. This "unintentional superheat" from pressure
+  reduction is one of the two primary reasons to desuperheat (the other
+  being protecting downstream equipment/process/product from excessive
+  temperature).
+concept-tags: [superheated steam, latent heat of vaporization, saturation temperature, isenthalpic throttling, unintentional superheat, desuperheating rationale]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, 'Thermodynamics of Steam' / 'Why Desuperheat?' sections, pp. 7-1–7-3 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-water-temperature-enthalpy-btu-diagram, pss-cmp-water-th-diagram-saturation-vs-pressure]
+relatedTopics: [cvh-topic-desuperheater-sizing-methodology]
+used-by: []
+notes: >
+  Read directly from the real chapter prose (pp. 7-1–7-3), not inferred from
+  the two T-H diagram figures' own captions — the worked isenthalpic-
+  throttling example (165 psia/370°F → 45 psia/328°F, 54°F superheat) does
+  not appear on either figure at all. Cross-references CVH ch7's own
+  desuperheater-sizing topic since both trace to the same underlying
+  thermodynamic driver, though this chapter's worked example is genuinely
+  distinct (a different real case, not a duplicate).
+```
+
 ---
 
 ### Chapter 7 — Desuperheating and Desuperheaters (printed pp. 7-4–7-6)
@@ -202,6 +240,120 @@ notes: >
   `pss-cmp-dsa-desuperheater-system-diagram` (Figure 7-5), the full P&ID-
   style system diagram for this same desuperheater design.
 mediaStatus: unreviewed
+```
+
+```yaml
+id: pss-topic-desuperheater-selection-taxonomy
+kind: topic
+teaches: >
+  Desuperheaters fall into three design-criteria families, distinguished by
+  how they atomize spraywater: Mechanically Atomized (fixed-geometry DMA,
+  4:1 turndown, near-steady-load only; or variable-geometry DVG, >40:1
+  turndown, can integrate its own control valve/trim), Geometrically
+  Enhanced (DVI — a venturi's own pressure recovery keeps turbulence high at
+  the injection point, ~15:1 turndown, best mixing/atomization of the
+  mechanical group), and Externally Energized (DSA — uses a separate
+  high-pressure steam source, not spraywater pressure itself, to shear water
+  into mist; >40:1 turndown without needing high-pressure water, but needs
+  a second control valve for the atomizing steam). The single most important
+  selection factor named by the source is picking the right family for the
+  application's real turndown requirement, not defaulting to one style.
+concept-tags: [desuperheater selection, mechanically atomized, geometrically enhanced, externally energized, turndown ratio, design taxonomy]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, 'Desuperheaters' section, pp. 7-4–7-6 — the synthesis text framing Figures 7-4A–7-4D as one family taxonomy, not each figure's own individual caption"
+relatedFigures: [pss-cmp-design-dma-af-desuperheater, pss-cmp-design-dvg-af-desuperheater, pss-cmp-design-dvi-desuperheater, pss-cmp-design-dsa-desuperheater-nozzle]
+relatedTopics: [cvh-topic-desuperheater-application-factors]
+used-by: []
+notes: >
+  Each of the four figures already documents its own design individually;
+  this entry captures the cross-cutting selection logic (which family for
+  which turndown) that no single figure's caption states — read directly
+  from the connecting prose between Figures 7-4A and 7-4D, pp. 7-4–7-6.
+```
+
+```yaml
+id: pss-topic-desuperheater-performance-factors
+kind: topic
+teaches: >
+  Beyond design family, five real physical factors govern desuperheater
+  performance: (1) Installation orientation — vertical, flow-up is optimal
+  for most units, since gravity suspends droplets longer against the
+  counter-directed injected water, extending effective mixing time; (2)
+  Spraywater temperature — counter-intuitively, HOTTER water performs
+  better (improves surface tension, drop-size distribution, latent heat of
+  vaporization, and vaporization rate all at once); (3) Spraywater quantity
+  — directly proportional to vaporization time, since heat transfer is
+  time-dependent; (4) Pipeline size — ideal steam velocity is 250-300
+  ft/sec; too fast needs more downstream distance to cool, too slow lets
+  water fall out of suspension and pool in the pipe without cooling the
+  steam; (5) Equipment vs. system turndown — a desuperheater is not a final
+  control element, so its real achievable turndown is a function of the
+  system it's installed in, not just its own empirical flow-variation spec
+  — even a well-designed unit cannot overcome a poorly designed system.
+concept-tags: [desuperheater performance, installation orientation, spraywater temperature, pipeline velocity, system vs equipment turndown]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, 'Desuperheaters' section, pp. 7-6–7-7 — prose, not figure-anchored"
+relatedTopics: [pss-topic-desuperheater-selection-taxonomy, cvh-topic-desuperheater-application-factors]
+used-by: []
+notes: >
+  Read directly from pp. 7-6–7-7's connected prose (the "Other factors"
+  bulleted list and its full explanation) — no figure covers this content at
+  all, genuinely invisible to the original figures-only pass.
+```
+
+```yaml
+id: pss-topic-desuperheater-sizing-equations
+kind: topic
+teaches: >
+  Two real installation-sizing formulas from the source, both functions of
+  maximum steam velocity: Downstream Straight Pipe Requirement, SPR (ft) =
+  0.1 sec × max steam velocity (ft/sec); and Downstream Temperature Sensor
+  Distance, TS (ft) = 0.2 sec × max steam velocity (ft/sec) for 15%
+  spraywater or less, or 0.3 sec × max steam velocity for greater than 15%
+  spraywater — more spraywater needs more downstream distance before a
+  temperature sensor reads a representative, fully-mixed value.
+concept-tags: [desuperheater sizing, straight pipe requirement, temperature sensor distance, spraywater percentage]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, p. 7-9 — the SPR/TS equations, prose/formula, not figure-anchored"
+relatedTopics: [pss-topic-desuperheater-performance-factors, cvh-topic-desuperheater-sizing-methodology]
+used-by: []
+notes: >
+  Real formulas transcribed exactly from p. 7-9, not paraphrased or derived —
+  distinct from CVH ch7's own desuperheater-sizing-methodology topic (a heat-
+  balance/Cv equation set), this is purely a pipe-layout/installation-
+  distance calculation, a different sizing question entirely.
+```
+
+```yaml
+id: pss-topic-desuperheater-control-philosophy
+kind: topic
+teaches: >
+  Two real control approaches for desuperheater temperature: feedback control
+  from a downstream temperature sensor (the default, but requires enough
+  straight pipe distance for the sensor to read a fully-mixed value — see
+  the TS equation), or feedforward control, where a control-system algorithm
+  calculates the required spraywater flow directly from a heat balance —
+  using upstream temperature/pressure, valve position, and steam-table
+  enthalpy data for both the steam and the spraywater — without waiting for
+  a downstream sensor reading at all. Feedforward is the source's named
+  practical solution when an installation genuinely lacks enough downstream
+  pipe distance for accurate feedback measurement.
+concept-tags: [feedback control, feedforward control, desuperheater temperature control, heat balance calculation]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, p. 7-9 — prose, not figure-anchored"
+relatedTopics: [pss-topic-desuperheater-sizing-equations]
+used-by: []
+notes: >
+  Read directly from the paragraph following the SPR/TS equations on p. 7-9 —
+  no figure exists for this content at all.
 ```
 
 ---
@@ -348,6 +500,163 @@ notes: >
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-turbine-bypass-system-benefits
+kind: topic
+teaches: >
+  A turbine bypass system's real benefits, independent of any one bypass
+  stage: matching steam and heavy turbine-metal component temperatures
+  during startup/shutdown (major fuel-savings and thermal-fatigue-reduction
+  significance, especially for life-extension programs); avoiding a full
+  boiler trip after a load rejection (the boiler/HRSG can withstand the
+  rejection and stay available for rapid reloading — the difference between
+  a costly warm start and a fast hot start); reducing solid-particle erosion
+  of turbine components (thermal transients dislodge scale/oxides/weldments
+  that would otherwise erode turbine blades); and independent operation of
+  the boiler and turbine (boiler controls/firing systems can be tested and
+  tuned without the turbine running at all, reducing commissioning cost and
+  time).
+concept-tags: [turbine bypass benefits, thermal fatigue, load rejection, solid particle erosion, independent boiler operation]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, 'Turbine Bypass Systems' / 'General System Description' sections, pp. 7-10 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-combined-cycle-turbine-bypass-schematic]
+relatedTopics: [cvh-topic-turbine-bypass-system-rationale]
+used-by: []
+notes: >
+  Read directly from pp. 7-10's bulleted-and-explained benefit list — the
+  existing Figure 7-9 schematic shows the HP/IP/LP valve layout but never
+  states why a bypass system is worth building, which is what this entry
+  captures. Cross-references CVH ch7's own turbine-bypass-system-rationale
+  topic — genuinely complementary (CVH gives the general Handbook-level
+  rationale, this sourcebook gives the power-industry-specific real benefit
+  list with concrete operational detail CVH doesn't carry).
+```
+
+```yaml
+id: pss-topic-hp-bypass-function-and-failure-mode
+kind: topic
+teaches: >
+  The High Pressure (HP) bypass directs steam from the superheater outlet to
+  the cold reheat line during startup/shutdown/trip, bypassing the HP
+  turbine section, with six specific duties: pressure/temperature-controlled
+  HP bypass, controlled main-steam pressure buildup, reheat-section cooling,
+  preventing spring-loaded HP safety-valve lifts during minor disturbances,
+  avoiding condensate loss/noise from blowing safety valves, and protecting
+  the boiler from over-pressure. Its failure mode is context-dependent, not
+  fixed: if the HP bypass is designed as the safety bypass system replacing
+  the standard safety relief valve function, it must fail OPEN; but if
+  standard safety relief valves remain in place, it's normally required to
+  fail CLOSED, especially in over-temperature situations on drum boilers.
+  Control is normally via feedback from main steam pressure and cold reheat
+  temperature, with the steam-to-spraywater ratio inversely proportional to
+  valve position (large Cv needed at startup's low-pressure/high-temperature
+  conditions, despite the reduced flow).
+concept-tags: [HP bypass, cold reheat, failure mode, fail open, fail closed, safety relief valve interaction]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, 'High Pressure Bypass' section, pp. 7-10–7-11 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-combined-cycle-turbine-bypass-schematic]
+relatedTopics: [pss-topic-turbine-bypass-system-benefits, pss-topic-hrh-lp-bypass-function]
+used-by: []
+notes: >
+  The context-dependent fail-open-vs-fail-closed logic is a real,
+  counter-intuitive point worth flagging — a naive "safety systems always
+  fail open" assumption would be wrong here depending on what else is
+  installed. Read directly from pp. 7-10–7-11.
+```
+
+```yaml
+id: pss-topic-hrh-lp-bypass-function
+kind: topic
+teaches: >
+  The Hot Reheat (HRH) and Low Pressure (LP) bypass directs steam from the
+  hot reheat line to the condenser during startup/shutdown/trip, bypassing
+  the IP and LP turbine sections, with four specific duties: pressure/
+  temperature-controlled bypass of IP and LP turbines, controlling reheat-
+  section pressure buildup, preventing condensate loss during trips, and
+  protecting the condenser from excessive pressure/temperature/enthalpy —
+  this last duty is the dominant design driver, since (unlike the HP bypass)
+  the HRH/LP bypass has ONLY closed as a real failure mode: protecting the
+  condenser from damage takes priority over controlling hot reheat pressure.
+  A named condenser is typically at 1-3 psia vacuum, so creating enough
+  backpressure to maintain reasonable pipe velocities while minimizing noise
+  (via sparger hole spacing/placement, avoiding converging steam jets) is a
+  real, distinct engineering challenge for this bypass stage specifically.
+concept-tags: [HRH bypass, LP bypass, condenser protection, fail closed only, backpressure control, sparger noise]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, 'Hot-Reheat & Low Pressure Bypass' section, pp. 7-12–7-13 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-combined-cycle-turbine-bypass-schematic, pss-cmp-tbx-whisperflo-sparger]
+relatedTopics: [pss-topic-hp-bypass-function-and-failure-mode]
+used-by: []
+notes: >
+  Real contrast with the HP bypass's context-dependent fail mode — this
+  stage's always-fail-closed rule is stated explicitly and unconditionally
+  in the source, unlike HP's. Read directly from pp. 7-12–7-13.
+```
+
+```yaml
+id: pss-topic-bypass-capacity-sizing-strategy
+kind: topic
+teaches: >
+  Real bypass capacity guidance by boiler and fuel type: once-through boiler
+  plants generally need 100% of full-load steam bypass capacity for startup/
+  part-load operation (essential if conventional safety valves are omitted);
+  drum boiler plants typically only need 25-70% capacity to handle most
+  operating/trip conditions, with more specific figures for hot-startup
+  temperature matching (30% for oil firing, 40-50% for coal) and for a full
+  turbine trip (40% for gas/oil-fired drum units, up to 70% for coal). A
+  real design tension: if HP bypass capacity exceeds ~50% and the LP bypass
+  passes all that steam to the condenser, condenser duty during bypass
+  operation becomes MORE severe than during normal full-load turbine
+  operation — a real limiting factor especially on retrofit projects.
+concept-tags: [bypass capacity, once-through boiler, drum boiler, fuel type, condenser duty limit]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, 'Bypass Size' section, p. 7-13 — prose, not figure-anchored"
+relatedTopics: [pss-topic-hrh-lp-bypass-function]
+used-by: []
+notes: >
+  Real percentages transcribed exactly from p. 7-13, not rounded or
+  paraphrased. No figure exists for this content.
+```
+
+```yaml
+id: pss-topic-turbine-operating-modes-and-bypass-role
+kind: topic
+teaches: >
+  A bypass system's role differs by real operating mode, each with real
+  characteristic timeframes from the source: Cold start (unit down over a
+  week, reheat temps below 200°F, 4.5-9 hours to full load — the bypass lets
+  the furnace/superheater/reheater run early in the steam cycle for steam
+  purity and tube-cooling before turbine start); Warm start (weekend
+  shutdown, HP turbine casing above 450°F, 2.5-5 hours); Hot start (a minor
+  disturbance caused a trip, 1-2 hours — the bypass keeps the boiler online
+  through the disturbance for the fastest reload); Load rejection/quick
+  restart (runback to minimum load, a definitive path to either complete
+  shutdown or quick restart, minimizing condensate loss); and Two-shift
+  operation (smaller, less-maneuverable units shut down nightly and
+  restarted each morning — the bypass matches steam/metal temperatures for
+  efficient restart without thermally stressing components each cycle).
+concept-tags: [cold start, warm start, hot start, load rejection, two-shift operation, turbine bypass role]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 7 body prose, 'Starts, Trips, Load Rejection, Two-Shift Operation' section, pp. 7-13–7-14 — prose, not figure-anchored"
+relatedTopics: [pss-topic-turbine-bypass-system-benefits, pss-topic-bypass-capacity-sizing-strategy]
+used-by: []
+notes: >
+  Real time ranges transcribed exactly from pp. 7-13–7-14. No figure exists
+  for this content — the chapter's final two pages (Summary, Short Notes)
+  carry no further figures at all, consistent with the existing index's own
+  finding.
+```
+
 ---
 
 ## Open Items
@@ -386,3 +695,19 @@ mediaStatus: unreviewed
   and has no equivalent chapter in the Oil & Gas Sourcebook.
 - **Archive/legacy material**: none consulted, none needed — this is a
   first-party current Fisher/Emerson document throughout.
+- **`kind: topic` pass, added 2026-09-17**: full chapter re-read for genuine
+  conceptual content beyond the 13 figure captions, same rigor as the CVH
+  and Oil & Gas Sourcebook passes. 10 new `pss-topic-*` entries added,
+  covering steam thermodynamics/desuperheat rationale (including a real,
+  counter-intuitive worked isenthalpic-throttling example), desuperheater
+  selection taxonomy and performance factors, real sizing equations and
+  control-philosophy content, and five distinct turbine-bypass concepts
+  (general benefits, HP-specific function/failure-mode logic, HRH/LP-
+  specific function, capacity sizing strategy, and operating-mode roles).
+  Chapter total is now 23 components (13 figures + 10 topics). No section
+  was found reference-data-only beyond what the figures pass already
+  established — every real page had genuine conceptual content to extract.
+  Confirmed richer than CVH's own steam-conditioning chapter (5 topics) —
+  this sourcebook's power-industry focus does carry real, distinct applied
+  content (specific bypass percentages, fail-mode logic, start-type
+  timeframes) that CVH's more conceptual treatment doesn't.

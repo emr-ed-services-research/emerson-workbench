@@ -7,8 +7,8 @@ tags:
   - component-index
 source: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
 chapter: ch14 — LNG Receiving Terminals
-updated: 2026-09-08
-status: complete — all ten chapter figures (14-1 through 14-10) catalogued across two batches
+updated: 2026-09-17
+status: complete — all ten chapter figures (14-1 through 14-10) plus 3 kind:topic entries catalogued
 ---
 
 # Teaching-Component Index — Fisher Control Valve Sourcebook, Oil & Gas, Chapter 14
@@ -63,6 +63,119 @@ to locate this batch's figures), out of scope for this batch, flagged for a
 future pass if this chapter is revisited.
 
 ## Components
+
+### Chapter 14 — LNG Receiving Terminal Overview (printed p. 14-1, chapter opener)
+
+```yaml
+id: ogas-topic-lng-receiving-terminal-overview
+kind: topic
+teaches: >
+  An LNG receiving terminal is the regasification counterpart to a
+  liquefaction plant (see ch13's `ogas-topic-lng-fundamentals`): it
+  receives LNG from ocean-going cargo vessels, stores it, and converts it
+  back from liquid to gaseous phase for injection into the local natural
+  gas grid. Holding tanks keep LNG non-pressurized at -256°F (-124°C) in
+  insulated concrete-and-steel structures. The terminal must deliver a
+  specified gas rate to the distribution pipeline while maintaining a
+  reserve capacity of LNG sized against expected shipping delays, seasonal
+  supply/demand variation, and strategic reserve requirements. Control
+  valve count scales directly with regasification capacity — roughly 75
+  valves for an average 1 BCFD unit up to 150 for a 2 BCFD unit — and
+  correlates with the number of storage tanks and the vaporization
+  technology employed, not a fixed count. The large majority of valves
+  are cryogenic constructions: nearly half medium-to-large butterfly
+  valves, the other half small-to-medium globe valves.
+concept-tags: [LNG receiving terminal, regasification, cryogenic storage, valve count scaling, reserve capacity, cryogenic construction]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 14 'LNG Receiving Terminals,' opening prose, printed p. 14-1 (PDF p. 160) — before Figure 14-1"
+relatedFigures: [ogas-cmp-lng-receiving-terminal-process-flow]
+relatedTopics: [ogas-topic-lng-fundamentals, ogas-topic-lng-vaporizer-types, ogas-topic-boiloff-recondenser-function]
+used-by: []
+notes: >
+  Real chapter-opening prose with no figure of its own, same shape as
+  ch13's `ogas-topic-lng-fundamentals` (that chapter's liquefaction-side
+  counterpart to this one's receiving-side overview) — confirmed by direct
+  page read (`pdftotext -layout`, PDF p. 160), not inferred from Figure
+  14-1's own caption, which shows only the process block diagram, not any
+  of this quantitative/scaling framing.
+```
+
+### Chapter 14 — LNG Vaporizer Types (printed p. 14-2–14-3)
+
+```yaml
+id: ogas-topic-lng-vaporizer-types
+kind: topic
+teaches: >
+  Send-out gas is injected into a high-pressure distribution system at
+  1200-1700 psig, reached via multi-staged send-out pumps (two to four
+  high-pressure pumps per tank, from the recondenser to the vaporizers).
+  Three vaporizer types are in common use, and the choice among them
+  depends heavily on capital cost, operating cost, and environmental
+  impact: Submerged Combustion Vaporizers (SCV) burn natural gas to heat
+  a water bath the LNG-carrying tube bundle sits in, discharging
+  combustion products through a short stack; Open Rack Vaporizers (ORV)
+  use seawater flowing over finned panel coils as the heat source,
+  warming LNG to ~40°F (4°C) as it flows upward through the tubes — ORV
+  is explicitly NOT covered by any figure in this chapter's own valve
+  application section (the source states this directly), so its main
+  valves (seawater intake control, pump bypass — large NPS 24-36
+  butterfly valves) are genuinely invisible to the figures-only index;
+  Shell and Tube vaporizers use a heating-medium loop (seawater,
+  freshwater, or glycol/water) circulated by a fired heater, at a real
+  operating cost of 1.5-2.0% of send-out gas consumed by the heater.
+concept-tags: [LNG vaporizer, submerged combustion vaporizer, SCV, open rack vaporizer, ORV, shell and tube vaporizer, send-out pumps, vaporizer selection]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 14 'LNG Receiving Terminals,' 'LNG Vaporizers' section, printed pp. 14-2–14-3 (PDF pp. 161-162)"
+relatedFigures: [ogas-cmp-scv-fuel-gas-valve-train, ogas-cmp-shell-tube-vaporizer-valves]
+relatedTopics: [ogas-topic-lng-receiving-terminal-overview, ogas-topic-boiloff-recondenser-function]
+used-by: []
+notes: >
+  Confirmed by direct page read (`pdftotext -layout`, PDF pp. 161-162) that
+  ORV genuinely has no figure anywhere in this chapter — the source's own
+  text says so ("This type of vaporizer will not be covered in the valve
+  application section"), not an indexing gap on this pass's part. This is
+  exactly the kind of content the figures-only rule structurally could
+  never surface: a whole vaporizer type and its valve applications,
+  present only in prose.
+```
+
+### Chapter 14 — Boil-Off System and Recondenser Function (printed p. 14-2)
+
+```yaml
+id: ogas-topic-boiloff-recondenser-function
+kind: topic
+teaches: >
+  Boil-off vapor is produced continuously in storage tanks and LNG lines
+  by ordinary heat transfer from the surroundings — not a fault
+  condition, an expected consequence of storing a cryogenic liquid. It
+  collects in a header feeding a compressor suction drum; from there it
+  can route to boil-off gas blowers for return to the ship during
+  unloading, or be compressed and liquefied in a recondenser. The
+  recondenser houses a packed bed that creates a large surface area for
+  vapor-liquid contact, letting the compressed boil-off vapor
+  re-liquefy against LNG also pumped in from the storage tanks (ahead of
+  the LNG's own onward path to the vaporizers). Recondensing serves two
+  purposes at once: it avoids flaring the boil-off under most operating
+  conditions, and it supplies fuel gas to the vaporizers when needed.
+concept-tags: [boil-off gas, recondenser, packed bed, vapor-liquid contact, flaring avoidance, cryogenic heat transfer]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 14 'LNG Receiving Terminals,' 'Boil-off System and Recondenser' section, printed p. 14-2 (PDF p. 161)"
+relatedFigures: [ogas-cmp-lng-storage-send-out-system, ogas-cmp-boiloff-gas-pipeline-compression-system]
+relatedTopics: [ogas-topic-lng-receiving-terminal-overview, ogas-topic-lng-vaporizer-types]
+used-by: []
+notes: >
+  Confirmed by direct page read (`pdftotext -layout`, PDF p. 161) — this
+  mechanism (why recondensing happens, what the packed bed does) is not
+  stated in either Figure 14-4's or Figure 14-6's own caption/teaches
+  field, which describe the process diagrams' valve layout, not the
+  underlying reason recondensing exists.
+```
 
 ### Chapter 14 — LNG Receiving Process (printed p. 14-1)
 
@@ -467,3 +580,16 @@ notes: >
 - No asset-variant-registry or `Curriculum —` writes were made from either
   batch — out of scope for a standing Component-Index-only cataloging
   pass.
+- **`kind: topic` pass, 2026-09-17:** read the chapter's full real body
+  prose (PDF pp. 160-168, `pdftotext -layout`), not just the ten figure
+  captions already catalogued. Three genuine concepts existed beyond what
+  any figure shows: the terminal-overview framing (`ogas-topic-lng-
+  receiving-terminal-overview`), the three-way vaporizer-type comparison
+  (`ogas-topic-lng-vaporizer-types` — includes ORV, which the source
+  itself says has no figure in this chapter at all), and the boil-off/
+  recondenser mechanism (`ogas-topic-boiloff-recondenser-function`). The
+  remaining prose (the "LNG Receiving Application Review" per-valve
+  rationale for Figures 14-2 through 14-10) is already substantively
+  captured by each figure's own `teaches` field — no additional topic
+  entries authored there, to avoid restating what's already indexed.
+  Chapter total is now 13 components (10 figures + 3 topics).

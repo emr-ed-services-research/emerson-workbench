@@ -90,6 +90,42 @@ doesn't inherit the off-by-one guess.
 
 ## Components
 
+### Chapter 11 — NGL Composition and Terminology (chapter opener, printed p. 11-1, no figure)
+
+```yaml
+id: ogas-topic-ngl-fractions-and-terminology
+kind: topic
+teaches: >
+  Natural gas at the wellhead is primarily four hydrocarbon constituents —
+  methane (C1), ethane (C2), propane (C3), butane (C4) — with methane
+  commonly 80%+ of the raw stream; fields high in C2+ are called "high BTU"
+  or "liquids-rich." When produced gas exceeds sales-pipeline BTU
+  specifications, heavier hydrocarbons are separated out at the gas
+  treatment plant via a low-temperature NGL recovery process, producing a
+  mixed C2+ stream commonly called "y-grade" or "raw mix." A typical mixed
+  NGL stream (for marketing purposes) breaks down as 45% ethane, 30%
+  propane, 10% butane, and 15% C5+ hydrocarbons — the actual mix varies by
+  reservoir. Widening oil-to-gas price spreads have made NGL recovery more
+  economically attractive in recent years, increasing production. The full
+  C1-C12 hydrocarbon name/chemical-formula table (methane through
+  dodecane) is given as a footnote reference.
+concept-tags: [NGL, natural gas liquids, high BTU, liquids-rich, y-grade, raw mix, hydrocarbon fractions, ethane, propane, butane]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 11 'Fractionation,' chapter-opening prose and hydrocarbon-fraction table, PDF p. 133, printed p. 11-1 (unnumbered opener page, no figure) — read directly, not inferred from any figure caption."
+relatedFigures: [ogas-cmp-fractionation-process-flow]
+relatedTopics: [ogas-topic-fractionation-train-mechanism]
+used-by: []
+notes: >
+  This page carries no figure or table object at all in the figures-only
+  sense (the C1-C12 chart is a footnote reference list, not a numbered
+  Table N.M) — confirmed invisible to the original figure-indexing pass,
+  which correctly found nothing to catalogue here. Genuine chapter-opening
+  concept content the fractionation-train mechanism (below) and the whole
+  application-review section assume the reader already has.
+```
+
 ### Chapter 11 — Fractionation Process (chapter opener, printed p. 11-2)
 
 ```yaml
@@ -124,6 +160,41 @@ notes: >
   11-2), `ogas-cmp-depropanizer-process-diagram` (Figure 11-4), and
   `ogas-cmp-debutanizer-process-diagram` (Figure 11-7) — all three catalogued
   below.
+```
+
+### Chapter 11 — Fractionation Train Mechanism (printed p. 11-2, prose beyond Figure 11-1's block diagram)
+
+```yaml
+id: ogas-topic-fractionation-train-mechanism
+kind: topic
+teaches: >
+  The fractionation process works by exploiting the varying boiling points
+  of the hydrocarbon constituents in the mixed NGL stream — each stage
+  separates out one constituent by boiling it off from the mixed stream and
+  recovering the pure product via an overhead condenser. Stages are named
+  for the constituent boiled off, in order: deethanizer, then depropanizer,
+  then debutanizer. The number of towers an actual plant has depends on
+  which products it's designed to recover — some plants need only one
+  tower (ethane/propane mix as the primary product), others add a butane
+  splitter for separate isobutane/normal-butane streams. Initial gas
+  treatment and NGL recovery (removing moisture, H2S, CO2 and recovering
+  C2+ from the raw gas) happen upstream of fractionation and are a
+  separate process. The debutanizer's bottoms output — mostly pentanes and
+  heavier — is called stabilized gas condensate or natural gasoline.
+concept-tags: [fractionation mechanism, boiling point separation, deethanizer, depropanizer, debutanizer, stabilized condensate, natural gasoline]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 11 'Fractionation,' 'Fractionation Process' section prose, printed p. 11-2, and its continuation on printed p. 11-3 — read directly, not inferred from Figure 11-1's own block-diagram caption."
+relatedFigures: [ogas-cmp-fractionation-process-flow, ogas-cmp-deethanizer-process-diagram, ogas-cmp-depropanizer-process-diagram, ogas-cmp-debutanizer-process-diagram]
+relatedTopics: [ogas-topic-ngl-fractions-and-terminology, ogas-topic-fractionation-valve-selection-rationale]
+used-by: []
+notes: >
+  Complements rather than duplicates `ogas-cmp-fractionation-process-flow`
+  (Figure 11-1) — the figure shows the block-diagram WHAT (three towers,
+  four product streams); this entry captures the WHY (boiling-point
+  separation principle) and the real plant-variability facts (single-tower
+  plants, butane-splitter option) that never appear in the figure itself.
 ```
 
 ### Chapter 11 — Deethanizer (printed p. 11-3)
@@ -400,10 +471,78 @@ notes: >
   itself. Reported as such rather than overclaimed.
 ```
 
+### Chapter 11 — Fractionation Valve-Duty-Point Taxonomy and Selection Rationale (chapter-wide, spans all three towers' Application Review sections, printed pp. 11-3 – 11-10)
+
+```yaml
+id: ogas-topic-fractionation-valve-selection-rationale
+kind: topic
+teaches: >
+  Each fractionation tower's Application Review names the same recurring
+  set of valve duty points, with the same selection reasoning applied at
+  each tower (deethanizer, depropanizer, debutanizer): (1) tower feed
+  control — flashing risk drives CoCr-A hardfacing, or an angle body with
+  hardened liner if flashing is expected to be severe; (2) reflux-pump
+  discharge back to the tower — a segmented ball valve for accurate flow
+  control and rangeability at minimal pressure drop; (3) reflux-pump
+  recycle (anti-cavitation/anti-surge protection during commissioning and
+  startup) — standard trim suffices at small pressure drop, but the
+  primary-pump recycle duty point specifically needs anti-cavitation trim
+  (and sometimes Micro-Trim for low flow) because of its elevated pressure
+  drop; (4) product-to-meter control — minimal pressure drop, a globe with
+  standard trim is the usual choice; (5) reboiler-to-next-tower handoff —
+  accurate control needed to optimize the next tower's recovery; (6)
+  reboiler hot-oil-return control. The depropanizer's heat-pump-compressor
+  duty points are a distinct case beyond this common pattern: a butterfly
+  valve is typical at minimal pressure drop, but the compressor-recycle
+  valve specifically needs fast-stroking capability for anti-surge
+  service, up to specifying the Fisher Optimized Digital Valve (ODV) on
+  larger valves to meet stroke-speed and throttling requirements — a real,
+  distinct selection driver (surge protection response time) that the
+  other duty points don't share.
+concept-tags: [valve selection rationale, anti-cavitation trim, Micro-Trim, segmented ball valve, anti-surge, ODV, fast stroking, rangeability, flashing, hardfacing]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 11 'Fractionation,' the Deethanizer/Depropanizer/Debutanizer Application Review numbered-item prose (items 1-8 per tower), printed pp. 11-3 through 11-10 — read directly across all three towers to confirm the pattern recurs, not assumed from one tower alone."
+relatedFigures: [ogas-cmp-deethanizer-process-diagram, ogas-cmp-depropanizer-process-diagram, ogas-cmp-debutanizer-process-diagram]
+relatedTopics: [ogas-topic-fractionation-train-mechanism, cvh-topic-cavitation, cvh-topic-flow-recovery]
+used-by: []
+notes: >
+  Cross-referenced to the Control Valve Handbook's own cavitation/flow-
+  recovery topic entries (`cvh-topic-cavitation`, `cvh-topic-flow-recovery`
+  — verified real in `Component Index — Control Valve Handbook ch5.md`
+  before citing) since the anti-cavitation-trim selection reasoning here is
+  a direct industry application of that same mechanism, not a separate
+  fact. This is the single richest transferable concept in the chapter —
+  captures the REASONING pattern across all three towers' Application
+  Review sections rather than restating any one tower's own table values,
+  which stay correctly owned by the existing per-figure component entries.
+```
+
 ---
 
 ## Open items
 
+- **Third batch — `kind: topic` pass (2026-09-17):** read the chapter's
+  full real prose (PDF pp. 133-142, all 10 printed pages) beyond the
+  figure captions already catalogued. Three genuine topic entries added:
+  `ogas-topic-ngl-fractions-and-terminology` (chapter-opening prose, no
+  figure at all on that page — invisible to the original figures-only
+  pass), `ogas-topic-fractionation-train-mechanism` (the boiling-point
+  separation principle, complementing rather than duplicating Figure
+  11-1), and `ogas-topic-fractionation-valve-selection-rationale` (the
+  recurring valve-duty-point pattern and selection reasoning across all
+  three towers' Application Review sections — the chapter's single
+  richest transferable concept). No other section had conceptual content
+  beyond what its existing figure entry already captures — every
+  Application Review numbered item beyond the general pattern above is
+  tower-specific table data, correctly left uncatalogued as a topic (the
+  existing per-figure entries already cite the relevant tables directly).
+  File integrity verified: 11 total ids (8 figures + 3 topics), all
+  unique, all `relatedFigures`/`relatedTopics` references — including the
+  two cross-file citations into `Component Index — Control Valve Handbook
+  ch5.md`'s `cvh-topic-cavitation`/`cvh-topic-flow-recovery` — verified to
+  resolve to real existing ids before use.
 - **First batch (Figures 11-1 through 11-6):** all six requested figures
   confirmed against the real page text and a 300 dpi page-image render
   before extraction; none were skipped or fabricated. PDF pages 134

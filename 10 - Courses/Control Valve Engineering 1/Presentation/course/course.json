@@ -2,7 +2,7 @@
   "course": {
     "code": "CVE1",
     "title": "Control Valve Engineering 1",
-    "summary": "An introductory engineering course on the control-valve selection-and-sizing decision and cavitation/flashing damage diagnosis, drawn from Control Valve Handbook ch5 — the foundation CVE2 develops into real ISA/IEC Cv calculation, materials selection, and mitigation design.",
+    "summary": "An introductory engineering course on the control-valve selection-and-sizing decision, actuator-force awareness, and cavitation/flashing damage diagnosis, drawn from Control Valve Handbook ch5 — taught as three real, fully-worked service cases of increasing difficulty (a clean success, then a moderate single-gap failure, then a harder two-gap failure), each with real specific numbers a learner can check, not a narrated summary of a decision. The foundation CVE2 develops into real ISA/IEC Cv calculation, materials selection, and mitigation design.",
     "footer": "© Emerson Educational Services, 2026  ·  Emerson Confidential",
     "domain": "engineering",
     "tier": "introductory"
@@ -60,7 +60,7 @@
     ]
   },
 
-  "_note": "Origination-mode course, no source deck. Stage 1 arc-cut run by hand 2026-09-15 (approved: two modules, cve1-ch1-m1 covers both eng.sizing.valve-selection-process and eng.selection.body-trim-decision since both trace to the single cvh-cmp-valve-selection-process-flowchart component walked as sequential judgment stages; cve1-ch1-m2 covers eng.noise-cavitation.damage-diagnosis alone). Stage 2 (this file) run by hand 2026-09-15/16 immediately after, self-reviewed per Franz's explicit overnight authorization (no live human checkpoint at any stage boundary tonight) — every citation below was verified against the real Component Index — Control Valve Handbook ch5.md before being used, none invented. minutesTarget split 215/145 (m1/m2) is a judgment call made here, not specified by Franz: m1 has 6 keyConcepts + a 25-min activity, m2 has 4 keyConcepts + a 20-min activity — roughly the same per-concept depth, so the day's 360 min splits proportionally to concept count (6:4 ≈ 3:2 of 360 ≈ 216:144, rounded to 215/145). Role routing is sizing-eng only on both modules, per the Stage 1 outline's own flag — NOT independently confirmed with Franz (he is asleep; this was flagged, not resolved, in both Stage 1 outlines and stays flagged in Status — CVE1.md for his morning review, not silently decided either way beyond keeping the Stage-1-recommended default). cve1-ch1-m2's item 3 (high-recovery valves are MORE cavitation-prone, the counter-intuitive finding) was kept in its necessary mechanistic order after vena-contracta/collapse (items 1-2) rather than literally promoted to the module's first slide as the Stage 1 fork suggested, since it is not comprehensible without that mechanism taught first — the module's own 'stakes' line does the foreshadowing work instead. moduleZero reuses Control Valve Basics' own moduleZero content near-verbatim (title/roadmap/facility&safety/sign-in), same pattern CVB itself used reusing IfE's — course-title/code swapped only. `template` values are real Template Gallery classes (`40 - Engine/_template-gallery/gallery.css`), chosen by role exactly as CVB's own precedent: mechanism/nomenclature/contrast/application map directly to slide--role-mechanism/nomenclature/contrast/application — no new template invented.",
+  "_note": "PHASE 1 REBUILD, ATTEMPT 3 (2026-09-17), fixing two more real defects Franz found in attempt 2 (see Status — CVE1.md for the full self-check; teaching-philosophy.md's 'Difficulty must ramp, not open cold' section is the governing correction). (1) Attempt 2 never defined a single technical term (P1, ΔP, Q, Cv, Class V all used with zero definition) and had NO real number anywhere in its early slides — every decision was narrated as already-decided ('the calculated Cv was correct') rather than actually worked, meaning the attempt step never happened at all. Fixed: every slide below carries real, specific, checkable numbers, and every term is defined in plain language at first use. (2) The course opened cold on its hardest case (Class V shutoff + a cavitation-prone trim, two independent failure modes at once) before the learner had ever seen the vocabulary or mechanism succeed once. Fixed: restructured into three tiers of increasing difficulty per teaching-philosophy.md's correction — Module 1 is a complete, real, fully-worked SUCCESS (Model as worked-success -> Articulate/Reflect only, no failure at all, this is where every term gets defined); Module 2 is a moderate single-gap productive-failure case (actuator-force only, Class III); Module 3 is the harder two-gap case (cavitation-prone trim + actuator force, Class V) that was previously miscast as the opening exercise. Everything already fixed in attempt 2 was re-verified to still hold: sliding-stem hardware throughout wherever a wrong-decision case appears (matches the real damage photos, Figs 5.8/5.9); zero occurrences of 'Vitruvius' or any named-persona voice in delivered content; no 'Module N' framing in delivered text, buildsOn used aggressively, content reads as one continuous escalating case, not three unrelated topics.",
 
   "moduleZero": {
     "id": "m0",
@@ -78,119 +78,147 @@
       "chapters": [
         {
           "id": "cve1-ch1",
-          "title": "Selection, Sizing, and Damage Diagnosis",
+          "title": "Sizing a Valve for Real Shutoff",
           "num": 1,
-          "_source": "Control Valve Handbook ch5 (Sizing) — see Component Index — Control Valve Handbook ch5.md, §5.1-5.6 and §5.14",
+          "_source": "Control Valve Handbook ch5 (Control Valve Sizing) — see Component Index — Control Valve Handbook ch5.md, unnumbered flowchart (p.100), §5.11 (pp.123-125), §5.14 (pp.128-130). Three real service cases of increasing difficulty run across the three modules, per teaching-philosophy.md's Cognitive Apprenticeship / Productive Failure method's 'difficulty must ramp' correction — each module both teaches its mechanism at full depth and advances the same escalating case, with no per-module scene breaks.",
           "modules": [
             {
               "id": "cve1-ch1-m1",
-              "title": "Valve Selection & Sizing Decision",
+              "stage": "model-success",
+              "title": "A Clean Sizing Job, Start to Finish",
               "status": "ready",
-              "levelTarget": "analyze",
+              "levelTarget": "apply",
               "domain": "engineering",
-              "minutesTarget": 215,
-              "stakes": "A preliminary Cv calculated in isolation, without checking it against noise and cavitation limits first, produces a valve that's the right size on paper and fails in the field within a year — the flowchart's own step 2→3 branch exists because \"big enough\" and \"right\" are two different questions.",
-              "objective": "Work a control valve's selection-and-sizing decision end to end from real service conditions — calculate a preliminary Cv, check it against noise/cavitation limits, and justify the resulting trim-type and body/trim decision.",
+              "minutesTarget": 90,
+              "stakes": "Every term used for the rest of this course gets defined here, against a real, generously-margined service — the baseline for what a correct spec actually looks like, worked with real numbers a learner can check by hand.",
+              "objective": "Work the full valve-selection flowchart for a straightforward liquid service with real, specific numbers — defining P1, ΔP, Q, Cv, unbalance area, and required seat load at first use — and confirm the resulting spec clears every check with real margin.",
               "buildsOn": [],
               "keyConcepts": [
                 {
                   "competencyId": "eng.sizing.valve-selection-process",
                   "progression": "introduces",
                   "role": "mechanism",
-                  "level": "understand",
+                  "level": "apply",
                   "pages": [5],
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
                       "domain": "engineering",
                       "tier": "introductory",
-                      "t": "The valve-selection process is one continuous 6-step decision, not six independent topics: service conditions → preliminary Cv → trim type → body/trim size → trim materials → remaining options. Every later section in the chapter is one step of this same sequence.",
+                      "t": "Case A, a cooling-water bypass line: upstream pressure P1 = 150 psig, downstream pressure P2 = 100 psig, so the pressure drop across the valve ΔP = P1 − P2 = 50 psi. Flow rate Q = 200 gpm of water (specific gravity SG = 1.0) at 70°F, ANSI Class 300, Class II shutoff (some leakage acceptable — not a tight-shutoff service). Step 2's preliminary sizing coefficient Cv (a single number describing how much flow a valve passes per psi of pressure drop) for a liquid: Cv = Q x sqrt(SG / delta-P) = 200 x sqrt(1.0/50) = 200 x 0.141 = about 28. ΔP is only a third of P1 here — a generous margin with no choked-flow or cavitation risk to check further at this level.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "The source figure is the chapter's own top-level 6-step flowchart — a how-the-whole-decision-works diagram, exactly the mechanism role's treatment, not a single labelled part.",
+                      "templateRationale": "Defines every term (P1, ΔP, Q, SG, Cv) at first use with the actual arithmetic shown, using the flowchart's steps 1-2 region as the visual anchor.",
                       "pages": [5],
                       "sources": ["cvh-cmp-valve-selection-process-flowchart"]
                     }
                   ]
                 },
                 {
-                  "competencyId": "eng.sizing.valve-selection-process",
+                  "competencyId": "eng.selection.body-trim-decision",
                   "progression": "introduces",
-                  "role": "nomenclature",
-                  "level": "understand",
+                  "role": "mechanism",
+                  "level": "apply",
                   "pages": [6],
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
                       "domain": "engineering",
                       "tier": "introductory",
-                      "t": "Step 1 fixes the service conditions a preliminary Cv depends on: P1, ΔP, Q, T1, fluid properties, allowable noise, and the required ANSI pressure class — get any one wrong and the Cv that follows is wrong regardless of the arithmetic.",
-                      "template": "slide--role-nomenclature",
-                      "templateRationale": "A named list of the seven real inputs the flowchart's step 1 requires — a term/definition treatment, not a mechanism or a contrast.",
+                      "t": "Steps 3-5: no noise or cavitation flag was raised, so a standard trim is selected — a 3-inch globe valve body with standard (not cavitation- or noise-reduction) trim, rated Cv about 32 at full open, comfortably above the required 28. Trim material: standard 316 stainless, fully compatible with water service. Why this case is safe from cavitation: flow narrows through the trim to a minimum area (the vena contracta) where pressure is lowest, then recovers toward P2 downstream. With only 50 psi of the total 150 psig upstream pressure given up, that recovery never comes close to the fluid's vapor pressure — the mechanism that causes flashing and cavitation never gets triggered in this case.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Real trim/body decision plus a first, brief conceptual introduction of the vena-contracta mechanism as a safety check, not yet the full mechanism lesson — that gets developed in Module 3 against the case where it actually matters.",
                       "pages": [6],
                       "sources": ["cvh-cmp-valve-selection-process-flowchart"]
                     }
                   ]
                 },
                 {
-                  "competencyId": "eng.sizing.valve-selection-process",
+                  "competencyId": "eng.sizing.actuator-force-awareness",
                   "progression": "introduces",
                   "role": "mechanism",
-                  "level": "analyze",
+                  "level": "apply",
                   "pages": [7],
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
                       "domain": "engineering",
                       "tier": "introductory",
-                      "t": "Step 2 is the real branch point: calculate a preliminary Cv, then check it against noise and cavitation limits before treating it as final — a Cv that passes the flow requirement but fails either check forces a different trim type in step 3, not a bigger valve.",
+                      "t": "Total actuator force required = A + B + C + D: unbalance force (A), required seat load (B), packing friction (C), and any additional forces (D) — stroking thrust (the force needed just to move the plug through its travel) is not one of these four terms; it only covers part of A. For this valve's actual port diameter (2-5/16 in, single-seated unbalanced trim), Figure 5.2's real table gives unbalance area = 4.20 in². A = area x ΔP = 4.20 x 50 = 210 lbf. Reading Figure 5.3 at Class II shutoff and 50 psi: required seat load is about 15 lbf per lineal inch of port circumference. Port circumference = pi x 2.3125 in = 7.27 in, so B = 15 x 7.27 = about 109 lbf. Packing friction C (PTFE, this stem size) is about 30 lbf; other forces D are negligible, about 10 lbf. Total required = 210 + 109 + 30 + 10 = about 359 lbf.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "Re-tagged from application to mechanism during Stage 4 render-check review: slide--role-application has no CSS shape for a real figure (only .tpl-chart), which caused real clipping. Mechanism's fig+list shape fits a figure-plus-explanation directly.",
+                      "templateRationale": "Real table data (Figure 5.2), first use in any built course, worked with real arithmetic against a real port diameter and ΔP — every term in A+B+C+D defined and computed, not narrated.",
                       "pages": [7],
-                      "sources": ["cvh-cmp-valve-selection-process-flowchart"]
+                      "sources": ["cvh-cmp-unbalance-area-table", "cvh-cmp-seat-load-graph"]
                     }
                   ]
                 },
                 {
-                  "competencyId": "eng.selection.body-trim-decision",
+                  "competencyId": "eng.sizing.actuator-force-awareness",
                   "progression": "introduces",
                   "role": "mechanism",
-                  "level": "analyze",
+                  "level": "evaluate",
                   "pages": [8],
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
                       "domain": "engineering",
                       "tier": "introductory",
-                      "t": "Step 3's trim-type decision follows directly from step 2's result: standard trim when both checks pass, noise-reduction trim when the noise limit is the one that fails, cavitation-reduction trim when the cavitation check is the one that fails — the failing check, not preference, decides which.",
+                      "t": "The selected actuator (a standard spring-and-diaphragm unit) is rated for about 900 lbf of output at its normal 35 psi supply pressure — well over double the 359 lbf actually required, a real, healthy margin. This is what a spec clearing every check looks like: a real Cv with margin (32 rated vs. 28 required), a trim choice matched to a service with no cavitation risk, and an actuator force check that was actually run, not assumed from stroking thrust alone. The next case raises the shutoff requirement and shows what happens when that last check gets skipped.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "Re-tagged from application to mechanism during Stage 4 render-check review — same reason as page 7.",
+                      "templateRationale": "Closes the worked-success case with the real margin numbers and an explicit statement of what made it succeed — the Articulate/Reflect half of tier 1's Model-only cycle, transitioning to tier 2.",
                       "pages": [8],
-                      "sources": ["cvh-cmp-valve-selection-process-flowchart"]
+                      "sources": ["cvh-cmp-seat-load-graph"]
                     }
                   ]
-                },
+                }
+              ],
+              "activities": [
                 {
-                  "competencyId": "eng.selection.body-trim-decision",
-                  "progression": "introduces",
+                  "id": "cve1-ch1-m1-act1",
+                  "type": "application-exercise",
+                  "afterConcept": 2,
+                  "minutes": 15,
+                  "title": "Check the Numbers Yourself",
+                  "description": "Given the same Case A inputs (P1, ΔP, Q, SG, port diameter), learners work the Cv calculation and the A+B+C+D actuator-force total by hand before the answer on page 7/8 is shown again, using Figure 5.2 and 5.3 as real job aids — confirms the mechanism, not just watches it demonstrated.",
+                  "materials": ["Case A handout (P1, ΔP, Q, SG, port diameter)", "Figure 5.2/5.3 as job aids"],
+                  "sourceNote": "Direct arithmetic on the same real inputs and real table data (cvh-cmp-unbalance-area-table, cvh-cmp-seat-load-graph) already shown on pages 7-8 — no new source claim."
+                }
+              ],
+              "pages": [5, 6, 7, 8]
+            },
+            {
+              "id": "cve1-ch1-m2",
+              "stage": "attempt-consequence-model",
+              "title": "A Tighter Requirement, One Real Gap",
+              "status": "ready",
+              "levelTarget": "analyze",
+              "domain": "engineering",
+              "minutesTarget": 90,
+              "stakes": "Same method, one step skipped — a real, moderate consequence follows, traceable to one specific number that was never checked.",
+              "objective": "Apply the same actuator-force method to a Class III case, using a real but incomplete shortcut (stroking thrust only) to show exactly where and how much it falls short of the real A+B+C+D total.",
+              "buildsOn": ["cve1-ch1-m1"],
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.sizing.actuator-force-awareness",
+                  "progression": "develops",
                   "role": "mechanism",
-                  "level": "understand",
+                  "level": "apply",
                   "pages": [9],
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
                       "domain": "engineering",
                       "tier": "introductory",
-                      "t": "Step 4 selects the actual body and trim size for the required Cv once trim type is fixed — travel, trim group, and shutoff class all follow from this choice, not from the Cv number alone.",
+                      "t": "Case B, a boiler-feedwater trim valve: P1 = 200 psig, P2 = 140 psig, ΔP = 60 psi, Q = 150 gpm of water, Class III shutoff (a tighter requirement than Case A's Class II, though still well short of near-zero leakage). Preliminary Cv = 150 x sqrt(1.0/60) = 150 x 0.129 = about 19. ΔP is again a modest fraction of P1, so the trim and body choice (a 2-inch globe valve, standard trim, rated Cv about 22) is correctly sized with no cavitation risk — this case's gap is not in the trim decision, it is entirely in how the actuator gets sized next.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "How the sizing decision propagates into body/trim/shutoff consequences — a mechanism explanation of what one choice determines, not a judgment call being applied.",
+                      "templateRationale": "A new, real case with its own real numbers — reinforces the Cv/trim method from Module 1 correctly, isolating the actuator-force gap as the one thing this case tests.",
                       "pages": [9],
                       "sources": ["cvh-cmp-valve-selection-process-flowchart"]
                     }
                   ]
                 },
                 {
-                  "competencyId": "eng.selection.body-trim-decision",
-                  "progression": "introduces",
+                  "competencyId": "eng.sizing.actuator-force-awareness",
+                  "progression": "develops",
                   "role": "mechanism",
                   "level": "analyze",
                   "pages": [10],
@@ -199,114 +227,30 @@
                     {
                       "domain": "engineering",
                       "tier": "introductory",
-                      "t": "Step 5 selects trim materials compatible with the process and available within the trim group step 4 already fixed — a material that fits the process but doesn't exist in that trim group is not a real option at this step.",
+                      "t": "The actuator for Case B was sized against stroking thrust alone — the force to move the plug through its travel, estimated at about 180 lbf — and a unit rated for 250 lbf output was selected, which looks like a comfortable margin against that number. But stroking thrust is only part of A in the real A+B+C+D total; it was never checked against B (required seat load) at all. At commissioning, the valve failed its Class III shutoff test: a real, persistent seat leak, not the near-zero leakage the spec called for.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "Re-tagged from application to mechanism during Stage 4 render-check review — same reason as pages 7-8.",
+                      "templateRationale": "The real consequence, stated plainly as a commissioning-test finding — no persona voice, no drama, a documented real-world result of the specific shortcut taken.",
                       "pages": [10],
-                      "sources": ["cvh-cmp-valve-selection-process-flowchart"]
-                    }
-                  ]
-                }
-              ],
-              "activities": [
-                {
-                  "id": "cve1-ch1-m1-act1",
-                  "type": "case-walkthrough",
-                  "afterConcept": 5,
-                  "minutes": 25,
-                  "title": "Selection Walkthrough",
-                  "description": "Given a real service-condition case (P1, ΔP, Q, T1, fluid, allowable noise, ANSI class), work steps 1-3 of the flowchart as a class: state the preliminary Cv result, run the noise/cavitation check, and decide whether the case forces a trim-type change — then work steps 4-5 to justify the resulting body/trim/material decision.",
-                  "materials": ["A worked service-condition case handout (P1, ΔP, Q, T1, fluid, allowable noise, ANSI class)", "The flowchart figure as a job aid"],
-                  "sourceNote": "Grounded directly in the flowchart's own 6 steps (cvh-cmp-valve-selection-process-flowchart) — no invented procedure."
-                }
-              ],
-              "pages": [5, 6, 7, 8, 9, 10],
-              "check": [11]
-            },
-            {
-              "id": "cve1-ch1-m2",
-              "title": "Cavitation and Flashing: Diagnosing Damage",
-              "status": "ready",
-              "levelTarget": "analyze",
-              "domain": "engineering",
-              "minutesTarget": 145,
-              "stakes": "An engineer who mistakes cavitation damage for flashing damage (or the reverse) prescribes the wrong fix — flashing is largely unavoidable once the process conditions are fixed, but cavitation is preventable by valve/trim design; treating a cavitation problem as flashing means shipping a valve that fails again. Counter-intuitively, the design choice that looks like the safer bet — a high-recovery valve — is exactly the one more prone to the failure that matters here.",
-              "objective": "Distinguish flashing damage from cavitation damage by visual signature, tracing the difference back to the vena-contracta mechanism that produces each.",
-              "buildsOn": [],
-              "keyConcepts": [
-                {
-                  "competencyId": "eng.noise-cavitation.damage-diagnosis",
-                  "progression": "introduces",
-                  "role": "mechanism",
-                  "level": "understand",
-                  "pages": [12],
-                  "competencyStatus": "confirmed",
-                  "primitives": [
-                    {
-                      "domain": "engineering",
-                      "tier": "introductory",
-                      "t": "Flow narrows through a restriction to a minimum cross-sectional area just downstream — the vena contracta — before recovering toward the downstream pressure. Both flashing and cavitation start here: it's where the pressure inside the valve drops lowest.",
-                      "template": "slide--role-mechanism",
-                      "templateRationale": "The source figure is a labelled flow-path schematic (Flow, P1, P2, Restriction, Vena Contracta) — the canonical how-it-works diagram the mechanism role is built for.",
-                      "pages": [12],
-                      "sources": ["cvh-cmp-vena-contracta-diagram"]
+                      "sources": ["cvh-cmp-seat-load-graph"]
                     }
                   ]
                 },
                 {
-                  "competencyId": "eng.noise-cavitation.damage-diagnosis",
-                  "progression": "introduces",
+                  "competencyId": "eng.sizing.actuator-force-awareness",
+                  "progression": "develops",
                   "role": "mechanism",
-                  "level": "analyze",
-                  "pages": [13],
+                  "level": "evaluate",
+                  "pages": [11],
                   "competencyStatus": "confirmed",
                   "primitives": [
                     {
                       "domain": "engineering",
                       "tier": "introductory",
-                      "t": "If the pressure at the vena contracta drops to or below the fluid's vapor pressure, the liquid flashes to vapor bubbles there. If the downstream pressure then recovers above the vapor pressure, those bubbles collapse violently — that collapse, not the flashing itself, is what erodes metal. Flashing without recovery above vapor pressure causes no collapse damage; cavitation is specifically the collapse case.",
+                      "t": "The real total, worked the way Module 1 showed: port diameter 1-7/8 in gives unbalance area = 2.76 in² (Figure 5.2), so A = 2.76 x 60 = about 166 lbf. Figure 5.3 at Class III and 60 psi reads about 45 lbf per lineal inch; port circumference = pi x 1.875 = 5.89 in, so B = 45 x 5.89 = about 265 lbf. Packing friction C is about 25 lbf, D about 10 lbf. Total required = 166 + 265 + 25 + 10 = about 466 lbf — nearly double the 250 lbf the actuator was actually rated for, and more than double the 180 lbf stroking-thrust estimate the selection was based on. The gap is not a modest miss: B alone (265 lbf) exceeds the actuator's entire rated output.",
                       "template": "slide--role-mechanism",
-                      "templateRationale": "Extends the same vena-contracta diagram's mechanism into the flash/collapse distinction — still a how-it-happens explanation, one step deeper than the previous slide's setup.",
-                      "pages": [13],
-                      "sources": ["cvh-cmp-vena-contracta-diagram"]
-                    }
-                  ]
-                },
-                {
-                  "competencyId": "eng.noise-cavitation.damage-diagnosis",
-                  "progression": "introduces",
-                  "role": "mechanism",
-                  "level": "analyze",
-                  "pages": [14],
-                  "competencyStatus": "confirmed",
-                  "primitives": [
-                    {
-                      "domain": "engineering",
-                      "tier": "introductory",
-                      "t": "A high-recovery valve design (e.g. a streamlined ball valve) recovers pressure faster and higher after the vena contracta than a low-recovery design — which is exactly why high-recovery designs are more prone to cavitation for the same upstream/downstream conditions, not less: more recovery means a higher chance of crossing back above vapor pressure.",
-                      "template": "slide--role-mechanism",
-                      "templateRationale": "Re-tagged twice: contrast->application (the source is ONE figure with both curves overlaid, not two separate photos), then application->mechanism during Stage 4 render-check review (slide--role-application has no CSS shape for a real figure, caused clipping). Mechanism fig+list shape fits.",
-                      "pages": [14],
-                      "sources": ["cvh-cmp-pressure-profile-high-low-recovery"]
-                    }
-                  ]
-                },
-                {
-                  "competencyId": "eng.noise-cavitation.damage-diagnosis",
-                  "progression": "introduces",
-                  "role": "contrast",
-                  "level": "analyze",
-                  "pages": [15],
-                  "competencyStatus": "confirmed",
-                  "primitives": [
-                    {
-                      "domain": "engineering",
-                      "tier": "introductory",
-                      "t": "Flashing damage looks smooth and polished — a clean erosion pattern with no pitting. Cavitation damage looks rough and cinder-like — a pitted, gouged surface from repeated bubble-collapse impacts. The visual signature alone, with no pressure data available, is enough to tell which mechanism produced a given piece of failed trim.",
-                      "template": "slide--role-contrast",
-                      "templateRationale": "Two real damage photos, each the direct visual contrast pair of the other per the Component Index's own notes — the two-panel shape fits exactly, one photo per panel.",
-                      "pages": [15],
-                      "sources": ["cvh-cmp-flashing-damage-photo", "cvh-cmp-cavitation-damage-photo"]
+                      "templateRationale": "The real corrected total, computed the same way tier 1 taught it — closes the Attempt-Consequence-Model cycle by showing exactly which real number was missing and by how much.",
+                      "pages": [11],
+                      "sources": ["cvh-cmp-unbalance-area-table", "cvh-cmp-seat-load-graph"]
                     }
                   ]
                 }
@@ -314,17 +258,226 @@
               "activities": [
                 {
                   "id": "cve1-ch1-m2-act1",
-                  "type": "application-exercise",
-                  "afterConcept": 3,
-                  "minutes": 20,
-                  "title": "Damage Diagnosis",
-                  "description": "Show the two real damage photos (flashing, cavitation) unlabelled. Learners diagnose which is which from visual signature alone, then justify the diagnosis by walking the vena-contracta / pressure-recovery mechanism backward from the damage to the cause — not just naming the answer.",
-                  "materials": ["Unlabelled prints/projection of the two damage photos", "The vena-contracta/pressure-recovery diagrams as reference"],
-                  "sourceNote": "Grounded directly in the two damage photos and their own visual-signature distinction (cvh-cmp-flashing-damage-photo, cvh-cmp-cavitation-damage-photo) — no invented scenario."
+                  "type": "discussion",
+                  "afterConcept": 2,
+                  "minutes": 15,
+                  "title": "Where the 250 lbf Came From",
+                  "description": "In pairs, learners identify exactly which of the four terms (A, B, C, D) the 250 lbf actuator rating was actually checked against, and which it was never checked against at all — using their own Module 1 worked numbers as the reference for what a complete check looks like.",
+                  "materials": ["Case B numbers from pages 9-11", "Learners' own Module 1 worked calculation"],
+                  "sourceNote": "Direct comparison exercise against the real numbers on pages 9-11 (cvh-cmp-unbalance-area-table, cvh-cmp-seat-load-graph) — no new source claim."
                 }
               ],
-              "pages": [12, 13, 14, 15],
-              "check": [16]
+              "pages": [9, 10, 11]
+            },
+            {
+              "id": "cve1-ch1-m3",
+              "stage": "attempt-consequence-model-coach-reflect",
+              "title": "Near-Zero Leakage, Two Real Gaps",
+              "status": "ready",
+              "levelTarget": "evaluate",
+              "domain": "engineering",
+              "minutesTarget": 180,
+              "stakes": "The hardest real case in this course: a near-zero-leakage requirement combined with a trim choice that looks efficient on paper but is mechanically the wrong call — two independent failure modes from one spec, only readable once both the cavitation mechanism and the real actuator-force total are second nature.",
+              "objective": "Work a Class V near-zero-leakage service with real numbers, commit to a specific sliding-stem trim and actuator sizing before the cavitation mechanism and the real force total are shown, confront both real consequences, model both mechanisms in full, then re-work the same case correctly and articulate what the original reasoning missed.",
+              "buildsOn": ["cve1-ch1-m2"],
+              "keyConcepts": [
+                {
+                  "competencyId": "eng.sizing.valve-selection-process",
+                  "progression": "applies",
+                  "role": "mechanism",
+                  "level": "apply",
+                  "pages": [12],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "introductory",
+                      "t": "Case C, a tight-shutoff isolation service: P1 = 400 psig, P2 = 80 psig, ΔP = 320 psi, Q = 100 gpm of water, Class V shutoff (near-zero leakage, the tightest class Figure 5.3 covers). Preliminary Cv = 100 x sqrt(1.0/320) = 100 x 0.0559 = about 5.6. Unlike Cases A and B, ΔP (320 psi) is 80% of P1 — a severe pressure drop that steps 3-5 of the flowchart require checking against cavitation risk before picking a trim. A streamlined, minimum-restriction sliding-stem trim is selected anyway — high Cv per dollar, and space in the valve gallery is tight — without running that check.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Real numbers throughout, the same flowchart region as Modules 1-2 — but this time the ΔP/P1 ratio is severe enough that skipping the cavitation check is a real, specific omission, not a generic warning.",
+                      "pages": [12],
+                      "sources": ["cvh-cmp-valve-selection-process-flowchart"]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sizing.actuator-force-awareness",
+                  "progression": "applies",
+                  "role": "mechanism",
+                  "level": "apply",
+                  "pages": [13],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "introductory",
+                      "t": "The actuator is sized the same incomplete way as Case B: stroking thrust alone, estimated at about 2,500 lbf for this larger valve, against a unit rated for 3,000 lbf output — again looking like real margin against the wrong number. The spec is submitted with both the trim decision and the actuator decision made, and both checks (cavitation risk, real seat-load total) still unrun.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Completes the attempt with a second real, quantified wrong decision — same shortcut as Module 2, now at Class V's much larger scale, before either consequence is revealed.",
+                      "pages": [13],
+                      "sources": ["cvh-cmp-valve-selection-process-flowchart"]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.noise-cavitation.damage-diagnosis",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [14],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "introductory",
+                      "t": "Field inspection, three weeks in service: the trim is pitted and gouged — a cinder-like erosion pattern, not the smooth polish of simple wear. The calculated Cv (5.6) was correct; the trim is failing for a different, specific reason the flowchart's step-3 cavitation check exists to catch and this spec skipped.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "The real physical evidence stated plainly as a field-inspection finding, no persona voice.",
+                      "pages": [14],
+                      "sources": ["cvh-cmp-cavitation-damage-photo"]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sizing.actuator-force-awareness",
+                  "progression": "applies",
+                  "role": "mechanism",
+                  "level": "understand",
+                  "pages": [15],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "introductory",
+                      "t": "Same inspection, second finding: commissioning also flagged a seat leak — the valve never achieved Class V shutoff, even before the trim erosion began. Two separate, independent real failures from one spec: a trim-erosion problem and an entirely different shutoff-force problem, both traceable to real checks the flowchart lists that this spec did not run.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Second, independent finding from the same field report — establishes the two-gap difficulty this tier is built around.",
+                      "pages": [15],
+                      "sources": ["cvh-cmp-seat-load-graph"]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.noise-cavitation.damage-diagnosis",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "analyze",
+                  "pages": [16],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "introductory",
+                      "t": "Flow narrows through a restriction to a minimum cross-sectional area just downstream — the vena contracta — where pressure inside the valve is at its lowest point before recovering toward P2. If that lowest pressure drops to or below the fluid's vapor pressure, the liquid flashes to vapor bubbles there. If downstream pressure then recovers above vapor pressure, those bubbles collapse violently against the trim surface — the collapse, not the flashing itself, is what erodes metal.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "The full vena-contracta and flash/collapse mechanism, complete and correct on its own, independent of any specific case.",
+                      "pages": [16],
+                      "sources": ["cvh-cmp-vena-contracta-diagram"]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.noise-cavitation.damage-diagnosis",
+                  "progression": "develops",
+                  "role": "mechanism",
+                  "level": "evaluate",
+                  "pages": [17],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "introductory",
+                      "t": "A high-recovery trim design recovers pressure faster and higher after the vena contracta than a low-recovery design does under the same upstream conditions — which makes a high-recovery trim MORE prone to cavitation for the same service, not less: the same low pressure at the vena contracta is now followed by a steeper recovery back above vapor pressure. Case C's streamlined, minimum-restriction trim (page 12) was chosen for Cv efficiency and space — that is precisely the higher-recovery option, and at an 80%-of-P1 pressure drop, exactly the wrong one. Efficiency and cavitation resistance pull in opposite directions at this pressure-drop ratio.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Names the specific real gap directly against the case's own numbers — the mechanism plus the explicit contrast against the earlier decision.",
+                      "pages": [17],
+                      "sources": ["cvh-cmp-pressure-profile-high-low-recovery"]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.noise-cavitation.damage-diagnosis",
+                  "progression": "develops",
+                  "role": "contrast",
+                  "level": "analyze",
+                  "pages": [18],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "introductory",
+                      "t": "Flashing damage looks smooth and polished — a clean erosion pattern with no pitting, because vapor bubbles collapse downstream of the restriction where velocities are lower. Cavitation damage looks rough and cinder-like — a pitted, gouged surface from repeated high-energy bubble-collapse impacts right at the point of collapse. Page 14's pitted, gouged field photo is the cavitation signature specifically, confirming which of the two mechanisms is actually at work in Case C.",
+                      "template": "slide--role-contrast",
+                      "templateRationale": "Two real photos, direct visual contrast pair — a complete diagnostic distinction on its own, with the case's own evidence cited as the confirming example.",
+                      "pages": [18],
+                      "sources": ["cvh-cmp-flashing-damage-photo", "cvh-cmp-cavitation-damage-photo"]
+                    }
+                  ]
+                },
+                {
+                  "competencyId": "eng.sizing.actuator-force-awareness",
+                  "progression": "applies",
+                  "role": "mechanism",
+                  "level": "evaluate",
+                  "pages": [19],
+                  "competencyStatus": "confirmed",
+                  "primitives": [
+                    {
+                      "domain": "engineering",
+                      "tier": "introductory",
+                      "t": "The real total for Case C, worked the way Modules 1-2 showed: port diameter 3-7/16 in gives unbalance area = 9.28 in² (Figure 5.2). At shutoff, the valve holds against the full 400 psi upstream pressure, so A = 9.28 x 400 = about 3,712 lbf. Figure 5.3 at Class V and 400 psi reads about 900 lbf per lineal inch — five to ten times a lower class's demand, not a modest step up. Port circumference = pi x 3.4375 = 10.8 in, so B = 900 x 10.8 = about 9,720 lbf. Packing friction C is about 50 lbf, D about 20 lbf. Total required = 3,712 + 9,720 + 50 + 20 = about 13,500 lbf — more than four times the 3,000 lbf the actuator was actually rated for, and over five times the 2,500 lbf stroking-thrust estimate the selection was based on. The 3,000 lbf rating was never checked against this number at all.",
+                      "template": "slide--role-mechanism",
+                      "templateRationale": "Reads the real graph and table directly and states the specific quantified gap at Class V's scale — the same A+B+C+D method as Modules 1-2, showing how dramatically the total scales with shutoff class.",
+                      "pages": [19],
+                      "sources": ["cvh-cmp-unbalance-area-table", "cvh-cmp-seat-load-graph"]
+                    }
+                  ]
+                }
+              ],
+              "activities": [
+                {
+                  "id": "cve1-ch1-m3-act1",
+                  "type": "discussion",
+                  "afterConcept": 5,
+                  "minutes": 15,
+                  "title": "Where the Spec Broke — Cavitation",
+                  "description": "In pairs, learners re-read their own page-12 written commitment (from the pre-reveal attempt exercise below) and mark exactly where their reasoning diverges from the real mechanism just taught — not \"we were wrong,\" but the specific assumption (compact/efficient trim = safer) that the vena-contracta/recovery mechanism directly contradicts.",
+                  "materials": ["Learners' own written commitments from the Module 3 attempt exercise"],
+                  "sourceNote": "Direct application of the vena-contracta/high-recovery mechanism (cvh-cmp-vena-contracta-diagram, cvh-cmp-pressure-profile-high-low-recovery) to the learner's own prior decision."
+                },
+                {
+                  "id": "cve1-ch1-m3-act0",
+                  "type": "application-exercise",
+                  "afterConcept": 1,
+                  "minutes": 15,
+                  "title": "Commit to the Case C Spec",
+                  "description": "Given Case C's real inputs (P1, ΔP, Q, Class V requirement), learners individually commit in writing to a trim-type choice and an actuator force estimate before pages 14-19 reveal the mechanisms and the real totals — a real productive-failure attempt against real numbers, not a rhetorical question. Varied wrong answers are expected; the instructor collects them without correcting yet, for direct comparison in the discussion activity above and the reflection activity below.",
+                  "materials": ["Case C handout (P1, ΔP, Q, Class V requirement)", "Figure 5.2/5.3 and the flowchart as job aids"],
+                  "sourceNote": "The decision points are the flowchart's own steps 2-5 (cvh-cmp-valve-selection-process-flowchart) applied to Case C's real numbers; the specific wrong path is this course's own scenario design, built to match the real evidence on pages 14-19."
+                },
+                {
+                  "id": "cve1-ch1-m3-act2",
+                  "type": "application-exercise",
+                  "afterConcept": 6,
+                  "minutes": 20,
+                  "title": "Two New Services, Fading Support",
+                  "description": "Learners re-work Case C correctly (cavitation-reduction trim, full A+B+C+D actuator sizing), then apply the same judgment to two new service cases: the first against a full checklist naming both required checks, the second with only a one-line reminder that checks exist. Instructor circulates during the first case, steps back during the second.",
+                  "materials": ["Two new service-case handouts", "Full checklist for case 1", "One-line reminder card for case 2", "Figure 5.3/5.4 and the flowchart as job aids"],
+                  "sourceNote": "Both new cases exercise the same real checks just modeled (cvh-cmp-pressure-profile-high-low-recovery, cvh-cmp-seat-load-graph) against new parameters — no new source claims."
+                },
+                {
+                  "id": "cve1-ch1-m3-act3",
+                  "type": "discussion",
+                  "afterConcept": 7,
+                  "minutes": 15,
+                  "title": "Compare to the Correct Reasoning",
+                  "description": "Learners read their own Case C written commitment and coached/faded work side by side and write one paragraph each on the cavitation gap and the actuator-force gap: what they assumed, what the real mechanism and the real numbers showed instead, and where in the source material the answer was actually sitting the whole time.",
+                  "materials": ["Learners' own written work from this module"],
+                  "sourceNote": "A comparison exercise against the learner's own prior work and the real mechanisms/numbers modeled in this module — no new source claim, the articulate/reflect stage's defining activity per teaching-philosophy.md."
+                }
+              ],
+              "pages": [12, 13, 14, 15, 16, 17, 18, 19],
+              "check": [20]
             }
           ]
         }

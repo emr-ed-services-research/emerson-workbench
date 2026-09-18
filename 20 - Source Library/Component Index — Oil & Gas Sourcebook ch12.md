@@ -66,6 +66,61 @@ chapter boundary without re-deriving it.
 
 ## Components
 
+### Chapter 12 — Natural Gas Storage: Introduction (printed p. 12-1, no visible folio)
+
+```yaml
+id: ogas-topic-storage-formation-types
+kind: topic
+teaches: >
+  Three formation types are used for underground natural-gas storage, each
+  with real tradeoffs the source states directly: depleted (natural gas or
+  oil) reservoirs are the most common, reusing existing wells and gas
+  transportation infrastructure and offering the largest storage volumes
+  of the three. Aquifers are the least common, due to relatively high base
+  gas requirements and the formation's inherently low permeability. Salt
+  caverns have lower storage capacity than the other two but have grown in
+  popularity for their higher relative injection and withdrawal rates;
+  naturally occurring salt domes are rarely large enough on their own, so
+  nearly all cavern sites require an upfront solution-mining process
+  (removing additional salt from the formation to create sufficient
+  storage volume) called leaching, which takes six months to three years
+  depending on the required cavern size — a real cost/lead-time tradeoff
+  against the salt cavern's throughput advantage. Only salt-cavern sites
+  need this leaching step; it does not apply to depleted-reservoir or
+  aquifer sites, which already have enough storage volume to be
+  economically feasible without it.
+
+  All gas in storage at a facility is divided into two categories: base
+  gas ("cushion gas") is the volume that must remain in the formation
+  permanently to maintain a minimum wellhead pressure; working gas is the
+  volume that can actually be extracted in normal operation. Facility size
+  varies enormously by this working-gas figure alone — from roughly 0.1 Bcf
+  for a smaller peak-load facility to 100 Bcf for a larger base-load one.
+concept-tags: [natural gas storage, storage formation types, depleted reservoir, aquifer, salt cavern, base gas, cushion gas, working gas, leaching, solution mining]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: >
+      Chapter 12 "Natural Gas Storage," introductory prose (printed p. 12-1,
+      PDF p. 143, no visible footer folio per this chapter's own opening-page
+      convention — prose, not figure-anchored).
+relatedFigures: [ogas-cmp-underground-storage-process-flow]
+relatedTopics: []
+used-by: []
+notes: >
+  Real conceptual foundation for the whole chapter — explains WHY a real
+  site has the specific sub-processes `ogas-cmp-underground-storage-process-
+  flow`'s own notes already point to (only salt-cavern sites need the
+  water-injection/brine-disposal loop), which that figure entry names but
+  doesn't explain. The source also says, in this same introductory section,
+  "See Chapter nine for more details" regarding glycol dehydration used in
+  gas withdrawal/export — not indexed here since Chapter 9 (Natural Gas
+  Treatment) hasn't been topic-indexed yet in this pass; a future ch9 pass
+  should link back to this chapter's `ogas-topic-bidirectional-cavern-valve-sizing`
+  and the withdrawal-separator/glycol-contactor content in
+  `ogas-cmp-gas-withdrawal-export-valve-diagram`'s own teaches field.
+```
+
 ### Chapter 12 — Underground Storage Process (chapter opener figure, printed p. 12-2)
 
 ```yaml
@@ -304,6 +359,48 @@ notes: >
   that closed the gap this record originally flagged).
 ```
 
+### Chapter 12 — Gas Injection System / Gas Withdrawal and Export: bi-directional valve sizing (printed pp. 12-6–12-7)
+
+```yaml
+id: ogas-topic-bidirectional-cavern-valve-sizing
+kind: topic
+teaches: >
+  Cavern injection and withdrawal valves are frequently the same physical
+  valve run in both directions, not two separate devices — the source
+  states this explicitly for both item 2 ("Cavern Injection Control... This
+  valve is commonly used for gas withdrawal, as well") and the mirrored
+  item 1 ("Cavern Withdrawal Control... This valve is commonly used for
+  gas injection as well"). That bi-directional duty creates a real sizing
+  tension: injection is a low-ΔP, high-Cv condition, while withdrawal is a
+  high-ΔP, low-Cv condition — the same valve has to cover both regimes, so
+  a specially characterized cage is commonly required rather than a
+  standard linear or equal-percentage trim. When bi-directional use is
+  actually required, turndown requirements "can be extreme." This is a
+  distinct engineering judgment from ordinary trim selection: the valve
+  isn't sized against one duty point, it's sized against two opposing
+  duty points on the same trim.
+concept-tags: [bidirectional flow, turndown, specially characterized cage, cavern injection, cavern withdrawal, low dP high Cv, high dP low Cv, gas storage]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: >
+      Chapter 12 "Natural Gas Storage," "Gas Injection System" item 2 and
+      "Gas Withdrawal and Export" item 1 application-review prose (printed
+      pp. 12-6–12-7, PDF pp. 147-148) — prose, not figure-anchored.
+relatedFigures: [ogas-cmp-gas-injection-valve-diagram, ogas-cmp-gas-withdrawal-export-valve-diagram]
+relatedTopics: [ogas-topic-storage-formation-types]
+used-by: []
+notes: >
+  The same tension is stated twice in the source almost verbatim (once
+  under Gas Injection's item 2, once under Gas Withdrawal's item 1) —
+  confirmed by reading both passages directly rather than assuming one
+  restates the other from a shared caption. Neither `ogas-cmp-gas-injection-
+  valve-diagram` nor `ogas-cmp-gas-withdrawal-export-valve-diagram`'s own
+  `teaches` field mentions this tradeoff; it lives only in the surrounding
+  application-review prose, exactly the kind of content the figures-only
+  rule structurally could not catch.
+```
+
 ### Chapter 12 — Gas Injection System / Gas Withdrawal and Export: representative hardware (printed p. 12-6)
 
 ```yaml
@@ -432,3 +529,17 @@ notes: >
 - No asset-variant-registry or `Curriculum —` writes were made from either
   pass — out of scope for a standing Component-Index-only cataloging
   batch.
+- **`kind: topic` pass (2026-09-17):** read the full chapter's real body
+  prose (PDF pp. 143-150, printed 12-1 through 12-8) start to finish, not
+  just sections already tied to a figure. Two genuine topic entries added:
+  `ogas-topic-storage-formation-types` (the chapter's conceptual
+  foundation — depleted reservoir/aquifer/salt-cavern tradeoffs, base
+  gas/working gas, leaching) and `ogas-topic-bidirectional-cavern-valve-
+  sizing` (the low-ΔP-high-Cv-injection vs. high-ΔP-low-Cv-withdrawal
+  tension, stated twice in the source almost verbatim, tied to no single
+  figure). **Every numbered parameter table (Tables 12-1 through 12-15 —
+  Fluid/Inlet Pressure/Outlet Pressure/Flow Rate/Valve Type/Trim Material
+  per service) confirmed reference-data-only**: real service-condition
+  specs, not generalizable conceptual content beyond what the two topic
+  entries above already extract from the surrounding prose. Chapter total
+  is now 10 components (8 figures + 2 topics).

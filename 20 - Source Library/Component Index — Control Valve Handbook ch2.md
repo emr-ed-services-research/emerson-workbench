@@ -44,6 +44,37 @@ itself.
 ### Process variability and performance test fundamentals (printed pp. 35–40)
 
 ```yaml
+id: cvh-topic-process-variability
+kind: topic
+teaches: >
+  Process variability is the spread (the +/-2 sigma band) of a process
+  variable's deviation from its set point under normal-cause variation — a
+  measure of how tightly a process is being controlled, expressed as a
+  percentage of the set point. If a product must meet a lower-limit
+  specification, the set point has to be pushed 2 sigma above that limit to
+  guarantee conformance; a tighter (smaller-sigma) control valve lets the
+  set point sit closer to the real limit instead of wasting material/product
+  making everything to an unnecessarily high standard. Extensive control-loop
+  studies found as many as 80% of loops fail to adequately reduce process
+  variability, and the control valve assembly (valve + actuator + positioner,
+  optimized as a unit, not as separately-designed components) is a major,
+  often-overlooked contributor.
+concept-tags: [process variability, 2-sigma band, set point, quality specification, control loop performance]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§2.1 Process Variability, pp. 35-36 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-process-variability-distributions, cvh-cmp-performance-test-loop-photo]
+relatedTopics: [cvh-topic-deadband, cvh-topic-valve-oversizing-effects]
+used-by: []
+notes: >
+  Read directly from the real PDF pages (pdftotext, footer-confirmed).
+  Foundational framing for the whole chapter — every later performance
+  concept (deadband, response time, gain) is explained in terms of its
+  contribution to this one quantity.
+```
+
+```yaml
 id: cvh-cmp-process-variability-distributions
 teaches: >
   Two stacked bell-curve (distribution) plots contrasting a wider, higher-variability
@@ -78,7 +109,64 @@ used-by: [{course: CVB, slide: cvb-054.html}]
 notes: Photo, not a graph; labelled equipment not individually called out in caption.
 ```
 
+```yaml
+id: cvh-topic-deadband
+kind: topic
+teaches: >
+  Deadband is a range or band of controller-output (CO) values that fail to
+  produce any change in the measured process variable (PV) when the input
+  signal reverses direction — when a load disturbance moves the PV off set
+  point, the corrective CO change must first travel through this deadband
+  before any actual corrective change in PV occurs at all, meaning the
+  deviation must grow larger before a fix can even begin. Deadband is a major
+  contributor to excess process variability; a control valve assembly can be
+  a primary source of it in an instrumentation loop, from friction, backlash,
+  shaft wind-up, or relay/spool-valve dead zone.
+concept-tags: [deadband, controller output, process variable, load disturbance, friction, backlash]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§2.1.1 Deadband, p. 36 — prose, not figure-anchored"
+relatedFigures: [ch3-cmp-deadband-effect-chart]
+relatedTopics: [cvh-topic-process-variability, cvh-topic-valve-response-time]
+used-by: []
+notes: >
+  Read directly from the real PDF page. The chapter's own Figure 2.3
+  (deadband effect chart) is cross-referenced elsewhere in this file, not
+  duplicated — see Open items; this topic entry cites that existing id
+  under `relatedFigures` rather than creating a second record for it.
+```
+
 ### Response time, installed gain, and valve-style comparison (printed pp. 41–46)
+
+```yaml
+id: cvh-topic-valve-response-time
+kind: topic
+teaches: >
+  Valve response time is measured by T63 — the time from the start of an
+  input-signal change to when the output reaches 63% of the corresponding
+  change — and splits into two parts. Dead time is the static portion,
+  driven mainly by deadband (friction/backlash in the valve, actuator, or
+  positioner); it should generally stay under about one-third of total
+  response time, and matters most when a fast process loop's own time
+  constant approaches the valve's dead time. Dead time should also be
+  reasonably consistent in both stroking directions — some designs (often
+  from asymmetric positioner behavior) have dead times 3-5x longer one way
+  than the other, which can badly limit loop tuning. Dynamic time is what
+  remains once dead time has passed and the valve is actually moving; it's
+  set mainly by the positioner/actuator combination (a positioner's power-
+  amplifier gain, and the actuator's air-chamber volume — a bigger chamber
+  to fill means a slower dynamic time).
+concept-tags: [valve response time, T63, dead time, dynamic time, positioner gain, actuator volume]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§2.1.3/§2.1.3.1/§2.1.3.2 Valve Response Time / Dead Time / Dynamic Time, pp. 40-41 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-valve-response-time-summary-table]
+relatedTopics: [cvh-topic-deadband, cvh-topic-process-variability]
+used-by: []
+notes: Read directly from the real PDF pages (pdftotext, footer-confirmed).
+```
 
 ```yaml
 id: cvh-cmp-valve-response-time-summary-table
@@ -99,6 +187,45 @@ source:
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Table-formatted content; no companion figure.
+```
+
+```yaml
+id: cvh-topic-installed-vs-inherent-characteristic
+kind: topic
+teaches: >
+  Inherent flow characteristic (linear, equal-percentage, quick-opening) is
+  the valve's flow-vs-travel relationship under a HELD CONSTANT pressure
+  drop — a function of trim geometry alone, unchanging as long as ΔP is
+  held constant; rotary designs (ball, butterfly, eccentric plug) mostly
+  can't have this changed, while most globe valves can via interchangeable
+  cages/plugs. Installed flow characteristic is the more practically
+  important number: the same flow-vs-input relationship but with the real
+  system's pressure drop allowed to vary naturally as installed, not held
+  constant. Installed gain is the slope of the installed characteristic
+  curve at each point. The reason to characterize inherent gain at all is
+  to compensate for the rest of the loop's own gain changes (e.g. a
+  pressure vessel's gain typically falls as throughput rises, so pairing it
+  with an equal-percentage valve, whose gain rises with flow, can net out
+  to a roughly linear installed characteristic). Loop gain — the product of
+  every device's gain in the loop except the controller — should not vary
+  more than about 4:1 across the operating range, or dynamic performance
+  degrades unacceptably (the EnTech gain-limit specification: nominal loop
+  process gain 0.5-2.0, a practitioner consensus figure, not a hard physical
+  law).
+concept-tags: [inherent characteristic, installed characteristic, installed gain, loop gain, 4-to-1 rule, EnTech]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§2.1.4/§2.1.4.1/§2.1.4.2 (Installed Gain, Loop Gain), pp. 44-46 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-installed-characteristic-and-gain, cvh-cmp-valve-style-control-range-comparison]
+relatedTopics: [cvh-topic-valve-oversizing-effects, cvh-topic-flow-characteristics]
+used-by: []
+notes: >
+  Read directly from the real PDF pages. `cvh-topic-flow-characteristics`
+  is Chapter 5's own topic entry (§5.4, inherent characteristics in the
+  sizing context) — cross-referenced, not duplicated; this Chapter 2 entry
+  is the performance/tuning-consequences side of the same underlying
+  concept, not a restatement.
 ```
 
 ```yaml
@@ -139,7 +266,64 @@ notes: >
   Open items for the mismatch on 2.8.
 ```
 
+```yaml
+id: cvh-topic-valve-oversizing-effects
+kind: topic
+teaches: >
+  Oversizing (common with line-size valves, especially high-capacity rotary
+  designs, and stacked safety factors) hurts process variability two real
+  ways. First, it puts too much gain into the valve itself, leaving the
+  controller less room to contribute gain — best performance comes from
+  most of the loop's gain living in the controller, not the valve. Second,
+  an oversized valve operates more often at low openings, where seal
+  friction is worse (especially in rotary valves); because an oversized
+  valve produces a disproportionately large flow change per unit of travel,
+  this friction/deadband effect on process variability gets exaggerated.
+  Regardless of its real inherent characteristic, a badly oversized valve
+  behaves like a quick-opening valve at low lift (high installed gain
+  there) and flattens out (near-zero gain, ineffective for control) at high
+  travel — a valve can be so oversized its usable control range narrows to
+  a small band of its total travel.
+concept-tags: [oversizing, control range, seal friction, quick-opening behavior, rotary valve, process variability]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§2.1.5 Valve Sizing, pp. 47-48 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-valve-style-control-range-comparison]
+relatedTopics: [cvh-topic-installed-vs-inherent-characteristic, cvh-topic-process-variability]
+used-by: []
+notes: Read directly from the real PDF pages.
+```
+
 ### Economics and Signature Series testing (printed pp. 49–51)
+
+```yaml
+id: cvh-topic-closed-loop-economics
+kind: topic
+teaches: >
+  Dynamic performance parameters (deadband, response time, installed gain)
+  are measurable open-loop, but their real economic impact only shows up
+  under closed-loop testing. A closed-loop test plots process variability
+  (% of set point) against closed-loop time constant (a measure of loop
+  tuning) for real valves against two reference lines: "Manual" (variability
+  with no control attempted at all) and "Minimum Variability" (the
+  calculated ideal for a perfectly linear valve assembly) — every real valve
+  falls somewhere between them, and not all valves that meet the same
+  static purchase spec perform the same dynamically. This is the basis for
+  a real economic argument: replacing a worse-performing valve with a
+  better one at the same tuning can be quantified as a specific percentage
+  variability improvement, translating directly into reduced scrap/rework/
+  off-spec product cost.
+concept-tags: [closed-loop testing, process variability, economic impact, dynamic performance, minimum variability line]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§2.2 Economic Results, pp. 48-49 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-closed-loop-disturbance-summary]
+relatedTopics: [cvh-topic-process-variability, cvh-topic-valve-oversizing-effects]
+used-by: []
+notes: Read directly from the real PDF pages.
+```
 
 ```yaml
 id: cvh-cmp-closed-loop-disturbance-summary
@@ -160,6 +344,36 @@ source:
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: [{course: CVB, slide: cvb-060.html}]
 notes: Feeds directly into the chapter's economics discussion (return on investment from tighter control).
+```
+
+```yaml
+id: cvh-topic-signature-series-testing
+kind: topic
+teaches: >
+  ValveLink Software Signature Series is a factory-executed performance
+  test, available for any Fisher control valve assembly with a FIELDVUE
+  digital valve controller, that creates a documented performance benchmark
+  before shipment — a starting point for a maintenance program, not a
+  one-time QA check. Three tiers: Series 1 (instrument configuration,
+  status monitor at 50% travel, valve spec sheet, valve signature and
+  dynamic error-band curve and drive signal all recorded -5 to 105% input);
+  Series 2 (adds a performance step test and status monitor at 0/25/50/75/
+  100%); Series 3 (user-specified Series 1+2 tests with adjustable end
+  points/scan times for specific requirements). The diagnostic principle:
+  once in service, the same tests can be re-run via ValveLink and the
+  current signature compared against the factory baseline to quickly
+  pinpoint developing issues (e.g. rising friction shows as an increased
+  signature span) — Data Comparison, the mechanism behind Figure 2.9's
+  worked example.
+concept-tags: [Signature Series, ValveLink, FIELDVUE, factory benchmark, data comparison, friction diagnosis]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§2.3/§2.3.1/§2.3.2/§2.3.3 Signature Series Performance Testing, pp. 50-51 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-signature-series-testing-photo, cvh-cmp-signature-data-comparison-overlay, cvh-cmp-valvelink-software-screens]
+relatedTopics: []
+used-by: []
+notes: Read directly from the real PDF pages.
 ```
 
 ```yaml
@@ -264,3 +478,12 @@ notes: Two-screenshot composite under one figure number; treat as one figure/one
 - **No low-confidence figures**: every figure's caption and page location was
   confirmed by both text extraction and a rendered page image; no figure in
   this chapter required a guess.
+- **`kind: topic` pass (2026-09-17)**: 7 new topic entries added — process
+  variability, deadband, valve response time, installed-vs-inherent
+  characteristic, valve oversizing effects, closed-loop economics, and
+  Signature Series testing — each grounded in real body prose read directly
+  from the PDF (`pdftotext`, footer-confirmed page numbers), not inferred
+  from the figure captions already catalogued above. All 16 ids in this file
+  (9 figures + 7 topics) confirmed unique; every `relatedFigures`/
+  `relatedTopics` reference (including the cross-chapter one to Chapter 5's
+  `cvh-topic-flow-characteristics`) verified to resolve to a real id.

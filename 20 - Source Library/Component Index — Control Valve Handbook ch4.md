@@ -101,6 +101,56 @@ used-by: [{course: CVB, slide: cvb-040.html}]
 notes: Fully labelled schematic (Output to Diaphragm, Relay, Instrument, Bellows, Supply, Feedback Axis, Nozzle, Flapper Assembly, Direct/Reverse Action Quadrants, Input Axis, Cam, Beam). The surrounding prose walks the full closed-loop mechanism step by step and is a strong candidate for context-pane material.
 ```
 
+```yaml
+id: cvh-topic-accessory-selection-rationale
+kind: topic
+concept-tags: [control valve accessories, accessory selection, environmental considerations, hazardous locations]
+status: current
+teaches: >
+  Five real reasons accessories get added to a control valve assembly, stated
+  directly in the source: improve process control, improve safety for the
+  process or personnel, improve valve performance/speed of response, monitor
+  or verify valve responsiveness, and diagnose potential valve issues.
+  Environmental/application conditions that drive accessory selection:
+  ambient temperature range -60 to 125°C (-76 to 257°F), corrosive
+  atmospheres (may require stainless steel or engineered resin), vibration
+  (may require rugged mounting or remote mounting), humidity (may require
+  protected electronics), and hazardous locations (may require flameproof,
+  explosion-proof, intrinsic-safety, or non-incendive protection concepts).
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.1 'Environmental & Application Considerations,' pp. 83-84 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [cvh-topic-positioner-fundamentals]
+used-by: []
+notes: >
+  Read directly from the real PDF (pp. 83-84). This is the chapter's own
+  stated rationale for accessories existing at all — grounds every
+  individual accessory figure that follows.
+```
+
+```yaml
+id: cvh-topic-positioner-fundamentals
+kind: topic
+concept-tags: [positioner, throttling, position feedback, positioner categories]
+status: current
+teaches: >
+  A positioner's fundamental function: deliver pressurized air to the valve
+  actuator so the stem/shaft position corresponds to the control system's
+  set point. Positioners are used when a valve requires throttling action,
+  need position feedback from the stem/shaft, and must be mounted on or near
+  the valve assembly. Three categories exist by control-signal type,
+  diagnostic capability, and communication protocol: pneumatic, analog I/P,
+  and digital valve controllers (each covered by its own figure entries).
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.2 'Positioners,' p. 84 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-pneumatic-positioner-schematic, cvh-cmp-analog-ip-positioner-schematic, cvh-cmp-digital-valve-controller-photo]
+relatedTopics: [cvh-topic-accessory-selection-rationale, cvh-topic-digital-valve-controller-capabilities]
+used-by: []
+notes: Read directly from p. 84's real prose, the intro paragraph before §4.2.1's pneumatic-positioner detail begins.
+```
+
 ### Analog I/P Positioners & Digital Valve Controllers (printed pp. 85–86)
 
 ```yaml
@@ -140,6 +190,34 @@ source:
 delivery: not yet determined
 used-by: [{course: CVB, slide: cvb-042.html}]
 notes: Photo of an assembled valve/actuator/DVC stack, not a schematic.
+```
+
+```yaml
+id: cvh-topic-digital-valve-controller-capabilities
+kind: topic
+concept-tags: [digital valve controller, diagnostics, HART, FOUNDATION fieldbus, PROFIBUS, wireless communication, two-way communication]
+status: current
+teaches: >
+  Beyond basic position control, a digital valve controller's microprocessor
+  enables two additional capabilities. Diagnostics: using pressure sensors,
+  temperature sensors, travel sensors, and internal readings, it creates
+  graphical performance/health representations and recommends maintenance
+  actions, using statistical algorithms on live sensor readings; provides
+  full-stroke dynamic testing (valve signature, dynamic error band, step
+  response, stroke time). Two-way digital communication: HART superimposes a
+  digital signal over the traditional 4-20 mA DC signal, letting a host
+  system configure/calibrate/monitor the positioner while keeping 4-20 mA
+  familiarity; FOUNDATION fieldbus and PROFIBUS are both all-digital
+  protocols sharing the same physical layer but differing in protocol;
+  wireless lets diagnostic data transmit independent of control-system
+  wiring.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.2.3.1-4.2.3.2, pp. 85-86 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-digital-valve-controller-photo]
+relatedTopics: [cvh-topic-positioner-fundamentals, cvh-topic-partial-stroke-testing]
+used-by: []
+notes: Read directly from pp. 85-86's real prose (§4.2.3.1 Diagnostics, §4.2.3.2 Two-Way Digital Communication).
 ```
 
 ### I/P Transducers & Volume Boosters (printed pp. 87–88)
@@ -183,6 +261,33 @@ used-by: [{course: CVB, slide: cvb-044.html}]
 notes: Cutaway/sectional diagram, distinct from the installation photo in Figure 4.8. Low confidence only on the exact section-number heading for §4.4 — the heading itself did not appear within the p.87–88 text window read; the booster subject matter and figure sequence are fully verified.
 ```
 
+```yaml
+id: cvh-topic-volume-booster-function
+kind: topic
+concept-tags: [volume booster, deadband, pneumatic amplification, stroking speed]
+status: current
+teaches: >
+  Volume boosters amplify positioner output to increase actuator stroking
+  speed when a large actuator volume makes positioning response too slow. A
+  large sudden input-signal change creates a pressure differential between
+  input and booster output; diaphragms then open the supply or exhaust port
+  (whichever reduces the differential) until the difference is back within
+  the booster's deadband limit. Fixed deadband, soft-seat construction, and
+  an integral bypass fitting let small-magnitude signal changes pass through
+  the bypass restriction without triggering booster action at all, avoiding
+  unnecessary air consumption. Single-acting actuators typically use one
+  booster; double-acting actuators require at least two (one per piston
+  side); compressor anti-surge or turbine-bypass applications may need
+  additional boosters for faster response.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.4 'Volume Boosters,' pp. 87-89 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-volume-booster-sectional, cvh-cmp-dual-booster-installation]
+relatedTopics: []
+used-by: []
+notes: Read directly from pp. 87-89's real prose.
+```
+
 ### Booster Installations, SIS, and Pneumatic Controllers (printed pp. 89–90)
 
 ```yaml
@@ -222,6 +327,60 @@ source:
 delivery: not yet determined
 used-by: [{course: CVB, slide: cvb-046.html}]
 notes: Photo of the assembled controller on a valve; the internal mechanism it summarizes is shown schematically in Figures 4.11 and 4.12.
+```
+
+```yaml
+id: cvh-topic-sis-accessory-role
+kind: topic
+concept-tags: [safety instrumented systems, SIS, fail-safe, FMEDA, emergency shutdown]
+status: current
+teaches: >
+  Emergency vent/block/isolation valves in a process loop are typically
+  on/off valves controlled by a separate safety system (often a logic
+  solver) to take the loop to a safe state during an emergency — distinct
+  from the primary modulating control valve. A spring-return, single-acting
+  actuator provides an inherent fail mode: removing air pressure lets the
+  spring drive the valve to its safe position, via a solenoid valve and/or
+  digital valve controller. Additional safety-valve instrumentation
+  (boosters, position transmitters, trip systems) must all be evaluated for
+  their effect on the safety system, since they can fail either by causing
+  an unplanned trip or by preventing the valve from reaching its safe state.
+  Failure Modes, Effects, and Diagnostics Analysis (FMEDA) provides per-
+  component metrics letting a safety engineer design to a target risk-
+  reduction level.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.5 'Safety Instrumented Systems (SIS),' §4.5.2, pp. 89-90 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-sis-dvc-on-safety-valve]
+relatedTopics: [cvh-topic-partial-stroke-testing]
+used-by: []
+notes: >
+  Read directly from pp. 89-90's real prose. The source itself points to
+  Chapter 12 for the full SIS treatment — this entry covers only what
+  Chapter 4 states about accessories' role, not full SIS theory.
+```
+
+```yaml
+id: cvh-topic-partial-stroke-testing
+kind: topic
+concept-tags: [partial stroke testing, PST, safety valve, valve sticking, safety instrumented systems]
+status: current
+teaches: >
+  Safety valves are static (don't modulate under normal conditions) and are
+  prone to sticking — when an emergency demand occurs, there's a real risk
+  they won't move when commanded. A digital valve controller can perform a
+  partial stroke test (PST): it slowly moves the valve a portion of its
+  total travel, then returns it to the normal state, exercising the
+  mechanical components with minimal process disruption. The digital valve
+  controller diagnoses potential issues during the test and communicates
+  alerts if it fails.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.5.1 'Partial Stroke Testing,' p. 89 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-sis-dvc-on-safety-valve]
+relatedTopics: [cvh-topic-sis-accessory-role, cvh-topic-digital-valve-controller-capabilities]
+used-by: []
+notes: Read directly from p. 89's real prose.
 ```
 
 ### Pneumatic Controller Schematics & Position Transmitters (printed pp. 91–93)
@@ -265,6 +424,62 @@ source:
 delivery: not yet determined
 used-by: [{course: CVB, slide: cvb-047.html}]
 notes: Photo of the assembled wireless position transmitter on an actuator.
+```
+
+```yaml
+id: cvh-topic-pneumatic-controller-modes
+kind: topic
+concept-tags: [pneumatic controller, proportional control, reset, rate, anti-reset windup, differential pressure controller, gauge pressure controller, temperature controller]
+status: current
+teaches: >
+  A local pneumatic controller measures a process input (pressure,
+  differential pressure, temperature, or level via a Bourdon tube, bellows,
+  liquid-displacement lever, or temperature bulb) through a beam-flapper-
+  nozzle-relay mechanism and modulates output pressure to the actuator.
+  Proportional-only control: the proportional band adjustment sets gain —
+  widening the band means less flapper motion per unit input change (lower
+  gain), narrowing it means more (higher gain); the adjustment can also
+  reverse controller action. Proportional-plus-reset feeds output pressure
+  back to reset and proportional bellows, minimizing offset between process
+  variable and set point. Proportional-plus-reset-plus-rate adds a rate
+  valve (adjustable restriction) that briefly holds gain up to accelerate
+  correction for slow systems, without holding it long enough to destabilize
+  the system. Anti-reset windup reduces overshoot from large/prolonged
+  set-point deviation via a differential relief valve. Three indicating-
+  controller variants exist by measured variable: differential pressure,
+  gauge pressure, and temperature.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.7-4.7.3, pp. 90-92 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-pneumatic-controller-photo, cvh-cmp-pneumatic-controller-schematic-proportional, cvh-cmp-pneumatic-controller-schematic-reset-rate]
+relatedTopics: []
+used-by: []
+notes: Read directly from pp. 90-92's real prose.
+```
+
+```yaml
+id: cvh-topic-position-feedback-devices
+kind: topic
+concept-tags: [position transmitter, limit switch, discrete feedback, continuous feedback]
+status: current
+teaches: >
+  Two distinct position-feedback device types serve different needs. A
+  position transmitter provides independent, continuous valve-position
+  feedback (4-20 mA wired, or 0-100% digital wireless) for process
+  monitoring, troubleshooting, or startup/shutdown verification. A limit
+  switch instead provides a discrete open/close signal only when the valve
+  reaches one specific position in its travel range, using proximity,
+  solid-state, magnetic, or contact-closure switch technology — same use
+  cases (monitoring, troubleshooting, startup/shutdown verification) but a
+  fundamentally coarser, discrete-only signal rather than continuous
+  position.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.8-4.9, pp. 92-93 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-wireless-position-transmitter]
+relatedTopics: []
+used-by: []
+notes: Read directly from pp. 92-93's real prose.
 ```
 
 ### Solenoid Valves & SIS Architectures (printed pp. 93–95)
@@ -399,6 +614,38 @@ used-by: []
 notes: Same low-confidence caveat as cvh-cmp-sov-three-way-manual-reset — sequence position and page confirmed, exact caption wording not independently re-verified word-for-word beyond the "14.N" numbering itself (confirmed 2026-09-12, see the top-of-file note).
 ```
 
+```yaml
+id: cvh-topic-sov-voting-nomenclature
+kind: topic
+concept-tags: [solenoid-operated valve, SOV, XooY, voting architecture, 1oo1, 1oo2, 2oo2, direct-acting, pilot-operated]
+status: current
+teaches: >
+  General XooY voting nomenclature for SOV (and final-element) architectures:
+  "any X of the total Y devices must change state when demanded" to put the
+  final control element in its safe state. A single solenoid used alone is
+  1oo1. 1oo2 means any 1 of 2 devices can trip the system (used where any one
+  SOV — or an SOV and a digital valve controller together — should be able
+  to force the safe state); 2oo2 requires both devices to agree before
+  tripping. More complex configurations exist beyond these two. Separately,
+  SOV actuation type must suit the actuator's full pressure range (0-150 psi
+  depending on actuator type): a direct-acting SOV is operated solely by the
+  solenoid's electromagnetic force; an externally-piloted SOV uses external
+  air pressure (switched by the solenoid's own direct-acting pilot) to
+  change state, letting it work without air pressure in the SOV's main body.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.10, pp. 93-95 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-sov-1oo2-voting-intro, cvh-cmp-sov-1oo2-architecture-schematic, cvh-cmp-sov-2oo2-architecture-schematic, cvh-cmp-sov-direct-acting-assembly, cvh-cmp-sov-pilot-operated-assembly, cvh-cmp-sov-redundant-trip-configuration, cvh-cmp-sov-three-way-manual-reset]
+relatedTopics: [cvh-topic-sis-accessory-role]
+used-by: []
+notes: >
+  Read directly from pp. 93-95's real prose. This general XooY rule
+  (transferable beyond SOVs — the same nomenclature governs sensor/final-
+  element voting generally) is a candidate cross-reference once Chapter 12
+  (Safety Instrumented Systems) is topic-indexed; not linked yet since that
+  chapter's topic ids don't exist as of this pass.
+```
+
 ### Trip and Switching Valves, Manual Handwheels (printed pp. 96–97)
 
 ```yaml
@@ -414,6 +661,30 @@ used-by: [{course: CVB, slide: cvb-051.html}]
 notes: >
   Directly follows the trip-systems and redundant-SOV discussion (Figure 14.21 — see that entry's own corrected caption note) earlier in the chapter.
   Crop corrected 2026-09-14: two printed labels on the left edge of this schematic are genuinely truncated in the source book's own print layout — confirmed by extracting all the way to the page's own printed margin and finding the text still cut off there. Not a cropping defect on our part and not recoverable by re-cropping; the current crop is the best available (captures everything the source actually contains) and excludes the printed caption line, which the original crop had included.
+```
+
+```yaml
+id: cvh-topic-trip-system-function
+kind: topic
+concept-tags: [trip system, fail-up, fail-down, lock-in-last-position, volume tank, pneumatic lock-up]
+status: current
+teaches: >
+  Trip systems provide a specific actuator action when supply pressure is
+  lost. Used with double-acting actuators lacking an inherent no-air fail
+  state, or with single-/double-acting actuators needing pneumatic lock-up.
+  When supply pressure falls below the trip point, the trip valve causes the
+  actuator to fail up, lock in its last position, or fail down. For double-
+  acting applications, a volume tank supplies reserve pneumatic air to
+  operate the valve until supply pressure is restored; when pressure rises
+  back above the trip point, the trip valve automatically resets to normal
+  operation.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§4.11 'Trip Systems,' pp. 94-96 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-trip-valve-tripped-condition]
+relatedTopics: [cvh-topic-sis-accessory-role]
+used-by: []
+notes: Read directly from pp. 94-96's real prose.
 ```
 
 ```yaml
@@ -457,6 +728,25 @@ notes: Last figure in the chapter; Chapter 5 ("Control Valve Sizing") begins on 
 
 ## Open items
 
+- **Full-chapter `kind: topic` pass, 2026-09-17.** Added 10 real `kind: topic`
+  entries (`cvh-topic-accessory-selection-rationale`,
+  `cvh-topic-positioner-fundamentals`,
+  `cvh-topic-digital-valve-controller-capabilities`,
+  `cvh-topic-volume-booster-function`, `cvh-topic-sis-accessory-role`,
+  `cvh-topic-partial-stroke-testing`, `cvh-topic-pneumatic-controller-modes`,
+  `cvh-topic-position-feedback-devices`, `cvh-topic-sov-voting-nomenclature`,
+  `cvh-topic-trip-system-function`) covering every genuine concept the
+  chapter's body prose teaches beyond what a figure caption alone captures —
+  read directly from the real PDF (`pdftotext -f/-l`), same rigor as the
+  original figure pass. Two sections (§4.12 Switching Valves, §4.13
+  Handwheels) were confirmed to have nothing conceptual beyond what their
+  existing figure entries already state — one short paragraph each, fully
+  captured by the figure's own `teaches:` field — no topic entry authored
+  for either, not an oversight. Total component count is now **37** (27
+  figures + 10 topics), up from 27. File integrity verified: 37 unique ids,
+  37 balanced `\`\`\`yaml` fences, every `relatedFigures`/`relatedTopics`
+  reference programmatically confirmed to resolve to a real id in this file
+  (zero broken references).
 - **Batch coverage**: all 27 figures in the chapter (4.1–4.27) are catalogued, with no gaps in the numeric sequence. Real chapter start (PDF p.82, divider) and end (content through p.97, with Chapter 5 confirmed starting at p.98) were verified directly against the source PDF, not assumed from the table of contents.
 - **Correction reversed, 2026-09-12**: this pass originally treated Figures 4.14–4.23's "Figure 14.N" captions as a `pdftotext` extraction artifact and "corrected" them back to "4.N". That was wrong — a later Stage 3 authoring pass rendered the actual PDF pages as images and confirmed the source book genuinely prints "Figure 14.14" through "Figure 14.23"; every affected entry below (`cvh-cmp-sov-3port-spring-return-symbol` through `cvh-cmp-sov-manifold-assembly`) has been corrected back to the real printed number. See the note at the top of this file for the full explanation and the confirmed boundary (4.13 and earlier, 4.24 and later, both unaffected).
 - **Low-confidence flags**:

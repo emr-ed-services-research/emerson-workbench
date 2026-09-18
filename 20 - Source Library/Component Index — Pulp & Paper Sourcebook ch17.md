@@ -158,6 +158,101 @@ notes: >
   17-5, `pp-cmp-dilution-control-headbox` Figure 17-6).
 ```
 
+```yaml
+id: pp-topic-paper-machine-wet-dry-end-structure
+kind: topic
+teaches: >
+  The paper machine is organized in two parts: the wet end (the forming
+  section, where fibers in a dilute slurry are deposited and initially
+  dewatered) and the dry end (pressing and drying operations that remove
+  the remaining water). This two-part structure is the chapter's own
+  organizing framework — every section that follows (headbox, forming
+  wire, press, drying, size press, calendaring, reel, winder) is one stage
+  within one of these two halves — but it is stated only once, in the
+  chapter's opening paragraph, and is not restated in any single figure's
+  own caption or teaches content.
+concept-tags: [wet end, dry end, forming section, pressing, drying, paper machine structure]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Wet End (opening paragraph), p. 17-1 (PDF p. 197)"
+relatedFigures: [pp-cmp-fourdrinier-paper-machine-overview]
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass — this is the chapter's own
+  orienting framework, distinct from Figure 17-1's own teaches field
+  (which describes the complete machine as one labeled diagram, not the
+  wet-end/dry-end conceptual split the surrounding prose states).
+```
+
+```yaml
+id: pp-topic-headbox-slice-mechanism
+kind: topic
+teaches: >
+  Every headbox type (rectifier roll, hydraulic, dilution control) shares
+  one common discharge mechanism: the slice, a full-width adjustable
+  orifice/nozzle at the headbox outlet. The jet emerging from the slice
+  contracts in thickness and deflects downward due to slice geometry; jet
+  thickness together with jet velocity sets the volumetric discharge rate.
+  Every slice has a top lip (adjustable as a unit — "main slice" — and
+  also locally via individual micro-adjusters) and an apron/bottom lip,
+  both built from corrosion-resistant alloys. Micro-adjusters let an
+  operator or computer system correct local basis-weight variation across
+  the machine width — the same adjustable-slice mechanism the rectifier
+  and hydraulic headboxes both use.
+concept-tags: [headbox slice, top lip, apron, micro-adjuster, basis weight, jet velocity]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Headbox, p. 17-3 (PDF p. 199), the paragraph beginning \"Every type of headbox contains a headbox slice\""
+relatedFigures: [pp-cmp-rectifier-roll-headbox, pp-cmp-hydraulic-headbox, pp-cmp-dilution-control-headbox]
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. This mechanism is shared across
+  all three headbox-type figures but stated once in the surrounding prose,
+  not repeated in any individual figure's own teaches field — a genuine
+  gap the figures-only rule couldn't see, since no single figure captions
+  the slice itself.
+```
+
+```yaml
+id: pp-topic-forming-section-dewatering-sequence
+kind: topic
+teaches: >
+  After the headbox slice deposits stock (typically 0.5-1% solids) onto
+  the forming fabric, water is removed in a fixed mechanical sequence, not
+  shown in any figure: (1) the forming board, the first static element
+  under the wire, supports the wire at jet impingement, prevents wrinkles,
+  and retards initial drainage so fines/fillers aren't washed through; (2)
+  foil units create a small vacuum (via a high-slope trailing blade edge)
+  that pulls more water through and breaks up fiber flocs — higher foil
+  angle means more vacuum, more turbulence, more drainage; (3) flatboxes
+  (vacuum boxes) connected to large vacuum pumps provide further
+  differential-pressure dewatering, reaching roughly 15% solids; (4) the
+  couch roll — a hollow perforated shell rotating with the wire around a
+  stationary inner vacuum box — is the final wire-section dewatering
+  device, bringing the sheet to 20-25% solids before it is peeled
+  (couched) off the wire for the press section.
+concept-tags: [forming board, foil units, flatbox, vacuum box, couch roll, dewatering sequence, forming wire]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Forming Wire / Forming Board / Foil Units / Flatboxes / Couch Roll, pp. 17-3–17-4 (PDF pp. 199-200)"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. **Genuinely zero figures exist for
+  this entire four-step sequence** — confirmed by direct reading of pp.
+  17-3–17-4; the section runs from "Forming Wire" through "Couch Roll"
+  with continuous prose and no figure callouts at all. Completely
+  invisible to the original figures-only pass. The real solids-percentage
+  progression (0.5-1% at deposit → ~15% after flatboxes → 20-25% after
+  the couch roll) is transcribed exactly from the source, not estimated.
+```
+
 ### Chapter 17 — Hydraulic and Dilution Control Headboxes (printed p. 17-3)
 
 ```yaml
@@ -301,6 +396,36 @@ notes: >
   wire converging onto the forming sheet from above.
 ```
 
+```yaml
+id: pp-topic-fourdrinier-multiply-rationale
+kind: topic
+teaches: >
+  Fourdrinier multi-ply forming (combining multiple stock layers into one
+  finished sheet) can be done several ways — a stratified headbox, a
+  secondary headbox, multiple fourdriniers run one atop another, or a
+  cylinder former — but the first two options share a real, named
+  problem: because all drainage occurs through the bottom layer, some
+  mixing of fibers between plies always occurs. This is the reason
+  papermakers developed the other techniques (multiple fourdriniers,
+  cylinder formers) as alternatives — a rationale connecting all the
+  multi-ply figures that no single one of them states on its own.
+concept-tags: [multi-ply forming, fiber mixing, stratified headbox, secondary headbox, multiple fourdriniers, cylinder former]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Fourdrinier Multi-Ply Process, p. 17-4 (PDF p. 200)"
+relatedFigures: [pp-cmp-stratified-headbox, pp-cmp-cylinder-former]
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. "Multiple Fourdriniers" is named
+  in this section's text as a real multi-ply option but has no figure of
+  its own anywhere in the chapter — captured here rather than left
+  entirely uncatalogued. The fiber-mixing rationale itself is stated once,
+  in the prose connecting all four options, not repeated in the
+  stratified-headbox or cylinder-former figure entries.
+```
+
 ### Chapter 17 — Press Section (printed pp. 17-6–17-8)
 
 ```yaml
@@ -426,6 +551,56 @@ notes: >
   labeled directly on the drawing ("Shoe Press").
 ```
 
+```yaml
+id: pp-topic-press-nip-mechanism
+kind: topic
+teaches: >
+  Every press design (roll, shoe, fabric, extended-nip) shares one
+  universal water-removal mechanism — the nip — not captured by any
+  single press-type figure. Most paper machines have 2-5 nips. A nip
+  removes water in four real stages: (1) the sheet and felt compress
+  between two rolls, air escapes both until the sheet saturates; (2) once
+  saturated, hydraulic pressure inside the sheet drives water into the
+  felt, until the felt itself saturates too — maximum hydraulic pressure
+  point; (3) the nip continues to expand until hydraulic pressure in the
+  paper reaches zero — maximum paper dryness; (4) both structures expand
+  further, the paper becomes unsaturated, and — critically — a number of
+  factors cause water to flow BACKWARD from felt to paper ("rewetting").
+  Pressing too hard past saturation causes "crushing," a real failure mode
+  that weakens sheet strength in the nip and can break the sheet; at
+  higher machine speeds, higher pressure has a diminished effect because
+  of the shorter nip residence time. Press felts themselves (woven
+  synthetic base fabric + fiber matt, sewn/punched together) must be
+  strong enough to survive roll compression while still holding void
+  volume for the removed water. Mechanically pressing water out is roughly
+  eight times cheaper than removing the same water by drying — the real
+  economic reason the press section exists before the dryer section at
+  all, not just a sequencing convenience.
+concept-tags: [nip mechanism, saturation, hydraulic pressure, rewetting, crushing, press felt, pressing economics]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Dry End / \"one must understand the nip\" through §Press's press-felt paragraph, pp. 17-6–17-8 (PDF pp. 202-204); the pressing-vs-drying-cost figure is stated on p. 17-8 (PDF p. 204)"
+relatedFigures: [pp-cmp-straight-through-press, pp-cmp-roll-press, pp-cmp-shoe-press, pp-cmp-shoe-press-nip, pp-cmp-modern-straight-through-press]
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. The four-stage nip mechanism, the
+  crushing failure mode, press felt composition, and the "eight times
+  cheaper" economic claim are all stated once in the general prose
+  surrounding the specific press-type figures, not repeated in any
+  individual figure's own teaches field (each of which describes only its
+  own press design's mechanism). One likely OCR artifact noted, not
+  silently corrected: the roll-press figure's own existing entry
+  (`pp-cmp-roll-press`) states "roughly 28-32% solids" while the real
+  running text extraction shows "38 - 32%" for the same claim — 38 is
+  almost certainly a digit-recognition error for 28, consistent with the
+  existing entry's own already-corrected value; flagged here for a future
+  OCR-verification pass against the actual page image, not fixed
+  unilaterally since it means editing a different, pre-existing record
+  outside this pass's own scope.
+```
+
 ### Chapter 17 — Drying, Steam/Condensate System (printed pp. 17-9–17-10)
 
 ```yaml
@@ -519,6 +694,218 @@ notes: >
   Drawing credited in-page: "Drawing is from TAPPI's Making Pulp and Paper
   Series and is used with permission." Labeled schematic (Condensate from
   the Dryers, Separated Steam, Separator, Condensate to the Boiler).
+```
+
+```yaml
+id: pp-topic-dryer-section-overview
+kind: topic
+teaches: >
+  After pressing, the sheet (still ~20% solids) enters the dryer section
+  where residual water is removed by evaporation, driven by the fact that
+  cellulose fibers are hydrophilic (want to hold onto water). Most paper
+  machines run 3-5 independently-felted dryer sections, each with its own
+  speed control to maintain sheet tension between sections and adjust for
+  sheet shrinkage — a real machine-control concept distinct from either
+  the two-tier or single-tier arrangement figures, which each describe one
+  specific cylinder-configuration mechanism rather than this
+  section-independence/tension-control framing. Entering solids ~40-45%
+  after pressing (a different number from the ~20% stated at the very
+  start of pressing, reflecting the press section's own real dewatering
+  work); final result 5-8% moisture.
+concept-tags: [dryer section, hydrophilic fiber, independently-felted sections, tension control, sheet shrinkage]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Drying, p. 17-9 (PDF p. 205), opening two paragraphs before the two-tier/single-tier figures are introduced"
+relatedFigures: [pp-cmp-two-tier-drying-system, pp-cmp-single-tier-dryer-section]
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. The independently-felted/
+  tension-control framing and the hydrophilic-fiber rationale are stated
+  once in the section's general opening, not restated in either specific
+  dryer-arrangement figure's own teaches field.
+```
+
+```yaml
+id: pp-topic-steam-drying-thermodynamics
+kind: topic
+teaches: >
+  The heat energy for paper drying comes from steam condensing inside the
+  dryer cylinders — releasing latent heat. Steam always condenses at the
+  saturation temperature defined by the system's pressure, which is why
+  uniform pressure across the machine matters for uniform drying — a
+  distinct thermodynamic principle from the physical siphon/condensate-
+  removal mechanism the steam-drum-and-siphon figure describes. The steam
+  itself is generated inside the sheet-side process too: as sheet water
+  reaches its boiling point, it converts to steam, collected in a
+  containment hood — this conversion supplies most of the drying section's
+  actual drying energy.
+concept-tags: [latent heat, saturation temperature, steam condensation, uniform drying, containment hood]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Steam and Condensate System, p. 17-9 (PDF p. 205), and the preceding paragraph on steam containment"
+relatedFigures: [pp-cmp-dryer-steam-drum-siphon]
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. `pp-cmp-dryer-steam-drum-siphon`'s
+  own teaches field covers the physical siphon/condensate-removal
+  mechanism; this entry covers the separate thermodynamic "why" (latent
+  heat, saturation temperature) the same section's prose states
+  immediately before introducing the siphon mechanism itself.
+```
+
+```yaml
+id: pp-topic-dryer-hood-ventilation
+kind: topic
+teaches: >
+  A ventilation hood covers the entire dryer section, from the press
+  section through calendaring. Typical hood arrangements use 7-20 pounds
+  of air per pound of water evaporated; exhaust-air volume and temperature
+  must stay high enough to avoid localized condensation (which causes
+  drips, buildup, and corrosion inside the hood). Modern "high-dew-point
+  hoods" are well sealed and insulated, eliminate diffusion air entirely,
+  and sharply reduce fresh makeup air by running hot with high recycle.
+concept-tags: [dryer hood, ventilation, high-dew-point hood, condensation, exhaust air]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Hood Ventilation, p. 17-10 (PDF p. 206/207)"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. **This entire section has no
+  figure at all** — confirmed by direct reading of printed p. 17-10/207;
+  this file's own existing Open Items already noted p. 207 "carries no
+  figures at all," but that finding was made under the figures-only rule
+  and never captured what real conceptual content the page actually has.
+```
+
+```yaml
+id: pp-topic-size-press-mechanism
+kind: topic
+teaches: >
+  A size press applies sizing solution (starches and other materials)
+  within a two-roll nip, positioned roughly three-quarters of the way
+  through the dryer section, to improve surface, internal strength,
+  smoothness, and water-penetration resistance. The nip is flooded with
+  sizing solution so the sheet absorbs some of it; absorption is governed
+  by sheet moisture (higher moisture promotes absorption), but moisture is
+  deliberately controlled to 4-5% or less so the sizing agent stays near
+  the surface rather than penetrating too deep. High machine speeds create
+  nip-pressure turbulence that hurts even distribution — addressed either
+  with larger-diameter rolls or a metering size press that meters starch
+  directly onto the size-press rolls via a blade or rotating rod rather
+  than flooding the nip. Modern size presses are also used for coating
+  applications, including pigmented coatings.
+concept-tags: [size press, sizing solution, starch, moisture control, metering size press, coating]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Size Press, pp. 17-10–17-11 (PDF pp. 206-207)"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. **No figure exists for the size
+  press anywhere in the chapter** — a real, substantial mechanism (its own
+  named process stage, distinct from drying and calendaring) entirely
+  invisible to the original figures-only pass.
+```
+
+```yaml
+id: pp-topic-calendaring-mechanism
+kind: topic
+teaches: >
+  Calendaring smooths and flattens the sheet (reduces thickness/caliper
+  variation) by passing the web through one or more two-roll nips under
+  extreme pressure. Two named types: hard-nip (both rolls iron or steel —
+  flattens the sheet to uniform thickness but can create density
+  variations tied to basis-weight variation, which then shows up as
+  surface-property variation) and soft-nip (a hard loading roll against a
+  roll with a soft polymeric — usually polyurethane — cover; because the
+  metal-roll side gets a better finish than the resilient-roll side, two
+  nips are needed for equal finish on both sides). Calendaring at high
+  temperature is desirable because hot paper becomes more pliable, letting
+  the same result be achieved at lower pressure. Real effects: improved
+  surface smoothness (better printing), increased sheet density (thinner,
+  denser, but less stiff paper).
+concept-tags: [calendaring, hard-nip, soft-nip, caliper, surface smoothness, sheet density]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Calendaring, p. 17-11 (PDF p. 208)"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. **No figure exists for calendaring
+  anywhere in the chapter** — confirmed by direct reading; a real,
+  named process stage entirely invisible to the original figures-only
+  pass.
+```
+
+```yaml
+id: pp-topic-reel-transfer-mechanism
+kind: topic
+teaches: >
+  After drying and calendaring, the paper is collected on a motor-driven
+  drum reel under sufficient load to keep tension on the sheet coming off
+  the calendars. The web wraps the reel drum and feeds into the nip formed
+  between the drum and the collection reel (held by secondary arms); an
+  empty spool waits on the primary arms while the reel builds. To transfer
+  from a full roll to an empty spool: the empty spool (on the primary
+  arms) is brought up to speed before contacting the paper on the reel
+  drum, the paper transfers to the new spool, the full parent reel
+  releases, the primary arms move the new roll down to the rails, and the
+  secondary arms come forward to take the spool while the primary arms
+  return to their original position — a real, ordered mechanical sequence.
+concept-tags: [reel, drum reel, primary arms, secondary arms, spool transfer, reel tension]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Reel, pp. 17-11–17-12 (PDF pp. 207-208)"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. **No figure exists for the reel**
+  — confirmed by direct reading; the spool-transfer sequence is a real,
+  step-ordered mechanical process with no diagram anywhere in the source.
+```
+
+```yaml
+id: pp-topic-winder-and-roll-finishing
+kind: topic
+teaches: >
+  The winder cuts and winds the full-width machine reel into
+  customer-sized rolls, trimming both edges (recycled to the dry-end/broke
+  pulper) and threading the web through tensioning rolls, adjustable
+  slitters, and an adjustable spreader bar onto fiber or plastic cores. A
+  steel shaft through the cores provides a locking arrangement, though
+  some newer "shaftless" winders use a one-side retaining surface instead
+  to prevent cross-machine wandering. The winder drive must run 2.5-3x
+  faster than the paper machine itself, to leave time for roll/reel
+  changes, break repair, defective-paper removal, slitting setup, and
+  spreader-bar adjustment. Roll finishing (scaling, wrapping, crimping,
+  heading, labeling) was once fully manual; today wrapping is
+  semi-automatic and labeling is handled by a data-processing print unit.
+concept-tags: [winder, slitter, spreader bar, shaftless winder, roll finishing, winder speed]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Winder / §Roll Finishing, p. 17-12 (PDF p. 208)"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  Added 2026-09-17, `kind: topic` pass. **No figure exists for the winder
+  or roll finishing** — confirmed by direct reading of the chapter's final
+  page; both are real named process stages with their own mechanical
+  detail, entirely invisible to the original figures-only pass.
 ```
 
 ## Open Items

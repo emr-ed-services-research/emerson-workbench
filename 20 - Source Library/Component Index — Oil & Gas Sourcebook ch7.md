@@ -51,6 +51,170 @@ legacy material was consulted for this batch.
 
 ## Components
 
+### Chapter 7 — Introduction and Application Overview (printed pp. 7-1–7-3)
+
+`kind: topic` entries added 2026-09-17, part of a vault-wide pass extending
+the Control Valve Handbook's topic-indexing convention to the Industry
+Specific Sourcebooks — the figures-only rule was never meant to exclude
+genuine conceptual body prose, only tables. All five entries below are
+read directly from the chapter's opening prose (PDF pp.72-74, printed
+7-1–7-3), which frames every later figure-anchored section but was
+completely invisible to the original figures-only pass.
+
+```yaml
+id: ogas-topic-onshore-production-overview
+kind: topic
+teaches: >
+  Conventional onshore oil and gas production breaks into four main
+  processes, in sequence: (1) oil, gas, and water separation; (2) crude oil
+  treatment and preparation for distribution; (3) gas dehydration and
+  compression; (4) water treatment and injection. Raw fluid (oil, gas,
+  water, and undesired products) leaves the well site, is gathered through
+  a manifold system, and enters a separation facility; separated gas is
+  compressed and sent to a gas plant, crude oil to a refinery. Because the
+  methods and equipment used at each site are broadly similar regardless of
+  production scale, control valve selection is largely independent of site
+  scale and scope — production scale varies, valve-selection logic does not.
+concept-tags: [onshore production, process overview, well site, separation, crude oil treatment, gas dehydration, gas compression, water treatment, valve selection scope-independence]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 7 'Onshore Oil and Gas Production,' printed pp. 7-1–7-3 — introductory/overview prose, not figure-anchored."
+relatedFigures: [ogas-cmp-onshore-production-process-flow]
+relatedTopics: [ogas-topic-crude-oil-dehydration-methods, ogas-topic-compressor-skid-sizing-factors]
+used-by: []
+notes: >
+  Read directly from the real chapter-opening prose (PDF pp.72-74, printed
+  7-1–7-3), not inferred from Figure 7-1's caption alone. The "valve
+  selection is largely independent of site scale and scope" line is the
+  chapter's own explicit framing for why this application-review chapter
+  is organized by process stage rather than by field size.
+```
+
+```yaml
+id: ogas-topic-staged-separation-pressure-design
+kind: topic
+teaches: >
+  Separation sites commonly use two or more separators in series to
+  optimally separate gas, oil, and water. Each separator's pressure
+  classification is set by its pressure-rating capability: high-pressure
+  vessels are typically ASME CL600, intermediate CL300, low CL150. The
+  first separator in the series is always rated highest, with each
+  subsequent stage typically reducing until fluids reach ambient pressure —
+  the number of stages depends on the production field's pressure, though
+  most fields use a high/intermediate/low three-stage train. The inlet
+  (first-stage) separator provides a significant cut in inlet pressure and
+  is well suited to smoothing surging liquid flows; unprocessed raw
+  production (with its sand/sediment) always enters here first.
+concept-tags: [separator staging, pressure classification, ASME class, high pressure separator, intermediate pressure separator, low pressure separator, inlet separator]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 7 'Onshore Oil and Gas Production,' printed p. 7-2 — Oil, Gas, and Water Separation prose, not figure-anchored."
+relatedFigures: [ogas-cmp-process-fluid-separation-system]
+relatedTopics: [ogas-topic-separator-gas-outlet-pressure-control, ogas-topic-separator-liquid-level-control-mechanism]
+used-by: []
+notes: >
+  Read directly from the real prose (PDF p.73, printed 7-2). This is the
+  design REASONING behind the three-stage high/intermediate/low structure
+  `ogas-cmp-process-fluid-separation-system` (Figure 7-4) shows — that
+  figure's own teaches field documents the valve stations, not why the
+  three pressure classes exist or why the first stage is always highest.
+```
+
+```yaml
+id: ogas-topic-crude-oil-dehydration-methods
+kind: topic
+teaches: >
+  Crude oil treatment/stabilization removes hydrogen sulfide, light
+  hydrocarbons (methane through butane), and water, producing a safe,
+  transportable crude at atmospheric pressure. Four dehydration methods
+  exist in the source, only two of which are shown as figures in this
+  chapter: electrostatic coalescers (high-voltage field coalesces entrained
+  water into droplets, also removing dissolved salts — see
+  `ogas-cmp-electrostatic-coalescer-oil-treatment-system`) and bulk
+  treaters (see `ogas-cmp-bulk-treater-oil-treatment-system`). The source
+  also names hydrocyclones (centrifugal force drives lighter oil droplets to
+  a low-pressure central core for reverse-flow removal, clean water exits
+  downstream) and flotation cells (fine gas bubbles generated in the water
+  attach to oil droplets/solids and lift them to the surface for collection)
+  — neither of which has any figure anywhere in this chapter.
+concept-tags: [crude oil treatment, stabilization, electrostatic coalescer, bulk treater, hydrocyclone, flotation cell, dehydration, dissolved salts]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 7 'Onshore Oil and Gas Production,' printed pp. 7-2–7-3 — Crude Oil Treatment and Preparation prose, not figure-anchored."
+relatedFigures: [ogas-cmp-bulk-treater-oil-treatment-system, ogas-cmp-electrostatic-coalescer-oil-treatment-system]
+relatedTopics: [ogas-topic-onshore-production-overview]
+used-by: []
+notes: >
+  Read directly from the real prose (PDF pp.73-74, printed 7-2–7-3). The
+  real, concrete finding this topic-indexing pass exists to catch: two of
+  the four named dehydration methods (hydrocyclones, flotation cells) were
+  completely invisible to the original figures-only pass — the source
+  describes their mechanism in prose but never illustrates them in this
+  chapter. Not fabricated or expanded beyond what the source states; no
+  numeric parameters are given for either method in this chapter.
+```
+
+```yaml
+id: ogas-topic-compressor-skid-sizing-factors
+kind: topic
+teaches: >
+  A gas-compression skid's capacity and horsepower are driven primarily by
+  three factors: suction pressure and temperature, discharge pressure and
+  temperature, and speed — allowing the compressor to run the engine Hp as
+  fully loaded and efficiently as possible for specified conditions. Skids
+  range from 50 Hp (smallest) to 8,000 Hp (largest), using reciprocating or
+  rotary screw compressors driven by natural gas engines/turbines or electric
+  motors. Because these conditions change over the life of a project, a
+  suction control valve and a recycle (anti-surge) valve are both required to
+  give the skid the flexibility to keep operating as field pressure depletes.
+concept-tags: [compressor skid, horsepower sizing, suction pressure, discharge pressure, reciprocating compressor, rotary screw compressor, gas engine drive, electric motor drive]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 7 'Onshore Oil and Gas Production,' printed p. 7-2 — Gas Dehydration and Compression intro prose, not figure-anchored."
+relatedFigures: [ogas-cmp-compressor-system]
+relatedTopics: [ogas-topic-onshore-production-overview]
+used-by: []
+notes: >
+  Read directly from the real prose (PDF p.73, printed 7-2). Explains WHY a
+  suction control valve and recycle valve are both structurally necessary
+  (not just what they do) — the "conditions change over project life"
+  reasoning is the real justification the existing `ogas-cmp-compressor-system`
+  figure entry doesn't itself carry.
+```
+
+```yaml
+id: ogas-topic-sour-service-material-selection
+kind: topic
+teaches: >
+  Onshore production materials selection commonly follows NACE
+  MR0175/ISO 15156 metallurgical guidelines, the most common user-applied
+  standard for sour-service (H2S-containing) production environments — a
+  shift to high-alloy materials may be necessary depending on field
+  conditions. The same corrosion/erosion concern applies at the well site
+  and gathering system specifically, where sour gases and particulates in
+  unprocessed flow can damage standard materials.
+concept-tags: [sour service, NACE MR0175, ISO 15156, corrosion resistance, erosion resistance, material selection, high alloy materials]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 7 'Onshore Oil and Gas Production,' printed p. 7-3 (Application Review intro) and p. 7-4 (Well Site and Gathering System) — material-selection prose, not figure-anchored."
+relatedFigures: [ogas-cmp-well-site-choke-valve-photo, ogas-cmp-well-site-gathering-system]
+relatedTopics: [ogas-topic-onshore-production-overview]
+used-by: []
+notes: >
+  Read directly from the real prose (PDF p.74, printed 7-3; PDF p.75,
+  printed 7-4). Deliberately brief, matching the source's own brief
+  treatment — not padded with outside NACE/ISO 15156 knowledge beyond what
+  this chapter itself states. Likely to recur across other Oil & Gas
+  Sourcebook chapters given how commonly "sour service" is invoked; not
+  cross-checked against other chapters in this pass (out of scope, ch7
+  only).
+```
+
 ### Chapter 7 — Onshore production process overview (printed p. 7-1)
 
 ```yaml
@@ -250,6 +414,95 @@ notes: >
   `ogas-cmp-v260-valve-exterior` (Figure 7-5) in the source.
 ```
 
+`kind: topic` entries added 2026-09-17, elaborating the functional
+reasoning behind Figure 7-4's numbered valve stations — read directly from
+the real prose surrounding that figure, not inferred from its own caption.
+
+```yaml
+id: ogas-topic-separator-gas-outlet-pressure-control
+kind: topic
+teaches: >
+  A separator's gas-outlet back-pressure control valve sits at the top of
+  the vessel and controls gas flow out to keep the separator operating in
+  its optimal separation pressure range — the outgoing gas is either sent
+  to the compression skid or directly to export. This gas stream carries
+  all the produced-gas constituents present at the well site, and depending
+  on location may see both low and high pressure drops, which can require
+  noise-attenuating trim; globe-style construction is the majority
+  solution.
+concept-tags: [separator gas outlet, back pressure control, noise attenuating trim, globe valve, optimal separation pressure]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 7 'Onshore Oil and Gas Production,' printed pp. 7-5–7-6 — Gas Outlet Back Pressure Control prose, not figure-anchored."
+relatedFigures: [ogas-cmp-process-fluid-separation-system, ogas-cmp-easydrive-actuator-d4-valve]
+relatedTopics: [ogas-topic-staged-separation-pressure-design]
+used-by: []
+notes: >
+  Read directly from the real prose (PDF pp.77-78, printed 7-5–7-6). This
+  is the functional WHY behind valve stations 3, 4, 5 in
+  `ogas-cmp-process-fluid-separation-system` (Figure 7-4) — that entry
+  names the stations, this topic explains what the control loop is
+  actually doing and why noise trim sometimes matters.
+```
+
+```yaml
+id: ogas-topic-separator-liquid-level-control-mechanism
+kind: topic
+teaches: >
+  Separator liquid-level dump valves are placed based on the gravity
+  separator's design and controlled by a level system (a controller coupled
+  to a displacer) — one valve per stage controls water level, a second
+  controls oil level. When the level system senses a level above set point,
+  it signals the corresponding valve to open, lowering the level; separated
+  water routes to water treatment and injection, separated oil to storage
+  tanks pending shipment to a refinery. Both level-control valves may see
+  flashing or cavitation conditions, which can require hardened trim or
+  Cavitrol III trim.
+concept-tags: [separator level control, dump valve, level controller, displacer, flashing, cavitation, Cavitrol III trim]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 7 'Onshore Oil and Gas Production,' printed p. 7-6 — Separator Liquid Level Control prose, not figure-anchored."
+relatedFigures: [ogas-cmp-process-fluid-separation-system, ogas-cmp-easydrive-actuator-d4-valve]
+relatedTopics: [ogas-topic-staged-separation-pressure-design, ogas-topic-separator-gas-outlet-pressure-control]
+used-by: []
+notes: >
+  Read directly from the real prose (PDF p.77, printed 7-6). Generalizes
+  across all three separator stages (valve stations 2,3,7,8,9,10,12,13 in
+  Figure 7-4) — the control-loop mechanism itself (level system → dump
+  valve) is stated once in the source and applies to every stage, not
+  repeated per stage.
+```
+
+```yaml
+id: ogas-topic-separator-vent-to-flare-safety-function
+kind: topic
+teaches: >
+  A separator's vent-to-flare valve is a high-pressure emergency relief
+  valve: if separator pressure rises above set point, it is relieved to the
+  flare header to safeguard the vessel. These valves see very high pressure
+  drops, producing high aerodynamic noise — globe-style valves with
+  attenuating trim (Whisper Trim I, Whisper Trim III) are commonly required
+  to mitigate noise and vibration.
+concept-tags: [vent to flare, emergency relief, overpressure protection, aerodynamic noise, Whisper Trim, flare header]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 7 'Onshore Oil and Gas Production,' printed pp. 7-6–7-7 — Separator Vent to Flare prose, not figure-anchored."
+relatedFigures: [ogas-cmp-process-fluid-separation-system]
+relatedTopics: [ogas-topic-staged-separation-pressure-design]
+used-by: []
+notes: >
+  Read directly from the real prose (PDF pp.77-78, printed 7-6–7-7). This
+  is valve stations 11-13 in Figure 7-4's own numbered key — the figure
+  entry names the stations generically ("gas outlet back pressure control
+  at each stage"), this topic is the specific safety-relief function and
+  noise-trim reasoning for the vent-to-flare subset of those stations
+  specifically, distinct from the ordinary gas-outlet stations covered by
+  `ogas-topic-separator-gas-outlet-pressure-control`.
+```
+
 ### Chapter 7 — Gas Compression (printed pp. 7-9 – 7-10)
 
 ```yaml
@@ -443,6 +696,18 @@ notes: >
 
 ## Open items
 
+- **`kind: topic` pass (2026-09-17): 8 new topic entries added**, extending
+  the CVH topic-indexing convention to this sourcebook — chapter's real
+  component count is now 19 (11 figures + 8 topics). All read directly from
+  the real body prose (PDF pp.72-78, printed 7-1–7-7), not inferred from
+  existing figure captions. The most concrete finding: two of the four
+  crude-oil dehydration methods this chapter names (hydrocyclones, flotation
+  cells) have **no figure anywhere in this chapter** — completely invisible
+  to the original figures-only pass (`ogas-topic-crude-oil-dehydration-methods`).
+  Sections pp.7-8–7-12 (Gas Compression detail, Oil Processing) were checked
+  and confirmed to have no further conceptual content beyond what the
+  existing figure entries' own `teaches` fields already capture — not
+  padded with a thin entry.
 - **All eleven figures across both batches confirmed against the real page
   text and image before extraction** — none were skipped or fabricated.
   Figure numbering in this chapter runs continuously 7-1 through 7-11

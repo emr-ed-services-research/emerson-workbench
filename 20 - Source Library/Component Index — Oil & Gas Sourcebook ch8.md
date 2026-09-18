@@ -81,6 +81,246 @@ legacy material was consulted for this batch.
 
 ## Components
 
+### Chapter 8 — Introduction (printed pp. 8-1 – 8-4)
+
+**`kind: topic` entries added 2026-09-17** — a full-chapter conceptual pass
+run after the Control Valve Handbook's own topic-indexing proved the
+`kind: topic` convention (see `Source Library.md`). The chapter's opening
+~4 pages (printed 8-1 through 8-4, PDF pp. 84-87) are real explanatory
+prose with no figure of their own at all — invisible to every prior
+figures-only batch above. Read directly via `pdftotext -layout`,
+footer-confirmed page numbers, nothing invented or summarized from
+outside knowledge.
+
+```yaml
+id: ogas-topic-offshore-facility-types
+kind: topic
+concept-tags: [fixed leg platform, tension leg platform, FPSO, spar, semi-submersible, offshore facility types, water depth, production capacity]
+status: current
+teaches: >
+  The chapter's five offshore production unit types, each with real
+  distinguishing numbers: Fixed Leg Platforms (FLP) — concrete/steel legs
+  anchored to the seabed, feasible to ~1,700 ft water depth. Tension Leg
+  Platforms (TLP) — floating, tethered to eliminate vertical movement, used
+  to ~6,000 ft, a 4-column design resembling a semi-submersible; "mini
+  TLPs" serve as early-production/satellite platforms. Floating Production
+  Storage and Offloading (FPSO) units — hull-based (converted tankers or
+  new builds) on a geostationary turret mooring that lets the vessel weathervane;
+  typically produce crude oil only (gas is reinjected, used for fuel, or
+  flared, since transporting gas to shore is uneconomical); 30,000-250,000
+  b/d production, 1-2 million bbl storage (3-10 days before offload
+  required), used to 8,500 ft. Spars — cylindrical vertical hulls (Conventional,
+  Truss, or Cell design), moored by a semi-taut system, 30,000-200,000 b/d,
+  no storage capability (unlike FPSOs), used to 8,000 ft. Semi-submersibles
+  — multi-legged floating structures on buoyant pontoons, 30,000-250,000
+  b/d, used to 8,000 ft. The source's own framing: "oil and gas production
+  methods... are common to nearly all units" — the rest of the chapter
+  describes that shared processing, not five separate process chains.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 8 opening, printed pp. 8-1 – 8-2 — prose, no figure"
+relatedFigures: [ogas-cmp-offshore-topsides-process-flow]
+relatedTopics: [ogas-topic-slugging-and-slug-catchers]
+used-by: []
+notes: >
+  This is the chapter's umbrella framing — every downstream figure/topic
+  in this file describes processing common across these five facility
+  types, per the source's own statement. FLP and TLP are named here but
+  neither gets its own dedicated figure/system diagram anywhere later in
+  the chapter (FPSO is the facility type most later figures are explicitly
+  captioned for, e.g. "Water Injection System, FPSO Unit").
+```
+
+```yaml
+id: ogas-topic-slugging-and-slug-catchers
+kind: topic
+concept-tags: [slugging, slug catcher, multiphase flow, separation train, gas flaring, plant shutdown]
+status: current
+teaches: >
+  Slugging is the partial separation of gas and liquid phases in a
+  multiphase flow line, characterized by sudden drops and surges in liquid
+  and gas volumes — a real, named failure mode for topsides processing, not
+  just background noise: large rapid variations can induce excessive gas
+  flaring, reduce operating capacity, and trigger plant shutdowns. A
+  dedicated slug catcher is installed specifically where frequent slugging
+  is anticipated, to protect the separation train from these variations
+  before the fluid reaches the high/low pressure separation vessels.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "printed p. 8-2 — prose, no figure (the slug catcher's own
+      valve layout is Figure 8-2, catalogued separately below)"
+relatedFigures: [ogas-cmp-slug-catcher-valves]
+relatedTopics: [ogas-topic-offshore-facility-types, ogas-topic-separation-train-overview]
+used-by: []
+notes: >
+  Explains WHY a slug catcher exists — `ogas-cmp-slug-catcher-valves`
+  (Figure 8-2) already documents its numbered valve stations but not the
+  underlying slugging phenomenon this record now covers. Note this chapter
+  frames the slug catcher as an FPSO-specific vessel ("found only in FPSO
+  units" per Figure 8-2's own record); this intro's more general "a
+  dedicated slug catcher may be installed" framing doesn't repeat that
+  restriction, a minor scope difference between the general intro and the
+  specific figure, not a contradiction to resolve here.
+```
+
+```yaml
+id: ogas-topic-separation-train-overview
+kind: topic
+concept-tags: [separation train, high pressure separation, low pressure separation, test separator, momentum dissipation, flash separation]
+status: current
+teaches: >
+  The general separation sequence common to offshore facilities: fluid
+  entering the high pressure separator has its momentum dissipated,
+  letting liquids fall free from gas; the liquid phase is then heated and
+  undergoes further separation to flash off remaining gas and split crude
+  oil from produced water. The high-pressure phase splits across a test
+  separator and a dedicated HP separator — where a slug catcher is
+  present, some initial separation has already occurred, and it's not
+  uncommon for the HP separator to be sized large enough to serve as both
+  the separator and the slug catcher. After HP separation, oil is heated
+  and further separated in the LP separator; LP off-gas moves to LP
+  compression (if present) then HP compression/dehydration, while the
+  crude oil stream proceeds to the bulk oil treater (and sometimes an
+  electrostatic coalescer) and produced water goes to the free water
+  knockout drum.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "printed pp. 8-2 – 8-3 — prose, no figure"
+relatedFigures: [ogas-cmp-high-pressure-separation-process-diagram, ogas-cmp-low-pressure-separation-process-diagram]
+relatedTopics: [ogas-topic-slugging-and-slug-catchers, ogas-topic-oil-water-separation-technologies]
+used-by: []
+notes: >
+  The general "why this sequence" explanation behind the specific
+  numbered-valve-station diagrams already catalogued (Figures 8-6, 8-9) —
+  those document each vessel's control points, this covers the physical
+  separation logic connecting the vessels.
+```
+
+```yaml
+id: ogas-topic-oil-water-separation-technologies
+kind: topic
+concept-tags: [electrostatic coalescer, hydrocyclone, floatation cell, oil-water separation, centrifugal separation, produced water treatment]
+status: current
+teaches: >
+  Three named oil-water separation technologies, reused across both oil
+  treatment and produced-water treatment in this chapter: electrostatic
+  coalescers expose the crude/water stream to a high-voltage electrostatic
+  field, causing water to coalesce into droplets and fall free (also
+  helping remove dissolved salts). Hydrocyclones use centrifugal force —
+  lighter oil droplets migrate to a low-pressure central core with axial
+  reverse flow, while clean water exits downstream. Floatation cells
+  generate and disperse fine gas bubbles that attach to oil droplets (or
+  solid particles), lifting them to the surface for collection. The source
+  explicitly scopes out valve-selection detail for this equipment: "valves
+  used in this process will not be discussed in this chapter, but can
+  range from NPS 1-14 globe, ball, or butterfly valves," sized dramatically
+  differently by pressure/flow constraints.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "printed pp. 8-3 – 8-4 — prose, no figure"
+relatedFigures: [ogas-cmp-electrostatic-coalescer-oil-treatment]
+relatedTopics: [ogas-topic-separation-train-overview, ogas-topic-water-treatment-and-injection-overview]
+used-by: []
+notes: >
+  Complementary to, not duplicative of, `ogas-cmp-electrostatic-coalescer-oil-treatment`
+  (Figure 8-12) — that record documents the coalescer system's numbered
+  valve stations; this record explains the coalescing/hydrocyclone/
+  floatation physics the source states are also used for produced-water
+  cleanup before disposal or injection, a second application the figure
+  entry doesn't cover at all.
+```
+
+```yaml
+id: ogas-topic-gas-compression-and-treatment-overview
+kind: topic
+concept-tags: [gas compression, low pressure compression, high pressure compression, dehydration, staging, vapor recovery, fuel gas]
+status: current
+teaches: >
+  After separation, gas is dried, compressed, potentially treated, and
+  sent back to the formation or onshore — at minimum via a high pressure
+  compression unit and dehydration package. Low pressure compression
+  (typically two-stage) is not present on every unit — more common on
+  larger vessels (150,000+ b/d) — and boosts secondary-separator gas for
+  further HP compression; where absent, a vapor recovery system may
+  instead capture off-gas from the knockout drum/bulk treater for HP
+  compression. HP compression uses at minimum two 50%-capacity
+  three-or-four-stage trains — shallower-water units typically use
+  three-stage trains, deeper-water units use additional staging, and
+  larger units may run up to three HP trains. Midway through HP
+  compression, gas is routed to TEG (tri-ethylene glycol) dehydration;
+  some dehydrated gas is diverted as fuel gas to power the vessel.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "printed pp. 8-3 – 8-4 — prose, no figure"
+relatedFigures: [ogas-cmp-low-pressure-compression-system-diagram, ogas-cmp-high-pressure-compression-train, ogas-cmp-teg-gas-dehydration-unit]
+relatedTopics: [ogas-topic-separation-train-overview, ogas-topic-gas-injection-and-lift]
+used-by: []
+notes: >
+  The staging/train-count reasoning behind why Figure 8-14 shows two
+  parallel four-stage trains (deeper-water configuration) — the existing
+  figure entry documents the valve stations within that configuration but
+  not why train count/staging varies by water depth and vessel size.
+```
+
+```yaml
+id: ogas-topic-gas-injection-and-lift
+kind: topic
+concept-tags: [gas injection, gas lift, secondary recovery, tertiary recovery, gas flaring limits, wellbore annulus]
+status: current
+teaches: >
+  Two distinct uses of produced/compressed gas, both aimed at improving
+  well productivity rather than export: gas injection reinjects gas to
+  raise reservoir pressure — increasingly the economic choice over
+  flaring, since most regions now limit flaring volumes, and nearly every
+  FPSO carries gas compression for this purpose even where flaring limits
+  aren't the driver. Gas lift instead routes compressed gas into the outer
+  wellbore annulus, where it enters the wellstream through inlets in the
+  inner production conduit, reducing the fluid column's density and
+  hydrostatic head to increase flow to surface — used where reservoir
+  pressure is relatively low, and specifically in deepwater developments
+  where reservoir drive pressure is countered by high hydrostatic head.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "printed p. 8-4 — prose, no figure"
+relatedFigures: []
+relatedTopics: [ogas-topic-gas-compression-and-treatment-overview]
+used-by: []
+notes: >
+  No figure anywhere in this chapter documents a gas-injection or
+  gas-lift-specific valve layout — this concept is genuinely absent from
+  the figures-only catalogue, confirmed by re-checking this file's own
+  existing 22 figure records above before writing this entry.
+```
+
+```yaml
+id: ogas-topic-water-treatment-and-injection-overview
+kind: topic
+concept-tags: [water treatment, water injection, secondary recovery, oil-in-water specification, produced water disposal]
+status: current
+teaches: >
+  Produced-water treatment depth depends on its destination: water
+  disposed overboard needs more cleaning than water re-injected into the
+  reservoir, typically to an oil-in-water specification below 40 ppm,
+  using the same hydrocyclone/floatation-cell technologies described
+  above. Water injection (a secondary recovery method) cleans and injects
+  produced water into the lowest portion of the reservoir via separate
+  injection wells, raising oil level and pushing it toward producing
+  areas — the need for water injection increases as the reservoir
+  depletes over time.
+source:
+  - doc: Fisher Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "printed p. 8-4 — prose, no figure"
+relatedFigures: [ogas-cmp-water-injection-system-fpso]
+relatedTopics: [ogas-topic-oil-water-separation-technologies]
+used-by: []
+notes: >
+  The general water-treatment/injection rationale (including the real
+  40 ppm oil-in-water spec, absent from any figure entry) behind
+  `ogas-cmp-water-injection-system-fpso` (Figure 8-20), which documents
+  only that system's numbered valve stations, not the treatment-depth
+  logic or the disposal-vs-injection distinction driving it.
+```
+
 ### Chapter 8 — Offshore production process overview (printed p. 8-2)
 
 ```yaml

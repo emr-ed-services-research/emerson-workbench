@@ -3,38 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 015 &mdash; Flashing Damage vs. Cavitation Damage</title>
+<title>CVE1 &middot; Slide 015 &mdash; Two Independent Failures, One Spec</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m2, page 15 — eng.noise-cavitation.damage-diagnosis
-       [analyze · contrast]. Two real damage photos, each the direct
-       visual-contrast pair of the other per the Component Index's own
-       notes — genuine two-way contrast, fits the fixed two-panel shape
-       exactly. Source: Control Valve Handbook 6th ed., Fig. 5.8 (p.129)
-       and Fig. 5.9 (p.130), cropped from real 200dpi page renders. -->
-  <article class="slide slide--role-contrast" data-slide="15" data-deck="cve1">
-    <h1 class="slide-title">Flashing Damage vs. Cavitation Damage</h1>
+  <!-- cve1-ch1-m3, page 15 — eng.sizing.actuator-force-awareness
+       [understand · mechanism, applies]. Second, independent Consequence —
+       establishes the two-gap difficulty this tier is built around. -->
+  <article class="slide slide--role-mechanism" data-slide="15" data-deck="cve1">
+    <h1 class="slide-title">Two Independent Failures, One Spec</h1>
     <div class="tpl-content">
-      <div class="tpl-panel" data-side="left">
-        <div class="panel-label">Flashing damage</div>
-        <div class="placeholder-img" style="background:none;border:none">
-          <img src="../assets/sourced/cvh5-fig5-8-flashing-damage.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Flashing damage on a valve plug: a smooth, polished-metal erosion pattern, no pitting.">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh5-fig5-3-seat-load-graph.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.3, Minimum Required Seat Load for Improved Seat Life on Metal-Seated Valves Class II-V">
         </div>
-        <div class="panel-caption">Smooth and polished &mdash; a clean erosion pattern with no pitting</div>
       </div>
-      <div class="tpl-divider"></div>
-      <div class="tpl-panel" data-side="right">
-        <div class="panel-label">Cavitation damage</div>
-        <div class="placeholder-img" style="background:none;border:none">
-          <img src="../assets/sourced/cvh5-fig5-9-cavitation-damage.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Cavitation damage on valve trim: a rough, cinder-like, pitted and gouged erosion surface.">
-        </div>
-        <div class="panel-caption">Rough and cinder-like &mdash; a pitted, gouged surface from repeated bubble-collapse impacts</div>
-      </div>
-      <p class="tpl-source" style="grid-column:1 / -1">The visual signature alone, with no pressure data available, is enough to tell which mechanism produced a given piece of failed trim. Control Valve Handbook, 6th ed., Figs. 5.8, 5.9, pp.129-130 &mdash; used directly. Component Index: cvh-cmp-flashing-damage-photo, cvh-cmp-cavitation-damage-photo.</p>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Same inspection, second finding: commissioning also flagged a seat leak &mdash; the valve never achieved Class V shutoff, even before the trim erosion began</li>
+        <li><span class="num">2</span>Two separate, independent real failures from one spec: a trim-erosion problem and an entirely different shutoff-force problem</li>
+        <li><span class="num">3</span>Both trace back to real checks the flowchart lists that this spec did not run</li>
+      </ul>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., Figure 5.3, p.124. Component Index: cvh-topic-seat-load, cvh-cmp-seat-load-graph.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">15</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

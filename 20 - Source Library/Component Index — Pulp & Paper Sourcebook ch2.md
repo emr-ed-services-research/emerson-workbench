@@ -292,6 +292,28 @@ notes: >
   ("Actuator Feature Comparison," p. 2-10) are all genuinely numbered with
   printed "Table" captions and are correctly excluded per the standing
   tables-vs-figures rule.
+- **`kind: topic` indexing pass (2026-09-17): zero new entries, confirmed
+  duplicate boilerplate, not a gap.** Read the full chapter's real body
+  prose directly (PDF pp. 33-44) looking for genuine concepts beyond the
+  9 figure captions — selection parameters, fail-safe mechanism, the
+  design-category taxonomy, spring-and-diaphragm/piston/electric actuator
+  mechanisms, the A+B+C+D force-calculation methodology, rotary torque
+  equations, and the Table 2-6 comparison. Every one of these is the same
+  Fisher Sourcebook-series master text already topic-indexed in Oil & Gas
+  ch2 (9 entries) and Power & Severe Service ch2 (11 entries) — confirmed
+  by direct side-by-side comparison, not assumed from the chapter's own
+  "identical drawing numbers" note above: the worked actuator-force
+  example (275 lbf required, 100 sq in. diaphragm, 6-15 psig bench set →
+  300 lbf pre-compression, "an adequate selection") is verbatim identical
+  in all three books, Figure 2-1's surrounding prose matches near
+  word-for-word against Oil & Gas's own version, and nothing in this
+  chapter's real text is pulp-and-paper-specific — no industry example,
+  equipment, or terminology anywhere in the chapter. Authoring `pp-topic-*`
+  duplicates of Oil & Gas's/Power & Severe Service's own entries would
+  restate rather than add value, the same discipline already applied to
+  the noise (ch5/ch6) and performance (ch14) chapters across these books.
+  If a genuinely pulp-and-paper-specific delta is found on a future pass,
+  add it then — none was found this pass.
 - **Cross-reference findings — the strongest overlap found in this whole
   pass.** Every one of this chapter's 9 figures was checked by printed
   drawing number against the whole library. **Six of nine are confirmed real

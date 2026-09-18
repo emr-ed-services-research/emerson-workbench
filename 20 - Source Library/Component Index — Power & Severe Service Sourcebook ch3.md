@@ -54,6 +54,88 @@ chapter.
 
 ## Components
 
+### Chapter 3 — Liquid sizing procedure (printed pp. 3-1–3-3, 3-6–3-8)
+
+```yaml
+id: pss-topic-liquid-sizing-methodology
+kind: topic
+teaches: >
+  The real ISA/IEC six-step liquid valve-sizing procedure: (1) specify the
+  sizing variables (desired valve design, process fluid, service conditions
+  q or w, P1, P2, T1, Gf, Pv, Pc); (2) determine the equation constant N
+  from the Equation Constants table (N1 for volumetric units, N6 for mass
+  units); (3) determine Fp, the piping geometry factor, only if fittings
+  are attached to the valve (Fp = 1.0 and drops out otherwise); (4)
+  determine qmax or ΔPmax if choked flow is possible; (5) solve for Cv via
+  Cv = q / (N1·Fp·sqrt((P1-P2)/Gf)) for volumetric flow, or the mass-flow
+  equivalent using N6; (6) select the valve size from the flow-coefficient
+  table. Also states the Kv/Av conversions (Kv = 0.865·Cv, Av = 2.40e-5·Cv).
+  The chapter's full worked sample problem is transcribed exactly: an
+  8-inch line, liquid propane, q=800 gpm, P1=314.7 psia, P2=289.7 psia
+  (ΔP=25 psi), T1=70°F, Gf=0.50, Pv=124.3 psia, Pc=616.3 psia — sizing a
+  proposed 3-inch ANSI Class 300 globe valve (equal-percentage cage, Cv=121
+  from the flow-coefficient table). Fp is calculated at 0.90 (using SK=1.11
+  for a valve between identical concentric reducers), giving a first-pass
+  Cv of 125.7 — exceeding the assumed 3-inch valve's 121 capacity, so the
+  procedure is repeated for a 4-inch valve (Cv=203 rated, Fp recalculated
+  to 0.93, yielding required Cv=121.7 — still under the 4-inch valve's
+  rated capacity). A further refinement using Cv=121.7 in the Fp
+  calculation converges to Fp=0.97 and a final required Cv of 116.2,
+  confirming the 4-inch valve at roughly 75% open is the correct selection.
+concept-tags: [liquid sizing, ISA S75.01, IEC 534, Cv calculation, piping geometry factor, worked example, propane]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 3 'Liquid Valve Sizing,' printed pp. 3-1–3-3 (procedure) and pp. 3-6–3-8 (worked sample problem) — prose, not figure-anchored"
+relatedFigures: [pss-cmp-liquid-critical-pressure-ratio-water, pss-cmp-liquid-critical-pressure-ratio-other-liquids]
+relatedTopics: [pss-topic-piping-geometry-factor, pss-topic-choked-flow-and-cavitation-flashing, ogas-topic-liquid-sizing-methodology, cvh-topic-liquid-sizing-methodology]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (PDF pp.35-37, 40-42; printed
+  pp.3-1–3-3, 3-6–3-8), not inferred from the two existing figure entries.
+  This is the same real worked sample problem (800 gpm liquid propane, 8-inch
+  line, 3-inch-to-4-inch convergence) already found and transcribed in
+  `Component Index — Oil & Gas Sourcebook ch3.md`'s own `ogas-topic-liquid-
+  sizing-methodology` — confirmed genuinely identical numbers, not just a
+  similar example; this Fisher sizing-procedure chapter is shared verbatim
+  boilerplate across the Sourcebook series, per that file's own flagged
+  cross-reference note. Kept as a separate record per this project's
+  standing rule against merging records across separate source documents,
+  cross-referenced via `relatedTopics` instead.
+```
+
+```yaml
+id: pss-topic-piping-geometry-factor
+kind: topic
+teaches: >
+  The Fp (piping geometry factor) correction, needed only when fittings
+  (reducers, elbows, tees) are directly attached to the valve's inlet/
+  outlet connections — Fp = 1.0 and drops out of the sizing equation
+  otherwise. Gives the real Fp equation (a function of the summed velocity-
+  head-loss coefficient SK, the valve's Cv, N2, and nominal size d) and the
+  three concentric-reducer K-factor cases actually used in the worked
+  example: for an inlet reducer, K1 = 0.5·(1-(d/D)²)²; for an outlet
+  reducer, K2 = 1.0·(1-(d/D)²)²; for a valve installed between identical
+  reducers, K1+K2 = 1.5·(1-(d/D)²)² (the case the chapter's own sample
+  problem uses). Also defines the Bernoulli coefficients KB1/KB2 (used only
+  when inlet and outlet piping diameters differ) and states they cancel
+  when the piping is the same size on both sides.
+concept-tags: [piping geometry factor, Fp, concentric reducer, Bernoulli coefficient, velocity head loss]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 3 'Liquid Valve Sizing,' printed pp. 3-2–3-4 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pss-topic-liquid-sizing-methodology, ogas-topic-piping-geometry-factor]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (PDF pp.36-38, printed pp.3-2–3-4).
+  Same real equations and reducer cases already found in `Component Index —
+  Oil & Gas Sourcebook ch3.md`'s `ogas-topic-piping-geometry-factor` — kept
+  separate per the standing rule against merging across source documents,
+  cross-referenced instead.
+```
+
 ### Chapter 3 — Liquid critical pressure ratio (printed pp. 3-5)
 
 ```yaml
@@ -113,8 +195,66 @@ notes: >
 mediaStatus: unreviewed
 ```
 
+### Chapter 3 — Choked flow, ΔPmax, and cavitation/flashing diagnosis (printed pp. 3-4–3-6)
+
+```yaml
+id: pss-topic-choked-flow-and-cavitation-flashing
+kind: topic
+teaches: >
+  Choked flow (qmax) occurs in liquids when the static pressure inside the
+  valve drops below the liquid's vapor pressure, causing vaporization; qmax
+  = N1·FL·Cv·sqrt((P1 - FF·Pv)/Gf), where FF (the liquid critical pressure
+  ratio factor) is read from Figure 3-1/3-2 or calculated as FF = 0.96 −
+  0.28·sqrt(Pv/Pc). The IEC standard instead requires calculating an
+  allowable sizing pressure drop, ΔPmax — ΔPmax(L) = FL²·(P1 − FF·Pv) for a
+  valve with no fittings attached, or the FLP/Fp-corrected equivalent
+  (ΔPmax(LP)) when fittings are attached — and using the lesser of ΔPmax
+  and the actual service ΔP (P1−P2) in the sizing equation whenever ΔPmax is
+  the smaller value (indicating choked flow will occur). Once choked flow
+  is confirmed, the source gives the real diagnostic for which failure mode
+  is occurring: **flashing** if the valve's outlet pressure is below the
+  liquid's vapor pressure; **cavitation** if the outlet pressure is above
+  the vapor pressure (the vapor bubbles that form at the vena contracta
+  collapse downstream instead of persisting).
+concept-tags: [choked flow, qmax, delta P max, liquid critical pressure ratio, F_F, cavitation, flashing, vena contracta]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 3 'Liquid Valve Sizing,' printed pp. 3-4–3-6 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-liquid-critical-pressure-ratio-water, pss-cmp-liquid-critical-pressure-ratio-other-liquids]
+relatedTopics: [pss-topic-liquid-sizing-methodology, ogas-topic-choked-flow-and-cavitation-flashing, cvh-topic-cavitation, cvh-topic-flashing, cvh-topic-flow-recovery]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (PDF pp.38-40, printed pp.3-4–3-6).
+  The outlet-pressure-vs-vapor-pressure diagnostic for distinguishing
+  cavitation from flashing is stated explicitly in this chapter's own text,
+  the same real distinction already topic-indexed in `Component Index —
+  Oil & Gas Sourcebook ch3.md`'s `ogas-topic-choked-flow-and-cavitation-
+  flashing` and in the Control Valve Handbook's `cvh-topic-cavitation`/
+  `cvh-topic-flashing` — kept as a separate record per the standing rule
+  against merging across source documents, cross-referenced instead of
+  duplicated.
+```
+
 ## Open Items
 
+- **`kind: topic` pass (2026-09-17)**: 3 new topic entries added
+  (`pss-topic-liquid-sizing-methodology`, `pss-topic-piping-geometry-factor`,
+  `pss-topic-choked-flow-and-cavitation-flashing`), each read directly from
+  the real PDF prose across the chapter's confirmed pp.35-42 range, not
+  inferred from the two existing figure entries. Table 3-1 (Abbreviations)
+  and Table 3-2 (Equation Constants) were re-confirmed reference-data-only
+  — no topic authored for either. The intro paragraph on ISA/IEC
+  standardization history (printed p.3-1) was read and judged historical
+  attribution, not a transferable concept — deliberately not indexed. This
+  chapter's real content (the ISA/IEC six-step procedure, the 800 gpm
+  liquid-propane worked example, the Fp reducer equations, the choked-flow/
+  cavitation-flashing diagnostic) is confirmed genuinely identical to
+  `Component Index — Oil & Gas Sourcebook ch3.md`'s own topic entries —
+  same Fisher Sourcebook-series boilerplate, same worked numbers. Kept as
+  separate records per the standing cross-document rule, cross-referenced
+  via `relatedTopics`. Chapter total is now 5 components (2 figures + 3
+  topics), up from 2.
 - **Chapter boundary** — confirmed directly by rendering: PDF p.35 is the
   Chapter 3 divider ("Chapter 3 / Liquid Valve Sizing"), PDF p.43 is the
   Chapter 4 divider. Chapter 3 = PDF pp.35–42 (printed pp.3-1–3-8). Every

@@ -3,35 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 005 &mdash; The Valve-Selection Decision, End to End</title>
+<title>CVE1 &middot; Slide 005 &mdash; Case A: Service Conditions and Preliminary Cv</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m1, page 5 — eng.sizing.valve-selection-process [understand
-       · mechanism]. Source figure: Control Valve Handbook 6th ed., the
-       chapter-opening unnumbered 6-step flowchart, p.100 (no printed
-       figure number — locator confirmed against Component Index —
-       Control Valve Handbook ch5.md). Cropped from a real 200dpi render of
-       the source page (build/assets/sourced/cvh5-valve-selection-process-flowchart.png),
-       not redrawn or invented — the flowchart's own box text is legible
-       as-is, no relabelling needed. -->
+  <!-- cve1-ch1-m1, page 5 — eng.sizing.valve-selection-process [apply ·
+       mechanism]. ATTEMPT 3: real numbers throughout, every term defined
+       at first use, per teaching-philosophy.md's tier-1 correction. -->
   <article class="slide slide--role-mechanism" data-slide="5" data-deck="cve1">
-    <h1 class="slide-title">The Valve-Selection Decision, End to End</h1>
+    <h1 class="slide-title">Case A: Service Conditions and Preliminary Cv</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-valve-selection-process-flowchart.png" style="width:100%;height:100%;object-fit:contain" alt="Six-step valve selection flowchart: 1. Determine Service Conditions, 2. Calculate Preliminary Cv Required (check noise and cavitation levels), 3. Select Trim Type, 4. Select Valve Body and Trim Type, 5. Select Trim Materials, 6. Consider Options.">
+          <img src="../assets/sourced/cvh5-fig-flowchart-steps1-2.png" style="width:100%;height:100%;object-fit:contain" alt="Valve selection flowchart, steps 1-2: determine service conditions, calculate preliminary Cv">
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>Service conditions fix everything downstream</li>
-        <li><span class="num">2</span>Preliminary Cv is checked against noise/cavitation before it counts as final</li>
-        <li><span class="num">3</span>Trim type, body/trim size, and materials each follow from the step before</li>
+        <li><span class="num">1</span>Cooling-water bypass line: P1 = 150 psig, P2 = 100 psig, so &Delta;P = P1 &minus; P2 = 50 psi</li>
+        <li><span class="num">2</span>Q = 200 gpm of water (SG = 1.0), 70&deg;F, ANSI Class 300, Class II shutoff</li>
+        <li><span class="num">3</span>Preliminary Cv = Q &times; &radic;(SG / &Delta;P) = 200 &times; &radic;(1.0/50) = 200 &times; 0.141 &asymp; 28</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100, Steps 1-2 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">5</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

@@ -114,6 +114,75 @@ notes: An analytical x-y graph, not a cutaway or schematic.
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-boiler-type-fundamentals
+kind: topic
+teaches: >
+  Two fundamentally different power-plant boiler architectures set the
+  service conditions every valve in this chapter is selected against. A
+  drum-style (subcritical) boiler uses a steam drum to separate steam from
+  boiling feedwater and operates below water's critical pressure (2400-2800
+  psi) — simple, load-swinging, easy to start up, and the most common
+  design in commercial/industrial plants. A once-through boiler has no
+  separator at all; all feedwater becomes steam as it passes through the
+  boiler tubes, and outlet steam pressure exceeds water's critical pressure
+  (3206 psia) — these supercritical, once-through units run around 3500 psi
+  to the turbine, have higher efficiency, and are used for base-load plants,
+  but are handicapped by difficult startup and poor load-following. This
+  drum-vs-once-through distinction recurs throughout the chapter (e.g. every
+  "Typical service conditions" table gives separate Drum-Style and
+  Once-Through pressure ranges) and is the reason Chapter 9B (Sliding
+  Pressure Control) and once-through-specific startup valves exist as their
+  own separate treatment.
+concept-tags: [subcritical boiler, supercritical boiler, drum-style, once-through, critical pressure, base load, load following]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9A introduction, p. 9A-1 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-fossil-plant-severe-service-valve-map]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the chapter's own opening prose (PDF p. 105, printed
+  p. 9A-1), before the condensate-system content begins. No figure of its
+  own — the concept frames every later application in the chapter rather
+  than being shown in one diagram.
+mediaStatus: n/a
+```
+
+```yaml
+id: pss-topic-cavitation-flashing-diagnostic-error
+kind: topic
+teaches: >
+  A real, named sizing pitfall for the condensate recirculation valve: field
+  data often indicates flashing (Application Ratio AR = ΔP/(P1−Pv) > 1), but
+  experience shows this application is always actually cavitating — it only
+  *appears* to be flashing because pipe friction, elevation, and condensate
+  sparger backpressure are commonly ignored in the calculation, giving an
+  artificially low P2. A second, compounding error: using worst-case
+  (full-load, no-recirculation) temperature for sizing drives vapor
+  pressure too high, which also falsely indicates flashing. The corrective
+  standard is tight shutoff (ANSI Class V) with anti-cavitation trim
+  regardless of what the naive calculation suggests — using a standard
+  valve because the numbers say "flashing" is explicitly named as a
+  mis-application that causes premature failure.
+concept-tags: [cavitation, flashing, application ratio, sizing error, condensate recirculation, misdiagnosis]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Condensate system section, pp. 9A-2–9A-3 — prose following Figure 9A-2, not itself figure-anchored"
+relatedFigures: [pss-cmp-condensate-system-two-valve-schematic, pss-cmp-design-et-cavitrol-condensate-recirc-valve]
+relatedTopics: [cvh-topic-cavitation, cvh-topic-flashing]
+used-by: []
+notes: >
+  Verified real: both CVH topic ids cited exist (`cvh-topic-cavitation`,
+  `cvh-topic-flashing` in Component Index — Control Valve Handbook ch5.md).
+  This is a genuinely distinct, source-specific application of that
+  mechanism (a named diagnostic error field engineers make), not a
+  duplicate of the CVH mechanism explanation.
+mediaStatus: n/a
+```
+
 ### Chapter 9A — Feedwater System (printed pp. 9A-4 – 9A-9)
 
 ```yaml
@@ -194,6 +263,100 @@ delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Fully sectioned cutaway showing internal stacked-stage trim construction — no printed field callouts beyond the caption.
 mediaStatus: unreviewed
+```
+
+```yaml
+id: pss-topic-alloy6-corrosion-mechanism
+kind: topic
+teaches: >
+  A specific, named material-failure mechanism in feedwater systems: boiler
+  feedwater is chemically treated with ammonia, hydrazine, or amine
+  derivatives at the deaerator to eliminate excess oxygen. These same
+  chemicals attack the protective oxide films on Alloy 6 trim overlays,
+  initiating an erosion/corrosion process that degrades the overlay — a
+  mechanism the source states is responsible for many valve trim failures
+  previously (and wrongly) attributed to poor design or maintenance. The
+  remedy is material substitution: solid 400-series stainless steel trim,
+  or Colmonoy overlays, eliminate the problem.
+concept-tags: [Alloy 6, erosion-corrosion, feedwater chemistry, hydrazine, amine, 400 series stainless, Colmonoy]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Feedwater System section, CAUTION box, p. 9A-4 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pss-topic-heater-drain-erosion-materials]
+used-by: []
+notes: >
+  A standalone CAUTION callout box in the source, not tied to any single
+  figure — genuinely invisible to the original figures-only pass.
+mediaStatus: n/a
+```
+
+```yaml
+id: pss-topic-feedpump-recirculation-methods
+kind: topic
+teaches: >
+  Three distinct methods exist for providing boiler feedpump recirculation
+  (BFPR), each a different design philosophy with real efficiency
+  tradeoffs. (1) Modulating: the valve tracks the pump manufacturer's
+  published NPSH-required curve against the plant's actual NPSH-available,
+  opening only enough to keep available above required — the most
+  efficient method. (2) On/off: provides constant recirculation flow up to
+  a specified plant load, then closes — less efficient, since energy is
+  wasted recirculating at higher loads than necessary. (3) Continuous:
+  recirculates a fixed amount regardless of load, pressure, or temperature
+  — found in older plants, the most inefficient since most feedpumps only
+  need recirculation at low load. An older, now-superseded approach used a
+  fixed backpressuring device (orifice plate or capillary tubing) with an
+  on/off valve — this reduced but did not solve cavitation damage, and
+  failed specifically at the moment the plug pulled off its seat (a brief
+  window of full, unmitigated high-energy cavitation), which is why modern
+  Cavitrol anti-cavitation trim replaced it.
+concept-tags: [BFPR, NPSH, recirculation, modulating, on/off, continuous, backpressuring device]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Feedwater System section, pp. 9A-5–9A-6 — prose following Figure 9A-6, not itself figure-anchored"
+relatedFigures: [pss-cmp-feedwater-system-three-valve-schematic, pss-cmp-cav4-four-stage-anticavitation-trim-cutaway]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real running prose between Figures 9A-6 and 9A-7,
+  not inferred from either figure's own caption.
+mediaStatus: n/a
+```
+
+```yaml
+id: pss-topic-cavitrol-trim-staging-selection
+kind: topic
+teaches: >
+  A real, pressure-drop-banded selection framework for BFPR valve trim,
+  distinct from any single figure's own caption: for pressure drops under
+  3000 psi, an appropriately sized HPT or EHT with two- or three-stage
+  Cavitrol III trim is used (characterized trim is explicitly ruled out
+  here since the pressure drop stays roughly constant regardless of flow).
+  For drops up to 4000 psi, the same body style takes four-stage Cavitrol
+  III trim. For drops exceeding 4000 psi, a CAV 4 valve (typically 2- or
+  4-inch) with Cavitrol IV trim is required — described as the most proven
+  valve on the market for these extreme conditions. At these highest
+  pressure drops, seating-surface quality becomes critical: soft metal
+  seats and Tight Shutoff Trim (TSO) avoid energy loss and wire-draw
+  effects. A separate trim variant, Dirty Service Trim (DST), handles
+  particulate up to 3/4 inch while still providing cavitation protection to
+  4000 psi.
+concept-tags: [Cavitrol III, Cavitrol IV, CAV 4, trim staging, pressure-drop banding, Dirty Service Trim, tight shutoff]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Feedwater System section, pp. 9A-6–9A-7 — prose surrounding Figure 9A-7, not itself figure-anchored"
+relatedFigures: [pss-cmp-cav4-four-stage-anticavitation-trim-cutaway]
+relatedTopics: [pss-topic-feedpump-recirculation-methods]
+used-by: []
+notes: >
+  The Figure 9A-7 caption only names the CAV 4/Cavitrol IV endpoint; the
+  real selection LOGIC across all three pressure bands lives in the
+  surrounding prose and was never captured by any figure entry.
+mediaStatus: n/a
 ```
 
 ```yaml
@@ -315,6 +478,37 @@ notes: >
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-microflat-trim-mechanism
+kind: topic
+teaches: >
+  MicroFlat trim (used in the Design HP and EH) does not prevent
+  cavitation — it isolates it. The trim uses a plug and seat ring with a
+  relatively low recovery coefficient, throttling to Cv as low as 0.01, but
+  limited to a maximum 1000 psi drop on its own; damage is prevented by
+  putting the trim in a carbon-steel angle body with a liner (a
+  chrome-moly or stainless body doesn't need the liner). For higher
+  pressure drops and flow rates, MicroFlat is combined with a Cavitrol III
+  cage — this combination gives a high recovery coefficient (eliminating
+  cavitation at the high-flow condition) while the MicroFlat plug still
+  isolates the low-flow condition from seat damage — one trim system
+  handling two different cavitation regimes by two different mechanisms.
+concept-tags: [MicroFlat trim, recovery coefficient, cavitation isolation, Cavitrol III cage, low-flow throttling]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Main Steam System section, pp. 9A-9–9A-10 — prose surrounding Figure 9A-11, not itself figure-anchored"
+relatedFigures: [pss-cmp-microflat-plug-cavitrol-reheater-spray-trim]
+relatedTopics: []
+used-by: []
+notes: >
+  The existing figure entry's caption names the MicroFlat/Cavitrol III
+  combination but doesn't explain the two-mechanism reasoning (isolation
+  vs. recovery-coefficient elimination) — that reasoning lives only in the
+  surrounding running text.
+mediaStatus: n/a
+```
+
 ### Chapter 9A — Turbine Bypass Valves (printed pp. 9A-11 – 9A-13)
 
 ```yaml
@@ -380,6 +574,69 @@ notes: Fully labelled with its own line-type legend (Spray Water Flow / Steam Fl
 mediaStatus: unreviewed
 ```
 
+```yaml
+id: pss-topic-turbine-bypass-system-function
+kind: topic
+teaches: >
+  A turbine bypass system exists to provide an alternate flow path around
+  the turbine so the boiler can keep operating stably when the turbine
+  trips offline or during startup, without requiring a full boiler trip. HP
+  bypass routes high-pressure, high-temperature steam around the HP turbine
+  back to the reheat section, cooling it to just above HP exhaust
+  temperature via feedwater spray so it can join HP exhaust steam through
+  the reheater — protecting the reheat section and unloading the turbine
+  quickly. LP bypass routes reheat-section steam around the LP turbine
+  directly into the condenser, using large amounts of desuperheating spray
+  since temperature control there matters only to protect the condenser
+  (not the turbine). The control system must open the valve within roughly
+  2 seconds and then modulate to hold pressure/temperature setpoints — a
+  real, specific response-time requirement that only appears in this prose,
+  not in any figure caption.
+concept-tags: [turbine bypass, HP bypass, LP bypass, boiler trip, reheat protection, desuperheating spray, response time]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Turbine Bypass Valves section, pp. 9A-11–9A-12 — prose surrounding Figures 9A-13/9A-14/9A-15, not itself figure-anchored"
+relatedFigures: [pss-cmp-tbx-t-hp-bypass-valve-cutaway, pss-cmp-tbx-t-lp-bypass-valve-photo, pss-cmp-turbine-bypass-system-hp-lp-schematic]
+relatedTopics: []
+used-by: []
+notes: >
+  The existing figure entries name the HP/LP valves and the overall
+  schematic but don't state why the system exists or the response-time
+  requirement — that reasoning lives only in the surrounding prose.
+mediaStatus: n/a
+```
+
+```yaml
+id: pss-topic-soot-blower-service-challenges
+kind: topic
+teaches: >
+  Soot blower valves (steam- or air-actuated, used to clean boiler tubes
+  without shutting the boiler down) face a specific combination of service
+  stresses distinct from other severe-service valves in this chapter:
+  frequent cycling (operated numerous times per day) causes temperature
+  cycling of the valve body, especially when a block valve isolates it
+  between uses; combined with large pressure drops, this produces high
+  noise and excessive trim wear/vibration. Fisher's experience-based
+  solution ("soot blower trim") is a drilled-hole cage oriented in the
+  flow-up direction plus an oversized valve-stem connection, in a
+  chrome-moly body (for the high temperatures involved) — a
+  cyclic-service-specific trim design, not a generic anti-cavitation or
+  noise-abatement solution.
+concept-tags: [soot blower, thermal cycling, drilled-hole cage, oversized stem, chrome-moly body]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Turbine Bypass Valves section (soot blower subsection), pp. 9A-12–9A-13 — prose, no figure of its own"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  This subsection has no figure at all in the source — genuinely invisible
+  to the original figures-only pass.
+mediaStatus: n/a
+```
+
 ### Chapter 9A — Heater Drain System and Scrubber Slurry (printed pp. 9A-15 – 9A-16)
 
 ```yaml
@@ -422,6 +679,69 @@ delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Fully labelled system schematic (To Economizer, Extraction Steam, Heater Drain Valve, High Level Dump, To H.P. Heater Drain Pump (D.A.), From Feedwater Pumps).
 mediaStatus: unreviewed
+```
+
+```yaml
+id: pss-topic-heater-drain-erosion-materials
+kind: topic
+teaches: >
+  Feedwater heater drain valves face a specific erosion mechanism: the
+  condensate at the heater bottom is at saturation, and when drained to the
+  condenser it loses pressure and flashes, and the flashing fluid's
+  high-velocity liquid droplets impinge on trim and body surfaces. Chrome-
+  moly steel resists this erosion; WC9 has largely replaced the older C5
+  alloy because, despite having lower chromium content, its much higher
+  molybdenum content more than compensates — WC9 is more erosion-resistant
+  than C5 and easier to cast, weld-repair, and manufacture reliably. A
+  separate mitigation, independent of material choice, is installing the
+  valve in reverse flow direction (as with the Design V500) specifically to
+  keep flashing from damaging the valve, combined with a line-size valve to
+  reduce velocity.
+concept-tags: [flashing erosion, WC9, C5 alloy, chrome-moly, molybdenum content, reverse flow, heater drain]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Heater Drain System section, pp. 9A-13–9A-14 — prose surrounding Figures 9A-16/9A-17, not itself figure-anchored"
+relatedFigures: [pss-cmp-design-v500-heater-drain-valve-photo, pss-cmp-hp-heater-drain-two-heater-schematic]
+relatedTopics: [pss-topic-alloy6-corrosion-mechanism]
+used-by: []
+notes: >
+  The WC9-vs-C5 material tradeoff and the reverse-flow mitigation reasoning
+  are stated only in the running prose, not in either figure's own caption.
+mediaStatus: n/a
+```
+
+```yaml
+id: pss-topic-fgd-scrubber-fundamentals
+kind: topic
+teaches: >
+  Federal regulation requires SO2 removal on every utility boiler,
+  regardless of fuel sulfur content. The wet limestone throwaway process is
+  the most common flue-gas desulfurization (FGD) system: a closed-loop
+  system that converts SO2 to calcium sulfite and calcium sulfate solids
+  (sludge), which must be continuously removed and disposed of. A
+  magnesium-oxide wet-scrubbing variant instead regenerates and reuses MgO,
+  removing up to 95% of sulfur oxides and 99% of particulates, and
+  producing a saleable sulfur byproduct. In both variants, the resulting
+  slurry (or the separate ash-handling stream) is highly erosive and
+  corrosive — 30%+ solids slurry containing calcium sulfate/sulfite and
+  ash — which is why scrubber-effluent and ash-removal valves see such
+  frequent replacement and why alloy trim (e.g. solid Alloy 6, Alloy 20,
+  Hastelloy C) and sealed-bearing designs matter more here than valve type
+  choice alone.
+concept-tags: [FGD, wet limestone scrubbing, calcium sulfite, calcium sulfate, magnesium oxide, sludge, erosive slurry]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Scrubber Slurry section, pp. 9A-14–9A-15 — prose, no figure of its own"
+relatedFigures: [pss-cmp-design-v500-heater-drain-valve-photo]
+relatedTopics: []
+used-by: []
+notes: >
+  This subsection has no figure of its own in the source — the process
+  chemistry it explains is genuinely invisible to the original
+  figures-only pass.
+mediaStatus: n/a
 ```
 
 ---

@@ -92,6 +92,45 @@ request actually reaches — never a wholesale pre-index of a document:
   unnumbered diagrams — a synthetic `"Unnumbered diagram, p. N — ..."`
   locator is the standing convention for this case going forward, not a
   one-off. ch5's real component count is therefore 19, not 18.
+  **A new entry kind, `kind: topic`, was added 2026-09-17** — the real
+  root cause found after three CVE1 curriculum rebuild attempts kept
+  failing to teach real conceptual content even once narrative, data, and
+  pacing problems were fixed in turn: the Component Index had only ever
+  indexed figures/diagrams/tables (every existing record an implicit
+  `kind: figure`), never the surrounding body prose that actually explains
+  a mechanism or a concept. A figure's `teaches` field describes what the
+  figure shows, not why cavitation happens or what seat load means — there
+  was never a source to author conceptual instruction FROM. `kind: topic`
+  fills that gap: a record grounded in a source's real body prose (a real
+  page/section locator, `status`, verification notes — same discipline as
+  a figure entry, nothing invented or summarized from outside knowledge),
+  cross-referencing the figure(s) it relates to via `relatedFigures` and
+  other topic entries via `relatedTopics`. Its id namespace is `cvh-topic-*`,
+  parallel to `cvh-cmp-*`. First real build: six ch5 topic entries
+  (`cvh-topic-cavitation`, `cvh-topic-flashing`, `cvh-topic-flow-recovery`,
+  `cvh-topic-vena-contracta`, `cvh-topic-valve-balance`,
+  `cvh-topic-seat-load`), each read directly from the real PDF prose (§5.11
+  and §5.14) before being written, not assumed from the figure entries'
+  own summaries alone.
+  **Completed to a full-chapter pass same night**, per Franz's explicit
+  correction that six reactively-identified topics wasn't the real
+  validation test — the whole chapter's real body prose was read
+  start-to-finish (every page, 98-149, footer-confirmed) and 11 more
+  genuine concepts added: seat-leakage classification (§5.2-5.3), flow
+  characteristics (§5.4), liquid and compressible sizing methodology
+  (§5.5/5.8-5.9, both with real worked-example numbers transcribed), packing
+  friction (§5.11.1.3, expanding a one-sentence mention), actuator force
+  selection (§5.11.2), rotary actuator torque sizing (§5.12-5.13),
+  cavitation/flashing mitigation (§5.14.2-5.14.3 — practical valve-selection
+  guidance, distinct from the mechanism topics), noise generation/prediction
+  (§5.15), noise control strategy (§5.16), and packing selection criteria
+  (§5.18). Reference-data-only sections (dimension tables, the abbreviations
+  glossary, equation constants, sizing-coefficient/torque-factor tables,
+  material/pressure-temperature-rating tables, NDE method names) were
+  confirmed to carry no teachable concept beyond their own data and were
+  deliberately not topic-indexed — see that chapter file's own Open Items
+  for the full disposition list. ch5's real component count is therefore 36
+  (19 figures + 17 topics), not 25.
   ch4's own schema drift was also fixed in the same pass: `status: verified`
   (a non-standard value never used elsewhere) corrected to `status: current`
   across all 27 records, and numeric ids (`cvh-cmp-4.N`) renamed to
@@ -209,9 +248,9 @@ on those rows as unfinished work.
 | Fisher 3610J/3620J Positioners ([[Component Index — Fisher 3610J-3620J Positioners]]) — 17101 batch | Standing full-document | Complete | 31 | 2026-09-21 |
 | Fisher 585CLS Long Stroke Piston Actuator ([[Component Index — Fisher 585CLS Long Stroke Piston Actuator]]) — 17101 batch, `status: current` per a flagged precedence judgment call (see the file's own header) | Standing full-document | Complete | 3 | 2026-09-21 |
 | AMS Trex ValveLink Diagnostic Concepts ([[Component Index — AMS Trex ValveLink Diagnostic Concepts]]) — topic-driven concept-grain pass, correcting the original AMS Trex navPath pass's over-indexed grain; mined from the Software Reference material below, nothing duplicated | Topic-driven | Complete (matches the topic) | 19 | 2026-09-14 |
-| Power & Severe Service Sourcebook — all 14 chapters | Standing full-chapter | Complete | 159 | 2026-09-15 |
-| Refining Sourcebook — all 5 chapters | Standing full-chapter | Complete | 95 | 2026-09-15 |
-| Pulp & Paper Sourcebook — all 18 chapters (chapter 10 has two real lettered sub-parts, 10A/10B) | Standing full-chapter | Complete | 147 | 2026-09-15 |
+| Power & Severe Service Sourcebook — all 14 real chapters (17 indexed files: ch1-8, 9A-9D, 10-14) | Standing full-chapter | Complete — 159 figures + 104 `kind: topic` entries (added 2026-09-17) | 263 | 2026-09-17 |
+| Refining Sourcebook — all 5 chapters | Standing full-chapter | Complete — 95 figures + 11 `kind: topic` entries (added 2026-09-18) | 106 | 2026-09-18 |
+| Pulp & Paper Sourcebook — all 18 chapters (chapter 10 has two real lettered sub-parts, 10A/10B) | Standing full-chapter | Complete — 147 figures + 101 `kind: topic` entries (added 2026-09-18) | 248 | 2026-09-18 |
 | Historic Educational Services archive | — | Not started (unverified, `legacy`/`archive-only` territory if ever indexed) | 0 | — |
 
 ## Software Reference material (not counted in Component Index totals)
@@ -269,8 +308,24 @@ to one app version and can go stale on the next release. Blending the two
 into one library-wide number hid that difference. From this date forward,
 report both:
 
-**854 components in the Component Index** (228 CVH + 144 Oil & Gas + 482
-Technical Publications — the last figure being 6 bench-set-657 + 17
+**1,019 components in the Component Index** (323 CVH + 214 Oil & Gas + 482
+Technical Publications — CVH's 323 is 228 figures (all 15 chapters,
+unchanged) plus 95 new `kind: topic` entries, added 2026-09-17 across a
+full-chapter conceptual-indexing pass run on all 15 CVH chapters (the
+figures-only rule was never meant to exclude genuine body-prose concepts,
+just tables — see each chapter file's own Open Items for the real
+per-chapter breakdown and the chapters confirmed to have zero topic
+content, ch13/14/15, which are pure reference data with no conceptual
+prose at all). Oil & Gas Sourcebook's 214 is its prior 144 figures plus 70
+new `kind: topic` entries, added 2026-09-17 across the same full-chapter
+pass run on all 13 of its indexed chapters (ch4 was never indexed as its
+own file and stays out of scope). **Two pre-existing figure-id
+collisions surfaced by this pass's vault-wide integrity check, neither
+caused by it** (`ogas-cmp-amine-treatment-unit`, already flagged in ch8/
+ch9's own Open Items before tonight; `ogas-cmp-compressor-system`, newly
+found in ch7/ch10, not previously flagged anywhere) — both real, both
+still unresolved, a cross-file id-uniqueness cleanup pass is real future
+work, not done here. Technical Publications' last figure being 6 bench-set-657 + 17
 657-completion + 25+16+17+11+10+16+24+25+15+9+6+7+12+35+16 across the
 original 15 flat-structure manuals + 39 DVC6200 + 42 DVC7K-H + 7
 ENVIRO-SEAL rotary + 11 Fisher 646 + 24 Fisher 846 + 14 i2P-100 + 25

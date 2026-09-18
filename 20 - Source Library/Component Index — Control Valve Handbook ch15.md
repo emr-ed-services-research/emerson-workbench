@@ -92,3 +92,16 @@ record.
   page-range correction above is the one thing worth Franz's attention,
   though it is a confirmed fact (checked directly against the PDF), not a
   judgment call.
+- **`kind: topic` pass (2026-09-17): zero entries, confirmed not assumed.**
+  Re-read the full chapter text (pp. 325–339) specifically looking for
+  conceptual/explanatory prose distinct from the tables themselves — the
+  two most likely candidates going in were §15.11 (Temperature Conversion
+  Formulas) and §15.13 (API and Baumé Gravity Tables), since a formula or
+  a named quantity can carry real explanation. Both checked directly: 15.11
+  is four bare "substitute in formula" rows with no reasoning given for why
+  the formulas take that form; 15.13 is a pure two-column lookup table with
+  no explanation of what API/Baumé gravity conceptually is or why either
+  scale exists. All other sections (length/mass/area/volume/pressure
+  equivalents, metric prefixes, "other useful conversions") are the same
+  bare-conversion-factor shape. No topic entry authored — this chapter is
+  genuinely reference data cover to cover, not a gap in this pass's effort.

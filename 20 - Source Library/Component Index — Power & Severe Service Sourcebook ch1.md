@@ -64,6 +64,38 @@ this chapter.
 ### Chapter 1 — Valve-type overview: sliding-stem, ball, and eccentric plug (printed pp. 1-1 – 1-6)
 
 ```yaml
+id: pss-topic-control-valve-selection-framework
+kind: topic
+teaches: >
+  Control valve selection is framed as narrowing down to one of nine
+  subcategories (across the two major types, sliding-stem and rotary),
+  then comparing specific valves within that subcategory — the
+  overview/comparison structure Table 1-2 itself embodies. "Control valve"
+  in this discussion means any power-operated valve used for throttling or
+  on-off control; motorized gate valves, louvers, pinch valves, and
+  self-operated regulators are explicitly excluded from the scope.
+  Selection used to be simple (one general type, sliding-stem, considered
+  by default) but is now considerably more complex given the range of
+  sliding-stem and rotary styles available, some marketed as near-universal
+  and others as narrow-application optimum solutions.
+concept-tags: [valve selection framework, nine subcategories, sliding-stem, rotary, control valve scope]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 1 opening prose and 'General Categories of Control Valves' section, pp. 1-1–1-2 — unnumbered prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [ogas-topic-control-valve-selection-process]
+used-by: []
+notes: >
+  Genuinely parallel prose to Oil & Gas ch1's own selection-framework
+  section (same sourcebook-series front matter) but catalogued as its own
+  record per this project's standing rule against merging records across
+  source documents — not verified word-for-word identical, only
+  conceptually equivalent, so no strong claim of textual identity is made
+  here.
+```
+
+```yaml
 id: pss-cmp-modern-control-valve-assembly
 kind: figure
 teaches: >
@@ -234,6 +266,35 @@ mediaStatus: unreviewed
 ```
 
 ```yaml
+id: pss-topic-sliding-stem-valve-family
+kind: topic
+teaches: >
+  Sliding-stem designs (globe, angle, Y-pattern) are the most versatile
+  control valve family: 1/2 through 36-inch, the widest range of
+  materials/end-connections/characteristics of any product family, and
+  body pressure ratings to ANSI Class 2500 and beyond. For many extreme
+  service conditions — high pressure/temperature, excessive noise,
+  cavitation potential — sliding-stem is the ONLY suitable choice, due to
+  its rugged construction handling piping stress, vibration, and
+  temperature changes that field conditions impose. In sizes through
+  3-inch, the incremental cost over rotary valves is low relative to the
+  benefit received.
+concept-tags: [sliding-stem valve, globe valve, versatility, extreme service, rugged construction, ANSI Class 2500]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "'Sliding-stem Valves' section, p. 1-2 — unnumbered prose, not figure-anchored"
+relatedFigures: [pss-cmp-design-et-globe-cutaway, pss-cmp-large-ewnt2-drilled-cage-cutaway, pss-cmp-ehd-high-pressure-cutaway, pss-cmp-baumann-24000sb-barstock-valve, pss-cmp-baumann-little-scotty-economy-valve, pss-cmp-piston-actuator-fieldvue-valve]
+relatedTopics: []
+used-by: []
+notes: >
+  Extends the individual figure entries above (each teaches one specific
+  design/subcategory) with the family-level rationale for WHY sliding-stem
+  is chosen over rotary in the first place — genuinely absent from any
+  single figure's own teaches field.
+```
+
+```yaml
 id: pss-cmp-v250-ball-valve-cutaway
 kind: figure
 teaches: >
@@ -287,6 +348,34 @@ mediaStatus: unreviewed
 ```
 
 ```yaml
+id: pss-topic-ball-valve-subcategories
+kind: topic
+teaches: >
+  Two ball-valve subcategories with a real performance tradeoff, not just
+  two size options: through-bore/full-ball (Figure 1-8) suits high
+  pressure-drop throttling and on-off service to 24-inch, with high flow
+  capacity and low erosive wear — but sluggish flow response in the first
+  20% of ball travel can make it unsuitable for some throttling
+  applications. Segmented-ball (Figure 1-9), with its reduced bore and
+  contoured-notch segment edge, is generally higher in overall control
+  performance and better suited to modulating service — splined-shaft
+  connections eliminate lost motion, and heavy-duty metal/fluoroplastic
+  seals allow wide temperature/fluid applicability.
+concept-tags: [ball valve, full-ball, through-bore, segmented ball, rangeability, lost motion, splined shaft]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "'Ball Valves' section, pp. 1-4–1-5 — unnumbered prose, not figure-anchored"
+relatedFigures: [pss-cmp-v250-ball-valve-cutaway, pss-cmp-vee-ball-v150-v200-v300-cutaway]
+relatedTopics: []
+used-by: []
+notes: >
+  The sluggish-first-20%-travel limitation and the lost-motion/splined-shaft
+  rationale are both genuinely absent from either figure's own caption —
+  real comparative reasoning the two figures alone don't carry.
+```
+
+```yaml
 id: pss-cmp-v500-eccentric-plug-cutaway
 kind: figure
 teaches: >
@@ -309,6 +398,32 @@ notes: >
   in `Component Index — Oil & Gas Sourcebook ch1.md`. Fully labelled
   cutaway — Style Guide §6.3 applies if ever placed on a slide.
 mediaStatus: unreviewed
+```
+
+```yaml
+id: pss-topic-eccentric-plug-transitional-category
+kind: topic
+teaches: >
+  Eccentric plug valves are explicitly positioned as a transitional
+  category combining sliding-stem and rotary traits: rotary actuation
+  (like rotary valves) paired with a massive, rigid seat design (unlike
+  most rotary valves) — giving excellent throttling capability and erosion
+  resistance by combining "many of the good aspects of both rotary and
+  sliding-stem designs." Sizes generally to 8-inch, ratings to ANSI Class
+  600, both flanged and flangeless available.
+concept-tags: [eccentric plug valve, transitional category, rotary actuation, rigid seat, erosion resistance]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "'Eccentric Plug Valves' section, p. 1-4 — unnumbered prose, not figure-anchored"
+relatedFigures: [pss-cmp-v500-eccentric-plug-cutaway]
+relatedTopics: []
+used-by: []
+notes: >
+  The figure entry's own teaches field already covers the mechanism
+  ("cams into the seat ring"); this topic entry adds the explicit
+  transitional-category framing (why this design exists between the two
+  major families) that the figure caption alone doesn't state.
 ```
 
 ---
@@ -385,6 +500,37 @@ mediaStatus: unreviewed
 ```
 
 ```yaml
+id: pss-topic-butterfly-valve-family-evolution
+kind: topic
+teaches: >
+  The requirement for zero or low leakage drove the evolution from the
+  basic swing-through butterfly (no seal, higher leakage, economical for
+  high flow-rate throttling) to lined butterfly valves (elastomer/TFE
+  liner against the disk for tight shutoff, but limited pressure drop and
+  temperature range since it depends on disk-liner interference) to high
+  performance butterfly valves (offset-disk design: eccentric shaft
+  mounting swings the disk clear of its seal to minimize wear and torque,
+  enabling uninterrupted sealing and a replaceable seal ring — tight
+  metal-to-metal seals for service too hot for elastomer-lined designs).
+  High-performance butterfly valves can be a suitable substitute for
+  sliding-stem valves given this tight-shutoff, heavy-duty construction.
+concept-tags: [butterfly valve, swing-through, lined butterfly, high performance butterfly, offset disk, eccentric shaft mounting, zero leakage evolution]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "prose following Figure 1-13, pp. 1-6–1-7 — unnumbered prose, not figure-anchored"
+relatedFigures: [pss-cmp-swing-through-butterfly-valve, pss-cmp-lined-butterfly-valve, pss-cmp-8560-high-perf-butterfly-cutaway]
+relatedTopics: []
+used-by: []
+notes: >
+  The design-evolution framing (why three subcategories exist, in this
+  order) and the offset-disk mechanism's WHY (reduces wear/torque, enables
+  a replaceable seal ring) are genuinely absent from the individual figure
+  captions, which describe WHAT each design is but not why it was
+  developed relative to the others.
+```
+
+```yaml
 id: pss-cmp-flow-characteristic-curves
 kind: figure
 teaches: >
@@ -411,6 +557,42 @@ notes: >
   three (quick-opening, linear, equal-percentage). Catalogued as a separate
   record, not merged.
 mediaStatus: unreviewed
+```
+
+```yaml
+id: pss-topic-flow-characteristic-rangeability-positioners
+kind: topic
+teaches: >
+  Inherent flow characteristic (the pattern of flow-vs-travel at constant
+  pressure drop) is a real selection criterion because it sets valve
+  gain — quick-opening (near-linear at low travel, flattening near wide
+  open, used mainly for on-off service but also for some linear-plug
+  applications), linear (flow directly proportional to travel, constant
+  gain, used for liquid level control), and equal-percentage (flow change
+  proportional to the flow just before the change, used for pressure
+  control where the system itself absorbs most of the pressure drop).
+  Rangeability (ratio of maximum to minimum controllable flow) matters for
+  wide load swings; rotary valves — especially partial-ball — generally
+  have greater rangeability than sliding-stem. A positioner can partially
+  substitute a nonlinear positioner-actuator combination for a different
+  inherent characteristic, but its own frequency response/phase lag limits
+  this, and positioners are not universally beneficial — some high-gain
+  processes are hindered by one.
+concept-tags: [flow characteristic, quick opening, linear, equal percentage, valve gain, rangeability, positioner, frequency response]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "'Flow Characteristic,' 'Rangeability,' and 'Use of Positioners' sections, pp. 1-8–1-9 — unnumbered prose, not figure-anchored"
+relatedFigures: [pss-cmp-flow-characteristic-curves]
+relatedTopics: [cvh-topic-flow-characteristics, cvh-topic-rangeability, ogas-topic-flow-characteristic-and-rangeability]
+used-by: []
+notes: >
+  Verified cvh-topic-flow-characteristics (Control Valve Handbook ch5.md),
+  cvh-topic-rangeability (ch1.md), and ogas-topic-flow-characteristic-and-
+  rangeability (Oil & Gas Sourcebook ch1.md) all exist as real ids before
+  citing. This entry additionally covers positioner-usage tradeoffs, which
+  neither of those cross-referenced entries carries — a genuine addition,
+  not a restatement.
 ```
 
 ---
@@ -465,6 +647,172 @@ notes: >
   1-14 (PDF pages 16–20) carry Tables 1-1 through 1-4 only (no further
   figures); Chapter 2 "Actuator Selection" begins at PDF page 21.
 mediaStatus: unreviewed
+```
+
+```yaml
+id: pss-topic-end-connection-selection-criteria
+kind: topic
+teaches: >
+  Three end-connection methods (screwed, flanged, welded) with real
+  selection tradeoffs beyond their own construction: screwed ends (tapered
+  NPT, metal-to-metal seal against mating male threads) are economical but
+  usually limited to valves 2-inch and smaller and not recommended for
+  elevated temperature, and complicate maintenance since removal requires
+  breaking a flanged/union joint. Flanged ends are easily removed and cover
+  the full working-pressure range most control valves are made in
+  (absolute zero/-273F to ~1500F/815C, all valve sizes). Welded ends are
+  leak-tight at all pressures/temperatures and economical initially, but
+  hard to remove from the line and limited to weldable materials. A piping
+  specification calling for welded connections only narrows the choice to
+  sliding-stem valves specifically.
+concept-tags: [end connections, screwed ends, flanged ends, welded ends, maintenance access, temperature range]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "'End Connections' section, pp. 1-9-1-10 — unnumbered prose, not figure-anchored"
+relatedFigures: [pss-cmp-bolted-flange-end-connections, pss-cmp-welded-end-connections]
+relatedTopics: []
+used-by: []
+notes: >
+  The two figures' own captions name the connection styles that exist;
+  this entry adds the real comparative selection reasoning (maintenance
+  access, temperature range, the welded-only-narrows-to-sliding-stem
+  implication) that neither figure caption carries.
+```
+
+```yaml
+id: pss-topic-pressure-temperature-material-selection-criteria
+kind: topic
+teaches: >
+  Three interlinked General Selection Criteria (Table 1-1): body pressure
+  rating is ordinarily set by ANSI pressure class (150/300/600 most common
+  for steel/stainless), each class corresponding to a maximum-pressure
+  profile that decreases with temperature per the material's own strength;
+  not all products are available in all classes, so this narrows real
+  choices. Temperature considerations include body-material
+  strength/ductility limits and relative thermal expansion, plus soft-part
+  limits (elastomers ~200-350F, PTFE ~450F) — going from PTFE to metal
+  seals at high temperature generally increases shutoff leakage, and
+  high-temperature metal bearing sleeves in rotary valves impose more
+  friction than PTFE bearings, reducing the pressure-drop load the shaft
+  can withstand at shutoff. Material selection (the more complex criterion)
+  weighs corrosion, erosion, flashing, cavitation, and process
+  pressure/temperature together — piping material usually indicates body
+  material, but higher valve-internal velocity means other factors often
+  make valve and piping materials differ; trim material follows from body
+  material, temperature range, and fluid properties, and bar stock or
+  lined bodies are considered when the body material needed isn't
+  available as carbon/alloy/stainless steel.
+concept-tags: [pressure rating, ANSI class, temperature limits, material selection, corrosion, erosion, trim material, bar stock]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "'Pressure Ratings,' 'Temperature Considerations,' and 'Material Selection' sections, pp. 1-7-1-8 — unnumbered prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  These three Table 1-1 criteria are treated as one entry since the source
+  itself interlinks them tightly (temperature drives material limits,
+  material drives pressure-class availability) — splitting them into three
+  separate records would fragment one real, connected line of reasoning.
+```
+
+```yaml
+id: pss-topic-pressure-drop-capacity-selection-criteria
+kind: topic
+teaches: >
+  Maximum tolerable pressure drop (at shutoff or partially/fully open) is
+  a real selection criterion where sliding-stem valves are generally
+  superior due to their rugged moving parts — many rotary valves are
+  limited to pressure drops well below their body pressure rating,
+  especially under flowing conditions, due to dynamic stresses high-
+  velocity flow imposes on the disk or ball segment. Flow capacity/size is
+  a separate but related criterion: sliding-stem is more expensive for
+  very large lines, while very small flows may have no suitable rotary
+  option; a sliding-stem valve with replaceable restricted trim lets
+  future capacity growth be handled by a trim change rather than a body
+  replacement. Rotary products generally have much higher maximum capacity
+  than sliding-stem for a given body size, making them attractive where
+  available pressure drop is small — but this capacity advantage is of
+  little value in high-pressure-drop applications like pressure regulation
+  or letdown.
+concept-tags: [pressure drop, flow capacity, sliding-stem superiority, rotary capacity advantage, restricted trim, letdown service]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "'Pressure Drop' and 'Flow Capacity' sections, pp. 1-8, 1-10 — unnumbered prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  Both sections address capacity-related tradeoffs between the sliding-
+  stem and rotary families and are combined here as one connected
+  selection criterion, not split into two thin records.
+```
+
+```yaml
+id: pss-topic-shutoff-leakage-selection-criteria
+kind: topic
+teaches: >
+  Shutoff capability is rated by ANSI/FCI 70-2 Class (Table 1-4), but
+  actual service leakage depends on many factors beyond the class number
+  (pressure drop, temperature, sealing-surface condition) and cannot be
+  predicted accurately from a standard-test-condition rating alone — the
+  Class provides a comparison basis among similarly-configured valves, not
+  a service-leakage guarantee. It is not uncommon for users to overestimate
+  the shutoff class actually required. Tight-shutoff valves cost more both
+  initially and in maintenance, so the decision warrants serious
+  consideration, particularly for high-pressure valves where leakage can
+  progress to trim destruction — requiring special seat material, seat
+  preparation, and seat-load precautions.
+concept-tags: [shutoff leakage, ANSI FCI 70-2, shutoff class, seat load, trim destruction, cost of tight shutoff]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "'Shutoff Capability' section, pp. 1-9-1-10 — unnumbered prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [ogas-topic-shutoff-leakage-classification]
+used-by: []
+notes: >
+  Verified ogas-topic-shutoff-leakage-classification (Oil & Gas Sourcebook
+  ch1.md) exists as a real id before citing — parallel sourcebook-series
+  content, kept as its own record per the standing no-cross-document-merge
+  rule.
+```
+
+```yaml
+id: pss-topic-valve-type-selection-guidelines
+kind: topic
+teaches: >
+  The chapter's own real rule-of-thumb conclusion, size-banded: for most
+  general applications, sliding-stem for lower flow ranges, ball valves
+  for intermediate capacities, high-performance butterfly for the largest
+  required flows. Below 3-inch, general-purpose sliding-stem gives
+  unparalleled performance/flexibility/service-life for a minimal price
+  premium over rotary; at 3-inch and larger the premium is warranted, and
+  for severe service sliding-stem is often the only available product. 4-
+  to 6-inch is best served by transitional styles (eccentric plug or ball)
+  — lower body-material cost and higher capacity than globe designs. At
+  8-inch and larger, lower typical pressures/drops make high-performance
+  butterfly viable — economical, tight shutoff, good control, and capacity
+  well beyond globe or high-performance rotary designs. After all criteria
+  are applied, remaining choices become a matter of price versus
+  capability plus institutional/personal preference — no single package is
+  cost-effective across the full application range.
+concept-tags: [valve selection conclusion, size-banded guidelines, sliding-stem, ball valve, eccentric plug, high performance butterfly]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "'Conclusion' section, p. 1-11 — unnumbered prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pss-topic-control-valve-selection-framework, pss-topic-sliding-stem-valve-family, pss-topic-ball-valve-subcategories, pss-topic-eccentric-plug-transitional-category, pss-topic-butterfly-valve-family-evolution]
+used-by: []
+notes: >
+  This is the chapter's own real synthesis of every valve-family topic
+  above into concrete size-banded guidance — the single most directly
+  useful passage in the chapter for an actual selection decision, genuinely
+  distinct from any one family's own description.
 ```
 
 ---

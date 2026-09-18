@@ -37,6 +37,124 @@ archive or legacy material was consulted.
 
 ## Components
 
+### Chapter 2 — Actuator selection framework and fail-safe mechanism (printed pp. 2-1 – 2-2)
+
+```yaml
+id: pss-topic-actuator-selection-parameters
+kind: topic
+teaches: >
+  Five parameters quickly narrow actuator choices: power source availability
+  (compressed air vs. electricity vs. water/hydraulic/pipeline pressure —
+  selection depends on ease/cost of supplying either at the valve location,
+  reliability, and backup power for critical loops), fail-safe requirements,
+  torque/thrust requirements, control functions, and economics. Control
+  functions split into two-position (on-off) — the simplest, least
+  restrictive selection case — and analog (throttling), which additionally
+  demands compatibility with the instrument signal and better static/dynamic
+  performance (low hysteresis, minimal deadband) to ensure loop stability;
+  compatibility is often inherent or add-on, but the high-performance
+  characteristics cannot be bolted on, they must be designed in. Economics
+  is a combination of cost, maintenance, and reliability — a simple
+  spring-and-diaphragm actuator has few moving parts, low initial cost, and
+  familiar maintenance; an actuator made specifically for a control valve
+  (rather than retrofitted) avoids a costly performance mismatch, and one
+  shipped assembled by the valve vendor eliminates separate mounting charges.
+concept-tags: [actuator selection, power source, fail-safe requirements, torque, thrust, control function, two-position, throttling, economics, hysteresis, deadband]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "§Power Source Availability through §Economics, pp. 2-1–2-2 — prose, not figure-anchored"
+relatedTopics: [ogas-topic-actuator-design-taxonomy]
+used-by: []
+notes: >
+  Read directly via pdftotext against the real PDF pages (21-22). This is
+  the chapter's opening selection framework — no figure anchors it at all.
+  Cross-referenced to Oil & Gas Sourcebook's own actuator-taxonomy topic as
+  a related-but-distinct treatment (different sourcebook, different real
+  text), not merged.
+```
+
+```yaml
+id: pss-topic-failsafe-mechanism
+kind: topic
+teaches: >
+  Fail-safe systems store energy — mechanically in springs, pneumatically in
+  volume tanks, or in hydraulic accumulators — and are triggered to drive the
+  valve to a required position (and hold it there) when the power source
+  fails; in many cases process pressure itself is used to ensure or enhance
+  this action. Actuator designs allow a choice of failure mode: fail-open,
+  fail-closed, or hold-in-last-position, and many actuator systems provide
+  this at no extra cost (spring-and-diaphragm types are inherently fail-open
+  or fail-closed by construction; electric operators typically hold their
+  last position instead). Fail-lock is also available via a pneumatic
+  switching valve (e.g. a Fisher Type 164A) piped as a lock valve.
+concept-tags: [fail-safe, stored energy, spring, volume tank, hydraulic accumulator, fail-open, fail-closed, lock last position, Type 164A]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "§Fail-Safe Requirements, p. 2-1, and p. 2-4 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-spring-diaphragm-actuator-667-657]
+used-by: []
+notes: >
+  Read directly against the real PDF (p. 21/pp. 2-1, p. 24/pp. 2-4). The
+  spring-and-diaphragm figure entry names fail-safe as a feature but doesn't
+  explain the storage/trigger mechanism itself — this topic entry is that
+  mechanism, applicable across all actuator types, not just spring-diaphragm.
+```
+
+```yaml
+id: pss-topic-actuator-design-categories-and-linkage
+kind: topic
+teaches: >
+  Actuators fall into four general categories — spring-and-diaphragm,
+  pneumatic piston, electric motor, electro-hydraulic — available for either
+  sliding-stem or rotary valve bodies; the designs differ only by linkages or
+  motion translators, the basic power sources are identical. Rotary actuators
+  typically use linkages, gears, or crank arms to convert linear
+  diaphragm/piston motion into the 90-degree rotation a rotary valve needs
+  (some newer designs use tilting pistons/diaphragms to eliminate most
+  linkage points); the most important consideration is limiting lost motion
+  between the internal linkage and valve coupling. Sliding-stem actuators are
+  rigidly fixed to valve stems by threaded/clamped connections with no
+  linkage points, so they exhibit no lost motion and have excellent inherent
+  control characteristics. Actuator-to-valve-shaft coupling method matters:
+  slotted connectors on milled shaft flats are generally unsatisfactory for
+  real performance; pinned connections suit nominal torque; a splined
+  connector rigidly clamped to a splined shaft eliminates lost motion, is
+  easy to disassemble, and handles high torque.
+concept-tags: [actuator categories, spring-and-diaphragm, pneumatic piston, electric motor, electro-hydraulic, rotary linkage, sliding-stem, lost motion, splined connector]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "§Actuator Designs, p. 2-2 — prose, not figure-anchored"
+relatedTopics: [cvh-topic-valve-balance]
+used-by: []
+notes: >
+  Read directly against the real PDF (p. 22/pp. 2-2). The lost-motion/
+  linkage reasoning here is the mechanism-level "why" behind every rotary
+  vs. sliding-stem actuator figure in this chapter, none of which state it
+  individually.
+```
+
+```yaml
+id: pss-topic-positioner-application-guidelines
+kind: topic
+teaches: >
+  A positioner or booster used with a spring-and-diaphragm actuator can
+  improve control, but if improperly applied can result in very poor
+  control — the source gives explicit guidelines: look for rugged,
+  vibration-resistant construction; calibration ease; simple, positive
+  feedback linkages.
+concept-tags: [positioner application, booster, spring-and-diaphragm actuator, vibration resistance, calibration, feedback linkage]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "p. 2-3 (PDF p. 23) — prose immediately preceding Figure 2-1, not figure-anchored"
+relatedFigures: [pss-cmp-type3582-pneumatic-positioner]
+used-by: []
+notes: Read directly against the real PDF (p. 23/pp. 2-3).
+```
+
 ### Chapter 2 — Spring-and-diaphragm and piston actuators (printed pp. 2-4 – 2-6)
 
 ```yaml
@@ -162,6 +280,170 @@ mediaStatus: unreviewed
 ### Chapter 2 — Piston, electric, and electro-hydraulic actuators; actuator sizing (printed pp. 2-6 – 2-9)
 
 ```yaml
+id: pss-topic-piston-actuator-mechanism-variants
+kind: topic
+teaches: >
+  Piston actuators are generally more compact and offer higher torque/force
+  than spring-and-diaphragm actuators (Fisher styles typically work at 50-150
+  psi supply). Piston actuators used for throttling must use double-acting
+  positioners that simultaneously load/unload opposite sides of the piston —
+  the pressure differential drives travel, the positioner senses motion and
+  equalizes pressure once the target position is reached. Two distinct
+  spring-return variants exist: (1) a large, high-output spring capable of
+  overcoming valve fluid forces on its own, loaded by a single-acting
+  positioner much like a spring-and-diaphragm; (2) a much smaller spring that
+  relies on valve fluid forces to help provide fail-safe action — in normal
+  operation this variant behaves like a double-acting piston, but on failure
+  the spring initiates movement helped by unbalance forces on the plug. The
+  main disadvantages of piston actuators generally: high supply pressures
+  needed for throttling positioners, and (without a spring) no inherent
+  fail-safe system — an alternative pneumatic trip system exists but is
+  complex, hard to maintain, and costly, so spring-and-diaphragm should be
+  considered first wherever fail-safe is a hard requirement. As linkage
+  points increase, deadband increases; as sliding parts increase, hysteresis
+  increases — high hysteresis/deadband can be fine for on-off service but is
+  a real caution when bolting a positioner onto such a design for throttling.
+concept-tags: [piston actuator, double-acting positioner, spring-return piston, fail-safe, pneumatic trip system, hysteresis, deadband]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "§Piston Actuators through the hysteresis/deadband caution, pp. 2-4–2-6 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-double-acting-piston-actuator-comparison, pss-cmp-type585c-spring-fail-safe-piston, pss-cmp-type1061-rotary-piston-throttling]
+relatedTopics: [ogas-topic-piston-actuator-design-variants]
+used-by: []
+notes: >
+  Read directly against the real PDF (pp. 24-26/pp. 2-4–2-6). This is the
+  mechanism explanation none of the three related piston figures individually
+  state — why there are two spring-return subtypes and what actually
+  distinguishes them.
+```
+
+```yaml
+id: pss-topic-electric-actuator-characteristics
+kind: topic
+teaches: >
+  Electric actuators (motors + gear trains) suit remote mounting with no
+  other power source, applications needing specialized thrust/stiffness, or
+  highly precise control. They are economical versus pneumatic only in small
+  size ranges — larger electric units operate more slowly and weigh
+  considerably more than pneumatic equivalents; typical fail action is lock
+  in last position. A key selection consideration is duty cycle for
+  continuous closed-loop control, since applications with frequent position
+  changes demand a suitable duty cycle. High-performance electric actuators
+  using continuous-rated DC motors and ball-screw output can achieve precise
+  control at 100% duty cycle, and compared to other designs generally provide
+  the highest output for a given package size while being very stiff
+  (resistant to valve forces) — an excellent choice for good throttling
+  control of large, high-pressure valves.
+concept-tags: [electric actuator, duty cycle, closed-loop control, DC motor, ball screw, stiffness]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "§Electric Actuators, pp. 2-6–2-7 — prose, not figure-anchored"
+relatedTopics: [ogas-topic-electric-actuator-selection-factors]
+used-by: []
+notes: >
+  Read directly against the real PDF (pp. 26-27/pp. 2-6–2-7). No figure in
+  this chapter depicts an electric actuator at all — this concept was
+  entirely invisible to the original figures-only pass.
+```
+
+```yaml
+id: pss-topic-electro-hydraulic-configurations
+kind: topic
+teaches: >
+  An electro-hydraulic actuator internally pumps oil at high pressure to a
+  piston to create output force — an excellent throttling choice given high
+  stiffness, analog-signal compatibility, and excellent frequency
+  response/positioning accuracy, but handicapped by high initial cost,
+  complexity, and difficult maintenance. Fail-safe action is achieved via a
+  return spring, a hydraulic accumulator, or a shutdown system. Two basic
+  configurations exist: self-contained (includes its own motor, pump, fluid
+  reservoir — can be built with spring-return fail mode) and externally
+  powered (separate motor, pump, reservoir, hydraulic hoses — requires an
+  accumulator to achieve a fail mode). Like electric actuators, suitable for
+  remote mounting with no other power source (e.g. pipelines).
+concept-tags: [electro-hydraulic actuator, self-contained, externally powered, hydraulic accumulator, fail-safe]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "§Electro-Hydraulic Actuators, pp. 2-6–2-7 — prose, not figure-anchored"
+relatedFigures: [pss-cmp-type350-self-contained-electro-hydraulic]
+relatedTopics: [ogas-topic-electro-hydraulic-actuator-configurations]
+used-by: []
+notes: >
+  Read directly against the real PDF (pp. 26-27/pp. 2-6–2-7). Figure 2-8
+  shows only the self-contained half of this contrast; the externally-powered
+  configuration and the fail-safe-mechanism distinction between the two are
+  prose-only, captured here.
+```
+
+```yaml
+id: pss-topic-actuator-force-calculation-globe
+kind: topic
+teaches: >
+  Total force required to operate a globe valve = A (force to overcome
+  static unbalance of the valve plug) + B (force to provide seat load) + C
+  (force to overcome packing friction) + D (additional forces for specific
+  applications/constructions). Unbalance force = net pressure differential ×
+  net unbalance area; frequent practice takes the maximum upstream gauge
+  pressure as the net pressure differential unless back pressure at maximum
+  inlet pressure is always ensured by process design — net unbalance area is
+  the port area for a single-seated flow-up design, may need to account for
+  stem area, and even balanced valves retain a small unbalance area (per
+  Table 2-1). Seat load (Table 2-2) is set by the ANSI/FCI 70-2 / IEC
+  534-4 leak class required, though a higher-than-recommended seat load can
+  extend seat life regardless of the classification tested. Packing friction
+  (Table 2-3) depends on stem size, packing type, and compressive load, and
+  is not 100% repeatable — newer live-loaded designs (especially graphite)
+  can carry significant friction forces. The source's own real worked
+  example: 275 lbf required to close a valve; an air-to-open actuator with
+  100 sq in of diaphragm area and a 6-15 psig bench set has a 3 psig
+  pre-compression margin (6 psig bench-set floor minus the 3 psig operating-range
+  floor) — pre-compression force = 3 psig × 100 sq in = 300 lbf, which
+  exceeds the 275 lbf required and is judged "an adequate selection."
+concept-tags: [actuator force calculation, unbalance force, seat load, packing friction, bench set, pre-compression, worked example]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "§Actuator Spring for Globe Valves through §Actuator Force Calculations, pp. 2-7–2-8 — prose, real worked example, not figure-anchored"
+relatedFigures: [pss-cmp-recommended-seat-load-graph]
+relatedTopics: [cvh-topic-valve-balance, cvh-topic-seat-load, ogas-topic-actuator-force-sizing-methodology]
+used-by: []
+notes: >
+  Read directly against the real PDF (pp. 27-28/pp. 2-7–2-8). The A+B+C+D
+  shape and worked-example style parallel both CVH's ch5 topics and Oil & Gas
+  Sourcebook ch2's own force-sizing entry — genuinely the same engineering
+  method taught across three source documents, each with its own real
+  numbers (this one: 275 lbf / 100 sq in / 6-15 psig bench set). Kept as its
+  own record per the project's standing rule against merging records across
+  source documents; cross-referenced instead.
+```
+
+```yaml
+id: pss-topic-piston-thrust-calculation
+kind: topic
+teaches: >
+  Thrust from piston actuators without springs = piston area × minimum
+  supply pressure = minimum available thrust (units must be kept
+  compatible). Piston actuators with springs are sized the same way as
+  spring-and-diaphragm actuators (per the A+B+C+D method). The manufacturer
+  normally takes responsibility for actuator sizing and publishes data on
+  actuator thrusts, effective diaphragm areas, and spring data, including
+  methods to check maximum stem loads — because an actuator supplying too
+  much force can cause the stem to buckle, bend enough to leak, or damage
+  valve internals.
+concept-tags: [piston actuator thrust, minimum available thrust, stem load, over-force damage]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "p. 2-8 (PDF p. 28), between the globe-valve force calculation and the rotary torque tables — prose, not figure-anchored"
+relatedTopics: [pss-topic-actuator-force-calculation-globe]
+used-by: []
+notes: Read directly against the real PDF (p. 28/pp. 2-8).
+```
+
+```yaml
 id: pss-cmp-type1061-rotary-piston-throttling
 kind: figure
 teaches: >
@@ -250,6 +532,80 @@ mediaStatus: unreviewed
 ---
 
 ### Chapter 2 — Positioners, actuator selection summary, and accessories (printed pp. 2-10 – 2-13)
+
+```yaml
+id: pss-topic-rotary-actuator-torque-methodology
+kind: topic
+teaches: >
+  Selecting the most economical rotary-valve actuator turns on the torque
+  required to open/close the valve vs. the actuator's torque output — this
+  method assumes the valve is already properly sized and the application
+  doesn't exceed the valve's pressure limits. Rotary valve torque is the sum
+  of several components, combined by the source into two practical
+  equations: Breakout Torque TB = A(ΔPshutoff) + B, and Dynamic Torque
+  TD = C(ΔPeff), with real A/B/C factors given per valve design/size in
+  Tables 2-4 (V-notch ball) and 2-5 (high-performance butterfly). Maximum
+  rotation is the angle from closed to wide-open — normally 90 degrees, but
+  some pneumatic spring-return-piston and spring-and-diaphragm actuators are
+  limited to 60 or 75 degrees; for spring-and-diaphragm actuators, limiting
+  rotation allows higher initial spring compression (more breakout torque),
+  and the effective lever length changes with rotation, which published
+  torque values (especially for pneumatic piston actuators) already reflect.
+concept-tags: [rotary actuator torque, breakout torque, dynamic torque, maximum rotation, V-notch ball, high-performance butterfly]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "§Actuator Sizing for Rotary Valves through §Maximum Rotation, pp. 2-9–2-10 — real equations and tables, prose, not figure-anchored"
+relatedTopics: [cvh-topic-rotary-actuator-torque, ogas-topic-rotary-actuator-torque-sizing]
+used-by: []
+notes: >
+  Read directly against the real PDF (pp. 29-30/pp. 2-9–2-10). Same real
+  methodology shape as CVH ch5's and Oil & Gas Sourcebook ch2's own rotary-
+  torque topics, with this book's own real A/B/C factor tables — kept
+  separate per the standing cross-document rule, cross-referenced instead.
+```
+
+```yaml
+id: pss-topic-actuator-type-comparison-summary
+kind: topic
+teaches: >
+  The fundamental actuator-selection requirement is knowing the application:
+  control signal, operating mode, power source available, thrust/torque
+  required, and fail-safe position drive most decisions, alongside
+  simplicity, maintainability, and lifetime cost; enclosed linkages and
+  controlled compression springs matter for safety. The source's own
+  real comparison (Table 2-6): spring-and-diaphragm — lowest cost, throttles
+  without a positioner, simple, inherently fail-safe, low supply pressure,
+  adjustable, easy to maintain, but limited output and larger size/weight;
+  pneumatic piston — high thrust, compact, lightweight, high-ambient-
+  temperature-adaptable, fast stroking, relatively stiff, but higher cost,
+  fail-safe needs accessories/a spring, needs a positioner for throttling,
+  and needs high supply pressure; electric motor — compact, very stiff, high
+  output, but high cost, no inherent fail-safe, limited duty cycle, slow
+  stroking; electro-hydraulic — high output and stiffness, excellent
+  throttling, fast stroking, but high cost, complex/hard to maintain, large
+  size/weight, fail-safe only via accessories. The closing guidance: simple
+  designs (spring-and-diaphragm) should be considered first in most
+  situations; piston actuators trade some of that simplicity for thrust
+  where compactness or long travel is needed; electric/electro-hydraulic
+  buy performance at real maintenance cost; and using one manufacturer's
+  actuators/accessories/valves together (one source, assembled and tested)
+  avoids many downstream problems.
+concept-tags: [actuator comparison, spring-and-diaphragm, pneumatic piston, electric motor, electro-hydraulic, selection guidance, single-source procurement]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "§The Selection Process and §Actuator Selection Summary (Table 2-6), pp. 2-10–2-12 — prose and the real comparison table, not figure-anchored"
+relatedTopics: [ogas-topic-actuator-selection-process-summary]
+used-by: []
+notes: >
+  Read directly against the real PDF (pp. 30-32/pp. 2-10–2-12). Table 2-6
+  itself is a real comparative-judgment table (advantages/disadvantages per
+  type), a genuinely different case from this vault's usual "reference data,
+  not a topic" table exclusion — the table IS the concept here, same
+  reasoning this project already applied to CVH ch5's decision-table
+  precedent, not padding.
+```
 
 ```yaml
 id: pss-cmp-type3620jp-electro-pneumatic-positioner
@@ -362,6 +718,29 @@ mediaStatus: unreviewed
 
 ## Open Items
 
+- **`kind: topic` pass, added 2026-09-17.** 11 new topic entries
+  (`pss-topic-*`) added, covering genuine conceptual content the
+  figures-only pass structurally couldn't see: the opening
+  selection-parameters framework, the fail-safe storage/trigger mechanism,
+  actuator-category/linkage reasoning, positioner application guidelines,
+  piston-actuator mechanism variants, electric-actuator characteristics
+  (no figure depicts an electric actuator anywhere in this chapter — fully
+  invisible to the original pass), electro-hydraulic configuration
+  contrast, the real globe-valve force-calculation worked example
+  (A+B+C+D, 275 lbf → 300 lbf pre-compression), piston thrust calculation,
+  rotary actuator torque methodology (breakout/dynamic torque equations),
+  and the actuator-type comparison summary (Table 2-6's real
+  advantages/disadvantages — the table itself is genuinely the concept
+  here, same reasoning already applied to CVH ch5's decision-table
+  precedent, not a reference-data exclusion). Every entry read directly
+  from the real PDF pages (21-33), not inferred from the existing figure
+  captions. Several genuinely parallel CVH ch5 and Oil & Gas Sourcebook
+  ch2's own force/torque-sizing topics — kept as separate records per the
+  standing rule against merging records across source documents, and
+  cross-referenced instead. Integrity verified: 25 total ids (14 figures +
+  11 topics), all unique, zero broken `relatedFigures`/`relatedTopics`
+  references checked against the whole vault's Component Index namespace
+  (1,707 ids).
 - **Chapter boundary**, confirmed directly: Chapter 2 divider = PDF p. 21;
   real content runs through PDF p. 33 (printed p. 2-13); PDF p. 34 is a
   blank trailing page (printed "2-14," no text or figures); Chapter 3

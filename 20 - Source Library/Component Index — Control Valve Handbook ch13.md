@@ -91,3 +91,21 @@ confirmed.
   low-confidence headings), this chapter's near-zero result was
   unambiguous on direct inspection — every page is plainly tabular
   reference data with no competing figure/table classification question.
+- **`kind: topic` pass (2026-09-17): zero topic entries added, confirmed
+  correct, not a gap.** Sampled real prose/framing text across all nine
+  sections directly via `pdftotext` (§13.1's material-specification list
+  opening, p.261; §13.2's mechanical-properties table, p.269; a general
+  physical-constants table, p.275+; the saturated-steam table, p.289+) —
+  every section is either a bare enumerated data list (§13.1's materials,
+  each just a name + temperature range + composition percentage, no
+  explanatory prose about selection criteria or why one material is
+  chosen over another) or a data-grid table with a one-line continuation
+  header. No section has real conceptual explanation to ground a
+  `teaches:` field in — the chapter teaches nothing beyond "here is the
+  reference data," which is exactly what the original figures-only
+  finding already established. Specifically checked the previously-flagged
+  possible connection to CVE2's `eng.selection.materials-compatibility`
+  gap (see `Curriculum — CVE2.md`): §13.1/13.2 have no compatibility,
+  availability, or cost guidance prose at all, only the bare specs
+  themselves — that gap remains genuinely unresolved by this chapter, not
+  fixed by the topic pass.

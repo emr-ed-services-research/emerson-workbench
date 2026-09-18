@@ -3,31 +3,29 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 008 &mdash; Step 3: Trim Type Follows the Failing Check</title>
+<title>CVE1 &middot; Slide 008 &mdash; A Clean Margin, Every Check Run</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m1, page 8 — eng.selection.body-trim-decision [analyze ·
-       mechanism]. Re-tagged from application to mechanism during Stage 4
-       render-check review — same fig-has-no-application-shape reason as
-       page 7. Same source flowchart, Step 3's decision rule. -->
+  <!-- cve1-ch1-m1, page 8 — eng.sizing.actuator-force-awareness [evaluate ·
+       mechanism]. Closes tier 1 (Model-as-success -> Reflect). -->
   <article class="slide slide--role-mechanism" data-slide="8" data-deck="cve1">
-    <h1 class="slide-title">Step 3: Trim Type Follows the Failing Check</h1>
+    <h1 class="slide-title">A Clean Margin, Every Check Run</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-valve-selection-process-flowchart.png" style="width:100%;height:100%;object-fit:contain" alt="Six-step valve selection flowchart, step 3: Select Trim Type.">
+          <img src="../assets/sourced/cvh5-fig5-3-seat-load-graph.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.3, Minimum Required Seat Load for Improved Seat Life on Metal-Seated Valves Class II-V">
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>Standard trim &mdash; when both checks pass</li>
-        <li><span class="num">2</span>Noise-reduction trim &mdash; when the noise limit is the one that fails</li>
-        <li><span class="num">3</span>Cavitation-reduction trim &mdash; when the cavitation check is the one that fails</li>
+        <li><span class="num">1</span>Packing friction C &asymp; 30 lbf, other forces D &asymp; 10 lbf. Total required = 210 + 109 + 30 + 10 &asymp; 359 lbf</li>
+        <li><span class="num">2</span>Selected actuator: rated &asymp; 900 lbf at 35 psi supply &mdash; more than double the 359 lbf required, a real margin</li>
+        <li><span class="num">3</span>This is what a spec clearing every check looks like: real Cv margin, a trim matched to a service with no cavitation risk, and an actuator check that was actually run</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100, Step 3 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., &sect;5.11.1.2 and Figure 5.3 &ldquo;Minimum Required Seat Load for Improved Seat Life on Metal-Seated Valves Class II-V,&rdquo; p.124. Component Index: cvh-topic-seat-load, cvh-cmp-seat-load-graph.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">8</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

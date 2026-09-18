@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 020 &mdash; Check Your Knowledge: Sizing for Real Shutoff</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch1-m3, page 20 — the chapter's check slide (course.json carries
+       no keyConcepts entry for it by schema design, per CVB/prior-build
+       precedent). Exercises eng.sizing.actuator-force-awareness directly
+       against the real Figure 5.3 values — answerable only by recognizing
+       Class V's real seat-load demand, not a generic "check more carefully". -->
+  <article class="slide slide--role-check" data-slide="20" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge: Sizing for Real Shutoff</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A service specifies Class V metal-seat shutoff. The actuator has been sized to the calculated stroking thrust only. Per Figure 5.3, what is the real risk?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;None &mdash; stroking thrust and seat load are the same requirement</li>
+        <li data-correct="true">B.&nbsp;&nbsp;The actuator likely can't generate the seat load Class V requires &mdash; five to ten times a lower class's demand</li>
+        <li>C.&nbsp;&nbsp;The risk is packing friction, not seat load</li>
+        <li>D.&nbsp;&nbsp;Class V only matters for rotary valves, not this globe valve</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; Total actuator force = A + B + C + D. Stroking thrust covers part of A. Class V's seat load (B) can run 700-1000+ lbf per lineal inch — checking it is a separate step Figure 5.3 exists for.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">20</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

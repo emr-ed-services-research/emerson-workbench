@@ -45,6 +45,186 @@ only — it does not crop or extract images. Record shape: `id` · `kind` ·
 
 ## Components
 
+### Chapter 13 — Recausticizing process fundamentals (printed p. 13-1)
+
+```yaml
+id: pp-topic-recausticizing-process-fundamentals
+kind: topic
+teaches: >
+  Recausticizing and lime recovery is the final step in the Kraft recovery
+  process, linking the recovery boiler back to the digester: it converts
+  the inorganic cooking chemicals in green liquor (from the recovery
+  boiler's dissolving tank) into white liquor for cooking wood chips, and
+  separately reclaims the lime consumed in that conversion by converting
+  lime mud back into usable lime. The source states plainly that proper
+  control of this recovery/reclaim cycle is essential to a Kraft mill's
+  economic success — the two halves of the chapter (recausticizing,
+  lime recovery) are one closed-loop chemical/thermal cycle, not two
+  unrelated processes sharing a chapter.
+concept-tags: [recausticizing, lime recovery, kraft recovery process, green liquor, white liquor, closed-loop chemistry]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Chapter 13 opening prose, p. 13-1 (PDF p. 169)"
+relatedFigures: [pp-cmp-recausticizing-lime-recovery-flow-diagram]
+relatedTopics: []
+used-by: []
+notes: >
+  Grounds Figure 13-1's diagram in the process purpose the diagram itself
+  doesn't state — the figure shows the equipment and valve tags, not why
+  the loop exists or what "closes" it (lime recovery feeding back into
+  recausticizing's own lime consumption). Read directly from the real
+  chapter-opening prose (pdftotext -layout, PDF p. 169), not paraphrased
+  from the figure's own teaches field.
+```
+
+### Chapter 13 — Recausticizing chemistry (printed pp. 13-1–13-2)
+
+```yaml
+id: pp-topic-recausticizing-chemistry
+kind: topic
+teaches: >
+  Green liquor is produced in the recovery boiler's dissolving tank by
+  mixing weak wash (mostly water, itself a product of lime mud washing)
+  with smelt (primarily Na2CO3 and Na2S, produced by burning black liquor
+  in the recovery furnace) — it also carries dregs (unburned carbon and
+  inorganic impurities) that must be removed downstream. In the slaker,
+  reburned lime (CaO) and makeup lime react with water in the green
+  liquor to form calcium hydroxide (Ca(OH)2); this reacts with the green
+  liquor's Na2CO3 to form sodium hydroxide (NaOH, the "caustic" in white
+  liquor) and precipitate calcium carbonate (CaCO3, the lime mud that
+  lime recovery later reburns back to CaO). The slaker retention time is
+  about 15 minutes; recausticizing efficiency improves with steam-heated
+  incoming green liquor and slaker agitation. The causticizers (a series
+  of two or more agitated tanks, 1.5-3 hours total retention) then
+  complete the reaction the slaker's short retention time can't finish
+  alone.
+concept-tags: [green liquor chemistry, smelt, dregs, slaker reaction, causticizer, sodium hydroxide, calcium carbonate, lime mud formation]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Dissolving Tank / Slaker / Causticizers prose, pp. 13-1–13-2 (PDF pp. 169-170)"
+relatedFigures: [pp-cmp-recausticizing-lime-recovery-flow-diagram]
+relatedTopics: [pp-topic-recausticizing-process-fundamentals, pp-topic-lime-kiln-reburning-process]
+used-by: []
+notes: >
+  The real chemical reaction chain behind the "Slaker" and "Causticizers"
+  labels on Figure 13-1 — the diagram names the equipment, this prose
+  explains what actually happens inside each vessel and why the two-stage
+  slaker-then-causticizer design exists (the slaker alone doesn't have
+  enough retention time to complete the reaction). Read directly from the
+  real body prose, not inferred from the figure's own teaches field.
+```
+
+### Chapter 13 — Clarifier separation principle (printed pp. 13-1, 13-3)
+
+```yaml
+id: pp-topic-clarifier-separation-principle
+kind: topic
+teaches: >
+  Both the green liquor clarifier and the white liquor clarifier operate
+  on the same real mechanism, stated explicitly in the source ("the white
+  liquor clarifier is essentially the same as the green liquor clarifier
+  described earlier"): gravity settling driven by a density differential
+  between the liquor and the solids it carries (dregs in the green-liquor
+  case, lime mud/CaCO3 in the white-liquor case). A slow-moving rake pulls
+  the settled solids to a center discharge cone for concentration and
+  removal, while the clarified liquor overflows to storage. This is one
+  separation principle applied twice at two different points in the
+  process, not two different clarifier designs.
+concept-tags: [clarifier, gravity settling, density differential, dregs removal, lime mud settling, rake mechanism]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Green Liquor Clarifier (p. 13-1) and §White Liquor Clarifier and Lime Mud Washer (p. 13-3), PDF pp. 169, 171"
+relatedFigures: [pp-cmp-recausticizing-lime-recovery-flow-diagram]
+relatedTopics: [pp-topic-recausticizing-chemistry]
+used-by: []
+notes: >
+  Captures a real cross-cutting mechanism the source itself calls out as
+  the same thing applied twice, rather than leaving it implicit across two
+  separate figure-adjacent paragraphs. Also grounds why Figure 13-2's
+  filtration equipment is described as a genuine alternative to this
+  mechanism, not a different function — filtration substitutes for gravity
+  settling specifically because lime mud's larger particle size favors it
+  in some mills (see Figure 13-2's own entry for that selection reasoning).
+```
+
+### Chapter 13 — Lime kiln reburning process (printed pp. 13-3–13-4)
+
+```yaml
+id: pp-topic-lime-kiln-reburning-process
+kind: topic
+teaches: >
+  Lime recovery (also called lime reburning or calcining) converts the
+  lime mud (CaCO3) produced by recausticizing back into lime (CaO) for
+  reuse in the slaker — closing the loop this chapter's opening describes,
+  and creating a real economic incentive: with good lime recovery,
+  purchased lime is only needed to make up system losses. The conversion
+  happens in a rotary lime kiln: a large steel tube lined with refractory
+  brick, mounted on an incline, supported on rollers, and rotated slowly
+  by an electric motor/gear reducer. Lime mud enters at 60-70% solids at
+  the upper end; a burner (oil or gas) at the lower end evaporates
+  remaining moisture and converts the lime mud to lime and CO2, while also
+  causing the lime powder to agglomerate into handleable pellets. The
+  lime product goes to a storage silo for slaker reuse; a scrubber
+  handles the dusting/pollution problem from the exiting flue gas.
+concept-tags: [lime kiln, lime reburning, calcining, rotary kiln, CaCO3 to CaO conversion, lime recovery economics]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "§Lime Recovery prose, pp. 13-3–13-4 (PDF pp. 171-172)"
+relatedFigures: [pp-cmp-recausticizing-lime-recovery-flow-diagram]
+relatedTopics: [pp-topic-recausticizing-chemistry, pp-topic-recausticizing-process-fundamentals]
+used-by: []
+notes: >
+  The real thermal-conversion mechanism behind Figure 13-1's "rotary lime
+  kiln" and "kiln scrubber" labels — the diagram shows where the kiln sits
+  in the process, this prose explains how it physically works and why
+  lime recovery matters economically. Read directly from the real body
+  prose (PDF pp. 171-172), not paraphrased from the figure's own summary.
+```
+
+### Chapter 13 — Lime mud erosive-service valve selection (cross-cutting, printed pp. 13-1–13-4)
+
+```yaml
+id: pp-topic-lime-mud-erosive-service-selection
+kind: topic
+teaches: >
+  A real, recurring material-selection pattern appears across nearly
+  every lime-mud/green-liquor valve write-up in this chapter, not stated
+  once and left implicit: lime mud and green liquor are erosive and
+  scaling-prone, so the recommended construction repeats the same
+  material logic each time — NPS 3-6 valves, alloy 6 (a hard-facing
+  cobalt-chromium alloy) scraper seats or hard-faced seats specifically
+  "due to concerns with scaling," alloy 6 bearings, and (for the most
+  severe erosive duty, e.g. FV-5 Green Liquor to Slaker) VTC ceramic
+  plug/seat internals on an alloy 6 hub with an oversized 17-4PH stainless
+  shaft. The chapter's own design-considerations note for the lime mud
+  underflow valves (FV-6/FV-8/FV-16/FV-19) states directly that "lime mud
+  is extremely erosive and difficult to handle due to fine particulate
+  and high solids concentration," and that the underflow valve must be
+  sized so the tank's mud level never reaches the filter socks — an
+  operational constraint, not just a materials choice.
+concept-tags: [lime mud, erosive service, alloy 6, ceramic trim, scaling, material selection rationale]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Recurring across the chapter's per-valve write-ups, pp. 13-1–13-4 (PDF pp. 169-172); most explicit statement in the FV-6/FV-8/FV-16/FV-19 design-considerations note, p. 13-3"
+relatedFigures: [pp-cmp-recausticizing-lime-recovery-flow-diagram, pp-cmp-white-liquor-lime-mud-pressure-filters]
+relatedTopics: [cvh-topic-particulate-cavitation-erosion, pss-topic-alloy6-erosion-corrosion-case]
+used-by: []
+notes: >
+  A cross-cutting pattern synthesized from repeated statements across
+  many individual valve write-ups (FV-3, LV-1, FV-5, FV-6/FV-8/FV-16/FV-19,
+  FV-11, FV-17), not tied to any single figure or valve tag — the pattern
+  itself, not any one instance, is the transferable concept. Cross-
+  referenced to CVH's own particulate/erosion topic and Power & Severe
+  Service's own alloy-6 erosion-corrosion case (both confirmed real ids
+  before citing) as the same general erosive-service material logic
+  applied to a different process fluid.
+```
+
 ### Chapter 13 — Recausticizing and Lime Recovery process flow (printed p. 13-5)
 
 ```yaml
@@ -178,3 +358,15 @@ notes: >
 - **Archive/legacy material:** none consulted, none needed — the 2011 Fisher
   Sourcebook is the sole and sufficient source for both of this chapter's
   components.
+- **`kind: topic` pass, added 2026-09-17.** Read the chapter's real body
+  prose (pp. 13-1–13-4, PDF pp. 169-172) in full for genuine conceptual
+  content beyond the two figures' own diagrams. Found five real, distinct
+  concepts: the recausticizing/lime-recovery closed-loop purpose, the real
+  chemical reaction chain (green liquor + lime → white liquor + lime mud),
+  the shared gravity-settling clarifier mechanism (explicitly stated by the
+  source to be the same for both green- and white-liquor clarifiers), the
+  rotary lime kiln's real thermal-conversion mechanism, and a cross-cutting
+  erosive-service material-selection pattern repeated across nearly every
+  lime-mud/green-liquor valve write-up. Chapter total is now 7 components
+  (2 figures + 5 topics). No section confirmed reference-data-only beyond
+  the already-excluded valve-selection table (p. 13-7).

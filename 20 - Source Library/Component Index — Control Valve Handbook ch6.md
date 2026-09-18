@@ -138,7 +138,78 @@ used-by: []
 notes: A FIELDVUE-equipped compact valve assembly, on the same page as Figures 6.2/6.3, opening §6.2.
 ```
 
+```yaml
+id: cvh-topic-low-flow-design-approach
+kind: topic
+teaches: >
+  Two distinct design approaches meet very-low-flow-Cv requirements. First,
+  special trims — a seat ring and valve plug machined to very close
+  tolerances — fit inside a standard control valve body, handling Cv as low
+  as 0.03; this reduces spare-parts inventory (the body stays standard) and
+  makes future flow expansion easy (swap the trim, not the whole valve).
+  Second, dedicated compact/lightweight specialty valves handle Cv as low as
+  0.000001, built for laboratory and pilot-plant use on light-schedule
+  piping/tubing where a full-size standard body would be impractical. Low-flow
+  designs generally feature low deadband/hysteresis, high flow capacity
+  relative to their size, and tight shutoff.
+concept-tags: [low-flow Cv, special trim, laboratory service, design tradeoff, spare-parts economy]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§6.2 Low-Flow Cv Control Valves, pp. 152-153 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-low-flow-cv-control-valve]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real page-152/153 body text (pdftotext -layout,
+  footer-confirmed). The existing figure entry (Figure 6.4) shows the compact
+  specialty-valve half of this picture; this topic adds the standard-body
+  special-trim alternative and the design/economic reasoning between them,
+  neither of which the figure caption alone conveys.
+```
+
 ### §6.3–6.4 High-Temperature and Cryogenic Service (printed p. 154)
+
+```yaml
+id: cvh-topic-extreme-temperature-materials
+kind: topic
+teaches: >
+  Materials selection at both temperature extremes, by threshold. High
+  temperature (above 232°C/450°F): standard plastics/elastomers/gaskets
+  become unsuitable; metal-to-metal seating and semi-metallic or laminated
+  flexible-graphite packing are used instead, with spiral-wound stainless
+  steel or flexible-graphite gaskets. Body-casting material is threshold-
+  driven — Cr-Mo steels above 538°C (1000°F); ASTM A217 Grade WC9 up to
+  593°C (1100°F); ASTM A351 Grade CF8M (Type 316 stainless) up to 816°C
+  (1500°F), with carbon content controlled to 0.04-0.08% between 538-816°C;
+  9%Cr-1%Mo-V materials (ASTM A217 Grade C12A castings, ASTM A182 Grade F91
+  forgings) up to 650°C (1200°F). Extension bonnets protect packing-box parts
+  from the heat. Cryogenic (below -101°C/-150°F): the same categories of
+  component (packing, plug seals) need special consideration — standard soft
+  seals go hard and brittle below -18°C (0°F) and lose their shutoff
+  capability; special elastomers need extra loading to still seal. Materials
+  of construction are generally CF8M body/bonnet with 300-series stainless
+  steel trim; hard facing may be needed in flashing applications to combat
+  erosion.
+concept-tags: [high-temperature service, cryogenic service, materials selection, Cr-Mo steel, ASTM grades, packing materials]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§6.3 High-Temperature Control Valves and §6.4 Cryogenic Service Valves, pp. 153-154 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-cryogenic-extension-bonnet]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real page-153/154 body text. §6.3 (high-temperature)
+  has NO figure anywhere in the chapter — this is the only catalogued record
+  for that section's real content. §6.4's existing figure entry
+  (cryogenic-extension-bonnet, Figure 6.5) already covers the frost mechanism
+  well; this topic adds the materials-of-construction guidance for both
+  temperature extremes, which no figure conveys. Merged high-temp and
+  cryogenic into one entry deliberately — parallel content (materials
+  selection by temperature threshold) in the same two-section prose flow,
+  not two independent concepts.
+```
 
 ```yaml
 id: cvh-cmp-cryogenic-extension-bonnet
@@ -234,6 +305,70 @@ notes: >
   treated as three independent facts.
 ```
 
+```yaml
+id: cvh-topic-particulate-cavitation-erosion
+kind: topic
+teaches: >
+  As process/oil-recovery pressures and resultant pressure drops climb, so
+  does cavitation propensity — and rising pressure often brings more
+  entrained particulate with it, which increases the risk of clogging the
+  small holes cavitation-abatement trims depend on (a real design tension:
+  the trim feature that fights cavitation is the same feature particulate
+  clogs). A distinct, separate erosion mechanism affects plants cycled
+  multiple times daily with particulate in the flow (particulate driven by
+  corrosion in the boiler feedwater system): jets exiting the cage holes
+  erode the plug tip when it sits in front of those holes for extended
+  periods, and controlling below the recommended minimum Cv lets clearance
+  flow erode the plug tip directly. A protected inside-seat design extends
+  seat and plug-tip service life against this specific failure mode.
+concept-tags: [cavitation, particulate erosion, seat erosion, minimum Cv, cyclic service, design tension]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§6.5 Valves Subjected to Cavitation and Fluids with Particulate, pp. 154-155 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-cavitation-trim-cutaway, cvh-cmp-particulate-trim-eccentric-plug]
+relatedTopics: [cvh-topic-cavitation, cvh-topic-flow-recovery]
+used-by: []
+notes: >
+  Read directly from the real page-154/155 body text. The two existing
+  figure entries show what the anti-cavitation and particulate-handling
+  trims look like; this topic adds the WHY — the cavitation/particulate
+  clogging tension, and the below-minimum-Cv erosion mechanism, neither of
+  which either figure caption states. relatedTopics point to ch5's real,
+  verified cavitation/flow-recovery topics since this section extends that
+  same mechanism into a severe-service, particulate-bearing context.
+```
+
+```yaml
+id: cvh-topic-custom-flow-characteristics
+kind: topic
+teaches: >
+  When the three standard inherent flow characteristics (Quick-Opening,
+  Linear, Equal-Percentage) don't meet a given application's needs, custom
+  characteristics can be manufactured: a contoured plug's tip design can be
+  modified so the unobstructed flow area changes size in a specific way as
+  the plug moves through its travel range, and cages can be similarly
+  redesigned. This is especially common in noise-abatement and
+  anti-cavitation trims, where a high level of protection may be needed at
+  low flow rates but much lower protection is needed at higher flow rates —
+  the custom characteristic lets the trim's protection level track the
+  actual risk across the flow range rather than being uniform.
+concept-tags: [inherent flow characteristic, custom trim, contoured plug, cage design, noise abatement, cavitation mitigation]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§6.6 Customized Characteristics, Noise Abatement, and Cavitation Mitigation Trims, pp. 155-156 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-severe-service-inherent-characteristic-curve]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real page-155/156 body text. The existing figure
+  entry shows the three STANDARD curves (itself the third printing of that
+  same chart in this document, see its own notes); this topic covers the
+  section's real subject — how and why custom characteristics beyond those
+  three get designed — which the standard-curve figure doesn't convey at all.
+```
+
 ### §6.7 Nuclear Service (printed p. 157)
 
 ```yaml
@@ -257,6 +392,106 @@ used-by: []
 notes: A FIELDVUE-equipped assembly photo; the only figure in §6.7 and §6.8 (Sulfide Stress Cracking, printed pp. 157–160, is text/standards-reference only, no figures).
 ```
 
+```yaml
+id: cvh-topic-nuclear-code-classification
+kind: topic
+teaches: >
+  U.S. nuclear power plant components have been subject to 10CFR50 Appendix
+  B (Quality Assurance Criteria for Nuclear Power Plants and Fuel
+  Reprocessing Plants) since 1970, enforced by the NRC; the plant owner bears
+  ultimate compliance responsibility but relies on manufacturers' documented
+  proof of controlled manufacture/inspection/test. Most nuclear components
+  are specified to ASME Section III (Rules for Construction of Nuclear
+  Facility Components), which defines three code classes by role: Class 1
+  (primary system pressure boundary, between the reactor vessel and the
+  outermost containment isolation valves), Class 2 (part of the emergency
+  core cooling system), Class 3 (emergency equipment cooling / systems that
+  may contain radioactive fluids). Section III governs materials, design
+  criteria, fabrication, NDE, hydrostatic testing, and marking/stamping for
+  pressure-retaining parts (in a control valve: body, bonnet, body-bonnet
+  studs/nuts, plug or disc) — it explicitly does NOT apply to actuators/
+  accessories (unless pressure-retaining), to service deterioration
+  (radiation, corrosion, erosion, seismic), or to cleaning/painting/
+  packaging. Non-Section-III parts can still be "safety related" under
+  10CFR50 Appendix B / 10CFR Part 21 if they prevent or mitigate offsite
+  exposure or enable safe shutdown — typically actuator yokes, valve stems,
+  stem connector assemblies, and actuator springs; packing and gaskets
+  generally are NOT considered safety related. Section III revises on a
+  cycle (editions every 3 years, addenda semi-annual) — usable after
+  issue date, mandatory 6 months after. The two main U.S. reactor designs
+  are PWR (Pressurized Water Reactor — primary coolant heats the core,
+  flows to a steam generator, a separate secondary water system makes the
+  steam that drives the turbines; the Pressurizer Spray Valve controls
+  primary coolant pressure) and BWR (Boiling Water Reactor — primary
+  cooling water itself boils in the core and its steam directly drives the
+  turbines); Canada's CANDU (Pressurized Heavy Water Reactor, uranium fuel)
+  is a third design increasingly using ENVIRO-SEAL packing to reduce valve
+  assembly height and improve seismic performance during refurbishment.
+concept-tags: [nuclear service, ASME Section III, code class, 10CFR50, safety related, PWR, BWR, CANDU, pressurizer spray valve]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§6.7 Control Valves for Nuclear Service in North America, pp. 156-157 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-pressurizer-spray-valve-nuclear]
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real page-156/157 body text. The existing figure
+  entry's own teaches field already sketches Class 1/2/3 and ASME Section
+  III briefly; this topic adds the real regulatory depth (10CFR50 Appendix
+  B, the safety-related distinction, Section III's explicit scope
+  exclusions, the revision cadence, and the PWR/BWR/CANDU reactor-type
+  differences) that the figure entry's short summary doesn't carry.
+```
+
+```yaml
+id: cvh-topic-sulfide-stress-cracking
+kind: topic
+teaches: >
+  NACE International's MR0175 ("Sulfide Stress Cracking-Resistant Metallic
+  Materials for Oilfield Equipment," issued 1975) is the dominant standard
+  for material selection against sulfide stress cracking (SSC) in H2S-
+  containing oil and gas production environments — so dominant that "NACE"
+  became nearly synonymous with "MR0175." Material resistance ranks
+  roughly: carbon/low-alloy steels need proper heat treatment (max HRC 22)
+  to resist SSC; austenitic stainless steels resist best annealed (some
+  grades acceptable to 35 HRC); copper-based alloys are inherently resistant
+  but restricted from critical parts over general-corrosion concerns; nickel
+  alloys generally provide the best resistance (some precipitation-hardenable
+  grades acceptable to 40 HRC); plating (chromium, nickel, etc.) offers NO
+  SSC protection and cannot substitute for a resistant base material. In
+  2003 MR0175 was significantly revised to also cover chloride stress
+  corrosion cracking and was rebranded as the joint NACE/ISO document NACE
+  MR0175/ISO 15156 — this removed a bolting material previously allowed
+  (17-4PH H1150 DBL, no longer permitted) and shifted from a simple
+  acceptable/unacceptable material list to environmental limits by H2S
+  partial pressure, temperature, chloride ppm, and free sulfur presence.
+  MR0103 ("Materials Resistant to Sulfide Stress Cracking in Corrosive
+  Petroleum Refining Environments," April 2003) is the refining industry's
+  parallel standard — similar to pre-2003 MR0175 but refinery-scoped, with
+  its own (more rigorous) welding controls (via NACE RP0472) and no
+  environmental limits — a material is simply acceptable or not. "Universal
+  NACE" is a WCC casting compliant with all four standards at once
+  (MR0175-2002, MR0175-2003/ISO 15156, and MR0103) — the practical
+  simplification for a manufacturer who doesn't want to track which
+  standard a given customer specifies.
+concept-tags: [sulfide stress cracking, NACE MR0175, NACE MR0103, sour service, material selection, H2S]
+status: current
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§6.8 Valves Subjected to Sulfide Stress Cracking (§6.8.1-6.8.3), pp. 157-160 — prose, not figure-anchored, no figures anywhere in this section"
+relatedFigures: []
+relatedTopics: []
+used-by: []
+notes: >
+  Read directly from the real page-157-160 body text. This whole section has
+  zero figures (confirmed by the existing figure-only pass's own Open Items
+  note) — this topic is the ONLY catalogued record for §6.8's real content.
+  Kept as one entry covering both the SSC material-resistance concept and
+  the MR0175/MR0103 standards-landscape history, since the source itself
+  presents them as one continuous narrative, not two separable concepts.
+```
+
 ## Open items
 
 - **Batch coverage**: all 9 real figures in the chapter (Figures 6.1–6.9) are catalogued, with no gaps in the numeric sequence. Confirmed by rendering and visually inspecting every page in the chapter's real range — no figure was skipped or identified from text extraction alone.
@@ -267,3 +502,4 @@ notes: A FIELDVUE-equipped assembly photo; the only figure in §6.7 and §6.8 (S
 - **Cross-reference check**: `Component Index — 14101 ch1-ch2.md`, `Component Index — 14101 ch3.md`, and `Component Index — bench-set-657.md` were checked directly (grepped for this chapter's section numbers §6.1–§6.8 and figure numbers 6.1–6.9) — no existing citations into this chapter's range. Every figure catalogued fresh here.
 - **No archive or legacy material** was found or consulted for this chapter — the 6th-edition Control Valve Handbook is the sole and sufficient source for all 9 figures.
 - **`status` and `id` conventions**: this file was authored fresh under the corrected conventions (precedence-bucket `status` values only; descriptive `id` slugs, not printed-figure-number ids) — no drift to correct, unlike ch4.
+- **`kind: topic` pass (2026-09-17), added to the existing figure-only catalogue above.** Read every real page (151-160) directly, not just sections with figures. Six new topic entries: `cvh-topic-low-flow-design-approach`, `cvh-topic-extreme-temperature-materials` (merges §6.3 high-temp and §6.4 cryogenic materials guidance — parallel content, same two-section prose flow), `cvh-topic-particulate-cavitation-erosion`, `cvh-topic-custom-flow-characteristics`, `cvh-topic-nuclear-code-classification`, `cvh-topic-sulfide-stress-cracking` (the entire figure-less §6.8, confirmed zero figures). **§6.1's one real concept (geometric-vs-arithmetic pressure-load scaling with valve size) is deliberately NOT given a separate topic entry** — it's already stated directly in `cvh-cmp-butterfly-valve-fieldvue-assembly`'s own `teaches` field; a separate topic would just restate it. Chapter total: 15 components (9 figures + 6 topics), up from 9. Integrity verified: 15 unique ids, 15 yaml fences, zero broken relatedFigures/relatedTopics references (checked programmatically against this file and ch5's own ids).

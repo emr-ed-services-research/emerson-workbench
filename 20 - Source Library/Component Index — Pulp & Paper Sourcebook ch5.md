@@ -43,8 +43,9 @@ Record shape (for reference, though no records apply): `id` · `kind` ·
 
 ## Components
 
-None. This chapter contains zero figures — see Open Items for the
-methodical confirmation.
+None — zero figures (original pass) and zero new `kind: topic` entries
+(2026-09-17 topic-indexing pass). See Open Items for the methodical
+confirmation of both.
 
 ## Open Items
 
@@ -84,3 +85,28 @@ methodical confirmation.
   cross-reference to Oil & Gas ch3 material — see that chapter's own Open
   Items. Chapter 5 has no figures to check against any other book.)
 - **Archive/legacy material:** none consulted, none needed.
+- **2026-09-17 topic-indexing pass — zero new entries, confirmed duplicate
+  content, not a gap.** Read the full chapter directly (PDF pp. 73-80,
+  `pdftotext -layout`) and compared it against Power & Severe Service
+  Sourcebook's already-indexed Chapter 4 (`pss-topic-gas-steam-sizing-methodology`,
+  `pss-topic-choked-flow-expansion-factor`, `pss-topic-xtp-piping-geometry-correction`,
+  all verified real in `Component Index — Power & Severe Service Sourcebook
+  ch4.md`). This chapter's six-step ISA procedure, N-constant table,
+  Fp/Y/xTP derivations, and its one worked sample problem are the same
+  Fisher-authored content — not merely "the same method with different
+  real numbers" (the usual don't-merge-across-documents case): this
+  chapter's worked example uses the **identical numbers** as PSS ch4's own
+  second sample problem (steam, w = 125,000 lb/h, P1 = 500 psig, T1 =
+  500°F, 6-inch line, 4-inch ANSI Class 300 Design ED valve with linear
+  cage, rated Cv = 236, SK = 0.463, Fp = 0.95, xTP = 0.67-0.688, Y = 0.73)
+  — a byte-for-byte reused worked problem, confirmed by direct comparison
+  of both chapters' real text, not assumed from section-title similarity.
+  This chapter is effectively a subset of PSS ch4 (it omits PSS ch4's
+  additional natural-gas/ball-valve example). No new `pp-topic-*` entry
+  authored — would restate rather than add value, same discipline already
+  applied when Oil & Gas ch5 and Power & Severe Service ch5/ch14 found
+  their own content duplicate elsewhere. Cross-reference only: any future
+  course citing this chapter's sizing methodology should cite
+  `pss-topic-gas-steam-sizing-methodology` (or CVH's own
+  `cvh-topic-compressible-sizing-methodology`) directly rather than expect
+  a `pp-topic-*` id to exist for it.

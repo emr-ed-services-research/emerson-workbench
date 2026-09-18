@@ -48,6 +48,38 @@ only — it does not crop or extract images. Record shape: `id` · `kind` ·
 
 ## Components
 
+```yaml
+id: pp-topic-stock-consistency-framework
+kind: topic
+teaches: >
+  Stock preparation's organizing variable is consistency (percentage of
+  fiber in water), not any single piece of equipment: the whole chapter
+  splits into a thick-stock system (3-5% solids — screening, refining,
+  blending) and a thin-stock system (0.4-1.0% solids — cleaning,
+  screening, final dilution to papermaking consistency), and every step
+  in between is really tracking that number down. Along the way, additives
+  (sizing agents, fillers, starch, retention/drainage agents, dyes) are
+  blended into the fiber furnish before final dilution and the trip to
+  the headbox. Stock preparation is stated directly as the controlling
+  factor over both final paper quality and how well the paper machine
+  runs.
+concept-tags: [stock preparation, consistency, thick stock, thin stock, fiber furnish, additives, papermaking process]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Chapter 15 opening prose, p. 15-1 (PDF p. 185) — before Figure 15-1"
+relatedFigures: [pp-cmp-thick-stock-system, pp-cmp-thin-stock-system]
+relatedTopics: []
+used-by: []
+notes: >
+  The chapter's own framing paragraph, read directly from the body prose
+  above Figure 15-1 — not stated in any single figure's own caption. This
+  is the conceptual frame every subsequent figure in the chapter hangs
+  off of (thick-stock figures 15-1 through 15-6, thin-stock figures 15-7
+  onward), so it earns its own topic entry rather than being folded into
+  one figure's notes.
+```
+
 ### Chapter 15 — Thick Stock Process (printed pp. 15-1–15-3)
 
 ```yaml
@@ -201,6 +233,32 @@ notes: >
   Tank), no numbered control valves shown.
 ```
 
+```yaml
+id: pp-topic-machine-chest-function
+kind: topic
+teaches: >
+  The machine chest is the last chest in the thick-stock part of stock
+  prep — by this point all fibers have been blended and consistency
+  controlled (typically 3-4%). Holding that consistency steady going
+  forward matters specifically because this stock determines the paper's
+  basis weight downstream. From the machine chest, stock enters the
+  thin-stock portion of stock prep.
+concept-tags: [machine chest, thick stock, consistency control, basis weight, stock prep sequencing]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "\"Machine Chest\" section, p. 15-3 (PDF p. 187)"
+relatedFigures: [pp-cmp-thick-stock-system, pp-cmp-fan-pump]
+relatedTopics: [pp-topic-stock-consistency-framework]
+used-by: []
+notes: >
+  No figure in this chapter depicts the machine chest on its own — it
+  only appears as one labeled block inside Figure 15-1's system-level
+  diagram — so this concept (why the machine chest specifically matters,
+  and its role as the thick/thin-stock handoff point) was invisible to
+  the figures-only pass entirely.
+```
+
 ### Chapter 15 — Thin Stock Process (printed pp. 15-4–15-5)
 
 ```yaml
@@ -302,6 +360,33 @@ notes: >
   Specification text on the facing page names "Fisher Vee-Ball V150 with
   either a 2052 actuator or SKF actuator" plus "FIELDVUE DVC6200 digital
   valve controller with Performance Diagnostics."
+```
+
+```yaml
+id: pp-topic-white-water-recycling
+kind: topic
+teaches: >
+  White water is the water drained from the sheet-forming section of the
+  paper machine, used to dilute thick stock to thin-stock consistency and
+  continually recycled back toward the headbox. It gets its name from its
+  cloudy appearance, caused by the fiber, fillers, and other valuable
+  chemicals it carries — most of which end up retained by the sheet
+  forming process itself, which is why recovering and recycling white
+  water (via the silo and, for the excess portion, the saveall) matters
+  economically, not just as wastewater handling.
+concept-tags: [white water, water recycling, silo, fiber recovery, sheet forming, dilution]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "\"White Water\" section, pp. 15-4–15-5 (PDF pp. 188-189)"
+relatedFigures: [pp-cmp-fan-pump, pp-cmp-disc-saveall]
+relatedTopics: []
+used-by: []
+notes: >
+  No figure captures "white water" as its own concept — it's named as an
+  input/output on the Fan Pump and Disc Saveall figures, but what it
+  actually is and why it's worth recovering is only stated in this
+  intervening body-text section, not in either figure's own caption.
 ```
 
 ### Chapter 15 — Saveall and Cleaners (printed pp. 15-5–15-6)
@@ -430,6 +515,72 @@ notes: >
 ```
 
 ```yaml
+id: pp-topic-pulp-screening-rationale-and-methods
+kind: topic
+teaches: >
+  Pulp screening's real purpose is separating harmful impurities (bark,
+  sand, shives, rocks, plastic pieces, fiber flakes left from cooking)
+  from pulp with minimal fiber loss, at an acceptable cost — not just
+  cleaning for its own sake. Two genuinely different separation
+  mechanisms exist: mechanical screen plates (separating by particle
+  size) and gravimetric/centrifugal force-field separation (separating by
+  weight) — pressure screening in multiple stages is the preferred method
+  for sand/shives removal specifically. Multi-stage screening is required
+  because a single pressure-screening stage cannot sufficiently
+  concentrate the impurities in the reject stream — the reject itself
+  thickens on the screen, degrading further separation — so successive
+  stages exist purely to concentrate impurities and return good fiber to
+  the main line, not because more stages inherently clean better.
+concept-tags: [pulp screening, impurity removal, mechanical screening, gravimetric separation, centrifugal separation, multi-stage screening, reject concentration]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "\"Screens\" section prose (the impurity-removal rationale paragraphs, not the backflush-mechanism paragraph already captured by pp-cmp-fine-slotted-screens), pp. 15-6–15-7 (PDF pp. 190-191)"
+relatedFigures: [pp-cmp-fine-slotted-screens, pp-cmp-stock-screening-process, pp-cmp-brownstock-screening-diagram]
+relatedTopics: []
+used-by: []
+notes: >
+  Distinct from `pp-cmp-fine-slotted-screens`'s own `teaches` field, which
+  covers the rotor/hydrofoil backflush mechanism for a single screen unit
+  — this entry covers the WHY behind screening broadly (impurity-removal
+  goal, the two separation-method families, and the real reason
+  multi-stage screening is needed) which is stated once in running prose
+  and applies to the whole chapter's screening figures collectively, not
+  repeated in any one figure's caption.
+```
+
+```yaml
+id: pp-topic-broke-handling
+kind: topic
+teaches: >
+  Broke is internal waste paper generated by the paper mill itself — from
+  the wet end (forming/press sections) or the dry end (dryer, reel,
+  winder, other finishers) — and contains good fiber and chemicals that
+  should not be lost, so it is captured (typically in an under-the-
+  machine repulper or broke pulper) and reprocessed rather than
+  discarded. Wet-end broke breaks up into individual fibers easily; fully
+  dried broke needs more aggressive agitation. Broke sometimes passes
+  through a high-density centrifugal cleaner to remove large heavy
+  particles first, then a deflaker to mechanically break up the
+  underfibered flakes that remain.
+concept-tags: [broke, internal waste paper, repulper, broke pulper, deflaker, wet-end broke, dry-end broke, fiber recovery]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "\"Broke Handling\" section, p. 15-6 (PDF p. 190)"
+relatedFigures: []
+relatedTopics: [pp-topic-white-water-recycling]
+used-by: []
+notes: >
+  Genuinely zero-figure content — no figure anywhere in this 19-figure
+  chapter depicts broke handling, the repulper/broke pulper, or the
+  deflaker; this entire concept was completely invisible to the original
+  figures-only cataloguing pass. Related to white-water recycling in
+  spirit (both are internal-waste recovery concepts) but a distinct
+  process, kept as a separate record rather than merged.
+```
+
+```yaml
 id: pp-cmp-compact-stock-prep-system
 kind: figure
 teaches: >
@@ -550,6 +701,65 @@ notes: >
   also the only one of this chapter's 19 figures carrying a Fisher-style
   drawing number (E1220) rather than a TAPPI credit line, confirming it is
   first-party Fisher content, not a TAPPI-licensed illustration.
+```
+
+```yaml
+id: pp-topic-brownstock-rejects-valve-selection
+kind: topic
+teaches: >
+  The Brown Stock Rejects Valve duty point exists because process
+  impurities damage equipment, hurt runnability, and degrade end-product
+  quality, so all solids contaminants must be removed from pulp — this
+  valve is specifically the reject-side control point after screening
+  separates acceptable pulp from impurity-rich rejects. Real design
+  considerations: tight shutoff is NOT required (impurities are already
+  being rejected, not contained), hardened materials protect the valve
+  body from wear, and a ball valve is specified so it can shear through
+  the impurities passing through it rather than jamming on them. Typical
+  specification: Fisher Slurry Vee-Ball V150S with high-chrome-iron trim.
+concept-tags: [brown stock rejects valve, impurity removal, ball valve, shear, wear-resistant trim, valve selection rationale]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "\"Brown Stock Rejects Valve\" section, Design Considerations and Typical Specification, pp. 15-7–15-8 (PDF pp. 191-192)"
+relatedFigures: [pp-cmp-brownstock-screening-diagram]
+relatedTopics: [pp-topic-pulp-screening-rationale-and-methods]
+used-by: []
+notes: >
+  The real valve-selection reasoning for this duty point (why tight
+  shutoff is explicitly NOT wanted, why a ball valve specifically) is not
+  captured in `pp-cmp-brownstock-screening-diagram`'s own `teaches` field,
+  which documents that figure's citation-error finding rather than the
+  valve-application text that follows it in the body prose.
+```
+
+```yaml
+id: pp-topic-mc-pump-valve-selection
+kind: topic
+teaches: >
+  The medium consistency (MC) centrifugal pump moves pulp stock
+  continuously at up to 18% bone-dry consistency and can be sited in
+  numerous locations in a mill. Where the flow control valve is
+  responsible for controlling the pump's head pressure, valve selection
+  needs special care. Pulp stock flow behavior and buildup concerns are
+  sometimes addressed with an expanded-outlet valve — many MC pump
+  manufacturers require expanded downstream piping to match. Real design
+  considerations: expanded outlet, a ball valve to shear through
+  impurities (the same rationale as the brown stock rejects valve), and
+  precise control. Typical specification: Fisher Vee-Ball V150E.
+concept-tags: [medium consistency pump, MC pump, bone dry consistency, expanded outlet valve, ball valve, valve selection rationale]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "\"Medium Consistency (MC) Pump Valve\" section, p. 15-8 (PDF p. 192)"
+relatedFigures: []
+relatedTopics: [pp-topic-brownstock-rejects-valve-selection]
+used-by: []
+notes: >
+  Genuinely zero-figure content — this chapter's figure sequence ends at
+  Figure 15-19; the MC Pump Valve section that closes the chapter has no
+  accompanying diagram or photo at all, so this valve-selection reasoning
+  was entirely invisible to the figures-only pass.
 ```
 
 ## Open Items

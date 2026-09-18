@@ -74,6 +74,39 @@ notes: >
   nomenclature/callout rules.
 ```
 
+```yaml
+id: cvh-topic-control-loop-fundamentals
+kind: topic
+concept-tags: [control loop, process variable, load disturbance, final control element, control valve assembly, sensor, transmitter, controller]
+status: current
+teaches: >
+  Why a control loop exists and what a control valve's job is inside it,
+  in the source's own reasoning, not just the block-diagram figure: modern
+  plants use control loops to keep a process variable (pressure, flow,
+  level, temperature) inside a required range despite disturbances the
+  loop both receives and internally creates. Sensors and transmitters
+  collect information about the process variable relative to a desired
+  set point; a controller decides what must be done to correct it; a
+  final control element then implements that decision — and "the most
+  common final control element in the process control industries is the
+  control valve." A control valve assembly is explicitly more than the
+  body: valve body, internal trim, an actuator supplying motive power, and
+  accessories (transducers, supply-pressure regulators, manual operators,
+  snubbers, limit switches).
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§1.1 'What is a Control Valve?', p. 17 — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-feedback-control-loop]
+relatedTopics: []
+used-by: []
+notes: >
+  This is the reasoning behind Figure 1.1's block diagram, not a
+  restatement of it — the figure entry above describes what the diagram
+  shows; this entry describes why the loop is built that way and what
+  "control valve assembly" actually bundles together. Read directly from
+  p. 17's real running prose, confirmed against the PDF page footer.
+```
+
 ---
 
 ### Section 1.2 — Sliding-Stem Terminology (printed pp. 18–22)
@@ -501,6 +534,166 @@ notes: >
   than corrected here, since that file is out of this pass's scope).
 ```
 
+```yaml
+id: cvh-topic-bench-set
+kind: topic
+concept-tags: [bench set, inherent diaphragm pressure range, actuator spring calibration, rated travel]
+status: current
+teaches: >
+  Bench Set is "the calibration procedure of an actuator spring so that it
+  can use a pressure range to fully stroke a valve to its rated travel" —
+  directly cross-referenced by the source to Inherent Diaphragm Pressure
+  Range: "the high and low values of pressure applied to the diaphragm to
+  produce rated valve plug travel with atmospheric pressure in the valve
+  body. This range is often referred to as a bench set range because it
+  will be the range over which the valve will stroke when it is set on
+  the work bench." Installed Diaphragm Pressure Range is the same
+  procedure done with real installed process forces acting on the plug
+  instead of atmospheric conditions — the source notes these two ranges
+  can differ specifically because of those forces.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§1.4 'Control Valve Functions and Characteristics Terminology,' pp. 26-27 — Bench Set, Inherent Diaphragm Pressure Range, Installed Diaphragm Pressure Range glossary entries, prose not figure-anchored"
+relatedFigures: [cvh-cmp-direct-acting-actuator, cvh-cmp-reverse-acting-actuator]
+relatedTopics: []
+used-by: []
+notes: >
+  Flagged as worth defining in this file's own pre-existing Open Items note
+  (see below) before this pass — confirmed real and grounded directly in
+  the glossary's own cross-referenced definitions, not invented. Distinct
+  from the Fisher 657-specific bench-set procedure already catalogued
+  elsewhere in the vault (`Component Index — bench-set-657.md`) — this
+  entry is the chapter's generic definition of the concept itself.
+```
+
+```yaml
+id: cvh-topic-flow-characteristic-and-valve-gain
+kind: topic
+concept-tags: [flow characteristic, inherent characteristic, installed characteristic, valve gain, rated flow coefficient]
+status: current
+teaches: >
+  Flow characteristic "should always be designated as either inherent
+  flow characteristic or installed flow characteristic" — inherent is
+  "the relationship between the flow rate and the closure member travel
+  as it is moved from the closed position to rated travel with constant
+  pressure drop across the valve"; installed is the same relationship
+  "as the pressure drop across the valve is influenced by the varying
+  process conditions" — i.e. inherent is a lab/test-bench property at
+  fixed ΔP, installed is what actually happens once the valve is in a
+  real system. Valve gain (the slope of these curves — change in flow per
+  change in travel) has the same inherent/installed split: "inherent
+  valve gain is an inherent function of the valve design," while
+  "installed valve gain is the valve gain relationship that occurs when
+  the valve is installed in a specific system and the pressure drop is
+  allowed to change naturally."
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§1.4/§1.5, pp. 26-27, 29-30 — Flow Characteristic, Inherent/Installed Flow Characteristic, Inherent/Installed Valve Gain glossary entries, prose not figure-anchored"
+relatedFigures: [cvh-cmp-inherent-characteristics-graph]
+relatedTopics: [cvh-topic-rangeability]
+used-by: []
+notes: >
+  This is the reasoning behind why Figure 1.19 plots characteristic curves
+  at constant ΔP specifically — the figure entry describes the plot
+  itself; this entry explains why "inherent" requires that constant-ΔP
+  condition and what changes once the valve is actually installed.
+```
+
+```yaml
+id: cvh-topic-rangeability
+kind: topic
+concept-tags: [rangeability, turndown, flow coefficient ratio, minimum controllable flow]
+status: current
+teaches: >
+  Rangeability is "the ratio of the largest flow coefficient (Cv or Kv)
+  to the smallest flow coefficient (Cv or Kv) within which the deviation
+  from the specified flow characteristic does not exceed the stated
+  limits" — the source gives a real concrete example: "a control valve
+  that still does a good job of controlling when flow increases to 100
+  times the minimum controllable flow has a rangeability of 100 to 1."
+  Rangeability can also be expressed as the ratio of maximum to minimum
+  controllable flow rates, not just the coefficient ratio.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§1.4, p. 27 — Rangeability glossary entry, prose not figure-anchored"
+relatedFigures: []
+relatedTopics: [cvh-topic-flow-characteristic-and-valve-gain]
+used-by: []
+notes: >
+  No figure anchors this concept at all in this chapter — a genuine
+  prose-only concept the figures-only rule would have excluded entirely
+  before `kind: topic` existed.
+```
+
+```yaml
+id: cvh-topic-deadband-and-friction
+kind: topic
+concept-tags: [deadband, backlash, static friction, stiction, dynamic friction, hysteresis]
+status: current
+teaches: >
+  Deadband is "the range through which an input signal can be varied,
+  upon reversal of direction, without initiating an observable change in
+  output signal" — for a control valve, controller output is the input
+  and process variable is the output (Figure 1.18). The source names two
+  real causes: Backlash ("slack, or looseness, of a mechanical
+  connection") and, more directly, static friction: "Static friction
+  (also known as stick/slip, or stiction) is the force that must be
+  overcome before there is any relative motion between the two surfaces.
+  ... Static friction is also one of the major causes of deadband in a
+  valve assembly." Once moving, dynamic friction ("running friction, or
+  sliding friction") is the force needed to sustain the motion. Hysteresis
+  is a related but distinct measurement: "the maximum difference in
+  output value for any single input value during a calibration cycle,
+  excluding errors due to deadband" — the source is explicit that
+  hysteresis and deadband are measured separately, not the same thing.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§1.4/§1.5, pp. 28-29 — Deadband (+ Figure 1.18), Backlash, Friction, Hysteresis glossary entries, prose not figure-anchored"
+relatedFigures: [cvh-cmp-deadband-graph]
+relatedTopics: []
+used-by: []
+notes: >
+  The existing Figure 1.18 entry describes the deadband plot itself; this
+  entry is the causal mechanism (friction/backlash) the plot's shape
+  results from, which the figure caption alone never explains.
+```
+
+```yaml
+id: cvh-topic-dynamic-response-characteristics
+kind: topic
+concept-tags: [dead time, time constant, T63, response time, first-order, second-order, gain]
+status: current
+teaches: >
+  How a valve assembly's speed of response is actually measured, per the
+  source's own definitions: Dead Time (Td) is "the time interval in which
+  no response of the system is detected following a small... step input,"
+  measured from the step to the first detectable response. Time Constant
+  is measured from that first detectable response until the output
+  reaches 63% of its final steady-state value. T63 is explicitly the
+  combined total of dead time and time constant. Response Time is
+  "usually measured by a parameter that includes both dead time and time
+  constant... When applied to the valve, it includes the entire valve
+  assembly." First-order systems have "only one energy storage device"
+  and exponential behavior; second-order systems have two energy storage
+  devices that "transfer kinetic and potential energy back and forth,"
+  introducing possible oscillation and overshoot. Gain (the ratio of
+  output change to the input change that caused it) has static gain
+  (steady-state sensitivity) and dynamic gain (a function of the
+  frequency/rate of the input) as its two components.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§1.5 'Process Control Terminology,' pp. 28-29, 31 — Dead Time, Time Constant, T63, Response Time, First-Order, Second-Order, Gain glossary entries, prose not figure-anchored"
+relatedFigures: []
+relatedTopics: [cvh-topic-deadband-and-friction]
+used-by: []
+notes: >
+  No figure anchors any of this content — a genuine, coherent cluster of
+  dynamic-response vocabulary the figures-only rule excluded entirely.
+  Kept as one topic rather than six separate entries since the source
+  itself defines each term by direct cross-reference to the others (T63
+  = Td + time constant; response time = "includes both").
+```
+
 ---
 
 ## Open items
@@ -542,3 +735,43 @@ notes: >
   chapter's range in any case.
 - No asset-variant-registry or `Curriculum —` writes were made from this pass —
   out of scope for a standing Component-Index-only cataloging batch.
+
+**`kind: topic` pass (2026-09-17), added to the existing figure-only
+catalogue above:**
+
+- **Six new `cvh-topic-*` entries added**, covering the real conceptual
+  content on pp. 26-33 this pass's own earlier note flagged as
+  "glossary text only, no figures" — correct that no figures exist there,
+  but incorrect that nothing worth cataloguing does. See
+  `cvh-topic-control-loop-fundamentals`, `cvh-topic-bench-set`,
+  `cvh-topic-flow-characteristic-and-valve-gain`, `cvh-topic-rangeability`,
+  `cvh-topic-deadband-and-friction`, `cvh-topic-dynamic-response-characteristics`.
+- **The bulk of §1.2, §1.3, and most of §1.5 is genuine dictionary-style
+  terminology, not topic-worthy.** Sections 1.2 (Sliding-Stem Terminology)
+  and 1.3 (Rotary Terminology) are almost entirely one-sentence part/term
+  definitions already adequately anchored by this chapter's existing
+  figure entries (e.g. "Angle Valve" by `cvh-cmp-angle-valve-photo`). Most
+  of §1.5's alphabetical glossary (Accessory, ANSI, API, Positioner,
+  Sensor, Transmitter, Set Point, Signal, Span, Travel, Trim, and similar)
+  are short single-sentence definitions with no real explanatory depth
+  beyond the term itself — deliberately NOT given individual topic entries,
+  the same "don't pad thin content" discipline `Component Index — Control
+  Valve Handbook ch13.md` already applied to pure reference-data tables.
+- **Two glossary entries duplicate concepts already topic-indexed in
+  Chapter 5 — not re-indexed here, cross-referenced instead.** "High-
+  Recovery Valve" / "Low-Recovery Valve" (p. 26-27) is the same mechanism
+  as `cvh-topic-flow-recovery` (ch5); "Vena Contracta" (p. 27) is the same
+  concept as `cvh-topic-vena-contracta` (ch5). Both ch1 glossary entries
+  are shorter restatements of the same underlying mechanism ch5 explains
+  more fully — creating a second `cvh-topic-*` id for the identical
+  concept would fragment one idea across two ids. If a future course needs
+  to cite this concept from a Chapter-1-only context, cite ch5's existing
+  topic id directly rather than minting a duplicate.
+- **The chapter's own earlier flag ("Bench Set" needing definition, in the
+  Figure 1.17 record's notes) is now resolved** — see `cvh-topic-bench-set`
+  above.
+- **File integrity verified.** 25 total ids in this file (19 figures + 6
+  new topics), all unique; every `relatedFigures`/`relatedTopics` reference
+  across all 6 new topic entries resolves to a real existing id in this
+  same file — checked with the same node one-liner integrity check used
+  for the ch5 pass, zero bad references found.

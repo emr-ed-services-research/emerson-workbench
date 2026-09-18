@@ -242,6 +242,108 @@ notes: >
   Sourcebooks.
 ```
 
+```yaml
+id: ogas-topic-control-valve-selection-process
+kind: topic
+concept-tags: [control valve definition, valve selection process, general categories, sliding-stem, rotary, subcategories]
+status: current
+teaches: >
+  What "control valve" means in this discussion — any power-operated valve
+  used for throttling or on-off control, explicitly excluding motorized gate
+  valves, louvers, pinch valves, and self-operated regulators. Frames why
+  selection has become considerably more complex than it used to be (when
+  sliding-stem was the only real option): today's assortment of sliding-stem
+  and rotary styles, some marketed as "universal," makes even experienced
+  users uncertain whether they're getting the best value. The two major
+  valve types, sliding-stem and rotary, are further divided into nine
+  subcategories by relative performance and cost (Table 1-2) — despite
+  internal variation (e.g. cage- vs. stem-guiding), valves within one
+  subcategory are treated as much alike for early-stage selection. Selection
+  itself is a two-step narrowing: pick the subcategory, then compare
+  specific valves within it.
+source:
+  - doc: Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 1, opening narrative + 'General Categories of Control Valves,' printed pp. 1-1–1-2 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-modern-control-valve-assembly]
+relatedTopics: [ogas-topic-sliding-stem-valve-family, ogas-topic-rotary-valve-family, cvh-topic-flow-characteristics]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (pages 7-8 of the source PDF,
+  printed pp. 1-1–1-2), not inferred from Figure 1-1's own caption. The
+  "control valve" definition (excludes gate valves/louvers/pinch valves/
+  self-operated regulators) does not appear anywhere in this chapter's
+  existing figure entries — it was invisible to the figures-only pass.
+```
+
+```yaml
+id: ogas-topic-sliding-stem-valve-family
+kind: topic
+concept-tags: [sliding-stem valve, globe valve, barstock valve, economy valve, versatility, severe service]
+status: current
+teaches: >
+  Sliding-stem valves as the most versatile control-valve family: globe,
+  angle, and Y-pattern designs spanning NPS 1/2-36, with more material/
+  end-connection/characteristic choices than any other family, cage-,
+  post-, or stem-guided trim, and body ratings to ASME CL4500 or API 10,000.
+  Three real subcategories with distinct rationale: regular sliding-stem
+  (ruggedness for field conditions — piping stress, vibration, temperature
+  swings; the only suitable choice for high pressure/temperature, excessive
+  noise, or cavitation risk); barstock valves (small, economical, machined
+  from bar stock rather than cast — chosen when material availability or
+  corrosion resistance matters, or for low-flow applications); and economy
+  bodies (the lowest-cost subcategory, for non-demanding low-pressure steam/
+  air/water service to ASME CL300, with no severe-service noise/cavitation
+  trim options).
+source:
+  - doc: Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 1, 'Sliding-Stem Valves,' printed pp. 1-2–1-3 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-et-globe-cutaway, ogas-cmp-large-et-drilled-cage-cutaway, ogas-cmp-ehd-high-pressure-cutaway, ogas-cmp-economy-body-sliding-stem]
+relatedTopics: [ogas-topic-control-valve-selection-process, ogas-topic-rotary-valve-family]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (pages 8-9, printed pp. 1-2–1-3).
+  This is genuine family-level positioning (why choose sliding-stem at all,
+  and which subcategory) distinct from any individual figure's own
+  teaches — the existing four figure entries above each describe one
+  specific valve, not the family-level tradeoffs.
+```
+
+```yaml
+id: ogas-topic-rotary-valve-family
+kind: topic
+concept-tags: [rotary valve, ball valve, eccentric plug valve, butterfly valve, through-bore, segmented ball, lined butterfly, high performance butterfly]
+status: current
+teaches: >
+  The rotary-valve family's real subcategory tradeoffs, distinct from any
+  single cutaway's own caption. Ball valves split into through-bore/full-ball
+  (high pressure-drop throttling and on-off service to NPS 24, high capacity
+  and low erosion susceptibility, but sluggish response in the first 20% of
+  travel) and segmented-ball (reduced bore with a contoured notch edge for
+  better throttling and higher rangeability, splined-shaft connections
+  engineered to eliminate lost motion, generally higher control performance
+  than full-ball). Eccentric plug valves combine sliding-stem and rotary
+  traits — rotary actuation with a massive, rigid seat design, excellent
+  throttling and erosion resistance. Butterfly valves split into lined
+  (elastomer/TFE-lined disk, limited pressure drop and temperature range
+  because shutoff depends on disk-liner interference, but the cheapest
+  option for corrosive medium/large-size service) and high-performance
+  (offset-disk eccentric mounting so the disk swings clear of its seal —
+  minimizes wear/torque, allows tight metal-to-metal shutoff even where
+  elastomer designs are too hot to use).
+source:
+  - doc: Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 1, 'Ball Valves,' 'Eccentric Plug Valves,' and the lined/high-performance butterfly narrative, printed pp. 1-4–1-6 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-v250-ball-valve-cutaway, ogas-cmp-vee-ball-segmented-cutaway, ogas-cmp-v500-eccentric-plug-cutaway, ogas-cmp-8560-high-perf-butterfly-cutaway]
+relatedTopics: [ogas-topic-control-valve-selection-process, ogas-topic-sliding-stem-valve-family]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (pages 10-13, printed pp. 1-4–1-6).
+  The through-bore-vs-segmented tradeoff and the lined-vs-high-performance
+  butterfly tradeoff are both genuine comparative reasoning the individual
+  figure captions don't carry — each figure entry describes only its own
+  valve, not the choice between subcategories.
+```
+
 ---
 
 ### Chapter 1 — Rotary valves, flow characteristic, and end connections (printed pp. 1-4 – 1-9)
@@ -451,9 +553,162 @@ notes: >
   Sourcebooks.
 ```
 
+```yaml
+id: ogas-topic-general-selection-criteria
+kind: topic
+concept-tags: [selection criteria, pressure rating, temperature, material selection, flow capacity, ASME class]
+status: current
+teaches: >
+  The chapter's real selection-criteria checklist (Table 1-1): body
+  pressure rating, high/low temperature limits, material compatibility,
+  inherent flow characteristic/rangeability, maximum pressure drop, noise
+  and cavitation, end connections, shutoff leakage, capacity vs. cost,
+  nature of flowing media, dynamic performance. Real reasoning behind the
+  physical criteria: pressure ratings follow ASME classes, whose allowable
+  pressure decreases with temperature per material strength; temperature
+  limits are set by soft-part materials (elastomers ~200-350°F, PTFE
+  ~450°F) and by rotary-bearing friction effects at high temperature;
+  material selection differs for body vs. trim since velocity in the valve
+  is higher than in piping; flow capacity favors sliding-stem for small
+  lines and rotary for large ones (rotary has much higher capacity per
+  body size but little advantage at high pressure drop); noise/cavitation
+  are explicitly deferred to Chapters 5 and 6 of this same sourcebook. The
+  chapter's own closing rule of thumb: sliding-stem for lower flow ranges,
+  ball valves for intermediate capacity, high-performance butterfly for
+  the largest flows — no single valve family is cost-effective across the
+  full range.
+source:
+  - doc: Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 1, 'General Selection Criteria' through 'Conclusion,' printed pp. 1-6, 1-8–1-9 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [ogas-topic-flow-characteristic-and-rangeability, ogas-topic-shutoff-leakage-classification, ogas-topic-control-valve-selection-process]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (pages 13-15, printed pp. 1-6,
+  1-8–1-9). This is a genuine checklist framework with no figure of its
+  own — Table 1-1 itself is a reference table (not catalogued as a
+  component, consistent with this file's own table-exclusion practice) but
+  the reasoning behind each row is real, transferable teaching content, not
+  captured anywhere in the existing figure entries. The chapter's explicit
+  deferral of noise/cavitation to Chapters 5/6 is a real cross-reference
+  worth carrying forward if this sourcebook's other chapters get indexed.
+```
+
+```yaml
+id: ogas-topic-flow-characteristic-and-rangeability
+kind: topic
+concept-tags: [flow characteristic, quick opening, linear, equal percentage, rangeability, positioner, valve gain]
+status: current
+teaches: >
+  Expands Figure 1-10's own caption with the real mechanism behind each
+  characteristic: quick-opening gives maximum flow change at low travel
+  with a nearly linear relationship, then sharply diminishing change as the
+  plug nears wide-open — used for on-off service. Linear gives flow
+  directly proportional to travel, a constant slope so valve gain stays
+  the same at all flows under constant pressure drop — used for liquid
+  level control and constant-gain flow control. Equal-percentage gives
+  equal travel increments producing equal *percentage* changes in existing
+  flow (change proportional to the flow rate just before the change) — used
+  for pressure control and where pressure drop varies widely, since the
+  system itself absorbs most of the drop. Rangeability (ratio of maximum to
+  minimum controllable flow) is a related but distinct property; rotary
+  valves — especially partial ball valves — generally have greater
+  rangeability than sliding-stem. A positioner can make one inherent
+  characteristic behave like another via a nonlinear (characterized)
+  positioner-actuator combination, limited by the positioner's own
+  frequency response and phase lag relative to the process.
+source:
+  - doc: Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 1, 'Flow Characteristic,' 'Rangeability,' and 'Use of Positioners,' printed pp. 1-6–1-7 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-flow-characteristic-curves]
+relatedTopics: [ogas-topic-general-selection-criteria, cvh-topic-flow-characteristics, cvh-topic-rangeability]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (pages 13-14, printed pp. 1-6–1-7).
+  Figure 1-10's own `teaches` field only names the three curves and their
+  applications at a summary level; the real mechanism reasoning (why each
+  shape produces the stated control behavior) lives in this surrounding
+  prose, not the caption. Cross-references CVH's own
+  `cvh-topic-flow-characteristics` (ch5) and `cvh-topic-rangeability` (ch1)
+  — same underlying concepts, this sourcebook's own worked framing.
+```
+
+```yaml
+id: ogas-topic-shutoff-leakage-classification
+kind: topic
+concept-tags: [shutoff capability, leakage class, ANSI FCI 70-2, seat leakage]
+status: current
+teaches: >
+  Shutoff capability is rated by ANSI/FCI 70-2 leakage Classes (Table 1-4).
+  Real caveats the table alone doesn't carry: service leakage depends on
+  pressure drop, temperature, sealing-surface condition, and actuator
+  force, and can't be predicted accurately from the standard test
+  conditions the Class rating is based on — the Class is a comparison
+  basis among similar valves, not a service-leakage guarantee. Users
+  commonly overestimate the shutoff class they actually need. Tight
+  shutoff costs more (initial and maintenance) and matters most in
+  high-pressure valves, where leakage can progress to trim destruction —
+  seat material, seat preparation, and seat load all need real attention
+  to achieve it.
+source:
+  - doc: Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 1, 'Shutoff Capability,' printed p. 1-8 — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [ogas-topic-general-selection-criteria, cvh-topic-seat-leakage-classification]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (page 15, printed p. 1-8). Table
+  1-4 (ANSI/FCI 70-2 and IEC 60534-4 leakage classes) is a reference table,
+  not catalogued as its own component per this file's existing practice —
+  but the real caveats around what the Class rating does and doesn't
+  guarantee are genuine teaching content with no other home in this index.
+  Cross-references CVH's own `cvh-topic-seat-leakage-classification`
+  (added during the Handbook's own topic-indexing pass, §5.2-5.3) — same
+  underlying ANSI/FCI 70-2 standard, worth confirming the two entries stay
+  consistent if either is revised later.
+```
+
 ---
 
 ### Chapter 1 — Packing selection and packing arrangements (printed pp. 1-16 – 1-19)
+
+```yaml
+id: ogas-topic-packing-selection-framework
+kind: topic
+concept-tags: [packing selection, EPA Clean Air Act, fugitive emissions, ENVIRO-SEAL, seal performance, service life, packing friction]
+status: current
+teaches: >
+  Why packing selection became a critical, separate factor in valve
+  selection beyond pressure/temperature/material/flow-characteristic
+  fit: driven by the Clean Air Act Amendments and subsequent EPA
+  regulations, plus customer demand for less maintenance and longer
+  service life. Historically packing was chosen mainly by process
+  temperature (PTFE below 450°F, graphite above), but now packing friction,
+  hysteresis, seal quality, and cycle life all matter and are hard to
+  quantify simply — hence the engineered, comparative approach behind
+  Table 1-5. Defines ENVIRO-SEAL from Fisher's perspective (an advanced
+  "compact," live-loaded spring-design system) versus the user's usual
+  framing of it (an emission-reducing packing) — clarifying it's also
+  genuinely useful in non-environmental service. Table 1-5 itself splits
+  into two real service categories (500 ppmv environmental/fugitive-
+  emission applications vs. non-environmental applications, each with its
+  own pressure/temperature guidelines) plus three comparative indices per
+  packing system: seal performance, service life, and friction.
+source:
+  - doc: Control Valve Sourcebook — Oil & Gas (© 2013 Fisher)
+    locator: "Chapter 1, 'Packing Materials and Systems,' printed pp. 1-11–1-12 — prose, not figure-anchored"
+relatedFigures: [ogas-cmp-packing-500ppm-guidelines-chart, ogas-cmp-packing-nonenvironmental-guidelines-chart]
+relatedTopics: [cvh-topic-packing-selection-criteria, cvh-topic-packing-friction]
+used-by: []
+notes: >
+  Read directly from the real PDF prose (pages 20-21, printed pp. 1-11–1-12),
+  immediately preceding the two guideline-chart figures and Table 1-5 —
+  none of this framing (the regulatory driver, the ENVIRO-SEAL definition,
+  the two-category/three-index structure) appears in either chart figure's
+  own caption. Cross-references CVH's own `cvh-topic-packing-selection-
+  criteria` and `cvh-topic-packing-friction` (ch5) — same underlying
+  concepts, this sourcebook's own worked framing with real product names.
+```
 
 ```yaml
 id: ogas-cmp-packing-500ppm-guidelines-chart
@@ -639,6 +894,26 @@ notes: >
 
 ## Open items
 
+- **`kind: topic` pass, 2026-09-17.** Read the chapter's real body prose
+  start to finish (PDF pages 7-25, printed pp. 1-1–1-19), not just the
+  sections around existing figures — same method proven on the Control
+  Valve Handbook's own full topic-indexing pass. Seven new topic entries
+  added: `ogas-topic-control-valve-selection-process`,
+  `ogas-topic-sliding-stem-valve-family`, `ogas-topic-rotary-valve-family`,
+  `ogas-topic-general-selection-criteria`,
+  `ogas-topic-flow-characteristic-and-rangeability`,
+  `ogas-topic-shutoff-leakage-classification`,
+  `ogas-topic-packing-selection-framework`. Chapter total is now 24
+  components (17 figures + 7 topics). Tables 1-1 through 1-5 remain
+  correctly uncatalogued as reference tables per this file's existing
+  practice, but the real prose framing each table (why it exists, how to
+  read it, what it doesn't guarantee) is genuine teaching content that had
+  no home until this pass — that gap is what these seven entries close.
+  Integrity verified: all ids in this file unique, every
+  `relatedFigures`/`relatedTopics` reference (including cross-references
+  into the Control Valve Handbook's own `cvh-topic-*` entries) resolves to
+  a real id, checked programmatically against the whole vault's Component
+  Index namespace.
 - **Third batch (Figures 1-13 through 1-17)** — the five packing-selection
   and packing-arrangement figures, printed pp. 1-16–1-19 (PDF pages 22–25).
   All five extracted and catalogued: `ogas-cmp-packing-500ppm-guidelines-chart`,

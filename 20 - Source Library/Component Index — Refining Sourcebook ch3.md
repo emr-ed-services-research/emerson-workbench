@@ -198,6 +198,34 @@ notes: >
   Sourcebooks. Note added to both records.
 ```
 
+```yaml
+id: ref-topic-port-guided-valve-limitations
+kind: topic
+teaches: >
+  Port-guided single-port valve constructions — a variant not shown in any
+  figure of this chapter — carry real, specific limitations distinct from
+  the cage/retainer-guided constructions the chapter's figures do depict:
+  usually limited to 10 bar (150 psig) maximum pressure drop, susceptible
+  to velocity-induced vibration, and typically provided with screwed-in
+  seat rings that can be difficult to remove after use. Port-guided plugs
+  are used for on-off or low-pressure throttling service, while
+  top-and-bottom-guided plugs (the cage-style construction shown in Figure
+  3.1.3) furnish stable operation for severe service.
+concept-tags: [port-guided valve, single-port valve, pressure drop limit, velocity-induced vibration, screwed-in seat ring]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§3.1 'Port-Guided Single-Port Valve Constructions,' p. 3-20 (PDF p. 19) — running prose, not figure-anchored"
+relatedFigures: [ref-cmp-balanced-plug-cage-style-valve]
+relatedTopics: []
+used-by: []
+notes: >
+  No figure anywhere in the chapter depicts a port-guided construction
+  specifically — genuinely invisible to the original figures-only pass.
+  Cross-referenced to the cage-guided figure it's explicitly contrasted
+  against in the same paragraph, not because it depicts this construction.
+```
+
 ### 3.2 Rotary Valves (printed pp. 3-21 – 3-22)
 
 ```yaml
@@ -494,6 +522,34 @@ notes: >
   follow) — genuinely one continuous overview graphic per the source's own
   presentation, not several distinct headed items; catalogued as one
   record per the bundling precedent for continuous reference material.
+```
+
+```yaml
+id: ref-topic-laminated-filament-graphite-packing
+kind: topic
+teaches: >
+  Laminated and filament graphite packing material — described in prose
+  immediately after PTFE V-Ring material but never given its own figure —
+  suits high-temperature service or where low chloride content is
+  desirable: it typically produces higher stem friction than PTFE and is
+  impervious to challenging fluids. Recommended packing-box temperature
+  range is cryogenic up to 649°C (1200°F). No lubrication is required, but
+  an extension bonnet should be used once packing-box temperature exceeds
+  427°C (800°F) — a real, specific threshold distinct from PTFE's own
+  -40 to +232°C (-40 to +450°F) limit already captured on the single PTFE
+  V-Ring figure.
+concept-tags: [packing, laminated graphite, filament graphite, low chloride, high temperature packing, extension bonnet]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§3.4 'Laminated and Filament Graphite,' p. 3-25 (PDF p. 24) — running prose, not figure-anchored"
+relatedFigures: [ref-cmp-control-valve-packing-overview]
+relatedTopics: []
+used-by: []
+notes: >
+  No figure in the chapter depicts this material specifically (the
+  composite overview figure shows arrangement cutaways, not material
+  callouts) — genuinely invisible to the original figures-only pass.
 ```
 
 ```yaml
@@ -818,6 +874,29 @@ notes: >
 
 ## Open Items
 
+- **`kind: topic` pass added 2026-09-18.** Read the real body prose in
+  full (PDF pp. 18-29) against every existing figure entry's own `teaches`
+  field before authoring anything — this chapter's original figures-only
+  pass already wrote unusually thorough `teaches` fields (most already
+  restate the surrounding prose almost completely), so the genuine gap
+  was narrow. Two entries added, both covering sections with **no figure
+  at all**: `ref-topic-port-guided-valve-limitations` (§3.1, p. 3-20) and
+  `ref-topic-laminated-filament-graphite-packing` (§3.4, p. 3-25).
+- **Two duplicate-boilerplate findings, zero entries authored for
+  either — confirmed against real prose, not assumed from topical
+  similarity:**
+  - The chapter's "Low Emission Packing" paragraph (LDAR programs,
+    100-500 ppmv monitoring threshold, ENVIRO-SEAL's four design
+    principles) matches Pulp & Paper Sourcebook ch1's own
+    `pp-topic-fugitive-emissions-regulatory-framework` almost exactly in
+    substance and framing (LDAR terminology, the same ppmv range, the same
+    four numbered design principles) — not authored again here.
+  - The chapter's "Electro-hydraulic Actuators" paragraph is a condensed
+    restatement, adding no numbers or detail beyond what Oil & Gas
+    Sourcebook ch2's own `ogas-topic-electro-hydraulic-actuator-
+    configurations` already teaches at real depth (self-contained vs.
+    externally-powered configurations, fail-safe mechanism) — not
+    authored again here.
 - **Chapter boundary confirmed directly**: PDF p.18 (divider, with its own
   mini TOC) through PDF p.29 (printed 3-29). PDF p.30 rendered and
   confirmed to be the Chapter 4 divider.

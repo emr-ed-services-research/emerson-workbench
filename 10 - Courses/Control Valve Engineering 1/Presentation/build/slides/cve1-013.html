@@ -3,31 +3,30 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 013 &mdash; Flashing vs. Cavitation: What Actually Erodes Metal</title>
+<title>CVE1 &middot; Slide 013 &mdash; The Actuator Decision, Submitted</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m2, page 13 — eng.noise-cavitation.damage-diagnosis
-       [analyze · mechanism]. Same source figure as page 12 (Fig. 5.6) —
-       the same vena-contracta mechanism, one step deeper into the
-       flash/collapse distinction. -->
+  <!-- cve1-ch1-m3, page 13 — eng.sizing.actuator-force-awareness [apply ·
+       mechanism, applies]. Completes the Attempt step, both wrong decisions
+       now committed before either consequence is revealed. -->
   <article class="slide slide--role-mechanism" data-slide="13" data-deck="cve1">
-    <h1 class="slide-title">Flashing vs. Cavitation: What Actually Erodes Metal</h1>
+    <h1 class="slide-title">The Actuator Decision, Submitted</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig5-6-vena-contracta.png" style="width:100%;height:100%;object-fit:contain" alt="Vena contracta illustration, the same restriction geometry the flash/collapse mechanism is built from.">
+          <img src="../assets/sourced/cvh5-fig-flowchart-steps3-5.png" style="width:100%;height:100%;object-fit:contain" alt="Valve selection flowchart, steps 3-5: select trim type, valve body and trim, trim materials">
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>Pressure at the vena contracta drops to or below vapor pressure &rarr; liquid flashes to vapor bubbles</li>
-        <li><span class="num">2</span>If downstream pressure recovers above vapor pressure, those bubbles collapse violently</li>
-        <li><span class="num">3</span>That collapse &mdash; not the flashing itself &mdash; is what erodes metal. No recovery above vapor pressure means no collapse damage.</li>
+        <li><span class="num">1</span>Same shortcut as Case B: sized against stroking thrust alone, estimated &asymp; 2,500 lbf for this larger valve</li>
+        <li><span class="num">2</span>A unit rated for 3,000 lbf output is selected &mdash; again looking like real margin against the wrong number</li>
+        <li><span class="num">3</span>The spec is submitted with both decisions made. Neither the cavitation check nor the real seat-load total has been run</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., Fig. 5.6, p.128, and &sect;5.14.1 text &mdash; used directly. Component Index: cvh-cmp-vena-contracta-diagram.</p>
+      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100, Steps 3-5 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">13</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

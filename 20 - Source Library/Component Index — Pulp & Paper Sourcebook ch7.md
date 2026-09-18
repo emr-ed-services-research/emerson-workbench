@@ -406,3 +406,42 @@ notes: >
 - **Archive/legacy material:** none consulted, none needed — the 2011
   Fisher Sourcebook is the sole and sufficient source for all thirteen of
   this chapter's components.
+- **`kind: topic` pass, added 2026-09-18: zero new entries — confirmed
+  duplicate boilerplate, not a gap.** Read the full real chapter prose
+  directly (`pdftotext -layout`, PDF pp. 91-104) and compared it line-by-line
+  against Power & Severe Service Sourcebook ch7's own already-topic-indexed
+  prose (10 `pss-topic-*` entries, added 2026-09-17). Every substantive claim
+  in this chapter's text matches PSS ch7 word-for-word or near-word-for-word,
+  not just at the figure-caption level already documented above: the same
+  isenthalpic-throttling worked example (165 psia/370°F, 4°F superheat →
+  throttled to 45 psia, comes out 328°F but saturation temp has dropped to
+  274°F, net 54°F of superheat — the "unintentional superheat" finding);
+  the same three-family desuperheater selection taxonomy (Mechanically
+  Atomized/DMA-DVG, Geometrically Enhanced/DVI, Externally Energized/DSA)
+  and the same five performance factors (orientation, spraywater
+  temperature, quantity, pipeline size 250-300 ft/sec, equipment-vs-system
+  turndown); the identical SPR/TS sizing equations (SPR = 0.1 sec × max
+  velocity; TS = 0.2 or 0.3 sec × max velocity by spraywater %) and the same
+  feedback-vs-feedforward control-philosophy discussion; and the identical
+  turbine-bypass content — the same benefits list (thermal fatigue, load
+  rejection/hot-vs-warm-start, solid-particle erosion, independent boiler
+  operation), the same HP-bypass context-dependent fail-open-vs-fail-closed
+  logic vs. HRH/LP's always-fail-closed rule, the same bypass-capacity
+  percentages (100% once-through, 25-70% drum, 30% oil/40-50% coal hot
+  start, 40% gas-oil/70% coal full trip), and the same cold/warm/hot-start
+  timeframes (4.5-9 / 2.5-5 / 1-2 hours). This chapter's only genuinely
+  distinct content is the industry-neutral framing paragraph at the very
+  top ("power producers have an ever-increasing need...") versus PSS's own
+  opening — framing prose, not a teachable concept, correctly not indexed.
+  Nothing pulp-and-paper-specific exists anywhere in this chapter's real
+  text — consistent with the file's own header note that steam conditioning
+  is fundamentally power-plant/turbine content reused here, not native P&P
+  process content. This is the strongest full-chapter duplicate found in
+  this sourcebook's topic-indexing pass (stronger than ch2's and ch5's
+  single-example matches) — cross-referencing PSS ch7's 10 topic entries
+  by id would be redundant with the figure-level cross-references already
+  documented above, so none were added; a reader following any figure's
+  existing cross-reference note into `Component Index — Power & Severe
+  Service Sourcebook ch7.md` will find the full topic-level content there.
+  Integrity unaffected — no new ids introduced, file total remains 13
+  figures, 0 topics.

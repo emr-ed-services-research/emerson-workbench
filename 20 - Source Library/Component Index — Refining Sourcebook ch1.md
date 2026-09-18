@@ -7,7 +7,7 @@ tags:
   - component-index
 source: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
 chapter: ch1 — Introduction
-updated: 2026-09-15
+updated: 2026-09-18
 ---
 
 # Teaching-Component Index — Fisher Control Valve Sourcebook, Refining, Chapter 1
@@ -82,6 +82,26 @@ notes: >
 
 ## Open Items
 
+- **`kind: topic` pass run 2026-09-18 — zero new entries, confirmed non-
+  conceptual, not a gap.** Read printed p. 1-4 in full (the chapter's only
+  prose page): it is entirely book-organization/scope-setting content —
+  how each following chapter is formatted (Other Names, Process
+  Descriptions, Process Drawing conventions, valve numbering
+  left-to-right/top-to-bottom), plus a generic "consult your Emerson
+  representative" valve-selection caveat. None of that is a refining- or
+  valve-domain concept; it is instructions for reading the rest of the
+  book. The one passage that names real valve-domain problems ("Problem
+  Valves": stiction/static friction, actuator-linkage deadband — "typically
+  in rotary valves," stem packing leakage, incompatible materials of
+  construction) only *names* them in one paragraph as motivation for the
+  sourcebook's existence — it does not teach the mechanism. That mechanism
+  is already taught at real depth elsewhere in the vault, confirmed by
+  reading it directly: `cvh-topic-deadband-and-friction` (Control Valve
+  Handbook ch1, `Component Index — Control Valve Handbook ch1.md`) quotes
+  the source's own definitions of stiction, backlash, dynamic friction, and
+  hysteresis and their causal relationship to deadband — a genuine
+  duplicate-boilerplate finding, not a missed topic, same discipline
+  applied to Pulp & Paper's ch2/ch5/ch7 zero-entry findings.
 - **Chapter boundary confirmed directly**: PDF p.2 (chapter divider) through
   PDF p.4 (printed 1-4, prose close). PDF p.5 rendered and confirmed to be
   the Chapter 2 divider, not part of Chapter 1 — Chapter 1 is genuinely

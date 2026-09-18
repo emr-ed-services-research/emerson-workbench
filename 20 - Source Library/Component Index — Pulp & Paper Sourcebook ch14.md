@@ -172,6 +172,289 @@ notes: >
   filtrate-flow discussion).
 ```
 
+### Chapter 14 — Process and Chemistry Concepts (printed pp. 14-1–14-5)
+
+```yaml
+id: pp-topic-bleaching-vs-brightening
+kind: topic
+teaches: >
+  Bleaching and brightening are different chemical processes, not
+  synonyms. Bleaching removes lignin outright and is used on chemical
+  (kraft) pulps, which still carry ~10% residual lignin after pulping;
+  it increases brightness by eliminating the lignin that darkens the
+  pulp. Brightening converts the chemical groups within lignin to
+  non-darkening forms without removing the lignin itself, and is used on
+  mechanical/chemi-mechanical pulps, which retain far more lignin than
+  chemical pulps can tolerate for a bleaching approach. The two
+  processes use different chemistries (see
+  `pp-topic-mechanical-pulp-brightening-chemistry`) because they are
+  solving different problems, not the same problem at different
+  intensities.
+concept-tags: [bleaching, brightening, lignin, kraft pulp, mechanical pulp, chemi-mechanical pulp, brightness]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Bleaching and Brightening intro, printed p. 14-1 (PDF p. 177) — running prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pp-topic-mechanical-pulp-brightening-chemistry]
+used-by: []
+notes: >
+  Read directly from the chapter's opening prose block (before Figure
+  14-1). This is the conceptual distinction the rest of the chapter's
+  figures assume the reader already has — worth teaching first.
+```
+
+```yaml
+id: pp-topic-oxygen-delignification-rationale
+kind: topic
+teaches: >
+  Oxygen delignification sits between pulping and bleaching and removes
+  up to half the pulp's remaining lignin under oxygen/NaOH at pressure —
+  but not further, because deeper delignification this way would
+  excessively degrade the cellulose itself. It is run at medium-to-high
+  consistency; medium consistency (10-14% from the brown stock washer) is
+  favored over high or low consistency specifically for lower capital
+  cost and inherently safer operation, not because it delignifies better.
+  The economic case for doing it at all is that it cuts the cost of the
+  downstream bleaching sequence and reduces the effluent-treatment load,
+  because post-oxygen washer filtrate returns to the brown stock washers
+  and chemical recovery system rather than becoming waste.
+concept-tags: [oxygen delignification, medium consistency, cellulose degradation, effluent treatment, brown stock washer, chemical recovery]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Oxygen Delignification section, printed p. 14-1 (PDF p. 177) — running prose, not figure-anchored"
+relatedFigures: [pp-cmp-oxygen-delignification-diagram]
+relatedTopics: []
+used-by: []
+notes: >
+  The figure entry's own `teaches` field already states the cost/effluent
+  benefit; this topic entry adds what the figure doesn't show — the
+  consistency-selection tradeoff (medium chosen for cost/safety, not
+  delignification performance) and the cellulose-degradation ceiling on
+  how far the process can be pushed.
+```
+
+```yaml
+id: pp-topic-bleaching-chemistry-nomenclature
+kind: topic
+teaches: >
+  Bleaching stages are named by a standard single-letter chemistry code:
+  Chlorination (C, elemental chlorine, acidic), Alkaline Extraction (E,
+  NaOH dissolution of reaction products), Chlorine Dioxide (D, acidic),
+  Oxygen (O, molecular oxygen at high pressure, alkaline), Hypochlorite
+  (H, alkaline), Peroxide (P, alkaline), Ozone (Z, acidic). A bleach
+  plant's sequence is written as a string of these letters — e.g.
+  DEOPDED — describing the actual chemistry order a batch of pulp
+  passes through; this notation is what the per-stage valve layout
+  figures (14-5/14-6/14-7) and the filtrate-flow figures (14-2/14-3/14-4)
+  are each one letter of.
+concept-tags: [DEOPDED sequence, chlorination, alkaline extraction, chlorine dioxide, oxygen stage, hypochlorite, peroxide, ozone, bleaching nomenclature]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'The common bleaching chemicals and nomenclature are' list, printed pp. 14-1–14-2 (PDF pp. 177-178) — running prose, not figure-anchored"
+relatedFigures: [pp-cmp-conventional-bleaching-process, pp-cmp-alkaline-extraction-hypochlorite-peroxide-ozone-stages, pp-cmp-chlorine-dioxide-d-stage, pp-cmp-oxygen-o-stage]
+relatedTopics: [pp-topic-alternating-stage-chemistry-and-brightness]
+used-by: []
+notes: >
+  This is the decoder for every stage-letter abbreviation used
+  throughout the rest of the chapter (D, E, O, H, P, Z) — none of the
+  seven existing figure entries state what the letters mean, only what
+  each stage's valve layout looks like.
+```
+
+```yaml
+id: pp-topic-alternating-stage-chemistry-and-brightness
+kind: topic
+teaches: >
+  Chlorine dioxide (D) stages are always interspersed with alkaline
+  extraction (E) stages, never mixed with each other directly — the
+  alternating acidic/alkaline pattern progressively breaks down smaller
+  and smaller amounts of residual lignin until it can be washed out.
+  Critically, brightness does not increase uniformly across the
+  sequence: it rises substantially in the first and second D stages and
+  only modestly in the final one, while E stages do not chemically
+  whiten the pulp at all — they actually darken it slightly, because
+  their real job is dissolving and removing lignin the D stages have
+  already broken down, not bleaching. A learner reading a bleach-plant
+  brightness curve needs this to avoid assuming every stage contributes
+  brightness equally.
+concept-tags: [chlorine dioxide stage, alkaline extraction stage, alternating sequence, brightness curve, lignin removal]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Conventional Bleaching section, printed pp. 14-2–14-3 (PDF pp. 178-179) — running prose, not figure-anchored"
+relatedFigures: [pp-cmp-conventional-bleaching-process]
+relatedTopics: [pp-topic-bleaching-chemistry-nomenclature]
+used-by: []
+notes: >
+  The existing Figure 14-2 entry describes the physical DEOPDED tower
+  sequence; this topic adds the non-obvious brightness-contribution
+  asymmetry between D and E stages, which is stated only in running text
+  right after the figure, not in the figure's own caption.
+```
+
+```yaml
+id: pp-topic-ecf-tcf-bleaching-drivers
+kind: topic
+teaches: >
+  Chlorination (elemental chlorine) was the historical first bleaching
+  stage for many years, but has been largely replaced since the 1990s by
+  chlorine dioxide specifically to avoid forming dioxins — an
+  environmental driver toward ECF (Elemental Chlorine Free) mills, now
+  the industry standard because chlorine dioxide is highly selective at
+  dissolving lignin without degrading cellulose or hemicellulose. A
+  smaller number of mills go further to TCF (Totally Chlorine Free),
+  eliminating organo-chloride compounds entirely using oxygen-alkali
+  chemistry, hydrogen peroxide, and ozone in combination — a real,
+  named tradeoff: TCF costs more, achieves lower brightness, and is more
+  prone to pulp-strength loss than ECF, not a strictly superior process.
+concept-tags: [ECF, TCF, elemental chlorine free, totally chlorine free, dioxin, chlorine dioxide, organo-chloride]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Ozone nomenclature note and 'Totally Chlorine Free' section, printed pp. 14-2, 14-4 (PDF pp. 178, 180) — running prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pp-topic-bleaching-chemistry-nomenclature]
+used-by: []
+notes: >
+  Combines two separate mentions in the source (a brief nomenclature-list
+  aside on p. 14-2 and the dedicated "Totally Chlorine Free" section on
+  p. 14-4) into one concept since both describe the same underlying
+  regulatory/chemistry driver, not two different ideas.
+```
+
+```yaml
+id: pp-topic-fiberline-quality-and-strength
+kind: topic
+teaches: >
+  The "fiberline" is the equipment and process path pulp travels from
+  chips to final bleached product. Kraft pulp strength declines along
+  this line due to cellulose-fiber degradation during pulping and
+  bleaching — chip quality, correct pulping equipment, and good
+  operating practice are the real levers against that decline, not a
+  bleaching-stage fix. Bleaching quality is also judged on cleanliness
+  (no dark particles from bark/pitch/stones), extractive content (resins
+  that cause papermaking problems), fiber-bundle ("shives") removal, and
+  metal-ion chelation (binding out ions the way a water softener removes
+  calcium) — quality has several real axes beyond brightness alone.
+concept-tags: [fiberline, pulp strength, cellulose degradation, shives, chelation, pulp cleanliness]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Fiberline section, printed p. 14-3 (PDF p. 179) — running prose, not figure-anchored"
+relatedFigures: [pp-cmp-oxygen-delignification-diagram]
+relatedTopics: []
+used-by: []
+notes: >
+  Cross-referenced to Figure 14-1 since the source itself points back to
+  that diagram when introducing the fiberline concept ("figure 14-1").
+```
+
+```yaml
+id: pp-topic-mechanical-pulp-brightening-chemistry
+kind: topic
+teaches: >
+  Mechanical pulping dissolves most of the wood's original lignin, so
+  high-yield mechanical pulps carry far more residual lignin than
+  chemical pulps and cannot be bleached the same way — they are
+  brightened instead, using sodium hydrosulfite (Na2S2O4) and hydrogen
+  peroxide (H2O2), sometimes a two-stage alkaline sequence to reach 85%+
+  brightness for chemi-thermomechanical pulp. Both chemicals attack the
+  darkening chemical groups without removing lignin itself — unlike
+  chemical-pulp bleaching, no lignin is removed in this process. A real,
+  named limitation: mechanical/brightened pulp will never reach
+  chemical-pulp brightness levels, and the brightening effect is
+  reversible on exposure to sunlight, unlike chemical-pulp bleaching.
+concept-tags: [mechanical pulping, sodium hydrosulfite, hydrogen peroxide, chemi-thermomechanical pulp, brightness reversibility]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Mechanical Pulping section, printed pp. 14-4–14-5 (PDF pp. 180-181) — running prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pp-topic-bleaching-vs-brightening]
+used-by: []
+notes: >
+  Direct mechanism-level follow-through on the bleaching-vs-brightening
+  distinction established at the chapter opening — this is what
+  "brightening" actually consists of chemically.
+```
+
+### Chapter 14 — Valve Application and Selection Concepts (printed pp. 14-5–14-6)
+
+```yaml
+id: pp-topic-caustic-naoh-valve-control-criticality
+kind: topic
+teaches: >
+  Sodium hydroxide (NaOH, "white liquor" precursor) is a caustic chemical
+  used to break down lignin binding cellulosic fibers in the digester,
+  and requires precise valve control because poor control causes real
+  economic loss two ways at once: wasted NaOH solution and excess wood
+  chip degradation. Named design considerations for this valve
+  application: material choice is highly temperature-dependent, low
+  flows require low-flow trims specifically (not just a smaller standard
+  trim), and tight shutoff is required. A real specification example is
+  given (Fisher V150 body in CG8M/CW2M, chrome-coated ball trim, Alloy 6
+  HD seal, spring-and-diaphragm actuator, FIELDVUE DVC6200 PD
+  positioner) — a concrete anchor for what "precise control" means in
+  hardware terms.
+concept-tags: [caustic, sodium hydroxide, NaOH, digester, valve control, low-flow trim, tight shutoff]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Caustic (NaOH) Valve Applications section, Design Considerations and Typical Specification, printed p. 14-5 (PDF p. 181) — running prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pp-topic-chlorine-dioxide-valve-selection-criteria]
+used-by: []
+notes: >
+  The source's own brief kraft-pulping/digester background paragraph
+  immediately preceding this section (chips → digester → white liquor →
+  cellulose fibers) is deliberately NOT re-taught here — that is core
+  pulping-process content belonging to this Sourcebook's own Chapter 9
+  (Pulping), out of scope for a Chapter 14 pass to duplicate. This entry
+  scopes strictly to the caustic valve-application content that is
+  genuinely Chapter 14's own.
+```
+
+```yaml
+id: pp-topic-chlorine-dioxide-valve-selection-criteria
+kind: topic
+teaches: >
+  Chlorine dioxide (ClO2) is the majority-choice bleaching chemical
+  industry-wide because it minimizes cellulose degradation while
+  achieving higher final brightness than chlorination — but it is
+  expensive to generate and highly corrosive, which drives valve
+  material selection directly: high ClO2 concentrations require titanium
+  construction, though Hastelloy C (CW2M) can substitute at lower
+  concentrations. Named design considerations distinct from the caustic
+  application: highly corrosive chemistry (explicitly not the same
+  corrosion mode as chlorine applications), erosion risk that depends on
+  stock consistency and velocity through the valve, and accurate control
+  driven by the chemical's own cost rather than a process-safety
+  requirement per se. Two real specifications are given spanning the
+  concentration range (V150/V300 with titanium or Hastelloy C trim; a
+  V150S variant using titanium and ceramic trim needing no liner at
+  all), plus a distinct high-concentration spec (Titanium C3/Hastelloy C
+  ball, TCM Plus seal, ENVIRO-SEAL PTFE packing box, FIELDVUE DVC6200
+  with Performance Diagnostics).
+concept-tags: [chlorine dioxide, ClO2, titanium, Hastelloy C, corrosion, erosion, valve material selection]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "Chlorine Dioxide Applications section, Design Considerations and Typical Specifications, printed pp. 14-5–14-6 (PDF pp. 181-182) — running prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [pp-topic-caustic-naoh-valve-control-criticality, pp-topic-bleaching-chemistry-nomenclature]
+used-by: []
+notes: >
+  This entry's material-selection logic (concentration-driven
+  titanium-vs-Hastelloy-C choice) is a genuinely distinct corrosion
+  mechanism from CVH's sulfide-stress-cracking or extreme-temperature
+  materials topics (different chemistry entirely) — deliberately not
+  cross-referenced there to avoid implying a shared mechanism that
+  doesn't exist.
+```
+
 ### Chapter 14 — Typical Valve Layouts by Bleaching Stage (printed pp. 14-6–14-8)
 
 ```yaml

@@ -121,6 +121,75 @@ used-by: []
 notes: A 3-panel progressive-sequence image (same nozzle at three penetration depths), not three distinct nozzle designs.
 ```
 
+```yaml
+id: cvh-topic-desuperheater-sizing-methodology
+kind: topic
+concept-tags: [desuperheater, sizing methodology, heat balance, spraywater quantity, Cv calculation]
+status: current
+teaches: >
+  The real sizing method for a desuperheater, worked as a two-step
+  calculation. Step 1 — a heat balance determines the required spraywater
+  mass flow (Qw): as a function of inlet steam flow (Q1), Qw(mass) = Q1 ×
+  (H1−H2)/(H2−Hw); as a function of outlet steam flow (Q2) instead, Qw(mass)
+  = Q2 × (H1−H2)/(Hw−H1) — where Q is mass flow in PPH and H is the
+  enthalpy at inlet, outlet, and spraywater conditions respectively. Step 2 —
+  convert to a volumetric flow, Qw(volumetric) [GPM] = Qw(mass) × 0.1247 / ρw
+  (ρw = spraywater density, lbm/ft³), then size the spraywater control valve
+  with the standard liquid sizing relation Cv = Qw(volumetric) × √(SG/ΔPdsh),
+  where ΔPdsh is the pressure differential across the proposed desuperheater.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§7.1 Understanding Desuperheating, pp. 164-165 — prose, not figure-anchored (the heat-balance and Cv equations themselves)."
+relatedFigures: [cvh-cmp-insertion-desuperheater-schematic, cvh-cmp-desuperheater-spray-penetration]
+relatedTopics: [cvh-topic-desuperheater-application-factors]
+used-by: []
+notes: >
+  Confirmed by direct reading of PDF pp. 164-165 (printed pp. 164-165, zero
+  offset per this chapter's own confirmed page-number correspondence). The
+  three equations are transcribed exactly as printed, including which
+  enthalpy terms appear in the numerator vs. denominator for each of the two
+  Qw(mass) variants — this is a real, easily-transposed methodological
+  detail worth getting right rather than approximating.
+```
+
+```yaml
+id: cvh-topic-desuperheater-application-factors
+kind: topic
+concept-tags: [desuperheater, installation orientation, spraywater temperature, steam velocity, turndown, rangeability, strainer]
+status: current
+teaches: >
+  The practical factors, beyond the sizing math itself, that determine
+  whether a desuperheater installation actually works. Installation
+  orientation matters more than unit style — vertical, flow-up is generally
+  optimum. Counter-intuitively, hotter spraywater cools better: as
+  spraywater temperature rises, surface tension and droplet-size
+  distribution both improve, aiding vaporization. Steam velocity has upper
+  and lower bounds — roughly 150-250 ft/s maximum (above which water can't
+  mix before hitting a piping obstruction) and roughly 15-30 ft/s minimum
+  for spring-loaded nozzles (below which droplets fall out of suspension;
+  venturi or steam-atomizing designs extend usable velocity lower).
+  "Turndown" and "rangeability" are frequently used interchangeably but are
+  NOT the same thing, and a desuperheater — not being a final control
+  element itself — has its actual system turndown set by the whole system
+  (steam PRV, water TCV, pipe steam velocity, nozzle dP) rather than by the
+  desuperheater's own empirical flow range alone; a good desuperheater
+  cannot overcome a poor system. Inline strainers, sized to the specific
+  nozzle's required mesh size, are always required given the particulate
+  common in spraywater systems and piping.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§7.1/§7.1.1 Understanding Desuperheating / Technical Aspects of Desuperheating, pp. 163-166 — prose, not figure-anchored."
+relatedFigures: [cvh-cmp-desuperheater-installation-orientations, cvh-cmp-desuperheater-spray-penetration]
+relatedTopics: [cvh-topic-desuperheater-sizing-methodology]
+used-by: []
+notes: >
+  Confirmed by direct reading of PDF pp. 163-166. The turndown-vs-rangeability
+  distinction is explicitly flagged in the source itself as "one of the most
+  over-used and misunderstood concepts" — worth preserving that framing
+  rather than smoothing it into a plain definition, since the source's own
+  point is that practitioners conflate the two.
+```
+
 ### §7.2 Typical Desuperheater Designs (printed pp. 166–169)
 
 ```yaml
@@ -295,6 +364,39 @@ used-by: []
 notes: A single-component photo, distinct from the whole-valve cross-section in Figure 7.10.
 ```
 
+```yaml
+id: cvh-topic-steam-conditioning-valve-rationale
+kind: topic
+concept-tags: [steam conditioning valve, forged construction, combined pressure and temperature control, rangeability]
+status: current
+teaches: >
+  Why pressure reduction and desuperheating are combined into one integral
+  valve rather than built as two separate devices. Steam conditioning valves
+  are typically forged/fabricated (not cast) because forging permits higher
+  design stresses, improved grain structure, and better material integrity
+  at the elevated pressures/temperatures these applications see, plus it
+  allows an expanded outlet (to control outlet steam velocity after the
+  pressure drop) and different inlet/outlet pressure-class ratings to better
+  match adjacent piping — castings remain an option only for lower-pressure
+  globe-style applications. Combining the two functions in one valve (versus
+  two separate devices) improves spraywater mixing (using the turbulent
+  expansion zone downstream of the pressure-reduction elements), improves
+  rangeability, and simplifies installation/servicing to one device instead
+  of two.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§7.3 Understanding Steam Conditioning Valves, pp. 169-170 — prose, not figure-anchored."
+relatedFigures: [cvh-cmp-steam-conditioning-valve-cross-section, cvh-cmp-backpressure-spray-nozzle]
+relatedTopics: []
+used-by: []
+notes: >
+  Confirmed by direct reading of PDF pp. 169-170. This is the "why" behind
+  what Figure 7.10's cross-section shows physically — the figure entry
+  covers the hardware (cage, cobalt overlays, shutoff), this topic covers
+  the design-rationale reasoning (forged vs. cast, combined vs. separate)
+  that isn't visible in the figure itself.
+```
+
 ### §7.4.1–7.4.2 Attemperator and Sparger (printed p. 171)
 
 ```yaml
@@ -337,6 +439,73 @@ used-by: []
 notes: A cylindrical sparger component photo, showing the drilled perforation pattern along its body.
 ```
 
+### §7.5–7.6.2 Turbine Bypass Systems and Valve Selection (printed pp. 172–173, no figures — prose only)
+
+```yaml
+id: cvh-topic-turbine-bypass-system-rationale
+kind: topic
+concept-tags: [turbine bypass, load swings, boiler protection, plant commissioning, closed-loop system]
+status: current
+teaches: >
+  Why turbine bypass systems exist. Power plant operation swings rapidly
+  between minimum and full load within a single day, and boilers, turbines,
+  condensers, and associated equipment cannot respond properly to such rapid
+  changes without a bypass path. A turbine bypass system lets the boiler
+  operate independent of the turbine — supplying an alternate flow path for
+  steam during startup or rapid load reduction, and conditioning that steam
+  to the same pressure/temperature the turbine's own expansion process would
+  normally produce. This protects the turbine, boiler, and condenser from
+  thermal and pressure-excursion damage, allows a new plant's boiler to be
+  commissioned and checked out separately from its turbine (faster, more
+  economical startups), and — as a closed-loop system — prevents atmospheric
+  loss of treated feedwater and reduces ambient noise emissions.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§7.5 Understanding Turbine Bypass Systems, pp. 172-173 — prose, not figure-anchored (no figure exists for this section)."
+relatedFigures: [cvh-cmp-turbine-bypass-actuation-package]
+relatedTopics: [cvh-topic-turbine-bypass-valve-selection]
+used-by: []
+notes: >
+  Confirmed by direct reading of PDF pp. 172-173. This section has no figure
+  at all in the source — genuinely missed by the figures-only pass, not a
+  gap in that pass's execution.
+```
+
+```yaml
+id: cvh-topic-turbine-bypass-valve-selection
+kind: topic
+concept-tags: [turbine bypass valve, water control valve, Class V shutoff, valve selection, noise abatement trim]
+status: current
+teaches: >
+  A turbine bypass system's major elements are the turbine bypass valves,
+  turbine bypass water control valves, and the actuation system. Both the
+  bypass valves and their water control valves usually require tight
+  shutoff (Class V) for equipment protection; water control valve trim can
+  range from standard to cavitation-reduction styles. Selecting a turbine
+  bypass control valve should start from the actual performance goals,
+  real piping geometry, and required process controls, THEN incorporate
+  valve style/size, pressure and flow control needs, noise-specification
+  requirements, and materials — bypass valve installations vary widely and
+  are frequently customized, rarely identical between installations.
+  Separate globe/angle bodies with downstream desuperheating devices suit
+  existing piping layouts; sliding-stem valves give precise flow control
+  and can incorporate noise-abatement trim for the large pressure drops
+  typical of steam letdown/turbine bypass service.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "§7.6 Turbine Bypass System Components / §7.6.1 Turbine Bypass Valves / §7.6.2 Turbine Bypass Water Control Valves, p. 173 — prose, not figure-anchored (no figure exists for these subsections; §7.6.3's own figure, Figure 7.14, is catalogued separately below)."
+relatedFigures: [cvh-cmp-turbine-bypass-actuation-package]
+relatedTopics: [cvh-topic-turbine-bypass-system-rationale]
+used-by: []
+notes: >
+  Confirmed by direct reading of PDF p. 173. §7.6.3 (Actuation) already has
+  its own figure entry (`cvh-cmp-turbine-bypass-actuation-package`) which
+  adequately covers the actuation-specific numbers (2-4s stroke, 1%
+  positioning accuracy, pneumatic/hydraulic options) — not duplicated here;
+  this topic covers §7.6-7.6.2's valve-selection content specifically, which
+  had no figure and no existing coverage at all.
+```
+
 ### §7.6.3 Turbine Bypass Actuation (printed p. 174)
 
 ```yaml
@@ -369,3 +538,4 @@ notes: A full actuator-and-valve assembly photo; the last figure of the chapter.
 - **Cross-reference check**: `Component Index — 14101 ch1-ch2.md`, `Component Index — 14101 ch3.md`, and `Component Index — bench-set-657.md` were checked directly — no existing citations into this chapter's range (§7.1–§7.6, figures 7.1–7.14). Every figure catalogued fresh here.
 - **No archive or legacy material** was found or consulted for this chapter — the 6th-edition Control Valve Handbook is the sole and sufficient source for all 14 figures.
 - **`status` and `id` conventions**: this file was authored fresh under the corrected conventions — no drift to correct.
+- **`kind: topic` pass (2026-09-17):** read the chapter's full body prose (PDF pp. 163-174) start to finish, not just figure-adjacent text. Five real `kind: topic` entries added: `cvh-topic-desuperheater-sizing-methodology` and `cvh-topic-desuperheater-application-factors` (§7.1), `cvh-topic-steam-conditioning-valve-rationale` (§7.3-7.4), `cvh-topic-turbine-bypass-system-rationale` and `cvh-topic-turbine-bypass-valve-selection` (§7.5-7.6.2). The latter two topics cover §7.5 and §7.6-7.6.2 specifically — real sections with genuine conceptual content that had **no figure at all** and so were invisible to the original figures-only pass, not a gap in that pass's own execution. §7.2 (desuperheater design types, Figures 7.4-7.9) and §7.4.1-7.4.2 (attemperator/sparger, Figures 7.12-7.13) were read in full and confirmed to have no conceptual content beyond what their existing figure entries already capture — no topic entry added for these, to avoid padding. Total chapter component count: 19 (14 figures + 5 topics), up from 14.

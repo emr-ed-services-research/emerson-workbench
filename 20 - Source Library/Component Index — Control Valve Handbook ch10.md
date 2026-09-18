@@ -60,6 +60,35 @@ this chapter's "figures" are dimension tables, not diagrams.
 
 ## Components
 
+```yaml
+id: cvh-topic-valve-function-taxonomy
+kind: topic
+concept-tags: [valve function, throttling, flow reversal, pressure regulation, valve selection]
+status: current
+teaches: >
+  The primary purpose of any valve is to stop or start flow, or to regulate
+  it. Regulation itself covers three distinct functions: throttling,
+  preventing flow reversal, and relieving or regulating system pressure.
+  Selecting a valve type for a given service is driven by which of these
+  functions the application actually needs, plus the valve's design
+  suitability for the service — not an arbitrary preference among the eight
+  basic valve designs this chapter surveys (gate, globe, check, diaphragm,
+  butterfly, plug, relief, ball).
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "p.211, §10.1 'Basic Valve Types' — prose, not figure-anchored"
+relatedFigures: []
+relatedTopics: [cvh-topic-body-bonnet-junction, cvh-topic-valve-guiding, cvh-topic-check-valve-selection]
+used-by: []
+notes: >
+  The chapter-opening framework the whole valve-type survey hangs off —
+  every subsequent section (gate, globe, check, diaphragm, pinch, ball,
+  butterfly, plug) is organized as an instance of this taxonomy. No single
+  figure carries this content; it is stated once in the chapter's own
+  introductory prose before Figure 10.1 appears. Confirmed by direct text
+  read of p.211.
+```
+
 ### 10.1 Basic Valve Types — Gate Valves (printed pp. 211–213)
 
 ```yaml
@@ -151,6 +180,40 @@ source:
 delivery: not yet determined
 used-by: []
 notes: Text explains this design achieves zero leakage at 6 bar air with lower required torque than a solid wedge.
+```
+
+```yaml
+id: cvh-topic-body-bonnet-junction
+kind: topic
+concept-tags: [pressure seal, bolted bonnet, body-bonnet junction, gasket, high pressure]
+status: current
+teaches: >
+  Every isolation valve's body-to-bonnet junction is made one of two ways: a
+  bolted bonnet (bolts and nuts, used across ANSI classes 150 through 1500)
+  or a pressure-seal bonnet (used only on high-pressure classes 900 through
+  4500). A pressure-seal joint works as a sequence: an axial force that
+  increases as internal pressure rises is applied to a gasket; this force
+  compresses the gasket, which deforms both radially (pressing against the
+  body and cover walls to create the sealing surface pressure) and axially;
+  a ring above the gasket absorbs the axial force and transfers it to
+  segment rings fitted in a groove in the body, which carry the force into
+  the body itself; the cover is separately pre-stressed by studs so the
+  gasket is already deformed and sealing even when internal pressure is low,
+  before the pressure-assist effect takes over at higher pressure.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "pp.213-214, §10.1.1 body text (unheaded prose following the flexible split-wedge discussion) — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-gate-valve-pressure-seal, cvh-cmp-pressure-seal-detail, cvh-cmp-flexible-split-wedge-gate-valve]
+relatedTopics: [cvh-topic-valve-function-taxonomy]
+used-by: []
+notes: >
+  Explicitly stated to apply to "all isolation valves," not just gate
+  valves — a real cross-cutting mechanism, not a gate-valve-specific detail,
+  even though it appears in the gate-valve section. Confirmed by direct
+  visual page render of p.213 (a two-column layout; text-extraction alone
+  read cleanly here, but the render was checked to be sure given p.217's
+  extraction problem below). Complements Figure 10.1/10.8's structural and
+  color-coded mechanism views with the real written sequence of forces.
 ```
 
 ### 10.1.1 Pressure Seal Detail; 10.1.2 Globe Valves (printed pp. 214–215)
@@ -330,6 +393,45 @@ used-by: []
 notes: Direct contrast pairing with Figure 10.19 (Body Guiding) — the text presents these as the two fundamental valve-guiding approaches.
 ```
 
+```yaml
+id: cvh-topic-valve-guiding
+kind: topic
+concept-tags: [valve guiding, body guiding, stem bonnet guiding, closure element alignment]
+status: current
+teaches: >
+  Reliable valve performance depends on keeping the closure element aligned
+  in the correct orientation. There are two fundamental approaches. Body
+  guiding (valvehead guided on the body itself; commonly used on larger
+  globe and non-return valves) — advantage: large contact area gives the
+  valvehead stability; disadvantages: may need hard-facing for high-wear
+  applications, can be subject to fouling/binding if system conditions
+  (e.g. scale) aren't maintained, and generally needs a larger valvehead; on
+  a non-return-valve application, if the valvehead seizes to the body, the
+  globe-valve function is lost too. Stem-bonnet guiding (the stem is guided
+  within the bonnet by an external anti-rotation device; common on smaller
+  valves) — advantages: removes the guiding surface from direct contact with
+  the system media, can reduce valvehead size/weight, generally needs no
+  hard-facing, and on a non-return-valve design lets the valve still work as
+  a plain globe valve even if seizure occurs; disadvantage: may need a
+  larger stem diameter on big valves.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "p.217, 'Valve Guiding Types' — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-body-guiding, cvh-cmp-stem-bonnet-guiding]
+relatedTopics: [cvh-topic-valve-function-taxonomy]
+used-by: []
+notes: >
+  This page's two-column layout defeated linear text extraction — the
+  Advantages/Disadvantages lists for body guiding vs. stem-bonnet guiding
+  interleaved incorrectly in a plain pdftotext read (stem-bonnet's
+  advantages appeared to run on directly from body guiding's, with body
+  guiding's own disadvantages appearing to vanish). Corrected by rendering
+  the actual page image at 200dpi and reading the real two-column layout
+  directly — the attribution above matches the visual layout, not the
+  garbled linear extraction. Anyone re-deriving this page's content from
+  text extraction alone should be aware of this risk.
+```
+
 ### 10.1.3 Check Valves (printed pp. 218–219)
 
 ```yaml
@@ -382,6 +484,39 @@ source:
 delivery: not yet determined
 used-by: []
 notes: Text notes lift check valves are also available in vertical designs (not separately figured here).
+```
+
+```yaml
+id: cvh-topic-check-valve-selection
+kind: topic
+concept-tags: [check valve, swing check, tilting disk, lift check, flow resistance, disk stability, valve selection]
+status: current
+teaches: >
+  The three common check-valve designs trade off differently. Swing check:
+  when fully open it offers less flow resistance than a lift check, but the
+  hinged disk's swinging action means the valve must be installed so the
+  disk closes positively by gravity; plain swing checks can suffer shock
+  closure and disk chatter, which outside lever-and-weight arrangements or
+  spring-loaded disks address by forcing immediate closure on flow reversal.
+  Tilting-disk (a swing-check variant addressing the same slamming problem):
+  flow passes both below and over the disk, giving greater disk stability
+  than a plain swing check — most advantageous above 6 inches and on
+  higher-pressure, low-flow-rate applications where disk stability is
+  otherwise at risk. Lift check: used where pressure drop isn't critical;
+  its flow pattern corresponds to a globe valve's, and it's available in
+  horizontal or vertical designs.
+source:
+  - doc: Control Valve Handbook, 6th ed. (D101881X012)
+    locator: "pp.218-219, §10.1.3 'Check Valves' body text — prose, not figure-anchored"
+relatedFigures: [cvh-cmp-swing-check-valve, cvh-cmp-lever-weight-swing-check-valve, cvh-cmp-tilting-check-valve, cvh-cmp-horizontal-lift-check-valve]
+relatedTopics: [cvh-topic-valve-function-taxonomy]
+used-by: []
+notes: >
+  Real comparative selection guidance (why choose one check-valve design
+  over another), distinct from what any single figure's own labelled-parts
+  caption shows. Confirmed by direct text read of pp.218-219; this section's
+  layout extracted cleanly (single-column), no visual-render cross-check
+  needed the way p.217 required.
 ```
 
 ### 10.1.4 Preheater Protection Valves (printed p. 219)
@@ -778,6 +913,23 @@ notes: Last of the seven-part steel-globe/check-valve dimension series, and the 
 ```
 
 ## Open items
+
+- **`kind: topic` pass, 2026-09-17** (part of the CVH-wide topic-indexing
+  directive, Franz, same date): 4 new topic entries added —
+  `cvh-topic-valve-function-taxonomy` (p.211), `cvh-topic-body-bonnet-junction`
+  (pp.213-214), `cvh-topic-valve-guiding` (p.217), `cvh-topic-check-valve-selection`
+  (pp.218-219). Every remaining section of the chapter (all individual
+  valve-type descriptions, the preheater/reheater/turbine-extraction/bypass/
+  diaphragm/pinch/ball/butterfly/plug sections, and the Figure 10.40-10.53
+  dimension tables) was read and confirmed to be either already fully
+  captured by its own figure entry's `teaches:` field, or pure reference
+  data with no additional conceptual content beyond what a figure shows —
+  no further topics were found or forced. p.217's two-column layout
+  defeated linear text extraction (see that topic's own notes) and required
+  a visual page render to attribute content correctly — flagging this as a
+  real risk for anyone doing text-only passes over this chapter in future.
+  Integrity re-checked after this pass: 57 total ids, zero duplicates, zero
+  broken relatedFigures/relatedTopics references.
 
 - **Chapter boundary confirmed by direct page reads:** PDF page 210 (divider) through PDF page 239 (blank, chapter-end filler); PDF page 240 is the Chapter 11 divider. No printed/PDF page offset. Every page in this 30-page range was rendered as an image and visually inspected — none read from text extraction alone.
 - **Full coverage: 53 figures, Figures 10.1–10.53, no gaps.** 39 are pictorial (labelled cutaways, schematics, or photos of isolation-valve hardware); 14 (Figures 10.40–10.53) are full-page ANSI dimension tables captioned as figures in the source — catalogued per the standing rule that a source-numbered figure is a component regardless of pictorial-vs-tabular content, distinct from a genuine "Table N" reference, of which none exist in this chapter.

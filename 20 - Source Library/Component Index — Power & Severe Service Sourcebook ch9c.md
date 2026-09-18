@@ -42,6 +42,114 @@ legacy material was consulted for this chapter.
 ### Chapter 9C — Geothermal Power (printed pp. 9C-1 – 9C-4)
 
 ```yaml
+id: pss-topic-geothermal-resource-fundamentals
+kind: topic
+teaches: >
+  Geothermal energy fundamentals: the resource is categorized as
+  hydrothermal, geo-pressured, hot dry rock, or magma — most existing
+  applications use hydrothermal (hot water/steam in permeable rock).
+  A resource becomes usable for power generation once its temperature
+  exceeds 90°C (194°F). Geothermal power is generally environmentally
+  clean, though steam plants can release small, easily-mitigated amounts
+  of gas. Reservoir economics: reinjecting spent geothermal fluid
+  preserves reservoir fluid volume but does not regenerate the heat
+  content itself — the source's own text states a geothermal resource's
+  recovery period runs several hundred years, against a typical 50-year
+  generating-facility lifespan, implying periodic new-site construction
+  rather than indefinite single-site operation.
+concept-tags: [geothermal power, hydrothermal resource, geo-pressured, hot dry rock, magma, reservoir recovery period, temperature threshold]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "Chapter 9C opening prose, p. 9C-1"
+relatedFigures: []
+relatedTopics: [pss-topic-geothermal-conversion-technologies]
+used-by: []
+notes: >
+  Pure body prose, no figure of its own — the chapter's opening framing
+  before the plant-technology discussion begins. Read directly from the
+  rendered page text, not inferred from any figure caption.
+```
+
+```yaml
+id: pss-topic-geothermal-conversion-technologies
+kind: topic
+teaches: >
+  Three power-plant technologies convert hydrothermal fluid to
+  electricity, selected by the fluid's state and temperature: Dry Steam
+  plants (steam-rich resources like The Geysers, CA — steam feeds the
+  turbine directly, emitting only excess steam and minor gases); Flash
+  Steam plants (fluid above 400°F/200°C is sprayed into a lower-pressure
+  tank, flashing part of it to steam that drives the turbine — Figure
+  9C-1); and Binary-Cycle plants (fluid below 400°F passes through a heat
+  exchanger to vaporize a secondary low-boiling-point fluid, e.g.
+  isobutane or isopentane, in a closed loop with virtually no atmospheric
+  emission — Figure 9C-2). The source states moderate-temperature water
+  is the most common geothermal resource, so binary-cycle is expected to
+  dominate future plant construction.
+concept-tags: [dry steam power plant, flash steam power plant, binary cycle power plant, temperature threshold, closed loop, secondary working fluid]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "\"Converting Steam and Hot Water to Electricity,\" p. 9C-1–9C-2"
+relatedFigures: [pss-cmp-flash-steam-power-plant-schematic, pss-cmp-binary-cycle-power-plant-schematic]
+relatedTopics: [pss-topic-geothermal-resource-fundamentals]
+used-by: []
+notes: >
+  Dry Steam plants are named and explained in the real prose but have NO
+  figure anywhere in this chapter — only Flash Steam (Fig. 9C-1) and
+  Binary-Cycle (Fig. 9C-2) are illustrated. This third technology was
+  completely invisible to the original figures-only cataloguing pass.
+```
+
+```yaml
+id: pss-topic-geothermal-corrosion-and-valve-selection
+kind: topic
+teaches: >
+  Geothermal fluids carry a specific set of corrosive agents named
+  directly in the source, each with a distinct mechanism: carbon dioxide
+  (corrodes steam/condensate lines), hydrogen sulfide (corrosive and
+  lethal at high concentration), sulfates (combine with the water's own
+  calcium to form adherent calcium-sulfate scale on pipe/heat-exchanger
+  surfaces), chlorides (increase water corrosiveness and drive chloride
+  stress-corrosion cracking on 300-series stainless steel — the source's
+  stated reason other stainless grades are typically used instead),
+  ammonia (reacts with copper/zinc alloys), and oxygen (accelerates
+  corrosion of water lines, heat-exchange equipment, boilers, return
+  lines). Valve selection follows directly from this: the V500 eplug
+  (ceramic plug/seat/retainer, optionally Alloy 6 chrome-oxide coated) is
+  the source's recommended choice for dirty, erosive brine and low-ΔP
+  wellhead duty; Vee-Ball valves for high-ΔP reinjection-tank and
+  pre-separator duty; a high-performance butterfly valve (e.g. Posi-Seal
+  A41, metal or firesafe elastomer disc seal) before the separator.
+  Bearing-material selection follows the plant's own "inside/outside the
+  fence" zoning shown in Figure 9C-3: sealed metal bearings (316SST,
+  Alloy 6, 440C) on the dirty/outside-the-fence side, PEEK elastomer-lined
+  bearings on the clean/inside-the-fence side.
+concept-tags: [corrosion, hydrogen sulfide, chloride stress corrosion cracking, calcium sulfate scale, V500 eplug, Vee-Ball, Posi-Seal A41, bearing material selection, inside the fence, outside the fence]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
+    locator: "\"Severe Service Considerations\" and \"Valve Options,\" p. 9C-2–9C-3"
+relatedFigures: [pss-cmp-flash-cycle-valve-locations-diagram, pss-cmp-v500-eplug-geothermal-cutaway]
+relatedTopics: []
+used-by: []
+notes: >
+  Expands well beyond Figure 9C-3's own `teaches` field, which names the
+  valves and the fence boundary but not the corrosion mechanisms driving
+  the selection or the specific bearing-material choices — that reasoning
+  exists only in the surrounding body prose. Cross-book materials-severity
+  connection considered: `cvh-topic-extreme-temperature-materials` and
+  `cvh-topic-sulfide-stress-cracking` (both verified real in Control Valve
+  Handbook ch6) cover temperature-driven and H2S-driven material selection
+  respectively — related domain, but this entry's corrosion agents
+  (chloride SCC, calcium sulfate scale, ammonia) are distinct enough not
+  to merge; left as a documented relationship here rather than a
+  relatedTopics link, since neither CVH entry actually discusses
+  geothermal brine chemistry specifically.
+```
+
+```yaml
 id: pss-cmp-flash-steam-power-plant-schematic
 teaches: >
   Flash-steam geothermal power plant process schematic: hydrothermal fluid
@@ -169,3 +277,14 @@ mediaStatus: unreviewed
   sweep). No other overlap found against material already in context.
 - **Archive/legacy material**: none consulted, none needed — this is a
   first-party current Fisher document throughout.
+- **`kind: topic` pass, added 2026-09-17**: 3 new topic entries
+  (`pss-topic-geothermal-resource-fundamentals`,
+  `pss-topic-geothermal-conversion-technologies`,
+  `pss-topic-geothermal-corrosion-and-valve-selection`) added, all read
+  directly from the chapter's real body prose (`pdftotext -layout`,
+  PDF pp. 155-158). Dry Steam power plants are named and explained in the
+  prose but have no figure at all — invisible to the original
+  figures-only pass. Chapter total is now 7 components (4 figures + 3
+  topics). No reference-data-only section required a skip note — the
+  whole chapter is narrative prose, fully covered between the 4 existing
+  figure entries and these 3 topic entries.

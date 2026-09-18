@@ -741,6 +741,292 @@ used-by: []
 notes: Dimensioned line-art with printed field labels (STEM, VALVE PLUG, SEAT RING, FLOW AREA, PORT DIA.); no cross-reference found elsewhere in the library for drawing A7100.
 ```
 
+### Chapter 1 — Conceptual content beyond the figures (`kind: topic`, added 2026-09-17)
+
+```yaml
+id: pp-topic-control-valve-selection-framework
+kind: topic
+concept-tags: [control loop, final control element, control valve assembly, valve selection taxonomy]
+status: current
+teaches: >
+  A control valve is the final control element in a process control loop:
+  sensors/transmitters detect a load disturbance against a process
+  variable's set point, a controller decides the correction, and the
+  control valve implements it by manipulating flowing fluid. "Control valve"
+  often really means "control valve assembly" — body, trim, actuator, and
+  accessories (positioners, transducers, regulators, snubbers, limit
+  switches) together. The chapter frames selection as choosing among nine
+  major valve-style subcategories (Table 1-2: regular/bar-stock/economy
+  sliding-stem, thru-bore/partial ball, eccentric plug, swing-thru/lined/
+  high-performance butterfly), and closes with a real economic conclusion:
+  sliding-stem for lower flow ranges, ball valves for intermediate
+  capacities, high-performance butterfly for the largest flows — though
+  "selecting a control valve is more of an art than a science."
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'What Is A Control Valve?', p. 1-1, and 'Conclusion', p. 1-20 (PDF pp. 9, 28)"
+relatedFigures: []
+relatedTopics: [ogas-topic-control-valve-selection-process, pss-topic-control-valve-selection-framework]
+used-by: []
+notes: >
+  Same Fisher Sourcebook-series opening framing already found in Oil & Gas's
+  and Power & Severe Service's own ch1 — kept as a separate record per the
+  project's standing cross-document rule, cross-referenced rather than
+  merged. No figure anchors this content; it is the chapter's own narrative
+  frame around Table 1-2.
+```
+
+```yaml
+id: pp-topic-end-connection-selection-criteria
+kind: topic
+concept-tags: [screwed connections, flanged connections, welded connections, end connection selection]
+status: current
+teaches: >
+  The three installation methods (screwed pipe threads, bolted gasketed
+  flanges, welded ends) trade off economy, temperature range, and ease of
+  maintenance/removal. Screwed connections are the most economical but
+  limited to NPS 2 and not recommended for elevated temperature; removing a
+  screwed-end valve requires breaking a flanged or union joint elsewhere in
+  the line. Flanged connections work from absolute zero to ~1500°F/815°C on
+  all valve sizes and are the easiest to remove. Welded ends are leak-tight
+  at all pressures/temperatures and economical in first cost, but are hard
+  to remove and limited to weldable materials. The chapter states this
+  matters concretely: a piping spec calling for welded connections only
+  narrows the choice to sliding-stem valves.
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'Control Valve End Connections', pp. 1-7–1-8, and 'End Connections', p. 1-19 (PDF pp. 15-16, 27) — the same content is presented twice in this chapter, once as a standalone section and once inside the general selection-criteria discussion"
+relatedFigures: [pp-cmp-bolted-flange-end-connections, pp-cmp-welded-end-connections]
+relatedTopics: [pss-topic-end-connection-selection-criteria]
+used-by: []
+notes: >
+  Consolidates both of this chapter's own presentations of the same three
+  methods into one record rather than two near-duplicate topic entries.
+  Oil & Gas's own ch1 does not have a matching standalone topic id for this
+  ground (checked directly, not assumed) — only Power & Severe Service does.
+```
+
+```yaml
+id: pp-topic-bonnet-function-and-types
+kind: topic
+concept-tags: [bonnet function, packing box, extension bonnet, bellows seal bonnet, rotary valves no bonnet]
+status: current
+teaches: >
+  The bonnet is the pressure-retaining part of a globe/angle valve body
+  through which the stem or shaft moves; it mounts the actuator and houses
+  the packing box. Generally, rotary valves do not have bonnets — packing
+  is housed within an extension of the body itself, or in a separate
+  component bolted between body and bonnet. On cage/retainer-trim bodies,
+  the bonnet also provides the clamping force that seals the seat ring to
+  the body and aligns the cage. Extension bonnets (cast or fabricated)
+  exist specifically to move the packing box away from extreme process
+  temperatures — cast extensions dissipate heat better for high-temp
+  service, fabricated stainless steel extensions minimize heat influx for
+  cold service. Bellows seal bonnets exist for near-zero leakage
+  (<1×10⁻⁶ cc/sec helium) when the process fluid is toxic, volatile,
+  radioactive, or expensive.
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'Valve Body Bonnets', pp. 1-8–1-11 (PDF pp. 16-19)"
+relatedFigures: [pp-cmp-typical-bonnet-flange-stud-bolts, pp-cmp-extension-bonnet-cast, pp-cmp-fabricated-extension-bonnet, pp-cmp-enviroseal-bellows-seal-bonnet]
+relatedTopics: []
+used-by: []
+notes: >
+  The general "why a bonnet, why rotary valves skip it, why extension/
+  bellows variants exist" reasoning ties together four separate figure
+  entries that each show one bonnet type without stating the shared
+  functional logic.
+```
+
+```yaml
+id: pp-topic-fugitive-emissions-regulatory-framework
+kind: topic
+concept-tags: [fugitive emissions, LDAR, EPA protocol, 500 ppmv, packing system response]
+status: current
+teaches: >
+  US fugitive-emissions regulations (LDAR — Leak Detection and Repair)
+  require monitoring all valves at an interval set by the percentage found
+  leaking above a 500 ppmv threshold (some cities use 100 ppmv), detected by
+  portable EPA-protocol sniffing equipment since the leakage is too slight
+  to see or hear. Facilities demonstrating under 0.5% of valves leaking can
+  extend the monitoring interval to a year. Packing systems designed for
+  extremely low leakage (e.g. ENVIRO-SEAL, four design principles: anti-
+  extrusion containment, Belleville-spring constant stress, proper stem/
+  shaft alignment, minimized seal-ring count) exist specifically to support
+  that extended monitoring objective, not just as a general seal upgrade.
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'USA Regulatory Requirements for Fugitive Emissions', pp. 1-12–1-13 (PDF pp. 20-21)"
+relatedFigures: [pp-cmp-voc-measurement-frequency-flowchart]
+relatedTopics: []
+used-by: []
+notes: >
+  The regulatory "why" behind the packing-system figures already catalogued
+  — those figures show what each packing system is, this entry explains the
+  compliance driver none of them state on their own.
+```
+
+```yaml
+id: pp-topic-flow-characteristic-and-rangeability
+kind: topic
+concept-tags: [linear characteristic, equal-percentage characteristic, quick-opening characteristic, rangeability, positioner use]
+status: current
+teaches: >
+  Inherent flow characteristic is the flow-rate-vs-travel relationship at
+  constant pressure drop: linear (flow directly proportional to travel,
+  used for level control and constant-gain flow control), equal-percentage
+  (small changes near the seat, rapidly increasing near wide-open — the
+  most common characteristic since inlet pressure typically decreases as
+  flow increases in real systems), and quick-opening (near-linear to ~70%
+  of travel then flattens — used for on/off and relief-valve service).
+  Rangeability is the ratio of maximum to minimum controllable flow;
+  rotary valves (especially partial-ball) generally have greater
+  rangeability than sliding-stem. A characterized positioner can partially
+  substitute one inherent characteristic for another, limited by the
+  positioner's own frequency response — not a substitute for choosing the
+  right cage/plug in high-gain-process applications.
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'Characterization of Cage-Guided Valve Bodies' and 'Characterized Valve Plugs', pp. 1-15–1-16, and 'Flow Characteristic'/'Rangeability'/'Use of Positioners', pp. 1-18–1-19 (PDF pp. 23-24, 26-27)"
+relatedFigures: [pp-cmp-characterized-cages-globe-valve, pp-cmp-inherent-flow-characteristics-curves]
+relatedTopics: [ogas-topic-flow-characteristic-and-rangeability, pss-topic-flow-characteristic-rangeability-positioners]
+used-by: []
+notes: >
+  Consolidates two separate chapter presentations of the same concept (the
+  mechanism-level cage/plug discussion at pp.1-15-16, and the selection-
+  criteria discussion at pp.1-18-19) into one record. Same Fisher
+  Sourcebook-series content as the cross-referenced Oil & Gas/Power & Severe
+  Service entries — kept separate per the standing cross-document rule.
+```
+
+```yaml
+id: pp-topic-restricted-capacity-trim-rationale
+kind: topic
+concept-tags: [restricted capacity trim, reduced flow rate, future capacity, oversizing correction]
+status: current
+teaches: >
+  Restricted/reduced-capacity trim lets a body be sized for future flow
+  growth while trim capacity matches present needs, permits selecting a
+  body for structural strength while keeping a reasonable travel/capacity
+  relationship, reduces inlet/outlet velocities in large bodies, avoids
+  buying expensive pipeline reducers, and corrects over-sizing errors.
+  Cage-guided trim commonly achieves this by borrowing plug/cage/seat-ring
+  parts from a smaller valve size (via adapter pieces) rather than a wholly
+  different design — many restricted-capacity combinations are standardized
+  around ~40% of full-size trim capacity.
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'Restricted-Capacity Control Valve Trim', p. 1-17 (PDF p. 25)"
+relatedFigures: [pp-cmp-characterized-cages-globe-valve]
+relatedTopics: []
+used-by: []
+notes: No figure of its own in the source; a pure rationale section.
+```
+
+```yaml
+id: pp-topic-valve-plug-guiding-methods
+kind: topic
+concept-tags: [cage guiding, top guiding, stem guiding, top-and-bottom guiding, port guiding]
+status: current
+teaches: >
+  Five valve-plug guiding methods, each ensuring proper plug/seat-ring
+  alignment: cage guiding (plug OD close to the cage's cylindrical inside
+  wall — self-aligning since bonnet/cage/seat ring assemble together);
+  top guiding (single guide bushing in the bonnet or body); stem guiding
+  (guide bushing acting on the plug stem); top-and-bottom guiding (bushings
+  in both bonnet and bottom flange); port guiding (aligned by the body port
+  itself — typical for small-diameter plugs with fluted skirts for
+  low-flow control).
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'Valve Plug Guiding', pp. 1-16–1-17 (PDF pp. 24-25)"
+relatedFigures: [pp-cmp-typical-bonnet-flange-stud-bolts, pp-cmp-high-pressure-globe-valve-body, pp-cmp-bar-stock-valve-body]
+relatedTopics: [cvh-topic-valve-plug-guiding-methods]
+used-by: []
+notes: >
+  Verified `cvh-topic-valve-plug-guiding-methods` (Control Valve Handbook
+  ch3) exists before citing — same five-method taxonomy, kept as a separate
+  record per the cross-document rule since this chapter's own figure
+  references and phrasing are book-specific.
+```
+
+```yaml
+id: pp-topic-pressure-temperature-material-selection-criteria
+kind: topic
+concept-tags: [ANSI pressure class, temperature limits, material compatibility, elastomer temperature limits]
+status: current
+teaches: >
+  Body pressure ratings follow ANSI classes (150/300/600 most common for
+  steel/stainless) per ASME/ANSI B16.34 and ANSI B16.1, with maximum
+  pressure decreasing as temperature rises per the material's own strength
+  curve. Temperature also bounds soft-part selection (elastomers typically
+  200-350°F upper limit, PTFE to 450°F) and affects performance indirectly —
+  e.g. switching from PTFE to metal seals for high temperature generally
+  increases shutoff leakage, and high-temperature metal bearing sleeves in
+  rotary valves impose more shaft friction, lowering the pressure-drop load
+  the shaft can withstand at shutoff. Material compatibility is the most
+  complex criterion: corrosion, erosion, flashing, cavitation, and pressure/
+  temperature all interact, and valve materials often differ from the
+  piping material because in-valve velocity is higher.
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'Pressure Ratings', 'Temperature Considerations', 'Material Selection', pp. 1-18 (PDF p. 26)"
+relatedFigures: []
+relatedTopics: [pss-topic-pressure-temperature-material-selection-criteria]
+used-by: []
+notes: >
+  Verified `pss-topic-pressure-temperature-material-selection-criteria`
+  exists before citing — same three-criterion bundle, kept separate per the
+  cross-document rule.
+```
+
+```yaml
+id: pp-topic-shutoff-leakage-classification
+kind: topic
+concept-tags: [ANSI FCI 70-2, shutoff class, leakage rating, cost tradeoff]
+status: current
+teaches: >
+  Shutoff capability is rated per ANSI/FCI 70-2 classes (Table 1-4), but
+  actual service leakage can differ from the standard test conditions the
+  ratings are based on — the class is a comparison basis among similar
+  valves, not a service-leakage prediction. Tight-shutoff valves cost more
+  both initially and in later maintenance, and users commonly overestimate
+  the shutoff class they actually need; this matters most in high-pressure
+  valves, where leakage can destroy trim, and requires real care in seat
+  material/preparation/load, not just spec selection.
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'Shutoff Capability', pp. 1-19–1-20 (PDF pp. 27-28)"
+relatedFigures: []
+relatedTopics: [ogas-topic-shutoff-leakage-classification, pss-topic-shutoff-leakage-selection-criteria]
+used-by: []
+notes: Table 1-4 itself stays excluded as reference data, per the standing tables-vs-figures rule.
+```
+
+```yaml
+id: pp-topic-flow-capacity-selection-tradeoff
+kind: topic
+concept-tags: [sliding-stem vs rotary economics, flow capacity, pressure drop tradeoff]
+status: current
+teaches: >
+  For extremely large lines, sliding-stem valves cost more than rotary
+  types; for extremely small flows, a suitable rotary valve may not exist.
+  A sliding-stem valve with replaceable restricted trim can be upgraded
+  cheaply to full-size trim if future flow grows, versus replacing an
+  entire body. Rotary products generally have much higher maximum capacity
+  than sliding-stem valves of the same body size, making them attractive
+  where available pressure drop is small — but they offer little advantage
+  in high-pressure-drop applications like pressure regulation or letdown,
+  where sliding-stem's structural robustness matters more.
+source:
+  - doc: Fisher Control Valve Sourcebook — Pulp & Paper (D103540X012, © 2011 Fisher Controls International LLC)
+    locator: "'Flow Capacity', p. 1-20 (PDF p. 28)"
+relatedFigures: []
+relatedTopics: [pss-topic-pressure-drop-capacity-selection-criteria]
+used-by: []
+notes: This section's real economic reasoning underlies the chapter's own closing conclusion (sliding-stem/ball/butterfly by size), already captured in `pp-topic-control-valve-selection-framework` — kept as a separate record since this states the underlying tradeoff, not just the conclusion.
+```
+
 ## Open Items
 
 - **Chapter boundary confirmed directly**, not merely inherited from any
