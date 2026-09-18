@@ -1,20 +1,20 @@
 ---
-title: Competency Map — Derived from the Topic-Indexed Component Index
+title: Competency Map — Derived from the Topic-Indexed Subject-Matter Index
 type: reference
 tags:
   - source-library
   - pipeline
   - competency-map
   - curriculum-development
-source: derived from all five industry Component Indexes (CVH, Oil & Gas, Power & Severe Service, Pulp & Paper, Refining)
+source: derived from all five industry Subject-Matter Indexes (CVH, Oil & Gas, Power & Severe Service, Pulp & Paper, Refining)
 updated: 2026-09-18
 ---
 
-# Competency Map — Derived from the Topic-Indexed Component Index
+# Competency Map — Derived from the Topic-Indexed Subject-Matter Index
 
 Franz's three-part directive (2026-09-18, relayed and refined through RC across
 several corrections): derive a fresh CVE competency map directly from the now
-fully topic-indexed Component Index — deliberately **not** using the existing
+fully topic-indexed Subject-Matter Index — deliberately **not** using the existing
 CVE1/CVE2/CVE-Industry map (`eng.sizing.*`, `eng.selection.*`, etc.) as a basis,
 since that map was built by clustering figures thematically before the topic
 layer existed. Report instructional-depth findings, then propose concrete
@@ -49,7 +49,7 @@ not just noted after the fact:
 - Extracted all 381 `kind: topic` and 773 `kind: figure` entries (1,154
   total; 1,152 unique — the only duplicates are two pre-existing Oil & Gas
   id collisions already flagged in `Source Library.md` months ago, not
-  caused by this pass) across all 64 chapter/sub-chapter Component Index
+  caused by this pass) across all 64 chapter/sub-chapter Subject-Matter Index
   files in the five industry sourcebooks, with full `teaches` text,
   `concept-tags`, and `relatedFigures`/`relatedTopics` cross-references.
 - Built the `relatedTopics` cross-reference graph: 144 connected

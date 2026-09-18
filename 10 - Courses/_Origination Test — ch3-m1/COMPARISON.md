@@ -44,7 +44,7 @@ that map was human-authored days ago in this same work-stream, so this is
 not a fully blind test of catalogue selection.
 
 **The figures matched exactly.** Every primitive pointed straight at a real
-Component Index component — `ch3-cmp-da-schematic` / `-ra-schematic`
+Subject-Matter Index component — `ch3-cmp-da-schematic` / `-ra-schematic`
 (image151/152), `ch3-cmp-fail-mode-matrix` (fail-mode-spring-schematics.png
 + the 4-way matrix), `ch3-cmp-valve-forces-cutaway` (globe-valve-forces-cutaway.png
 + the A–D table), `ch3-cmp-bench-set-graph` (the bench-set line geometry),
@@ -480,7 +480,7 @@ container.
 
 ## 6. Honest assessment of the self-executed process
 
-- **The clearest win is retrieval, not structure.** The Component Index +
+- **The clearest win is retrieval, not structure.** The Subject-Matter Index +
   primitive registry meant every figure traced to a real component — zero
   "generate from nothing", zero cold search. That was the original ch3-m4
   failure mode and the whole reason the curriculum layer exists; here it

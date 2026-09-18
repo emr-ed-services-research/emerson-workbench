@@ -44,4 +44,4 @@ onshore/offshore distinction.
 
 **Competency coverage:** `eng.storage.formation-type-classification` (all items), `progression: applies` (proposed) — **though see the Curriculum doc's own flag: this may actually be `introduces` (genuinely new classification content) rather than `applies` (exercising something already taught) — Franz should make this call, not this pass.**
 
-**Open items flagged for Franz:** none beyond the progression-value question above — this module's sourcing is the most directly verified of the seven in this course (the salt-cavern-only claim was read from the actual Component Index record, not inferred).
+**Open items flagged for Franz:** none beyond the progression-value question above — this module's sourcing is the most directly verified of the seven in this course (the salt-cavern-only claim was read from the actual Subject-Matter Index record, not inferred).

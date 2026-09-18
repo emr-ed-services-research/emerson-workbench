@@ -23,7 +23,7 @@ adopting (checked CVE1's own `Status — CVE1.md` and its actual output in
 **31 real figures** CVE2 needed were cropped this way, all 55 slides are
 now built for real, and `verify.ps1` passes clean. Nothing below is
 fabricated — every crop traces to a real PDF page/figure number, checked
-against the Component Index before cropping.
+against the Subject-Matter Index before cropping.
 
 ## What's actually done
 
@@ -61,7 +61,7 @@ deck). **Resolved this pass**, using the method CVE1's sibling fork proved:
 separate cropping tool needed. Workflow used for all 31 figures: render
 the full page at 200dpi, view it to locate the figure's pixel bounding
 box, then re-render with the crop box. Every figure's real PDF page number
-was confirmed against the Component Index's own locator field first (no
+was confirmed against the Subject-Matter Index's own locator field first (no
 page guessed). One page-number-offset check was done explicitly (CVH:
 zero offset, PDF page = printed page, confirmed against p.123's real
 content) rather than assumed from precedent.
@@ -203,7 +203,7 @@ Final `verify.ps1` result after all of the above: **0 FAIL, 0 warn.**
    entry (GHG scopes) was originally authored assuming no real figure
    existed for it — the same "prose/table-driven, no hardware figure"
    reasoning that's genuinely correct for the ch11 decarbonization table.
-   Checking the real Component Index before cropping showed this was
+   Checking the real Subject-Matter Index before cropping showed this was
    wrong for this specific concept: `cvh-cmp-greenhouse-gas-scopes` is a
    real infographic (icons + labelled arrows, Figure 11.1), not a plain
    table. Corrected — page 44 now has a real cropped image like every

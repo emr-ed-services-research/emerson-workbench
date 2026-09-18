@@ -40,4 +40,4 @@ even though the temperature constraint doesn't.
 
 **Competency coverage:** `eng.lng.receiving-terminal-application` (all items), `progression: applies` (proposed).
 
-**Open items flagged for Franz:** the `ogas-cmp-a31a-cryogenic-valve` figure's specific spec details (material, size, pressure class) were not read in depth for this first pass — only confirmed to exist in the real Component Index; Stage 2 needs to read that record's full `teaches` field before authoring real slide content from it.
+**Open items flagged for Franz:** the `ogas-cmp-a31a-cryogenic-valve` figure's specific spec details (material, size, pressure class) were not read in depth for this first pass — only confirmed to exist in the real Subject-Matter Index; Stage 2 needs to read that record's full `teaches` field before authoring real slide content from it.

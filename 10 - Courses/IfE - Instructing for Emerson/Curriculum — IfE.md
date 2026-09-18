@@ -262,7 +262,7 @@ correction above.
   slide: ife-012
 ```
 
-No Component Index back-pointer for any of these — `provenance: original`
+No Subject-Matter Index back-pointer for any of these — `provenance: original`
 asset variants are exempt. The 6 framing-only concepts (Welcome, Prime
 Question, Myths, Meet Your Slice, plus the check itself) have no edges of
 their own beyond the one check edge above — no competency to place.
@@ -424,7 +424,7 @@ source material, none invented:
    staged bench setup (SHOW), explains why bench set matters and the real
    friction-correction gotcha from the same IM (TELL), then participants
    rotate through the staged stations to practice it with feedback (DO).
-   Sourced against `20 - Source Library/Component Index — bench-set-657.md`
+   Sourced against `20 - Source Library/Subject-Matter Index — bench-set-657.md`
    and verified directly against the real 1400 deck's own slides 92,
    96-100 (`10 - Courses/14101.../build/_generator/tmp/dryrun/slides/`) —
    slide 100 is literally "Check Your Knowledge 2: Bench Set." 657/667 is

@@ -37,7 +37,7 @@ role: mechanism · level: understand · pages: 40
 
   A pneumatic positioner closes its own local loop: it compares actual stem position (fed back through a cam and beam) to the command signal at a flapper/nozzle, and drives a relay until the two agree.
 
-  - `cvh-cmp-pneumatic-positioner-schematic` (verified, Component Index — Control Valve Handbook ch4.md) — "Full pneumatic single-acting positioner mechanism — bellows, beam, cam feedback, flapper/nozzle, relay, and the diaphragm-pressure output loop that positions the valve stem"
+  - `cvh-cmp-pneumatic-positioner-schematic` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Full pneumatic single-acting positioner mechanism — bellows, beam, cam feedback, flapper/nozzle, relay, and the diaphragm-pressure output loop that positions the valve stem"
   - template: `slide--role-mechanism` — One fully labelled schematic (bellows, beam, cam feedback, flapper/nozzle, relay, diaphragm-pressure output) showing the complete closed local loop — the clearest possible mechanism-role case in this module, one figure carrying the whole explanation.
   - slideCount: 1 (stage2)
   - pages: 40
@@ -50,8 +50,8 @@ role: mechanism · level: understand · pages: 41
 
   An analog I/P positioner runs the same feedback loop from a 4-20 mA current signal instead of a pneumatic one, converting current to pneumatic output through the same nozzle/flapper/relay stages.
 
-  - `cvh-cmp-analog-ip-positioner-schematic` (verified, Component Index — Control Valve Handbook ch4.md) — "Analog I/P positioner design — labelled schematic showing the DC input signal, converter, feedback axis, nozzle/flapper, and relay stages that produce a pneumatic output"
-  - `cvh-cmp-analog-ip-positioner-photo` (verified, Component Index — Control Valve Handbook ch4.md) — "Physical appearance of an assembled I/P positioner unit, as referenced alongside the schematic in Figure 4.2"
+  - `cvh-cmp-analog-ip-positioner-schematic` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Analog I/P positioner design — labelled schematic showing the DC input signal, converter, feedback axis, nozzle/flapper, and relay stages that produce a pneumatic output"
+  - `cvh-cmp-analog-ip-positioner-photo` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Physical appearance of an assembled I/P positioner unit, as referenced alongside the schematic in Figure 4.2"
   - template: `slide--role-mechanism` — Two figures in natural teaching order: the labelled schematic (DC input, converter, feedback axis, nozzle/flapper, relay) explaining the mechanism, then the physical unit photo confirming what it actually looks like — the same schematic-then-hardware sequence mechanism's shape is built to carry.
   - slideCount: 1 (stage2)
   - pages: 41
@@ -64,7 +64,7 @@ role: nomenclature · level: remember · pages: 42
 
   A digital valve controller replaces the positioner's mechanical feedback linkage with a microprocessor — same job (drive the valve to command), added diagnostics.
 
-  - `cvh-cmp-digital-valve-controller-photo` (verified, Component Index — Control Valve Handbook ch4.md) — "Digital valve controller mounted on an assembled control valve — the physical instrument referenced by §4.2.3's description of microprocessor-based positioning"
+  - `cvh-cmp-digital-valve-controller-photo` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Digital valve controller mounted on an assembled control valve — the physical instrument referenced by §4.2.3's description of microprocessor-based positioning"
   - template: `slide--role-nomenclature` — A single real photo of a digital valve controller mounted on an assembled valve — a straightforward recognition-level nomenclature case, naming the instrument before its own diagnostic capabilities are covered later in the course.
   - slideCount: 1 (stage2)
   - pages: 42
@@ -77,8 +77,8 @@ role: mechanism · level: understand · pages: 43
 
   An I/P transducer converts a current signal to a pneumatic one with no position feedback at all — simpler and cheaper than a positioner, appropriate where high positioning accuracy isn't required.
 
-  - `cvh-cmp-ip-transducer-pilot-detail` (verified, Component Index — Control Valve Handbook ch4.md) — "Deflector/nozzle pilot-stage detail inside an I/P transducer — the two-nozzle arrangement and deflector bar that establishes pilot pressure"
-  - `cvh-cmp-ip-transducer-photo` (verified, Component Index — Control Valve Handbook ch4.md) — "I/P transducer mounted on a control valve — the physical, no-feedback alternative to a positioner for applications not requiring high positioning accuracy"
+  - `cvh-cmp-ip-transducer-pilot-detail` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Deflector/nozzle pilot-stage detail inside an I/P transducer — the two-nozzle arrangement and deflector bar that establishes pilot pressure"
+  - `cvh-cmp-ip-transducer-photo` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "I/P transducer mounted on a control valve — the physical, no-feedback alternative to a positioner for applications not requiring high positioning accuracy"
   - template: `slide--role-mechanism` — Two figures in natural teaching order — a pilot-stage detail crop, then the assembled unit mounted on a valve — the same schematic-then-hardware sequence mechanism's shape already carries for the analog I/P positioner two slides earlier. Re-tagged from contrast to mechanism per the 2026-09-11 template-fit review, since both cited figures are views of the same device, not two different things for a two-panel contrast.
   - slideCount: 1 (stage2)
   - pages: 43
@@ -91,8 +91,8 @@ role: application · level: understand · pages: 44
 
   A volume booster amplifies the pneumatic flow available to the actuator without changing the signal's pressure — needed when a large or fast-stroking actuator would otherwise starve the positioner's own limited output capacity.
 
-  - `cvh-cmp-volume-booster-sectional` (verified, Component Index — Control Valve Handbook ch4.md) — "Volume booster sectional view — internal construction of a booster used to amplify pneumatic flow capacity to the actuator"
-  - `cvh-cmp-dual-booster-installation` (verified, Component Index — Control Valve Handbook ch4.md) — "Typical dual-booster installation on a double-acting actuator — one booster feeding each side of the actuator piston"
+  - `cvh-cmp-volume-booster-sectional` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Volume booster sectional view — internal construction of a booster used to amplify pneumatic flow capacity to the actuator"
+  - `cvh-cmp-dual-booster-installation` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Typical dual-booster installation on a double-acting actuator — one booster feeding each side of the actuator piston"
   - template: `slide--role-application` — Two figures split cleanly by role within the slide: the sectional view grounds the takeaway's mechanism claim (amplifying flow without changing signal pressure), and the dual-booster installation photo is the real case that motivates when you'd need one — fits application's fig-plus-takeaway shape with the installation photo as the primary figure and the sectional view supporting the one-line payoff, not two separate things needing their own panels.
   - slideCount: 1 (stage2)
   - pages: 44
@@ -115,9 +115,9 @@ role: mechanism · level: understand · pages: 46
 
   A standalone pneumatic controller closes an entire control loop right at the valve, with no central control-room computer system (a DCS or PLC) needed — it compares the measured process value to a set point and drives the valve directly. Adding reset and rate elements to a proportional-only design corrects lingering offset and reacts faster to a changing load.
 
-  - `cvh-cmp-pneumatic-controller-photo` (verified, Component Index — Control Valve Handbook ch4.md) — "Pneumatic controller mounted on a control valve — a local, standalone controller used when a full DCS/PLC is not needed, driven by a Bourdon tube, bellows, liquid-displacement lever, or temperature bulb input element"
-  - `cvh-cmp-pneumatic-controller-schematic-proportional` (verified, Component Index — Control Valve Handbook ch4.md) — "Full pneumatic controller schematic for proportional-only control — manual/remote set point, proportional bellows, beam-flapper-nozzle-relay loop, and direct/reverse-action quadrants"
-  - `cvh-cmp-pneumatic-controller-schematic-reset-rate` (verified, Component Index — Control Valve Handbook ch4.md) — "Pneumatic controller schematic extended with reset and rate elements — anti-reset windup and the differential relief valve for proportional-plus-reset-plus-rate control"
+  - `cvh-cmp-pneumatic-controller-photo` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Pneumatic controller mounted on a control valve — a local, standalone controller used when a full DCS/PLC is not needed, driven by a Bourdon tube, bellows, liquid-displacement lever, or temperature bulb input element"
+  - `cvh-cmp-pneumatic-controller-schematic-proportional` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Full pneumatic controller schematic for proportional-only control — manual/remote set point, proportional bellows, beam-flapper-nozzle-relay loop, and direct/reverse-action quadrants"
+  - `cvh-cmp-pneumatic-controller-schematic-reset-rate` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Pneumatic controller schematic extended with reset and rate elements — anti-reset windup and the differential relief valve for proportional-plus-reset-plus-rate control"
   - template: `slide--role-mechanism` — Three figures in a genuine build-up sequence — the physical unit, then its proportional-only schematic, then the same schematic extended with reset-and-rate elements — exactly mechanism's own guidance for a figure showing sequential states of one mechanism (add a flow-arrow between the two schematic stages), not three independent things.
   - slideCount: 1 (stage2)
   - pages: 46
@@ -130,7 +130,7 @@ role: contrast · level: understand · pages: 47
 
   A position transmitter reports actual valve position back to the control system — 4-20 mA if wired, a 0-100% digital signal if wireless — so the control room can see where the valve really is, not just where it was told to go.
 
-  - `cvh-cmp-wireless-position-transmitter` (verified, Component Index — Control Valve Handbook ch4.md) — "Wireless position monitor mounted on an actuator — a position transmitter reporting a 0–100% digital signal in a wireless installation, vs. a 4–20 mA signal in a wired one"
+  - `cvh-cmp-wireless-position-transmitter` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Wireless position monitor mounted on an actuator — a position transmitter reporting a 0–100% digital signal in a wireless installation, vs. a 4–20 mA signal in a wired one"
   - template: `slide--role-contrast` — The single source figure (a wireless position monitor) is captioned against the wired case directly ('reporting a 0-100% digital signal... vs. a 4-20mA signal in a wired one') — a real two-way contrast even from one figure, since the wired case is the baseline already established for every other accessory in this chapter; the wireless photo anchors one panel, the wired baseline anchors the other without needing its own new photograph.
   - slideCount: 1 (stage2)
   - pages: 47
@@ -143,8 +143,8 @@ role: contrast · level: understand · pages: 48
 
   A spring-return SOV drives a single-acting actuator (3-port symbol); a double-acting SOV drives an actuator that needs pressure on both sides (4-port symbol).
 
-  - `cvh-cmp-sov-3port-spring-return-symbol` (verified, Component Index — Control Valve Handbook ch4.md) — "Spring-return (single-acting) actuator represented in a 3-port SOV schematic symbol, used within SIS architecture diagrams"
-  - `cvh-cmp-sov-4port-double-acting-symbol` (verified, Component Index — Control Valve Handbook ch4.md) — "Double-acting actuator represented in a 4-port SOV schematic symbol, contrasted with the 3-port spring-return symbol in Figure 4.14"
+  - `cvh-cmp-sov-3port-spring-return-symbol` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Spring-return (single-acting) actuator represented in a 3-port SOV schematic symbol, used within SIS architecture diagrams"
+  - `cvh-cmp-sov-4port-double-acting-symbol` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Double-acting actuator represented in a 4-port SOV schematic symbol, contrasted with the 3-port spring-return symbol in Figure 4.14"
   - template: `slide--role-contrast` — Two-way contrast (spring-return/single-acting vs. double-acting), each with its own schematic symbol (3-port vs. 4-port) — fits contrast's two-panel shape exactly, once split from the actuation-type axis this id used to also carry.
   - slideCount: 1 (stage2)
   - pages: 48
@@ -157,8 +157,8 @@ role: contrast · level: understand · pages: 49
 
   A direct-acting SOV switches with less flow capacity but no minimum pressure; a pilot-operated SOV needs a minimum supply pressure but handles far more flow.
 
-  - `cvh-cmp-sov-direct-acting-assembly` (verified, Component Index — Control Valve Handbook ch4.md) — "Direct-acting solenoid valve assembly — physical construction of the simpler of the two SOV actuation types"
-  - `cvh-cmp-sov-pilot-operated-assembly` (verified, Component Index — Control Valve Handbook ch4.md) — "Pilot-operated solenoid valve — physical construction of the higher-capacity SOV actuation type, contrasted with the direct-acting design in Figure 4.17"
+  - `cvh-cmp-sov-direct-acting-assembly` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Direct-acting solenoid valve assembly — physical construction of the simpler of the two SOV actuation types"
+  - `cvh-cmp-sov-pilot-operated-assembly` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Pilot-operated solenoid valve — physical construction of the higher-capacity SOV actuation type, contrasted with the direct-acting design in Figure 4.17"
   - template: `slide--role-contrast` — Two-way contrast (direct-acting vs. pilot-operated SOV actuation), each with its own physical-construction photo — fits contrast's two-panel shape exactly, split out of cvb.safety.solenoid-valve-types (which used to bundle this axis with the separate spring-return/double-acting drive-type axis).
   - slideCount: 1 (stage2)
   - pages: 49
@@ -175,9 +175,9 @@ role: application · level: understand · pages: 50
 
   A 1oo2 (one-out-of-two) architecture trips if either of two SOVs sees a demand — favoring safety, more nuisance trips. A 2oo2 architecture needs both to agree — favoring uptime, at the cost of a slower response to a real single-SOV failure.
 
-  - `cvh-cmp-sov-1oo2-voting-intro` (verified, Component Index — Control Valve Handbook ch4.md) — "Solenoid valve and digital valve controller combined in a 1oo2 ("one-out-of-two") voting configuration for a safety instrumented system"
-  - `cvh-cmp-sov-1oo2-architecture-schematic` (verified, Component Index — Control Valve Handbook ch4.md) — "1oo2 solenoid-operated valve architecture — full voting-system schematic showing how either of two SOVs can independently trip the safety function"
-  - `cvh-cmp-sov-2oo2-architecture-schematic` (verified, Component Index — Control Valve Handbook ch4.md) — "2oo2 solenoid-operated valve architecture — full voting-system schematic requiring both SOVs to trip before the safety function activates, contrasted with the 1oo2 architecture in Figure 4.19"
+  - `cvh-cmp-sov-1oo2-voting-intro` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Solenoid valve and digital valve controller combined in a 1oo2 ("one-out-of-two") voting configuration for a safety instrumented system"
+  - `cvh-cmp-sov-1oo2-architecture-schematic` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "1oo2 solenoid-operated valve architecture — full voting-system schematic showing how either of two SOVs can independently trip the safety function"
+  - `cvh-cmp-sov-2oo2-architecture-schematic` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "2oo2 solenoid-operated valve architecture — full voting-system schematic requiring both SOVs to trip before the safety function activates, contrasted with the 1oo2 architecture in Figure 4.19"
   - template: `slide--role-application-case` — Two distinct voting architectures (1oo2, 2oo2), each with its own full schematic and its own tradeoff, now shown as application-case's two-frame filmstrip instead of base application's single-fig shape. Already the right role; only the template variant changed.
   - slideCount: 1 (stage2)
   - pages: 50
@@ -192,10 +192,10 @@ role: nomenclature · level: remember · pages: 51
 
   A trip valve shows a distinct physical state once a safety system actually trips it; a switching valve routes pneumatic signal for control logic rather than process flow. A side- or top-mounted handwheel lets a technician manually stroke an actuator with no air supply at all.
 
-  - `cvh-cmp-trip-valve-tripped-condition` (verified, Component Index — Control Valve Handbook ch4.md) — "Trip valve shown in its tripped condition — the physical valve state that results when a safety trip system activates"
-  - `cvh-cmp-three-way-switching-valve` (verified, Component Index — Control Valve Handbook ch4.md) — "Typical three-way switching valve"
-  - `cvh-cmp-actuator-side-handwheel` (verified, Component Index — Control Valve Handbook ch4.md) — "Actuator fitted with a side-mounted handwheel — a manual-override mechanism for manipulating the actuator without pneumatic supply"
-  - `cvh-cmp-actuator-top-handwheel` (verified, Component Index — Control Valve Handbook ch4.md) — "Actuator fitted with a top-mounted handwheel, contrasted with the side-mounted arrangement in Figure 4.26"
+  - `cvh-cmp-trip-valve-tripped-condition` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Trip valve shown in its tripped condition — the physical valve state that results when a safety trip system activates"
+  - `cvh-cmp-three-way-switching-valve` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Typical three-way switching valve"
+  - `cvh-cmp-actuator-side-handwheel` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Actuator fitted with a side-mounted handwheel — a manual-override mechanism for manipulating the actuator without pneumatic supply"
+  - `cvh-cmp-actuator-top-handwheel` (verified, Subject-Matter Index — Control Valve Handbook ch4.md) — "Actuator fitted with a top-mounted handwheel, contrasted with the side-mounted arrangement in Figure 4.26"
   - template: `slide--role-nomenclature` — Four figures resolve into three named items — trip valve, switching valve, and handwheel override (shown in its two mounting variants, side and top) — nomenclature's labelled-list shape holds three named things under one slide comfortably, the handwheel's two photos serving as one list entry's illustration, not two separate items.
   - slideCount: 1 (stage2)
   - pages: 51

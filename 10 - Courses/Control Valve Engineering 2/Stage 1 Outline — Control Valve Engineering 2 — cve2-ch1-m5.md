@@ -37,4 +37,4 @@ level target: `evaluate` · domain: `engineering` · tier: `advanced`
 
 **Competency coverage:** `eng.standards.scheme-reconciliation` (all items), `progression: introduces`.
 
-**Verification note:** the asymmetric IIC/IIB/IIA hierarchy and the IEC-vs-ATEX comparison table were both checked verbatim against `Component Index — Control Valve Handbook ch9.md` this pass. No corrections needed.
+**Verification note:** the asymmetric IIC/IIB/IIA hierarchy and the IEC-vs-ATEX comparison table were both checked verbatim against `Subject-Matter Index — Control Valve Handbook ch9.md` this pass. No corrections needed.

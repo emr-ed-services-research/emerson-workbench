@@ -83,7 +83,7 @@ attempt, the faded attempt, and the reflection into one module — attempt 1
 had these as three separate modules. Every cross-reference between modules
 is by content ("the trim shown earlier"), never a module number.
 
-## Real sources used (all verified against Component Index — Control Valve Handbook ch5.md before use)
+## Real sources used (all verified against Subject-Matter Index — Control Valve Handbook ch5.md before use)
 
 - `cvh-cmp-valve-selection-process-flowchart` — shown as two distinct crops
   (steps 1-2; steps 3-5) plus once as the full diagram (page 17, the

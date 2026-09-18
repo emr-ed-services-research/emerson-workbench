@@ -45,7 +45,7 @@ Types) → Chapter 4 (Control Valve Accessories) → Chapter 2 (Control Valve
 Performance). Course-chapter ids (`cvb-ch1..cvb-ch4`) are this course's own
 teaching order, not the source chapter numbers — see each chapter's `_source`
 note in `course.json`. Every competency below traces to a real figure already
-catalogued in `Component Index — Control Valve Handbook ch1/ch2/ch3/ch4.md`
+catalogued in `Subject-Matter Index — Control Valve Handbook ch1/ch2/ch3/ch4.md`
 (Phase 0 of this same review-checkpoint work) — no invented facts, nothing
 beyond what those indexes verified against the source PDF.
 
@@ -174,7 +174,7 @@ a future advanced course could pull from directly.
 - id: cvb.performance.deadband
   bloom: understand
   statement: Explain deadband as the range of controller-output reversal that produces no observable process change.
-  note: Introduced in cvb-ch1-m2; develops in cvb-ch4-m1 (the chapter's own three-valve open-loop step-test comparison — cross-referenced to the same figure already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Component Index, a different course).
+  note: Introduced in cvb-ch1-m2; develops in cvb-ch4-m1 (the chapter's own three-valve open-loop step-test comparison — cross-referenced to the same figure already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Subject-Matter Index, a different course).
 
 - id: cvb.bodystyle.globe-variants
   bloom: understand

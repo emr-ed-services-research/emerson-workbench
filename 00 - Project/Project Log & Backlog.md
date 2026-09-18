@@ -56,12 +56,12 @@ review racks wired in the same day. (`30a7045`, `33aa516`, `e43d522`)
 
 **2026-09-04 — Source grounding, instructional tagging, and the template
 system's real turning point.** Three-axis instructional-design tagging
-adopted; ch3's teaching-component index built; ch3 Stage 2 tagged and
+adopted; ch3's teaching-subject-matter index built; ch3 Stage 2 tagged and
 Stage 3 run on modules 1–3; the 8-master-template proposal; the template
 gallery rebuilt live inside the real Workshop shell; the "completeness
 against source, not volume" correction (pipeline working rule 4);
 `System Architecture.md` corrected so origination is one capability, not a
-deck-only assumption; Component Index generalized deck-scoped →
+deck-only assumption; Subject-Matter Index generalized deck-scoped →
 topic-scoped; the bench-set-657 topic index built cold as the first test;
 a 16-example template proof run, surfacing and fixing two systemic template
 bugs. (`8138687`–`855cbe8`)
@@ -77,7 +77,7 @@ corrected across 2,096 occurrences in 505 files — the concrete cost that
 justified baking in ID-scheme values early elsewhere. Curriculum layer
 Phases 1–4 landed same day: schema + worked example, ch3 retrofit, the
 Day-One competency map, and the asset-variant registry — Phase 5 opened but
-held. Component Index extended to 14101 ch1–ch2. The bench-set Figure 4
+held. Subject-Matter Index extended to 14101 ch1–ch2. The bench-set Figure 4
 redraw approved and wired onto slide 098. (`e5a995c`–`319373b`)
 
 **2026-09-07 — Phase 5 dry run + template hardening.** The ch3-m1
@@ -167,9 +167,9 @@ idea); left in rather than silently dropped.
   simply in-progress live work — it has one real slide built and is very
   recent. Flagged rather than guessed.
 
-### Source Library / Component Index
+### Source Library / Subject-Matter Index
 
-- The Component Index's generalization is topic-scoped, not
+- The Subject-Matter Index's generalization is topic-scoped, not
   library-scoped, on purpose — meaning every future origination request
   needs its own topic index built as real editorial work, not a one-off.
   Not itself a backlog item, but a standing cost worth naming: the next

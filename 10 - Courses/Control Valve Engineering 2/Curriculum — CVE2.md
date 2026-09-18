@@ -36,8 +36,8 @@ updated: 2026-09-15
 
 CVE1's Stage 1 fork correctly identified that the four sourcebooks' shared
 liquid-sizing chapters belong to CVE2's `eng.sizing.liquid-sizing-calculation`,
-not CVE1. Confirmed directly this pass: **both** `Component Index — Oil & Gas
-Sourcebook ch3.md` and `Component Index — Power & Severe Service Sourcebook
+not CVE1. Confirmed directly this pass: **both** `Subject-Matter Index — Oil & Gas
+Sourcebook ch3.md` and `Subject-Matter Index — Power & Severe Service Sourcebook
 ch3.md` are titled "Liquid Valve Sizing" (real `chapter:` frontmatter, not
 assumed) and both carry the identical ISA/IEC liquid critical pressure ratio
 factor formula `F_F = 0.96 − 0.28·√(P_v/P_c)`, the q_max (choked-flow) and
@@ -52,7 +52,7 @@ conditions — not four redundant copies of the same content.
 ## The 8 confirmed competencies — verification results
 
 For each, `sourceNote` below states exactly what was checked directly this
-pass against the real Component Index files (not assumed from the design
+pass against the real Subject-Matter Index files (not assumed from the design
 conversation) and the result.
 
 ```yaml
@@ -66,7 +66,7 @@ conversation) and the result.
   progression: develops
   sources: [cvh-cmp-unbalance-area-table, cvh-cmp-seat-load-graph, cvh-cmp-packing-friction-values-table]
   sourceNote: >
-    CONFIRMED. Force-margin tables verified real in Component Index — Control
+    CONFIRMED. Force-margin tables verified real in Subject-Matter Index — Control
     Valve Handbook ch5.md §5.11. F_F formula and worked graphical method
     verified real and identical in both Oil & Gas Sourcebook ch3 and Power &
     Severe Service Sourcebook ch3 (both titled "Liquid Valve Sizing").
@@ -98,7 +98,7 @@ conversation) and the result.
   sources: [cvh-cmp-cavitation-trim-cutaway, cvh-cmp-cryogenic-extension-bonnet, cvh-cmp-pressurizer-spray-valve-nuclear]
   sourceNote: >
     CONFIRMED — all three specific figures named in the original design
-    conversation check out exactly against Component Index — Control Valve
+    conversation check out exactly against Subject-Matter Index — Control Valve
     Handbook ch6.md: the DST trim's "high-pressure-drop applications up to
     4200 psid" is verbatim in `cvh-cmp-cavitation-trim-cutaway`; the "-101°C
     / -150°F" frost point is verbatim in `cvh-cmp-cryogenic-extension-bonnet`;
@@ -117,7 +117,7 @@ conversation) and the result.
   sourceNote: >
     CONFIRMED — "Class V" shutoff and "2-4 seconds full-stroke" (plus
     "better than 1% positioning accuracy," not previously named) verbatim in
-    `cvh-cmp-turbine-bypass-actuation-package`, Component Index — Control
+    `cvh-cmp-turbine-bypass-actuation-package`, Subject-Matter Index — Control
     Valve Handbook ch7.md. **Volume flag**: this chapter has 14 real figures
     (5 desuperheater design types, attemperator, sparger, plus the turbine-
     bypass figure) — genuinely more source material than any other CVE2
@@ -139,7 +139,7 @@ conversation) and the result.
     verbatim: "IIC-marked equipment is suitable for applications requiring
     IIC, IIB, or IIA; IIB-marked equipment is suitable for IIB or IIA;
     IIA-marked equipment is suitable only for IIA" (`cvh-cmp-equipment-
-    groups-table`, Component Index — Control Valve Handbook ch9.md). The
+    groups-table`, Subject-Matter Index — Control Valve Handbook ch9.md). The
     IEC-vs-ATEX comparison table exists exactly as described
     (`cvh-cmp-iec-vs-atex-ratings-table`). Scoping note: this module does
     NOT use ch9's enclosure-ratings figures (9.6/9.7, NEMA/IP) — a real,
@@ -184,7 +184,7 @@ conversation) and the result.
   sourceNote: >
     CONFIRMED. The 5-category table (Hydrogen, Decarbonization/Carbon
     Capture, Alternative Fuel and Biochemical, Renewables, Electrification
-    and Storage) is real, Component Index — Control Valve Handbook ch11.md.
+    and Storage) is real, Subject-Matter Index — Control Valve Handbook ch11.md.
     Confirms the "prose/table-driven, not hardware-driven" framing — this
     chapter has only 3 figures across 10 pages, all reference tables/
     infographics. "Actuator electrification" (listed under Electrification
@@ -231,7 +231,7 @@ conversation) and the result.
 
 **No real source content exists** in any currently-catalogued Control Valve
 Handbook chapter for trim-material compatibility/availability/cost tradeoffs.
-Checked directly: the only match anywhere in ch1–12's Component Index files
+Checked directly: the only match anywhere in ch1–12's Subject-Matter Index files
 is the chapter-5 valve-selection flowchart's own step-5 label, "Select Trim
 Materials" — a one-line step name with no supporting figure, table, or
 comparative data behind it, and it's the same flowchart already used at
@@ -250,7 +250,7 @@ Left as BLOCKED, no module cut, rather than guessed around.
 
 **Follow-up (WC, same night):** checked one more real lead before accepting
 this as a dead end — Control Valve Handbook ch13 (Engineering Data),
-`Component Index — Control Valve Handbook ch13.md`. Confirmed **zero
+`Subject-Matter Index — Control Valve Handbook ch13.md`. Confirmed **zero
 catalogued components** there, but that's specifically because the
 project's figures-only cataloguing rule excludes tabular content, not
 because the content doesn't exist: §13.1/13.2 ("Standard Specifications for

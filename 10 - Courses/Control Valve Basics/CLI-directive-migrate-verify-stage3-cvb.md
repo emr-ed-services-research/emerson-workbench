@@ -769,7 +769,7 @@ Each primitive got:
    50
   ],
   "t": "Testing three real valve designs open-loop shows deadband directly: each valve's output lags its command by a different amount before it moves at all — the same deadband concept already introduced, now measured and compared.",
-  "sourceNote": "CVH ch2 Figure 2.3 'Effect of Deadband on Valve Performance' — the same figure is already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Component Index (a different course); cross-referenced, not duplicated as a new id, per Component Index — Control Valve Handbook ch2.md's own Open Items.",
+  "sourceNote": "CVH ch2 Figure 2.3 'Effect of Deadband on Valve Performance' — the same figure is already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Subject-Matter Index (a different course); cross-referenced, not duplicated as a new id, per Subject-Matter Index — Control Valve Handbook ch2.md's own Open Items.",
   "template": "slide--role-mechanism",
   "competencyStatus": "confirmed"
  },
@@ -2229,7 +2229,7 @@ Each primitive got:
      "estimate": 1,
      "maturity": "stage2"
     },
-    "sourceNote": "CVH ch2 Figure 2.3 'Effect of Deadband on Valve Performance' — the same figure is already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Component Index (a different course); cross-referenced, not duplicated as a new id, per Component Index — Control Valve Handbook ch2.md's own Open Items."
+    "sourceNote": "CVH ch2 Figure 2.3 'Effect of Deadband on Valve Performance' — the same figure is already catalogued as ch3-cmp-deadband-effect-chart in 14101's own Subject-Matter Index (a different course); cross-referenced, not duplicated as a new id, per Subject-Matter Index — Control Valve Handbook ch2.md's own Open Items."
    }
   ]
  },
@@ -2949,7 +2949,7 @@ role: mechanism · level: understand · pages: 34
 
   **Primitive** — orientation · introductory
   A rack-and-pinion actuator is a compact, economical pneumatic option for rotary valves — but its backlash limits it to on/off service, not the precision continuous throttling a diaphragm or piston actuator handles.
-    - `cvh-cmp-rack-and-pinion-actuator` (current, Component Index — Control Valve Handbook ch3.md)
+    - `cvh-cmp-rack-and-pinion-actuator` (current, Subject-Matter Index — Control Valve Handbook ch3.md)
     - template: `slide--role-mechanism` — ...
     - slideCount: 1 (stage2)
     - pages: 34
@@ -2965,7 +2965,7 @@ role: mechanism · level: understand · pages: 34
 
   A rack-and-pinion actuator is a compact, economical pneumatic option for rotary valves — but its backlash limits it to on/off service, not the precision continuous throttling a diaphragm or piston actuator handles.
 
-  - `cvh-cmp-rack-and-pinion-actuator` (current, Component Index — Control Valve Handbook ch3.md)
+  - `cvh-cmp-rack-and-pinion-actuator` (current, Subject-Matter Index — Control Valve Handbook ch3.md)
   - template: `slide--role-mechanism` — ...
   - slideCount: 1 (stage2)
   - pages: 34

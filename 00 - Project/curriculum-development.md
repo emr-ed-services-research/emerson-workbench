@@ -43,7 +43,7 @@ Foundation to roof:
 | **Placement edges** | `module × roles × competency × progression → asset variant` | Yes |
 | **Primitives** (added 2026-09-11) | `competency × domain-or-audienceStage × tier` — the irreducible, essential CONTENT unit for one concept at one audience permutation | Yes |
 | **Asset variants** (renamed 2026-09-11 — was "Instructional primitives"; see "Primitives vs. asset variants" below) | `competency × asset-variant` — the finite authored ARTIFACT (which file) | Yes |
-| **Source Library / Component Index** | The assets an asset variant wraps | Exists today; gains a `serves:` back-pointer |
+| **Source Library / Subject-Matter Index** | The assets an asset variant wraps | Exists today; gains a `serves:` back-pointer |
 
 ### Primitives vs. asset variants — two different things, not a rename in place (2026-09-11)
 
@@ -176,7 +176,7 @@ audience, per the "don't leave two field shapes for one thing" lesson
   t: >                     # the irreducible content itself, instructor-talking-point voice
     Disassemble, inspect, and reassemble a 657 actuator; check bench set
     before returning it to service.
-  sources: [ch3-cmp-657-assembly]           # Component Index id(s) — same Axis-A discipline as today
+  sources: [ch3-cmp-657-assembly]           # Subject-Matter Index id(s) — same Axis-A discipline as today
   template: slide--role-procedure-worked    # Template Gallery class + rationale (see below)
   templateRationale: >
     A real worked walkthrough (Show-Tell-Do), not a plain step list — the
@@ -234,7 +234,7 @@ items:
 Stage 3 composes each pane/panel of a multi-item template (a filmstrip, a
 multi-panel contrast, a multi-part list) from its matching `items[i].t` —
 this is the fix for a real shipped defect where a multi-pane slide's
-captions were re-derived from the raw Component Index citation instead,
+captions were re-derived from the raw Subject-Matter Index citation instead,
 bypassing the primitive's own authored content entirely. Most primitives
 (one source) never need `items` at all.
 
@@ -253,7 +253,7 @@ id: av.mnt.actuator.identify-sd-construction.cutaway
 competencyId: mnt.actuator.identify-sd-construction
 status: exists                              # exists | pending  (built vs. planned but not yet authored)
 asset: image155.png                         # one filename, OR a list for a true parallel figrow (Finding 2)
-provenance: ch3-cmp-657-assembly            # Component Index entry
+provenance: ch3-cmp-657-assembly            # Subject-Matter Index entry
 redrawRecord: >                             # the three-reason redraw rule, applied per asset variant
   Existing figure, no redraw — first-party colour sectional, cleaner than
   the IM parts drawings. (Style Guide §5.8 — no redraw reason applies.)
@@ -267,16 +267,16 @@ variantTag: cutaway                         # optional; only when a competency h
   `progression` matter on the placement edge, not an asset variant.
 - `status: pending` asset variants carry `assetRef`, `provenance`, and
   `redrawRecord` as `TBD` until authored; a `status: exists` asset variant must
-  name a real asset and a real Component Index entry.
+  name a real asset and a real Subject-Matter Index entry.
 - **`provenance: original`** (added 2026-09-09, for IfE) — the one exception
-  to "must name a real Component Index entry." Every asset variant built so
+  to "must name a real Subject-Matter Index entry." Every asset variant built so
   far traces to an external source figure being redrawn or reused; IfE's own
   methodology content (a TPCD diagram, a Five-Tenets summary graphic) has no
   such external source — Steve invented the pedagogical model itself. An
   asset variant with `provenance: original` is asserting exactly that: authored
   fresh for this course, nothing to cite, `redrawRecord` not applicable.
   This does **not** apply to IfE's practice-slice content, which traces to
-  real 14101 Component Index entries exactly like any other course's
+  real 14101 Subject-Matter Index entries exactly like any other course's
   asset variants — see "Cross-course provenance" below.
 
 A new asset variant is created **only** for a genuinely new `competency ×
@@ -376,13 +376,13 @@ ValveLink Mobile, starting from a fresh connection"), let them attempt it
 and get stuck, then debrief with the actual path and vocabulary
 afterward — discovery through struggle with a real task, not
 memorization of a click-path diagram. A `task-cold-start` activity's
-`sourceNote` names the `navPath` Component Index id(s) (see `Component
+`sourceNote` names the `navPath` Subject-Matter Index id(s) (see `Component
 Index — Process & Standards.md`) it debriefs from once the learner has
 attempted the task — the same relationship an ordinary activity's
-`sourceNote` has to a figure-based Component Index entry, and the same
+`sourceNote` has to a figure-based Subject-Matter Index entry, and the same
 relationship components already have to a primitive: the task is
 course-authored pedagogy built from library facts, not a new Source
-Library record type. No new Component Index record is minted for a task
+Library record type. No new Subject-Matter Index record is minted for a task
 itself.
 
 Added 2026-09-10, same directive as `minutesTarget` (Content-Depth fix),
@@ -406,7 +406,7 @@ same way a module's `stakes` field is prose that never becomes a slide.
 Every activity must be **additive and sourced**, same standard as slide
 content: a real discussion/application/case-walkthrough design, tied to
 real source material where it makes a claim (the course's own practice
-vehicle, a Component Index entry, established general instructional-design
+vehicle, a Subject-Matter Index entry, established general instructional-design
 technique) — never invented busywork, and never a fabricated example, fact,
 or quote. `sourceNote` names what grounds it, the same role `sourceNote`
 plays on a `keyConcepts` entry.
@@ -487,18 +487,18 @@ Phase 3 on.
 
 ### Cross-course provenance (added 2026-09-09, for IfE)
 
-An asset variant's `provenance` naming a Component Index entry does **not**
-require the asset variant and the Component Index entry to belong to the same
-course. This was already the shared-library point — one Component Index
+An asset variant's `provenance` naming a Subject-Matter Index entry does **not**
+require the asset variant and the Subject-Matter Index entry to belong to the same
+course. This was already the shared-library point — one Subject-Matter Index
 entry can back asset variants in any number of courses' own registries — but
 until IfE it had never actually happened; the oil-and-gas catalogue (144
 figures, zero asset variants) was the proof that the *library* side works, with
 no second course yet drawing from it. IfE's practice-slice asset variants are
 the first real instance of the *consuming* side: an IfE asset variant's
-`provenance` names an existing 14101 Component Index entry directly — no
-new Component Index entries are created for content IfE borrows from
+`provenance` names an existing 14101 Subject-Matter Index entry directly — no
+new Subject-Matter Index entries are created for content IfE borrows from
 14101, only for IfE's own source material (the rubric, the outline — see
-[[Source Library]] conventions; IfE gets its own Component Index entries
+[[Source Library]] conventions; IfE gets its own Subject-Matter Index entries
 the same way any course's source manual does).
 
 ---
@@ -648,7 +648,7 @@ mechanism types and exercises the placement edge across modules.
 - id: av.mnt.actuator.set-travel.piston
   competencyId: mnt.actuator.set-travel
   assetRef: TBD             # authored during Phase 4 / ch4 Stage 3
-  provenance: TBD           # Component Index entry to be added for the piston procedure
+  provenance: TBD           # Subject-Matter Index entry to be added for the piston procedure
   redrawRecord: TBD
   variantTag: piston
   status: pending
@@ -689,7 +689,7 @@ loading-pressure range, and uses a different stem connector — a real
   assetVariantId: av.mnt.actuator.set-travel.piston
 ```
 
-### The Component Index back-pointer
+### The Subject-Matter Index back-pointer
 
 `ch3-cmp-benchset-adjustment-setup` gains:
 

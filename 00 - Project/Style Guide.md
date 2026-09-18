@@ -64,7 +64,7 @@ comment becomes a pointer.
 | `tokens.css` | the EMERSON palette as machine values | Stays the single machine source. §3 here is the human spec and usage intent; it never redefines a token. |
 | `TEMPLATES.md`, `gallery.css` header comments | usage reference for specific CSS classes + accumulated collision fixes | Keep as usage references. Conventions they state move here; they gain "see Style Guide §X" pointers. |
 | `Glossary.md` | ~12 project nouns | §7 (terminology) is the house style for instructional writing and cross-references it. |
-| Component Index (`20 - Source Library/`) | which source figure / component backs a concept | §6 (callouts) formalises the manifest pattern the Component Index work already practises. |
+| Subject-Matter Index (`20 - Source Library/`) | which source figure / component backs a concept | §6 (callouts) formalises the manifest pattern the Subject-Matter Index work already practises. |
 
 ---
 
@@ -85,7 +85,7 @@ It does **not** govern:
   the design consequences that follow from it; it never restates or overrides
   a pedagogy decision.
 - **Which source backs a concept** — the figure, manual, or component a slide
-  is built from. That is the **Component Index** and the Source Library.
+  is built from. That is the **Subject-Matter Index** and the Source Library.
 - **Course and module structure** — `Roadmap.md`, `Vault Structure.md`, the
   per-course status notes.
 
@@ -561,7 +561,7 @@ consistent" is not, by itself, the argument.
 
 Whatever the outcome: a redraw is **specified against a named source
 figure** (manual + figure number), never invented — the same rule the
-Component Index applies to components — and it follows §5.1–§5.7.
+Subject-Matter Index applies to components — and it follows §5.1–§5.7.
 
 For the bench-set / deadband graphs specifically (corrected 2026-09-05,
 after inspecting Fig. 8.10 directly and against tp-010's worked outcome):
@@ -588,7 +588,7 @@ redraw was right, for the reason above rather than the one it gave.
 Every graph — lifted directly or redrawn — carries a `.tpl-source` line
 (grey italic, below the content), matching the format already in use:
 
-> After [manual / handbook], Fig. [N] — [what was kept / changed]. Component Index: [id].
+> After [manual / handbook], Fig. [N] — [what was kept / changed]. Subject-Matter Index: [id].
 
 A figure used directly says so ("CVH Fig. 8.10, cropped to the
 friction-shift region"). A redraw that departs from its source figure
@@ -697,7 +697,7 @@ only one part.
 **097 was missed in this section's original enumeration** — the Component
 Index's `ch3-cmp-bench-set-graph` lists `used-by: [92, 97, 102, 112]` and
 097 has the identical two-rotated-label defect. Caught by checking the
-Component Index directly at §5 review.
+Subject-Matter Index directly at §5 review.
 
 **Franz's scope decision (2026-09-05): 092 / 097 / 102 in, 112 deferred.**
 112 is ch3-m4 content — under the module-work full stop, same treatment as
@@ -723,7 +723,7 @@ Basics 2026-09-13.
 figure. A slide with several clickable figures — a filmstrip/
 application-case pane, or any other shape with more than one image — must
 give **each figure its own** `data-lightbox-caption="Fig. [N], [what it
-shows]. Component Index: [id]."`, the same one-line shape as `.tpl-source`
+shows]. Subject-Matter Index: [id]."`, the same one-line shape as `.tpl-source`
 but scoped to that one image. Without it, the click-to-enlarge view falls
 back to the slide's shared citation — correct for whichever figure that
 citation was actually written about, wrong for every other one on the
@@ -753,9 +753,9 @@ Structure:
 <svg viewBox="0 0 W H" width="100%" height="100%"
      preserveAspectRatio="xMidYMid meet" role="img" aria-label="...">
   <image href="../assets/sourced/item-a.png" x="0" y="0" width="W1" height="H"
-         data-lightbox-caption="Fig. N, Item A. Component Index: id-a."></image>
+         data-lightbox-caption="Fig. N, Item A. Subject-Matter Index: id-a."></image>
   <image href="../assets/sourced/item-b.png" x="X2" y="0" width="W2" height="H"
-         data-lightbox-caption="Fig. N, Item B. Component Index: id-b."></image>
+         data-lightbox-caption="Fig. N, Item B. Subject-Matter Index: id-b."></image>
 </svg>
 ```
 
@@ -786,11 +786,11 @@ graph-specific overrides.
 
 ### 6.0 The callout manifest — the record comes before the marker
 
-The Component Index and the slide-template work already practise this;
+The Subject-Matter Index and the slide-template work already practise this;
 stated here as the rule:
 
 - **Every marker's position is derived from a verified source** — the real
-  source figure at the coordinates the Component Index records, or an
+  source figure at the coordinates the Subject-Matter Index records, or an
   already-reviewed production slide — **before the marker is placed**, not
   eyeballed onto the drawing and then explained.
 - The marker → label → source-locator record is authored *as* the marker is
@@ -932,7 +932,7 @@ defaults to the **Control Valve Handbook**'s usage, then the relevant
 | Quantity | Unit | Format |
 | --- | --- | --- |
 | Pressure | **psig** | `11 psig` — space between value and unit |
-| Torque | **N·m primary, lbf·ft in parentheses** | `13 N·m (10 lbf·ft)` — the form the ch3 torque content and the Component Index use |
+| Torque | **N·m primary, lbf·ft in parentheses** | `13 N·m (10 lbf·ft)` — the form the ch3 torque content and the Subject-Matter Index use |
 | Length / travel | **inches**, vulgar fractions for nominal sizes | `3/8 in`, `3/4 in` |
 | Angle | degrees | `90°` — no space |
 

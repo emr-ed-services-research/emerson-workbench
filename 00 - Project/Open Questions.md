@@ -91,7 +91,7 @@ gate review, then Phase 2"* — but the pathway has since reached Phase 5
 1–4 complete per session memory). The doc that defines the curriculum
 schema was never updated to reflect its own later phases.
 
-- Surfaced 2026-09-09 while tracing the Component Index / Instructional
+- Surfaced 2026-09-09 while tracing the Subject-Matter Index / Instructional
   Primitives relationship for the project hub.
 - **Deliberately not fixed as part of that work** — Franz's own framing:
   fixing it in passing would be exactly the ad hoc, noticed-while-doing-
@@ -148,7 +148,7 @@ module be piloted first?
 - **Recommendation: pilot one small module first, not a full cold-start.**
   IfE has never run through Stage 1/2/3 origination mode at all — the only
   precedent is `ch3-m1` (a *technical-skill* module, `mnt` domain, backed by
-  the Component Index/template-gallery machinery this session's schema work
+  the Subject-Matter Index/template-gallery machinery this session's schema work
   extended to a second tier for the first time). Piling a brand-new domain
   tier, a brand-new provenance value, and a brand-new cross-course-asset-variant
   pattern all onto one full-course attempt at once repeats exactly the shape

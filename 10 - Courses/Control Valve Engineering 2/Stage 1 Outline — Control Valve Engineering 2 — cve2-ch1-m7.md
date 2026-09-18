@@ -40,4 +40,4 @@ level target: `evaluate` · domain: `engineering` · tier: `advanced`
 
 **Competency coverage:** `eng.sustainability.technology-tradeoff` (all items), `progression: introduces`.
 
-**Verification note:** the 5-category table and the GHG scope diagram were both checked verbatim against `Component Index — Control Valve Handbook ch11.md` this pass. The "actuator electrification" vs. "offshore wind" contrast in item 3 uses two real named items from the source's own table, not invented examples.
+**Verification note:** the 5-category table and the GHG scope diagram were both checked verbatim against `Subject-Matter Index — Control Valve Handbook ch11.md` this pass. The "actuator electrification" vs. "offshore wind" contrast in item 3 uses two real named items from the source's own table, not invented examples.

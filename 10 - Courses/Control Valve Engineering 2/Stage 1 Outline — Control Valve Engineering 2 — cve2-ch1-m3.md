@@ -38,4 +38,4 @@ level target: `evaluate` · domain: `engineering` · tier: `advanced`
 
 **Competency coverage:** `eng.severe-service.design-justification` (all items), `progression: introduces`.
 
-**Verification note:** every numeric threshold above (4200 psid, -101°C, ASME Section III Class 1/2/3, the geometric-vs-arithmetic scaling claim) was checked verbatim against `Component Index — Control Valve Handbook ch6.md` this pass — none were assumed from the design conversation. No corrections needed; this is the one CVE2-new competency where every original claim held up exactly as stated.
+**Verification note:** every numeric threshold above (4200 psid, -101°C, ASME Section III Class 1/2/3, the geometric-vs-arithmetic scaling claim) was checked verbatim against `Subject-Matter Index — Control Valve Handbook ch6.md` this pass — none were assumed from the design conversation. No corrections needed; this is the one CVE2-new competency where every original claim held up exactly as stated.

@@ -44,6 +44,6 @@ level target: `evaluate` (spans into `create`) · domain: `engineering` · tier:
 
 **Competency coverage:** `eng.steam-conditioning.system-integration` (all items), `progression: introduces`.
 
-**Verification note:** all five design rangeability/velocity figures and the turbine-bypass Class V / 2-4s / 1% figures were checked verbatim against `Component Index — Control Valve Handbook ch7.md` this pass. No corrections needed — every specific number named in the original design conversation and added here checks out exactly.
+**Verification note:** all five design rangeability/velocity figures and the turbine-bypass Class V / 2-4s / 1% figures were checked verbatim against `Subject-Matter Index — Control Valve Handbook ch7.md` this pass. No corrections needed — every specific number named in the original design conversation and added here checks out exactly.
 
 **Flagged for Franz:** the two-module split question above (real, unresolved) and confirmation that `evaluate`/`create` split bloom-level framing is acceptable for a single competency ID, rather than warranting a second competency for the "architect" half specifically.

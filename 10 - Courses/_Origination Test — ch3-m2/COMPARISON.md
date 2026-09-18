@@ -20,7 +20,7 @@ no clipping) in both 4:3 and 16:9.
 - **Candidate A** = the real, current ch3-m2 (`1400-094` … `098`, check
   `100`). Not touched by this test.
 - **Candidate B** = originated cold from the topic *"bench-setting a Fisher
-  657"* via `20 - Source Library/Component Index — bench-set-657.md`, then
+  657"* via `20 - Source Library/Subject-Matter Index — bench-set-657.md`, then
   composed into HTML with `buildStage3OriginatePrompt` (in
   `PipelineConsole/src/main/runners/prompts.js`), the prompt executed by the
   model under the same discipline as the 17 template-proof examples.

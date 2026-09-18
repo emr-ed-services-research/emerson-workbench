@@ -250,7 +250,7 @@ reworked:
    instructional content, framing, or emphasis that is not in the Source
    Library at all, earned by however the course was actually taught before.
    Completeness for a conversion is measured against the **union** of the
-   Source Library / component index **and** the original deck, never the
+   Source Library / subject-matter index **and** the original deck, never the
    Source Library alone with the deck treated as mere inventory to reshape —
    that repeats this exact bias, just relocated: the correction was "don't
    judge a slide's completeness by how little it shows," not "judge it by an
@@ -419,7 +419,7 @@ finding, and it produced something unrecognizable as a course.
 keyConcept structure every other course in this vault uses, in full.**
 Modules are real structural *and* content units, not scheduling-only
 containers. A module teaches its competency properly, using genuine
-explanation — now drawn from the Component Index's `kind: topic` entries,
+explanation — now drawn from the Subject-Matter Index's `kind: topic` entries,
 not narrated results — the same way any module in CVB or 14101 does.
 Productive failure and cognitive apprenticeship are **one activity type
 available inside a module**, alongside (not instead of) the normal
@@ -461,7 +461,7 @@ refinements:**
 
 - **The wrong paths and their consequences must be real, not invented for
   drama.** They should trace to genuine documented cases — a real
-  counter-intuitive finding already in the Component Index (e.g. the
+  counter-intuitive finding already in the Subject-Matter Index (e.g. the
   cavitation section's high-recovery-valves-are-more-cavitation-prone
   result), a real documented failure pattern (e.g. the SIS chapter's OREDA
   data showing the final control element accounts for roughly half of

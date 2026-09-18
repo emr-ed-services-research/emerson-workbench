@@ -59,7 +59,7 @@ something applied to what a learner would actually see.
 | 1 | **Visual variety** | Do consecutive slides show genuinely different images, or does one image repeat unmodified across multiple slides? | |
 | 2 | **Real tension** | Is there at least one genuine, source-grounded counter-intuitive finding or open judgment call — not just facts delivered in sequence? | |
 | 3 | **Attempt before instruction** | Does the learner make a real decision, with plausible wrong options, *before* the concept is taught — not an activity bolted on after? | |
-| 4 | **Consequence is real** | Does the reveal trace to an actual documented case or finding (a Component Index entry, a verified Vitruvius ledger entry) — not a dramatized but invented scenario? | |
+| 4 | **Consequence is real** | Does the reveal trace to an actual documented case or finding (a Subject-Matter Index entry, a verified Vitruvius ledger entry) — not a dramatized but invented scenario? | |
 | 5 | **Narrative continuity** | Does this module connect to the same running scenario as the one before it, or does it feel like a disconnected new topic? | |
 | 6 | **Instructor depth** | Is there enough behind the content that an instructor could field a real unscripted question, or does it read as a bare script? | |
 | 7 | **Coverage against source** | Does the competency set draw on a meaningful fraction of its assigned chapter's real content, or a token sample standing in for the whole chapter? | |

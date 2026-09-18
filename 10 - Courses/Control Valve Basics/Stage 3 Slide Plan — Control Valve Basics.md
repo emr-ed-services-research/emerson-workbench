@@ -302,7 +302,7 @@ Sequential, page 1 through 64, no gaps or duplicates — verified programmatical
 ## Next step (not taken here)
 
 Actually composing these 64 slides — real HTML, real figures resolved from the
-Component Index, on-screen titles/text per the Style Guide, and a real
+Subject-Matter Index, on-screen titles/text per the Style Guide, and a real
 `build/manifest.js` — is Stage 3's own authoring pass (`buildStage3OriginatePrompt`
 in `PipelineConsole/src/main/runners/prompts.js`), run per module. That has not
 been executed for CVB; this plan is what it would consume.

@@ -13,7 +13,7 @@ updated: 2026-09-16
 See `Vitruvius.md` for what this is. Every entry below is one Historic
 Educational Services Training Content item Vitruvius has actually reviewed
 and verified for use in a course — not a cataloguing pass over the
-archive. The archive itself stays outside the Component Index; this log is
+archive. The archive itself stays outside the Subject-Matter Index; this log is
 the only record of which pieces of it have ever been vetted.
 
 **Entry shape:**

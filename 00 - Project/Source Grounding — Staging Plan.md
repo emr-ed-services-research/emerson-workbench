@@ -60,7 +60,7 @@ instead of rediscovering.
    `superseded` (excluded from retrieval). **Human-checked, not decided live by
    an agent** — it determines what is even eligible for the index. §3 below is
    the drafted groundwork awaiting Franz's check.
-2. **Teaching-component index, scoped to ch3 only.** Extend the pattern
+2. **Teaching-subject-matter index, scoped to ch3 only.** Extend the pattern
    `build/assets/sourced/SOURCES.txt` already does well, to cover ch3's actual
    footprint (§4 — estimated ~16 diagram components). **Do not** digitise or
    index the full archive.
@@ -83,8 +83,8 @@ needs. Expand later, deliberately, once proven on real content.
 ## 3. Step 1 — Precedence pass
 
 **Status (2026-09-03):** Steps 1–2 done; step 3 mechanism wired.
-- **Step 1–2:** precedence confirmed; component index built
-  (`20 - Source Library/Component Index — 14101 ch3.md`, 18 components + a
+- **Step 1–2:** precedence confirmed; subject-matter index built
+  (`20 - Source Library/Subject-Matter Index — 14101 ch3.md`, 18 components + a
   procedure-photo group + a proposed concept→component+level map).
 - **Step 3 (wiring):** the console now reads the index and the ID tags —
   `src/main/instructional-design.js` (verb menus + Bloom levels, mirrors
@@ -248,9 +248,9 @@ figure that already splits direct/reverse.
 
 ---
 
-## 4. Step 2 — Teaching-component index, ch3 — **BUILT**
+## 4. Step 2 — Teaching-subject-matter index, ch3 — **BUILT**
 
-`20 - Source Library/Component Index — 14101 ch3.md` (2026-09-03). 18 discrete
+`20 - Source Library/Subject-Matter Index — 14101 ch3.md` (2026-09-03). 18 discrete
 components (est. was ~16) grouped by module, plus a procedure-photo catch-all.
 The table below was the planning inventory; the index file is now authoritative.
 Diagram/figure components where **source-grounding vs. invention is the live
@@ -298,7 +298,7 @@ extraction:          <crop notes once pulled — mirrors today's SOURCES.txt pro
 used-by:             [<slide numbers>]        # back-reference, filled as Stage 3 consumes it
 ```
 
-Lives at `20 - Source Library/Component Index — ch3.md` for now (human-readable).
+Lives at `20 - Source Library/Subject-Matter Index — ch3.md` for now (human-readable).
 A console-parseable form (`.json`, kept in sync like `System Map.md` / `.html`)
 is added when step 3 wires Stage 2 to read it.
 
@@ -312,7 +312,7 @@ objective + key-concepts. Both are added in the same build pass (Franz,
 
 ### Axis A — source-component earmarking
 
-- `buildStage2Prompt`: read `Component Index — ch3.md`; for each `keyConcept` add
+- `buildStage2Prompt`: read `Subject-Matter Index — ch3.md`; for each `keyConcept` add
   `sources: [component-id, …]`; if none fits, record an explicit "no component"
   note.
 - `moduleStage2Completeness`: optionally require every concept to carry ≥ 1
@@ -437,7 +437,7 @@ yet; for ch3 (already tagged for A/B) it is another `force` re-author.
 - [x] §3 precedence buckets confirmed by Franz (2026-09-02).
 - [x] Bench-set-graph decision confirmed (Fisher IM Fig 5 canonical). The four
       slide variants (92/97/112/125) still to be built by Stage 3.
-- [x] `20 - Source Library/Component Index — 14101 ch3.md` built.
+- [x] `20 - Source Library/Subject-Matter Index — 14101 ch3.md` built.
 - [x] Step 3 mechanism wired in the console (`instructional-design.js`,
       `course-model.js`, `prompts.js`, `stage-runners.js`); 78 tests green.
 - [x] `teaching-philosophy.md` "Instructional-design tags" section written.

@@ -35,7 +35,7 @@ five-tenet framework and its "through-line" (tenets 1–2 are inputs the
 instructor receives; 3–5 are what the instructor performs and is scored
 on). No handbook, no manual, nothing external behind it — the reason this
 module was chosen as the pilot candidate over one with real 14101 content:
-it isolates `provenance: original` cleanly, with no Component Index
+it isolates `provenance: original` cleanly, with no Subject-Matter Index
 material mixed in.
 
 **Module.** One module, three slides, `domain: "ife"` on the chapter and
@@ -71,7 +71,7 @@ either).
 ## 2. `provenance: original` — works cleanly, no friction
 
 Both `ift-001` and `ift-002` are `provenance: original` primitives with no
-Component Index entry, and this composed without incident:
+Subject-Matter Index entry, and this composed without incident:
 
 - Neither slide has a `.tmpl-source` citation line — there is nothing to
   cite, and the Style Guide convention (a required source attribution on
@@ -79,7 +79,7 @@ Component Index entry, and this composed without incident:
 - `course.json`'s key concepts carry a `sourceNote` describing the
   provenance in prose (matching the existing `sourceNote` convention
   already used for check slides with no figure) instead of a `sources`
-  list naming Component Index IDs.
+  list naming Subject-Matter Index IDs.
 - The registry's `redrawRecord: not applicable — provenance: original`
   reads correctly against the schema's own stated exception.
 
@@ -286,7 +286,7 @@ check once more non-technical content exists to compare against.
   render-check clean in both aspect ratios, and separately confirmed by
   eye.
 - **`provenance: original` works cleanly** — the one thing this pilot most
-  needed to prove. No Component Index entry, no source citation, no
+  needed to prove. No Subject-Matter Index entry, no source citation, no
   friction.
 - **The `ife` domain code is now wired into the engine** — `instructional-
   design.js` has a real `ife` verb menu (proposed, reviewed, and approved

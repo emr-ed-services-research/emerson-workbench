@@ -11,7 +11,7 @@ updated: 2026-09-16
 # Vitruvius — Verified Findings Ledger
 
 See `Vitruvius.md` for what this is and why it's a separate, lighter trust
-tier from the Component Index. Every entry below is one fact pulled in
+tier from the Subject-Matter Index. Every entry below is one fact pulled in
 from outside the Source Library (the web, or the Historic Educational
 Services archive) and actually used in a course — not a pre-populated
 reference collection.

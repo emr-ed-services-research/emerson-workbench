@@ -16,7 +16,7 @@ updated: 2026-09-15
 > HIPPS figure is explicitly framed as "a typical HIPPS in a configuration
 > set to meet SIL 3," using 2oo3 voting. Confirmed non-overlapping with
 > ch4's SOV/voting-architecture figures already catalogued for other
-> courses (per ch12's own Component Index note) — no cross-course
+> courses (per ch12's own Subject-Matter Index note) — no cross-course
 > collision.
 
 ### 1. cve2-ch1-m8 — SIS Voting Architecture & SIL Compliance
@@ -42,4 +42,4 @@ level target: `evaluate` (spans into `create`) · domain: `engineering` · tier:
 
 **Competency coverage:** `eng.sis.sil-architecture` (all items), `progression: introduces`.
 
-**Verification note:** the OREDA 42%/8%/50% breakdown and the HIPPS "SIL 3, 2oo3 voting" framing were both checked verbatim against `Component Index — Control Valve Handbook ch12.md` this pass — the design conversation's "~50%" claim holds exactly, and the HIPPS worked example wasn't even flagged in the original conversation, a genuine find that strengthens this module.
+**Verification note:** the OREDA 42%/8%/50% breakdown and the HIPPS "SIL 3, 2oo3 voting" framing were both checked verbatim against `Subject-Matter Index — Control Valve Handbook ch12.md` this pass — the design conversation's "~50%" claim holds exactly, and the HIPPS worked example wasn't even flagged in the original conversation, a genuine find that strengthens this module.

@@ -147,9 +147,9 @@ the "mandatory, no default" rule as written). Omitting it is the more
 honest of two bad options, not a fix. This needs an actual decision, not
 a pilot-time workaround — see `PILOT-NOTES.md` finding 4.
 
-No Component Index back-pointer — `provenance: original` primitives are
+No Subject-Matter Index back-pointer — `provenance: original` primitives are
 exempt (curriculum-development.md: *"the one exception to 'must name a
-real Component Index entry'"*).
+real Subject-Matter Index entry'"*).
 
 ---
 

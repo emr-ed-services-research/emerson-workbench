@@ -322,7 +322,7 @@ lines in place. It is a production port of the gallery
     <li><span class="num">1</span>Upper bench set</li>
   </ul>
   <p class="tmpl-takeaway">One plain-language line — the thing to carry away.</p>
-  <p class="tmpl-source">After …, Fig. … — … . Component Index: … .</p>
+  <p class="tmpl-source">After …, Fig. … — … . Subject-Matter Index: … .</p>
   <div class="slide-chrome">…</div>
 </article>
 ```

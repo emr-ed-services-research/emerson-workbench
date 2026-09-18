@@ -10,7 +10,7 @@ updated: 2026-09-18
 # Course Catalog
 
 The canonical set of real, production-track course ids — built to give the
-Component Index's `used-by` field a real reference target instead of a
+Subject-Matter Index's `used-by` field a real reference target instead of a
 free-text course name. Nothing more yet: no status/production-stage field,
 no ownership metadata, no schedule — those get added only when a real,
 cheap source for them exists, not spun up speculatively.
@@ -18,7 +18,7 @@ cheap source for them exists, not spun up speculatively.
 **Membership is deliberate, not automatic.** A course belongs here once it
 has crossed the line toward production — not the moment a course folder
 exists, and not in proportion to how much real content it holds. See
-[[Component Index — Process & Standards]] for how a real citation from a
+[[Subject-Matter Index — Process & Standards]] for how a real citation from a
 non-catalog course is still recorded (in the component's own `notes`, never
 by inventing a catalog entry to make `used-by` fit).
 
@@ -46,8 +46,8 @@ ship as a real course. Revisit if any of them — or a course descended from
 them — actually reaches production-track.
 
 14101 (`14101 Valve Trim and Body Maintenance`) is also not listed here: its
-own Component Index files (`Component Index — 14101 ch1-ch2.md`,
-`Component Index — 14101 ch3.md`) already use a separate, pre-existing
+own Subject-Matter Index files (`Subject-Matter Index — 14101 ch1-ch2.md`,
+`Subject-Matter Index — 14101 ch3.md`) already use a separate, pre-existing
 `used-by` convention (bare slide numbers, not filenames) that predates this
 catalog and isn't part of this build. Adding 14101 to this catalog, and
 migrating its indexes' `used-by` convention to match, is a real, separate

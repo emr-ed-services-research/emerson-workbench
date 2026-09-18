@@ -82,7 +82,7 @@ IfE Vault first; this folder tracks it.
       `curriculum-development.md`) and four real, sourced activities to
       `d1-foundations` — a Tenet Sort discussion, a Show-Tell-Do worked
       walkthrough tied to the real 1400 bench-set-657 procedure
-      (`20 - Source Library/Component Index — bench-set-657.md`), a live
+      (`20 - Source Library/Subject-Matter Index — bench-set-657.md`), a live
       walkthrough of 1400 Chapter 3's own real slides, and an Objectives
       practice exercise using that chapter's real 7 objectives — all
       verified against real source, none invented. Literal schedule

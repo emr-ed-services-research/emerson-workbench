@@ -125,7 +125,7 @@ content, with a human reviewing every gate.
 
 ---
 
-## 5. Instructional Primitives Pathway & the Component Index
+## 5. Instructional Primitives Pathway & the Subject-Matter Index
 
 A second, newer layer sits alongside the five pipeline stages: the
 **curriculum-development schema** (`curriculum-development.md`), which tracks
@@ -149,14 +149,14 @@ Console's own build phases (§6) even though both happen to run 0/1 through
 
 **The core relationship — a shared library, and per-course pointers into it:**
 
-| | Component Index | Asset Variant |
+| | Subject-Matter Index | Asset Variant |
 | --- | --- | --- |
 | **Scope** | Course-agnostic. One entry per real source figure. | Per-course. One entry per `competency × asset-variant`. |
 | **Lives in** | `20 - Source Library/` — reusable by any course. | The specific course's own asset-variant registry (e.g. `10 - Courses/14101.../Curriculum — 14101.md`). |
-| **Points to** | The source figure itself (a `serves:` back-pointer to whichever competencies use it). | Back to a Component Index entry via `provenance`. |
+| **Points to** | The source figure itself (a `serves:` back-pointer to whichever competencies use it). | Back to a Subject-Matter Index entry via `provenance`. |
 | **Placed by** | Nothing — it's a catalogue, not a lesson. | A **placement edge** (`moduleId, roles, competencyId, assetVariantId`) — what actually puts it in a module. One asset variant can serve multiple edges. |
 
-The relationship is asymmetric on purpose: the Component Index doesn't need an
+The relationship is asymmetric on purpose: the Subject-Matter Index doesn't need an
 asset variant to exist, and cataloguing a source is real, useful work on its own.
 Proof: the **oil-and-gas sourcebook catalogue** (144/144 figures, 13 chapters,
 committed `79b3dfb`) is Component-Index-only — zero asset-variant-registry
@@ -173,7 +173,7 @@ the 14101 asset-variant registry). Phase 5 — wiring origination-mode Stage 1/2
 a module can be cut and drafted from objectives alone, no deck to read — has
 run one bounded dry run against `ch3-m1`, reviewed by Franz. A second,
 separate origination trial is in progress in an isolated scratch clone,
-testing the new oil-and-gas Component Index against the diagram-cleanup +
+testing the new oil-and-gas Subject-Matter Index against the diagram-cleanup +
 lightbox pipeline (below).
 
 ---
@@ -259,7 +259,7 @@ re-publish the infographic:
    ([[Course Porting Pipeline]]).
 5. **The vault structure changes** (§3, and [[Vault Structure]]).
 6. **The Instructional Primitives Pathway advances a phase, or the
-   Component Index / asset-variant relationship changes** (§5,
+   Subject-Matter Index / asset-variant relationship changes** (§5,
    `curriculum-development.md`) — keep its phase numbering visibly distinct
    from the Console's own build-phase numbering (§6).
 

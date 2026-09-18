@@ -47,11 +47,11 @@ updated: 2026-09-15
 > V/cavitation scenario, repositioned here rather than at the front) — see
 > "Structure" below and `Status — CVE1.md` for the explicit self-check with
 > real verification commands. **ATTEMPT 4 (2026-09-17)** grounds conceptual
-> explanations in six new real `kind: topic` Component Index entries
+> explanations in six new real `kind: topic` Subject-Matter Index entries
 > (`cvh-topic-cavitation`, `-flashing`, `-flow-recovery`, `-vena-contracta`,
 > `-valve-balance`, `-seat-load` — new entries added to
-> `Component Index — Control Valve Handbook ch5.md` to close a real gap:
-> the Component Index previously indexed only figures, never the Handbook's
+> `Subject-Matter Index — Control Valve Handbook ch5.md` to close a real gap:
+> the Subject-Matter Index previously indexed only figures, never the Handbook's
 > own conceptual body prose). One real content fix resulted (page 17's
 > high-recovery/cavitation mechanism now states the Handbook's own causal
 > reasoning, verbatim-quoted, not just the correlation); most other cited
@@ -73,7 +73,7 @@ updated: 2026-09-15
 > **Full ch5 topic index completed (2026-09-17)**, per Franz's correction
 > that six reactively-identified topics wasn't the real validation test —
 > the whole chapter's real body prose was read and 11 more genuine concepts
-> added (17 `kind: topic` entries total; see `Component Index — Control
+> added (17 `kind: topic` entries total; see `Subject-Matter Index — Control
 > Valve Handbook ch5.md`'s own Open Items for the full list and
 > `Source Library.md` for the updated count). **Competency-map
 > re-examination against the real topic structure: the existing 4-competency
@@ -201,7 +201,7 @@ summary alone.
   sources: [cvh-cmp-unbalance-area-table, cvh-cmp-seat-load-graph]
 ```
 
-`sources` above are verified real Component Index ids (`Component Index —
+`sources` above are verified real Subject-Matter Index ids (`Subject-Matter Index —
 Control Valve Handbook ch5.md`) — checked against the actual file before
 this document was written, not transcribed on trust. The two new
 actuator-force sources (`cvh-cmp-unbalance-area-table`,
@@ -333,7 +333,7 @@ with the actual commands run, not just an assertion each one holds.
     map).
   bloom: evaluate
   progression: introduces
-  sourceNote: "Control Valve Handbook ch9 (Standards and Approvals) — status: current, verified this session (Component Index — Control Valve Handbook ch9.md)."
+  sourceNote: "Control Valve Handbook ch9 (Standards and Approvals) — status: current, verified this session (Subject-Matter Index — Control Valve Handbook ch9.md)."
 
 - id: eng.isolation-valves.variant-justification
   statement: >
@@ -342,7 +342,7 @@ with the actual commands run, not just an assertion each one holds.
     torque.
   bloom: evaluate
   progression: introduces
-  sourceNote: "Control Valve Handbook ch10 (Isolation Valves). MUST carry the IPT/Robert A. Lee credit forward per Franz's 2026-09-18 decision (Component Index — Control Valve Handbook ch10.md) — this chapter is credited to IPT's Pipe Trades Handbook by Robert A. Lee, not cite the Handbook alone. Verified real this session."
+  sourceNote: "Control Valve Handbook ch10 (Isolation Valves). MUST carry the IPT/Robert A. Lee credit forward per Franz's 2026-09-18 decision (Subject-Matter Index — Control Valve Handbook ch10.md) — this chapter is credited to IPT's Pipe Trades Handbook by Robert A. Lee, not cite the Handbook alone. Verified real this session."
 
 - id: eng.sustainability.technology-tradeoff
   statement: >
@@ -392,7 +392,7 @@ Franz's explicit sequencing: full chapter topic index → re-examine whether
 the competency map still holds, now that real topic relationships exist,
 rather than the figure-grouping guess the original map was drawn from →
 THEN outline → THEN rebuild. This section is that re-examination, done
-against the real 17-topic map now in `Component Index — Control Valve
+against the real 17-topic map now in `Subject-Matter Index — Control Valve
 Handbook ch5.md`, not against the earlier 6-topic partial view.
 
 **Conclusion: the existing 4-competency map holds. No change.**

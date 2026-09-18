@@ -21,40 +21,40 @@ a chapter or section level.
 **Concept-level indexing has started, scoped to real use.** The deferred
 "wait for a real retrieval task" condition is now met — the Pipeline Console's
 Stage 3 was generating diagrams from scratch while good source material sat idle.
-The response is a **teaching-component index** built only as far as a real
+The response is a **teaching-subject-matter index** built only as far as a real
 request actually reaches — never a wholesale pre-index of a document:
 
-- [[Component Index — 14101 ch3]] — the discrete instructional components (a
+- [[Subject-Matter Index — 14101 ch3]] — the discrete instructional components (a
   diagram, a labelled figure, a graph) that Chapter 3's concepts need, each with
   its source, a precedence bucket (`current` / `archive-corroborated` /
   `archive-only` / `legacy`), and a locator. Stage 2 tags each key concept
   against it; Stage 3 pulls from it instead of searching cold. Each record also
   carries a `serves:` pointer into the curriculum layer (competency ids).
-- [[Component Index — 14101 ch1-ch2]] — the same, for Chapter 1 (valve
+- [[Subject-Matter Index — 14101 ch1-ch2]] — the same, for Chapter 1 (valve
   specifications) and Chapter 2 (Fisher Easy-E valve maintenance). 25
   components, built 2026-09-06 as the Phase 4 follow-on of the Instructional
   Primitives Pathway. Almost entirely `current` (CVH 6th ed. + current Fisher
   easy-e / ET / packing manuals); no archive content.
 - **Control Valve Handbook, all 15 chapters — complete.** Chapters 1–4 —
-  [[Component Index — Control Valve Handbook ch1|ch1]] (19 figures),
-  [[Component Index — Control Valve Handbook ch2|ch2]] (9 new + 1
-  cross-referenced), [[Component Index — Control Valve Handbook ch3|ch3]]
-  (52), [[Component Index — Control Valve Handbook ch4|ch4]] (27) — 107
+  [[Subject-Matter Index — Control Valve Handbook ch1|ch1]] (19 figures),
+  [[Subject-Matter Index — Control Valve Handbook ch2|ch2]] (9 new + 1
+  cross-referenced), [[Subject-Matter Index — Control Valve Handbook ch3|ch3]]
+  (52), [[Subject-Matter Index — Control Valve Handbook ch4|ch4]] (27) — 107
   figures catalogued fresh, built 2026-09-11 as Phase 0 of the Stage-1/
   Stage-2 review-checkpoint work, the real precondition for Steve's Control
   Valve Basics class (chapters in the order 1, 3, 4, 2). Chapters 5–15 —
-  [[Component Index — Control Valve Handbook ch5|ch5]] (19 — 18 numbered
+  [[Subject-Matter Index — Control Valve Handbook ch5|ch5]] (19 — 18 numbered
   figures + 1 unnumbered diagram, see below),
-  [[Component Index — Control Valve Handbook ch6|ch6]] (9),
-  [[Component Index — Control Valve Handbook ch7|ch7]] (14),
-  [[Component Index — Control Valve Handbook ch8|ch8]] (11),
-  [[Component Index — Control Valve Handbook ch9|ch9]] (7),
-  [[Component Index — Control Valve Handbook ch10|ch10]] (53),
-  [[Component Index — Control Valve Handbook ch11|ch11]] (3),
-  [[Component Index — Control Valve Handbook ch12|ch12]] (5),
-  [[Component Index — Control Valve Handbook ch13|ch13]],
-  [[Component Index — Control Valve Handbook ch14|ch14]],
-  [[Component Index — Control Valve Handbook ch15|ch15]] (0 each, confirmed
+  [[Subject-Matter Index — Control Valve Handbook ch6|ch6]] (9),
+  [[Subject-Matter Index — Control Valve Handbook ch7|ch7]] (14),
+  [[Subject-Matter Index — Control Valve Handbook ch8|ch8]] (11),
+  [[Subject-Matter Index — Control Valve Handbook ch9|ch9]] (7),
+  [[Subject-Matter Index — Control Valve Handbook ch10|ch10]] (53),
+  [[Subject-Matter Index — Control Valve Handbook ch11|ch11]] (3),
+  [[Subject-Matter Index — Control Valve Handbook ch12|ch12]] (5),
+  [[Subject-Matter Index — Control Valve Handbook ch13|ch13]],
+  [[Subject-Matter Index — Control Valve Handbook ch14|ch14]],
+  [[Subject-Matter Index — Control Valve Handbook ch15|ch15]] (0 each, confirmed
   — reference-table chapters with no numbered figures, checked page by page
   rather than assumed) — 121 more components, built 2026-09-17. **228
   components total across the whole Handbook.** Standing full-chapter cataloging (see
@@ -95,7 +95,7 @@ request actually reaches — never a wholesale pre-index of a document:
   **A new entry kind, `kind: topic`, was added 2026-09-17** — the real
   root cause found after three CVE1 curriculum rebuild attempts kept
   failing to teach real conceptual content even once narrative, data, and
-  pacing problems were fixed in turn: the Component Index had only ever
+  pacing problems were fixed in turn: the Subject-Matter Index had only ever
   indexed figures/diagrams/tables (every existing record an implicit
   `kind: figure`), never the surrounding body prose that actually explains
   a mechanism or a concept. A figure's `teaches` field describes what the
@@ -138,7 +138,7 @@ request actually reaches — never a wholesale pre-index of a document:
   content (course data, 11 built slide files, an asset manifest), verified
   clean afterward (`verify.ps1`: 0 FAIL, 0 warn).
 
-**Three ways a component index gets triggered** (corrected 2026-09-04 — see
+**Three ways a subject-matter index gets triggered** (corrected 2026-09-04 — see
 `Course Porting Pipeline.md` "Origination without a deck" — then widened
 2026-09-11 to name a third pattern already in real use, the Oil & Gas
 Sourcebook's own 13-chapter pass, but never previously written down here):
@@ -161,8 +161,8 @@ Sourcebook's own 13-chapter pass, but never previously written down here):
    Handbook's own chapters 1–4, added 2026-09-11 as Phase 0 of the
    Stage-1/Stage-2 review-checkpoint work; and chapters 5–15, added
    2026-09-17 to complete the whole Handbook (all 15 chapters:
-   [[Component Index — Control Valve Handbook ch1|ch1]] through
-   [[Component Index — Control Valve Handbook ch15|ch15]]) — the last three
+   [[Subject-Matter Index — Control Valve Handbook ch1|ch1]] through
+   [[Subject-Matter Index — Control Valve Handbook ch15|ch15]]) — the last three
    chapters (13–15) confirmed to contain zero numbered figures, checked page
    by page, not skipped on the assumption that reference-table chapters
    wouldn't have any.
@@ -187,7 +187,7 @@ as authoring Stage 2 content, not as pipeline plumbing.
 **The actual step-by-step process — file/record schema, the render-and-look
 rigor standard, the mandatory whole-library collision sweep, and how the
 real edge cases get handled — lives in
-[[Component Index — Process & Standards]], not here.** This doc stays the
+[[Subject-Matter Index — Process & Standards]], not here.** This doc stays the
 overview; that one is what a directive like "index [source]" should point
 at instead of re-deriving scope from scratch. It also governs `used-by`
 (see [[Course Catalog]] for the real courses it can reference) and
@@ -205,11 +205,11 @@ this graduates into the permanent pipeline docs.
 | Fisher / Emerson instruction manuals | Technical publications | 27 | [[Technical Publications]] |
 | Historic Educational Services training series | Historical archive (unverified) | ~60+ modules | [[Historic Educational Services Training Content]] |
 
-## Component Index coverage
+## Subject-Matter Index coverage
 
 The single place that answers "what's indexed and what isn't," across every
 source. Updated as the explicit closing step of every ingestion pass — see
-[[Component Index — Process & Standards]] — not a separately-remembered
+[[Subject-Matter Index — Process & Standards]] — not a separately-remembered
 maintenance task. "Status" and "trigger-type" are read together: a
 deck-/topic-driven index's own "complete" means *matches its scope*
 (the deck or the topic), not *exhausts the source* — don't read "partial"
@@ -219,10 +219,10 @@ on those rows as unfinished work.
 | --- | --- | --- | --- | --- |
 | Control Valve Handbook — all 15 chapters | Standing full-chapter | Complete | 228 | 2026-09-18 |
 | Oil & Gas Sourcebook — all 13 chapters | Standing full-chapter | Complete | 144 | 2026-09-08 |
-| 14101 ch1–ch2 ([[Component Index — 14101 ch1-ch2]]) | Deck-driven | Complete (matches the deck) | 25 | 2026-09-06 |
-| 14101 ch3 ([[Component Index — 14101 ch3]]) | Deck-driven | Complete (matches the deck) | 52 | 2026-09-02 |
-| bench-set-657 ([[Component Index — bench-set-657]]) | Topic-driven | Complete (matches the topic) | 6 | 2026-09-06 |
-| Fisher 657 Diaphragm Actuator ([[Component Index — Fisher 657 Diaphragm Actuator]]) — rest of the document beyond bench-set-657's slice | Standing full-document | Complete | 17 | 2026-09-19 |
+| 14101 ch1–ch2 ([[Subject-Matter Index — 14101 ch1-ch2]]) | Deck-driven | Complete (matches the deck) | 25 | 2026-09-06 |
+| 14101 ch3 ([[Subject-Matter Index — 14101 ch3]]) | Deck-driven | Complete (matches the deck) | 52 | 2026-09-02 |
+| bench-set-657 ([[Subject-Matter Index — bench-set-657]]) | Topic-driven | Complete (matches the topic) | 6 | 2026-09-06 |
+| Fisher 657 Diaphragm Actuator ([[Subject-Matter Index — Fisher 657 Diaphragm Actuator]]) — rest of the document beyond bench-set-657's slice | Standing full-document | Complete | 17 | 2026-09-19 |
 | Fisher 667 Diaphragm Actuator | Standing full-document | Complete | 25 | 2026-09-19 |
 | Fisher 585C Series Piston Actuators | Standing full-document | Complete | 16 | 2026-09-19 |
 | Fisher 1051/1052 Rotary Actuators | Standing full-document | Complete | 17 | 2026-09-19 |
@@ -238,44 +238,44 @@ on those rows as unfinished work.
 | Fisher 8580 Rotary Valve | Standing full-document | Complete | 12 | 2026-09-19 |
 | Fisher Vee-Ball V150/200/300 Rotary Valves | Standing full-document | Complete | 35 | 2026-09-19 |
 | Fisher V500 Rotary Globe Valve | Standing full-document | Complete | 16 | 2026-09-19 |
-| Fisher FIELDVUE DVC6200 ([[Component Index — Fisher FIELDVUE DVC6200]]) | Standing full-document | Complete | 39 | 2026-09-19 |
-| Fisher FIELDVUE DVC7K-H ([[Component Index — Fisher FIELDVUE DVC7K-H]]) | Standing full-document | Complete | 42 | 2026-09-19 |
-| Fisher ENVIRO-SEAL Rotary Packing System ([[Component Index — Fisher ENVIRO-SEAL Rotary Packing System]]) — added to the library 2026-09-20 | Standing full-document | Complete | 7 | 2026-09-20 |
-| Fisher 646 Electro-Pneumatic Transducer ([[Component Index — Fisher 646 Electro-Pneumatic Transducer]]) — 1 of 7 manuals acquired for the 17101 gap analysis | Standing full-document | Complete | 11 | 2026-09-21 |
-| Fisher 846 Electro-Pneumatic Transducer ([[Component Index — Fisher 846 Electro-Pneumatic Transducer]]) — 17101 batch | Standing full-document | Complete | 24 | 2026-09-21 |
-| Fisher i2P-100 Electro-Pneumatic Transducer ([[Component Index — Fisher i2P-100 Electro-Pneumatic Transducer]]) — 17101 batch | Standing full-document | Complete | 14 | 2026-09-21 |
-| Fisher 3582/3582i Positioners ([[Component Index — Fisher 3582-3582i Positioners]]) — 17101 batch | Standing full-document | Complete | 25 | 2026-09-21 |
-| Fisher 3610J/3620J Positioners ([[Component Index — Fisher 3610J-3620J Positioners]]) — 17101 batch | Standing full-document | Complete | 31 | 2026-09-21 |
-| Fisher 585CLS Long Stroke Piston Actuator ([[Component Index — Fisher 585CLS Long Stroke Piston Actuator]]) — 17101 batch, `status: current` per a flagged precedence judgment call (see the file's own header) | Standing full-document | Complete | 3 | 2026-09-21 |
-| AMS Trex ValveLink Diagnostic Concepts ([[Component Index — AMS Trex ValveLink Diagnostic Concepts]]) — topic-driven concept-grain pass, correcting the original AMS Trex navPath pass's over-indexed grain; mined from the Software Reference material below, nothing duplicated | Topic-driven | Complete (matches the topic) | 19 | 2026-09-14 |
+| Fisher FIELDVUE DVC6200 ([[Subject-Matter Index — Fisher FIELDVUE DVC6200]]) | Standing full-document | Complete | 39 | 2026-09-19 |
+| Fisher FIELDVUE DVC7K-H ([[Subject-Matter Index — Fisher FIELDVUE DVC7K-H]]) | Standing full-document | Complete | 42 | 2026-09-19 |
+| Fisher ENVIRO-SEAL Rotary Packing System ([[Subject-Matter Index — Fisher ENVIRO-SEAL Rotary Packing System]]) — added to the library 2026-09-20 | Standing full-document | Complete | 7 | 2026-09-20 |
+| Fisher 646 Electro-Pneumatic Transducer ([[Subject-Matter Index — Fisher 646 Electro-Pneumatic Transducer]]) — 1 of 7 manuals acquired for the 17101 gap analysis | Standing full-document | Complete | 11 | 2026-09-21 |
+| Fisher 846 Electro-Pneumatic Transducer ([[Subject-Matter Index — Fisher 846 Electro-Pneumatic Transducer]]) — 17101 batch | Standing full-document | Complete | 24 | 2026-09-21 |
+| Fisher i2P-100 Electro-Pneumatic Transducer ([[Subject-Matter Index — Fisher i2P-100 Electro-Pneumatic Transducer]]) — 17101 batch | Standing full-document | Complete | 14 | 2026-09-21 |
+| Fisher 3582/3582i Positioners ([[Subject-Matter Index — Fisher 3582-3582i Positioners]]) — 17101 batch | Standing full-document | Complete | 25 | 2026-09-21 |
+| Fisher 3610J/3620J Positioners ([[Subject-Matter Index — Fisher 3610J-3620J Positioners]]) — 17101 batch | Standing full-document | Complete | 31 | 2026-09-21 |
+| Fisher 585CLS Long Stroke Piston Actuator ([[Subject-Matter Index — Fisher 585CLS Long Stroke Piston Actuator]]) — 17101 batch, `status: current` per a flagged precedence judgment call (see the file's own header) | Standing full-document | Complete | 3 | 2026-09-21 |
+| AMS Trex ValveLink Diagnostic Concepts ([[Subject-Matter Index — AMS Trex ValveLink Diagnostic Concepts]]) — topic-driven concept-grain pass, correcting the original AMS Trex navPath pass's over-indexed grain; mined from the Software Reference material below, nothing duplicated | Topic-driven | Complete (matches the topic) | 19 | 2026-09-14 |
 | Power & Severe Service Sourcebook — all 14 real chapters (17 indexed files: ch1-8, 9A-9D, 10-14) | Standing full-chapter | Complete — 159 figures + 104 `kind: topic` entries (added 2026-09-17) | 263 | 2026-09-17 |
 | Refining Sourcebook — all 5 chapters | Standing full-chapter | Complete — 95 figures + 11 `kind: topic` entries (added 2026-09-18) | 106 | 2026-09-18 |
 | Pulp & Paper Sourcebook — all 18 chapters (chapter 10 has two real lettered sub-parts, 10A/10B) | Standing full-chapter | Complete — 147 figures + 101 `kind: topic` entries (added 2026-09-18) | 248 | 2026-09-18 |
 | Historic Educational Services archive | — | Not started (unverified, `legacy`/`archive-only` territory if ever indexed) | 0 | — |
 
-## Software Reference material (not counted in Component Index totals)
+## Software Reference material (not counted in Subject-Matter Index totals)
 
 Software navigation/screenshot records are a different kind of fact than
-the physical Component Index above: tied to one app version, high-churn,
-and — per the correction that produced [[Component Index — AMS Trex
+the physical Subject-Matter Index above: tied to one app version, high-churn,
+and — per the correction that produced [[Subject-Matter Index — AMS Trex
 ValveLink Diagnostic Concepts]] — the wrong grain for teaching software
 anyway (a navigation map, not the concepts a technician needs). These rows
 are **mined source material**, not a library deliverable: the files
 themselves are untouched (nothing discarded, nothing renamed), and every
 genuinely durable concept they contained has already been extracted into
-the Component Index proper, cross-referenced by id in both directions.
+the Subject-Matter Index proper, cross-referenced by id in both directions.
 Kept as its own table, separate from the headline total, so the two kinds
 of fact are never blended into one number again.
 
 | Source / scope | Trigger-type | Status | Components | Last touched |
 | --- | --- | --- | --- | --- |
-| AMS Trex User Guide ch2 ([[Component Index — AMS Trex User Guide ch2]]) — hardware overview chapter; first pass to apply the `kind: navPath` software-documentation convention | Standing full-chapter | Complete (mined) | 57 | 2026-09-14 |
-| AMS Trex User Guide ch3 ([[Component Index — AMS Trex User Guide ch3]]) — Field Communicator application chapter, the densest chapter in the document (HART/FOUNDATION fieldbus connection, configuration, Favorites, Graphics) | Standing full-chapter | Complete (mined) | 72 | 2026-09-14 |
-| AMS Trex User Guide ch4-ch5 ([[Component Index — AMS Trex User Guide ch4-ch5]]) — Loop Diagnostics + Fieldbus Diagnostics applications, catalogued together | Standing full-chapter | Complete (mined) | 63 | 2026-09-24 |
-| ValveLink Mobile Software Quick Start Guide ([[Component Index — ValveLink Mobile Software Quick Start Guide]]) — 17101 batch | Standing full-document | Complete (mined) | 11 | 2026-09-21 |
+| AMS Trex User Guide ch2 ([[Subject-Matter Index — AMS Trex User Guide ch2]]) — hardware overview chapter; first pass to apply the `kind: navPath` software-documentation convention | Standing full-chapter | Complete (mined) | 57 | 2026-09-14 |
+| AMS Trex User Guide ch3 ([[Subject-Matter Index — AMS Trex User Guide ch3]]) — Field Communicator application chapter, the densest chapter in the document (HART/FOUNDATION fieldbus connection, configuration, Favorites, Graphics) | Standing full-chapter | Complete (mined) | 72 | 2026-09-14 |
+| AMS Trex User Guide ch4-ch5 ([[Subject-Matter Index — AMS Trex User Guide ch4-ch5]]) — Loop Diagnostics + Fieldbus Diagnostics applications, catalogued together | Standing full-chapter | Complete (mined) | 63 | 2026-09-24 |
+| ValveLink Mobile Software Quick Start Guide ([[Subject-Matter Index — ValveLink Mobile Software Quick Start Guide]]) — 17101 batch | Standing full-document | Complete (mined) | 11 | 2026-09-21 |
 
 **203 software-reference records** (192 AMS Trex + 11 ValveLink Mobile QSG),
-tracked here and excluded from every Component Index total below.
+tracked here and excluded from every Subject-Matter Index total below.
 
 **27 real Technical Publications manuals are now fully indexed** (18 from
 the original batch, plus the ENVIRO-SEAL rotary manual D101643X012 added
@@ -292,23 +292,23 @@ first 19, in direct response to a real gap analysis for the 17101 batch
 for the next 7, and as a deliberate proof-of-concept for AMS Trex — see
 each file's own header for the real per-document rigor and structural
 findings. **AMS Trex and the ValveLink Mobile QSG's own records now live
-in the Software Reference table above, not the Component Index total
+in the Software Reference table above, not the Subject-Matter Index total
 below** — see "Two totals, not one" immediately following.
 
 ### Two totals, not one (split 2026-09-14)
 
 The AMS Trex navPath pass over-indexed at the wrong grain (a navigation
-map, not the concepts a technician needs) — see [[Component Index — AMS
+map, not the concepts a technician needs) — see [[Subject-Matter Index — AMS
 Trex ValveLink Diagnostic Concepts]] for the correction and the full
 reasoning. That correction surfaced a real, durable distinction: physical
-Component Index facts (a valve's construction, an actuator's bench-set
+Subject-Matter Index facts (a valve's construction, an actuator's bench-set
 procedure) don't churn — a figure catalogued in 2026 still teaches the
 same thing years later. Software navigation facts do churn — they're tied
 to one app version and can go stale on the next release. Blending the two
 into one library-wide number hid that difference. From this date forward,
 report both:
 
-**1,019 components in the Component Index** (323 CVH + 214 Oil & Gas + 482
+**1,019 components in the Subject-Matter Index** (323 CVH + 214 Oil & Gas + 482
 Technical Publications — CVH's 323 is 228 figures (all 15 chapters,
 unchanged) plus 95 new `kind: topic` entries, added 2026-09-17 across a
 full-chapter conceptual-indexing pass run on all 15 CVH chapters (the

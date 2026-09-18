@@ -77,8 +77,8 @@ first surfaced them.
    spending time iterating on an existing hand-drawn figure too**, not only when
    first authoring a slide.
 
-   From Stage 2 on, this search is **front-loaded into a component index**
-   (`20 - Source Library/Component Index — <code> <chapter>.md`): the figures a
+   From Stage 2 on, this search is **front-loaded into a subject-matter index**
+   (`20 - Source Library/Subject-Matter Index — <code> <chapter>.md`): the figures a
    chapter's concepts need, each with a source locator and a precedence bucket
    (`current` / `archive-corroborated` / `archive-only` / `legacy` — newer
    sources win on correctness; a better-presented older figure is usable where
@@ -120,7 +120,7 @@ first surfaced them.
    "The standard is completeness against source, not a volume judgment" for
    the full statement.) Establish what full, correct coverage of a concept
    requires from **every legitimate source for the scope at hand** — the
-   Source Library / component index, and, when converting an existing deck,
+   Source Library / subject-matter index, and, when converting an existing deck,
    the deck itself (it may carry real instructional content or framing not in
    the Source Library at all; it is a source, not inventory to reshape
    against an external standard) — then measure a slide against that bar,
@@ -237,7 +237,7 @@ De-coupling fixes required first (all small):
 | --- | --- | --- | --- | --- |
 | **0 · Bulk convert** | `.pptx` | `slides/*.html`, `manifest.*`, `conversion-report.csv` | script | Fully — `extract-media.ps1` + `generate.ps1`. Works today. |
 | **1 · Cut the teaching arc** | converted deck + source chapter list + [[teaching-philosophy]] | `course.json` skeleton: days → chapters → modules, page ranges, `status: "outline"` | human | No — this is the judgement the philosophy governs. Scaffold only. |
-| **2 · Author the context layer** | skeleton + [[Source Library]] + component index | per module: `objective`, 4–6 `keyConcepts` (`{t, pages, level, role, sources}`), `check`, `visual: true`, `status: "ready"`, `levelTarget` / `stakes` / `buildsOn`; chapter `domain` | human + Claude | Partly — Claude drafts from slides + source; human approves. |
+| **2 · Author the context layer** | skeleton + [[Source Library]] + subject-matter index | per module: `objective`, 4–6 `keyConcepts` (`{t, pages, level, role, sources}`), `check`, `visual: true`, `status: "ready"`, `levelTarget` / `stakes` / `buildsOn`; chapter `domain` | human + Claude | Partly — Claude drafts from slides + source; human approves. |
 | **3 · Four-part slide pass** | authored module + [[Source Library]] | templated, polished slides; splits consolidated; dropped slides ribboned; unverifiable claims flagged | Claude + human review | Partly — procedure is defined; needs the template library and the data-single-source decision to be clean. |
 | **4 · Verify & publish** | rebuilt slides | browser-render checks, 16:9 tuning, `course-data.js` regenerated, integrity-validated | script + human | Mostly — one `verify.ps1`. |
 
@@ -311,8 +311,8 @@ each module.
 `00 - Project/Instructional-Method Review — ch3.md`, and [[teaching-philosophy]]
 "Instructional-design tags"):
 
-1. **Source-component earmarking (Axis A).** If the chapter has a component index
-   (`20 - Source Library/Component Index — <code> <chapter>.md`), each concept
+1. **Source-component earmarking (Axis A).** If the chapter has a subject-matter index
+   (`20 - Source Library/Subject-Matter Index — <code> <chapter>.md`), each concept
    gets `sources: [<component id>, …]` naming the indexed figure that supports
    it. No indexed component → a short `sourceNote` instead. Stage 3 then pulls
    from these instead of searching source material cold.
@@ -640,7 +640,7 @@ an engine change, or a new authoring pass — re-run the whole checklist.
   construction only; a rotary valve's flow characteristic comes from its
   closure member's own contour). This is not caught by any render check —
   it requires actually knowing the domain and checking the claim against
-  the Component Index's own `teaches` field (grounded in the real source)
+  the Subject-Matter Index's own `teaches` field (grounded in the real source)
   or the source document directly. Prioritize checks where two adjacent
   concepts share vocabulary but describe genuinely different hardware
   (sliding-stem vs. rotary is the recurring one in this vault; there may be
@@ -896,7 +896,7 @@ Mirror into [[Open Questions]] once reviewed.
   and Stage 2's prompts still open with "read every slide in the range" /
   "read its slides for the page numbers listed," unconditionally — they need
   a second mode that cuts a module's scope and drafts its `keyConcepts`
-  directly from a named topic + the Source Library / component index, with no
+  directly from a named topic + the Source Library / subject-matter index, with no
   slide range to read at all. Stage 3's explicit "does not create new slide
   files" rule needs to become "does not create new slide files **when
   converting**" — an origination module's assigned-but-unbacked page numbers
@@ -910,7 +910,7 @@ Mirror into [[Open Questions]] once reviewed.
 
   **Follow-up (Franz, 2026-09-04, same day):** the two open questions above —
   bounding a module with no page range, and which template Stage 3 authors
-  into — may collapse into one: generalize the Component Index. Checked
+  into — may collapse into one: generalize the Subject-Matter Index. Checked
   against how the ch3 index and Axis C actually work:
   - **Template selection is already solved**, not just plausible: Stage 3's
     existing role→treatment mapping (`teaching-philosophy.md`) already picks
@@ -929,7 +929,7 @@ Mirror into [[Open Questions]] once reviewed.
     keeps that discipline: an origination request's *named topic* is the
     trigger, the same way a chapter's slides are the trigger today — a
     small, request-scoped index built for that topic alone, not a
-    library-wide one. See `Source Library.md` "Two ways a component index
+    library-wide one. See `Source Library.md` "Two ways a subject-matter index
     gets triggered."
   - **Building a topic index is real editorial work, not a bounded code
     change** — the same size and character as building ch3's index was (full
@@ -945,7 +945,7 @@ Mirror into [[Open Questions]] once reviewed.
     proof below, not after it.
 
     **Trial done, accepted (Franz, 2026-09-06):**
-    `20 - Source Library/Component Index — bench-set-657.md` — built cold
+    `20 - Source Library/Subject-Matter Index — bench-set-657.md` — built cold
     2026-09-04, compared against the ch3 index. Accepted as the trial
     result. Its one shortcut (carrying over ch3's archive-review verdict for
     D750004/D750066 rather than re-reading the same Franz-confirmed pages)

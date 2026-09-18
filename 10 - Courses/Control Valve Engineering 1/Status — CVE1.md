@@ -10,18 +10,18 @@ updated: 2026-09-17
 
 # Status — CVE1
 
-## PHASE 1 REBUILD, ATTEMPT 4 (2026-09-17) — grounds conceptual explanation in real Component Index topic entries, awaiting Franz's review
+## PHASE 1 REBUILD, ATTEMPT 4 (2026-09-17) — grounds conceptual explanation in real Subject-Matter Index topic entries, awaiting Franz's review
 
 **Why this pass exists.** Attempt 3 (below) fixed narrative/pacing/data
 problems (the three-tier ramp, real worked numbers) but its conceptual
 explanations — why cavitation happens, what vena contracta is, what
 balance/seat-load actually mean — were authored from general engineering
 knowledge, because no real source for that conceptual content existed
-anywhere in the Component Index. The Component Index only ever indexed
+anywhere in the Subject-Matter Index. The Subject-Matter Index only ever indexed
 figures/diagrams/tables (the standing "figures-only rule"); body prose
 explaining the concepts themselves was never catalogued. Franz's fix: a
 new entry kind, `kind: topic`, was added to
-`Component Index — Control Valve Handbook ch5.md` — six real entries
+`Subject-Matter Index — Control Valve Handbook ch5.md` — six real entries
 (`cvh-topic-cavitation`, `cvh-topic-flashing`, `cvh-topic-flow-recovery`,
 `cvh-topic-vena-contracta`, `cvh-topic-valve-balance`, `cvh-topic-seat-load`),
 each grounded in real Handbook body prose (verified via `pdftotext -layout`
@@ -219,7 +219,7 @@ sliding-stem "valve plug/seat ring" damage — a real hardware mismatch that
 destroyed the scenario's credibility.
 
 *Fix, checked before writing any scenario text this time:* read
-`Component Index — Control Valve Handbook ch5.md` in full first. Confirmed
+`Subject-Matter Index — Control Valve Handbook ch5.md` in full first. Confirmed
 the damage photos are sliding-stem-specific, and separately confirmed the
 unbalance-area table (`cvh-cmp-unbalance-area-table`, Fig. 5.2) is
 explicitly framed around "single-seated unbalanced valves vs. balanced
@@ -360,7 +360,7 @@ full module map and scenario description.
 Two new real source figures used for the first time in any built course:
 `cvh-cmp-unbalance-area-table` (Figure 5.2, p.123) and
 `cvh-cmp-seat-load-graph` (Figure 5.3, p.124) — both verified against
-`Component Index — Control Valve Handbook ch5.md` before use, both
+`Subject-Matter Index — Control Valve Handbook ch5.md` before use, both
 hand-cropped via `pdftoppm -r 200` from the real PDF pages. The flowchart
 component — the source of the original defect — is now shown as two
 distinct crops (steps 1-2; steps 3-5) for different concepts, plus once as
@@ -378,7 +378,7 @@ slides (verified via real screenshots, `40 - Engine/render/render-check.mjs
 | 1 | Visual variety | **Pass** | Every one of the 16 content slides uses a distinct crop or a genuinely different figure — checked directly by listing every image reference across pages 5-20; the flowchart appears as 3 different crop regions (steps 1-2, steps 3-5, full diagram) across 5 uses, never the same crop for two different concepts. This is the specific defect that broke the first build — confirmed fixed, not assumed. |
 | 2 | Real tension | **Pass** | The high-recovery-valves-are-more-cavitation-prone finding (page 11) and the 5-10x seat-load gap between Class II and Class V (page 14) are both genuine, source-grounded counter-intuitive results, not facts delivered in sequence — both explicitly framed as contradicting a plausible-sounding assumption. |
 | 3 | Attempt before instruction | **Pass** | Module 1 (pages 5-6) is a real written commitment to a specific, plausible wrong decision, made before any of the four competencies are taught — not an activity bolted on after content. The instructor collects varied answers without correcting (page 6's activity note). |
-| 4 | Consequence is real | **Pass** | Both field failures (cavitation damage, seat-load shortfall) trace directly to real, already-verified Component Index entries (`cvh-cmp-pressure-profile-high-low-recovery`, `cvh-cmp-seat-load-graph`) — not dramatized inventions. Neither needed the Historic archive or new Vitruvius research, so the Verified Findings Ledger correctly stays empty this pass (see course.json's own `_note`). |
+| 4 | Consequence is real | **Pass** | Both field failures (cavitation damage, seat-load shortfall) trace directly to real, already-verified Subject-Matter Index entries (`cvh-cmp-pressure-profile-high-low-recovery`, `cvh-cmp-seat-load-graph`) — not dramatized inventions. Neither needed the Historic archive or new Vitruvius research, so the Verified Findings Ledger correctly stays empty this pass (see course.json's own `_note`). |
 | 5 | Narrative continuity | **Pass** | All 7 modules run the same case (the same service, the same original spec) — module 3/4's "Model" stages explicitly reference "the Module 1 decision," module 5 explicitly re-walks "the same flowchart steps," module 6 explicitly frames itself as a second attempt, module 7 explicitly asks the learner to compare against their own Module 1/6 work. No module reads as a disconnected new topic. |
 | 6 | Instructor depth | **Needs a human judgment call, not a fact-check** | The real A+B+C+D force breakdown, the real seat-load table, and the vena-contracta/high-recovery mechanism all give an instructor genuine material to field an unscripted question with — more than the first build had. Whether it's genuinely *enough* depth is exactly the kind of call this rubric item exists for a human to make, not something I can self-certify. |
 | 7 | Coverage against source | **Needs a tweak — flagged, not hidden** | This is explicitly Phase 1's scope, not Phase 2's — the rubric doc itself says Phase 1 tests the method "at CVE1's current scope," and Phase 2 is where real chapter coverage gets proven. CVE1 still draws on a small fraction of ch5 (the flowchart, cavitation/flashing, and now 2 of the actuator-sizing figures) — Figures 5.4-5.5 (recommended seat load table, packing friction) and the rest of ch5's dimensional/sizing content are untouched. Do not read row 1's real fix as also closing row 7 — they are different defects. |
@@ -392,7 +392,7 @@ Phase 2's job, not silently claimed as done.**
 `verify.ps1 -Course "Control Valve Engineering 1"` → **0 FAIL, 0 warn**,
 independently re-run after every content change, not just once at the end.
 20 slides (4 moduleZero + 16 content/check), all real, all citations
-verified against the Component Index before use.
+verified against the Subject-Matter Index before use.
 
 ### What still needs Franz
 
@@ -494,13 +494,13 @@ first pass caught).
 
 ## Verification discipline applied
 
-Every Component Index citation used (`cvh-cmp-valve-selection-process-flowchart`,
+Every Subject-Matter Index citation used (`cvh-cmp-valve-selection-process-flowchart`,
 `cvh-cmp-vena-contracta-diagram`, `cvh-cmp-pressure-profile-high-low-recovery`,
 `cvh-cmp-flashing-damage-photo`, `cvh-cmp-cavitation-damage-photo`) was
-checked against the real `Component Index — Control Valve Handbook ch5.md`
+checked against the real `Subject-Matter Index — Control Valve Handbook ch5.md`
 before use — none invented. All 5 slide images are real crops from actual
 200dpi renders of the source PDF pages (p.100 for the flowchart — an
-unnumbered diagram, confirmed via the Component Index's own locator note;
+unnumbered diagram, confirmed via the Subject-Matter Index's own locator note;
 pp.128-130 for the cavitation/flashing figures), not fabricated or
 AI-generated illustrations. The counter-intuitive "high-recovery valves
 are more cavitation-prone" claim was independently corroborated by reading

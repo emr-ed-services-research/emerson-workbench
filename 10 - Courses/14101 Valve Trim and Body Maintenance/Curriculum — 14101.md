@@ -298,7 +298,7 @@ Phase 4** below.
   provenance: ch3-cmp-stem-connector
   redrawRecord: existing deck photo, no redraw
   # slide 103 body text "fine travel adjustment at the locknut and jam nut"
-  # is not IM terminology — already flagged in the ch3 Component Index; a
+  # is not IM terminology — already flagged in the ch3 Subject-Matter Index; a
   # slide-content fix, not a model issue.
 
 - id: av.mnt.actuator.torque-diaphragm-casing.pattern
@@ -387,9 +387,9 @@ Written with asset variants because the ch3-m2 / m3 assets already exist. The
     assetVariantId: null, slide: 108, note: "check-your-knowledge — see FINDING 1" }
 ```
 
-### Component Index back-pointers
+### Subject-Matter Index back-pointers
 
-Added to `20 - Source Library/Component Index — 14101 ch3.md`:
+Added to `20 - Source Library/Subject-Matter Index — 14101 ch3.md`:
 
 | Component | `serves:` |
 | --- | --- |
@@ -400,7 +400,7 @@ Added to `20 - Source Library/Component Index — 14101 ch3.md`:
 | `ch3-cmp-mounting-components` | `mnt.actuator.mount-on-valve` |
 | `ch3-cmp-stem-connector` | `mnt.actuator.install-stem-connector` |
 | `ch3-cmp-casing-torque-pattern` | `mnt.actuator.torque-diaphragm-casing` |
-| `ch3-cmp-da-schematic` | `mnt.actuator.explain-actuator-action` *(renamed from `direct-acting-principle` 2026-09-06; competency lives in ch3-m1, ch3-m2 applies it. The `serves:` line in the Component Index is updated to match.)* |
+| `ch3-cmp-da-schematic` | `mnt.actuator.explain-actuator-action` *(renamed from `direct-acting-principle` 2026-09-06; competency lives in ch3-m1, ch3-m2 applies it. The `serves:` line in the Subject-Matter Index is updated to match.)* |
 
 ---
 
@@ -593,7 +593,7 @@ enrolls in, not a filter inside 14101. Out of scope here.
 1. **`mnt.actuator.direct-acting-principle` → `mnt.actuator.explain-actuator-action`.**
    ch3-m1's actuator-action concept covers direct *and* reverse acting, so
    the competency is the general one. ch3-m1 `introduces`; ch3-m2
-   `applies`. The ch3 Component Index `serves:` line on `ch3-cmp-da-schematic`
+   `applies`. The ch3 Subject-Matter Index `serves:` line on `ch3-cmp-da-schematic`
    needs the same rename.
 2. **`mnt.actuator.bench-set` progression.** Phase 2 had ch3-m2
    `introduces` it. ch3-m1 is where it is first taught (generic,
@@ -613,13 +613,13 @@ enrolls in, not a filter inside 14101. Out of scope here.
 Enumeration and bookkeeping over the closed competency set. **Commits no
 generated content.** Each entry: the asset variant for a competency, its
 `status`, and provenance. `status: exists` = a real asset already ships
-(pointed at a Component Index entry for ch3, or a `SOURCES.txt` entry / a
+(pointed at a Subject-Matter Index entry for ch3, or a `SOURCES.txt` entry / a
 production slide for ch2 / ch1). `status: exists*` = ships, but provenance
 is only the production slide — firming it to the ch3 standard needs a
-ch2 / ch1 Component Index (flagged below). `status: pending` = no adequate
+ch2 / ch1 Subject-Matter Index (flagged below). `status: pending` = no adequate
 asset; Phase 5 / Stage 3 authoring.
 
-### ch3-m1 asset variants (full — ch3 has a Component Index)
+### ch3-m1 asset variants (full — ch3 has a Subject-Matter Index)
 
 ```yaml
 - id: av.mnt.actuator.explain-actuator-action.da-ra-schematics
@@ -666,7 +666,7 @@ asset; Phase 5 / Stage 3 authoring.
   provenance: ch2-cmp-pdtc-pdto-sectionals    # == ch3-cmp-pdtc-pdto-bodies (same image files)
   redrawRecord: existing deck figures, no redraw
   # ONE asset variant, TWO placement edges (Franz confirmed 2026-09-06): ch2-m1
-  # slide 29 `introduces`, ch3-m1 slide 93 `develops`. The Component Index
+  # slide 29 `introduces`, ch3-m1 slide 93 `develops`. The Subject-Matter Index
   # build showed ch2-cmp-pdtc-pdto-sectionals and ch3-cmp-pdtc-pdto-bodies
   # are the same asset — Phase 4 call 2's provisional "two asset variants" was
   # wrong. No variantTag: same asset, different framing at the two slides.
@@ -709,9 +709,9 @@ exists.
 **14 of 25 `mnt.valve-body.*` asset variants are `SOURCES.txt`-backed
 (`exists`); 11 are `exists*` — production slide only.** No `pending` on the
 valve-body side: every ch2 / ch1 competency has a shipped figure. The
-`exists*` rows need a **ch2 / ch1 Component Index** to reach the ch3
+`exists*` rows need a **ch2 / ch1 Subject-Matter Index** to reach the ch3
 standard of provenance (source doc + locator + precedence bucket). That is
-real editorial work — the same size as the ch3 Component Index build — and
+real editorial work — the same size as the ch3 Subject-Matter Index build — and
 is flagged as the Phase 4 follow-on, not a Phase 4 blocker.
 
 ### New-vs-reframe calls — all four confirmed (Franz, 2026-09-06)
@@ -726,7 +726,7 @@ is flagged as the Phase 4 follow-on, not a Phase 4 blocker.
    stop.
 
 2. **`contrast-pdtc-pdto` = ONE asset variant** — corrected after the ch1/ch2
-   Component Index build (2026-09-06): `ch2-cmp-pdtc-pdto-sectionals` and
+   Subject-Matter Index build (2026-09-06): `ch2-cmp-pdtc-pdto-sectionals` and
    `ch3-cmp-pdtc-pdto-bodies` are the same image files (deck image42/43), so
    there is one asset variant (`av.mnt.valve-body.contrast-pdtc-pdto.body-sections`)
    at two placement edges — ch2-m1 slide 29 `introduces`, ch3-m1 slide 93
@@ -735,7 +735,7 @@ is flagged as the Phase 4 follow-on, not a Phase 4 blocker.
    to produce* (Franz).
 
 3. **ch3-m1 `develops` `contrast-pdtc-pdto`** — corrected from Phase 3's
-   `applies`. A dedicated teaching slide + figure + Component Index entry is
+   `applies`. A dedicated teaching slide + figure + Subject-Matter Index entry is
    real teaching content, not exercise of a prior competency. Confirmed; the
    ch3-m1 edge above is updated.
 
@@ -823,7 +823,7 @@ step in that arc, not a separate `mnt.actuator.friction-effect` competency.
 **FINDING 7 — Known slide-content bug carried forward.** *"Fisher 657 —
 Mount & Service"* page 3 of 5 (`1400-103`) — "fine travel adjustment at the
 locknut and jam nut" is not Fisher IM terminology (already flagged in the
-ch3 Component Index notes). Slide-content fix for whoever next touches
+ch3 Subject-Matter Index notes). Slide-content fix for whoever next touches
 that module; not a curriculum-layer issue.
 
 ### FINDING 3 — resolution
@@ -839,7 +839,7 @@ not hold.** Four sources agree:
   adjuster, mark the valve stem. *"Figure 5. Typical Valve Response to
   Deadband"* is a **different figure** in the separate *Deadband
   Measurement* section (p 10).
-- **The ch3 Component Index**: `ch3-cmp-benchset-adjustment-setup` labels
+- **The ch3 Subject-Matter Index**: `ch3-cmp-benchset-adjustment-setup` labels
   Figure 4 as SPRING ADJUSTER / LOWER-UPPER BENCH SET LOADING PRESSURE /
   RATED VALVE TRAVEL MEASURE / MARK VALVE STEM HERE. Deadband is a separate
   component citing Figure 5.
@@ -883,12 +883,12 @@ Tracked, not blocking. These are content tasks, not schema decisions.
 | Item | Where | Status |
 | --- | --- | --- |
 | **`av.mnt.actuator.set-travel.spring` redraw** — house SVG redraw of Fisher IM Figure 4. | `sourced/benchset-fig4-redraw.svg` | **DONE** — Franz selected it 2026-09-06 over both prior options; asset variant moved to `status: exists`. Wiring it onto *"Fisher 657 — Identify & Bench Set"* page 5 of 5 (replacing the two deck photos) awaits a separate slide-edit go-ahead. |
-| **ch1 / ch2 Component Index** — build a Component Index for ch1 + ch2 to the ch3 standard so the `exists*` valve-body asset variants carry full provenance. | ch1-m1, ch2-m1…m7 | **DONE** — `Component Index — 14101 ch1-ch2.md`, 25 components, committed 2026-09-06. The `exists*` rows now have real provenance. Minor items in its own "Discrepancies" section. |
+| **ch1 / ch2 Subject-Matter Index** — build a Subject-Matter Index for ch1 + ch2 to the ch3 standard so the `exists*` valve-body asset variants carry full provenance. | ch1-m1, ch2-m1…m7 | **DONE** — `Subject-Matter Index — 14101 ch1-ch2.md`, 25 components, committed 2026-09-06. The `exists*` rows now have real provenance. Minor items in its own "Discrepancies" section. |
 | **Finding 5** — possible redundant caution: *"Mount & Service"* page 4 of 5 (`1400-105`) may be `applies`, not `develops`, of `mnt.actuator.relieve-spring-before-casing`. | ch3-m3 | for the ch3-m3 owner |
 | **Finding 6** — RESOLVED in Phase 3: friction is a `develops` step of `mnt.actuator.bench-set`, not a separate competency. | ch3-m3 | closed |
 | **Finding 7** — "jam nut" terminology on *"Mount & Service"* page 3 of 5 (`1400-103`) is not Fisher IM wording. | ch3-m3 | slide-content fix |
 | **ch2-m4 disassembly-safety asymmetry** — folded into `mnt.valve-body.disassemble-body` rather than split out as its own `caution` competency (the actuator side splits it out). | ch2-m4 | watch — no change requested |
-| **ch1 slide-14 upgrade / EZ IM Fig 12 redraw candidate** — see the ch1-ch2 Component Index "Discrepancies". | ch1-m1 / ch2-m2 | logged, no action requested |
+| **ch1 slide-14 upgrade / EZ IM Fig 12 redraw candidate** — see the ch1-ch2 Subject-Matter Index "Discrepancies". | ch1-m1 / ch2-m2 | logged, no action requested |
 
 ## Gate log
 
@@ -920,19 +920,19 @@ ch1-m1 as a registry table. **≈40 asset variants for 37 edged competencies**
 
 **Follow-ons — both now DONE** (2026-09-06, neither touched the Stage 3
 authoring gate):
-- **ch1/ch2 Component Index** built to the ch3 standard —
-  `Component Index — 14101 ch1-ch2.md`, 25 components. The `exists*`
+- **ch1/ch2 Subject-Matter Index** built to the ch3 standard —
+  `Subject-Matter Index — 14101 ch1-ch2.md`, 25 components. The `exists*`
   valve-body asset variants now carry real provenance.
 - **`av.mnt.actuator.set-travel.spring`** — the redraw was produced,
   Franz selected it over both prior options, and the asset variant is now
   `status: exists`.
 
 **New-vs-reframe calls:** three confirmed as recorded. **Call 2 corrected**
-after the Component Index build: `contrast-pdtc-pdto` is **one** asset variant
+after the Subject-Matter Index build: `contrast-pdtc-pdto` is **one** asset variant
 at two edges, not two asset variants — Franz confirmed the collapse
 ("exactly the kind of correction the phase-gate discipline is meant to
 produce").
-The `exists*` provenance gap is logged as the ch1/ch2 Component Index
+The `exists*` provenance gap is logged as the ch1/ch2 Subject-Matter Index
 follow-on — real editorial work, not rushed to close this gate.
 
 ### Phase 5 — NOT STARTED (held pending a separate decision)
@@ -946,7 +946,7 @@ Phase 4 approval**. No Phase 5 work — no design, prototyping, or
 implementation — begins until the widening is explicitly requested and
 confirmed on its own terms.
 
-**Not gated by Phase 5:** the ch1/ch2 Component Index follow-on — that is
-source-indexing work, the same kind as the ch3 Component Index, and needs
+**Not gated by Phase 5:** the ch1/ch2 Subject-Matter Index follow-on — that is
+source-indexing work, the same kind as the ch3 Subject-Matter Index, and needs
 no authoring gate. The `av.mnt.actuator.set-travel.spring` redraw stays a
 logged open content item on its own timing.

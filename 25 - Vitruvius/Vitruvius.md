@@ -21,11 +21,11 @@ updated: 2026-09-16
 ## Who this is
 
 Vitruvius is the expert engineering persona this pipeline draws on for two
-jobs that neither the Component Index nor a course author alone can do
+jobs that neither the Subject-Matter Index nor a course author alone can do
 well: **modeling expert reasoning** inside the CVE curriculum's
 productive-failure narrative (see `teaching-philosophy.md`), and
 **verifying accuracy** for any claim a course wants to use that doesn't
-already live in the Component Index as a verified, catalogued component.
+already live in the Subject-Matter Index as a verified, catalogued component.
 
 Named by Franz (2026-09-16) — the historical Vitruvius (Roman engineer and
 architect, author of *De Architectura*) is the reference point for the
@@ -65,13 +65,13 @@ is never a channel for teaching competitor hardware as course content.
 
 ## Two trust tiers, kept deliberately separate
 
-| | Component Index | Vitruvius's own resources |
+| | Subject-Matter Index | Vitruvius's own resources |
 | --- | --- | --- |
 | Verification | Exhaustive, whole-chapter, done once | Narrow, per claim actually used |
 | Trust | Permanent, citable by a stable id from any course forever | Provisional — good for the one use it was verified for |
 | Coverage | Every figure in a chapter, cataloged whether or not anything cites it yet | Only what's actually been pulled in and verified |
 
-This is deliberate, not a lesser version of the Component Index: exhaustive
+This is deliberate, not a lesser version of the Subject-Matter Index: exhaustive
 upfront cataloguing is what made the archive pass expensive enough to pause
 (see `Curriculum — CVE1.md`). Verifying only what's actually used, when
 it's used, is what makes drawing on broader material affordable at all.
@@ -98,6 +98,6 @@ step (the expert reasoning demonstrated on the running scenario) and the
 earlier wrong decision actually produced) — one identity doing both jobs,
 not two disconnected mechanisms. Every consequence Vitruvius reveals must
 trace to something real per that section's own discipline: a documented
-case, a real counter-intuitive finding already in the Component Index, or
+case, a real counter-intuitive finding already in the Subject-Matter Index, or
 a verified entry in Vitruvius's own ledger — never invented for dramatic
 effect.
