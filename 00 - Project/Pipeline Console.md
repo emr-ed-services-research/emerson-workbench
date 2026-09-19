@@ -20,8 +20,9 @@ updated: 2026-08-31
 > 14101 this session (`verify.ps1` full run: 0 FAIL, 26 warn, all 418 slides
 > rendered; all five stage switches driven to closed/green). The look is
 > token-refined Direction A (`phase6-clean-baseline`). Remaining: Phase 7
-> (multi-project hardening) and the smaller open items in §9. Build proceeds
-> per §7.
+> (origination-mode real execution — see §9's 2026-09-19 entry, scoped from
+> CVE1's real build), Phase 8 (multi-project hardening), and the smaller open
+> items in §9. Build proceeds per §7.
 
 Related: [[System Architecture]] (the four layers) · [[Course Porting Pipeline]]
 (the five stages this console runs) · [[Engine]] (the scripts it drives).
@@ -312,7 +313,8 @@ Phased so a genuinely useful console exists early, before the hardest parts.
 | 4 | ~~**Stage 1**~~ | Done 2026-08-31. Reuses the Phase 3 Agent SDK machinery, scoped to one target chapter: fire → agent cuts the chapter into modules on its own judgement (inherited skeleton treated as a proposal) → pure structural check (coverage gaps/overlaps, ≥3-slide modules, page order, objective stubs, soft CYK notes) → per-module arc-review rack. `canCloseReview` makes **both** gates block — every module approved **and** the machine check green or its issues explicitly accepted; approvals alone never close past a red check (also retro-fixed Stage 2). Stage 0's regeneration-guard decline is now a no-op that undoes its own fire instead of cascade-locking. Also fixed a Phase 3 bug where the agent's `MEMORY_DIR` path never resolved. Verified end to end against 14101 ch3 (5→6 modules; 1-slide Deadband flagged, accepted as an exception). 48 tests. | Phase 3 |
 | 5 | ~~**Stage 3 + light rack + batch review**~~ | Done 2026-08-31. Fire scope is one ready module at a time (`target = { chapterId, moduleId }`). `runStage3` screenshots each in-flow slide **before** the pass, runs the agent's four parts (printing `PART n/4:`), then **after**: `render-check --json --slides --screenshot` ∥ `-Slides`-scoped `verify.ps1` ∥ an in-process tag-balance. Per-slide light grid coloured by worst state; flag panel with **before/after thumbnails side by side**, the render findings, open-4:3 / open-16:9, and an inline comment + approve/flag. `re-run flagged` re-fires against just the flagged slides with their notes collated, merging approved slides forward. `canCloseReview` generalised to the slide rack — both gates block. 59 tests; paid end-to-end fire not yet run. | ~~render checks~~ done |
 | 6 | ~~**Visual pass**~~ | Done 2026-08-31. Ships as a **token-system refinement of Direction A** (`styles.css` rebuilt on a grey ramp, spacing/type scales, structural-only accent, one unified indicator-light glow treatment) — tag `phase6-clean-baseline`. A follow-on electromechanical-hardware pass (panel-mount maintained toggles + momentary pilot pushbuttons, branch `phase6-hardware-switches`) was tried and **reverted**: pure CSS box-shadow/gradient can't carry a convincing physical-hardware feel without a visual reference loop — that needs purpose-built SVG/PNG switch art, parked as an unscheduled follow-up. | direction approved |
-| 7 | **Multi-project hardening** | several live slots; pause/resume; survive the app being killed mid-run; run-lane / queue behaviour | — |
+| 7 | **Origination-mode real execution** | Named this order 2026-09-19 (Franz) — more foundational than Phase 8, since a single project's execution has to actually run unattended before hardening several concurrent ones matters. A parallel origination-mode runner path alongside the existing conversion-mode one: per-module dispatch loop (not conversion mode's one-dispatch-per-chapter shape), live `slideStart` allocation, a per-course write lock, and the course-wide coverage check described in §9's "Noted 2026-09-19" entry. Scoped from CVE1's real 24-module build (see §9); not yet started. | Phase 3/4 (Agent SDK, Stage 1) |
+| 8 | **Multi-project hardening** | several live slots; pause/resume; survive the app being killed mid-run; run-lane / queue behaviour | Phase 7 |
 
 Phases 1–2 alone give a console that really runs bulk-convert and verify with
 live status — worth having even before the AI stages are wired.
@@ -416,6 +418,77 @@ live status — worth having even before the AI stages are wired.
   Branch `phase6-hardware-switches` was deleted (never committed); the reasoning
   is preserved here and in the `pipeline-console-design-directive` memory.
 
+### Noted 2026-09-19 — CVE1's real origination-mode build, scoping Phase 7
+
+The first full-course, real-content run of Stage 1/2 in ORIGINATION mode (no
+source deck) — 24 modules, 10 chapters, 25 real headless agent turns — was
+run tonight, but **hand-orchestrated from outside the console** (a Claude
+Code session dispatching subagents one at a time), because `stage-runners.js`
+has **zero wiring for origination mode at all** — it only imports and calls
+`buildStage1Prompt`/`buildStage2Prompt` (conversion mode). Every prior
+origination test was one hand-executed module, by design (proof discipline);
+this is the first time the prompts and schema were proven at real course
+scale. They held up — this is a scope finding about the *runner*, not a
+finding that the prompts or schema need rework.
+
+**This isn't just "add the missing `import`.` `runStage1`'s whole shape
+assumes conversion mode's granularity: one agent dispatch per invocation, at
+**chapter** scope (a whole chapter's arc cut in one turn, because a
+conversion-mode chapter comes from one existing deck section). Origination
+mode's real, now-proven design needs **N sequential per-module dispatches**,
+each computing its own `slideStart` live as the previous module's real last
+`check` value + 1 (there is no deck to bound page numbers, per §9's
+already-open "how are origination page numbers allocated" question — answer,
+from real practice: computed live from the course's own current state at
+dispatch time, never pre-allocated or estimated). A real origination runner
+is closer to a loop *around* something shaped like today's `runStage1`/
+`runStage2`, called once per module in course order, than a drop-in
+replacement inside them.
+
+**Answers the open "Concurrency" question below, at least for one project:**
+within a single course build, stages must be **strictly single-lane**, for
+two compounding reasons, not just caution — global sequential slide numbers
+(each module's cut needs to know exactly where the previous one stopped) and
+every stage reading/writing the *same* `course.json` (two agents running
+concurrently risk one silently clobbering the other's write). Tonight this
+was true by discipline (dispatch one, wait, verify, dispatch the next); the
+real runner needs to make it structurally true — a per-course write lock, not
+a convention.
+
+**A real, not hypothetical, coverage gap.** Chapter 2's second module was
+skipped entirely mid-build and only caught by a manual audit script written
+*after* the build was believed complete. The existing safety net for this —
+`chapter-state.js`'s `deriveChapterStages`, which already requires *every*
+module in a chapter to be `status: "ready"` before that chapter counts as
+Stage-2-authored — would have caught it, had the build been running through
+the console instead of hand-dispatched subagents. The gap tonight wasn't
+missing logic, it was bypassing the console entirely. Worth deciding whether
+that per-chapter check is sufficient, or whether origination mode (which can
+span chapters continuously, unlike conversion mode's one-chapter-at-a-time
+"Target chapter" model in §3) also needs a course-wide "every chapter has
+every module at status X" check, since a whole chapter could in principle be
+skipped the same way one module was.
+
+**Two real defects this run surfaced and fixed** (PipelineConsole commit
+`8cdcc07`): `DOMAIN_VERBS.engineering` was missing verbs real objectives use
+(`frame`, `introduce`, `interpret`, `predict`, `perform`, `apply` itself);
+`moduleStage2Completeness`'s hard `4-6 keyConcepts` bound (also baked into
+this doc's own §4 table, "AI drafts objective + 4-6 keyConcepts per module" —
+true for conversion mode, not for origination's own "slide count follows
+content" rule) blocked 17 of 24 real, good modules as false positives. Both
+fixed and verified against the real CVE1 data (0/24 blocked afterward); §4's
+Stage 2 row should be corrected to note this is a conversion-mode figure, not
+a universal one, when this section is next revised.
+
+**Scope for the real fix — Phase 7** (named and ordered ahead of the
+former Phase 7, now Phase 8 multi-project hardening, by Franz 2026-09-19: a
+single project's execution has to actually run unattended before hardening
+several concurrent ones matters; not yet started): a parallel origination-mode
+runner path (own dispatch loop, own slide-number-allocation function, own
+write lock) alongside the existing conversion-mode path, plus the course-wide
+coverage check above, before origination mode is trusted to run unattended
+the way conversion mode already does. See §7's table for the phase entry.
+
 ### Still open
 
 - **Git.** Does the console commit to the vault repo itself — per stage, the way
@@ -425,7 +498,10 @@ live status — worth having even before the AI stages are wired.
   edited in place in the vault, or does the console keep a staging copy and
   merge it into the vault only when a stage closes?
 - **Concurrency.** Can two slots run Claude Code simultaneously (two headless
-  processes), or is there a single orchestration lane with a queue?
+  processes), or is there a single orchestration lane with a queue? **Within
+  one project, answered 2026-09-19 above: single-lane, structurally, not by
+  convention.** Whether two *different* projects (two courses) can run
+  concurrently is still open — nothing in tonight's finding bears on that.
 - **Cartridge boundary.** The console's output is a Cartridge. Building it makes
   the [[System Architecture#Layer 3 — Cartridge|Cartridge / Workshop
   separation]] concrete — still deferred, but the console design should not
