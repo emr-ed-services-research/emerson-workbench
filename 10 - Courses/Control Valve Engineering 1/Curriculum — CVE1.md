@@ -5,10 +5,41 @@ tags:
   - curriculum
   - pipeline
 course: Control Valve Engineering 1
-updated: 2026-09-15
+updated: 2026-09-18
 ---
 
 # Curriculum Registry — CVE1
+
+> [!warning] SUPERSEDED — on-disk content (attempt 3/4) is stale on two fronts, updated 2026-09-18
+> Everything below this note describes **what was tried**, kept as real
+> history, not the current design. Two corrections landed after attempt
+> 3/4 was built and neither has been applied to CVE1's actual content yet:
+>
+> 1. **Architecture.** Franz corrected (`teaching-philosophy.md`'s "What
+>    this does not change," right after the method section): productive
+>    failure / cognitive apprenticeship is **one activity type available
+>    inside a real module**, not a replacement for the day/chapter/module/
+>    keyConcept structure. Attempt 3's own "Structure" section below (the
+>    three-case A/B/C narrative, and its own verification claim "modules
+>    are scheduling units only, content flows continuously") describes
+>    exactly the rejected architecture — module boundaries treated as
+>    invisible scheduling seams inside one continuous scenario, not real
+>    chapters/modules each carrying their own `objective`/`stakes`/
+>    `levelTarget`. That claim was true of what attempt 3 built; it is not
+>    the design going forward.
+> 2. **Competency scope.** The competency map below (the four `eng.*`
+>    competencies) predates the topic-derived Subject-Matter Index and the
+>    fresh three-tier Terminal/Enabling/Learning-Objective hierarchy — see
+>    `00 - Project/Competency Hierarchy — CVE1, CVE2, CVE-Industry (Oil &
+>    Gas).md` (`tc-cve1-1` and its five Enabling Competencies) for the
+>    current, reviewed-pending design. The two aren't necessarily in
+>    conflict (the Enabling Competencies below trace to the same CVH ch5
+>    ground this file's old competencies cite), but this file's own
+>    four-competency map has not been reconciled against it.
+>
+> **A real rebuild against both corrections is pending Franz's go-ahead —
+> not started.** Until then, nothing below should be read as CVE1's
+> current design, only as the record of what attempts 1-4 actually did.
 
 > [!note] Status — PHASE 1 REBUILD complete (2026-09-16), awaiting Franz's rubric review
 > This document formalizes the CVE1 → CVE2 → CVE-Industry curriculum design.
@@ -210,6 +241,13 @@ during the Phase 1 rebuild and are used in a built course for the first
 time.
 
 ## Structure (Phase 1 rebuild, ATTEMPT 3, 2026-09-17) — three tiers of increasing difficulty
+
+> [!warning] This structure is superseded — see the note at the top of this file
+> The "modules are scheduling units only, content flows continuously"
+> claim below was a real, verified property of what attempt 3 built — and
+> is exactly the architecture Franz's later correction rejected. Kept
+> as-written for the historical record of this attempt, not as current
+> design.
 
 Attempt 2 fixed attempt 1's four root causes but Franz then found the
 course opened cold: no term was ever defined, no early slide had a real

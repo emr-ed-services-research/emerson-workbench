@@ -219,7 +219,7 @@ reader can see topic-vs-figure backing at a glance.
 
 ## Instrumentation
 
-### `eng.instrumentation.level-measurement` — Liquid Level Measurement & Control (figure-only gap — see findings)
+### `eng.instrumentation.level-measurement` — Liquid Level Measurement & Control (figure-only in the Subject-Matter Index; real grounding now exists via Vitruvius — see Finding 2)
 *Tier: developing · 0 topics + 9 figures · sourcebooks: Refining, Oil & Gas*
 
 **Figures:** ref-cmp-digital-level-transmitter-overview, ref-cmp-l2-liquid-level-controller, ref-cmp-displacer-level-transmitter-schematic, ref-cmp-caged-sensor, ref-cmp-cageless-sensor, ref-cmp-level-trol-application-photo, ref-cmp-liquid-level-installation-schematic, ogas-cmp-l2e-electric-level-controller, ogas-cmp-fieldvue-dlc3010-digital-level-controller
@@ -390,17 +390,23 @@ reader can see topic-vs-figure backing at a glance.
 
 ## Application — Refining
 
-### `app.refining.unit-operations` — Refinery Unit Operations (incomplete rigor pass — see findings)
-*Tier: advanced · 9 topics + 23 figures · sourcebooks: Refining*
+### `app.refining.unit-operations` — Refinery Unit Operations
+*Tier: advanced · 17 topics + 23 figures · sourcebooks: Refining*
 
-**Topics:** ref-topic-furnace-temperature-control-philosophy, ref-topic-distillation-column-flooding-and-reflux-mechanics, ref-topic-gas-plant-light-ends-economics-and-emissions, ref-topic-crude-distillation-unit-role-and-product-cuts, ref-topic-pump-around-loop-function, ref-topic-delayed-coker-drum-cycle-mechanism, ref-topic-hydrotreating-reaction-mechanism, ref-topic-catalytic-reforming-octane-and-regulatory-history, ref-topic-alkylation-acid-catalyst-rationale
+**Updated 2026-09-18** — the ch4 follow-up pass Franz asked for is complete (its own file's Open Items has the full per-section account); this competency's own "incomplete rigor pass" caveat is resolved and its topic list now includes the 8 new entries the pass found for these sections (2 more went to the PSA competency below). One figure, `ref-cmp-blending-unit-pfd`, is also corrected into this list — it was misfiled under the PSA competency in the original derivation despite being §4.15 Blending content, not PSA.
 
-**Figures:** ref-cmp-complete-refinery-flow-diagram, ref-cmp-refinery-unit-location-map, ref-cmp-furnace-photo, ref-cmp-furnace-pfd, ref-cmp-distillation-column-photo, ref-cmp-distillation-column-pfd, ref-cmp-gas-plant-pfd, ref-cmp-crude-desalter-pfd, ref-cmp-crude-distillation-column-pfd, ref-cmp-vacuum-crude-column-pfd, ref-cmp-delayed-coking-unit-pfd, ref-cmp-v500ffd-features, ref-cmp-hydrotreater-pfd, ref-cmp-hydrocracker-pfd, ref-cmp-fixed-bed-catalytic-reformer-pfd, ref-cmp-continuous-catalytic-reformer-pfd, ref-cmp-fcc-converter-section-pfd, ref-cmp-fcc-fractionation-section, ref-cmp-fcc-vapor-recovery-section, ref-cmp-hf-alkylation-pfd, ref-cmp-sulfuric-acid-alkylation-pfd, ref-cmp-amine-unit-pfd, ref-cmp-sulfur-recovery-unit-pfd
+**Topics:** ref-topic-furnace-temperature-control-philosophy, ref-topic-distillation-column-flooding-and-reflux-mechanics, ref-topic-gas-plant-light-ends-economics-and-emissions, ref-topic-crude-distillation-unit-role-and-product-cuts, ref-topic-pump-around-loop-function, ref-topic-delayed-coker-drum-cycle-mechanism, ref-topic-hydrotreating-reaction-mechanism, ref-topic-catalytic-reforming-octane-and-regulatory-history, ref-topic-alkylation-acid-catalyst-rationale, ref-topic-steam-stripping-mechanism, ref-topic-outgassing-vs-flashing-cavitation-distinction, ref-topic-reactor-interbed-hydrogen-quench-mechanism, ref-topic-fcc-reactor-regenerator-pressure-balance-safety, ref-topic-fcc-operating-mode-tradeoffs, ref-topic-amine-unit-architecture-and-scrubber-flooding, ref-topic-sru-regulatory-driver-and-redundancy, ref-topic-blending-giveaway-economics-and-lineup-valves
 
-### `app.refining.pressure-swing-adsorption` — Pressure-Swing Adsorption (Hydrogen Purification) — real gap, no topic anywhere
-*Tier: advanced · 0 topics + 5 figures · sourcebooks: Refining*
+**Figures:** ref-cmp-complete-refinery-flow-diagram, ref-cmp-refinery-unit-location-map, ref-cmp-furnace-photo, ref-cmp-furnace-pfd, ref-cmp-distillation-column-photo, ref-cmp-distillation-column-pfd, ref-cmp-gas-plant-pfd, ref-cmp-crude-desalter-pfd, ref-cmp-crude-distillation-column-pfd, ref-cmp-vacuum-crude-column-pfd, ref-cmp-delayed-coking-unit-pfd, ref-cmp-v500ffd-features, ref-cmp-hydrotreater-pfd, ref-cmp-hydrocracker-pfd, ref-cmp-fixed-bed-catalytic-reformer-pfd, ref-cmp-continuous-catalytic-reformer-pfd, ref-cmp-fcc-converter-section-pfd, ref-cmp-fcc-fractionation-section, ref-cmp-fcc-vapor-recovery-section, ref-cmp-hf-alkylation-pfd, ref-cmp-sulfuric-acid-alkylation-pfd, ref-cmp-amine-unit-pfd, ref-cmp-sulfur-recovery-unit-pfd, ref-cmp-blending-unit-pfd
 
-**Figures:** ref-cmp-psa-basic-flow-scheme, ref-cmp-psa-four-bed-color-coded-diagram, ref-cmp-psa-four-bed-valve-numbered-diagram, ref-cmp-psa-five-step-cycle-diagrams, ref-cmp-blending-unit-pfd
+### `app.refining.pressure-swing-adsorption` — Pressure-Swing Adsorption (Hydrogen Purification)
+*Tier: advanced · 2 topics + 4 figures · sourcebooks: Refining*
+
+**Updated 2026-09-18** — no longer "no topic anywhere." The ch4 follow-up pass found the 5-step cycle mechanism was already well-captured inside `ref-cmp-psa-five-step-cycle-diagrams`' own `teaches` field (the original figures-pass author read that prose carefully), but the valve-selection-critical content sitting beside it — why PSA valves face uniquely demanding cycling/bi-directional-shutoff requirements, and the installation's own architecture — was the real, confirmed gap. See `Subject-Matter Index — Refining Sourcebook ch4.md`'s own Open Items for the full account across all 7 originally-spot-checked sections, not just this one.
+
+**Topics:** ref-topic-psa-valve-service-demands, ref-topic-psa-installation-architecture-and-feed-valve-role
+
+**Figures:** ref-cmp-psa-basic-flow-scheme, ref-cmp-psa-four-bed-color-coded-diagram, ref-cmp-psa-four-bed-valve-numbered-diagram, ref-cmp-psa-five-step-cycle-diagrams
 
 ## Part 2 — Instructional depth findings
 
@@ -417,15 +423,25 @@ sourcebook's own author walked through the mechanism with its own numbers, not
 a single explanation copy-pasted five times. A course drawing on any of these
 competencies has more than enough real explanatory material to teach from.
 
-**Finding 2 — A few genuinely thin spots, named directly, not glossed over:**
-- `eng.instrumentation.level-measurement` (9 figures, **zero topics**) is the
-  starkest case in the whole map. Every entry is a bare hardware photo or
-  schematic with a one-paragraph caption; nothing anywhere in the five
-  sourcebooks explains *why* level measurement matters for valve selection, what
-  a displacer vs. differential-pressure measurement actually is, or how caged
-  vs. cageless sensors trade off. If a course wants to teach level-control valve
-  selection, this competency needs real topic-authoring work before it's usable
-  — the figures alone don't teach.
+**Finding 2 — A few genuinely thin spots, named directly, not glossed over.
+Two have since been closed via Vitruvius (2026-09-18), not by inventing
+Subject-Matter Index topics — see the note after each:**
+- `eng.instrumentation.level-measurement` (9 figures, **zero topics**) was the
+  starkest case in the whole map: every entry a bare hardware photo or
+  schematic with a one-paragraph caption, nothing anywhere in the five
+  sourcebooks explaining *why* level measurement matters for valve selection,
+  what a displacer vs. differential-pressure measurement actually is, or how
+  caged vs. cageless sensors trade off. **Closed via Vitruvius, not the
+  Subject-Matter Index**: real, currency-checked findings from live current
+  Emerson/Fisher documentation now ground all three questions in
+  `Vitruvius — Verified Findings Ledger.md` (`vit-finding-displacer-level-
+  measurement-principle`, `vit-finding-caged-vs-cageless-displacer-tradeoff`,
+  `vit-finding-differential-pressure-level-measurement-principle`,
+  `vit-finding-level-technology-selection-considerations`) — deliberately kept
+  out of the Subject-Matter Index since this content isn't grounded in the
+  vault's own primary-source PDFs, per `Vitruvius.md`'s explicit two-tier
+  design. The topic count here stays 0 by design; a future course build cites
+  the ledger directly.
 - `eng.installation.piping-practice-and-orientation` (5 topics, **zero
   figures**) is the mirror case: real prose (piping arrangement, line-size-vs-
   valve-size, welding procedure, flushing/sacrificial trim) with no diagram
@@ -487,14 +503,37 @@ would have missed all three silently:
   `bypass-auxiliary-connections`) — a real, distinct three-way inlet/outlet/
   bypass piping mechanism with no topic anywhere explaining *why* it exists.
   Given a home in `eng.steam.turbine-and-boiler-bypass-systems` by association
-  for this map, but the mechanism itself was never independently authored as
-  prose.
-- **Pressure-swing adsorption** (Refining ch4: 5 figures, its own competency
-  `app.refining.pressure-swing-adsorption`) — directly caused by Refining ch4's
-  own already-disclosed incomplete-rigor pass (7 of 15 sections spot-checked
-  rather than exhaustively read, per that chapter's own fork report). This is
-  the clearest case in the whole survey of a known gap and its downstream
-  effect on the competency map lining up exactly.
+  for this map. **Closed via Vitruvius (2026-09-18)**: the real mechanism —
+  a defective tube, weld, or drain-system failure raises shell water level,
+  triggering fail-safe fast-closing tee/changeover valves that bypass the
+  heater group using feedwater pressure itself as motive power, so protection
+  holds even through an electric/pneumatic supply failure — is now grounded
+  in `Vitruvius — Verified Findings Ledger.md`'s
+  `vit-finding-feedwater-heater-bypass-protection-mechanism` entry, sourced
+  from Emerson's live Sempell Raisteam product documentation. Kept out of the
+  Subject-Matter Index for the same reason as the level-measurement gap
+  above.
+- **Pressure-swing adsorption** (Refining ch4: originally 5 figures, zero
+  topics, its own competency `app.refining.pressure-swing-adsorption`) —
+  directly caused by Refining ch4's own already-disclosed incomplete-rigor
+  pass (7 of 15 sections spot-checked rather than exhaustively read, per
+  that chapter's own fork report). **Closed by direct re-read, not
+  Vitruvius (2026-09-18)**: this was correctly identified as the
+  non-Vitruvius case — the real content was already sitting in the source
+  PDF, just never fully read. Re-reading all 7 originally spot-checked
+  sections (§4.5 remainder, §4.8, §4.10, §4.12, §4.13, §4.14, §4.15) found
+  a genuine mix: the process-cycle mechanisms the original spot-check
+  trusted (FCC's reactor/regenerator loop, the amine cycle, the Claus
+  process, PSA's own 5-step cycle) really were already captured at full
+  depth inside those sections' figures' own `teaches` fields — but real,
+  distinct valve-selection-critical content sat beside every one of them
+  uncaptured. 10 new topic entries resulted, at least one per section, two
+  specifically for PSA (`ref-topic-psa-valve-service-demands`,
+  `ref-topic-psa-installation-architecture-and-feed-valve-role`) — see
+  `Subject-Matter Index — Refining Sourcebook ch4.md`'s own Open Items for
+  the complete per-section account. The judgment call that produced the
+  original gap was right about where depth already lived, wrong to treat
+  that as "nothing left to find."
 
 ## Part 3 — Pipeline-integration requirements for the `kind: topic` layer
 

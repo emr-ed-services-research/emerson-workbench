@@ -513,3 +513,236 @@ other course in this vault — this method never replaces it, only supplies
 one activity type available inside it.** This section governs what one
 or more activities inside a module can look like, not what a single slide
 is allowed to show, and not the course's own organizing structure.
+
+## The objective hierarchy — course, unit, module (added 2026-09-18)
+
+**The problem, named directly by Franz:** modules have consistently read as
+abrupt across every CVE1 attempt, and the cause traces to something
+missing in the schema itself, not to any one attempt's execution. A
+module carries its own `objective`/`stakes`/`levelTarget`. A chapter — the
+`unit` in the classic instructional-design sense — carries none of that:
+checked directly against real `course.json` structure, a chapter object
+has only `id`, `title`, `num`, `_source`. There is a course-level
+objective (implicit in `course.summary`) and a module-level objective, but
+nothing at the level in between naming *why this group of modules exists
+as a deliberate step*, rather than an arbitrary bucket a set of related
+competencies happened to fall into.
+
+**The fix is structural, but the structure alone is not the fix.** Adding
+a chapter-level `objective` (and `stakes`, mirroring the module-level
+field) closes the schema gap and is required — but a field populated with
+a list of the modules' own objectives restated one level up is not
+instruction, it is a table of contents wearing a costume. **The standard
+this field must actually meet, when populated:**
+
+- **A genuine conceptual frame, not a list.** What a real teacher gives a
+  class in the first few minutes of a unit — a mental model the learner
+  can hold before the detail arrives, not a checklist of what's coming.
+  This is a real, named technique (an *advance organizer*), not a house
+  invention — brought in under the same standing rule that established
+  instructional-design knowledge is a legitimate completeness source (see
+  "The standard is completeness against source" above).
+- **Real stakes at the unit's own scale**, the same job a module's
+  `stakes` line does, one level up — why getting this whole unit wrong
+  matters in the world the content actually serves, not administrative
+  framing ("this unit covers X, Y, Z").
+- **Grounded in real Subject-Matter Index content**, same discipline as
+  everywhere else in this pipeline. An overview that paints a false or
+  invented picture is worse than no overview at all.
+
+**Why this is arguably the most important content in the unit, not a
+formality to satisfy before the real content starts:** everything a
+module teaches afterward is easier to learn with a frame to place it in,
+and shallower without one — the overview is not preamble to the
+instruction, it is instruction, and often the highest-leverage instruction
+in the unit precisely because it's where the concept at hand actually
+gets introduced.
+
+**The corrected authoring order — top-down, not derived bottom-up from
+the competency map.** The topic-derived competency map (see
+`20 - Source Library/Competency Map — Topic-Derived.md`) is essential raw
+material — it is the real, verified record of what exists and how it
+genuinely connects — but it is not itself a course structure, and its
+natural clusters (competencies that share a topic-graph connection, or
+sit under the same industry) are not the same thing as a deliberately
+designed instructional hierarchy. The corrected order: decide the course
+objective first; design chapter/unit objectives as deliberate steps
+toward it, informed by what the competency map shows is actually
+teachable and how it connects, but not mechanically generated from those
+clusters; then build modules that serve their chapter's objective. A
+chapter that exists because a set of competencies clustered together in
+the data, with no one having decided *why that cluster is a meaningful
+step*, will read exactly as abrupt as CVE1 has so far.
+
+### Three real tiers, confirmed (2026-09-18)
+
+The hierarchy above is not two levels (course, module) with a gap in the
+middle — it is three, each a genuinely different kind of thing, not the
+same record at different sizes:
+
+- **Terminal Competency** (course-scoped, no parent) — a demonstrable,
+  real-world capability stated as a role-based performance ("size and
+  select a control valve for a given process condition"). Synthesized by
+  scanning the course's *entire* declared Subject-Matter Index scope, not
+  any single topic or cluster. A course carries a small number of these —
+  likely 1-4, never a long list.
+- **Enabling Competency** (chapter-scoped, `parentTerminalId`) — a
+  necessary sub-capability serving one specific terminal competency,
+  tracing back to a real cluster of Subject-Matter Index entries (topics
+  and/or figures) that justify it existing. **The existing 39-item
+  topic-derived competency map (`Competency Map — Topic-Derived.md`) sits
+  at exactly this tier** — confirmed by scale
+  (`eng.selection.valve-body-and-type-taxonomy` alone cites 26 topics plus
+  125 figures, chapter-scale synthesis, not one Bloom-verb action) — and
+  gets re-typed into this schema as real Enabling Competency records, not
+  rebuilt from scratch. A chapter carries no terminal competency of its
+  own; it exists only to serve its parent's.
+- **Learning Objective** (module-scoped, `parentEnablingId`) — a single
+  observable action, a Bloom's-taxonomy verb tied to one specific Bloom's
+  level, tracing to one or a small number of Subject-Matter Index entries
+  — narrower than its parent enabling competency's own cluster. A module
+  carries no competency of its own, only the objectives that roll up into
+  its chapter's enabling competency.
+- **Day** stays a pure scheduling container — no competency or objective
+  weight of its own, just how modules get chunked into class time.
+
+**Minimum module size — instructional time, not objective count.** When
+decomposing an enabling competency downward into module-scale learning
+objectives, do not default to one module per Subject-Matter Index topic.
+A module sized around a single thin topic that only sustains a few
+minutes of real class time is too granular. **A module's size is defined
+by how much class time it can genuinely sustain, not by how many discrete
+objectives happen to exist for it** — if an individual topic doesn't
+clear that bar alone, merge it categorically with adjacent, related
+topics under one shared objective set rather than generating a module per
+topic by default. This is exactly the same failure shape as authoring a
+slide per source citation regardless of whether each citation earns its
+own slide — the unit of content should be sized by what it needs to teach
+well, never by mechanically mirroring the index's own granularity.
+
+**Concrete thresholds (added 2026-09-18), mechanically checkable, not a
+judgment call left open-ended:**
+
+- A module estimated at under **10 minutes** of real class time must be
+  merged into another module.
+- A chapter estimated at under **25 minutes** of real class time must be
+  merged into another chapter.
+- A course carries **no more than 10 chapters**.
+- A chapter carries **no more than 4 modules**.
+
+**These thresholds govern structure, never content — they never exclude
+real, grounded material.** When a course's actual content would otherwise
+call for more chapters or modules than these caps allow, the fix is to
+group multiple Enabling Competencies into one chapter, or multiple
+Learning Objectives into one module, never to drop content to fit the
+cap. The minute estimates used here are a structural sizing heuristic for
+this grouping decision during Stage 1 — a different thing from a course's
+real `minutesTarget`, which still must come from an actual schedule
+Franz/the course's design docs supply, never estimated by the pipeline as
+a final, authoritative number.
+
+**Traceability is bidirectional, but the reverse direction is a computed
+index, never written back onto the Subject-Matter Index itself.** Every
+competency and objective record, at all three tiers, carries an explicit
+pointer to the real Subject-Matter Index entries (`sources: {topics: [...],
+figures: [...]}`) it was built from — this is what lets an authoring pass
+generate the hierarchy from the index rather than requiring it be
+hand-built by feel, and gives a real audit trail (an index entry changes,
+everything that depended on it can be found and flagged). The reverse
+lookup — which competencies/objectives cite a given index entry — is a
+computed scan generated at build or query time, not a backlink field
+stored on the Subject-Matter Index entry itself. Writing curriculum-side
+citations back onto an index record would recouple it to specific
+courses, undoing the "exists independent of any course" property the
+component/topic split was built to establish.
+
+### Hard rule — the hierarchy is an authoring layer, never a presentation layer
+
+**Non-negotiable, not a soft guideline, stated at the same register as
+this document's other hard disciplines:** none of the competency or
+objective records above are ever read aloud, displayed as an enumerated
+list, or otherwise surfaced to a learner or instructor in anything close
+to their raw form. A chapter opening with a bulleted list of enabling
+competencies, or a module opening with a bulleted list of learning
+objectives, is a real, well-documented instructional-design failure mode
+(sometimes named "objective theater") — both instructors and students
+disengage from that kind of formal recitation, and it is failure by the
+Engagement section's own standard above, not a merely unpolished delivery
+of the right content.
+
+Stage 3 **may read** an enabling competency's record to generate its
+chapter's `stakes` sentence — the same one-sentence, on-the-job-consequence
+pattern a module's `stakes` field already uses, applied one level up. It
+**may never render** the competency's raw statement, its source list, or
+an enumerated list of the objectives beneath it. One compressed,
+room-ready sentence per chapter, and nothing else from this hierarchy
+reaches the rendered course. A future authoring pass that produces a
+chapter with a real `stakes` sentence *and* a bulleted objectives list
+alongside it has satisfied the letter of "chapter has a stakes sentence"
+while still producing objective theater — that does not pass.
+
+## Multi-course curriculum mapping — rebuild from zero, never patch (added 2026-09-18)
+
+**The failure this corrects, named directly by Franz:** the CVE1 Terminal
+Competency work went stale three times in a row, at three different
+altitudes, and it was the same mistake each time, not three different
+ones. Module structure got patched onto an existing scenario-only build
+instead of rebuilt. The 40-item competency map got patched into the new
+Terminal/Enabling schema by matching against each course's *existing*
+declared scope (`Curriculum — CVE1.md`), which was itself still describing
+the abandoned scenario. Even the correction to that mistake started by
+re-examining the *already-assigned* enabling competencies rather than
+questioning whether that assignment was ever independently derived at
+all. **Output is a function of input plus structure. When the structure
+changes — a new Subject-Matter Index layer, a new schema tier, a new
+doctrine — prior output was produced by the old structure and is not a
+valid starting point for the new one, no matter how reasonable it still
+looks.** Patching it forward doesn't save the good parts; it invisibly
+drags every assumption of the old structure into the new one.
+
+**The rule is not "always rebuild from zero" — that would just swap one
+silent default for another and remove Franz's own judgment from a call
+that is his to make.** What actually failed here is that the choice was
+never asked at all: RC and WC both defaulted to patching the existing
+artifact without ever surfacing it as a decision. **The real rule:
+whenever a structural change occurs that could affect already-built
+curriculum artifacts (a new Subject-Matter Index layer, a new schema
+tier, a new doctrine), that must be raised as an explicit question —
+clean rebuild or patch — never silently defaulted either way.** Franz may
+reasonably choose a patch when the change is small and contained, or a
+full rebuild when it isn't; the failure is deciding that silently on his
+behalf, not the specific direction picked in this instance.
+
+**The method for multi-course curriculum mapping, for when a clean
+rebuild is the chosen answer:**
+
+1. **Input 1 — each course's intended purpose, stated independently of
+   any existing artifact.** Domain, tier, `industryScope` where relevant,
+   and one or two sentences naming the course's actual role in the
+   program (e.g., "CVE1: introductory engineering, foundational
+   selection/sizing/verification"; "CVE2: advanced engineering, deepens
+   CVE1 and adds specialized/compliance capability"; "CVE-Industry(X):
+   applies the fundamentals to industry X's real processes"). This comes
+   from the program-level decision already made about the course
+   (the CVE1 → CVE2 → CVE-Industry shape-1 allocation is exactly this
+   kind of decision) — never derived from a course's own prior
+   `Curriculum — *.md` doc, `course.json`, or any previously-built
+   hierarchy.
+2. **Input 2 — the full, current Subject-Matter Index.** Every topic and
+   figure that exists right now, not whatever subset a prior pass
+   happened to use.
+3. **Process, run across the whole program together, not one course at a
+   time in isolation** (courses in a sequence genuinely depend on each
+   other — CVE2 develops what CVE1 introduces, CVE-Industry applies both):
+   assign Enabling-Competency-scale clusters to courses based on fit
+   against each course's *stated purpose* from Input 1, not against any
+   existing assignment; synthesize each course's Terminal Competencies
+   from the clusters actually assigned to it; decompose each Enabling
+   Competency downward into Learning Objectives, respecting the minimum
+   module-size rule above.
+4. **Output supersedes, it does not merge with, whatever existed before.**
+   Every prior CVE1/CVE2/CVE-Industry artifact — course-specific
+   `Curriculum — *.md` docs, prior hierarchy documents, prior scenario
+   builds — becomes historical record of what was tried, the same
+   treatment `Curriculum — CVE1.md` already got after the module-structure
+   correction. None of it is consulted as an input to the rebuild.

@@ -152,6 +152,20 @@ bloom: apply                       # remember | understand | apply | analyze | e
 Domain and area are **in the ID**, not repeated as fields. `bloom` reuses
 the existing Stage 2 cognitive-level axis (`instructional-design.js`).
 
+**Schema decision (Franz, 2026-09-18), under the three-tier Terminal /
+Enabling / Learning-Objective hierarchy in `teaching-philosophy.md`'s "The
+objective hierarchy" section:** `keyConcept.competencyId` now points at the
+**Enabling Competency** (the flat competency shape above, at chapter
+scale), not at a Learning Objective. A `keyConcept` that needs to name the
+narrower Learning Objective it actually teaches carries a **new, separate
+field, `keyConcept.learningObjectiveId`** — the Enabling Competency stays
+reachable from there only via that objective's own `parentEnablingId`
+pointer, never duplicated onto the `keyConcept` directly. This mirrors the
+Subject-Matter Index's own rule (reverse lookups are computed, never
+written back onto the thing being pointed at) at one layer up. Not yet
+wired into any pipeline code — this is the schema decision, the Stage 1
+code change is separate, real follow-on work.
+
 ### Primitive (added 2026-09-11)
 
 The irreducible, essential content for ONE concept at ONE

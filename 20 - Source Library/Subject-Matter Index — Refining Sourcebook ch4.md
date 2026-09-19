@@ -593,6 +593,48 @@ notes: >
   own application-review text.
 ```
 
+### Topic entry — §4.5 follow-up pass (2026-09-18): a genuine mechanism the figure doesn't state
+
+```yaml
+id: ref-topic-steam-stripping-mechanism
+kind: topic
+teaches: >
+  Steam stripping as a distinct separation mechanism from the reflux/reboil
+  physics `ref-topic-distillation-column-flooding-and-reflux-mechanics`
+  already covers: stripping steam is injected into the bottom of a column
+  or side stripper specifically to drive off (strip out) light components
+  remaining in a liquid product stream — a direct physical displacement,
+  not a heat-driven vapor/liquid equilibrium shift. The vacuum crude
+  column's own strippers (LVGO, HVGO) each use this; the amount of
+  stripping steam directly affects separation efficiency, and stripper
+  steam valves "drive the vapor back up through the column," with
+  reboiler steam having "a direct effect on overhead reflux flow" — the
+  two mechanisms interact but are not the same one. Poor steam-valve
+  performance causes quality-specification variability in the product
+  stream; a real valve failure creates an upset lasting "from thirty
+  minutes to a few hours," matching this chapter's standard failure-
+  consequence framing for the section's other numbered valves.
+concept-tags: [steam stripping, stripper, LVGO, HVGO, separation efficiency, reflux, valve failure consequence]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.5 Vacuum Crude Column, items 5/6/8 'Stripping Steam Valves,' p. 4-49 (PDF p. 49)"
+relatedFigures: [ref-cmp-vacuum-crude-column-pfd]
+relatedTopics: [ref-topic-distillation-column-flooding-and-reflux-mechanics]
+used-by: []
+notes: >
+  Genuinely new — checked directly, "stripping steam"/"steam stripping"/
+  "strip out" appear nowhere else in this file before this pass. The
+  §4.5 feed-valve (fail-open, furnace-tube protection) and fuel-valve
+  (fail-closed) rationale in the same section's prose is NOT a second new
+  topic: it is the identical mechanism `ref-cmp-furnace-pfd`'s own
+  `teaches` field already states in full and explicitly flags as reused
+  "in §4.6's Delayed Coker furnace review" — the vacuum crude column's
+  charge heater is the same furnace type, cross-referenced in the source's
+  own text ("refer to section 4.1 related to the furnace"), not a distinct
+  concept requiring its own entry.
+```
+
 ### 4.6 Delayed Coker Unit (printed pp. 4-50 – 4-56)
 
 Figure 4.6.1 "Delayed Coker Unit Location" is the consolidated
@@ -798,6 +840,99 @@ notes: >
   separator, and fractionator valve functions).
 ```
 
+### Topic entries — §4.7/§4.8 follow-up pass (2026-09-18): genuine mechanisms neither the PFD figure nor the existing hydrotreating-reaction topic states
+
+```yaml
+id: ref-topic-outgassing-vs-flashing-cavitation-distinction
+kind: topic
+teaches: >
+  Outgassing as a real, third distinct two-phase-flow phenomenon, easily
+  confused with flashing and cavitation but requiring different sizing:
+  outgassing is a liquid with a SEPARATE, already-dissolved gas
+  (different composition, e.g. crude oil with entrained hydrogen — "the
+  best example... a bottle of soda") that separates on any pressure drop,
+  vs. flashing/cavitation, where a SINGLE substance changes phase at its
+  own vapor pressure. Because outgassing involves two different chemical
+  components rather than one substance's phase change, the standard ANSI/
+  ISA S75.01 and IEC 60534-2-1 liquid-sizing equations do not accurately
+  model it — Emerson's own guidance is to contact a sales office for a
+  dedicated "Outgassing Process Data Sheet" rather than size it as a
+  standard liquid or flashing application. Four real diagnostic checks the
+  source gives for catching a misdiagnosed outgassing application: (A) a
+  spec sheet's vapor pressure suspiciously equal to inlet pressure
+  (compensating for a downstream gas of different composition — an
+  invalid assumption); (B) vapor pressure exceeding critical pressure
+  (thermodynamically impossible, meaning the customer may be unknowingly
+  describing outgassing); (C) inlet listed as liquid and outlet as
+  liquid+gas; (D) a valve tagged "LC"/"LCV"/"LV" (a level-control
+  application, where outgassing is common). Misdiagnosing outgassing as
+  flashing and sizing/selecting trim accordingly causes real damage if
+  the actual gas release happens before the valve throat.
+concept-tags: [outgassing, flashing, cavitation, two-phase flow, ISA S75.01, IEC 60534-2-1, sizing equations, misdiagnosis]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.7 Hydrotreater / Separator Let-Down Valve, 'Outgassing' subsection and its Flow Media Phases table, pp. 4-60–4-61 (PDF pp. 60-61)"
+relatedFigures: [ref-cmp-hydrotreater-pfd]
+relatedTopics: []
+used-by: []
+notes: >
+  Genuinely new — checked directly, "outgassing" appears nowhere else in
+  this file before this pass, and the existing cavitation/flashing
+  competency built for the derived competency map (`eng.destructive-flow.*`
+  in Competency Map — Topic-Derived.md) covers cavitation and flashing but
+  never outgassing as its own distinct phenomenon. This section straddles
+  the §4.7/§4.8 boundary in the source (the Flow Media Phases table and
+  outgassing discussion appear under the Hydrotreater section's own
+  Separator Let-Down Valve item, immediately before the §4.8 divider) —
+  catalogued under §4.7 by its real page location, cross-referenced from
+  §4.8's own entries below since Hydrocracker item 3's Separator Let-Down
+  Valve cites "see outgassing discussion previously".
+```
+
+```yaml
+id: ref-topic-reactor-interbed-hydrogen-quench-mechanism
+kind: topic
+teaches: >
+  Interbed hydrogen quench as the real mechanism controlling an exothermic
+  catalytic reaction across a multi-bed reactor (hydrotreater or
+  hydrocracker alike): cool recycled hydrogen is injected between
+  catalyst beds specifically to control bed temperature, since the
+  cracking/desulfurization reaction itself releases heat. Tight
+  temperature control is required to maximize catalyst life — allowing
+  temperatures to run too high accelerates coking (hydrocracker) or can
+  trigger a real runaway reaction (explicitly named as the failure mode
+  in the hydrocracker case, more severe than the hydrotreater's gradual
+  coking). These valves are not required to move often, which creates its
+  own real failure mode distinct from an actuator-force or sizing
+  problem: infrequent movement lets iron oxide build up in the process
+  line and around the valve, causing sticking; a sticking quench valve
+  causes bed-temperature oscillation, which itself accelerates coking on
+  the affected bed — a maintenance-driven failure path, not a
+  process-design one. Separately, the hydrogen/oil ratio (set via the
+  make-up and recycle-purge valves) is the throughput-vs-catalyst-life
+  tradeoff underlying why quench control matters at all: too low a ratio
+  builds excess coke and shortens reactor life; too high wastes unit
+  throughput.
+concept-tags: [interbed quench, exothermic reaction, runaway reaction, catalyst life, coking, hydrogen-oil ratio, valve sticking, iron oxide]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.8 Hydrocracker, items 4/5 'Reactor Hydrogen Quench Valve' and item 2 'Recycle Hydrogen Valve,' pp. 4-64–4-66 (PDF pp. 64-66)"
+relatedFigures: [ref-cmp-hydrocracker-pfd]
+relatedTopics: [ref-topic-hydrotreating-reaction-mechanism]
+used-by: []
+notes: >
+  Genuinely new — the existing `ref-topic-hydrotreating-reaction-mechanism`
+  (§4.7) covers the reaction chemistry, not interbed quench injection or
+  the hydrogen/oil ratio tradeoff, and neither term appears in that entry
+  or in `ref-cmp-hydrocracker-pfd`'s own `teaches`. The feed-valve
+  (fail-open) and fuel-valve (fail-closed) furnace-protection language
+  repeated verbatim in this section is NOT a new topic — it is the exact
+  same mechanism `ref-cmp-furnace-pfd` already states and explicitly
+  flags for reuse.
+```
+
 ### 4.9 Catalytic Reformer Unit (printed pp. 4-72 – 4-77)
 
 Figure 4.9.1 "Catalytic Reformer Unit Location" is the consolidated
@@ -953,6 +1088,82 @@ notes: >
   vapor-recovery diagram sequence.
 ```
 
+### Topic entries — §4.10 follow-up pass (2026-09-18): genuine mechanisms neither the three FCC figures nor any other entry states
+
+```yaml
+id: ref-topic-fcc-reactor-regenerator-pressure-balance-safety
+kind: topic
+teaches: >
+  A real safety-critical failure chain specific to the FCC's reactor/
+  regenerator catalyst-circulation loop, beyond what
+  `ref-cmp-fcc-converter-section-pfd`'s own `teaches` states (that entry
+  covers the normal circulation path — feed cracked, catalyst stripped,
+  regenerated, returned — not what happens when it goes wrong): the
+  Inlet Air to Regenerator valve's job is maintaining the pressure balance
+  between the reactor and the regenerator. Poor performance causes
+  pressure swings that can let reactor products flow INTO the regenerator,
+  which can cause catalyst flow reversal — a real mechanical-damage risk
+  to the vessel or internal components, not merely a lost-efficiency
+  problem. The companion Inlet Air Vent to Atmosphere valve (the "snort
+  valve") protects the separate inlet air compressor from surge and "must
+  provide fast, accurate control to maintain the pressure balance between
+  the reactor and regenerator" during any process upset — the same
+  reactor/regenerator balance concern from the compressor-protection side.
+concept-tags: [FCC, reactor, regenerator, pressure balance, catalyst flow reversal, mechanical damage, surge protection]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.10 FCC Converter Section, items 4 'Inlet Air to Regenerator' and 5 'Inlet Air Vent to Atmosphere,' p. 4-81 (PDF p. 81)"
+relatedFigures: [ref-cmp-fcc-converter-section-pfd]
+relatedTopics: []
+used-by: []
+notes: >
+  Genuinely new — checked `ref-cmp-fcc-converter-section-pfd`'s own
+  `teaches` field directly; it states the normal catalyst-circulation
+  mechanism but not this specific pressure-imbalance failure chain or the
+  catalyst-flow-reversal consequence.
+```
+
+```yaml
+id: ref-topic-fcc-operating-mode-tradeoffs
+kind: topic
+teaches: >
+  An FCC unit is deliberately run in one of three operating modes, each a
+  real temperature/catalyst-ratio tradeoff, not a fixed design choice —
+  absent from all three FCC figures' `teaches` fields: Maximum Gasoline
+  Mode (the most common; intermediate cracking temperature 510-540°C/
+  950-1005°F with a high catalyst/oil ratio and short reaction time,
+  relying on high conversion in the riser); Maximum Distillate Mode
+  (reduced severity, below 510°C/950°F, with a lower catalyst/oil ratio —
+  deliberately reduces first-pass conversion so light cycle oil isn't
+  overcracked, at the cost of requiring heavy-cycle-oil recycle from the
+  fractionator since more feedstock goes unconverted); Maximum Light
+  Olefin Mode (raised above 540°C/1005°F for higher C3/C4 propylene/
+  butylene yield and improved octane, at the real cost of hydrogen-
+  deficient liquid products and overcracking a fair amount of gasoline
+  down to C3/C4). Across all three modes, increasing severity
+  (temperature) always increases coke and light-ends production — the
+  one directional relationship that holds regardless of which mode is
+  chosen.
+concept-tags: [FCC, operating mode, catalyst-to-oil ratio, cracking severity, maximum gasoline, maximum distillate, maximum light olefin]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.10 Fluidized Catalytic Cracking, 'Maximum Gasoline/Distillate/Light Olefin Mode' subsections, p. 4-79 (PDF p. 79)"
+relatedFigures: [ref-cmp-fcc-converter-section-pfd]
+relatedTopics: []
+used-by: []
+notes: >
+  Genuinely new — this is process-operations content (why a refiner picks
+  one mode over another) rather than valve-selection content, but it is
+  real explanatory prose beyond any figure's caption and grounds the
+  "erosive nature of the fluids" and cavitation-protection language
+  repeated throughout this section's individual valve write-ups (higher
+  severity modes produce more coke/entrained catalyst, directly driving
+  the anti-cavitation-trim and hardened-trim recommendations seen on
+  nearly every FCC valve in this section).
+```
+
 ### 4.11 Alkylation Unit (printed pp. 4-87 – 4-94)
 
 Figure 4.11.1 "Alkylation Unit Location" is the consolidated
@@ -1067,6 +1278,37 @@ notes: >
   own "1. Sour Gas Valve" through "10. Steam Reboiler Valve" text.
 ```
 
+### Topic entry — §4.12 follow-up pass (2026-09-18)
+
+```yaml
+id: ref-topic-amine-unit-architecture-and-scrubber-flooding
+kind: topic
+teaches: >
+  Two things `ref-cmp-amine-unit-pfd`'s own `teaches` doesn't state. First,
+  "amine unit" is misleading as a name: it is rarely a standalone unit —
+  most process units have their own small amine scrubber sharing a
+  central regenerator with several other units' scrubbers, not one
+  plant-wide amine system. Second, a real failure mode distinct from the
+  absorber/regenerator cycle itself: a scrubber behaves like a
+  distillation column for loading purposes (too much vapor or liquid
+  traffic floods it), but the flooding consequence here is different from
+  `ref-topic-distillation-column-flooding-and-reflux-mechanics`'s
+  purity-loss framing — a flooded amine scrubber stops completely
+  stripping sulfur compounds from the sour gas, a real emissions/
+  processing failure, not merely a purity dip. A sticking lean-amine
+  valve on a scrubber already operated close to its loading limit is
+  specifically named as the real trigger.
+concept-tags: [amine unit, amine scrubber, decentralized architecture, central regenerator, flooding, sulfur stripping failure]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.12 Amine Unit opening prose (p. 4-94) and item 4 'Lean Amine Valve' (p. 4-98), PDF pp. 94, 98"
+relatedFigures: [ref-cmp-amine-unit-pfd]
+relatedTopics: [ref-topic-distillation-column-flooding-and-reflux-mechanics]
+used-by: []
+notes: Genuinely new — checked the figure's own teaches field directly; it states the cycle mechanism, not this architecture note or the flooding-consequence distinction.
+```
+
 ### 4.13 Sulfur Recovery Unit (printed pp. 4-100 – 4-102)
 
 Figure 4.13.1 "Sulfur Recovery Unit Location" is the consolidated
@@ -1097,6 +1339,40 @@ notes: >
   Line-art schematic, 10 numbered valves (#1–#10, with #7/#8/#9 grouped as
   the three reheater steam valves) keyed to the section's own application
   text ("7., 8., 9. Reheater Steam Valves").
+```
+
+### Topic entry — §4.13 follow-up pass (2026-09-18)
+
+```yaml
+id: ref-topic-sru-regulatory-driver-and-redundancy
+kind: topic
+teaches: >
+  Why an SRU is production-limiting despite being viewed internally as an
+  "overhead"/utility unit — real regulatory and redundancy content absent
+  from `ref-cmp-sulfur-recovery-unit-pfd`'s own `teaches`: US crude sulfur
+  content has risen from ~0.9 wt% to 1.4 wt% while allowed sulfur in
+  transportation fuels has fallen from 450 ppm to 15 ppm (headed to 10 ppm
+  by 2020) — a widening gap the SRU has to close. Because an SRU shutdown
+  would force the whole refinery to cut production rather than exceed
+  processing capacity for acid gas, most refineries run multiple SRUs so
+  no single shutdown stops the plant, and SRU capacity itself is a real
+  constraint on what sulfur-content crudes a refinery can even process —
+  "a small incremental gain in capacity... can yield significant profit."
+  Separately, the main air valve and trim air valve have a real control
+  relationship neither figure states: the main valve sets bulk air flow
+  and is adjusted only rarely, specifically to keep the trim valve
+  centered in its own control range — the trim valve does the fine
+  control, the main valve exists so the trim valve doesn't run out of
+  range.
+concept-tags: [sulfur recovery unit, SRU, regulatory driver, sulfur content trend, redundancy, main air valve, trim air valve]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.13 Sulfur Recovery Unit opening prose and Application Review, pp. 4-100–4-101; item 5 'Main Air Valve,' p. 4-101 (PDF pp. 100-101)"
+relatedFigures: [ref-cmp-sulfur-recovery-unit-pfd]
+relatedTopics: []
+used-by: []
+notes: Genuinely new — the figure's own teaches states the Claus reaction mechanism in full already; this entry supplies the regulatory/economic "why it matters" and the main/trim air control relationship, neither of which the figure states.
 ```
 
 ### 4.14 Pressure Swing Adsorption (printed pp. 4-103 – 4-106)
@@ -1228,6 +1504,88 @@ notes: >
   source itself binds them together as a single teaching sequence.
 ```
 
+### Topic entries — §4.14 follow-up pass (2026-09-18): the real, confirmed gap
+
+**This is the section the derived competency map flagged as `app.refining.pressure-swing-adsorption` (5 figures, zero topics) and Franz asked to be re-read exhaustively rather than re-assumed complete.** Direct finding, checked against all four existing PSA figures' own `teaches` fields before writing anything: the 5-step cycle MECHANISM is already captured in real depth inside `ref-cmp-psa-five-step-cycle-diagrams` — the original figures-pass author read that prose carefully. What genuinely never got captured anywhere, in a figure or a topic, is the valve-selection-critical content: why PSA valves are treated as a uniquely demanding service, and the installation's own architecture. That is a real gap, and it is fixed here — the earlier "no topic anywhere" characterization undersold what the original pass got right, but it was correct that a real gap existed underneath it.
+
+```yaml
+id: ref-topic-psa-valve-service-demands
+kind: topic
+teaches: >
+  Why PSA is treated as its own demanding valve-selection category, not a
+  standard on/off or throttling service — real content absent from all
+  four existing PSA figures' `teaches` fields: because the process
+  alternately pressurizes and depressurizes large adsorber vessels in a
+  complex repeating sequence, PSA valves see high cycle counts (stroking
+  as often as once every three minutes in the source's own stated
+  example), bi-directional flow, and must achieve tight bi-directional
+  shutoff — three real, simultaneous demands most other refinery valve
+  services don't combine. The failure consequence is specific and severe:
+  valve leakage lets contamination cross from one adsorber bed to
+  another, directly compromising the purity of the hydrogen product —
+  "improper selection of control valves can be the limiting factor in
+  achieving PSA purity and longevity requirements," not merely a
+  maintenance inconvenience. Separately, real business framing: effective
+  hydrogen management has improved refinery profitability "by millions of
+  dollars annually," partly achieved by extending PSA control-valve
+  maintenance intervals using modern purpose-built valve technology
+  rather than accepting frequent PSA-driven maintenance as a fixed cost.
+concept-tags: [pressure swing adsorption, PSA, valve cycling, bi-directional shutoff, contamination, hydrogen purity, maintenance interval, stroking speed]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.14 Pressure Swing Adsorption, opening prose and 'PSA Control Valve Application Review,' pp. 4-104–4-105 (PDF pp. 104-105)"
+relatedFigures: [ref-cmp-psa-basic-flow-scheme, ref-cmp-psa-five-step-cycle-diagrams]
+relatedTopics: []
+used-by: []
+notes: >
+  Genuinely new — checked directly against all four PSA figures' own
+  `teaches` fields (`ref-cmp-psa-basic-flow-scheme`,
+  `ref-cmp-psa-four-bed-color-coded-diagram`,
+  `ref-cmp-psa-four-bed-valve-numbered-diagram`,
+  `ref-cmp-psa-five-step-cycle-diagrams`) before writing this. None states
+  the cycling/bi-directional-shutoff/contamination-consequence content,
+  even though `ref-cmp-psa-five-step-cycle-diagrams` already covers the
+  step-by-step cycle mechanism itself in real depth.
+```
+
+```yaml
+id: ref-topic-psa-installation-architecture-and-feed-valve-role
+kind: topic
+teaches: >
+  A real PSA installation's four major physical components, stated
+  nowhere in any figure's `teaches`: (1) adsorber vessels (carbon steel,
+  filled with adsorbent), (2) a valve-and-piping skid (all valves and
+  instrumentation, shop-fabricated and tested before shipping), (3) a
+  control system (normally in a remote control room, running the cycle
+  logic), and (4) a mixing drum specifically to minimize composition
+  variation in the off-gas stream. The whole valve/piping skid is
+  typically shop-mounted on a steel frame and shipped to site as one or
+  more pre-tested pieces — a packaged-system delivery approach distinct
+  from field-erected refinery units elsewhere in this chapter. Separately,
+  a real functional distinction the numbered/color-coded valve diagrams
+  imply but never state outright: the Feed Valves (1A-1D) are specified
+  as fully-open-or-fully-closed only — "throttling control is not
+  important" for them — unlike the Dump/Purge, Providing Purge, and
+  Product/Repressurization valve groups, whose jobs require precise flow
+  management through the cycle; for a feed valve what matters instead is
+  that it reliably opens or closes exactly when the cycle sequence
+  demands it.
+concept-tags: [pressure swing adsorption, PSA, adsorber vessel, valve skid, packaged system, mixing drum, feed valve, on-off valve]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.14 Pressure Swing Adsorption, 'PSA Process Overview' and item '1A-1D. Feed Valves,' pp. 4-104–4-105 (PDF pp. 104-105)"
+relatedFigures: [ref-cmp-psa-four-bed-valve-numbered-diagram]
+relatedTopics: [ref-topic-psa-valve-service-demands]
+used-by: []
+notes: >
+  Genuinely new — `ref-cmp-psa-four-bed-valve-numbered-diagram`'s own
+  `teaches` names the four valve groups shown in that figure but does not
+  state the installation's four physical components or the feed-valve
+  on/off-only functional rationale; checked directly before writing.
+```
+
 ### 4.15 Blending Unit (printed pp. 4-107 – 4-108)
 
 Figure 4.15.1 "Blending Unit Locations" is the consolidated
@@ -1260,6 +1618,36 @@ notes: >
   "Terminology" begins on the same PDF page (109) immediately after.
 ```
 
+### Topic entry — §4.15 follow-up pass (2026-09-18)
+
+```yaml
+id: ref-topic-blending-giveaway-economics-and-lineup-valves
+kind: topic
+teaches: >
+  Two things beyond `ref-cmp-blending-unit-pfd`'s own recipe/sticking-
+  valve mechanism. First, real stated economics for poor blend control:
+  product-specification "giveaway" (blending richer than the spec strictly
+  requires, to stay safely on-spec) can cost $0.05-$0.10 per barrel of
+  gasoline — $150-300 million per year for every 10,000 barrels/day of
+  gasoline a refinery produces, the source's own worked example at 20,000
+  bpd. Second, a genuinely distinct valve type from the flow-controlled
+  component valves: lineup valves, which simply connect or disconnect
+  storage tanks (manually or automatically), with a real, severe, and
+  different failure mode — a lineup valve left in the wrong position can
+  ruin an entire tank (or multiple tanks) of finished product, a
+  binary/positional risk unrelated to the component valves' continuous
+  flow-accuracy concern.
+concept-tags: [blending, giveaway economics, lineup valve, tank connection, product specification]
+status: current
+source:
+  - doc: Fisher Control Valve Sourcebook — Refining (D103205X012, © 2014, 2024 Fisher Controls International LLC)
+    locator: "§4.15 Blending Unit, closing prose before 'Blending Unit Application Review,' p. 4-108 (PDF p. 108)"
+relatedFigures: [ref-cmp-blending-unit-pfd]
+relatedTopics: []
+used-by: []
+notes: Genuinely new — checked the figure's own teaches field directly; it states the recipe/sticking-valve mechanism, not the giveaway economics or lineup valves, which are a distinct valve type never mentioned elsewhere in the figure or its notes.
+```
+
 ## Open Items
 
 - **`kind: topic` pass added 2026-09-18.** This is by far the largest
@@ -1279,21 +1667,80 @@ notes: >
   history (§4.9), and alkylation's liquid-acid-catalyst rationale (§4.11).
   Each cross-references the figure(s) it complements rather than
   restating them.
-- **Honest scope disclosure, not a silent gap.** Given this chapter's
-  unusual size, sections §4.5 (beyond the pump-around cross-reference),
-  §4.8, §4.10, §4.12, §4.13, §4.14, and §4.15 were spot-checked for the
-  same figure-vs-prose gap pattern found elsewhere (their process-
-  mechanism content already reads as substantially captured in their own
-  figures' unusually detailed `teaches` fields — e.g. the FCC riser/
-  regenerator loop, the amine treating cycle, the Claus process, and the
-  PSA five-step cycle are all already stated at real mechanism depth in
-  `ref-cmp-fcc-converter-section-pfd`, `ref-cmp-amine-unit-pfd`,
-  `ref-cmp-sulfur-recovery-unit-pfd`, and `ref-cmp-psa-five-step-cycle-
-  diagrams` respectively) but were not read page-by-page with the same
-  exhaustive per-paragraph rigor as §4.1-4.4/4.6/4.7/4.9/4.11 in this
-  pass. A follow-up pass specifically targeting those seven sections'
-  running prose (not just their figures) for any remaining genuine gap is
-  real, flagged future work — not assumed complete here.
+- **Follow-up pass completed (2026-09-18) — the honest scope disclosure
+  above was correct to flag itself as incomplete.** Franz asked, via the
+  derived Competency Map's `app.refining.pressure-swing-adsorption`
+  finding (5 figures, zero topics), for the seven spot-checked sections
+  to actually be read exhaustively rather than re-assumed complete. They
+  now have been, page-by-page, the same standard as §4.1-4.4/4.6/4.7/4.9/
+  4.11. Result, per section:
+  - **§4.5 (Vacuum Crude Column):** one real gap found and fixed —
+    steam-stripping as a distinct mechanism from reflux/reboil
+    (`ref-topic-steam-stripping-mechanism`). The feed/fuel-valve fail-
+    open/fail-closed logic repeated in this section's prose is confirmed
+    NOT a new gap — it is the identical mechanism `ref-cmp-furnace-pfd`
+    already states and explicitly flags for reuse.
+  - **§4.8 (Hydrocracker, plus the outgassing discussion that actually
+    sits at the end of §4.7):** two real gaps found and fixed — outgassing
+    as a genuine third distinct two-phase-flow phenomenon requiring its
+    own sizing approach, easily confused with flashing/cavitation
+    (`ref-topic-outgassing-vs-flashing-cavitation-distinction`), and
+    interbed hydrogen quench as the real reactor-temperature-control
+    mechanism plus the hydrogen/oil ratio tradeoff
+    (`ref-topic-reactor-interbed-hydrogen-quench-mechanism`).
+  - **§4.10 (FCC):** confirmed the reactor/regenerator catalyst-
+    circulation mechanism IS already captured in
+    `ref-cmp-fcc-converter-section-pfd`'s own `teaches` — but two real
+    gaps sat beside it: the reactor/regenerator pressure-balance safety
+    failure chain (catalyst flow reversal, mechanical damage risk —
+    `ref-topic-fcc-reactor-regenerator-pressure-balance-safety`) and the
+    three real operating-mode tradeoffs, max gasoline/distillate/light-
+    olefin (`ref-topic-fcc-operating-mode-tradeoffs`).
+  - **§4.12 (Amine Unit):** confirmed the absorption/regeneration cycle IS
+    already captured in `ref-cmp-amine-unit-pfd`'s own `teaches` — one
+    real gap found: the decentralized-scrubber/shared-regenerator
+    architecture and the scrubber-flooding failure mode
+    (`ref-topic-amine-unit-architecture-and-scrubber-flooding`).
+  - **§4.13 (Sulfur Recovery):** confirmed the Claus reaction mechanism IS
+    already captured in `ref-cmp-sulfur-recovery-unit-pfd`'s own
+    `teaches` — one real gap found: the regulatory/redundancy economics
+    and the main-air/trim-air control relationship
+    (`ref-topic-sru-regulatory-driver-and-redundancy`).
+  - **§4.14 (Pressure Swing Adsorption) — the specifically reported gap:**
+    confirmed the 5-step cycle mechanism IS already captured in real
+    depth in `ref-cmp-psa-five-step-cycle-diagrams`'s own `teaches` — the
+    original figures-pass author read that prose carefully. The real,
+    confirmed gap was the valve-selection-critical content sitting beside
+    it: why PSA valves face uniquely demanding cycling/bi-directional-
+    shutoff requirements and what leakage actually costs
+    (`ref-topic-psa-valve-service-demands`), and the installation's own
+    four-component architecture plus the feed-valve on/off-only
+    functional rationale
+    (`ref-topic-psa-installation-architecture-and-feed-valve-role`). Two
+    new topics, not zero — the competency map's "real gap, no topic
+    anywhere" characterization is now out of date; see that file's own
+    update.
+  - **§4.15 (Blending):** confirmed the recipe/sticking-valve mechanism IS
+    already captured in `ref-cmp-blending-unit-pfd`'s own `teaches` — one
+    real gap found: the real giveaway-cost economics and lineup valves as
+    a genuinely distinct valve type from the flow-controlled component
+    valves (`ref-topic-blending-giveaway-economics-and-lineup-valves`).
+  **Net finding: the original spot-check judgment call was right about
+  WHERE the depth already existed (inside unusually thorough figure
+  `teaches` fields) but wrong to treat that as equivalent to "nothing left
+  to find" — 10 new topic entries came out of actually reading all seven
+  sections, at least one new entry in every single one of the seven
+  (none came up genuinely empty).** All 10:
+  `ref-topic-steam-stripping-mechanism`,
+  `ref-topic-outgassing-vs-flashing-cavitation-distinction`,
+  `ref-topic-reactor-interbed-hydrogen-quench-mechanism`,
+  `ref-topic-fcc-reactor-regenerator-pressure-balance-safety`,
+  `ref-topic-fcc-operating-mode-tradeoffs`,
+  `ref-topic-amine-unit-architecture-and-scrubber-flooding`,
+  `ref-topic-sru-regulatory-driver-and-redundancy`,
+  `ref-topic-psa-valve-service-demands`,
+  `ref-topic-psa-installation-architecture-and-feed-valve-role`,
+  `ref-topic-blending-giveaway-economics-and-lineup-valves`.
 - **Reference-data-only, confirmed not padded.** Every section's "Typical
   Process Conditions" / "Typical Control Valve Selection" bulleted boxes
   (fluid, P1/P2, T, Q, valve size/type/material recommendations) are

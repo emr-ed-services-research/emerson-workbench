@@ -255,6 +255,14 @@ fixed now:
 - A pneumatic-actuator interaction feel — rejected as a general
   interaction language, but could return as a one-off flourish on a
   single hero element.
+- **Visual coverage for `kind: topic` entries and the keyConcepts/primitives
+  built from them** — raised 2026-09-18 during the SMI topic-indexing and
+  competency-map work. Known gap, mirroring the orphan-figure problem from
+  the other direction: many topics may have zero or weak `relatedFigures`,
+  which matters given `teaching-philosophy.md`'s slides-are-visual-only
+  rule. Franz has more thoughts on how to address this and wants it
+  scoped as its own task, not folded into the current CVE curriculum work
+  — earmarked, not started.
 
 ### Process / meta
 
