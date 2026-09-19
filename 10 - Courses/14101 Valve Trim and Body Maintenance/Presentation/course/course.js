@@ -28,6 +28,8 @@
     btnPrev: byId("btnPrev"), btnNext: byId("btnNext"),
     ctxHere: byId("ctxHere"), ctxMod: byId("ctxMod"), ctxObj: byId("ctxObj"),
     ctxConcepts: byId("ctxConcepts"), ctxCheckWrap: byId("ctxCheckWrap"), ctxCheck: byId("ctxCheck"),
+    ctxRegroundWrap: byId("ctxRegroundWrap"), ctxRegroundBtn: byId("ctxRegroundBtn"), ctxReground: byId("ctxReground"),
+    ctxRegroundHook: byId("ctxRegroundHook"), ctxRegroundBridge: byId("ctxRegroundBridge"), ctxRegroundDepth: byId("ctxRegroundDepth"),
     ftRight: byId("ftRight"), progressPct: byId("progressPct"),
     progressBar: byId("progressBar"), hdProgress: byId("hdProgress"),
     hdDay: byId("hdDay")
@@ -304,6 +306,7 @@
     el.ctxObj.textContent = "";
     el.ctxConcepts.innerHTML = "";
     el.ctxCheckWrap.hidden = true;
+    el.ctxRegroundWrap.hidden = true;
   }
   window.__ewSplashContinue = function () { splashDismissed = true; render(); };
 
@@ -340,6 +343,7 @@
     el.ctxMod.textContent = C.course.code + " " + C.course.title;
     el.ctxConcepts.innerHTML = "";
     el.ctxCheckWrap.hidden = true;
+    el.ctxRegroundWrap.hidden = true;
     renderProgress();
   }
 
@@ -350,6 +354,7 @@
     document.querySelectorAll(".toc__sec,.toc__ch,.toc__mod,.toc__pagelist li").forEach(function (x) { x.classList.remove("is-current"); });
     el.ctxConcepts.innerHTML = "";
     el.ctxCheckWrap.hidden = true;
+    el.ctxRegroundWrap.hidden = true;
     el.dots.innerHTML = "";
     el.pos.textContent = "";
   }
@@ -469,6 +474,7 @@
     el.ctxConcepts.innerHTML = "";
     var bkc = ctxConceptsBlock(); if (bkc) bkc.hidden = true;
     el.ctxCheckWrap.hidden = true;
+    el.ctxRegroundWrap.hidden = true;
     renderNav(route);
     syncToc(route);
     renderProgress();
@@ -548,8 +554,20 @@
       el.ctxConcepts.innerHTML = '<li class="ctx__empty">Key concepts for this module are still being written.</li>';
     } else {
       el.ctxConcepts.innerHTML = kc.map(function (c, i) {
-        var text = typeof c === "string" ? c : c.t;
-        var pages = (typeof c === "object" && c.pages) ? c.pages : [];
+        // A concept's teaching text lives at c.t directly under the flat
+        // (pre-2026-09-11) shape, or under c.primitives[0].t once a course
+        // has been migrated to the primitives[] shape (one entry per
+        // domain-or-audienceStage x tier permutation) - c.t itself is never
+        // set on a migrated concept. Falling back to the first primitive
+        // (rather than every primitive's text) matches every migrated
+        // course's real current shape: exactly one primitive per concept,
+        // since none has yet authored more than one audience/tier variant.
+        // Without this fallback every context-pane bullet on a migrated
+        // course renders as an empty string - found on Control Valve
+        // Basics's real build, 2026-09-12.
+        var firstPrim = (typeof c === "object" && Array.isArray(c.primitives) && c.primitives.length) ? c.primitives[0] : null;
+        var text = typeof c === "string" ? c : (c.t != null ? c.t : (firstPrim ? firstPrim.t : ""));
+        var pages = (typeof c === "object" && c.pages && c.pages.length) ? c.pages : (firstPrim && firstPrim.pages) ? firstPrim.pages : [];
         var active = curPage != null && pages.indexOf(curPage) > -1;
         var goto = pages.length ? pages[0] : (m._pages[0] || null);
         var idx = goto != null ? m._pages.indexOf(goto) : -1;
@@ -565,6 +583,33 @@
       el.ctxCheckWrap.hidden = false;
       el.ctxCheck.onclick = function () { location.hash = "#" + m.id + "/check"; };
     } else { el.ctxCheckWrap.hidden = true; }
+
+    renderReground(m);
+  }
+
+  /* ---------- right rail: reground ("what are we doing, and why?") -
+     Instructor-only support, authored once by Stage 2 alongside keyConcepts
+     (m.reground = { hook, bridge, depth }), never live-generated - see
+     "Instructor reorientation" in Project Log & Backlog.md. Collapsed by
+     default on every module change so it never lingers open into a module
+     it wasn't written for. */
+  function renderReground(m) {
+    var rg = m.reground;
+    if (!rg || (!rg.hook && !rg.bridge && !rg.depth)) {
+      el.ctxRegroundWrap.hidden = true;
+      return;
+    }
+    el.ctxRegroundWrap.hidden = false;
+    el.ctxReground.hidden = true;
+    el.ctxRegroundBtn.setAttribute("aria-expanded", "false");
+    el.ctxRegroundHook.textContent = rg.hook || "";
+    el.ctxRegroundBridge.textContent = rg.bridge || "";
+    el.ctxRegroundDepth.textContent = rg.depth || "";
+    el.ctxRegroundBtn.onclick = function () {
+      var open = el.ctxReground.hidden;
+      el.ctxReground.hidden = !open;
+      el.ctxRegroundBtn.setAttribute("aria-expanded", String(open));
+    };
   }
 
   /* ---------- stage nav ------------------------------------- */
@@ -686,6 +731,7 @@
       else if (e.key === "[") bToc.click();
       else if (e.key === "]") bCtx.click();
       else if (e.key === "p" || e.key === "P") bPres.click();
+      else if ((e.key === "g" || e.key === "G") && !el.ctxRegroundWrap.hidden) el.ctxRegroundBtn.click();
       else if (e.key === "Escape") { document.body.classList.remove("present", "hide-toc"); upd(); }
     });
     window.addEventListener("message", function (ev) {
@@ -713,9 +759,10 @@
 
     var ov = byId("libov"), idxEl = byId("libIndex"), docEl = byId("libDoc"),
         elBack = byId("libBack"), elTitle = byId("libTitle"), elExt = byId("libExt"),
-        elClose = byId("libClose");
+        elClose = byId("libClose"), elLoading = byId("libLoading");
     var LKEY = "ew" + C.course.code + ".lib";
     var frames = {};                 // docId -> iframe, kept alive once built
+    var loaded = {};                 // docId -> true once that iframe's "load" has fired
     var byDoc = {};
     (LIB.primary || []).forEach(function (d) { byDoc[d.id] = d; });
     (LIB.columns || []).forEach(function (col) { col.docs.forEach(function (d) { byDoc[d.id] = d; }); });
@@ -787,6 +834,10 @@
       if (!frames[d.id]) {
         var fr = h('<iframe class="libov__frame" title="' + esc(d.title) + '"></iframe>');
         fr.setAttribute("data-active", "false");
+        fr.addEventListener("load", function () {
+          loaded[d.id] = true;
+          if (state.docId === d.id) elLoading.hidden = true;
+        });
         fr.src = docURL(d);
         docEl.appendChild(fr);
         frames[d.id] = fr;
@@ -807,6 +858,9 @@
       elTitle.textContent = inDoc ? doc.title : "Source Library";
 
       if (inDoc) {
+        // Show the spinner before frameFor() so a first-open genuinely
+        // starts loading state visible, not a blank frame for one paint.
+        elLoading.hidden = !!loaded[doc.id];
         var fr = frameFor(doc);
         Object.keys(frames).forEach(function (k) {
           frames[k].setAttribute("data-active", k === doc.id ? "true" : "false");
@@ -816,6 +870,7 @@
       } else {
         elExt.hidden = true;
         elExt.removeAttribute("href");
+        elLoading.hidden = true;
       }
 
       try { localStorage.setItem(LKEY, JSON.stringify({ view: state.view, docId: state.docId })); } catch (e) {}

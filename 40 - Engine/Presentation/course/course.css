@@ -365,6 +365,25 @@ body.page-view .page__frame { width: 100%; height: 100%; aspect-ratio: auto; }
 }
 .ctx__check:hover { background: #f2faee; }
 
+.ctx__reground-btn {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--rail-bg); border: 1px solid var(--rail-line); color: var(--emerson-charcoal);
+  border-radius: 6px; padding: 9px; cursor: pointer; font-size: 12.5px; font-weight: 700;
+}
+.ctx__reground-btn:hover { background: #eef1f3; }
+.ctx__reground-btn[aria-expanded="true"] { border-color: var(--accent); color: var(--emerson-blue); }
+.ctx__reground {
+  margin-top: 10px; padding: 12px 13px; background: var(--emerson-white);
+  border: 1px solid var(--rail-line); border-left: 3px solid var(--accent); border-radius: 4px;
+}
+.ctx__reground-part { margin-bottom: 12px; }
+.ctx__reground-part:last-child { margin-bottom: 0; }
+.ctx__reground-part h5 {
+  margin: 0 0 4px; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 700;
+}
+.ctx__reground-part p { margin: 0; font-size: 13px; line-height: 1.5; }
+
 /* the home / course-overview view has no "current module" — drop the context rail */
 body.view-home .shell { grid-template-columns: var(--w-toc) minmax(0,1fr) 0; }
 body.view-home .shell__ctx { visibility: hidden; }

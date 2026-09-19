@@ -192,6 +192,23 @@ idea); left in rather than silently dropped.
 - Stage 3 QA mechanisms from the staging plan (machine geometry checks
   promoted to blocking, provenance checks, a second-agent rubric review) —
   designed in real detail, never shipped.
+- **Figure-only keyConcept citation gap — CLOSED 2026-09-19.** Designed
+  2026-09-18 in `Competency Map — Topic-Derived.md` Part 3 (Findings 1–2),
+  approved by Franz and implemented the same day: (1) both Stage 2 prompts
+  (`buildStage2Prompt`'s "sources" rule and `buildStage2OriginatePrompt`'s
+  `t`-derivation step) now instruct the agent that an explanatory claim
+  (mechanism/tradeoff/"why"/worked example) needs `-topic-` backing, not a
+  `-cmp-` (figure) citation alone; (2) `verify.ps1` gained a mechanical
+  course.json check flagging any module whose keyConcepts cite figures only
+  with zero topic backing — a Warn, not a Fail, since a genuinely
+  figure-only nomenclature module is legitimate. Verified: `prompts.js`
+  syntax-checked clean, PipelineConsole's suite still 270/271 (the one
+  failure is pre-existing and unrelated — confirmed via `git diff --stat`
+  that only `prompts.js` changed). Running the new `verify.ps1` check
+  against the real, already-shipped 14101 course surfaced that all 6 of its
+  ch3 modules are figure-only, zero-topic — expected, since 14101 predates
+  the topic/figure distinction, not a defect, but a real finding worth
+  knowing about.
 - `Roadmap.md`'s "Current picture" and `System Map.md` never got the
   source-grounding/instructional-design milestone folded in — checklist
   item left unchecked. **This is itself a second, earlier instance of the
@@ -237,6 +254,23 @@ fixed now:
   value across ~2,400 lines of CSS is tuned against it) even though 16:9
   is the real delivery target. Flagged as a deeper open question, not
   touched.
+- **Instructor reorientation ("regrounding") feature** — designed
+  2026-09-19: a pre-authored (never live-generated), per-module explanation
+  an instructor can pull up mid-class to answer "what are we doing and why."
+  Lives only in presenter mode, never the student display; auto-scoped to
+  whatever module is currently live; opens as an expansion of the existing
+  context pane. Content is a new three-part scaffolded explanation (plain-
+  language hook → bridge to real vocabulary → the actual technical depth,
+  not simplified away) — a genuine new Stage 2 authoring addition, not a
+  reuse of the existing engineering-voice competency text. Motivated
+  directly by Franz's own background (English Literature, not an engineering
+  degree — see memory `franz-background-english-literature-not-engineer`):
+  the explanation has to teach him too, not just relabel content he can
+  already read. Deliberately kept OUT of Vitruvius — this needs zero live
+  reasoning or per-claim verification since it only presents content the
+  pipeline has already authored and verified. Franz explicitly chose to
+  design this now but hold the build until the Workshop shell is next
+  unfrozen, rather than break the freeze early.
 
 ### Curriculum / Instructional Primitives
 

@@ -28,6 +28,8 @@
     btnPrev: byId("btnPrev"), btnNext: byId("btnNext"),
     ctxHere: byId("ctxHere"), ctxMod: byId("ctxMod"), ctxObj: byId("ctxObj"),
     ctxConcepts: byId("ctxConcepts"), ctxCheckWrap: byId("ctxCheckWrap"), ctxCheck: byId("ctxCheck"),
+    ctxRegroundWrap: byId("ctxRegroundWrap"), ctxRegroundBtn: byId("ctxRegroundBtn"), ctxReground: byId("ctxReground"),
+    ctxRegroundHook: byId("ctxRegroundHook"), ctxRegroundBridge: byId("ctxRegroundBridge"), ctxRegroundDepth: byId("ctxRegroundDepth"),
     ftRight: byId("ftRight"), progressPct: byId("progressPct"),
     progressBar: byId("progressBar"), hdProgress: byId("hdProgress"),
     hdDay: byId("hdDay")
@@ -304,6 +306,7 @@
     el.ctxObj.textContent = "";
     el.ctxConcepts.innerHTML = "";
     el.ctxCheckWrap.hidden = true;
+    el.ctxRegroundWrap.hidden = true;
   }
   window.__ewSplashContinue = function () { splashDismissed = true; render(); };
 
@@ -340,6 +343,7 @@
     el.ctxMod.textContent = C.course.code + " " + C.course.title;
     el.ctxConcepts.innerHTML = "";
     el.ctxCheckWrap.hidden = true;
+    el.ctxRegroundWrap.hidden = true;
     renderProgress();
   }
 
@@ -350,6 +354,7 @@
     document.querySelectorAll(".toc__sec,.toc__ch,.toc__mod,.toc__pagelist li").forEach(function (x) { x.classList.remove("is-current"); });
     el.ctxConcepts.innerHTML = "";
     el.ctxCheckWrap.hidden = true;
+    el.ctxRegroundWrap.hidden = true;
     el.dots.innerHTML = "";
     el.pos.textContent = "";
   }
@@ -469,6 +474,7 @@
     el.ctxConcepts.innerHTML = "";
     var bkc = ctxConceptsBlock(); if (bkc) bkc.hidden = true;
     el.ctxCheckWrap.hidden = true;
+    el.ctxRegroundWrap.hidden = true;
     renderNav(route);
     syncToc(route);
     renderProgress();
@@ -577,6 +583,33 @@
       el.ctxCheckWrap.hidden = false;
       el.ctxCheck.onclick = function () { location.hash = "#" + m.id + "/check"; };
     } else { el.ctxCheckWrap.hidden = true; }
+
+    renderReground(m);
+  }
+
+  /* ---------- right rail: reground ("what are we doing, and why?") -
+     Instructor-only support, authored once by Stage 2 alongside keyConcepts
+     (m.reground = { hook, bridge, depth }), never live-generated - see
+     "Instructor reorientation" in Project Log & Backlog.md. Collapsed by
+     default on every module change so it never lingers open into a module
+     it wasn't written for. */
+  function renderReground(m) {
+    var rg = m.reground;
+    if (!rg || (!rg.hook && !rg.bridge && !rg.depth)) {
+      el.ctxRegroundWrap.hidden = true;
+      return;
+    }
+    el.ctxRegroundWrap.hidden = false;
+    el.ctxReground.hidden = true;
+    el.ctxRegroundBtn.setAttribute("aria-expanded", "false");
+    el.ctxRegroundHook.textContent = rg.hook || "";
+    el.ctxRegroundBridge.textContent = rg.bridge || "";
+    el.ctxRegroundDepth.textContent = rg.depth || "";
+    el.ctxRegroundBtn.onclick = function () {
+      var open = el.ctxReground.hidden;
+      el.ctxReground.hidden = !open;
+      el.ctxRegroundBtn.setAttribute("aria-expanded", String(open));
+    };
   }
 
   /* ---------- stage nav ------------------------------------- */
@@ -698,6 +731,7 @@
       else if (e.key === "[") bToc.click();
       else if (e.key === "]") bCtx.click();
       else if (e.key === "p" || e.key === "P") bPres.click();
+      else if ((e.key === "g" || e.key === "G") && !el.ctxRegroundWrap.hidden) el.ctxRegroundBtn.click();
       else if (e.key === "Escape") { document.body.classList.remove("present", "hide-toc"); upd(); }
     });
     window.addEventListener("message", function (ev) {

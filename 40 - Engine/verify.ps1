@@ -69,6 +69,34 @@ if ($C) {
   }
   if ($badRef.Count) { $badRef | ForEach-Object { Fail $_ } } else { Pass "every keyConcept page ref is inside its module's pages" }
 
+  # Figure-only sourcing check (Competency Map - Topic-Derived.md, Part 3,
+  # requirement 2 - approved 2026-09-19): a module whose keyConcepts cite
+  # sources that are ALL figures (`-cmp-`) with ZERO topic (`-topic-`)
+  # backing is exactly the eng.instrumentation.level-measurement shape found
+  # 2026-09-18 - nine figures, nothing in the index actually explaining the
+  # mechanism. Mechanically checkable from the id pattern alone; a warning to
+  # prompt human review, not a hard failure - a genuinely figure-only
+  # nomenclature module is a legitimate case, not an error.
+  $figureOnly = @()
+  foreach ($day in $C.days) {
+    foreach ($ch in $day.chapters) {
+      foreach ($m in ($ch.modules | Where-Object { $_ })) {
+        if (-not $m.keyConcepts) { continue }
+        $ids = @()
+        foreach ($kc in @($m.keyConcepts | Where-Object { $_ })) {
+          $ids += @($kc.sources | Where-Object { $_ })
+        }
+        if (-not $ids.Count) { continue }
+        $topics  = @($ids | Where-Object { $_ -match '-topic-' })
+        $figures = @($ids | Where-Object { $_ -match '-cmp-' })
+        if ($figures.Count -gt 0 -and $topics.Count -eq 0) {
+          $figureOnly += "$($m.id): $($figures.Count) figure citation(s) across its keyConcepts, zero topic backing"
+        }
+      }
+    }
+  }
+  if ($figureOnly.Count) { $figureOnly | ForEach-Object { Warn $_ } } else { Pass "no module is sourced entirely from figures with zero topic backing" }
+
   if ($C.slidePrefix) { Pass "slidePrefix = $($C.slidePrefix)" } else { Warn "no slidePrefix (course.js will use code + '-')" }
 }
 
