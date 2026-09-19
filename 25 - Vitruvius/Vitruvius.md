@@ -90,6 +90,50 @@ specialization.
   supersession — see `Curriculum — CVE1.md`'s "Explicitly out of scope"
   note).
 
+## Images are the same charter, not a separate mechanism (Franz, 2026-09-19)
+
+Vitruvius's broad-research role is not text-only. When a course concept
+genuinely needs a figure and the Source Library has been actually checked —
+not assumed, checked, via the real cataloging pass Stage 2/3 already run —
+and nothing real exists there, Vitruvius researches **real, current,
+correctly-attributed Emerson/Fisher published material** (product pages,
+catalog sheets, instruction manuals — the same kind of live source already
+cited in this ledger's text findings) for a figure that actually fits,
+before anything is invented from scratch.
+
+This closes a real, already-documented failure mode, not a hypothetical
+one: `coverage-cataloger.js`'s own header names the exact incident this
+guards against — "Stage 3's own prompt then silently fell back to an
+invented SVG redraw whenever nothing was catalogued." The fix was never
+"let Stage 3 draw something plausible" — it is "look harder for something
+real, and only when that is genuinely exhausted does a human get asked to
+decide," the same discipline this document already applies to text claims.
+
+**Same two-tier trust model, extended, not duplicated:**
+- An image found this way gets its own ledger entry (see the Verified
+  Findings Ledger's `vit-image-<slug>` shape) — never a Subject-Matter
+  Index `kind: figure` entry. That index is reserved for content grounded
+  in the vault's own primary-source PDFs, the same reason Vitruvius's text
+  findings never become `kind: topic` entries either.
+- The actual image file is saved into the course's own
+  `Presentation/build/assets/sourced/` folder — same physical location a
+  real Source Library crop would go — so Stage 3 embeds it exactly the same
+  way, but the slide's citation credits the real Emerson source Vitruvius
+  found, not a Component Index id.
+- **Verification is per-use, not exhaustive-once**: does this specific
+  image actually depict what this specific concept claims, is the source a
+  genuine current Emerson/Fisher publication (not a third-party or stock
+  image, not a superseded/discontinued product unless the course is
+  explicitly teaching legacy equipment), and is reusing it inside Emerson's
+  own internal training material the kind of use Emerson's own published
+  material is intended for. All three get recorded in the ledger entry,
+  the same as a text finding's `currencyCheck`.
+- **A search that finds nothing real stays a real, logged gap** —
+  `stillThin`, reported honestly — never silently resolved by inventing an
+  SVG, and never a reason to lower the bar on what counts as "real."
+  Whether to commission genuinely new artwork at that point is a human
+  decision, not an agent's own fallback.
+
 ## The explicit boundary
 
 Vitruvius verifies accuracy and models reasoning — it does **not** expand
@@ -116,9 +160,10 @@ it's used, is what makes drawing on broader material affordable at all.
 ## Where Vitruvius's own resources live
 
 - `Vitruvius.md` (this file) — identity, scope, boundary.
-- `Vitruvius — Verified Findings Ledger.md` — every fact pulled from the
-  web or the archive and actually used in a course: the claim, its real
-  citation, the currency-check performed, and which course/module used it.
+- `Vitruvius — Verified Findings Ledger.md` — every fact **or image**
+  pulled from the web or the archive and actually used in a course: the
+  claim (or image description), its real citation, the currency/fit-check
+  performed, and which course/module used it.
 - `Vitruvius — Archive Use Log.md` — which Historic Educational Services
   archive items have been reviewed and verified for use, and where each
   one landed.

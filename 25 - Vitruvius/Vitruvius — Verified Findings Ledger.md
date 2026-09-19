@@ -16,7 +16,7 @@ from outside the Source Library (the web, or the Historic Educational
 Services archive) and actually used in a course — not a pre-populated
 reference collection.
 
-**Entry shape:**
+**Entry shape (text finding):**
 
 ```yaml
 id: vit-finding-<slug>
@@ -28,6 +28,37 @@ citation: >
 currencyCheck: >
   What was checked, against what current source, and when.
 usedBy: [course/module where this was actually placed]
+verifiedDate: YYYY-MM-DD
+```
+
+**Entry shape (image finding — added 2026-09-19, see `Vitruvius.md`'s
+"Images are the same charter" section).** Deliberately a distinct
+`vit-image-` prefix, never a Subject-Matter Index `-cmp-`/`-topic-` id —
+this content is externally sourced, not primary-source-PDF-grounded, and
+must stay mechanically distinguishable as such:
+
+```yaml
+id: vit-image-<slug>
+depicts: >
+  What the image actually shows, in the same terms a Component Index
+  entry's "teaches" field would use.
+sourceUrl: >
+  The real, live URL the image was found at.
+sourceLabel: >
+  The publication it's from (e.g. "Fisher™ 249 Series Caged Sensors
+  product page, Emerson").
+assetPath: >
+  Vault-relative path to the saved file, e.g.
+  "10 - Courses/<course>/Presentation/build/assets/sourced/<filename>.png".
+fitCheck: >
+  Does this image genuinely depict what the citing concept claims — not
+  "close enough" or "the same general idea."
+currencyCheck: >
+  Is the source a live, current Emerson/Fisher publication for an actively
+  supported product (or, if legacy equipment is the course's actual
+  subject, explicitly noted as such) — not a third-party/stock image, not
+  quietly superseded.
+usedBy: [course/module/concept where this was actually placed]
 verifiedDate: YYYY-MM-DD
 ```
 
