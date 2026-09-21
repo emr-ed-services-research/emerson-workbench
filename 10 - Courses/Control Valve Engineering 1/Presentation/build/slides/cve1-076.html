@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 076 &mdash; Verifying a Stated Body/Bonnet Class</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m2, page 76 — eng.selection.shutoff-leakage-and-standards.
+       verify-pt-rating-and-material [apply · application]. Applies
+       pss-topic-pressure-temperature-material-selection-criteria and
+       pss-topic-pressure-rating-classes together (both topics: [] figures)
+       — the verification sequence itself (class-vs-condition check, tier
+       identification, documentation confirmation, material-suitability
+       check) is this module's own synthesis of the two topics' teaches
+       text, matching the worked logic this module's own cve1-ch5-m2-act1
+       activity already exercises on nameplate/service-condition cards. No
+       specific numeric pressure-temperature values are asserted (the
+       registry states the relationship, not a numeric table), so the
+       worked example stays at the level of what the source actually
+       supports. Same tp-009 decision-table application variant this
+       course already used on slides 53/69
+       (.slide--role-application:has(.tmpl-table), Style Guide Sec
+       5.10/9.2) for an identical shape — an apply-level judgment call with
+       zero figures in the registry. Columns ordered given-to-answer per
+       Style Guide Sec 9.4. -->
+  <article class="slide slide--role-application" data-slide="76" data-deck="cve1">
+    <h1 class="slide-title">Verifying a Stated Body/Bonnet Class</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1">
+        <thead>
+          <tr><th>Nameplate claims</th><th>Check this before accepting it</th><th>What's required to sign off</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Standard Class (e.g. Class 300)</td><td>The class's maximum allowable pressure falls as temperature rises &mdash; re-check the nameplate class against the <b>real service pressure AND temperature</b>, not the class's headline rating</td><td>Adequate once the class covers the actual service condition at that temperature; no further documentation needed</td></tr>
+          <tr><td>Intermediate Standard, Special, or Intermediate Special claimed</td><td>Confirm the valve is genuinely <b>butt-weld-end (BWE)</b> construction &mdash; no non-standard tier is valid on any other end connection</td><td>Extra wall-thickness/bolting records (intermediate tiers) and/or NDE records &mdash; radiographic, ultrasonic, magnetic-particle, or liquid-penetrant, by <b>SNT-TC-1A-qualified</b> personnel (special tiers) &mdash; on file; without them, the class hasn't actually been earned</td></tr>
+          <tr><td>Any class, any tier</td><td>Confirm soft parts (elastomers, PTFE) stay within their real temperature limits, and trim material matches the service's corrosion/erosion/flashing/cavitation profile</td><td>Trim carried over from body material by default is not sufficient on its own &mdash; suitability has to be confirmed at the actual service condition</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-takeaway">A stated class is a claim, not a fact, until the service condition, the construction, and the documentation all check out together.</p>
+      <p class="tpl-source">No corroborating figure exists in the Source Library for this synthesis (both backing citations are topics, prose only). After Fisher Power &amp; Severe Service Sourcebook's pressure-temperature/material-selection-criteria and pressure-rating-classes topics. Component Index: pss-topic-pressure-temperature-material-selection-criteria, pss-topic-pressure-rating-classes.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">76</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

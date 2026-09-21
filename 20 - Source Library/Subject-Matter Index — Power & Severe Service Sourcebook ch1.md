@@ -27,7 +27,7 @@ Control Valve Selection" divider, real chapter content runs PDF pp. 7–20
 (printed pp. 1-1 through 1-14), and PDF page 21 is the "Chapter 2 / Actuator
 Selection" divider. Chapter 1 = pp. 7–20; Chapter 2 starts at p. 21.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/
 Control Valve Sourcebook - Power & Severe Service.pdf`. This pass catalogs
 existence and location only — it does not crop or extract images (no
 extracted-figures folder exists yet for this book), so each record's
@@ -110,6 +110,8 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-1 'Modern control valve combines actuator, valve assembly and digital valve controller...,' p. 1-1 — drawing W8119"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig1-modern-control-valve-overview.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
@@ -139,6 +141,8 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-2 'Standard globe sliding-stem valve design is typified by the Design ET...,' p. 1-2 — drawing W0992-4"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig2-et-globe-valve-cutaway.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
@@ -189,6 +193,8 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-4 'Design EHD is typical of high-pressure globe valves...,' p. 1-3 — drawing W3379"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig4-ehd-high-pressure-globe-cutaway.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
@@ -309,6 +315,8 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-8 'High-pressure ball valves feature heavy shafts and full ball designs. This Type V250...,' p. 1-5 — drawing W7169"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig6-v250-high-pressure-ball-valve-cutaway.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
@@ -391,12 +399,18 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-10 'The V500 eccentric plug valve is specially designed for severe rotary applications...,' p. 1-6 — drawing W4170-3/IL"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig8-v500-eccentric-plug-valve-cutaway.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
   Same source drawing (W4170-3/IL) as `ogas-cmp-v500-eccentric-plug-cutaway`
   in `Subject-Matter Index — Oil & Gas Sourcebook ch1.md`. Fully labelled
-  cutaway — Style Guide §6.3 applies if ever placed on a slide.
+  cutaway — Style Guide §6.3 applies if ever placed on a slide. Cross-
+  sourcebook duplicate confirmed on inspection (identical drawing number,
+  identical labelled parts, identical caption content) — no new crop was
+  made; this entry points directly at the Oil & Gas sourcebook's existing
+  extracted crop rather than duplicating the file.
 mediaStatus: unreviewed
 ```
 
@@ -468,10 +482,15 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-12 'Lined butterfly valves offer tight shutoff but are limited to low temperature applications...,' p. 1-6 — drawing W4081"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Power & Severe Service — extracted-figures/ch1-fig12-lined-butterfly-valve.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
-  Production photo. No Oil & Gas ch1 equivalent — new to this book.
+  Production photo. No Oil & Gas ch1 equivalent — new to this book. Genuinely
+  new figure, confirmed no filename or content overlap with the Oil & Gas
+  extracted-figures folder; cropped fresh from the source PDF (p. 12 /
+  printed 1-6) at 200 dpi, figure + caption.
 mediaStatus: unreviewed
 ```
 
@@ -490,6 +509,8 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-13 'High performance butterfly valves provide excellent performance and value...,' p. 1-7 — drawing W6235-2/IL"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig9-8560-high-performance-butterfly-cutaway.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
@@ -547,7 +568,9 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-14 'Many control valves offer a choice of characteristic...,' p. 1-8 — drawing A1265"
-delivery: analytical graph — falls under Style Guide §5 / not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Power & Severe Service — extracted-figures/ch1-fig14-flow-characteristic-curves.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
   Teaches the same concept as `ogas-cmp-flow-characteristic-curves` (Oil &
@@ -555,7 +578,9 @@ notes: >
   chart — a different drawing number, and this version plots FOUR curves
   (adding "modified parabolic") where the Oil & Gas version plots only
   three (quick-opening, linear, equal-percentage). Catalogued as a separate
-  record, not merged.
+  record, not merged. Confirmed genuinely distinct on inspection (drawing
+  A1265, four curves, printed p. 1-9 facing the p. 1-8 text reference) —
+  cropped fresh from the source PDF at 200 dpi, figure + caption.
 mediaStatus: unreviewed
 ```
 
@@ -613,6 +638,8 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-15 'Popular varieties of bolted flange end connections,' p. 1-9 — drawing A7098"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig11-bolted-flange-end-connections.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
@@ -637,6 +664,8 @@ status: current
 source:
   - doc: Fisher Control Valve Sourcebook — Power & Severe Service (© 2001, 2003, 2004 Fisher Controls International LLC, Fourth Edition, D101449X012)
     locator: "Figure 1-16 'Common welded end connections,' p. 1-9 — drawing A7099"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig12-welded-end-connections.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >

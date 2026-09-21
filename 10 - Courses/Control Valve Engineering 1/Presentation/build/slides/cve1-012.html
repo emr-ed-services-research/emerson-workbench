@@ -3,30 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 012 &mdash; Case C: Near-Zero Leakage</title>
+<title>CVE1 &middot; Slide 012 &mdash; Comparing Rated Rangeability to Required Turndown</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m3, page 12 — eng.sizing.valve-selection-process [apply ·
-       mechanism, applies]. The Attempt step for tier 3, real numbers,
-       sliding-stem hardware throughout matching the real damage photos. -->
-  <article class="slide slide--role-mechanism" data-slide="12" data-deck="cve1">
-    <h1 class="slide-title">Case C: Near-Zero Leakage</h1>
+  <!-- cve1-ch1-m2, page 12 — eng.foundations.control-loop-and-final-control-element.
+       calculate-rangeability [apply · procedure]. GENERATED FROM NOTHING: no
+       component is registered for this competency (see slide 11's sourceNote).
+       Per Franz's editorial constraint, this is a SIMPLE, PLAIN worked-comparison
+       graphic only — the same 100:1-rated valve drawn twice, once against a
+       50:1 required turndown (clears) and once against a 150:1 required
+       turndown (falls short) — the Handbook's own worked reference case
+       (course.json primitive text), nothing invented beyond it. This is also
+       the worked model the module's own activity (cve1-ch1-m2-act1) has the
+       class repeat with new numbers immediately after the caution slide. -->
+  <article class="slide slide--role-procedure-image" data-slide="12" data-deck="cve1">
+    <h1 class="slide-title">Comparing Rated Rangeability to Required Turndown</h1>
     <div class="tpl-content">
-      <div class="tpl-fig-wrap">
-        <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig-flowchart-steps1-2.png" style="width:100%;height:100%;object-fit:contain" alt="Valve selection flowchart, steps 1-2: determine service conditions, calculate preliminary Cv">
-        </div>
+      <ol class="tpl-steps">
+        <li>State the loop's required turndown &mdash; the largest flow the process will demand &divide; the smallest flow it must still be controlled at</li>
+        <li>Pull the candidate valve's rated rangeability off its data sheet (Cv-max &divide; Cv-min at the stated deviation limit)</li>
+        <li>Compare the two directly &mdash; the valve's rated rangeability must meet or exceed the loop's required turndown</li>
+      </ol>
+      <div class="tpl-fig">
+        <svg viewBox="0 0 380 260" role="img" aria-label="The same 100-to-1 rated valve compared against two loops: one requiring 50-to-1 turndown, which the valve clears, and one requiring 150-to-1 turndown, which the valve's rated capability falls short of." style="width:100%;height:100%">
+          <text x="190" y="26" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#3F4040">Valve rated rangeability: 100:1</text>
+          <!-- Row A: clears -->
+          <rect x="30" y="55" width="173" height="26" fill="#004B8D"></rect>
+          <line x1="116" y1="40" x2="116" y2="96" stroke="#959797" stroke-width="1.8" stroke-dasharray="3 3"></line>
+          <text x="116" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11.5" fill="#3F4040">required 50:1</text>
+          <text x="30" y="112" font-family="Arial, Helvetica, sans-serif" font-size="12.5" fill="#3F4040">Clears &mdash; margin to spare</text>
+          <!-- Row B: falls short -->
+          <rect x="30" y="160" width="173" height="26" fill="#004B8D"></rect>
+          <line x1="290" y1="145" x2="290" y2="201" stroke="#959797" stroke-width="1.8" stroke-dasharray="3 3"></line>
+          <text x="290" y="139" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="11.5" fill="#3F4040">required 150:1</text>
+          <text x="30" y="217" font-family="Arial, Helvetica, sans-serif" font-size="12.5" fill="#3F4040">Falls short &mdash; caps flow resolution below what's needed</text>
+        </svg>
       </div>
-      <ul class="tpl-list">
-        <li><span class="num">1</span>Tight-shutoff isolation service: P1 = 400 psig, P2 = 80 psig, &Delta;P = 320 psi, Q = 100 gpm water, Class V shutoff (near-zero leakage, the tightest class Figure 5.3 covers)</li>
-        <li><span class="num">2</span>Preliminary Cv = 100 &times; &radic;(1.0/320) = 100 &times; 0.0559 &asymp; 5.6</li>
-        <li><span class="num">3</span>Unlike Cases A/B, &Delta;P is 80% of P1 &mdash; steps 3-5 require a cavitation check before picking a trim. A streamlined, minimum-restriction sliding-stem trim is selected anyway &mdash; high Cv per dollar, tight gallery space &mdash; without running that check</li>
-      </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100, Steps 1-2 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
+      <p class="tpl-source">Originated worked-comparison graphic &mdash; no component is registered for this competency (Control Valve Handbook 6th ed. &sect;1.4, p.27, prose only). Values are the Handbook's own worked reference case, not invented.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">12</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

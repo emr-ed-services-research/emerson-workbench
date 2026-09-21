@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 168 &mdash; Three Stages, Three Trim Risks</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch9-m2, page 168 — eng.installation.piping-practice-and-orientation.
+       describe-welding-procedure-staging [understand · mechanism]. No
+       component earmarked (course.json sourceNote): pss-topic-welding-
+       procedure-stages (Power & Severe Service Sourcebook ch13, "Installation
+       — Welding Procedures," printed pp. 13-3–13-4) is confirmed prose-only,
+       no figure in the source. Same figure-less mechanism adaptation this
+       course's own cve1-164 already established: .tpl-content overridden to
+       a single column so the list runs full width, composed as a three-stage
+       sequence (preheat -> interpass -> PWHT) rather than a schematic. The
+       300-500°F preheat/interpass band and the up-to-1400°F PWHT figure are
+       transcribed exactly from the source, not rounded further. -->
+  <article class="slide slide--role-mechanism" data-slide="168" data-deck="cve1">
+    <h1 class="slide-title">Three Stages, Three Trim Risks</h1>
+    <div class="tpl-content" style="grid-template-columns:1fr">
+      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:78cqw;margin:0 auto">
+        <li><span class="num">1</span><b>Preheat</b> &mdash; required by piping code before the weld starts, applied with heating pads or a torch; reaches roughly 300&ndash;500&deg;F depending on material and joint thickness. Not damaging to most metal parts, but elastomeric and plastic parts (O-rings, seal rings, backup rings, packing rings, gaskets) can have lower limits. Little risk in the packing box area itself &mdash; the bonnet and body dissipate heat &mdash; but the body interior runs closer to the full preheat value.</li>
+        <li><span class="num">2</span><b>Welding &mdash; interpass temperature</b> &mdash; the temperature the first weld puddle has cooled to by the time the pass comes back around to it; must stay below a material-dependent maximum, typically the same 300&ndash;500&deg;F band for chrome-moly and stainless steels, so the same elastomeric/plastic caution applies.</li>
+        <li><span class="num">3</span><b>Post-weld heat treating (PWHT)</b> &mdash; the most severe stage: welding chrome-moly steel creates residual stresses that can crack the weld unless relieved by holding the area at up to roughly 1400&deg;F for several hours. That heat conducts back into the valve body and can damage elastomeric/plastic parts, warp metal parts, or loosen shrink-fit and threaded connections.</li>
+      </ul>
+      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Power &amp; Severe Service Sourcebook, Ch. 13, &ldquo;Installation &mdash; Welding Procedures,&rdquo; printed pp. 13-3&ndash;13-4 &mdash; the preheat/interpass 300&ndash;500&deg;F range and the up-to-1400&deg;F PWHT figure transcribed exactly from the source. Component Index: pss-topic-welding-procedure-stages.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">168</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

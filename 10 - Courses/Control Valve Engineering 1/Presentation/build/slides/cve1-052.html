@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 052 &mdash; Verify the Rated Pressure Class</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch3-m4, page 52 — eng.selection.valve-body-and-type-taxonomy.
+       verify-end-connection-and-pressure-class [apply · procedure].
+       Components: cvh-cmp-pressure-seal-detail (Fig. 10.8, p.214),
+       cvh-cmp-cast-iron-gate-valve-dimensions (Fig. 10.40, p.225),
+       cvh-cmp-steel-gate-valve-class150-dimensions (Fig. 10.42, p.227) —
+       all freshly copied this session. Composed as one multi-image SVG per
+       Style Guide Sec 5.14 (a real four-step verification procedure needs
+       the mechanism detail plus both dimension tables together, not one
+       flattened raster), each image independently lightbox-navigable with
+       its own data-lightbox-caption (Sec 5.13) so the dense ANSI tables can
+       be read at full size on click. Scaled to a common height and placed
+       left-to-right; the two tall dimension tables read narrow inline at
+       this shared height by construction (their aspect ratio is fixed, not
+       a sizing choice made here) — the lightbox is exactly how a reader
+       gets the full-size, legible table. has-wide-fig: three images side
+       by side read too small in the standard 34cqw side column. Steps
+       condense this concept's own t (the full four-step text lives in the
+       context pane) into short imperative headers per Style Guide Sec 8.3,
+       step 4 bolded as the slide's own teaching point (this is where the
+       class is actually confirmed, not assumed from a worn nameplate) —
+       same convention cve1-044 established. procedure-image chosen over
+       procedure-callout per course.json's own templateRationale: no
+       coordinate-verified marker positions exist for these figures. IPT
+       credit-forward per the ch10 index's 2026-09-18 decision. -->
+  <article class="slide slide--role-procedure-image has-wide-fig" data-slide="52" data-deck="cve1">
+    <h1 class="slide-title">Verify the Rated Pressure Class</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig">
+        <svg viewBox="0 0 964.6 320" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Pressure-seal construction detail, an ANSI dimension table for cast-iron gate valves, and an ANSI dimension table for steel gate valves Class 150.">
+          <image href="../assets/sourced/cvh10-fig10-8-pressure-seal-detail.png" x="0" y="0" width="460" height="320" data-lightbox-caption="Fig. 10.8, Pressure Seal. Component Index: cvh-cmp-pressure-seal-detail."></image>
+          <image href="../assets/sourced/cvh10-fig10-40-cast-iron-gate-valve-dimensions.png" x="485" y="0" width="225.9" height="320" data-lightbox-caption="Fig. 10.40, Cast Iron Gate Valves (dimension table). Component Index: cvh-cmp-cast-iron-gate-valve-dimensions."></image>
+          <image href="../assets/sourced/cvh10-fig10-42-steel-gate-valve-class150-dimensions.png" x="736" y="0" width="228.6" height="320" data-lightbox-caption="Fig. 10.42, Steel Gate Valve Class 150 (dimension table). Component Index: cvh-cmp-steel-gate-valve-class150-dimensions."></image>
+        </svg>
+      </div>
+      <ol class="tpl-steps">
+        <li>Identify the bonnet construction &mdash; pressure-seal already floors the class at 900; a bolted bonnet leaves it open anywhere from 150 to 1500.</li>
+        <li>Confirm the body material &mdash; cast iron (tops out at Class 800) or steel (covers 150 through 2500) &mdash; each has its own dimension-table family.</li>
+        <li>Read the nominal pipe size and measure the actual face-to-face dimension on the part.</li>
+        <li><b>Match the measured face-to-face value against the ANSI table for the confirmed material</b> &mdash; the class whose table value matches is the verified rated class, not whatever a worn or missing nameplate shows.</li>
+      </ol>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Figs. 10.8, 10.40 &amp; 10.42 &mdash; content in this chapter is credited to IPT's Pipe Trades Handbook (Robert A. Lee), reprinted at CVH Ch. 10; used directly. Component Index: cvh-cmp-pressure-seal-detail, cvh-cmp-cast-iron-gate-valve-dimensions, cvh-cmp-steel-gate-valve-class150-dimensions.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">52</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

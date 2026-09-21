@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 127 &mdash; Stepping the LDAR Measurement Frequency</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch7-m2, page 127 — eng.packing.selection-and-fugitive-emissions.
+       select-packing-for-emissions-target [understand · mechanism].
+       Component: cvh-cmp-voc-ldar-measurement-frequency (CVH Fig. 3.25,
+       printed p. 69) — the sole figure for this concept, used directly
+       per Style Guide Sec 5.8's default (no stated redraw reason applies).
+       The Subject-Matter Index's only asset on file for this id was the
+       shared ch3-fig25-26-emissions-composite.png (Fig. 3.25's VOC-LDAR
+       flowchart plus Fig. 3.26's ISO 15848-1 table side by side, delivery
+       note: "not yet cropped/extracted from source") — the SAME composite
+       file cve1-070.html's own SOURCES.txt entry already cropped once
+       this course, there isolating Fig. 3.26 instead. Cropped this
+       session (System.Drawing, 2087x590 -> 1360x590) to isolate Fig. 3.25
+       alone; verified by direct inspection that no part of the Fig. 3.26
+       table bleeds into the crop. has-wide-fig: the flowchart is landscape
+       (1360x590, ~2.3:1) and would render illegibly small in the standard
+       36cqw mechanism column. The diagram carries its own printed box
+       labels and branch percentages (Style Guide Sec 6.3) — no numbered
+       markers added to the image; the .tpl-list instead states the
+       step-down/step-up logic in teaching order, matching cve1-121.html's
+       own precedent for a .num list used as an ordering aid rather than a
+       marker-to-image correspondence. List item 4 (the Quality
+       Improvement Plan branch) reads the diagram directly rather than the
+       primitive's own t verbatim: t states "a facility that fails to hold
+       a threshold on re-monitoring feeds into a Quality Improvement Plan
+       rather than simply reverting a level," but the source diagram shows
+       QIP reachable only from Monthly LDAR (the floor, with nowhere lower
+       to revert) — every other level's exceed-threshold arrow reverts
+       one level up (Annual->Semi-Annual, Semi-Annual->Quarterly,
+       Quarterly->Monthly). Reconciled by scoping t's "rather than simply
+       reverting" framing to the one case the diagram actually shows it
+       applying to; flagged under Low confidence in this run's report. -->
+  <article class="slide slide--role-mechanism has-wide-fig" data-slide="127" data-deck="cve1">
+    <h1 class="slide-title">Stepping the LDAR Measurement Frequency</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh3-fig3-25-voc-ldar-measurement-frequency.png" style="width:100%;height:100%;object-fit:contain" alt="LDAR measurement-frequency flowchart: Monthly LDAR steps to Quarterly, Semi-Annual, then Annual LDAR as the percentage of valves found leaking above the 500 ppm threshold falls below 2%, 1%, and 0.5% in turn; each level reverts up one step on exceeding its threshold on re-monitoring, and a Monthly-level facility that still exceeds 2% enters a Quality Improvement Plan.">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Every valve in regulated service starts on Monthly LDAR monitoring</li>
+        <li><span class="num">2</span>Below 2% of valves leaking above 500 ppmv steps Monthly &rarr; Quarterly; below 1% steps Quarterly &rarr; Semi-Annual; below 0.5% steps Semi-Annual &rarr; Annual</li>
+        <li><span class="num">3</span>Exceeding the threshold on re-monitoring reverts one level up &mdash; Annual &rarr; Semi-Annual, Semi-Annual &rarr; Quarterly, Quarterly &rarr; Monthly</li>
+        <li><span class="num">4</span>A facility still above 2% while already at Monthly &mdash; the floor, with nowhere lower to revert &mdash; enters a Quality Improvement Plan instead</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 3.25 (printed p. 69) &mdash; cropped this session from the shared Fig. 3.25/3.26 composite scan to isolate the flowchart alone; own printed labels retained. Component Index: cvh-cmp-voc-ldar-measurement-frequency.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">127</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

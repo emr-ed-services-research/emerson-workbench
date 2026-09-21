@@ -34,7 +34,7 @@ page, no trailing blank). PDF page 193 confirmed as the Chapter 16 divider
 ("Wet-End Chemistry"). Zero page offset throughout (PDF page = printed page
 number + 170). Chapter 15 = PDF pp. 185-192.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/Control
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control
 Valve Sourcebook - Pulp & Paper.pdf`. This pass catalogs existence and location
 only — it does not crop or extract images. Record shape: `id` · `kind` ·
 `teaches` · `concept-tags` · `status` · `source` (`doc` + `locator`) ·

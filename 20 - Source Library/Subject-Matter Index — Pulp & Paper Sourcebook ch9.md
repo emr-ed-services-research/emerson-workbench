@@ -27,7 +27,7 @@ trailing blank). PDF page 119 = Chapter 10A divider ("Digesters"). Zero page
 offset throughout (PDF page = printed page number + 106). Chapter 9 = PDF
 pp. 115-118.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/Control
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control
 Valve Sourcebook - Pulp & Paper.pdf`. This pass catalogs existence and location
 only — it does not crop or extract images. Record shape: `id` · `kind` ·
 `teaches` · `concept-tags` · `status` · `source` (`doc` + `locator`) ·

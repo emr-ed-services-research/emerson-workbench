@@ -101,6 +101,8 @@ source:
     locator: >
       §3.1.1.1 Single-Port Valve Bodies, Figure 3.1 (printed p. 55) —
       "Flanged Angle-Style Control Valve Body."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig1-flanged-angle-body.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-020.html}]
 notes: >
@@ -122,6 +124,8 @@ source:
     locator: >
       §3.1.1.1 Single-Port Valve Bodies, Figure 3.2 (printed p. 56) — "Bar
       Stock Valve Body."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig2-bar-stock-body.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-020.html}]
 notes: >
@@ -144,6 +148,8 @@ source:
     locator: >
       §3.1.1.2 Post- and Port-Guided Valve Bodies, Figure 3.3 (printed p. 56)
       — "Single-Ported Globe-Style Valve Body."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig3-single-ported-globe-body.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-019.html}]
 notes: >
@@ -167,6 +173,8 @@ source:
     locator: >
       §3.1.1.3 Cage-Style Valve Bodies, Figure 3.4 (printed p. 57) — "Valve
       Body with Cage-Style Trim, Balanced Valve Plug, and Soft Seat."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig4-cage-style-balanced-plug.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-019.html}]
 notes: >
@@ -196,6 +204,8 @@ source:
     locator: >
       §3.1.1.4 Double-Ported Valve Bodies, Figure 3.5 (printed p. 57) —
       "Reverse-Acting Double-Ported Globe-Style Valve Body."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig5-double-ported-reverse-acting.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-019.html}]
 notes: >
@@ -222,6 +232,8 @@ source:
     locator: >
       §3.1.1.5 Three-Way Valve Bodies, Figure 3.6 (printed p. 58) —
       "Three-Way Globe Valve."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig6-three-way-globe-valve.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-020.html}]
 notes: >
@@ -261,6 +273,8 @@ source:
     locator: >
       §3.1.3.1 Butterfly Valve Bodies, Figure 3.7 (printed p. 59) — "Shaft
       Center Line Offset with Disc Center."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig7-butterfly-shaft-offset.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-021.html}]
 notes: A schematic geometry diagram, not a body cutaway or photo.
@@ -284,7 +298,9 @@ source:
     locator: >
       §3.1.3.2 Segmented Ball Valve Bodies, Figure 3.8 (printed p. 59) —
       "Segmented V-Notch Ball."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig8-segmented-v-notch-ball.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
   Shows the ball/segment component itself, not a full body cutaway; pairs
@@ -308,6 +324,8 @@ source:
     locator: >
       §3.1.3.1 Butterfly Valve Bodies, Figure 3.9 (printed p. 60) —
       "Butterfly Control Valve."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig9-butterfly-control-valve.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-021.html}]
 notes: Full-body photo/cutaway, the chapter's introductory butterfly-valve image.
@@ -326,6 +344,8 @@ source:
     locator: >
       §3.1.3.2 Segmented Ball Valve Bodies, Figure 3.10 (printed p. 60) —
       "Ball Valve Options."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig10-ball-valve-options.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-023.html}]
 notes: Companion figure to `cvh-cmp-segmented-v-notch-ball` (Figure 3.8), same section.
@@ -349,6 +369,8 @@ source:
     locator: >
       §3.1.3.3 High-Performance Butterfly Valve Bodies, Figure 3.11 (printed
       p. 61) — "High-Performance Butterfly Control Valve."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig11-high-performance-butterfly.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-021.html}]
 notes: Full-body photo, alone at the top of its section.
@@ -366,6 +388,8 @@ source:
     locator: >
       §3.1.3.4 Eccentric Plug Valve Bodies, Figure 3.12 (printed p. 61) —
       "Pressure Assisted Seal Configuration."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig12-pressure-assisted-seal.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-023.html}]
 notes: A component-level seal detail, not a full valve cutaway.
@@ -391,6 +415,8 @@ source:
     locator: >
       §3.1.3.4 Eccentric Plug Valve Bodies, Figure 3.13 (printed p. 62) —
       "Eccentric Plug Control Valve Body."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig13-eccentric-plug-body.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-022.html}]
 notes: >
@@ -415,7 +441,9 @@ source:
     locator: >
       §3.1.3.5 Full-Port Ball Valve Bodies, Figure 3.14 (printed p. 62) —
       "Full-Port Ball Control Valve."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig14-full-port-ball-control-valve.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
   Distinguish from `cvh-cmp-full-port-ball-valve-trunnion` (Figure 3.15) —
@@ -439,6 +467,8 @@ source:
     locator: >
       §3.1.3.5 Full-Port Ball Valve Bodies, Figure 3.15 (printed p. 62) —
       "Full-Port Ball Valve."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig15-full-port-ball-trunnion.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-022.html}]
 notes: >
@@ -462,6 +492,8 @@ source:
     locator: >
       §3.1.3.6 Multi-Port Flow Selector, Figure 3.16 (printed p. 63) —
       "Multi-Port Flow Selector Valve."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig16-multi-port-flow-selector.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-023.html}]
 notes: The last figure of §3.1; §3.2 End Connections begins immediately after on the same printed page.
@@ -573,6 +605,8 @@ source:
     locator: >
       §3.2.2 Bolted Gasketed Flanges, Figure 3.17 (printed p. 64) — "Popular
       Varieties of Bolted Flange Connections."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig17-bolted-flange-connections.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-024.html}]
 notes: >
@@ -600,6 +634,8 @@ source:
     locator: >
       §3.2.3 Welded End Connections, Figure 3.18 (printed p. 65) — "Common
       Welded End Connections."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig18-welded-end-connections.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-024.html}]
 notes: >
@@ -660,6 +696,8 @@ source:
     locator: >
       §3.3 Valve Body Bonnets, Figure 3.19 (printed p. 65) — "Typical
       Bonnet, Flange, and Stud Bolts."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig19-typical-bonnet-stud-bolts.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-026.html}]
 notes: >
@@ -681,6 +719,8 @@ source:
     locator: >
       §3.3.1 Extension Bonnets, Figure 3.20 (printed p. 66) — "Bonnet
       Variations."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig20-bonnet-variations.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-026.html}]
 notes: >
@@ -712,6 +752,8 @@ source:
     locator: >
       §3.3.1 Extension Bonnets, Figure 3.21 (printed p. 66) — "Valve Body
       with Fabricated Extension Bonnet."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig21-fabricated-extension-bonnet.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-026.html}]
 notes: >
@@ -736,6 +778,8 @@ source:
     locator: >
       §3.3.2 Bellows Seal Bonnets, Figure 3.22 (printed p. 67) —
       "ENVIRO-SEAL Bellows Seal Bonnet."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig22-enviroseal-bellows-seal-bonnet.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-027.html}]
 notes: >
@@ -759,6 +803,8 @@ source:
     locator: >
       §3.3.2 Bellows Seal Bonnets, Figure 3.23 (printed p. 67) —
       "Welded-Leaf Bellows."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig23-welded-leaf-bellows.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-027.html}]
 notes: >
@@ -779,6 +825,8 @@ source:
     locator: >
       §3.3.2 Bellows Seal Bonnets, Figure 3.24 (printed p. 67) —
       "Mechanically-Formed Bellows."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig24-mechanically-formed-bellows.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-027.html}]
 notes: >
@@ -846,6 +894,8 @@ source:
     locator: >
       §3.4 Control Valve Packing, Figure 3.24 (printed p. 68) — "Packing
       Material Arrangements for Globe-Style Valve Bodies."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig24-packing-material-arrangements.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-028.html}]
 notes: >
@@ -874,6 +924,8 @@ source:
       §3.4.3 U.S. Regulatory Requirements for Fugitive Emissions, Figure 3.25
       (printed p. 69) — "Measurement Frequency for Valves Controlling
       Volatile Organic Chemicals (VOC)."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig25-26-emissions-composite.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-031.html}]
 notes: >
@@ -886,17 +938,18 @@ id: cvh-cmp-iso15848-1-qualification-requirements
 teaches: >
   ISO 15848-1 qualification requirements table-as-figure: mechanical cycle
   classes for control valves (CC1/CC2/CC3: 20,000/60,000/100,000 cycles) and
-  isolation valves (CO1/CO2/CO3: 205/1,500/2,500 cycles), each with
-  associated thermal cycle counts and tightness classes (AM/BM/CM),
-  cross-referenced to measured leak concentration thresholds (<50/<100/<500
-  ppm per EPA Method 21 sniffing).
-concept-tags: [fugitive emissions, ISO 15848-1, mechanical cycle class, tightness class, control valve vs isolation valve]
+  isolation valves (CO1/CO2/CO3: 205/1,500/2,500 cycles), each with its
+  associated thermal (temp.) cycle count. Four columns only: Valve Type,
+  Mechanical Cycle Class, Mechanical Cycles Required, Temp. Cycles.
+concept-tags: [fugitive emissions, ISO 15848-1, mechanical cycle class, control valve vs isolation valve]
 status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: >
       §3.4.4 Global Standards for Fugitive Emissions, Figure 3.26 (printed p.
       70) — "ISO 15848-1 Qualification Requirements."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig25-26-emissions-composite.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-031.html}]
 notes: >
@@ -908,6 +961,16 @@ notes: >
   (Figure 3.27) and `cvh-cmp-iso15848-1-measured-leak-concentration` (Figure
   3.28).
   Crop corrected 2026-09-14: the original crop included the printed caption line. Re-cropped to the complete table alone (right edge, previously suspected truncated, is in fact complete in the source — confirmed against the rendered page).
+  Teaches field corrected 2026-09-20: the previous description claimed this
+  figure's table included a tightness-class column (AM/BM/CM) cross-referenced
+  to measured leak concentration thresholds (<50/<100/<500 ppm). Verified
+  independently against the rendered source page (p. 70, 300dpi): that column
+  belongs to the adjacent `cvh-cmp-iso15848-1-measured-leak-concentration`
+  (Figure 3.28) table, printed beside Figure 3.26 on the same page — the two
+  tables' rows align visually, which is what produced the original
+  cross-referenced misreading. Figure 3.26 itself is a 4-column table (Valve
+  Type, Mechanical Cycle Class, Mechanical Cycles Required, Temp. Cycles)
+  with no tightness-class or leak-concentration data of its own.
 ```
 
 ```yaml
@@ -925,7 +988,9 @@ source:
     locator: >
       §3.4.4 Global Standards for Fugitive Emissions, Figure 3.27 (printed p.
       70) — "ISO 15848-1 Measured Leak Rate."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig27-iso15848-1-measured-leak-rate.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Companion data table to `cvh-cmp-iso15848-1-measured-leak-concentration` (Figure 3.28), same source page.
 ```
@@ -943,7 +1008,9 @@ source:
     locator: >
       §3.4.4 Global Standards for Fugitive Emissions, Figure 3.28 (printed p.
       70) — "ISO 15848-1 Measured Leak Concentration."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig28-iso15848-1-measured-leak-concentration.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Companion data table to `cvh-cmp-iso15848-1-measured-leak-rate` (Figure 3.27).
 ```
@@ -984,9 +1051,32 @@ source:
     locator: >
       §3.4.5 Single PTFE V-Ring Packing, Figure 3.30 (printed p. 71) —
       "Single PTFE V-Ring Packing."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig30-single-ptfe-vring-packing.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-028.html}]
-notes: The first of the individual packing-system cutaway figures (3.30–3.34) that follow the ISO/FCI tables.
+notes: >
+  The first of the individual packing-system cutaway figures (3.30–3.34) that
+  follow the ISO/FCI tables.
+  Crop corrected 2026-09-20: this entry's crop and `cvh-cmp-enviroseal-ptfe-packing-system`'s
+  (Figure 3.31) were flagged as producing pixel-identical extracted images
+  despite cataloguing two different packing designs. Verified independently
+  against the rendered source pages (pp. 71–72, 300dpi): the original crop
+  here was cut too tight, capturing only the cutaway diagram and omitting the
+  companion parts photo (loose coil spring, PTFE rings, washer) that is part
+  of the real printed Figure 3.30 — which is why it read as identical to
+  Figure 3.31's crop. Re-cropped from p. 71 to the complete figure (cutaway +
+  parts photo + caption), matching this entry's real printed extent.
+  Separately, and NOT a re-crop bug: the cutaway diagram itself (the
+  "envptfe"-tagged line art, including its "Belleville Spring Pack Assembly"
+  callout) is genuinely reused by the source book for both Figure 3.30 and
+  Figure 3.31 — confirmed on the rendered pages, same line art, same internal
+  tag. This is a real duplication in the source, not an extraction error, and
+  it sits oddly against this figure's own §3.4.5 body text, which describes
+  the Single PTFE V-Ring packing as using a coil spring rather than a
+  Belleville spring pack — that mismatch is the source's, not this index's.
+  See `cvh-cmp-enviroseal-ptfe-packing-system`'s notes for the companion
+  half of this record.
 ```
 
 ```yaml
@@ -1004,12 +1094,25 @@ source:
     locator: >
       §3.4.6 ENVIRO-SEAL PTFE Packing, Figure 3.31 (printed p. 72) —
       "ENVIRO-SEAL PTFE Packing System."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig31-enviroseal-ptfe-packing-system.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-029.html}]
 notes: >
   Printed on the same page as `cvh-cmp-enviroseal-duplex-packing-system`
   (Figure 3.32) and `cvh-cmp-enviroseal-graphite-ulf-packing-system` (Figure
   3.33) — the three ENVIRO-SEAL system diagrams are grouped together.
+  Investigated 2026-09-20 alongside `cvh-cmp-single-ptfe-vring-packing`
+  (Figure 3.30) after the two entries' crops were flagged as pixel-identical.
+  This crop was already correct and complete and was not changed. The
+  cutaway diagram half of it genuinely is identical source line art to
+  Figure 3.30's diagram (confirmed against the rendered source pages) — the
+  book reuses the same "envptfe"-tagged cutaway for both figures — but the
+  two figures' companion photos differ (this one an assembled cartridge
+  photo; Figure 3.30's a loose coil-spring/rings photo), and Figure 3.30's
+  crop was missing its photo entirely, which is what produced the false
+  "identical" read. See `cvh-cmp-single-ptfe-vring-packing`'s notes for the
+  fix applied there.
 ```
 
 ```yaml
@@ -1028,7 +1131,9 @@ source:
     locator: >
       §3.4.7 ENVIRO-SEAL Duplex Packing, Figure 3.32 (printed p. 72) —
       "ENVIRO-SEAL Duplex (PTFE and Graphite) Packing System."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig32-enviroseal-duplex-packing-system.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
   Fully labelled cutaway with its own printed field callouts — Style Guide
@@ -1053,7 +1158,9 @@ source:
     locator: >
       §3.4.9 ENVIRO-SEAL Graphite ULF, Figure 3.33 (printed p. 72) —
       "ENVIRO-SEAL Graphite ULF Packing System."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig33-enviroseal-graphite-ulf-packing-system.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
   Fully labelled cutaway with its own printed field callouts — §6.3 applies
@@ -1075,7 +1182,9 @@ source:
     locator: >
       §3.4.12 ENVIRO-SEAL Graphite for Rotary Valves, Figure 3.34 (printed p.
       73) — "ENVIRO-SEAL Graphite Packing System for Rotary Valves."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig34-enviroseal-graphite-packing-rotary.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: The only rotary-specific packing-system cutaway among Figures 3.30–3.34; the rest are sliding-stem.
 ```
@@ -1119,9 +1228,19 @@ source:
     locator: >
       §3.4.15 Rotary Environmental Packing Selection, Figure 3.36 (printed p.
       74) — "Rotary Environmental Packing Selection."
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig36-rotary-environmental-packing-selection.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-038.html}]
-notes: Direct rotary-valve counterpart to `cvh-cmp-sliding-stem-environmental-packing-selection` (Figure 3.35); the last figure of §3.4.
+notes: >
+  Direct rotary-valve counterpart to
+  `cvh-cmp-sliding-stem-environmental-packing-selection` (Figure 3.35); the
+  last figure of §3.4. Cross-reference, 2026-09-19: an earlier reconciliation
+  pass flagged this as a real gap because CVB's own slide (cvb-038.html) uses
+  an HTML table instead of this image, with no crop file anywhere yet. On
+  direct inspection the source page (p. 74) has a perfectly clean, legible
+  table — this was a plain not-yet-cropped case, not a genuine missing-source
+  gap; no Vitruvius search was needed or used.
 ```
 
 ```yaml
@@ -1191,6 +1310,8 @@ source:
     locator: >
       §3.5 Characterization of Cage-Guided Valve Bodies, Figure 3.37 (printed
       p. 74) — "Characterized Cages for Globe-Style Valve Bodies."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig37-characterized-cages-globe.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-033.html}]
 notes: >
@@ -1213,6 +1334,8 @@ source:
     locator: >
       §3.5 Characterization of Cage-Guided Valve Bodies, Figure 3.38 (printed
       p. 75) — "Inherent Flow Characteristics Curves."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig38-inherent-flow-characteristic-curves.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-033.html}]
 notes: >
@@ -1238,6 +1361,8 @@ source:
     locator: >
       §3.5.1 Characterized Valve Plugs, Figure 3.39 (printed p. 75) —
       "Various Plug Contour for Different Flow Characterization."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig39-plug-contour-flow-characterization.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-034.html}]
 notes: >
@@ -1258,6 +1383,8 @@ source:
     locator: >
       §3.5.1 Characterized Valve Plugs, Figure 3.40 (printed p. 76) —
       "Typical Construction to Provide Quick-Opening Flow Characteristic."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig40-quick-opening-construction.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-034.html}]
 notes: >
@@ -1282,6 +1409,8 @@ source:
     locator: >
       §3.6 Valve Plug Guiding, Figure 3.41 (printed p. 76) — "Cross
       Sectional View of Cage Guiding and Plug Guiding in Globe Valves."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig41-cage-guiding-plug-guiding-cross-section.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-035.html}]
 notes: >
@@ -1304,6 +1433,8 @@ source:
     locator: >
       §3.7 Restricted-Capacity Control Valve Trim, Figure 3.42 (printed p.
       77) — "Adapter Method for Providing Reduced Flow Capacity."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig42-adapter-reduced-flow-capacity.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-035.html}]
 notes: The last figure before §3.8 Actuators begins, on the same printed page.
@@ -1412,6 +1543,8 @@ source:
     locator: >
       §3.8.1 Diaphragm Actuators, Figure 3.44 (printed p. 78) —
       "Field-Reversible Multi-Spring Actuator."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig44-field-reversible-multi-spring-actuator.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-036.html}]
 notes: >
@@ -1438,6 +1571,8 @@ source:
     locator: >
       §3.8.1 Diaphragm Actuators, Figure 3.45 (printed p. 78) — "Diaphragm
       Actuator for Rotary Valve."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig45-diaphragm-actuator-rotary-valve.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-036.html}]
 notes: >
@@ -1461,6 +1596,8 @@ source:
     locator: >
       §3.8.2 Piston Actuators, Figure 3.46 (printed p. 78) — "Control Valve
       with Double-Acting Piston Actuator."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig46-double-acting-piston-actuator.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-037.html}]
 notes: >
@@ -1487,6 +1624,8 @@ source:
     locator: >
       §3.8.2 Piston Actuators, Figure 3.47 (printed p. 79) — "Control Valve
       with Scotch-Yoke Piston Actuator."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig47-scotch-yoke-piston-actuator.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-037.html}]
 notes: >
@@ -1515,6 +1654,8 @@ source:
     locator: >
       §3.8.3 Manual Actuators, Figure 3.48 (printed p. 79) — "Manual
       Actuator for Sliding-Stem Valves."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig48-manual-actuator-sliding-stem.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-038.html}]
 notes: >
@@ -1536,6 +1677,8 @@ source:
     locator: >
       §3.8.3 Manual Actuators, Figure 3.49 (printed p. 79) — "Manual
       Actuator for Rotary Valves."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig49-manual-actuator-rotary.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-038.html}]
 notes: >
@@ -1557,6 +1700,8 @@ source:
     locator: >
       §3.8.4 Rack-and-Pinion Actuators, Figure 3.50 (printed p. 79) —
       "Rack-and-Pinion Actuator."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig50-rack-and-pinion-actuator.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-038.html}]
 notes: >
@@ -1586,6 +1731,8 @@ source:
     locator: >
       §3.8.5 Electric Actuators, Figure 3.51 (printed p. 80) — "Electric
       Actuator for Sliding-Stem Valve."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig51-electric-actuator-sliding-stem.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-038.html}]
 notes: >
@@ -1605,6 +1752,8 @@ source:
     locator: >
       §3.8.5 Electric Actuators, Figure 3.52 (printed p. 80) — "Electric
       Actuator for Rotary Valve."
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch3-fig52-electric-actuator-rotary.png
+    locator: ""
 delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
 used-by: [{course: CVB, slide: cvb-038.html}]
 notes: >

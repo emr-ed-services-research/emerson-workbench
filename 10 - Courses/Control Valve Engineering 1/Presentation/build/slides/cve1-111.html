@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 111 &mdash; Full-Stroke Speed vs. Small-Signal Response</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m3, page 111 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.select-extreme-service-actuator-variant [analyze ·
+       contrast]. No figure registered for this competency's speed-myth
+       concept (course.json sourceNote) — grounded in
+       pss-topic-piston-diaphragm-speed-myth (Power & Severe Service
+       Sourcebook, "Valve Response Time," p.14-6), the only Subject-Matter
+       Index entry stating this specific reversal, confirmed absent from
+       CVH's own response-time/deadband topics per that entry's own
+       cross-check note. PER FRANZ'S EXPLICIT EDITORIAL CONSTRAINT for this
+       slide: stays text/swatch-only rather than an originated comparison
+       graphic — two labelled conditions (100% full stroke vs. 0.25-2%
+       small signal), each panel naming which design wins and why, no
+       diagram drawn. Each panel's middle subgrid row (where an image
+       normally sits) carries a short bold verdict statement instead. -->
+  <article class="slide slide--role-contrast" data-slide="111" data-deck="cve1">
+    <h1 class="slide-title">Full-Stroke Speed vs. Small-Signal Response</h1>
+    <div class="tpl-content">
+      <div class="tpl-panel" data-side="left">
+        <div class="panel-label">Full-Stroke (100%)</div>
+        <p style="margin:0;text-align:center;font-weight:700;font-size:1.8cqw;color:var(--emerson-blue);align-self:center">Piston wins</p>
+        <div class="panel-caption">A complete step-change stroke test rewards raw thrust &mdash; higher supply pressure drives a piston actuator through a full stroke fastest.</div>
+      </div>
+      <div class="tpl-divider"></div>
+      <div class="tpl-panel" data-side="right">
+        <div class="panel-label">Small Signal (0.25&ndash;2%)</div>
+        <p style="margin:0;text-align:center;font-weight:700;font-size:1.8cqw;color:var(--emerson-blue);align-self:center">Spring-and-diaphragm wins</p>
+        <div class="panel-caption">Real regulatory control makes small, continuous corrections, not full strokes. At that scale, documented industry research shows the result reverses: piston's extra friction (O-ring seals, more guide surfaces, alignment sensitivity, lubrication that degrades over time) specifically degrades small-signal responsiveness, even though it barely shows up on a full-stroke thrust test.</div>
+      </div>
+      <p class="tpl-source">Grounded in Power &amp; Severe Service Sourcebook, "Valve Response Time" (p.14-6) &mdash; the only Subject-Matter Index entry stating this reversal; no figure exists for either condition, text-only per editorial constraint. Component Index: pss-topic-piston-diaphragm-speed-myth.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">111</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

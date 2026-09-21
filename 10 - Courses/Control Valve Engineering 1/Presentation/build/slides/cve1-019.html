@@ -3,30 +3,47 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 019 &mdash; The Real Total at Class V's Scale</title>
+<title>CVE1 &middot; Slide 019 &mdash; Process Variability &mdash; the Cost of Spread</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m3, page 19 — eng.sizing.actuator-force-awareness
-       [evaluate · mechanism, applies]. Reads the real graph/table directly
-       and states the specific quantified gap at Class V's scale. -->
+  <!-- cve1-ch2-m1, page 19 — eng.foundations.process-variability-and-loop-
+       performance.interpret-variability-and-economics [understand ·
+       mechanism]. This module has no separate prime slide (course.json:
+       the stakes line is the hook), so the module opens directly here.
+       Fig. 2.1 is the same component CVB's cvb-053.html already verified
+       and uses (cvh-cmp-process-variability-distributions) — reused
+       verbatim, no re-cropping, per Style Guide §5.8 default (use the
+       source figure directly). The concept's own templateRationale calls
+       for "a two-entry swatch key ... per Style Guide §5.3, not numbered
+       features" — checked against gallery.css and the swatch treatment
+       (.tpl-list .swatch) is scoped only to .slide--role-application, not
+       role-mechanism, so an unscoped swatch span would render with no
+       border/visible sample at all under this role. Used the proven
+       numbered-list convention instead (cvb-053's own precedent for this
+       identical figure), and flagged the template-scope gap in the report
+       rather than guessing at unproven CSS. List goes beyond CVB's
+       simpler two-line version to carry this module's fuller primitive
+       text (the 80%-of-loops finding and the valve-assembly-as-a-unit
+       point), since this module's analyze-level arc needs that economic
+       framing that CVB's understand-level treatment didn't. -->
   <article class="slide slide--role-mechanism" data-slide="19" data-deck="cve1">
-    <h1 class="slide-title">The Real Total at Class V's Scale</h1>
+    <h1 class="slide-title">Process Variability &mdash; the Cost of Spread</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig5-2-unbalance-area-table.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.2, Typical Unbalance Areas of Control Valves">
+          <img src="../assets/sourced/cvh2-fig2-1-process-variability-distributions.png" style="width:100%;height:100%;object-fit:contain" alt="Two stacked distribution curves against the same lower limit specification and set point. The upper curve is wide, with a large 2-sigma spread on either side of the set point. The lower curve is narrow, with a much smaller spread, at the identical set point.">
         </div>
       </div>
-      <ul class="tpl-list">
-        <li><span class="num">1</span>Port dia. 3-7/16 in &rarr; unbalance area 9.28 in&sup2;. At shutoff the valve holds the full 400 psi: A = 9.28 &times; 400 &asymp; 3,712 lbf</li>
-        <li><span class="num">2</span>Fig. 5.3 at Class V, 400 psi &asymp; 900 lbf/in &mdash; five to ten times a lower class's demand, not a modest step up. Circumference = &pi; &times; 3.4375 = 10.8 in, so B &asymp; 900 &times; 10.8 &asymp; 9,720 lbf</li>
-        <li><span class="num">3</span>C &asymp; 50 lbf, D &asymp; 20 lbf. Total required &asymp; 13,500 lbf &mdash; more than four times the 3,000 lbf actually rated. That rating was never checked against this number at all</li>
-      </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., &sect;5.11&ndash;5.11.1.2 and Figures 5.2/5.3, pp.123-124. Component Index: cvh-topic-valve-balance, cvh-topic-seat-load, cvh-cmp-unbalance-area-table, cvh-cmp-seat-load-graph.</p>
+      <ol class="tpl-list">
+        <li><span class="num">1</span>Upper curve &mdash; wide spread: a large 2&sigma; band forces the set point back from the quality limit as a safety margin, wasting product/energy on conservative operation</li>
+        <li><span class="num">2</span>Lower curve &mdash; narrow spread: tight control lets the same set point sit closer to the limit with no off-spec product</li>
+        <li><span class="num">3</span>Up to 80% of real control loops fail to adequately reduce this spread &mdash; the control valve assembly (valve, actuator, and positioner as one unit, not sized separately) is a frequent, overlooked cause</li>
+      </ol>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 2.1 &mdash; used directly. Component Index: cvh-cmp-process-variability-distributions.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">19</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

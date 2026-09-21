@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 122 &mdash; Selecting a Packing System</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch7-m1, page 122 — eng.packing.selection-and-fugitive-emissions.
+       select-packing-material-and-arrangement [evaluate · application].
+       Decision-table variant (Style Guide Sec 5.10/9.2,
+       .slide--role-application:has(.tmpl-table)), tp-009 precedent. Per
+       course.json's own templateRationale, no corroborating figure exists
+       for this synthesis — all seven registry figures for this competency
+       are already placed on slides 117-121 — so the table runs FULL WIDTH
+       with an inline style="grid-column:1 / -1" rather than force-fitting
+       an unrelated image into the variant's figure slot, matching this
+       course's own cve1-053.html precedent exactly (no figure-less
+       variant exists yet in gallery.css, so this is fixed at the slide
+       level). Column order departs from Sec 9.4's given-to-answer default:
+       the row key is the packing system (already named on slides 117-121),
+       with envelope/class/body-style as the given columns checked against
+       it — comparing five already-taught systems, not selecting one label
+       from stated criteria, per course.json's own explicit rationale.
+
+       2026-09-20 fix (Phase 1 remediation, unsupported-claim finding):
+       "Meets 100 ppmv" for ENVIRO-SEAL PTFE, Duplex, and Graphite ULF
+       corrected to "Qualifies for environmental service" &mdash; checked
+       against the Handbook's own text (Ch. 3, Sec 3.4.6/3.4.7/3.4.9): each
+       of those three sections calls its packing "suited to environmental
+       applications" / "designed primarily for environmental applications"
+       with no ppmv figure stated. The 100 ppmv EPA leakage number IS
+       stated in this same chapter, but for two DIFFERENT systems not on
+       this row set &mdash; Single PTFE V-Ring (Sec 3.4.5, sliding-stem,
+       general service) and ENVIRO-SEAL Graphite for rotary valves
+       (Sec 3.4.12, up to 1500 psi/316&deg;C) &mdash; which is why the
+       Graphite (rotary) row below keeps its own "Meets 100 ppmv to
+       316&deg;C" claim unchanged; that one is genuinely source-stated.
+       Duplex keeps its real, source-stated "fire-tested to API 589"
+       (Sec 3.4.7). -->
+  <article class="slide slide--role-application" data-slide="122" data-deck="cve1">
+    <h1 class="slide-title">Selecting a Packing System</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1">
+        <thead>
+          <tr><th>Packing system</th><th>Pressure / temperature envelope</th><th>Emissions class</th><th>Body style</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Single PTFE V-Ring</td><td>&le;300 psi (20.7 bar) / 93&deg;C (200&deg;F)</td><td>Fails the rotary low-emission criterion</td><td>Sliding-stem only</td></tr>
+          <tr><td>ENVIRO-SEAL PTFE</td><td>&le;750 psi (51.7 bar) / 232&deg;C (450&deg;F)</td><td>Qualifies for environmental service</td><td>Sliding-stem or rotary</td></tr>
+          <tr><td>ENVIRO-SEAL Duplex</td><td>&le;232&deg;C (450&deg;F)</td><td>Qualifies for environmental service; fire-tested to API 589</td><td>Sliding-stem only</td></tr>
+          <tr><td>ENVIRO-SEAL Graphite ULF</td><td>Above 232&deg;C (450&deg;F)</td><td>Qualifies for environmental service</td><td>Sliding-stem only</td></tr>
+          <tr><td>ENVIRO-SEAL Graphite (rotary)</td><td>&le;1500 psi (103 bar) to 316&deg;C (600&deg;F); to 371&deg;C (700&deg;F) non-environmental</td><td>Meets 100 ppmv to 316&deg;C</td><td>Rotary only</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-takeaway">Specifying on friction or cost before checking which cell the real service point falls into is exactly how a packing spec passes acceptance and fails a compliance audit a year later.</p>
+      <p class="tpl-source">No corroborating figure exists for this synthesis &mdash; all seven registry figures for this competency are already placed on slides 117-121. After Control Valve Handbook, 6th ed., &sect;3.4/&sect;5.18. Component Index: cvh-cmp-single-ptfe-vring-packing, cvh-cmp-enviroseal-ptfe-packing-system, cvh-cmp-enviroseal-duplex-packing-system, cvh-cmp-enviroseal-graphite-ulf-packing-system, cvh-cmp-enviroseal-graphite-packing-rotary.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">122</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

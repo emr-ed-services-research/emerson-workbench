@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 092 &mdash; Check Your Knowledge &mdash; Actuator Mechanism Types &amp; Selection</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m1, page 92 — module check slide (role: check). No component
+       earmarked, by design (Stage 2 never gives a check slide its own
+       keyConcept). Synthesized from the whole module arc (slides 81-91),
+       origination-mode Stage 3 — this module has no prior slide file to
+       fall back to. Stem forces a synthesis across BOTH competencies
+       (distinguish-actuator-mechanism-types AND select-actuator-type-and-
+       failsafe) and across specific slide content, not general knowledge:
+       correctly ruling out A requires slide 83's own point that a
+       double-acting piston needs an added accessory to fail safely; ruling
+       out C requires slide 90's own point that electric has no inherent
+       fail-safe (a backup battery does not change that); ruling out D
+       requires slide 86's own point that rack-and-pinion backlash confines
+       it to on/off duty, not continuous throttling; the correct answer
+       requires slide 82's rotary spring-and-diaphragm construction plus
+       slide 90's own "start with the simplest design" closing guidance.
+       Distractors are real, plausible mix-ups a technician or a hasty
+       selection makes, not obvious throwaways. Follows this course's own
+       cve1-080.html precedent exactly: data-correct="true" on the right
+       option, terse letter-plus-phrase reveal, not a restated sentence. -->
+  <article class="slide slide--role-check" data-slide="92" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Actuator Mechanism Types &amp; Selection</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A rotary valve throttles continuously in a service where losing instrument air must drive the valve to a known safe position. The required torque comfortably fits a single-acting design, and plant air is available. Which actuator type and fail-safe configuration is the right starting choice?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Double-acting piston actuator, no fail-safe accessory added &mdash; highest thrust and fastest stroking, so plan the rest of the loop around it</li>
+        <li data-correct="true">B.&nbsp;&nbsp;Single-acting (spring-return) spring-and-diaphragm actuator, rotary construction &mdash; inherently fail-safe and throttles without a positioner; start here unless torque or speed rules it out</li>
+        <li>C.&nbsp;&nbsp;Electric actuator with a backup battery for the fail-safe position &mdash; cheapest to install where plant air already exists</li>
+        <li>D.&nbsp;&nbsp;Rack-and-pinion actuator with a positioner added for continuous throttling &mdash; compact and economical for a rotary body</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; Single-acting spring-and-diaphragm (rotary)</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">92</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

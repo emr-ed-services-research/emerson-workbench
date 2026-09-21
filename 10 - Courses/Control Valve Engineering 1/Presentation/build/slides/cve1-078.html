@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 078 &mdash; Where Each Standard Stands Relative to B16.34</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m2, page 78 — eng.selection.shutoff-leakage-and-standards.
+       identify-code-jurisdiction. course.json's outer keyConcept role is
+       "contrast", KEPT UNCHANGED — but per this run's own instructions,
+       the concept map's note explains this slide should follow the
+       template it specifies, not the outer role label: the crosswalk
+       names seven distinct standards/standard-groups (B16.5, B16.10,
+       B16.37, MSS SP-66, MSS SP-67, MSS SP-53/54/55 grouped, MSS SP-61),
+       each carrying its own current/superseded/out-of-scope verdict — a
+       genuine multi-group comparison, not a two-sided contrast, so this
+       uses the same widened .slide--role-nomenclature + .tmpl-table
+       treatment as slides 74/75/77 (and this module's m1 sibling's slide
+       68), one row per standard/standard-group, current status as the
+       payoff column. Source: pss-topic-valve-standards-crosswalk (topics
+       only, figures: [] confirmed real); cvh-topic-seat-leakage-
+       classification is cross-referenced by the source topic itself (the
+       modern ANSI/FCI 70-2 replacement for MSS SP-67's leak classes) but
+       is not independently re-cited here since this module's m1 sibling
+       already teaches that classification directly (slide 68) —
+       restating it here would duplicate content across modules. MSS
+       SP-53/54/55 grouped into one row (they share one verdict and one
+       reason) keeps the table at 7 rows — near the comfortable
+       per-template capacity ceiling (Style Guide Sec 6.4's tp-003
+       reference point) but not over it; font-size reduced slightly
+       (1.3cqw vs. the usual 1.5cqw) to keep 7 rows of longer prose
+       legible without crowding the source line beneath. -->
+  <article class="slide slide--role-nomenclature" data-slide="78" data-deck="cve1">
+    <h1 class="slide-title">Where Each Standard Stands Relative to B16.34</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1; grid-row:1; align-self:center; font-size:1.3cqw;">
+        <thead>
+          <tr><th>Standard</th><th>What it covers</th><th>Status for control valves</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>ANSI B16.5 &mdash; flange / flanged-fitting design</td><td>Was itself a valve design standard before 1973 (butt-weld end) &amp; 1977 (flanged end)</td><td>Design responsibility transferred to B16.34; now mainly a dimensional/rating reference (&ldquo;mates with ANSI XXX flanges&rdquo;) &mdash; older specs may still cite it as the design basis</td></tr>
+          <tr><td>MSS SP-66 &mdash; valve design standard, pre-B16.34</td><td>&ldquo;Special inspections&rdquo; concept for raising pressure-temperature ratings</td><td>Generally superseded by B16.34 conformance; replaced by B16.34's own special-class ratings</td></tr>
+          <tr><td>MSS SP-67 &mdash; butterfly-valve design &amp; test performance, its own Type I/II/III leak classes</td><td>Butterfly-valve design &amp; test performance</td><td>Leak classes superseded in most control-valve usage by ANSI/FCI 70-2; source directs control valves to ISA S75.19 &amp; ANSI/FCI 70-2 instead (its own seat-leak test can't distinguish leak-rate across trim styles/sizes); still supplies face-to-face dimensions for certain butterfly valves</td></tr>
+          <tr><td>ANSI B16.10</td><td>Face-to-face dimensions (gate/plug/check/ball/control valves, named size &amp; class bounds)</td><td>Current &amp; unsuperseded</td></tr>
+          <tr><td>ANSI B16.37</td><td>Hydrostatic testing at 1.5&times; cold working pressure per B16.34</td><td>Current; Fisher adds a post-assembly aerostatic test beyond the bare code requirement</td></tr>
+          <tr><td>MSS SP-53/54/55 &mdash; magnetic-particle / radiographic / visual casting examination</td><td>Casting examination methods</td><td>Effectively superseded &mdash; B16.34 or ASTM E94-equivalent methods recommended instead for broader acceptance</td></tr>
+          <tr><td>MSS SP-61</td><td>Pressure testing of steel valves generally</td><td>Not superseded, but out of scope here &mdash; explicitly <b>not</b> intended for control valves; its seat-closure tests are written for shutoff/isolation/on-off/block valves</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-source">Originated crosswalk table &mdash; no figure in the registry depicts this standards positioning. After Fisher Power &amp; Severe Service Sourcebook's valve-standards-crosswalk topic &mdash; reference material, prose only. Component Index: pss-topic-valve-standards-crosswalk.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">78</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

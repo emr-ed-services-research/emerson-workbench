@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 192 &mdash; Two ValveLink Windows, Two Different Tests</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch2-m2, page 192 — eng.foundations.process-variability-and-loop-
+       performance.diagnose-degraded-valve-from-signature-data [analyze ·
+       application]. Component: cvh-cmp-valvelink-software-screens (Fig.
+       2.10, p. 51), reused verbatim from Control Valve Basics' own
+       already-verified crop (cvh2-fig2-10-valvelink-software-screens.png,
+       660x850, portrait — two stacked screenshots, each with its own
+       printed window-title label, "Total Scan" / "Valve Step Response").
+       Per Style Guide Sec 6.3, the screens' own titles already do the
+       naming job, so no numbered markers or .tpl-list were added — base
+       application shape (.tpl-chart + .tpl-takeaway + .tpl-source, no key),
+       matching CVB's own cvb-062.html structure for a single already-
+       labelled figure with no key (this course's concept differs from
+       CVB's role assignment for this same image — CVB tags it
+       nomenclature; this course tags it application, applying the
+       mechanism just shown in slide 191 to a concrete piece of software,
+       per the concept's own templateRationale). This competency is also
+       figures-only (topics: []) — the takeaway names only the two windows
+       and what each contains, per course.json's own sourceNote, without
+       asserting Total Scan is literally running slide 191's exact
+       comparison. -->
+  <article class="slide slide--role-application" data-slide="192" data-deck="cve1">
+    <h1 class="slide-title">Two ValveLink Windows, Two Different Tests</h1>
+    <div class="tpl-content">
+      <div class="tpl-chart">
+        <img src="../assets/sourced/cvh2-fig2-10-valvelink-software-screens.png" style="width:100%;height:100%;object-fit:contain" alt="Two stacked ValveLink software screenshots. Top, titled Total Scan, shows a recorded signature graph. Bottom, titled Valve Step Response, shows a step-test graph of travel versus time.">
+      </div>
+      <p class="tpl-takeaway">Know which window you're in before reading the plot &mdash; a widened span on Total Scan is the same friction signal just shown; a trace on Valve Step Response is a different test, checking how the valve moves, not comparing it to a baseline signature.</p>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 2.10 &mdash; used directly, own printed window-title labels retained. Component Index: cvh-cmp-valvelink-software-screens.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">192</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

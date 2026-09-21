@@ -26,7 +26,7 @@ trailing blank page** — confirmed by direct rendering (page number only, no
 body content) — so the chapter's real content ends at PDF p.55 (printed
 5-5). Chapter 5 = PDF pp.51–56; Chapter 6 starts at PDF p.57.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/
 Control Valve Sourcebook - Power & Severe Service.pdf`. This pass catalogs
 existence and location only — no extracted-figures crop folder exists yet
 for this book, so each record's `source` carries a single locator. Every

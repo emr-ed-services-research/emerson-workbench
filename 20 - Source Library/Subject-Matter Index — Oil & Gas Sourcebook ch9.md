@@ -34,7 +34,7 @@ skipped or fabricated. **Chapter 9 is now fully catalogued, Figures 9-1
 through 9-11, with no gaps** — Figure 9-11 is the chapter's last figure
 (confirmed by reading Chapter 10's opening page immediately after it).
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -87,7 +87,7 @@ source:
       Chapter 9 "Natural Gas Treatment," Figure 9-1 (drawing number E1511,
       printed p. 9-1, the chapter's opening page) — "Figure 9-1. Natural Gas
       Treatment Process Flow Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig1-natural-gas-treatment-process-flow.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig1-natural-gas-treatment-process-flow.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 113, printed p. 9-1) at 300 dpi, full block diagram (all five blocks: inlet separation, gas treatment, sulfur recovery, dehydration) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -313,7 +313,7 @@ source:
     locator: >
       Chapter 9 "Natural Gas Treatment," Figure 9-2 (drawing number E1512,
       printed p. 9-3) — "Figure 9-2. Inlet Separation System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig2-inlet-separation-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig2-inlet-separation-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 115, printed p. 9-3) at 300 dpi, full schematic (all 3 numbered valve stations, inlet separator vessel), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -350,7 +350,7 @@ source:
       Chapter 9 "Natural Gas Treatment," Figure 9-3 (drawing number W9571,
       printed p. 9-3) — "Figure 9-3. A11 with 2052 Actuator and FIELDVUE
       DVC6000."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig3-a11-2052-actuator-dvc6000.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig3-a11-2052-actuator-dvc6000.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 115, printed p. 9-3) at 300 dpi, full valve photo (actuator, positioner, disc, flanged body) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -381,7 +381,7 @@ source:
       Chapter 9 "Natural Gas Treatment," Figure 9-4 (drawing number
       W3162-3, printed p. 9-4) — "Figure 9-4. NPS 1-6 Design ET with Plug
       Open for Dynamic Action."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig4-nps1-6-design-et-plug-open-dynamic-action.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig4-nps1-6-design-et-plug-open-dynamic-action.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 116, printed p. 9-4) at 300 dpi, full valve body cutaway (bonnet, stem, plug, flow arrows) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -423,7 +423,7 @@ source:
     locator: >
       Chapter 9 "Natural Gas Treatment," Figure 9-5 (drawing number E1497,
       printed p. 9-5) — "Figure 9-5. Amine Treatment Unit."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig5-amine-treatment-unit.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig5-amine-treatment-unit.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 117, printed p. 9-5) at 300 dpi, contactor, flash tank, rich/lean amine exchanger, regeneration vessel, both pumps, all 12 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -474,7 +474,7 @@ source:
       Chapter 9 "Natural Gas Treatment," Figure 9-6 (drawing number
       W9711-2, printed p. 9-6) — "Figure 9-6. NPS 6 Class 600 NotchFlo Cast
       Globe Body."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig6-notchflo-cast-globe-body.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig6-notchflo-cast-globe-body.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 118, printed p. 9-6) at 300 dpi, full valve cutaway (bonnet, trim stack, flanged body) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -518,7 +518,7 @@ source:
     locator: >
       Chapter 9 "Natural Gas Treatment," Figure 9-7 (drawing number W2629,
       printed p. 9-6) — "Figure 9-7. Whisper Trim III."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig7-whisper-trim-iii.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig7-whisper-trim-iii.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 118, printed p. 9-6) at 300 dpi, full trim cage photo + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -564,7 +564,7 @@ source:
     locator: >
       Chapter 9 "Natural Gas Treatment," Figure 9-8 (drawing number E1498,
       printed p. 9-9) — "Figure 9-8. Tail Gas Treatment System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig8-tail-gas-treatment-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig8-tail-gas-treatment-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 121, printed p. 9-9) at 300 dpi, full block diagram (all drawn valve stations, tail gas quench/absorber/KO drum, acid gas enrichment absorber, regeneration, rich amine flash drum, free acid gas drum vessels), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -613,7 +613,7 @@ source:
     locator: >
       Chapter 9 "Natural Gas Treatment," Figure 9-9 (drawing number E1496,
       printed p. 9-11) — "Figure 9-9. TEG Gas Dehydration Unit."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig9-teg-gas-dehydration-unit.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig9-teg-gas-dehydration-unit.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 123, printed p. 9-11) at 300 dpi, both vessels (KO drum and glycol contactor), all 3 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -660,7 +660,7 @@ source:
     locator: >
       Chapter 9 "Natural Gas Treatment," Figure 9-10 (drawing number
       E1514, printed p. 9-12) — "Figure 9-10. Sulfur Recovery System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig10-sulfur-recovery-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig10-sulfur-recovery-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 124, printed p. 9-12) at 300 dpi, full block diagram (all process vessels, all 9 numbered valve stations), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -700,7 +700,7 @@ source:
     locator: >
       Chapter 9 "Natural Gas Treatment," Figure 9-11 (drawing number
       W0451, printed p. 9-14) — "Figure 9-11. Design ED."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig11-design-ed-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch9-fig11-design-ed-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 126, printed p. 9-14) at 300 dpi, full valve body cutaway (bonnet, stem, spring, flow arrows) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

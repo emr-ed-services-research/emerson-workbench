@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 110 &mdash; Answering Extreme Force &mdash; Piston vs. Diaphragm</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m3, page 110 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.select-extreme-service-actuator-variant [analyze ·
+       contrast]. Components: cvh-cmp-field-reversible-multi-spring-
+       actuator (CVH ch3 Fig. 3.44, p.78) and cvh-cmp-diaphragm-actuator-
+       rotary-valve (Fig. 3.45, p.78), both freshly copied into this
+       course's own assets/sourced/ this session from the shared
+       extracted-figures folder. Piston's own two spring-return variants
+       (left panel) have no figure registered for this competency — the
+       registry's four figures are the diaphragm/handwheel set (course.json
+       sourceNote) — so the left panel is composed as a short two-item list
+       instead of an image, using the panel's own middle subgrid row the
+       same way an image normally would (structurally: label / list /
+       caption, in place of label / image / caption). The right panel
+       composes its two registered figures as ONE multi-image SVG per Style
+       Guide Sec 5.14 (several named items in one figure area, each its own
+       clickable image) rather than a third contrast panel — contrast stays
+       structurally two .tpl-panel siblings (Sec 6.4/gallery.css), matching
+       this course's own cve1-082 precedent for the multi-image technique.
+       Each image carries its own data-lightbox-caption per Sec 5.13. -->
+  <article class="slide slide--role-contrast" data-slide="110" data-deck="cve1">
+    <h1 class="slide-title">Answering Extreme Force &mdash; Piston vs. Diaphragm</h1>
+    <div class="tpl-content">
+      <div class="tpl-panel" data-side="left">
+        <div class="panel-label">Piston</div>
+        <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;justify-content:center;gap:1.4cqh;height:100%;font-size:1.45cqw;line-height:1.35;color:var(--body-text)">
+          <li><b>Large, high-output spring</b> &mdash; sized to overcome valve fluid forces entirely on its own, loaded like a spring-and-diaphragm via a single-acting positioner.</li>
+          <li><b>Small, assist-only spring</b> &mdash; relies on the valve's own unbalance forces to help drive fail-safe action; behaves like a plain double-acting piston in normal operation.</li>
+        </ul>
+        <div class="panel-caption">Higher raw thrust at higher supply pressure &mdash; but fail-safe has to be engineered in as a separate choice, not inherent to the design.</div>
+      </div>
+      <div class="tpl-divider"></div>
+      <div class="tpl-panel" data-side="right">
+        <div class="panel-label">Diaphragm</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <svg viewBox="0 0 1126 500" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Left: a field-reversible multi-spring diaphragm actuator, using multiple springs to raise output force. Right: a diaphragm actuator adapted for a rotary valve, converting the same diaphragm-and-spring construction into rotation through an actuator lever.">
+            <image href="../assets/sourced/cvh3-fig3-44-field-reversible-multi-spring-actuator.png" x="0" y="0" width="435" height="500" data-lightbox-caption="Fig. 3.44, Field-Reversible Multi-Spring Actuator. Component Index: cvh-cmp-field-reversible-multi-spring-actuator."></image>
+            <image href="../assets/sourced/cvh3-fig3-45-diaphragm-actuator-rotary-valve.png" x="475" y="0" width="651" height="500" data-lightbox-caption="Fig. 3.45, Diaphragm Actuator for Rotary Valve. Component Index: cvh-cmp-diaphragm-actuator-rotary-valve."></image>
+          </svg>
+        </div>
+        <div class="panel-caption">The diaphragm family's own extreme-force answer &mdash; a field-reversible multi-spring construction (left) raises output past a standard single-spring design while staying field-convertible; the same approach extends to rotary valves through the actuator lever (right), with net thrust equal to diaphragm force minus opposing spring force.</div>
+      </div>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Figs. 3.44 &amp; 3.45 &mdash; used directly; piston's two spring-return variants (left) are prose-only, no figure registered for this competency. Component Index: cvh-cmp-field-reversible-multi-spring-actuator, cvh-cmp-diaphragm-actuator-rotary-valve.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">110</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

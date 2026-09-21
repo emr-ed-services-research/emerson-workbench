@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 063 &mdash; Check the Pressure-Drop Ratio Before You Specify a Characteristic</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch4-m2, page 63 — eng.selection.flow-characteristic-and-
+       rangeability.predict-installed-vs-inherent-divergence [analyze ·
+       caution]. The one role Gallery does not cover — legacy
+       .slide--tmpl-caution structure (TEMPLATES.md Template 6) unchanged;
+       both stylesheets still loaded (gallery.css supplies every other
+       slide in this module). No caution-fig, matching cve1-013's and
+       cve1-193's own precedent of an unillustrated caution — figures: []
+       in the registry for this competency (see slide 61's note), and the
+       consequence stated is the direct corollary of cvh-topic-installed-
+       vs-inherent-characteristic's own pressure-drop-ratio mechanism, not
+       a sourcing gap specific to this slide. -->
+  <article class="slide slide--tmpl-caution" data-slide="63" data-deck="cve1">
+    <h1 class="slide-title"><span class="slide-title__mark">!</span>Check the Pressure-Drop Ratio Before You Specify a Characteristic</h1>
+    <p class="caution-body">
+      A characteristic selected straight off the catalog's inherent curve, with no check on the
+      valve's own share of system pressure drop, passes every static spec check and still ships
+      a loop where <b>the installed valve's actual gain bears no resemblance to the curve that
+      was ordered &mdash; and no amount of controller retuning corrects a characteristic that was
+      never verified against how the loop actually loads it.</b>
+    </p>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">63</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

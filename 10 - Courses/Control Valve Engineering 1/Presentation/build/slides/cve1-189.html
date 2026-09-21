@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 189 &mdash; The Performance Test Loop</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch2-m2, page 189 — eng.foundations.process-variability-and-loop-
+       performance.performance-test-loop-and-signature-testing [understand ·
+       nomenclature]. Component: cvh-cmp-performance-test-loop-photo (Fig.
+       2.2, p. 36), reused verbatim from Control Valve Basics' own
+       already-verified crop (cvh2-fig2-2-performance-test-loop.png,
+       1377x990, copied into this course's assets/sourced/ unchanged).
+       CVB's own cvb-054.html uses this same photo under role: nomenclature
+       but with NO markers (a plain 2-bullet list) — this course's concept
+       explicitly calls for numbered markers naming four equipment
+       categories (per course.json sourceNote: "Stage 3 places its own
+       numbered markers per Style Guide Sec 6.0/6.1"; piping loop, pump
+       drive, valve under test, instrumentation).
+       has-wide-fig used: the source photo is landscape (1377x990, ~1.39
+       aspect), and gallery.css's own has-wide-fig comment names "a
+       landscape chart" as a qualifying case for the standard 36cqw column
+       being too narrow to keep the photo (and its four separate marker
+       targets) legible — the full-width top slot gives it much more room.
+       Marker positions (left/top %) were derived by direct visual
+       inspection of the raw photo at its own pixel dimensions (1377x990),
+       the same method tp-003's corrected markers used: (1) the grey
+       horizontal pipe run bridging the two blue vessels near the top =
+       piping loop; (2) the blue motor-driven pump package at lower left =
+       pump drive; (3) a green-bodied, actuator-topped valve assembly mid-
+       frame = valve under test; (4) the tripod-mounted measurement
+       instrument at right = instrumentation. LOW CONFIDENCE: these were
+       verified against the source image directly, not against a rendered
+       slide at 2x zoom (working rule 1 — no browser mid-draft in this
+       pass); if the wide-fig box's own aspect ratio letterboxes the photo
+       at render time, the percentages (computed against the raw image,
+       not a letterboxed box) could drift slightly off their intended
+       targets — flagged for the render-verification pass. -->
+  <article class="slide slide--role-nomenclature has-wide-fig" data-slide="189" data-deck="cve1">
+    <h1 class="slide-title">The Performance Test Loop</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh2-fig2-2-performance-test-loop.png" style="width:100%;height:100%;object-fit:contain" alt="A real closed-loop flow-test rig in an instrumented test bay: two tall blue process vessels connected by a grey piping loop, blue motor-driven pump packages at floor level, a row of green-bodied control-valve assemblies mounted in the line, and a tripod-mounted measurement instrument reading the test.">
+          <span class="tpl-marker" style="left:35%;top:14%">1</span>
+          <span class="tpl-marker" style="left:27%;top:79%">2</span>
+          <span class="tpl-marker" style="left:69%;top:47%">3</span>
+          <span class="tpl-marker" style="left:87%;top:54%">4</span>
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Piping loop &mdash; circulates process fluid past the valve under test</li>
+        <li><span class="num">2</span>Motor-driven pump &mdash; drives flow through the loop</li>
+        <li><span class="num">3</span>Valve assembly under test &mdash; mounted in the line, instrumented</li>
+        <li><span class="num">4</span>Instrumentation &mdash; reads flow and valve position throughout the test</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 2.2 &mdash; used directly, numbered markers placed by direct visual inspection (no native printed labels on the photo). Component Index: cvh-cmp-performance-test-loop-photo.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">189</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

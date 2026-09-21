@@ -29,7 +29,7 @@ gets triggered."
   real page text before extraction (each hint matched what the source page
   actually shows).
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -66,7 +66,7 @@ source:
       Chapter 6 "Control Valve Cavitation and Flashing," Figure 6-1 (drawing
       number A3444, printed p. 6-1) — "Figure 6-1. Pressure profile of flow
       through a restriction."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig1-pressure-profile-restriction.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig1-pressure-profile-restriction.png
     locator: "already extracted — cropped directly from the source PDF (p. 61 / printed 6-1) at 300 dpi, both the flow-restriction schematic and the pressure-profile curve + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -96,7 +96,7 @@ source:
       number E0109, printed p. 6-1) — "Figure 6-2. Pressure versus velocity
       curves illustrate that the highest flow rate occurs at the vena
       contracta."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig2-pressure-velocity-vena-contracta.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig2-pressure-velocity-vena-contracta.png
     locator: "already extracted — cropped directly from the source PDF (p. 61 / printed 6-1) at 300 dpi, both stacked plots + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -125,7 +125,7 @@ source:
       number A3445, printed p. 6-2) — "Figure 6-3. Pressure recovery above
       the vapor pressure of the liquid results in cavitation. Remaining
       below the vapor pressure incures [sic] flashing."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig3-pressure-recovery-cavitation-flashing.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig3-pressure-recovery-cavitation-flashing.png
     locator: "already extracted — cropped directly from the source PDF (p. 62 / printed 6-2) at 300 dpi, curve + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -155,7 +155,7 @@ source:
       Chapter 6 "Control Valve Cavitation and Flashing," Figure 6-4 (drawing
       number E0110, printed p. 6-2) — "Figure 6-4. The ΔP allowable equation
       will predict the occurrence of fully choked flow."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig4-choked-flow-deltaP-allowable.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig4-choked-flow-deltaP-allowable.png
     locator: "already extracted — cropped directly from the source PDF (p. 62 / printed 6-2) at 300 dpi, chart + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -284,7 +284,7 @@ source:
       characteristic rough texture of cavitation damage, which differs
       greatly from the polished appearance of damage due to flashing (lower
       photo). The two damage mechanisms vary greatly."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig6-cavitation-vs-flashing-damage-photos.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig6-cavitation-vs-flashing-damage-photos.png
     locator: "already extracted — cropped directly from the source PDF (p. 63 / printed 6-4) at 300 dpi, both photos (W2843 upper, W2842 lower) + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -320,7 +320,7 @@ source:
       mechanics of collapse give rise to high velocity liquid jets, which
       impinge on metallic surfaces. Ultimately, the metal fatigues and
       breaks away in small pieces."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig7-bubble-collapse-jet-formation.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig7-bubble-collapse-jet-formation.png
     locator: "already extracted — cropped directly from the source PDF (p. 64 / printed 6-5) at 300 dpi, all four sequence panels + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -412,7 +412,7 @@ source:
       number W0970, printed p. 6-6) — "Figure 6-8. Design EAS valve with
       outlet liner is used for flashing service. The liner resists erosion
       and protects the body."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig8-eas-valve-outlet-liner.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig8-eas-valve-outlet-liner.png
     locator: "already extracted — cropped directly from the source PDF (p. 65 / printed 6-6) at 300 dpi, full cutaway (RESTRICTED-TRIM ADAPTOR + LINER callouts) + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -445,7 +445,7 @@ source:
       number W8359, printed p. 6-7) — "Figure 6-9. Rotary plug valves, such
       as the Design V500 (reverse flow trim direction, trim level 3) have
       excellent erosion resistance and perform well in flashing service."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig9-rotary-plug-valve-flashing-service.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig9-rotary-plug-valve-flashing-service.png
     locator: "already extracted — cropped directly from the source PDF (p. 66 / printed 6-7) at 300 dpi, full 3D cutaway rendering + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -547,7 +547,7 @@ source:
       accomplished by increasing the flow area from stage to stage. This
       stepped reduction allows full pressure drop without the vena contracta
       pressure falling below the vapor pressure of the liquid."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig10-cavitrol-pressure-drop-staging-graph.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig10-cavitrol-pressure-drop-staging-graph.png
     locator: "already extracted — cropped directly from the source PDF (p. 67 / printed 6-8) at 300 dpi, full chart (both curves, all callouts) + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -582,7 +582,7 @@ source:
       design a flow passage that optimizes capacity and recovery coefficient
       values. These carefully designed passages are used exclusively in
       Cavitrol cages."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig11-drilled-hole-cross-sections.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig11-drilled-hole-cross-sections.png
     locator: "already extracted — cropped directly from the source PDF (p. 68 / printed 6-9) at 300 dpi, all three cross-section pairs + labels + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -616,7 +616,7 @@ source:
       expanding flow areas to affect a four-stage pressure drop. All
       significant pressure drop is taken downstream of the shutoff seating
       surface."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig12-cavitrol-IV-trim-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch6-fig12-cavitrol-IV-trim-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 69 / printed 6-10) at 300 dpi, full body cutaway + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

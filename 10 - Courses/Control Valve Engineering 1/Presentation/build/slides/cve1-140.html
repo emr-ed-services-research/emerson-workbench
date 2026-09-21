@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 140 &mdash; Selecting an End Connection</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch7-m3, page 140 — eng.packing.selection-and-fugitive-emissions.
+       select-end-connection-and-precautions [evaluate · application].
+       Decision-table variant, tp-009/cve1-053/cve1-135 precedent. Per
+       course.json's own templateRationale, no new corroborating figure is
+       placed — both cited figures (cvh-cmp-bolted-flange-end-connections,
+       cvh-cmp-welded-end-connections) already appear on slide 136 — so the
+       table runs FULL WIDTH with an inline style="grid-column:1 / -1".
+       Row key is the connection family (already named on slide 136); the
+       two precautions (galvanic corrosion, oxygen service) apply
+       regardless of which connection is chosen, per the concept's own t,
+       so they are carried in the takeaway rather than as table columns
+       tied to one connection type — putting them in the table would
+       misrepresent them as connection-specific, which they are not. -->
+  <article class="slide slide--role-application" data-slide="140" data-deck="cve1">
+    <h1 class="slide-title">Selecting an End Connection</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1">
+        <thead>
+          <tr><th>Connection type</th><th>Removable without cutting the line?</th><th>Range / limitation</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Bolted flange</td><td>Yes</td><td>Covers the full working range most control valves are built for, to roughly 815&deg;C or 15,000 psig depending on style</td></tr>
+          <tr><td>Welded</td><td>No &mdash; must be cut out</td><td>Leak-tight at any condition, cheapest first cost; a welded-only piping spec narrows the valve choice to sliding-stem bodies, and low-temperature composition trim must come out before welding to avoid heat damage</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-takeaway">Either way: a dissimilar-metal flanged joint headed for extended outdoor storage carries the galvanic-corrosion risk just covered, and any packing ordered for oxygen service must be specified as such so it ships degreased &mdash; neither precaution is optional, and neither substitutes for the other.</p>
+      <p class="tpl-source">No new corroborating figure is placed &mdash; both cited figures already appear on slide 136. After Control Valve Handbook, 6th ed., &sect;3.2. Component Index: cvh-cmp-bolted-flange-end-connections, cvh-cmp-welded-end-connections.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">140</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

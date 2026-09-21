@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 038 &mdash; Check Your Knowledge &mdash; Guiding &amp; Restricted-Capacity Trim</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch3-m2, page 38 — the module's check-your-knowledge slide. No
+       keyConcepts/primitive entry exists for a check slide by schema
+       design (Stage 2 never authors one, per this run's own instructions)
+       — composed fresh here, synthesized from the module's whole arc, not
+       any one slide. levelTarget is analyze, so Style Guide Sec 8.4
+       requires a situation stem, not "which is true." Draws on the
+       module's TWO concept threads together: guiding method (slides
+       34-35 — cage-guiding is the default control-valve construction;
+       body- vs. stem-bonnet guiding trade stability for hard-facing/
+       fouling risk) and restricted-capacity trim (slides 36-37 — an
+       oversized body's low-travel/hunting problem is a CAPACITY issue,
+       solved by adapter-mated smaller-size trim, not a guiding-method
+       change). The distractors are real, plausible conflations: A and C
+       both mistake a capacity problem for a guiding-method problem
+       (switching guiding method does not change how much of the port's
+       travel the actual flow uses); D is a real, valid alternative the
+       module's own text explicitly names as the thing restricted-capacity
+       trim is chosen to avoid ("avoiding a costly pipeline reducer or a
+       custom-sized body"), not a throwaway. data-correct="true" marks the
+       right option per the interactive check convention (gallery.css Sec
+       8.2 / slides.js); reveal is terse per cve1-009/018/023/032's
+       established convention. -->
+  <article class="slide slide--role-check" data-slide="38" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Guiding &amp; Restricted-Capacity Trim</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A body was specified one size larger than today's process needs, to leave room for future capacity growth. At today's flow the plug spends most of its travel near the closed end of the port and the loop hunts. The spec also correctly calls for cage-guided construction to keep the plug tightly aligned to the seat ring. What is the correct fix &mdash; and why doesn't the cage guiding already solve it?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Switch to a stem-bonnet-guided body &mdash; cage guiding can't hold stable alignment at low travel</li>
+        <li data-correct="true">B.&nbsp;&nbsp;Fit restricted-capacity trim (smaller-size plug/cage/seat-ring, adapter-mated to the body) &mdash; guiding stabilizes alignment, but doesn't change how much of the port's travel today's flow actually uses</li>
+        <li>C.&nbsp;&nbsp;Fit a body-guided trim insert instead &mdash; body guiding gives more bearing area than a cage at low travel</li>
+        <li>D.&nbsp;&nbsp;Add a pipeline reducer upstream of the valve &mdash; the body's flow area, not the guiding method, is the problem</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; Restricted-capacity trim</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">38</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

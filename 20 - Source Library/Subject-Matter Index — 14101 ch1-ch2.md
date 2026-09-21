@@ -148,9 +148,18 @@ serves: [mnt.valve-body.identify-trim-parts]
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "Figure 1.3 'Sliding-Stem Control Valve' — exploded major-components view, callouts 1-11, p18"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig3-sliding-stem-exploded.png
+    locator: ""
 delivery: existing figure (crop, is-sourced) — cvh6-fig1-3-globe-valve-components.png; figure's own numbered markers, list mirrors 1-for-1
 used-by: [27]
-notes: replaced deck image39.jpg (a cutaway photo with ~14 burned-in yellow arrows). Provenance: SOURCES.txt.
+notes: >
+  replaced deck image39.jpg (a cutaway photo with ~14 burned-in yellow arrows).
+  Provenance: SOURCES.txt. Cross-reference, 2026-09-19: this is the same
+  source figure as Subject-Matter Index — Control Valve Handbook ch1.md's
+  `cvh-cmp-sliding-stem-exploded` (CVH Fig 1.3, cropped independently for
+  Control Valve Basics as ch1-fig3-sliding-stem-exploded.png) — the standing
+  library file is now cited above alongside this course's own crop; the
+  14101 course build itself is untouched.
 ```
 
 ```yaml
@@ -379,13 +388,20 @@ serves: [mnt.valve-body.identify-packing-box]
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "Figure 1.6 'Bonnet Assembly' — cutaway of stem, packing, packing box (bored recess), bonnet in correct proportion, callouts 1-4, p19"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig6-bonnet-assembly.png
+    locator: ""
 delivery: existing figure (crop, is-sourced) — cvh6-fig1-6-bonnet-packing-box.png; list mirrors the figure's numbering 1-for-1
 used-by: [51]
 notes: >
   replaced an earlier hand-drawn SVG whose bonnet-wall proportions were
   wrong. "Packing box = the bored recess, not the casting" is a Franz
   terminology correction (see memory `valve-packing-box-terminology`).
-  Provenance: SOURCES.txt.
+  Provenance: SOURCES.txt. Cross-reference, 2026-09-19: this is the same
+  source figure as Subject-Matter Index — Control Valve Handbook ch1.md's
+  `cvh-cmp-bonnet-assembly` (CVH Fig 1.6, cropped independently for Control
+  Valve Basics as ch1-fig6-bonnet-assembly.png) — the standing library file
+  is now cited above alongside this course's own crop; the 14101 course
+  build itself is untouched.
 ```
 
 ```yaml

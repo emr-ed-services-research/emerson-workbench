@@ -3,29 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 010 &mdash; Commissioning: A Real Seat Leak</title>
+<title>CVE1 &middot; Slide 010 &mdash; Inherent vs. Installed Characteristic and Gain</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m2, page 10 — eng.sizing.actuator-force-awareness [analyze ·
-       mechanism, develops]. -->
-  <article class="slide slide--role-mechanism" data-slide="10" data-deck="cve1">
-    <h1 class="slide-title">Commissioning: A Real Seat Leak</h1>
+  <!-- cve1-ch1-m2, page 10 — eng.foundations.control-loop-and-final-control-element.
+       characteristic-and-gain-interaction [understand · mechanism]. GENERATED
+       FROM NOTHING: no component is registered for this competency (course.json
+       sourceNote — CVH Sec 1.4/1.5 is prose-only; cvh-cmp-inherent-characteristics-graph
+       exists but is registered to ch4's distinguish-inherent-characteristics
+       competency, not this one, so it is not borrowed here). Per Franz's
+       editorial constraint for this module, this is a SIMPLE, PLAIN two-condition
+       schematic only — a bench/fixed-ΔP icon beside an installed/varying-ΔP icon —
+       nothing beyond what the primitive's own text states (no characteristic
+       curves drawn, since the curve math itself is ch4's distinguish/predict
+       content, not this introductory slide's job per the templateRationale).
+       has-wide-fig: the two-panel schematic reads as a landscape figure, the
+       same modifier cve1-006/007 already use for a photo row. -->
+  <article class="slide slide--role-mechanism has-wide-fig" data-slide="10" data-deck="cve1">
+    <h1 class="slide-title">Inherent vs. Installed Characteristic and Gain</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig5-3-seat-load-graph.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.3, Minimum Required Seat Load for Improved Seat Life on Metal-Seated Valves Class II-V">
+          <svg viewBox="0 0 640 260" role="img" aria-label="Two-panel schematic: left, a valve tested on a bench with a fixed, held pressure drop across it; right, the same valve installed in a real loop where the pressure drop drifts as flow, upstream pressure, and downstream demand change." style="width:100%;height:100%">
+            <defs>
+              <marker id="ptA" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto"><path d="M6,0 L0,3 L6,6 Z" fill="#3F4040"></path></marker>
+              <marker id="ptB" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#3F4040"></path></marker>
+            </defs>
+            <text x="160" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#3F4040">Bench (inherent)</text>
+            <text x="480" y="34" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" fill="#3F4040">Installed (real loop)</text>
+            <line x1="320" y1="18" x2="320" y2="248" stroke="#959797" stroke-width="1.4"></line>
+            <!-- left: bench, fixed dP -->
+            <line x1="70" y1="180" x2="250" y2="180" stroke="#3F4040" stroke-width="3"></line>
+            <polygon points="146,163 165,180 146,197" fill="#004B8D"></polygon>
+            <polygon points="184,163 165,180 184,197" fill="#004B8D"></polygon>
+            <line x1="128" y1="118" x2="202" y2="118" stroke="#3F4040" stroke-width="1.6" marker-start="url(#ptA)" marker-end="url(#ptB)"></line>
+            <text x="165" y="106" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12.5" fill="#3F4040">&#916;P held constant</text>
+            <circle cx="165" cy="180" r="12.5" fill="#004B8D"></circle>
+            <text x="165" y="185" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#fff">1</text>
+            <!-- right: installed, varying dP -->
+            <line x1="390" y1="180" x2="570" y2="180" stroke="#3F4040" stroke-width="3"></line>
+            <polygon points="466,163 485,180 466,197" fill="#004B8D"></polygon>
+            <polygon points="504,163 485,180 504,197" fill="#004B8D"></polygon>
+            <line x1="418" y1="118" x2="552" y2="118" stroke="#3F4040" stroke-width="1.6" stroke-dasharray="5 4" marker-start="url(#ptA)" marker-end="url(#ptB)"></line>
+            <text x="485" y="106" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12.5" fill="#3F4040">&#916;P drifts with flow/demand</text>
+            <circle cx="485" cy="180" r="12.5" fill="#004B8D"></circle>
+            <text x="485" y="185" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#fff">2</text>
+          </svg>
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>The actuator was sized against stroking thrust alone &mdash; the force to move the plug through travel &mdash; estimated at &asymp; 180 lbf; a 250 lbf unit was picked, a comfortable-looking margin against that number</li>
-        <li><span class="num">2</span>Stroking thrust is only part of A in the real A+B+C+D total &mdash; it was never checked against B (required seat load) at all</li>
-        <li><span class="num">3</span>At commissioning: the valve failed its Class III shutoff test &mdash; a real, persistent seat leak, not the near-zero leakage the spec called for</li>
+        <li><span class="num">1</span>Bench (inherent) &mdash; flow-vs-travel and valve gain measured at a fixed, held &#916;P</li>
+        <li><span class="num">2</span>Installed (real loop) &mdash; the same relationship once the process lets &#916;P drift as flow, upstream pressure, and downstream demand change</li>
+        <li>Valve gain &mdash; the local slope of the characteristic curve: how much flow changes per increment of travel</li>
+        <li>Loop stability needs roughly constant <b>installed</b> gain across the operating range &mdash; a spec built only from the inherent curve never checks this</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., &sect;5.11.1.2 and Figure 5.3 &ldquo;Minimum Required Seat Load for Improved Seat Life on Metal-Seated Valves Class II-V,&rdquo; p.124. Component Index: cvh-topic-seat-load, cvh-cmp-seat-load-graph.</p>
+      <p class="tpl-source">Originated schematic &mdash; no component is registered for this competency (Control Valve Handbook 6th ed. &sect;1.4/&sect;1.5, pp. 26-27, 29-30, prose only). Not a redraw of any source figure.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">10</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

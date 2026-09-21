@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 138 &mdash; Don&rsquo;t Remove Packing for Storage &mdash; the Fix Is Worse Than the Risk</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch7-m3, page 138 — eng.packing.selection-and-fugitive-emissions.
+       select-end-connection-and-precautions [understand · caution]. The
+       one role Gallery does not cover — legacy .slide--tmpl-caution
+       structure (TEMPLATES.md Template 6) unchanged; both stylesheets
+       still loaded, matching this course's own cve1-063/107 precedent.
+       No caution-fig — pss-topic-galvanic-corrosion-and-storage (Power &amp;
+       Severe Service Sourcebook ch11, printed p.11-3) is a prose-only
+       topic with no supporting figure in the source (course.json
+       sourceNote). The bolded failure is the primitive's own bolded
+       phrase, carried through near-verbatim. -->
+  <article class="slide slide--tmpl-caution" data-slide="138" data-deck="cve1">
+    <h1 class="slide-title"><span class="slide-title__mark">!</span>Don&rsquo;t Remove Packing for Storage &mdash; the Fix Is Worse Than the Risk</h1>
+    <p class="caution-body">
+      Graphite packing carries a real galvanic-corrosion risk to the stem under humid conditions
+      with chlorides and oxygen present &mdash; a risk the number of variables involved makes
+      near-impossible to predict in advance. Fisher mitigates it with a nonmetallic passivating
+      inhibitor built into the base graphite material and a sacrificial zinc washer on every
+      graphite packing system except nuclear service, but neither measure eliminates the risk
+      outright. Shipping the valve with no packing installed at all would remove that risk &mdash;
+      except <b>someone could then put the valve into service without realizing it has no packing
+      installed</b>, which is exactly why every Fisher valve ships with packing already in,
+      accepting the corrosion risk to avoid the bigger one.
+    </p>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">138</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

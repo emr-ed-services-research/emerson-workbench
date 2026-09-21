@@ -155,13 +155,58 @@ idea); left in rather than silently dropped.
   the no-deck prompt variants (`buildStage1OriginateArcPrompt`, etc.) exist
   as artifacts, but a real headless Agent-SDK run of them is still a
   distinct, never-yet-taken step — every origination test so far has been
-  hand-executed, by design (proof-discipline).
+  hand-executed, by design (proof-discipline). **Partially superseded
+  2026-09-19**, see the real-run finding below — the *prompts* are now
+  proven at full-course scale, but the run was still hand-orchestrated
+  (Claude Code's own Task tool dispatching subagents, not the Console
+  driving the Agent SDK), so "a real headless Agent-SDK run" specifically
+  is still the open, never-taken step.
 - Which Console action actually starts an origination project (a distinct
   "no deck" affordance) — still open.
 - How an origination module's page numbers get allocated with no deck
-  length to bound them — still open.
+  length to bound them — **answered by real practice, 2026-09-19**: each
+  module's Stage 1 dispatch computes its own `slideStart` as the previous
+  module's last `check` value + 1, read live from the course's current
+  `course.json` at dispatch time (not pre-allocated or estimated) — see the
+  Console-scoping requirement below for what this means the real runner
+  needs to do automatically.
 - Whether a topic index "holds up when consumed" by a real Stage 2 pass —
   gated on the two items above; untested.
+- **Real-run finding, 2026-09-19 (CVE1's full Stage 1+2 build) — logged as
+  a Console-scoping requirement, not just a note:** running the real
+  origination prompts across an entire course (24 modules, 10 chapters) for
+  the first time — previously every origination test was one hand-executed
+  module — surfaced concrete requirements the eventual Console runner must
+  satisfy, not just "wire origination mode in":
+  - **Strictly sequential dispatch, enforced, not conventionally followed.**
+    Two hard constraints made this true tonight and will always be true:
+    slide numbers are globally sequential across an entire course (each
+    module's Stage 1 cut needs the previous module's real last slide
+    number, not an estimate), and every stage reads/writes the same
+    course.json, so two agents running concurrently risk one silently
+    clobbering the other's write. The Console must guarantee single-writer
+    access per course (a real lock), not rely on whoever's driving it to
+    dispatch one at a time by discipline.
+  - **A real coverage/completeness check per course, not a human's mental
+    tally.** Chapter 2's second module was skipped entirely mid-run and
+    only caught by a final course-wide audit script written after the
+    build was believed complete — manual chapter-by-chapter tracking has
+    no structural guarantee every module in every chapter actually got
+    processed. The Console needs a first-class "is every module in this
+    course's real chapter/module list at status X" check, run automatically
+    at each stage boundary, not as an afterthought.
+  - **Slide-number allocation as a real runner function**, computed live
+    from the module immediately before it in the course's actual current
+    structure, not hand-tracked or pre-planned.
+  - **Automated post-stage verification**, not a human re-reading
+    course.json after every agent run. Tonight's independent verification
+    (confirming status/reground/primitives/page-ranges directly against the
+    file after every single dispatch, not trusting the agent's own report)
+    caught nothing wrong on the content side, but it's exactly the
+    "structural check on the cut" the Console's own control-loop design
+    already calls for at Stage 1/2 — it needs to actually run automatically
+    for origination mode, not depend on whoever's orchestrating remembering
+    to do it by hand each time.
 - **UNSURE:** whether the second origination trial (oil-and-gas,
   `_b-headless-clone`, `og-001.html`) counts as parked/incomplete or is
   simply in-progress live work — it has one real slide built and is very

@@ -278,7 +278,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: "§8.3.5 Continued Diagnostics Development, Figure 8.4 (printed p. 182) — 'Typical Spring-and-Diaphragm Actuator.'"
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch8-fig4-spring-diaphragm-actuator.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
   Distinguish from ch1's `cvh-cmp-direct-acting-actuator` (Figure 1.9) and
@@ -533,7 +535,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: "§8.5.5 Bench Set, Figure 8.10 (printed p. 186) — 'Bench Set Seating Force.'"
-delivery: existing figure — use directly per Style Guide §5.8 default; not yet cropped/extracted from source
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch8-fig10-bench-set-seating-force-graph.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
   Analytical graph, falls under Style Guide §5 if ever placed on a slide.

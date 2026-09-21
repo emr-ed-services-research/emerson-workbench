@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 159 &mdash; Check Your Knowledge &mdash; Compressible Sizing &amp; Choked Flow</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m2, page 159 — module check slide (role: check). No
+       component earmarked by design (Stage 2 never gives a check slide its
+       own keyConcept) — synthesized from the whole module arc (slides
+       152-158), origination-mode Stage 3, no prior slide file to fall back
+       to. Apply-level module, so the stem is a concrete situation, not
+       "which of the following is true," per Style Guide §8.4. Deliberately
+       uses new numbers rather than the steam/Design-ED case verbatim, to
+       test transfer of the mechanism rather than recall of one case's
+       arithmetic. Draws on slide 156 (the sonic-velocity ceiling, the
+       0.667 floor "no matter how much further P2 is dropped") and slide
+       157 (the Y equation) together, and ties the consequence directly
+       back to the module's own stakes line (slide 152: a compressible
+       calculation that skips the choked-flow check "can pass on paper and
+       still never deliver rated flow in the field ... opening it further
+       buys nothing"). Distractors are real plausible mistakes: A
+       extrapolates the Y formula past its valid domain instead of applying
+       the floor (the natural mistake a spreadsheet that never checks x
+       against Fk·xTP would make); B is the naive "more ΔP always means
+       more flow" intuition the whole choked-flow concept exists to correct;
+       C correctly keeps Y at the floor but still assumes flow keeps rising
+       with ΔP, missing that Y being fixed is exactly WHY mass flow can't
+       increase further. Follows this course's own cve1-151 (m1's check)
+       precedent: data-correct="true" on the right option, terse
+       letter-plus-summary reveal, not a restated sentence. -->
+  <article class="slide slide--role-check" data-slide="159" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Compressible Sizing &amp; Choked Flow</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">You&rsquo;re checking a compressible service and find x = &Delta;P/P1 = 0.85 against this valve&rsquo;s own F<sub>k</sub>&middot;x<sub>TP</sub> = 0.60 &mdash; already choked. If you drop P2 further so x rises to 0.90, what happens to the expansion factor Y and to the mass flow actually passing through the valve?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Y drops further below 0.667 (following Y = 1 &minus; x/(3&middot;F<sub>k</sub>&middot;x<sub>TP</sub>) out to x = 0.90), and mass flow increases along with it</li>
+        <li>B.&nbsp;&nbsp;Y climbs back toward 1.0, since a bigger pressure drop always pulls more flow through a restriction</li>
+        <li>C.&nbsp;&nbsp;Y stays locked at 0.667, but the mass flow still increases because you increased &Delta;P</li>
+        <li data-correct="true">D.&nbsp;&nbsp;Y stays locked at 0.667, and the mass flow does not increase &mdash; the gas is already moving at sonic velocity at the vena contracta, so dropping P2 further only wastes pressure drop</li>
+      </ul>
+      <p class="tpl-reveal">D &middot; Y locked at 0.667, no flow gain</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">159</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

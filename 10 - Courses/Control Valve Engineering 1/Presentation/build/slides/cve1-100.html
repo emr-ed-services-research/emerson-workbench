@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 100 &mdash; Rotary Sizing Matches Torque, Not Force</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m2, page 100 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.calculate-rotary-torque [understand · mechanism].
+       PER FRANZ'S EXPLICIT INSTRUCTION FOR THIS SLIDE: the concept map
+       flags a human decision (whether to reuse cvh-cmp-rotary-actuator-
+       cutaway, CVH Fig. 1.17, already placed at slide 82 for a different
+       competency) that this pass does not make. No figure is placed —
+       not the disputed cutaway, and not a newly originated diagram either
+       (course.json's own templateRationale: "No image assigned pending
+       the human reuse call above") — grounded in the cited topic text
+       only, exactly as the concept map specifies. This is an open
+       question for Franz, not resolved here (see this run's report).
+       Structural note: the mechanism template's grid reserves a 36cqw
+       figure column (gallery.css); with no figure to place there, this
+       slide overrides .tpl-content to a single column via inline style
+       so the list and source line take the full width rather than
+       leaving a blank 36cqw gutter — the same non-overlap-by-construction
+       discipline gallery.css's grid tracks apply everywhere else, just
+       collapsed to one column for this one figure-less slide. -->
+  <article class="slide slide--role-mechanism" data-slide="100" data-deck="cve1">
+    <h1 class="slide-title">Rotary Sizing Matches Torque, Not Force</h1>
+    <div class="tpl-content" style="grid-template-columns:1fr">
+      <ul class="tpl-list" style="grid-column:1">
+        <li><span class="num">1</span>Rotary-valve actuator sizing matches torque, not force, to the actuator's output &mdash; the same fundamental process as the globe-valve force sizing just covered, applied to rotation instead of travel</li>
+        <li><span class="num">2</span>Breakout Torque T<sub>B</sub> = A(&Delta;P<sub>shutoff</sub>) + B &mdash; the torque needed to start the valve moving from a dead stop against shutoff pressure</li>
+        <li><span class="num">3</span>Dynamic Torque T<sub>D</sub> = C(&Delta;P<sub>eff</sub>) &mdash; the torque needed to keep it moving once underway</li>
+        <li><span class="num">4</span>A, B, and C are real, valve-design-specific factors published per valve size and shaft diameter &mdash; not estimated</li>
+      </ul>
+      <p class="tpl-source" style="grid-column:1">Grounded in Control Valve Handbook, 6th ed., &sect;5.13/&sect;5.13.1 (cvh-topic-rotary-actuator-torque) &mdash; prose only, no figure placed here. A candidate figure (cvh-cmp-rotary-actuator-cutaway, CVH Fig. 1.17) is already placed at slide 82 for a different competency; its reuse here is an open human decision, not made by this pass. Component Index: cvh-topic-rotary-actuator-torque.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">100</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

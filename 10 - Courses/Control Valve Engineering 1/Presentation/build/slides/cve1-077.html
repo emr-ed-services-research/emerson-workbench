@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 077 &mdash; Boiler Proper vs. Boiler External Piping &mdash; Who Governs</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m2, page 77 — eng.selection.shutoff-leakage-and-standards.
+       identify-code-jurisdiction [understand · mechanism]. Source:
+       pss-topic-boiler-piping-code-jurisdiction (topics only, figures: []
+       confirmed real). Content limited to that topic's own teaches text.
+       The boiler-proper/boiler-external-piping boundary and its
+       administrative/technical jurisdiction split is a structure to
+       understand with no schematic in the registry — the boundary is
+       stated in prose per the source itself — so, same convention as
+       slides 74/75, a production .tmpl-table is placed directly into the
+       mechanism role's existing grid via an inline grid-column/grid-row
+       span rather than forcing a figure that doesn't exist. Three location
+       tiers as three rows keeps the physical-boundary structure legible
+       at a glance, matching how the source itself organizes the same
+       three-way split. -->
+  <article class="slide slide--role-mechanism" data-slide="77" data-deck="cve1">
+    <h1 class="slide-title">Boiler Proper vs. Boiler External Piping &mdash; Who Governs</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1; grid-row:1; align-self:center;">
+        <thead>
+          <tr><th>Location</th><th>Governs administratively</th><th>Governs technically</th><th>Practical consequence</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>&ldquo;Boiler proper&rdquo; &mdash; superheaters, economizers, reheaters, steam/water drums, other pressure parts connected directly to the boiler with no intervening valve</td><td>ASME BPVC</td><td>ASME BPVC</td><td>Fisher does not manufacture equipment installed here at all</td></tr>
+          <tr><td>&ldquo;Boiler external piping&rdquo; &mdash; begins at the first circumferential weld end, flange face, or threaded joint; can still carry real control equipment (e.g. a steam-drum level controller)</td><td>ASME BPVC</td><td>ANSI/ASME B31.1</td><td>Inspection records, data reports, and stamping required &mdash; unless a documented BPVC Section I waiver applies (parts already compliant with an ANSI or manufacturer's standard, backed by separate material/welding/radiography/heat-treatment documentation)</td></tr>
+          <tr><td>Everywhere else on power-plant piping</td><td>ANSI/ASME B31.1</td><td>ANSI/ASME B31.1 (B16.34 the applicable valve design standard)</td><td>Code prohibits ungasketed, screwed bonnets on steam-service valves rated over 250 psig</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-source">Originated jurisdiction-boundary table &mdash; no schematic of a boiler boundary exists in the registry. After Fisher Power &amp; Severe Service Sourcebook's boiler-piping code-jurisdiction topic &mdash; reference material, prose only. Component Index: pss-topic-boiler-piping-code-jurisdiction.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">77</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

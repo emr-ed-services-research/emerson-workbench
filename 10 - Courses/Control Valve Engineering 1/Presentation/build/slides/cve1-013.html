@@ -3,31 +3,27 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 013 &mdash; The Actuator Decision, Submitted</title>
+<title>CVE1 &middot; Slide 013 &mdash; Confirm Rangeability Clears the Loop's Required Turndown</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m3, page 13 — eng.sizing.actuator-force-awareness [apply ·
-       mechanism, applies]. Completes the Attempt step, both wrong decisions
-       now committed before either consequence is revealed. -->
-  <article class="slide slide--role-mechanism" data-slide="13" data-deck="cve1">
-    <h1 class="slide-title">The Actuator Decision, Submitted</h1>
-    <div class="tpl-content">
-      <div class="tpl-fig-wrap">
-        <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig-flowchart-steps3-5.png" style="width:100%;height:100%;object-fit:contain" alt="Valve selection flowchart, steps 3-5: select trim type, valve body and trim, trim materials">
-        </div>
-      </div>
-      <ul class="tpl-list">
-        <li><span class="num">1</span>Same shortcut as Case B: sized against stroking thrust alone, estimated &asymp; 2,500 lbf for this larger valve</li>
-        <li><span class="num">2</span>A unit rated for 3,000 lbf output is selected &mdash; again looking like real margin against the wrong number</li>
-        <li><span class="num">3</span>The spec is submitted with both decisions made. Neither the cavitation check nor the real seat-load total has been run</li>
-      </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100, Steps 3-5 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
-    </div>
+  <!-- cve1-ch1-m2, page 13 — eng.foundations.control-loop-and-final-control-element.
+       calculate-rangeability [apply · caution]. The one role Gallery does not
+       cover — legacy .slide--tmpl-caution structure (TEMPLATES.md Template 6)
+       unchanged, per the Stage 3 prompt; both stylesheets still loaded (gallery.css
+       supplies every other slide in this module, emerson-workbench.css supplies
+       this template). No caution-fig — the photo is optional per the
+       course.json sourceNote and no component is registered for this
+       competency; the card carries the consequence sentence alone, matching
+       tp-012's precedent shape. -->
+  <article class="slide slide--tmpl-caution" data-slide="13" data-deck="cve1">
+    <h1 class="slide-title"><span class="slide-title__mark">!</span>Confirm Rated Rangeability Clears the Loop's Required Turndown</h1>
+    <p class="caution-body">
+      A valve whose rated rangeability doesn't clear the loop's required turndown cannot resolve flow changes once demand drops below the bottom of its usable range &mdash; <b>the loop hunts, cycles, or loses control at low flow, and no amount of controller retuning fixes a valve that is mechanically incapable of resolving that flow.</b> This is a specification failure, not an operating one: it passes every static check &mdash; correct Cv at design flow, correct pressure class &mdash; and still fails the loop the moment demand turns down.
+    </p>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">13</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
 </main>

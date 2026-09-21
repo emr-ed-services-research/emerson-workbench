@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 135 &mdash; Selecting a Bonnet Type</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch7-m3, page 135 — eng.packing.selection-and-fugitive-emissions.
+       select-bonnet-type [evaluate · application].
+
+       2026-09-20 fix (Phase 1 remediation, Decision 1): converted from the
+       static decision-table variant to the real interactive
+       .slide--role-application-pick template (gallery.css Sec 13), already
+       used correctly elsewhere in this course for exactly this shape —
+       pick one of several named real options, see its own worked
+       reasoning (cve1-049.html, cve1-091.html) — rather than a comparison
+       table for a "pick one" teaching task. No new fact added: same four
+       named bonnet types and the same driver/limitation reasoning the
+       prior table stated, recomposed as tpl-pick-item buttons whose
+       data-work analysis is that same reasoning written out. No new
+       corroborating figure is placed, same as before — all three cited
+       figures already appear on slides 131, 133 & 134.
+
+       JUDGMENT CALL reconciled from the phase-1 proof
+       (_phase1-proof/proof-C-cve1-135.html): the proof defaulted to
+       showing the first option's analysis on load. Franz's review
+       rejected that — production pick-work panes start on a NEUTRAL
+       placeholder until the learner actually clicks (cve1-091.html,
+       _Template Gallery tg-017.html are the real precedent), so no
+       tpl-pick-item here carries is-selected and .tpl-pick-work opens on
+       .tpl-pick-work__placeholder, matching slides.js's real generic
+       click handler (which itself is unmodified — no per-slide script). -->
+  <article class="slide slide--role-application-pick" data-slide="135" data-deck="cve1">
+    <h1 class="slide-title">Selecting a Bonnet Type</h1>
+    <div class="tpl-content" style="grid-template-rows:auto auto 1fr auto">
+      <p class="tpl-howto"><span class="tpl-howto__badge">1</span> Pick one of the four bonnet types below. See its real driver, and where it falls short.</p>
+      <div class="tpl-pick-list">
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Standard bonnet&lt;/b&gt; &mdash; the baseline choice whenever neither a temperature extreme nor a leakage/isolation requirement applies. Limited to near-ambient service only &mdash; a service point outside that band rules it out immediately, before any other criterion is even considered.&lt;/p&gt;">Standard &mdash; neither a temperature extreme nor a leakage requirement applies</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Extension bonnet &mdash; cast&lt;/b&gt; &mdash; specified for a high-temperature extreme (&ge;&sim;427&deg;C/800&deg;F), giving the packing box distance from the hot process fluid. It solves the temperature problem only &mdash; it adds no leakage or fugitive-emissions benefit on its own, so a service that also needs low emissions isn&rsquo;t satisfied by this choice alone.&lt;/p&gt;">High-temperature extreme (&ge;&sim;427&deg;C/800&deg;F)</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Extension bonnet &mdash; fabricated&lt;/b&gt; &mdash; the cryogenic/cold-extreme counterpart to the cast version, extending the packing box away from a very cold process fluid instead of a hot one. Like the cast extension, it solves temperature only &mdash; no leakage benefit comes with it.&lt;/p&gt;">Cryogenic/cold extreme</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Bellows-seal bonnet&lt;/b&gt; &mdash; the choice when the requirement is near-zero stem leakage for a toxic, volatile, radioactive, or high-value fluid, not a temperature extreme. Between its two constructions, welded-leaf versus mechanically-formed only differ in package height traded against service life &mdash; not in the leakage guarantee itself.&lt;/p&gt;">Near-zero stem leakage for toxic/volatile/radioactive/high-value fluid</button>
+      </div>
+      <div class="tpl-pick-work"><p class="tpl-pick-work__placeholder">Pick a bonnet type above to see its driver, and where it falls short.</p></div>
+      <p class="tpl-source">No new corroborating figure is placed &mdash; all three cited figures already appear on slides 131, 133 &amp; 134. After Control Valve Handbook, 6th ed., &sect;3.3. Component Index: cvh-cmp-bonnet-assembly, cvh-cmp-fabricated-extension-bonnet, cvh-cmp-enviroseal-bellows-seal-bonnet. Same four named alternatives and same driver/limitation reasoning as the prior decision-table version &mdash; recomposed as a pick-and-see-why interaction, no new fact added.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">135</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

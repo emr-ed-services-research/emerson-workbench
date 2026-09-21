@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 165 &mdash; Running Both Checks Together</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch9-m1, page 165 — eng.installation.piping-practice-and-orientation.
+       evaluate-line-size-and-velocity [analyze · application]. No component
+       earmarked, confirmed prose-only. The culminating analyze-level
+       application for this LO — a concrete installation run through both
+       checks at once. NOT a decision table (course.json templateRationale:
+       this evaluates one installation against two independent criteria in
+       sequence, not several already-taught named items side by side), so
+       this reuses cve1-162's plain two-panel .tpl-chart scenario shape
+       rather than :has(.tmpl-table) — same reasoning, no .tpl-list/
+       .tmpl-table classes used, to avoid triggering the keyed-graph
+       :has(.tpl-list) variant. Sets up the immediately-following Line-Size &amp;
+       Velocity Violation Audit activity (afterConcept: 5). -->
+  <article class="slide slide--role-application" data-slide="165" data-deck="cve1">
+    <h1 class="slide-title">Running Both Checks Together</h1>
+    <div class="tpl-content">
+      <div class="tpl-chart" style="display:grid;grid-template-columns:1fr auto 1fr;column-gap:2.6cqw;align-items:center;height:100%">
+        <div>
+          <p style="text-align:center;font-weight:700;color:var(--emerson-blue);font-size:1.7cqw;margin:0 0 1.3cqh">Line-Size Check</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1cqh;font-size:1.4cqw;line-height:1.35;color:var(--body-text);text-align:center">
+            <li>Rule 1: valve &ge; half the line size</li>
+            <li>Rule 2: valve &ge; two sizes below the line size</li>
+            <li>Flag anything failing either rule &mdash; they can disagree</li>
+          </ul>
+        </div>
+        <div style="width:0.14cqw;height:80%;background:var(--emerson-grey);justify-self:center"></div>
+        <div>
+          <p style="text-align:center;font-weight:700;color:var(--emerson-blue);font-size:1.7cqw;margin:0 0 1.3cqh">Velocity Check</p>
+          <ul style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:1cqh;font-size:1.4cqw;line-height:1.35;color:var(--body-text);text-align:center">
+            <li>Gas/vapor: Mach vs. 0.3 (Whisper Trim III) or 0.5 (Whisper Trim I)</li>
+            <li>Liquid, cage-guided: guide-wear/buffeting/erosion concerns largely don&rsquo;t apply</li>
+            <li>Liquid, not cage-guided: they do &mdash; but clean-fluid velocity alone still isn&rsquo;t grounds for an erosion limit</li>
+          </ul>
+        </div>
+      </div>
+      <p class="tpl-takeaway">Worked: an 18-in line fitted with a 9-in cage-guided valve in clean liquid service passes Rule 1 but fails Rule 2 &mdash; and because the valve is cage-guided, velocity isn&rsquo;t the deciding factor here, so the line-size disagreement is the real open question, not an assumed erosion risk.</p>
+      <p class="tpl-source">After Fisher Power &amp; Severe Service Sourcebook, Ch. 13, &ldquo;Line Size Versus Valve Size&rdquo; (p. 13-2) and &ldquo;Velocity Limitations in Control Valves&rdquo; (pp. 13-2&ndash;13-3) &mdash; both rules and both velocity criteria applied together to an illustrative installation, not a source-reported case. Component Index: pss-topic-line-size-vs-valve-size, pss-topic-velocity-limitations.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">165</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 148 &mdash; Choked Liquid Flow &mdash; Vaporization, Not Friction</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m1, page 148 — eng.sizing.fundamentals-liquid-and-compressible.
+       determine-liquid-choked-flow [understand · mechanism]. CONCEPT-MAP
+       GAP: the registry's figures:[] AND topics:[] for this competency is a
+       citation gap, not a true prose absence — real, verified topic content
+       exists (ogas-topic-choked-flow-and-cavitation-flashing /
+       pss-topic-choked-flow-and-cavitation-flashing, same Ch. 3 source,
+       printed pp. 3-4–3-6) and is used directly here per course.json's own
+       sourceNote. Same figure-less mechanism adaptation as slides 143-145
+       (single-column .tpl-content override) — slide 149's chart pair is the
+       FF-reading tool, not this mechanism itself, so no figure is placed
+       here. -->
+  <article class="slide slide--role-mechanism" data-slide="148" data-deck="cve1">
+    <h1 class="slide-title">Choked Liquid Flow &mdash; Vaporization, Not Friction</h1>
+    <div class="tpl-content" style="grid-template-columns:1fr">
+      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:74cqw;margin:0 auto">
+        <li><span class="num">1</span>Choked flow in a liquid is vaporization, not a friction ceiling &mdash; once static pressure inside the valve drops below the liquid&rsquo;s own vapor pressure, it flashes at the vena contracta and added &Delta;P stops buying more flow</li>
+        <li><span class="num">2</span>The check: calculate &Delta;P<sub>max</sub> &mdash; &Delta;P<sub>max(L)</sub> = F<sub>L</sub>&sup2;&middot;(P1&minus;F<sub>F</sub>&middot;P<sub>v</sub>) with no fittings, or the Fp/F<sub>LP</sub>-corrected form with fittings &mdash; and compare it to the actual service &Delta;P</li>
+        <li><span class="num">3</span>Whichever of &Delta;P<sub>max</sub> and the actual &Delta;P is smaller goes into the Cv equation; if &Delta;P<sub>max</sub> is the smaller value, the flow is choked</li>
+        <li><span class="num">4</span>Once choked, the outlet pressure tells you which failure mode: below the liquid&rsquo;s vapor pressure &mdash; flashing; above it &mdash; cavitation, the collapse happens downstream instead</li>
+      </ul>
+      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3 &ldquo;Liquid Valve Sizing,&rdquo; printed pp. 3-4&ndash;3-6 &mdash; the &Delta;P<sub>max</sub> equations and the outlet-pressure diagnostic transcribed as printed. Component Index: ogas-topic-choked-flow-and-cavitation-flashing, pss-topic-choked-flow-and-cavitation-flashing.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">148</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

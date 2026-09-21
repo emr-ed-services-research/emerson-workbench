@@ -48,7 +48,7 @@ authoritative, not implicit in code or scattered across past fixes**:
   `teaching-philosophy.md` "The standard is completeness against source").
 - Slide **style** traces to **this document**.
 
-The master templates (`40 - Engine/_template-gallery/gallery.css`,
+The master templates (`40 - Engine/Presentation/build/css/gallery.css`,
 `40 - Engine/Presentation/build/css/emerson-workbench.css`) and the callout
 manifest discipline are *implementations* of what this document states.
 Where a template comment currently states a convention (e.g. gallery.css's
@@ -588,7 +588,12 @@ redraw was right, for the reason above rather than the one it gave.
 Every graph — lifted directly or redrawn — carries a `.tpl-source` line
 (grey italic, below the content), matching the format already in use:
 
-> After [manual / handbook], Fig. [N] — [what was kept / changed]. Subject-Matter Index: [id].
+> After [manual / handbook], Fig. [N] — [what was kept / changed]. Component Index: [id].
+
+(2026-09-20: corrected from "Subject-Matter Index" to "Component Index" —
+every one of the 197 real citations in the shipped Control Valve
+Engineering 1 course already used "Component Index," so this document had
+drifted from actual practice, not the other way around.)
 
 A figure used directly says so ("CVH Fig. 8.10, cropped to the
 friction-shift region"). A redraw that departs from its source figure
@@ -596,6 +601,19 @@ states how, briefly
 ("travel-stop marks added"; "axes relabelled to psig"; "both curves from
 Fig. 5, deadband bracket added"). This is what makes a redraw checkable
 against its source instead of trusted.
+
+**A prose-only slide (no figure) carries the same clause, not a shorter
+one** (decided 2026-09-20, after review found this varying by chapter
+within a single course with no standing rule to resolve it): whenever a
+real Subject-Matter Index entry backs the slide's content — a `kind: topic`
+entry grounding conceptual prose the same way a `kind: cmp` entry grounds a
+figure — the citation states it: `After [source], [section/page]. Component
+Index: [id].` Omitting the clause because there's no image to point at
+throws away exactly the traceability this document exists to require
+everywhere else — a maintainer checking a prose slide against its source
+needs the same one-line trail a figure slide already gives them. This
+applies whether the slide is drawn from a single topic entry or several
+(list the ids comma-separated, same convention as a multi-figure slide).
 
 ### 5.10 Worked application — pages 6 & 10 of the template proof
 

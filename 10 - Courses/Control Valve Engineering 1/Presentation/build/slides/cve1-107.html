@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 107 &mdash; Don't Overshoot Travel Past the Seat</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m3, page 107 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.perform-bench-set-adjustment [understand · caution].
+       The one role Gallery does not cover — legacy .slide--tmpl-caution
+       structure (TEMPLATES.md Template 6) unchanged; both stylesheets
+       still loaded, matching cve1-099's own precedent exactly. No
+       caution-fig — figures: [] in the registry (course.json
+       sourceNote); the consequence stated is the direct restatement of
+       cvh-topic-valve-travel-criticality (CVH &sect;8.5.6, p.187) — the
+       over-travel plug-bottoming/stem-pullout failure and the
+       sliding-stem-vs-rotary attention difference are both stated there
+       almost verbatim. -->
+  <article class="slide slide--tmpl-caution" data-slide="107" data-deck="cve1">
+    <h1 class="slide-title"><span class="slide-title__mark">!</span>Don't Overshoot Travel Past the Seat</h1>
+    <p class="caution-body">
+      Travel set wrong does not fail gracefully in either direction. Under-travel means the
+      valve never reaches its designed flow rate no matter how hard the loop calls for more.
+      Over-travel is worse: it can <b>reduce the seat load actually delivered at the closed
+      position &mdash; a real shutoff-capability loss &mdash; and damage the trim</b>, in the
+      extreme letting the plug bottom against the bonnet and pull the stem straight out of it.
+      Sliding-stem valves demand more attention to travel setting than rotary valves.
+    </p>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">107</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

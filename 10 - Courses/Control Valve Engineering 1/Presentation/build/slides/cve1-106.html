@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 106 &mdash; Adjusting Bench Set</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m3, page 106 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.perform-bench-set-adjustment [apply · procedure]. No
+       figure anchors the adjustment steps themselves (course.json
+       sourceNote) — the seating-force graph (slide 105) is the reference
+       CONSULTED during this procedure, not re-cited here per the
+       asset-variant reuse discipline. slide--role-procedure-list per
+       course.json: a genuine physical step sequence with nothing to
+       photograph or diagram at this tier — matches this module's own
+       templateRationale exactly. Four runsheet steps decompose the
+       primitive's own t directly (seat the valve, set the adjuster,
+       confirm against the equation, expect real tolerance) — no step
+       invented beyond what t already states. -->
+  <article class="slide slide--role-procedure-list" data-slide="106" data-deck="cve1">
+    <h1 class="slide-title">Adjusting Bench Set</h1>
+    <div class="tpl-content">
+      <ol class="tpl-runsheet">
+        <li><span class="run-t">Seat the valve fully</span><span class="run-d">The reference point that demands the greatest accuracy of any setting in the whole sequence.</span></li>
+        <li><span class="run-t">Turn the spring adjuster to the bench set's lower value</span><span class="run-d">For an air-to-open actuator this is the pressure at which opening travel begins; for air-to-close, where closing travel begins. This sets the correct initial spring compression.</span></li>
+        <li><span class="run-t">Confirm against the seating-force relationship</span><span class="run-d">Seating force = applied pressure &minus; bench set &minus; spring compression already used by travel. Check the setting against this relationship (see the previous slide's graph).</span></li>
+        <li><span class="run-t">Expect some real spring variation</span><span class="run-d">Real springs carry manufacturing tolerance in spring angle &mdash; expect and check for some variation rather than assuming a fresh spring matches the nameplate exactly.</span></li>
+      </ol>
+      <p class="tpl-source">Grounded directly in Control Valve Handbook, 6th ed., &sect;8.5.5 (p.186) &mdash; the spring-adjuster step, the seating-force equation, and the spring-tolerance note are stated there almost verbatim; no figure placed here. Component Index: cvh-topic-bench-set-adjustment.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">106</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

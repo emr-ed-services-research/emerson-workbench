@@ -33,7 +33,7 @@ diagrams — bulk treater (Figure 7-10) and electrostatic coalescer
 (Figure 7-11). All five confirmed against the real page text and image
 before extraction — none were skipped or fabricated.
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -235,7 +235,7 @@ source:
     locator: >
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-1 (drawing number
       E1481, printed p. 7-1) — "Figure 7-1. Production Process Flow Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig1-onshore-production-process-flow.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig1-onshore-production-process-flow.png
     locator: "already extracted — cropped directly from the source PDF (p. 72 / printed 7-1) at 300 dpi, full block diagram (SEPARATION SITE dashed boundary + all five process blocks) + drawing number, caption excluded"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -266,7 +266,7 @@ source:
     locator: >
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-2 (drawing number
       E1482, printed p. 7-4) — "Figure 7-2. Well Site & Gathering System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig2-well-site-gathering-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig2-well-site-gathering-system.png
     locator: "already extracted — cropped directly from the source PDF (p. 75 / printed 7-4) at 300 dpi, both valve stations (items 1 and 2), the FLUID FROM RESERVOIR / TO SEPARATION SITE labels, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -299,7 +299,7 @@ source:
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-3 (drawing number
       W7859-1, printed p. 7-4) — "Figure 7-3. Product Catalog − High Pressure
       − D or DA; Oil and Gas − D or DA."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig3-well-site-choke-valve-photo.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig3-well-site-choke-valve-photo.png
     locator: "already extracted — cropped directly from the source PDF (p. 75 / printed 7-4) at 300 dpi, full valve photo (actuator to body) + drawing number, caption excluded"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -333,7 +333,7 @@ source:
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-4 (drawing number
       E1483, printed p. 7-5) — "Figure 7-4. Process Fluid Separation
       System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig4-process-fluid-separation-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig4-process-fluid-separation-system.png
     locator: "already extracted — cropped directly from the source PDF (p. 76 / printed 7-5) at 300 dpi, all three separator stages, all 13 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -368,7 +368,7 @@ source:
     locator: >
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-5 (drawing number
       W6539-1, printed p. 7-6) — "Figure 7-5. V260 Valve Exterior."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig5-v260-valve-exterior.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig5-v260-valve-exterior.png
     locator: "already extracted — cropped directly from the source PDF (p. 77 / printed 7-6) at 300 dpi, full valve photo (actuator, positioner, body, flanged outlet) + drawing number, caption excluded"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -400,7 +400,7 @@ source:
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-6 (drawing number
       W9934-2, printed p. 7-7) — "Figure 7-6. easy-Drive Actuator on D4
       Control Valve."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig6-easydrive-actuator-d4-valve.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig6-easydrive-actuator-d4-valve.png
     locator: "already extracted — cropped directly from the source PDF (p. 78 / printed 7-7) at 300 dpi, full actuator-and-valve photo + drawing number, caption excluded"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -529,7 +529,7 @@ source:
     locator: >
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-7 (drawing number
       E1484, printed p. 7-9) — "Figure 7-7. Compressor System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig7-compressor-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig7-compressor-system.png
     locator: "already extracted — cropped directly from the source PDF (p. 80 / printed 7-9) at 300 dpi, all four numbered valve stations, scrubber, compressor, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -562,7 +562,7 @@ source:
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-8 (drawing number
       W9244, printed p. 7-9) — "Figure 7-8. 657 easy-e EZ Low Angle NPS 2
       CL150 67AFR DVC6010."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig8-657-easye-ez-low-angle-antisurge-valve.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig8-657-easye-ez-low-angle-antisurge-valve.png
     locator: "already extracted — cropped directly from the source PDF (p. 80 / printed 7-9) at 300 dpi, full valve photo (actuator to body) + drawing number, caption excluded"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -594,7 +594,7 @@ source:
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-9 (drawing number
       X0202-1, printed p. 7-10) — "Figure 7-9. 12x8 EW Antisurge Valve, 585C
       Size 130 Actuator, DVC6200 Instrument, and 2625 Boosters."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig9-12x8-ew-antisurge-valve-585c.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig9-12x8-ew-antisurge-valve-585c.png
     locator: "already extracted — cropped directly from the source PDF (p. 81 / printed 7-10) at 300 dpi, full valve photo (actuator, positioner, boosters, body, flanged outlet) + drawing number, caption excluded"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -637,7 +637,7 @@ source:
     locator: >
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-10 (drawing
       number E1485, printed p. 7-11) — "Figure 7-10. Oil Treatment System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig10-oil-treatment-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig10-oil-treatment-system.png
     locator: "already extracted — cropped directly from the source PDF (p. 82 / printed 7-11) at 300 dpi, all four numbered valve stations, bulk treater, dry oil tank, main pump, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -677,7 +677,7 @@ source:
       Chapter 7 "Onshore Oil and Gas Production," Figure 7-11 (drawing
       number E1486, printed p. 7-12) — "Figure 7-11. Electrostatic
       Coalescer Oil Treatment System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig11-electrostatic-coalescer-oil-treatment-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch7-fig11-electrostatic-coalescer-oil-treatment-system.png
     locator: "already extracted — cropped directly from the source PDF (p. 83 / printed 7-12) at 300 dpi, both numbered valve stations, coalescer vessel, cargo-storage outlet, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

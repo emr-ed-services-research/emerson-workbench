@@ -99,7 +99,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.211, §10.1 "Basic Valve Types", Figure 10.1 "Gate Valve Pressure Seal"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig1-gate-valve-pressure-seal.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Opens the chapter's valve-type survey; a 3D rendered cutaway, not a traditional line-drawing schematic.
 ```
@@ -112,7 +114,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.211, §10.1.1 "Gate Valves", Figure 10.2 "Gate Valve Bolted Bonnet"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig2-gate-valve-bolted-bonnet.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Fully labelled cutaway with the chapter's most extensive callout set for a single gate-valve figure.
 ```
@@ -125,7 +129,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.212, Figure 10.3 "Solid-Wedge Gate Valve"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig3-solid-wedge-gate-valve.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Contrasted directly against the flexible-wedge design in the adjacent Figure 10.4/10.5.
 ```
@@ -226,7 +232,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.214, Figure 10.8 "Pressure Seal"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig8-pressure-seal-detail.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Color-coded mechanism diagram, distinct from Figure 10.1's 3D structural render of the same general concept — this one shows HOW the seal works, not just what it looks like.
 ```
@@ -347,7 +355,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.216, Figure 10.17 "Stop Function"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig17-stop-function.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Color-coded cutaway (blue/red highlight on the split-ring detail) with an explicit "Captive Split Ring" leader-line callout — paired conceptually with Figure 10.18's Stop-Check Function on the facing page.
 ```
@@ -362,7 +372,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.217, Figure 10.18 "Stop-Check Function"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig18-stop-check-function.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Direct pairing/contrast with Figure 10.17's Stop Function — same valve family, same color-coding style, opposite valvehead-to-stem connection behavior.
 ```
@@ -375,7 +387,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.217, Figure 10.19 "Body Guiding"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig19-body-guiding.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Photo-realistic 3D render (not a line cutaway), contrasted with the stem/bonnet guiding approach shown in Figure 10.20.
 ```
@@ -388,7 +402,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.217, Figure 10.20 "Stem Bonnet Guiding"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig20-stem-bonnet-guiding.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Direct contrast pairing with Figure 10.19 (Body Guiding) — the text presents these as the two fundamental valve-guiding approaches.
 ```
@@ -442,7 +458,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.218, §10.1.3 "Check Valves", Figure 10.21 "Swing Check Valve"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig21-swing-check-valve.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: The baseline check-valve design the lever-and-weight (Figure 10.22) and tilting-disk (Figure 10.23) variants are built from.
 ```
@@ -455,7 +473,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.218, Figure 10.22 "Lever and Weight Swing Check Valve"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig22-lever-weight-swing-check-valve.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Text frames this and spring-loaded variants as solutions to shock/chatter problems in the plain swing check design (Figure 10.21).
 ```
@@ -468,7 +488,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.218, Figure 10.23 "Tilting Check Valve"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig23-tilting-check-valve.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Text explains the flow passes both below and over the disk, providing greater disk stability than a plain swing check, especially above 6 inches and at higher pressure/lower flow.
 ```
@@ -481,7 +503,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.219, Figure 10.24 "Horizontal-Lift Check Valve"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig24-horizontal-lift-check-valve.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Text notes lift check valves are also available in vertical designs (not separately figured here).
 ```
@@ -611,7 +635,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.222, §10.1.8 "Diaphragm Valves", Figure 10.31 "Weir-Type Diaphragm Valve"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig31-weir-type-diaphragm-valve.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Text notes diaphragm valves are sometimes called "Saunders valves"; this design shortens diaphragm movement versus straightway-type (Figure 10.32), extending diaphragm life.
 ```
@@ -639,7 +665,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.222, §10.1.9 "Pinch Valves", Figure 10.33 "Air-Operated Pinch Valve"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig33-air-operated-pinch-valve.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Three-panel composite (main cutaway plus two small state-comparison end views) under one figure number.
 ```
@@ -710,7 +738,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.224, §10.1.12 "Plug Valves", Figure 10.38 "Lubricated Plug Valve"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-fig38-lubricated-plug-valve.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Text explains lubricated plugs should not be used where flow contamination from lubricant is a concern.
 ```
@@ -738,7 +768,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.225, Figure 10.40 "Cast Iron Gate Valves"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-table40-cast-iron-gate-valve-dimensions.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Pure dimension table, captioned as a Figure in the source (see top-of-file note) — not a diagram or photo.
 ```
@@ -764,7 +796,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.227, Figure 10.42 "Steel Gate Valve (Class 150)"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch10-table42-steel-gate-valve-class150-dimensions.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: First of a six-part steel-gate-valve dimension series (Figures 10.42–10.46) covering Classes 150 through 2500.
 ```

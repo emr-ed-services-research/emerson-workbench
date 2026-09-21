@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 081 &mdash; Direct- vs. Reverse-Acting Actuator Construction</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m1, page 81 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.distinguish-actuator-mechanism-types [understand ·
+       nomenclature]. Components: cvh-cmp-direct-acting-actuator (CVH Fig.
+       1.9, 12-part printed key) and cvh-cmp-reverse-acting-actuator (Fig.
+       1.12, 16-part printed key) — both fully-labelled cutaways carrying
+       their OWN printed numbered callouts. Composed per Style Guide Sec
+       5.14 as two separate images in one multi-image SVG (has-wide-fig),
+       each independently lightbox-navigable with its own
+       data-lightbox-caption (Sec 5.13). Per Sec 6.2, the source's own
+       numbering stays as printed on each image — no added house markers or
+       numbered list badges are layered on top, which would create a second,
+       competing numbering scheme against the figures' own 12-/16-part keys.
+       The tpl-list therefore carries two PLAIN (no .num circle) whole-image
+       summary captions, bold-led by the construction name, matching each
+       item's own items[].t verbatim from course.json — the individual
+       part-by-part labels are read directly off each figure's own printed
+       key, not restated here (precedent: cve1-061's plain-<li> pattern for
+       a list entry with no corresponding on-image marker). Images scaled to
+       a common height (900) and placed left-to-right per Sec 5.14. -->
+  <article class="slide slide--role-nomenclature has-wide-fig" data-slide="81" data-deck="cve1">
+    <h1 class="slide-title">Direct- vs. Reverse-Acting Actuator Construction</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <svg viewBox="0 0 2641 900" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Left: a direct-acting spring-and-diaphragm actuator, a fully labelled 12-part cutaway. Right: a reverse-acting spring-and-diaphragm actuator, a fully labelled 16-part cutaway with four additional features called out.">
+            <image href="../assets/sourced/cvh1-fig1-9-direct-acting-actuator.png" x="0" y="0" width="1243" height="900" data-lightbox-caption="Fig. 1.9, Direct-Acting Actuator. Component Index: cvh-cmp-direct-acting-actuator."></image>
+            <image href="../assets/sourced/cvh1-fig1-12-reverse-acting-actuator.png" x="1283" y="0" width="1358" height="900" data-lightbox-caption="Fig. 1.12, Reverse-Acting Actuator. Component Index: cvh-cmp-reverse-acting-actuator."></image>
+          </svg>
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><b>Direct-acting</b> &mdash; the baseline 12-part construction: diaphragm casing, diaphragm, diaphragm plate, actuator spring, spring seat/adjuster, yoke, stem connector, travel indicator disk and scale.</li>
+        <li><b>Reverse-acting</b> &mdash; the same core parts with action reversed, plus four features the direct-acting design doesn't carry: seal bushing and O-rings, integrated handwheel-mounting bosses, an integral air passage, and an integral DVC6200 mounting pad.</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Figs. 1.9 &amp; 1.12 &mdash; used directly, each figure's own printed numbered key retained as-is. Component Index: cvh-cmp-direct-acting-actuator, cvh-cmp-reverse-acting-actuator.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">81</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

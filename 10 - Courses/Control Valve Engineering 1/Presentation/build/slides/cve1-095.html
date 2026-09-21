@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 095 &mdash; Seat Load (B) &mdash; Reading Figure 5.3</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m2, page 95 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.calculate-sliding-stem-thrust [apply · mechanism].
+       Existing figure (crop), Style Guide Sec 5.8 default — Fig. 5.3's
+       analytical graph (5 class lines, II-V with two Class V metal-seat
+       sub-cases), used directly rather than redrawn (no Sec 5.8 redraw
+       reason applies — the source's own printed figure already carries
+       its class-line labels). Component Index: cvh-cmp-seat-load-graph.
+       Concept-map gap carried forward from course.json's own
+       templateRationale: five class lines sits above Style Guide Sec
+       6.4's 2-4-entry comfort ceiling for a graph key — the list here is
+       condensed to 4 reading-procedure entries (naming all five lines in
+       one entry) rather than one entry per line, to stay near that
+       ceiling; flagged in this run's report rather than resolved
+       unilaterally (splitting the concept across two slides was not this
+       agent's call to make against an already-authored Stage 2 concept
+       map). -->
+  <article class="slide slide--role-mechanism" data-slide="95" data-deck="cve1">
+    <h1 class="slide-title">Seat Load (B) &mdash; Reading Figure 5.3</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh5-fig5-3-seat-load-graph.png" alt="Control Valve Handbook Figure 5.3, Minimum Required Seat Load for Improved Seat Life on Metal-Seated Valves Class II-V — five diagonal lines, one per leak class, plotting minimum required seat load in pounds-force per lineal inch against shutoff pressure drop in psi.">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Axes: shutoff pressure drop (psi) vs. minimum required seat load (lbf per lineal inch of port circumference)</li>
+        <li><span class="num">2</span>Five lines, one per ANSI/FCI 70-2 / IEC 60534-4 leak class &mdash; Class II through Class V, with two Class V metal-seat sub-cases</li>
+        <li><span class="num">3</span>Find the actual shutoff pressure drop on the x-axis, read up to the required class's line</li>
+        <li><span class="num">4</span>These are factory-test minimums, not a field-performance guarantee &mdash; go above the plotted value to prolong seat life where tight shutoff genuinely matters, or use a lower class where it doesn't</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 5.3 &mdash; used directly. Component Index: cvh-cmp-seat-load-graph.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">95</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

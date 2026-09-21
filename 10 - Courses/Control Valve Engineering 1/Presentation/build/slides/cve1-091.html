@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 091 &mdash; Selecting an Actuator Type and Fail-Safe Action</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m1, page 91 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.select-actuator-type-and-failsafe [evaluate ·
+       application]. figures: [] in the registry; no single figure could
+       represent an applied selection judgment. Grounded in
+       pss-topic-actuator-selection-parameters and pss-topic-actuator-type-
+       comparison-summary (the same two topics slides 88 and 90 just
+       taught) plus pss-topic-actuator-body-orientation for the orientation
+       half of the call. Per course.json templateRationale, matches the
+       application-pick precedent already used for check-valve-style
+       selection (this course's own cve1-049.html) rather than a graph/
+       table application or case walkthrough — direct lead-in to this
+       module's own act2 case-walkthrough activity (course.json), which
+       uses three DIFFERENT service cards, so the four scenarios below are
+       constructed to complement, not duplicate, that activity. Each
+       scenario applies the five parameters (slide 88) and the type-
+       comparison tradeoffs (slide 90) to reach one worked actuator-type-
+       plus-fail-safe-action call, the same judgment a real selection spec
+       makes — an application of just-taught criteria to a concrete
+       situation, not a new invented fact. -->
+  <article class="slide slide--role-application-pick" data-slide="91" data-deck="cve1">
+    <h1 class="slide-title">Selecting an Actuator Type and Fail-Safe Action</h1>
+    <div class="tpl-content" style="grid-template-rows:auto auto 1fr auto">
+      <p class="tpl-howto"><span class="tpl-howto__badge">1</span> Pick one of the four service scenarios below. See it as stated, then the worked actuator-type-and-fail-safe call it drives.</p>
+      <div class="tpl-pick-list">
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Spring-and-diaphragm, direct- or reverse-acting to match the required fail action&lt;/b&gt; &mdash; plant air is available and the valve mounts vertical, so nothing rules out the simplest design; it throttles without a positioner and is inherently fail-safe on loss of air, meeting the fail-closed requirement with no added accessory.&lt;/p&gt;">Throttling loop, plant air available, actuator-vertical mounting, must fail closed</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Electric actuator&lt;/b&gt; &mdash; with no instrument air at the site and too few valves to justify a compressor, pneumatic options are off the table; the on/off duty tolerates electric's traditionally on/off, slower-stroking nature. Electric carries no inherent fail-safe, so the fail-safe position has to come from a backup power supply or a manual override, not the actuator itself.&lt;/p&gt;">Simple on/off shutoff, no instrument air at the site, low cycling frequency</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Double-acting pneumatic piston, plus a trip valve or lock-up accessory&lt;/b&gt; &mdash; the required thrust and fast stroke rule out spring-and-diaphragm (limited output, larger size for the thrust needed); plant air is available at pressure for a piston design; because a double-acting piston has no inherent fail-safe, the accessory is what actually delivers the fail-safe action, and a positioner is added for throttling.&lt;/p&gt;">High-thrust continuous throttling, fast stroke required, 120 psig plant air on site, must fail safe on loss of air</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Electro-hydraulic&lt;/b&gt; &mdash; when output, stiffness, and throttling precision all have to be at their highest and cost is not the limiting factor, electro-hydraulic is the one type built to deliver all three together; accept the higher cost and harder maintenance as the tradeoff for meeting a demand none of the other three types can.&lt;/p&gt;">Extreme thrust and stiffness with precision throttling; cost is not the limiting factor</button>
+      </div>
+      <div class="tpl-pick-work"><p class="tpl-pick-work__placeholder">Pick a scenario above to see its worked selection call.</p></div>
+      <p class="tpl-source">Grounded in pss-topic-actuator-selection-parameters, pss-topic-actuator-type-comparison-summary, and pss-topic-actuator-body-orientation &mdash; no figure represents an applied selection judgment. Component Index: pss-topic-actuator-selection-parameters, pss-topic-actuator-type-comparison-summary, pss-topic-actuator-body-orientation.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">91</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

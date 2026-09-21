@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 147 &mdash; Working the Propane Case &mdash; Converging on NPS 4</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m1, page 147 — eng.sizing.fundamentals-liquid-and-compressible.
+       calculate-liquid-cv [apply · procedure], part 2 of 2 (continues from
+       slide 146). Confirmed prose-only, same source worked example as
+       slide 146 — the NPS 4 reassumption (Cv=203), ΣK=0.84, Fp=0.93 →
+       Cv=121.7, the refinement to Fp=0.97 → Cv=116.2, and the "~75% open"
+       conclusion are transcribed exactly, not derived independently. Do tab
+       (2026-09-20 fix): replaced a false "practice exercise that follows"
+       reference — no such exercise exists anywhere in this course,
+       confirmed by search — with a judgment prompt grounded only in this
+       slide's own numbers.
+
+       2026-09-20 fix (Phase 1 remediation, Decision 1): the figure-less
+       adaptation flagged above no longer applies — restored the real fixed
+       32cqw figure column (gallery.css Sec 10) with the SAME propane
+       installation as slide 146's own diagram, but drawn at the NPS 4 size
+       this slide reassumes: NPS 8 line, concentric reducers down to and
+       back up from the NPS 4 valve, P1/P2 taps at the valve's own
+       connections, and a label reading the source's own "~75% open"
+       conclusion — grounding rated Cv = 203 against the converged
+       required Cv = 116.2 the way slide 146's diagram grounds its own
+       Cv/ΔP terms. Not a copy of 146's figure: same case, different
+       valve size and outcome, drawn to match. -->
+  <article class="slide slide--role-procedure-worked" data-slide="147" data-deck="cve1">
+    <h1 class="slide-title">Working the Propane Case &mdash; Converging on NPS 4</h1>
+    <div class="tpl-content">
+      <div class="tpl-tabs">
+        <button class="tpl-tab is-active" type="button">1 &middot; Show</button>
+        <button class="tpl-tab" type="button">2 &middot; Tell</button>
+        <button class="tpl-tab" type="button">3 &middot; Do</button>
+      </div>
+      <div class="tpl-tabpanes">
+        <div class="tpl-tabpane is-active">
+          <ol class="tpl-steps">
+            <li>Reassume NPS 4, rated Cv = 203</li>
+            <li>Recompute for the wider bore: &Sigma;K = 0.84 &rarr; Fp = 0.93</li>
+            <li>Required Cv = 121.7 &mdash; safely under the NPS 4&rsquo;s rated 203</li>
+            <li>Refine: feed 121.7 back into the Fp equation &rarr; Fp = 0.97 &rarr; Cv converges to 116.2, close enough to 121.7 to stop</li>
+          </ol>
+        </div>
+        <div class="tpl-tabpane">
+          <div class="tpl-callout"><span class="tpl-callout__label">Common failure</span>Treating the first passing Cv as final. 121.7 sits far enough from the 203 used to derive that Fp that one more iteration is worth running &mdash; stopping at the first Cv under the rated capacity, without checking whether the Cv/d&sup2; ratio the Fp calculation was built on still holds, is how a &ldquo;passing&rdquo; calculation still ships a size that&rsquo;s subtly off.</div>
+        </div>
+        <div class="tpl-tabpane">
+          Try it yourself: this refinement moved the answer from 121.7 to 116.2 &mdash; about 5%. Would you have stopped there, or run one more iteration? There&rsquo;s no fixed rule; make the call, then see whether you agree with the source&rsquo;s own choice to stop at NPS 4, roughly 75% open.
+        </div>
+      </div>
+
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <svg viewBox="0 0 260 520" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="Schematic of the same propane line as slide 146, redrawn at the NPS 4 valve size: an NPS 8 line necks down through a concentric reducer to the NPS 4 control valve, P1 and P2 pressure taps at the valve's own connections, then expands back to NPS 8 through a second reducer. A label beside the valve shows it landing about 75% open.">
+            <rect x="1" y="1" width="258" height="518" fill="#ffffff"></rect>
+
+            <text x="130" y="22" font-size="13" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">NPS 8 line</text>
+
+            <!-- Wide inlet pipe (D = NPS 8) -->
+            <rect x="96" y="30" width="60" height="80" fill="#cfe3f4" stroke="#004B8D" stroke-width="2"></rect>
+            <line x1="126" y1="34" x2="126" y2="70" stroke="#004B8D" stroke-width="2.5" marker-end="url(#cve1147FlowArrow)"></line>
+            <text x="164" y="75" font-size="11" fill="#3F4040" font-family="Arial, sans-serif">D</text>
+
+            <defs>
+              <marker id="cve1147FlowArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#004B8D"></path>
+              </marker>
+            </defs>
+
+            <!-- Concentric reducer, 8in -> 4in (wider throat than 146's NPS 3 reducer) -->
+            <polygon points="96,110 156,110 143,150 109,150" fill="#e7eaec" stroke="#3F4040" stroke-width="1.8"></polygon>
+            <text x="164" y="132" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif">reducer</text>
+
+            <!-- Narrow run into valve (d = NPS 4, wider than 146's NPS 3 run) -->
+            <rect x="109" y="150" width="34" height="35" fill="#cfe3f4" stroke="#004B8D" stroke-width="2"></rect>
+
+            <!-- P1 tap, at valve inlet -->
+            <line x1="97" y1="178" x2="109" y2="178" stroke="#3F4040" stroke-width="1.6"></line>
+            <text x="52" y="182" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">P1</text>
+            <text x="52" y="195" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">314.7 psia</text>
+
+            <!-- Valve body: two triangles apex-to-apex, wider than 146's -->
+            <polygon points="109,185 143,185 126,207" fill="#e7eaec" stroke="#3F4040" stroke-width="2"></polygon>
+            <polygon points="109,245 143,245 126,207" fill="#e7eaec" stroke="#3F4040" stroke-width="2"></polygon>
+            <text x="164" y="196" font-size="11" fill="#3F4040" font-family="Arial, sans-serif">NPS 4 valve</text>
+            <text x="164" y="210" font-size="10" fill="#3F4040" font-family="Arial, sans-serif">rated Cv = 203</text>
+            <text x="164" y="224" font-size="10" fill="#3F4040" font-family="Arial, sans-serif">required Cv &asymp; 116.2</text>
+            <text x="164" y="238" font-size="10" fill="#004B8D" font-family="Arial, sans-serif" font-weight="700">&asymp;75% open</text>
+
+            <!-- Actuator on top of valve, offset -->
+            <line x1="126" y1="207" x2="126" y2="185" stroke="#3F4040" stroke-width="1.4"></line>
+
+            <!-- narrow run out of valve -->
+            <rect x="109" y="245" width="34" height="27" fill="#cfe3f4" stroke="#004B8D" stroke-width="2"></rect>
+
+            <!-- P2 tap, at valve outlet -->
+            <line x1="97" y1="260" x2="109" y2="260" stroke="#3F4040" stroke-width="1.6"></line>
+            <text x="52" y="264" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">P2</text>
+            <text x="52" y="277" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">289.7 psia</text>
+
+            <!-- deltaP bracket -->
+            <path d="M44,178 L36,178 L36,260 L44,260" fill="none" stroke="#959797" stroke-width="1.3"></path>
+            <text x="12" y="222" font-size="10.5" fill="#959797" font-family="Arial, sans-serif" text-anchor="middle" transform="rotate(-90 12 222)">&Delta;P = 25 psi</text>
+
+            <text x="150" y="262" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif">d</text>
+
+            <!-- Second reducer, 4in -> 8in -->
+            <polygon points="109,272 143,272 156,312 96,312" fill="#e7eaec" stroke="#3F4040" stroke-width="1.8"></polygon>
+
+            <!-- Wide outlet pipe -->
+            <rect x="96" y="312" width="60" height="150" fill="#cfe3f4" stroke="#004B8D" stroke-width="2"></rect>
+            <line x1="126" y1="420" x2="126" y2="462" stroke="#004B8D" stroke-width="2.5" marker-end="url(#cve1147FlowArrow)"></line>
+            <text x="126" y="484" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">q = 800 gpm</text>
+            <text x="126" y="500" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">Gf = 0.50 (propane)</text>
+
+            <text x="126" y="342" font-size="13" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">NPS 8 line</text>
+          </svg>
+        </div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Liquid Sizing Sample Problem,&rdquo; printed pp. 3-6&ndash;3-8 &mdash; worked case transcribed as printed, continuing slide 146. Physical schematic (piping/reducer/P1&ndash;P2 layout) is an originated diagram illustrating the source&rsquo;s own stated geometry and stated &ldquo;~75% open&rdquo; result, not a source figure.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">147</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 144 &mdash; Solving for Required Cv</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m1, page 144 — eng.sizing.fundamentals-liquid-and-compressible.
+       calculate-liquid-cv [apply · mechanism]. Confirmed prose-only (Fisher
+       Control Valve Sourcebook — Oil & Gas, Ch. 3, p. 3-4; identical in the
+       Power & Severe Service edition) — no figure registered. Same
+       figure-less mechanism adaptation as slide 143 (single-column
+       .tpl-content override); flagged once under Concept-map gaps rather
+       than repeated on every affected slide. -->
+  <article class="slide slide--role-mechanism" data-slide="144" data-deck="cve1">
+    <h1 class="slide-title">Solving for Required Cv</h1>
+    <div class="tpl-content" style="grid-template-columns:1fr">
+      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:72cqw;margin:0 auto">
+        <li><span class="num">1</span>Governing equation, volumetric flow: Cv = q &divide; (N1&middot;Fp&middot;&radic;(&Delta;P/Gf)), N1 = 1.0 in gpm/psia units</li>
+        <li><span class="num">2</span>Mass-flow form: substitutes N6 for N1 and w (mass flow rate) for q</li>
+        <li><span class="num">3</span>Fp = 1.0 and drops out entirely when the valve is installed at line size &mdash; no reducers, elbows, or tees at its own connections</li>
+        <li><span class="num">4</span>Two other flow-coefficient conventions convert directly off Cv: Kv = 0.865&middot;Cv, Av = 2.40&times;10<sup>&minus;5</sup>&middot;Cv &mdash; same valve, same physical capacity, different unit system</li>
+      </ul>
+      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3 &ldquo;Liquid Valve Sizing,&rdquo; printed p. 3-4 &mdash; the Cv equation and Kv/Av conversions transcribed from the source&rsquo;s own step-5 equations.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">144</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

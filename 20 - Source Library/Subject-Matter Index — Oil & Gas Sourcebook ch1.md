@@ -71,7 +71,7 @@ source:
       p. 1-1) — "Modern control valve combines actuator, valve assembly and
       digital valve controller to provide maximum performance in a wide
       variety of control applications."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig1-modern-control-valve-overview.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig1-modern-control-valve-overview.png
     locator: "already extracted — cropped directly from the source PDF (p. 7 / printed 1-1) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -102,7 +102,7 @@ source:
       sizes, materials and end connections is available. The balanced plug
       reduces plug force and allows use of smaller actuators. These valves
       are the first choice for applications less than NPS 3 size."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig2-et-globe-valve-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig2-et-globe-valve-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 8 / printed 1-2) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -138,7 +138,7 @@ source:
       flow into multiple passages. Spacing of the holes is carefully
       controlled to eliminate jet interaction and higher resultant noise
       levels."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig3-large-et-drilled-cage-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig3-large-et-drilled-cage-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 8 / printed 1-2) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -164,7 +164,7 @@ source:
       of high-pressure globe valves. Rated at ASME CL2500, it provides
       throttling control of high-pressure steam and fluids. Anti-noise and
       anti-cavitation trims are available to handle flow problems."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig4-ehd-high-pressure-globe-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig4-ehd-high-pressure-globe-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 9 / printed 1-3) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -195,7 +195,7 @@ source:
       Chapter 1, Figure 1-5 (drawing X0184, printed p. 1-3) — "NPS 1 Baumann
       24000 Little Scotty valve with a size 32 actuator and a FIELDVUE
       DVC6200."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig5-baumann-24000-little-scotty-valve.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig5-baumann-24000-little-scotty-valve.png
     locator: "already extracted — cropped directly from the source PDF (p. 9 / printed 1-3) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -224,7 +224,7 @@ source:
       ball valves feature heavy shafts and full ball designs. This V250 is
       suitable for pressure drops to 2220 psig. ASME CL600 and CL900 bodies
       are available—sizes range to NPS 24."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig6-v250-high-pressure-ball-valve-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig6-v250-high-pressure-ball-valve-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 10 / printed 1-4) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -368,7 +368,7 @@ source:
       V150/V200/V300 Vee-Ball™. This product incorporates many features to
       improve throttling performance and rangeability. Tight shutoff is
       achieved by using either heavy-duty metal seals or composition seals."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig7-v150-v200-v300-vee-ball-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig7-v150-v200-v300-vee-ball-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 10 / printed 1-4) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -401,7 +401,7 @@ source:
       closure, it features tight shutoff with globe valve style seating. It
       also offers excellent resistance to abrasive wear and flashing induced
       erosion."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig8-v500-eccentric-plug-valve-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig8-v500-eccentric-plug-valve-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 11 / printed 1-5) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -439,7 +439,7 @@ source:
       High-pressure capability, tight shutoff and excellent control are
       featured as standard. This 8560 design is made for ASME CL150
       applications."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig9-8560-high-performance-butterfly-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig9-8560-high-performance-butterfly-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 12 / printed 1-6) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -475,7 +475,7 @@ source:
       valves offer a choice of characteristic. Selection to match process
       requirements is guided by simple rules. Adherence to these guidelines
       will help assure stable operation."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig10-flow-characteristic-curves.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig10-flow-characteristic-curves.png
     locator: "already extracted — cropped directly from the source PDF (p. 13 / printed 1-7) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -505,7 +505,7 @@ source:
     locator: >
       Chapter 1, Figure 1-11 (drawing A7098, printed p. 1-9) — "Popular
       varieties of bolted flange end connections."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig11-bolted-flange-end-connections.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig11-bolted-flange-end-connections.png
     locator: "already extracted — cropped directly from the source PDF (p. 15 / printed 1-9) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -536,7 +536,7 @@ source:
     locator: >
       Chapter 1, Figure 1-12 (drawing A7099, printed p. 1-9) — "Common
       welded end connections."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig12-welded-end-connections.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig12-welded-end-connections.png
     locator: "already extracted — cropped directly from the source PDF (p. 15 / printed 1-9) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -726,7 +726,7 @@ source:
     locator: >
       Chapter 1 "Control Valve Selection," Figure 1-13 (drawing A6158-2/IL,
       printed p. 1-16) — "Application Guidelines Chart for 500 PPM Service."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig13-packing-500ppm-application-guidelines-chart.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig13-packing-500ppm-application-guidelines-chart.png
     locator: "already extracted — cropped directly from the source PDF (p. 22 / printed 1-16) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -762,7 +762,7 @@ source:
       Chapter 1 "Control Valve Selection," Figure 1-14 (drawing A6159-2/IL,
       printed p. 1-16) — "Application Guidelines Chart for Non-Environmental
       Service."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig14-packing-nonenvironmental-application-guidelines-chart.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig14-packing-nonenvironmental-application-guidelines-chart.png
     locator: "already extracted — cropped directly from the source PDF (p. 22 / printed 1-16) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -792,7 +792,7 @@ source:
     locator: >
       Chapter 1, Figure 1-15 (drawings A6161, A6162, A6163, 24B9310/A6844,
       printed p. 1-17) — "Typical Packing Examples for Sliding-Stem Valves."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig15-sliding-stem-packing-examples-ptfe-and-duplex.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig15-sliding-stem-packing-examples-ptfe-and-duplex.png
     locator: "already extracted — cropped directly from the source PDF (p. 23 / printed 1-17) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -833,7 +833,7 @@ source:
     locator: >
       Chapter 1, Figure 1-16 (drawings E0818, A6167, A6166, A6168, printed
       p. 1-18) — "Typical Packing Examples for Sliding-Stem Valves."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig16-sliding-stem-packing-examples-graphite.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig16-sliding-stem-packing-examples-graphite.png
     locator: "already extracted — cropped directly from the source PDF (p. 24 / printed 1-18) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -864,7 +864,7 @@ source:
     locator: >
       Chapter 1, Figure 1-17 (drawings W5806-1/IL, W6125-1/IL, printed p.
       1-19) — "Typical ENVIRO-SEAL Packing Arrangements for Rotary Valves."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig17-enviroseal-rotary-valve-packing-arrangements.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch1-fig17-enviroseal-rotary-valve-packing-arrangements.png
     locator: "already extracted — cropped directly from the source PDF (p. 25 / printed 1-19) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

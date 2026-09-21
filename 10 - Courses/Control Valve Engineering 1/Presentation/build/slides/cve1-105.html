@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 105 &mdash; Bench Set &mdash; the Travel/Diaphragm-Pressure Relationship</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m3, page 105 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.perform-bench-set-adjustment [understand · mechanism].
+       Component: cvh-cmp-bench-set-seating-force-graph (CVH ch8 Fig. 8.10,
+       p.186). STAGE 3 JUDGMENT CALL (course.json explicitly leaves this to
+       Stage 3, against the rendered result): use Fig. 8.10 DIRECTLY, not a
+       bounded redraw. Checked against Style Guide Sec 5.8's three stated
+       redraw reasons, none apply here: (1) axis layout is NOT incompatible
+       — Fig. 8.10 already plots 0% Travel at the TOP and 100% (plug
+       seated) at the BOTTOM, exactly this course's own Sec 5.7 travel-axis
+       convention, with zero transposition needed; (2) this slide is not
+       trying to isolate ONE interleaved sub-concept the way each of
+       14101 ch3-m6's separate bench-set slides does (Sec 5.8's own
+       worked precedent) — this slide's whole teaching point (course.json
+       t) IS the complete bench-set/deadband/seating-force relationship as
+       one concept, so "cannot be cropped to a single sub-concept" does
+       not apply; if anything cropping would remove load-bearing content.
+       (3) the crop (freshly re-verified/re-cropped this session from the
+       real source PDF) is clean vector-quality art with legible printed
+       labels, not a poor scan. So none of the three reasons fire and
+       Sec 5.8's DEFAULT (use directly) governs. Composed per Sec 6.3 (a
+       figure that carries its own printed field labels): no house-added
+       numbered markers are placed ON the image — the list still carries
+       numbered entries (Sec 6.1's one marker colour) naming each of the
+       figure's own printed labels verbatim, with the plain-language gloss.
+       has-wide-fig used (not the shared 36cqw fig column) so the figure's
+       own printed axis/band labels stay legible at slide size — this is a
+       dense analytical graph with several small printed labels, not a
+       simple cutaway. The figure's own "Lower Diaphragm Casing" annotation
+       (bottom-left, a construction reference near the axis) is not given
+       its own list entry — folded into the travel-axis entry rather than
+       treated as a separate load-bearing concept; flagged Low confidence
+       in this run's report. Copied into this course's own assets/sourced/
+       this session from the shared extracted-figures folder (freshly
+       re-cropped there this session; the earlier defective crop this
+       session's instructions reference was Fig. 4.27, not this figure). -->
+  <article class="slide slide--role-mechanism has-wide-fig" data-slide="105" data-deck="cve1">
+    <h1 class="slide-title">Bench Set &mdash; the Travel/Diaphragm-Pressure Relationship</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh8-fig8-10-bench-set-seating-force-graph.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Actuator Travel (0% Travel, upper stop, at top; 100% Rated Valve Travel, lower stop, plug seated, at bottom) plotted against Actuator Diaphragm Pressure (0-15 psig). A solid blue line shows the Bench Set band from 3 to 11 psig; a dashed grey line at upper left shows the Deadband gap; a dashed orange line to the right shows the combined Bench Set + Deadband range, footnoted for an actuator connected to the valve with deadband present.">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span><b>Bench Set (3&ndash;11 psig)</b> &mdash; the initial spring compression set at the spring adjuster; for an air-to-open actuator, its lower value (3 psig) fixes the pressure at which opening travel begins.</li>
+        <li><span class="num">2</span><b>Deadband</b> &mdash; the pressure range the signal must cross, from backlash and static friction (stiction) in the mechanical connection, before travel actually resumes.</li>
+        <li><span class="num">3</span><b>Bench Set + Deadband</b> &mdash; the combined, wider range once the actuator is connected to the real valve with deadband present (the dashed reference line).</li>
+        <li><span class="num">4</span><b>0% / 100% Travel</b> &mdash; 0% Travel is the upper stop; 100% Rated Valve Travel is the lower stop, plug seated &mdash; matching this course's own travel-axis convention (0% at top).</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 8.10 &mdash; used directly (Style Guide &sect;5.8 default; none of its three redraw reasons apply here). Component Index: cvh-cmp-bench-set-seating-force-graph.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">105</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

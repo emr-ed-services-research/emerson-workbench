@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 056 &mdash; Linear vs. Equal-Percentage</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch4-m1, page 56 — eng.selection.flow-characteristic-and-
+       rangeability.distinguish-inherent-characteristics [understand ·
+       contrast]. Component: cvh-cmp-flow-characteristic-curves-repeat
+       (Control Valve Handbook, 6th ed., Fig. 5.1, p.108 — the same
+       three-curve chart already shown whole on slide 55, re-plotted here;
+       cited per the primitive's own sourceNote naming this as the
+       instance whose backing topic states the distinguishing-behavior/
+       service-use reasoning this slide teaches). Concept-map gap (see
+       report): the contrast template is fixed at exactly two panels, and
+       the source plots all three curves sharing ONE set of axes with no
+       seam separating a "Linear region" from an "Equal-Percentage
+       region" — Style Guide Sec 5.8 reason #2 (cannot be cropped/keyed
+       down to the single sub-concept each panel teaches). Resolved as a
+       BOUNDED REDRAW: each panel isolates the one curve it names, drawn
+       against the identical axis convention and 0-100% bounds Fig. 5.1
+       itself uses (Rated Flow Coefficient % vs Rated Travel %, both
+       axes bounded so neither gets an open-ended arrowhead, Style Guide
+       Sec 5.7). The Linear curve is definitionally a straight diagonal
+       (no measurement needed). The Equal-Percentage curve is spec'd
+       against the classic R=50 rangeability relation Q/Qmax = R^(l-1)
+       (l = fractional travel) - visually cross-checked against Fig. 5.1's
+       own printed curve (stays low through roughly the first two-thirds
+       of travel, then rises sharply) - not a freehand approximation.
+       Each panel is a single series (Style Guide Sec 5.4) so neither
+       carries a key. Quick-Opening (already shown whole on slide 55) is
+       named in text, not given a third panel the template has no room
+       for, per this concept's own templateRationale. -->
+  <article class="slide slide--role-contrast" data-slide="56" data-deck="cve1">
+    <h1 class="slide-title">Linear vs. Equal-Percentage</h1>
+    <div class="tpl-content">
+      <div class="tpl-panel" data-side="left">
+        <div class="panel-label">Linear</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <svg viewBox="0 0 300 260" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Graph of rated flow coefficient against rated travel, both 0 to 100 percent, showing the Linear characteristic as a straight diagonal line from the origin to the top-right corner.">
+            <g stroke="#3F4040" stroke-width="2.4" fill="none" stroke-linecap="round">
+              <path d="M60,15 V205 H285"/>
+            </g>
+            <path d="M60,205 L285,15" fill="none" stroke="#004B8D" stroke-width="3"/>
+            <g font-size="13" fill="#3F4040" font-family="Arial, Helvetica, sans-serif">
+              <text x="52" y="209" text-anchor="end">0</text>
+              <text x="52" y="20" text-anchor="end">100</text>
+              <text x="60" y="222" text-anchor="middle">0</text>
+              <text x="285" y="222" text-anchor="middle">100</text>
+              <text x="172" y="245" text-anchor="middle" font-weight="700">Rated Travel (%)</text>
+              <text x="16" y="110" text-anchor="middle" font-weight="700" transform="rotate(-90 16 110)">Rated Flow Coefficient (%)</text>
+            </g>
+          </svg>
+        </div>
+        <div class="panel-caption">Flow coefficient directly proportional to travel &mdash; constant gain at constant &Delta;P. Fits a loop where the valve carries nearly all the system's pressure drop (liquid-level control, constant-gain flow loops).</div>
+      </div>
+      <div class="tpl-divider"></div>
+      <div class="tpl-panel" data-side="right">
+        <div class="panel-label">Equal-Percentage</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <svg viewBox="0 0 300 260" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Graph of rated flow coefficient against rated travel, both 0 to 100 percent, showing the Equal-Percentage characteristic staying low through most of the travel range then rising sharply near full travel.">
+            <g stroke="#3F4040" stroke-width="2.4" fill="none" stroke-linecap="round">
+              <path d="M60,15 V205 H285"/>
+            </g>
+            <path d="M60,201.2 C110,200 150,196 172.5,178.2 C200,158 250,110 285,15" fill="none" stroke="#004B8D" stroke-width="3"/>
+            <g font-size="13" fill="#3F4040" font-family="Arial, Helvetica, sans-serif">
+              <text x="52" y="209" text-anchor="end">0</text>
+              <text x="52" y="20" text-anchor="end">100</text>
+              <text x="60" y="222" text-anchor="middle">0</text>
+              <text x="285" y="222" text-anchor="middle">100</text>
+              <text x="172" y="245" text-anchor="middle" font-weight="700">Rated Travel (%)</text>
+              <text x="16" y="110" text-anchor="middle" font-weight="700" transform="rotate(-90 16 110)">Rated Flow Coefficient (%)</text>
+            </g>
+          </svg>
+        </div>
+        <div class="panel-caption">Gain rises with flow &mdash; the same percent change in travel produces a small change at low flow, a large one at high flow. Fits the more common case where piping and process equipment absorb most of the drop.</div>
+      </div>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 5.1 &mdash; each panel redrawn to isolate the named curve against the source's own axis convention (Style Guide Sec 5.8, reason 2: the three curves share one set of axes with no seam to crop along). Quick-opening, already shown in full on slide 55, is not a contender for continuous throttling and is not repeated here. Component Index: cvh-cmp-flow-characteristic-curves-repeat.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">56</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

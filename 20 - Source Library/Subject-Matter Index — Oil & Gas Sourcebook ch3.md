@@ -29,7 +29,7 @@ ch2.md` "Open items" — Chapter 2's last content is printed p. 2-14, PDF page
   matching the practice already applied to ch1's and ch2's own reference
   tables in this document series.
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -70,7 +70,7 @@ source:
       WATER. ENTER ON THE ABSCISSA AT THE WATER VAPOR PRESSURE AT THE VALVE
       INLET. PROCEED VERTICALLY TO INTERSECT THE CURVE. MOVE HORIZONTALLY TO
       THE LEFT TO READ THE CRITICAL PRESSURE RATIO, F_F, ON THE ORDINATE."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch3-fig1-liquid-critical-pressure-ratio-water.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch3-fig1-liquid-critical-pressure-ratio-water.png
     locator: "already extracted — cropped directly from the source PDF (p. 44 / printed 3-4) at 600 dpi, chart + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -118,7 +118,7 @@ source:
       ENTER ON THE ABSCISSA AT THE RATIO JUST CALCULATED AND PROCEED
       VERTICALLY TO INTERSECT THE CURVE. MOVE HORIZONTALLY TO THE LEFT AND
       READ THE CRITICAL PRESSURE RATIO, F_F, ON THE ORDINATE."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch3-fig2-liquid-critical-pressure-ratio-nonwater.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch3-fig2-liquid-critical-pressure-ratio-nonwater.png
     locator: "already extracted — cropped directly from the source PDF (p. 45 / printed 3-6) at 600 dpi, chart + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

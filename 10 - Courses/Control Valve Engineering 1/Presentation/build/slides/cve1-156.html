@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 156 &mdash; Choked Compressible Flow &mdash; A Velocity Ceiling</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m2, page 156 — eng.sizing.fundamentals-liquid-and-compressible.
+       determine-compressible-choked-flow [understand · mechanism]. Confirmed
+       prose-only (pss-topic-choked-flow-expansion-factor, Fisher Control
+       Valve Sourcebook — Power & Severe Service, Ch. 4, printed pp. 4-1–4-2).
+       The natural-gas contrast (8-in Design V250 ball valve, x=0.70,
+       FkxT=0.129, choked) is transcribed from that same topic's own citation
+       of "Compressible Fluid Sizing Sample Problem No. 1" (same source,
+       printed pp. 4-2–4-3) — used here only as this mechanism's illustrating
+       case, NOT as this module's own continuing worked example (that stays
+       the steam/Design-ED case on slides 155 and 158, the only one of the
+       two source examples that demonstrates the xTP piping correction LO4
+       needs). Same figure-less mechanism adaptation as slide 153, matching
+       m1's cve1-148 treatment. -->
+  <article class="slide slide--role-mechanism" data-slide="156" data-deck="cve1">
+    <h1 class="slide-title">Choked Compressible Flow &mdash; A Velocity Ceiling</h1>
+    <div class="tpl-content" style="grid-template-columns:1fr">
+      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:76cqw;margin:0 auto">
+        <li><span class="num">1</span>Compressible choking is a velocity ceiling, not liquid sizing&rsquo;s vaporization ceiling &mdash; past a critical pressure-drop ratio, the gas reaches sonic velocity at the vena contracta and added &Delta;P stops increasing mass flow</li>
+        <li><span class="num">2</span>The test is a ratio, not an absolute pressure: compare x = &Delta;P/P1 to the product F<sub>k</sub>&middot;x<sub>T</sub> (F<sub>k</sub> = k/1.4; x<sub>T</sub> is the valve&rsquo;s own rated pressure-drop-ratio factor, replaced by x<sub>TP</sub> when fittings are attached at the valve&rsquo;s own connections)</li>
+        <li><span class="num">3</span>At the critical value, Y is fixed at exactly 0.667 and can&rsquo;t go lower no matter how much further P2 is dropped</li>
+        <li><span class="num">4</span>Contrast: an 8-in Design V250 ball valve, natural gas, x = 0.70 against a rated-travel F<sub>k</sub>x<sub>T</sub> of only 0.129 &mdash; choked outright, and the real x<sub>T</sub> has to be reworked at the valve&rsquo;s actual opening angle three times before the calculation converges</li>
+      </ul>
+      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4 &ldquo;Compressible Fluid Sizing,&rdquo; printed pp. 4-1&ndash;4-3 &mdash; the choking mechanism and the natural-gas contrast case transcribed as printed. Component Index: pss-topic-choked-flow-expansion-factor.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">156</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

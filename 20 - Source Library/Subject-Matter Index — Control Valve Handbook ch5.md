@@ -75,6 +75,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Unnumbered diagram, p. 100 — 'Valve Selection Process,' 6-step flowchart (1. Determine Service Conditions, 2. Calculate Preliminary Cv Required, 3. Select Trim Type, 4. Select Valve Body and Trim Type, 5. Select Trim Materials, 6. Consider Options)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch5-diagram-valve-selection-process-flowchart.png
+    locator: ""
 delivery: analytical diagram — falls under Style Guide §5 if ever placed on a slide
 used-by: []
 notes: >
@@ -144,6 +146,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 5.1 (printed caption reads 'Feedback Control Loop'), p. 108 — Rated Flow Coefficient (%) vs. Rated Travel (%), three curves labelled Quick-Opening, Linear, Equal-Percentage"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch5-fig1-flow-characteristic-curves.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: []
 notes: >
@@ -284,6 +288,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 5.2 'Typical Unbalance Areas of Control Valves,' p. 123"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch5-table2-unbalance-areas.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
@@ -343,6 +349,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 5.3 'Minimum Required Seat Load for Improved Seat Life on Metal-Seated Valves Class II-V,' p. 124"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch5-fig3-seat-load-graph.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: []
 notes: Five labelled diagonal lines (Class II through Class V, with two Class V sub-cases for metal-seat variants), axes Required Seat Load (LBF per Lineal Inch) vs. Shutoff Pressure Drop (PSI).
@@ -395,6 +403,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 5.4 'Recommended Seat Load,' p. 124"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch5-table4-recommended-seat-load.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Table-formatted, printed with a Figure number — catalogued per the same rule as Figure 5.2. Its Class V row explicitly instructs "determine from Figure 5.2," an internal cross-reference within the same source pass.
@@ -411,6 +421,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 5.5 'Typical Packing Friction Values,' p. 125"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch5-table5-packing-friction-values.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Large table-formatted figure spanning stem sizes 5/16" through 2", printed with a Figure number, catalogued per the same table-as-figure rule.
@@ -965,6 +977,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 5.17 'Application Guidelines Chart for 100 PPM Service,' p. 136"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch5-fig17-packing-guidelines-100ppm.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: []
 notes: Dense multi-envelope chart with dual-unit axes (°C/°F, psi/bar); each packing system's operating envelope is a labelled step-line, not a single curve.
@@ -981,6 +995,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 5.18 'Application Guidelines Chart for Non-Environmental Service,' p. 136"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch5-fig18-packing-guidelines-non-environmental.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: []
 notes: Direct companion to Figure 5.17 — same chart shape and packing-system set, wider envelopes throughout (e.g. temperature axis extends to 1200°F vs. Figure 5.17's ~600°F).

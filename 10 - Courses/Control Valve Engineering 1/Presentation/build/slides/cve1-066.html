@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 066 &mdash; Check Your Knowledge: Installed Characteristic & Rangeability</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch4-m2, page 66 — module check slide (role: check). No
+       component earmarked, by design (Stage 2 never gives a check slide
+       its own keyConcept — see this run's own instructions). Synthesized
+       from the whole module arc (slides 61-65): the stem folds the
+       pressure-drop-ratio -> characteristic call (62) together with the
+       rated-rangeability-vs-turndown numeric check (64/65), framed as a
+       concrete evaluate-level situation per Style Guide Sec 8.4.
+       Distractors are real, plausible mix-ups, not obvious throwaways: B
+       gets the numeric check right but the characteristic choice wrong
+       (picks linear where the low ratio calls for equal-percentage); C
+       gets the characteristic right but misreads the numbers (30:1
+       already clears 20:1, so no positioner is needed) — the specific
+       trap of not actually checking the arithmetic; D is wrong on both. -->
+  <article class="slide slide--role-check" data-slide="66" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Installed Characteristic &amp; Rangeability</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A sliding-stem globe valve will hold about 20% of the total system pressure drop at design flow &mdash; the rest is absorbed by the process vessel and piping. The loop needs 20:1 turndown, and the candidate trim is rated for 30:1 rangeability with no positioner planned. Which characteristic should you specify, and does the candidate clear the turndown requirement?</p>
+      <ul class="tpl-options">
+        <li data-correct="true">A.&nbsp;&nbsp;Equal-percentage; yes &mdash; 30:1 rated rangeability clears the 20:1 requirement</li>
+        <li>B.&nbsp;&nbsp;Linear; yes &mdash; 30:1 rated rangeability clears the 20:1 requirement</li>
+        <li>C.&nbsp;&nbsp;Equal-percentage; no &mdash; a characterized positioner is required first to reach 20:1 turndown</li>
+        <li>D.&nbsp;&nbsp;Linear; no &mdash; the valve must be replaced with a rotary body to reach 20:1 turndown</li>
+      </ul>
+      <p class="tpl-reveal">A &middot; Equal-percentage, clears (30:1 &gt; 20:1)</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">66</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

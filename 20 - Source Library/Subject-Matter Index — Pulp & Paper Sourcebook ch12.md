@@ -30,7 +30,7 @@ full: PDF p. 161 = printed p. 12-1 (chapter opening), PDF p. 167 = printed p.
 footer). Zero page offset throughout (PDF page = printed page number + 156).
 Chapter 12 = PDF pp. 161-168.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/Control
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control
 Valve Sourcebook - Pulp & Paper.pdf`. This pass catalogs existence and location
 only — it does not crop or extract images. Record shape: `id` · `kind` ·
 `teaches` · `concept-tags` · `status` · `source` (`doc` + `locator`) ·

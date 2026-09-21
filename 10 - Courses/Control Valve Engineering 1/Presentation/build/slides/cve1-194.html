@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 194 &mdash; Check Your Knowledge &mdash; Diagnosing Valve-Level Causes</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch2-m2, page 194 — the module check slide. Origination mode:
+       no keyConcepts entry exists for a check by design (course.json's own
+       "check": [194] with no matching keyConcept), so this is synthesized
+       directly from the module's own arc (slides 187-193), not from a
+       source figure — no component to cite, matching cve1-023.html's own
+       precedent note for this course's ch2-m1 check slide.
+       Module levelTarget is analyze, so per Style Guide Sec 8.4 the stem is
+       a SITUATION, not "which statement is true." Deliberately draws on
+       THREE of the module's own concepts together, not one: (1) slide 188's
+       Response Time Summary data (a small, consistent Td/T63 across every
+       step rules out both deadband and slow dynamic response as the
+       cause); (2) slides 190-191's signature-overlay diagnostic (a widened
+       span vs. the factory baseline is the friction signal); (3) slide
+       193's caution (retuning does not fix a valve-level fault). All four
+       options are real mistakes a technician could plausibly make from a
+       partial read of the data, per Sec 8.4 — a technician who stops at
+       "the loop is hunting" alone would guess A, B, or D. Revealed answer
+       is terse (letter + short phrase), not a restated sentence, per the
+       Stage 3 prompt's check-slide instructions. data-correct="true" marks
+       the right option per the interactive check convention (gallery.css
+       Sec 8 / slides.js), matching cve1-009/018/023's established
+       convention in this course. -->
+  <article class="slide slide--role-check" data-slide="194" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Diagnosing Valve-Level Causes</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A loop is hunting at low flow. The valve's own Response Time Summary shows a small, consistent Td and T63 across every tested step size and direction &mdash; the valve moves promptly every time. But a ValveLink Total Scan overlay shows the current signature's span is visibly wider than the factory baseline across the whole stroke. What is the most likely cause, and what actually fixes it?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Deadband from linkage backlash &mdash; replace the linkage</li>
+        <li>B.&nbsp;&nbsp;Slow dynamic response &mdash; resize the positioner or actuator</li>
+        <li data-correct="true">C.&nbsp;&nbsp;Increased friction in the valve assembly &mdash; service it; retuning will not fix a widened span</li>
+        <li>D.&nbsp;&nbsp;A controller-tuning mismatch &mdash; retune to a faster time constant</li>
+      </ul>
+      <p class="tpl-reveal">C &middot; Service the valve (friction)</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">194</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

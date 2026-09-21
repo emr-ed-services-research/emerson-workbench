@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 069 &mdash; Specifying the Construction to Meet the Class</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m1, page 69 — eng.selection.shutoff-leakage-and-standards.
+       classify-and-select-shutoff-class [evaluate · application]. No
+       figure in the registry backs a trim/seat-construction worked example
+       for this competency (topics only — cvh-topic-seat-leakage-
+       classification, ogas-topic-shutoff-leakage-classification, pp-topic-
+       shutoff-leakage-classification, pss-topic-shutoff-leakage-selection-
+       criteria — all four prose-only, relatedFigures: [] on every one).
+       The decision table below stays to what those four sources actually
+       state (the class-selection judgment, the factory-test-vs-field-
+       performance caveat, seat material/preparation/load as the real
+       construction lever, and the high-ΔP trim-destruction consequence)
+       rather than asserting a specific seat-material-to-class ceiling
+       (e.g. "metal seat tops out at Class IV/V, soft seat reaches Class
+       VI") — that mapping is common Handbook knowledge and is even implied
+       by cvh-cmp-seat-load-graph's own metal-seated-valves-only Class
+       II-V seat-load chart, but that figure and its topic (cvh-topic-
+       seat-load) are registered in this course to a different competency
+       (eng.actuation.actuator-selection-and-force-torque-sizing.
+       calculate-sliding-stem-thrust), and curriculum-development.md's
+       asset-variant discipline treats a competency×asset-variant reuse as
+       a human-curated call, not one Stage 3 should make unilaterally.
+       CONCEPT-MAP GAP, carried forward for Franz: whether cvh-cmp-seat-
+       load-graph should be formally cross-referenced here is still open —
+       not resolved in this pass. Same tp-009 decision-table application
+       variant this course already used on slide 53
+       (.slide--role-application:has(.tmpl-table), Style Guide Sec
+       5.10/9.2) for an identical shape: an evaluate-level rule of thumb
+       with zero figures in the registry — no corroborating figure, table
+       runs full width, same as slide 53. Columns ordered given-to-answer
+       per Style Guide Sec 9.4. -->
+  <article class="slide slide--role-application" data-slide="69" data-deck="cve1">
+    <h1 class="slide-title">Specifying the Construction to Meet the Class</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1">
+        <thead>
+          <tr><th>Duty situation</th><th>Confirm this first</th><th>Construction to verify</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Occasional-cycling isolation duty, some seat leakage tolerable</td><td>Read the required class off the table just taught &mdash; don't default upward</td><td>Seat material &amp; seat load sized to the <b>confirmed</b> class, not over-built</td></tr>
+          <tr><td>Toxic or high-hazard block valve, near-zero visible leakage required</td><td>Confirm Class V or VI is genuinely justified by the duty, not assumed</td><td>Seat material, seat preparation, <b>and</b> seat load all matched together &mdash; the class number alone is a factory-test result, not a field guarantee</td></tr>
+          <tr><td>Any of the above, at high pressure drop (&Delta;P)</td><td>Same confirmed class applies &mdash; &Delta;P doesn't change which class the duty needs</td><td>An under-built seat here risks trim erosion and eventual trim destruction, not just a leakage miss</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-takeaway">A leakage class on a spec sheet is a factory-test comparison basis, not a field-leakage guarantee &mdash; meeting it in service depends on seat material, preparation, and load together, and skipping that check costs the most at high &Delta;P.</p>
+      <p class="tpl-source">No corroborating figure exists in the Source Library for this synthesis (all four backing citations are topics, prose only). After Control Valve Handbook, 6th ed., &sect;5.2&ndash;5.3, cross-confirmed against Oil &amp; Gas / Pulp &amp; Paper / Power &amp; Severe Service Sourcebook parallels. Component Index: cvh-topic-seat-leakage-classification, ogas-topic-shutoff-leakage-classification, pp-topic-shutoff-leakage-classification, pss-topic-shutoff-leakage-selection-criteria.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">69</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

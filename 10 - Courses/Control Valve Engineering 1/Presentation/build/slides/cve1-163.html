@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 163 &mdash; Two Rules That Don&rsquo;t Agree</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch9-m1, page 163 — eng.installation.piping-practice-and-orientation.
+       evaluate-line-size-and-velocity [understand · contrast]. No component
+       earmarked (course.json sourceNote): pss-topic-line-size-vs-valve-size
+       is confirmed prose-only, no figure in the source, so both panels carry
+       plain text rather than an image — no .tpl-list used inside the panels
+       (no scoped styling exists for it under slide--role-contrast; a plain
+       label + worked-value pair reuses the existing .panel-label/
+       .panel-caption classes instead). The 20-in/10-in/16-in figures are the
+       source's own worked example, transcribed exactly to demonstrate the
+       two rules genuinely conflict rather than merely differ in derivation
+       (course.json templateRationale). Citation sits in the reserved 4th
+       .tpl-source row (gallery.css Sec 6, 2026-09-14 fix). -->
+  <article class="slide slide--role-contrast" data-slide="163" data-deck="cve1">
+    <h1 class="slide-title">Two Rules That Don&rsquo;t Agree</h1>
+    <div class="tpl-content">
+      <div class="tpl-panel" data-side="left">
+        <div class="panel-label">Rule 1 &mdash; Half the Pipe Size</div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1cqh;text-align:center">
+          <p style="margin:0;font-size:1.5cqw;color:var(--body-text);line-height:1.35">Valve size &ge; &frac12; the line size</p>
+          <p style="margin:0;font-size:2.1cqw;font-weight:700;color:var(--emerson-blue)">20-in line &rarr; 10-in floor</p>
+        </div>
+        <div class="panel-caption">Adequate strength assurance on its own</div>
+      </div>
+      <div class="tpl-divider"></div>
+      <div class="tpl-panel" data-side="right">
+        <div class="panel-label">Rule 2 &mdash; Two Sizes Below Line</div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1cqh;text-align:center">
+          <p style="margin:0;font-size:1.5cqw;color:var(--body-text);line-height:1.35">Valve size &ge; line size &minus; 2 nominal sizes</p>
+          <p style="margin:0;font-size:2.1cqw;font-weight:700;color:var(--emerson-blue)">20-in line &rarr; 16-in floor</p>
+        </div>
+        <div class="panel-caption">Also adequate on its own</div>
+      </div>
+      <p class="tpl-source">After Fisher Power &amp; Severe Service Sourcebook, Ch. 13, &ldquo;Line Size Versus Valve Size,&rdquo; printed p. 13-2 &mdash; the source&rsquo;s own worked 20-in-line comparison, transcribed to show the two rules genuinely disagree. Component Index: pss-topic-line-size-vs-valve-size.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">163</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

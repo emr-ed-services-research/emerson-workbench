@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 112 &mdash; Electric vs. Electro-Hydraulic</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m3, page 112 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.select-extreme-service-actuator-variant [understand ·
+       contrast]. No figure exists for either type in the registry, or (per
+       ogas-topic-electro-hydraulic-actuator-configurations' own note)
+       anywhere in the Oil & Gas Sourcebook's chapter for the
+       electro-hydraulic half at all (course.json sourceNote). GENERATED
+       FROM NOTHING, per Franz's explicit editorial constraint for this
+       slide: a pair of plain, simple block-diagram schematics — motor +
+       gear train for electric, motor + pump + piston/accumulator for
+       electro-hydraulic — standard textbook-simple boxes and arrows, not
+       detailed engineering drawings. No physical geometry is claimed
+       beyond a labelled box and a direction-of-flow arrow, so working rule
+       2's geometry check does not apply (no real part shape is being
+       represented). -->
+  <article class="slide slide--role-contrast" data-slide="112" data-deck="cve1">
+    <h1 class="slide-title">Electric vs. Electro-Hydraulic</h1>
+    <div class="tpl-content">
+      <div class="tpl-panel" data-side="left">
+        <div class="panel-label">Electric</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <svg viewBox="0 0 320 170" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Simple block diagram: a motor connected to a gear train, which drives the actuator output.">
+            <rect x="10" y="50" width="110" height="70" rx="4" fill="none" stroke="#004B8D" stroke-width="2.6"></rect>
+            <text x="65" y="90" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#3F4040">Motor</text>
+            <line x1="120" y1="85" x2="158" y2="85" stroke="#3F4040" stroke-width="2.2"></line>
+            <path d="M158,85 L148,80 L148,90 Z" fill="#3F4040"></path>
+            <rect x="163" y="45" width="147" height="80" rx="4" fill="none" stroke="#004B8D" stroke-width="2.6"></rect>
+            <circle cx="207" cy="68" r="13" fill="none" stroke="#959797" stroke-width="1.8"></circle>
+            <circle cx="230" cy="68" r="9" fill="none" stroke="#959797" stroke-width="1.8"></circle>
+            <text x="237" y="112" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#3F4040">Gear Train</text>
+          </svg>
+        </div>
+        <div class="panel-caption">A motor and gear train &mdash; the simpler, lower-cost path, economical only in small size ranges; typical fail action is lock-in-last-position, not a true fail-open or fail-closed.</div>
+      </div>
+      <div class="tpl-divider"></div>
+      <div class="tpl-panel" data-side="right">
+        <div class="panel-label">Electro-Hydraulic</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <svg viewBox="0 0 460 170" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Simple block diagram: a motor drives a pump, which drives a piston-and-accumulator assembly that outputs to the actuator.">
+            <rect x="10" y="55" width="95" height="60" rx="4" fill="none" stroke="#004B8D" stroke-width="2.6"></rect>
+            <text x="57" y="90" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#3F4040">Motor</text>
+            <line x1="105" y1="85" x2="138" y2="85" stroke="#3F4040" stroke-width="2.2"></line>
+            <path d="M138,85 L128,80 L128,90 Z" fill="#3F4040"></path>
+            <rect x="140" y="55" width="95" height="60" rx="4" fill="none" stroke="#004B8D" stroke-width="2.6"></rect>
+            <text x="187" y="90" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#3F4040">Pump</text>
+            <line x1="235" y1="85" x2="268" y2="85" stroke="#3F4040" stroke-width="2.2"></line>
+            <path d="M268,85 L258,80 L258,90 Z" fill="#3F4040"></path>
+            <rect x="270" y="45" width="180" height="80" rx="4" fill="none" stroke="#004B8D" stroke-width="2.6"></rect>
+            <text x="360" y="80" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#3F4040">Piston /</text>
+            <text x="360" y="100" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#3F4040">Accumulator</text>
+          </svg>
+        </div>
+        <div class="panel-caption">A motor pumps oil internally to a piston &mdash; high stiffness, analog-signal compatibility, excellent frequency response and positioning accuracy. Fail-safe is not inherent: a return spring or accumulator is needed, either self-contained (its own motor/pump/reservoir) or externally powered.</div>
+      </div>
+      <p class="tpl-source">Originated block diagrams &mdash; no component is registered for either type at this competency, and no figure exists anywhere in the Oil &amp; Gas Sourcebook's own chapter for the electro-hydraulic half (Control Valve Handbook, Oil &amp; Gas Sourcebook, and Power &amp; Severe Service Sourcebook are all prose-only here). Not a redraw of any source figure. Component Index: ogas-topic-electric-actuator-selection-factors, ogas-topic-electro-hydraulic-actuator-configurations.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">112</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

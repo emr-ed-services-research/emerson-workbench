@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 075 &mdash; Three Criteria That Set the Body/Bonnet Spec</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m2, page 75 — eng.selection.shutoff-leakage-and-standards.
+       verify-pt-rating-and-material [understand · mechanism]. Source:
+       pss-topic-pressure-temperature-material-selection-criteria,
+       cross-confirmed against its Pulp & Paper Sourcebook parallel
+       (pp-topic-pressure-temperature-material-selection-criteria), which
+       independently restates the same three-criterion bundle (both
+       topics: [] figures, confirmed real). The source treats these three
+       criteria as one interlinked Table 1-1 entry rather than three
+       separable facts — preserved as one slide, matching the source's own
+       structure. No schematic exists for this reasoning chain (this
+       concept's own templateRationale), so — same convention as slide 74
+       and this module's own m1 sibling's slide 68 — a production
+       .tmpl-table is placed directly into the mechanism role's existing
+       grid via an inline grid-column/grid-row span rather than forcing a
+       figure that doesn't exist. The "none of the three stands alone"
+       coupling point is carried as a full-span tfoot note, the same
+       device used on slide 74, since it applies across all three rows at
+       once. -->
+  <article class="slide slide--role-mechanism" data-slide="75" data-deck="cve1">
+    <h1 class="slide-title">Three Criteria That Set the Body/Bonnet Spec</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1; grid-row:1; align-self:center;">
+        <thead>
+          <tr><th>Criterion</th><th>Sets / driven by</th><th>How it couples to the others</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Pressure rating</td><td>ANSI class &mdash; 150/300/600 most common for steel &amp; stainless</td><td>Each class's maximum-pressure ceiling <b>falls as service temperature rises</b>, per the material's own strength curve; not every product is available in every class</td></tr>
+          <tr><td>Temperature</td><td>Body-material strength/ductility limits, thermal expansion, soft-part limits &mdash; elastomers to roughly 200&ndash;350&deg;F, PTFE to roughly 450&deg;F</td><td>Metal seals (needed above PTFE's limit) generally <b>increase shutoff leakage</b>; hot metal bearing sleeves in rotary valves add shaft friction that <b>reduces the pressure-drop load the shaft can withstand at shutoff</b></td></tr>
+          <tr><td>Material selection</td><td>Corrosion, erosion, flashing, cavitation, and process pressure/temperature weighed together</td><td>In-valve velocity runs higher than pipe velocity, so valve material often <b>differs</b> from piping material; trim material follows body material, temperature range, and fluid properties; bar stock or lined bodies considered when the needed body material isn't available as carbon, alloy, or stainless steel</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="3">None of the three stands alone &mdash; temperature limits which materials are usable, and material choice constrains which pressure class is even available.</td></tr>
+        </tfoot>
+      </table>
+      <p class="tpl-source">Originated synthesis table &mdash; no schematic exists for this reasoning chain. After Fisher Power &amp; Severe Service Sourcebook's General Selection Criteria topic, cross-confirmed against its Pulp &amp; Paper Sourcebook parallel &mdash; reference material, prose only. Component Index: pss-topic-pressure-temperature-material-selection-criteria, pp-topic-pressure-temperature-material-selection-criteria.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">75</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

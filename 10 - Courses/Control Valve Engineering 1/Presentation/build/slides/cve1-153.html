@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 153 &mdash; What Compressible Sizing Adds</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m2, page 153 — eng.sizing.fundamentals-liquid-and-compressible.
+       calculate-compressible-cv [understand · mechanism]. Confirmed
+       prose-only against the real source PDF (Fisher Control Valve
+       Sourcebook — Power & Severe Service, Ch. 4, printed pp. 4-1–4-2;
+       parallel boilerplate in the Control Valve Handbook §5.9) — no figure
+       exists to overlay step markers on. Same figure-less mechanism
+       adaptation this course's own cve1-143/144/145/148 (m1) already
+       established: .tpl-content overridden to a single column so the list
+       runs full width, flagged once under Concept-map gaps in this run's
+       report rather than repeated per slide. -->
+  <article class="slide slide--role-mechanism" data-slide="153" data-deck="cve1">
+    <h1 class="slide-title">What Compressible Sizing Adds</h1>
+    <div class="tpl-content" style="grid-template-columns:1fr">
+      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:74cqw;margin:0 auto">
+        <li><span class="num">1</span>A gas&rsquo;s density keeps changing as it drops pressure through the valve, unlike a liquid&rsquo;s &mdash; so two new inputs join the service conditions: the gas&rsquo;s molecular weight (M) and its specific-heat ratio (k)</li>
+        <li><span class="num">2</span>Liquid sizing picks between two unit constants (N1 volumetric, N6 mass). Compressible sizing picks among four: N7 or N9 volumetric, N6 or N8 mass</li>
+        <li><span class="num">3</span>Which half of each pair applies depends on which gas property was actually specified in the service conditions &mdash; specific gravity (Gg) or molecular weight (M)</li>
+      </ul>
+      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4 &ldquo;Compressible Fluid Sizing,&rdquo; printed pp. 4-1&ndash;4-2 &mdash; the M/k additions and the N6/N7/N8/N9 branching as stated in the source&rsquo;s own steps 1&ndash;2.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">153</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

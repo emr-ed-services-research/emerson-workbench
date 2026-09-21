@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 021 &mdash; Oversizing Distorts Installed Gain</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch2-m1, page 21 — eng.foundations.process-variability-and-loop-
+       performance.oversizing-distortion-effects [understand · mechanism],
+       progression: develops. Fig. 2.5 is the same component CVB's
+       cvb-057.html already verified and uses
+       (cvh-cmp-installed-characteristic-and-gain) — reused verbatim, no
+       re-cropping, per Style Guide §5.8. has-wide-fig used, matching
+       cvb-057's own precedent: the crop (1377x870 px, aspect ~1.58) is a
+       landscape two-stacked-plot chart the fixed 36cqw standard column
+       would render illegibly small. Per the concept's own
+       templateRationale this DEVELOPS what cve1-ch1-m2 slide 10 already
+       introduced generally (what installed characteristic/installed gain
+       ARE) — that module's own registry has no figure for it — so this
+       list is deliberately terser than a from-scratch explanation: it
+       goes straight to the oversizing-specific distortion (two named
+       mechanisms) rather than re-defining the two curves. -->
+  <article class="slide slide--role-mechanism has-wide-fig" data-slide="21" data-deck="cve1">
+    <h1 class="slide-title">Oversizing Distorts Installed Gain</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh2-fig2-5-installed-characteristic-and-gain.png" style="width:100%;height:100%;object-fit:contain" alt="Two stacked graphs sharing a valve-travel x-axis. Top: flow in gpm rising from 0 to about 850 and flattening as travel increases, labelled Installed Characteristic. Bottom: installed gain, plotted as percent flow per percent input, starting near 2.8 at low travel and falling toward zero at high travel, with a Control Range band and an EnTec Gain Specification bracket marked on the right.">
+        </div>
+      </div>
+      <ol class="tpl-list">
+        <li><span class="num">1</span>Oversizing puts too much of the loop's total gain into the valve itself &mdash; crowding out the controller's own share (best performance comes from the controller holding most of the gain, not the valve)</li>
+        <li><span class="num">2</span>Oversizing forces the valve to operate more of its life at low openings, where seal friction is worst &mdash; exaggerating the resulting friction/deadband penalty on variability</li>
+        <li><span class="num">3</span>Net effect, whatever the valve's inherent characteristic: quick-opening behavior (high, hard-to-control gain) at low lift, nearly flat (uncontrollable) at high travel &mdash; the usable control range narrows to a fraction of total travel</li>
+      </ol>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 2.5 &mdash; used directly. Component Index: cvh-cmp-installed-characteristic-and-gain.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">21</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

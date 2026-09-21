@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 098 &mdash; Piston Actuator Thrust</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m2, page 98 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.calculate-sliding-stem-thrust [apply · procedure].
+       GENERATED FROM NOTHING, per Franz's explicit editorial constraint
+       for this slide: no piston-thrust worked example exists anywhere in
+       the indexed Subject-Matter Index (checked directly against the
+       Control Valve Handbook, Oil & Gas Sourcebook, and Power & Severe
+       Service Sourcebook, including the primary PDF text — course.json
+       sourceNote); the formula is real, a solved numeric case is not.
+       Plain piston/cylinder cross-section labelling area and supply
+       pressure only, per Franz's stated constraint: a simple schematic,
+       not a detailed engineering drawing — same minimal register as
+       cve1-061's two-box schematic. Working-rule-2 geometry check: a
+       piston in a cylindrical bore is drawn here as a straight-sided
+       rectangle (a flat disc face, not a curved profile) — the correct
+       flattening of a genuinely cylindrical part for a side-view
+       schematic, not a misrepresentation of a ring as a line. -->
+  <article class="slide slide--role-procedure-image" data-slide="98" data-deck="cve1">
+    <h1 class="slide-title">Piston Actuator Thrust</h1>
+    <div class="tpl-content">
+      <ol class="tpl-steps">
+        <li>Piston actuator, no spring &mdash; thrust = piston area &times; minimum supply pressure = available thrust</li>
+        <li>No bench-set / precompression check &mdash; there is no spring range to overcome</li>
+        <li>Keep units compatible: piston area in sq. in., pressure in psig, thrust in lbf</li>
+        <li>Piston actuator WITH a spring is sized the same A + B + C + D way as the diaphragm actuator &mdash; the manufacturer publishes its own thrust, effective area, and spring data, plus a maximum-stem-load check</li>
+      </ol>
+      <div class="tpl-fig">
+        <svg viewBox="0 0 380 260" role="img" aria-label="A simple piston-and-cylinder schematic: supply pressure P pushes on the piston's area A from the left, producing thrust out the stem on the right, labelled Thrust = P times A." style="width:100%;height:100%">
+          <rect x="60" y="70" width="220" height="120" fill="none" stroke="#3F4040" stroke-width="3"></rect>
+          <rect x="150" y="70" width="14" height="120" fill="#004B8D"></rect>
+          <line x1="164" y1="130" x2="260" y2="130" stroke="#3F4040" stroke-width="6"></line>
+          <defs>
+            <marker id="q98a" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#004B8D"></path>
+            </marker>
+            <marker id="q98b" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <path d="M0,0 L8,4 L0,8 Z" fill="#3F4040"></path>
+            </marker>
+          </defs>
+          <line x1="20" y1="105" x2="60" y2="105" stroke="#004B8D" stroke-width="3" marker-end="url(#q98a)"></line>
+          <line x1="20" y1="130" x2="60" y2="130" stroke="#004B8D" stroke-width="3" marker-end="url(#q98a)"></line>
+          <line x1="20" y1="155" x2="60" y2="155" stroke="#004B8D" stroke-width="3" marker-end="url(#q98a)"></line>
+          <text x="18" y="90" text-anchor="start" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#004B8D">Supply pressure (P)</text>
+          <text x="157" y="60" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#3F4040">Piston area (A)</text>
+          <line x1="260" y1="130" x2="290" y2="130" stroke="#3F4040" stroke-width="2" marker-end="url(#q98b)"></line>
+          <text x="200" y="215" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="15" font-weight="700" fill="#3F4040">Thrust = P &times; A</text>
+        </svg>
+      </div>
+      <p class="tpl-source">Originated schematic &mdash; no component is registered for this competency (Control Valve Handbook, 6th ed., &sect;5.11.2; Power &amp; Severe Service Sourcebook, pss-topic-piston-thrust-calculation; prose only, no worked case). Not a redraw of any source figure.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">98</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

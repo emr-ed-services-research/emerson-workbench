@@ -24,7 +24,7 @@ against the real page text (`pdftotext -layout`) and a 200/300 dpi
 page-image render before extraction; none were skipped or fabricated.
 Chapter 14 is now fully catalogued.
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -200,7 +200,7 @@ source:
       Chapter 14 "LNG Receiving Terminals," Figure 14-1 (drawing number
       E1536, printed p. 14-1) — "Figure 14-1. LNG Receiving Terminal Process
       Flow Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig1-lng-receiving-process-flow.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig1-lng-receiving-process-flow.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 160, printed p. 14-1) at 300 dpi, full block diagram (all seven named process blocks, boil-off/recondenser/vaporizer return paths), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -238,7 +238,7 @@ source:
       Chapter 14 "LNG Receiving Terminals," Figure 14-2 (drawing number
       E1537, printed p. 14-3) — "Figure 14-2. LNG Ship Unloading and Vapor
       Return Lines."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig2-ship-unloading-vapor-return.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig2-ship-unloading-vapor-return.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 162, printed p. 14-3) at 300 dpi, full diagram (all three numbered valve symbols, LNG storage tank, vapor-return-to-ship block), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -270,7 +270,7 @@ source:
     locator: >
       Chapter 14 "LNG Receiving Terminals," Figure 14-3 (drawing number
       W7449, printed p. 14-4) — "Figure 14-3. A31A Cryogenic Valve."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig3-a31a-cryogenic-valve.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig3-a31a-cryogenic-valve.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 163, printed p. 14-4, upper portion) at 300 dpi, full product photo (bonnet extension, body, handwheel), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -304,7 +304,7 @@ source:
     locator: >
       Chapter 14 "LNG Receiving Terminals," Figure 14-4 (drawing number
       E1538, printed p. 14-4) — "Figure 14-4. LNG Storage Send-Out System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig4-lng-storage-send-out-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig4-lng-storage-send-out-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 163, printed p. 14-4, lower portion) at 300 dpi, full diagram (both storage tanks, all five numbered valve symbols, recondenser block), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -337,7 +337,7 @@ source:
     locator: >
       Chapter 14 "LNG Receiving Terminals," Figure 14-5 (drawing number
       W6397-1, printed p. 14-5) — "Figure 14-5. Design ET-C."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig5-design-et-c-valve.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig5-design-et-c-valve.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 164, printed p. 14-5) at 300 dpi, full cutaway illustration (spring-and-diaphragm actuator, bonnet, globe body), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -374,7 +374,7 @@ source:
       Chapter 14 "LNG Receiving Terminals," Figure 14-6 (drawing number
       E1539, printed p. 14-6) — "Figure 14-6. Boil Off Gas and Pipeline
       Compression System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig6-boiloff-gas-pipeline-compression.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig6-boiloff-gas-pipeline-compression.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 165, printed p. 14-6) at 300 dpi, full diagram (both storage tanks, both compressors, all three numbered anti-surge/control valves, LP fuel gas / pipeline / recondenser outlets), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -410,7 +410,7 @@ source:
     locator: >
       Chapter 14 "LNG Receiving Terminals," Figure 14-7 (drawing number
       E1132, printed p. 14-7) — "Figure 14-7. High Pressure Pump System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig7-send-out-pump-recirculation-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig7-send-out-pump-recirculation-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 166, printed p. 14-7, left column) at 300 dpi, full diagram (both pump trains, both numbered valve types, recondenser and vaporizer blocks), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -449,7 +449,7 @@ source:
     locator: >
       Chapter 14 "LNG Receiving Terminals," Figure 14-8 (drawing number
       E1133, printed p. 14-7) — "Figure 14-8. High Pressure Pump System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig8-scv-fuel-gas-valve-train.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig8-scv-fuel-gas-valve-train.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 166, printed p. 14-7, right column) at 300 dpi, full diagram (fuel gas inlet, both numbered valve types, combustor symbol, LNG/GAS/EXHAUST GAS labels), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -493,7 +493,7 @@ source:
       Chapter 14 "LNG Receiving Terminals," Figure 14-9 (drawing number
       E1134, printed p. 14-8) — "Figure 14-9. Shell and Tube Vaporizer and
       Associated Valves."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig9-shell-tube-vaporizer-valves.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig9-shell-tube-vaporizer-valves.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 167, printed p. 14-8, right column) at 300 dpi, full diagram (fuel gas inlet, all three numbered valve types, combustor, HTF loop, vaporizer block, LNG/GAS labels), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -531,7 +531,7 @@ source:
     locator: >
       Chapter 14 "LNG Receiving Terminals," Figure 14-10 (drawing number
       E1540, printed p. 14-9) — "Figure 14-10. Plant Discharge Valves."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig10-plant-discharge-valves.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch14-fig10-plant-discharge-valves.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 168, printed p. 14-9, left column) at 300 dpi, full diagram (vaporizer block, both numbered valve types, discharge arrows), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

@@ -63,7 +63,7 @@ as its own record. Twenty-one records resulted from twenty-three real
 drawing numbers found (two pairs bundled) — see Open Items for the full
 accounting.
 
-All content is from `20 - Source Library/Industry Specific Sourcebooks/
+All content is from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/
 Control Valve Sourcebook - Power & Severe Service.pdf`. No extracted-figures
 crop folder exists for this book — each record's `source` carries a single
 synthetic locator (`"Unnumbered diagram, p. N — <description>"`, drawing

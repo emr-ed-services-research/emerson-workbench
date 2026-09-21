@@ -3,30 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 005 &mdash; Case A: Service Conditions and Preliminary Cv</title>
+<title>CVE1 &middot; Slide 005 &mdash; The Feedback Control Loop</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m1, page 5 — eng.sizing.valve-selection-process [apply ·
-       mechanism]. ATTEMPT 3: real numbers throughout, every term defined
-       at first use, per teaching-philosophy.md's tier-1 correction. -->
+  <!-- cve1-ch1-m1, page 5 — eng.foundations.control-loop-and-final-control-element.
+       identify-final-control-element [understand · mechanism]. Origination
+       Stage 3: this module has no separate prime slide — the module's
+       stakes line is the hook, so the module opens directly on this
+       content. Fig. 1.1 is a labelled block diagram already carrying its
+       own Process/Sensor/Transmitter/Controller/Control Valve labels and
+       Manipulated/Controlled Variable arrows (Style Guide Sec 6.3 — a
+       figure with its own printed field labels is not re-marked with
+       numbered circles), so no .tpl-marker dots or .tpl-flow-arrow are
+       added; the list keys the loop's function sequence, naming each
+       printed block, and closes on the point the whole course rests on:
+       "control valve" here is the full assembly, not the body alone. -->
   <article class="slide slide--role-mechanism" data-slide="5" data-deck="cve1">
-    <h1 class="slide-title">Case A: Service Conditions and Preliminary Cv</h1>
+    <h1 class="slide-title">The Feedback Control Loop</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig-flowchart-steps1-2.png" style="width:100%;height:100%;object-fit:contain" alt="Valve selection flowchart, steps 1-2: determine service conditions, calculate preliminary Cv">
+          <img src="../assets/sourced/cvh1-fig1-1-feedback-control-loop.png" style="width:100%;height:100%;object-fit:contain" alt="Feedback control loop block diagram: a Manipulated Variable arrow runs from Control Valve to Process; a Controlled Variable arrow runs from Process onward and also down to Sensor, then Transmitter, then Controller, which closes the loop back to Control Valve.">
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>Cooling-water bypass line: P1 = 150 psig, P2 = 100 psig, so &Delta;P = P1 &minus; P2 = 50 psi</li>
-        <li><span class="num">2</span>Q = 200 gpm of water (SG = 1.0), 70&deg;F, ANSI Class 300, Class II shutoff</li>
-        <li><span class="num">3</span>Preliminary Cv = Q &times; &radic;(SG / &Delta;P) = 200 &times; &radic;(1.0/50) = 200 &times; 0.141 &asymp; 28</li>
+        <li><span class="num">1</span>Process &mdash; the variable actually being controlled (pressure, flow, level, temperature&hellip;)</li>
+        <li><span class="num">2</span>Sensor &amp; Transmitter &mdash; measure the process variable, carry it onward as the Controlled Variable</li>
+        <li><span class="num">3</span>Controller &mdash; compares the measurement to setpoint, computes the correction</li>
+        <li><span class="num">4</span>Control Valve &mdash; the final control element; carries the correction into the process as the Manipulated Variable &mdash; the whole assembly (body, trim, actuator, accessories), not the body alone</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100, Steps 1-2 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 1.1 &mdash; used directly, block labels retained. Component Index: cvh-cmp-feedback-control-loop.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">5</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

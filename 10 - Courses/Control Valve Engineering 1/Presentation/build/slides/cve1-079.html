@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 079 &mdash; Tracing Jurisdiction for a Real Installation</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m2, page 79 — eng.selection.shutoff-leakage-and-standards.
+       identify-code-jurisdiction [analyze · application]. Applies
+       pss-topic-boiler-piping-code-jurisdiction and pss-topic-valve-
+       standards-crosswalk together (both topics: [] figures, confirmed
+       real) — the two-step reasoning chain (boundary rule, then standards
+       crosswalk) is this module's own synthesis of both topics' teaches
+       text, matching the worked logic this module's own cve1-ch5-m2-act2
+       activity already exercises on installation-context cards. The
+       worked case (a steam-drum level control valve) is the source's OWN
+       named example of real control equipment sitting on boiler external
+       piping (pss-topic-boiler-piping-code-jurisdiction's own teaches
+       text) — not an invented scenario. Kept as a plain case-walkthrough
+       rather than a decision table (this concept's own templateRationale):
+       unlike slide 78's flat current/superseded listing, this slide's
+       content is a two-step reasoning chain applied to ONE scenario, not
+       a lookup table. CONCEPT-MAP / TEMPLATE GAP (flagged in this run's
+       report): gallery.css's role-application has a keyed-graph shape
+       (:has(.tpl-list)) and a decision-table shape (:has(.tmpl-table)),
+       but no shape for a chartless, tableless sequential case-walkthrough
+       — the base .tpl-chart slot (width/height 100%, row 1 of the
+       default 1fr/auto grid) is reused here to hold two inline-styled
+       numbered steps instead of a chart/image, matching the exact
+       document structure (.tpl-chart / .tpl-takeaway / .tpl-source, no
+       explicit grid-row on any of the three) that cve1-020/071 already
+       use for a plain, unkeyed application slide — no new CSS class
+       invented, only markup placed inside the class the template already
+       gives this slot. -->
+  <article class="slide slide--role-application" data-slide="79" data-deck="cve1">
+    <h1 class="slide-title">Tracing Jurisdiction for a Real Installation</h1>
+    <div class="tpl-content">
+      <div class="tpl-chart" style="display:flex; flex-direction:column; justify-content:center; gap:2.4cqh;">
+        <div style="display:flex; align-items:flex-start; gap:1.3cqw;">
+          <span style="flex:none; width:2.1cqw; height:2.1cqw; border-radius:50%; background:var(--emerson-blue); color:var(--emerson-white); font-weight:700; font-size:1.25cqw; display:flex; align-items:center; justify-content:center;">1</span>
+          <div>
+            <p style="margin:0 0 0.5cqh; font-weight:700; font-size:1.55cqw; color:var(--body-text);">Locate the boundary</p>
+            <p style="margin:0; font-size:1.42cqw; line-height:1.35; color:var(--body-text);"><b>Case:</b> a steam-drum level control valve. It isn't welded straight to the drum with no intervening joint &mdash; it sits on the piping running off the drum, past the first circumferential weld end, flange face, or threaded joint, so the termination-point rule places it in <b>boiler external piping</b>, not boiler proper.</p>
+          </div>
+        </div>
+        <div style="display:flex; align-items:flex-start; gap:1.3cqw;">
+          <span style="flex:none; width:2.1cqw; height:2.1cqw; border-radius:50%; background:var(--emerson-blue); color:var(--emerson-white); font-weight:700; font-size:1.25cqw; display:flex; align-items:center; justify-content:center;">2</span>
+          <div>
+            <p style="margin:0 0 0.5cqh; font-weight:700; font-size:1.55cqw; color:var(--body-text);">Cross-reference the standards</p>
+            <p style="margin:0; font-size:1.42cqw; line-height:1.35; color:var(--body-text);">On boiler external piping, ASME BPVC governs administratively while ANSI/ASME B31.1 governs technically &mdash; inspection records, data reports, and stamping are required unless a documented BPVC Section I waiver applies. Then check whichever supporting standard is cited for the valve itself (B16.34, B16.10, B16.37, or an older MSS SP) against the crosswalk just taught &mdash; an older spec can still name a standard B16.34 has since superseded.</p>
+          </div>
+        </div>
+      </div>
+      <p class="tpl-takeaway">Getting the code jurisdiction right while still citing a superseded standard for the supporting requirement is only half the cross-reference done.</p>
+      <p class="tpl-source">No corroborating figure exists in the Source Library for this synthesis (both backing citations are topics, prose only). After Fisher Power &amp; Severe Service Sourcebook's boiler-piping code-jurisdiction and valve-standards-crosswalk topics. Component Index: pss-topic-boiler-piping-code-jurisdiction, pss-topic-valve-standards-crosswalk.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">79</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

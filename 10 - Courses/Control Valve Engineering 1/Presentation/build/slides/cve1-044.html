@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 044 &mdash; The Valve Selection Process</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch3-m3, page 44 — eng.selection.valve-body-and-type-taxonomy.
+       match-rotary-subtype-to-application [understand · procedure].
+       Component: cvh-cmp-valve-selection-process-flowchart (Control
+       Valve Handbook, 6th ed., unnumbered diagram, printed p. 100).
+       procedure-image (list + single image) per course.json's own
+       templateRationale: the flowchart already carries the authoritative
+       six-step structure; no verified marker coordinates exist to place
+       numbered callouts against (Style Guide Sec 6.0), so procedure-
+       callout was rejected in favor of this shape. CORRECTED THIS
+       SESSION: the asset already staged at assets/sourced/cvh5-valve-
+       selection-process-flowchart.png (980x665) was cropped short &mdash; it
+       cut off Step 6's own body text ("Consider options on shutoff, stem
+       packing, etc.", confirmed present via pdftotext against the source
+       PDF, p.100). Re-rendered page 100 at 300dpi (poppler pdftoppm) and
+       re-cropped to the full six-box diagram (1434x1101), overwriting the
+       incomplete asset &mdash; flagged under this run's report as a real,
+       caught defect, not a hypothetical. has-wide-fig: the corrected
+       figure is a dense six-box diagram that renders too small in the
+       standard 34cqw side column; steps wrap into a row below it. Steps
+       list condenses the primitive's own t (the full six-step text lives
+       in the context pane) into short imperative headers + phrases per
+       Style Guide Sec 8.3, with step 4 bolded as the slide's own teaching
+       point (this is where the rotary subtype actually gets chosen). -->
+  <article class="slide slide--role-procedure-image has-wide-fig" data-slide="44" data-deck="cve1">
+    <h1 class="slide-title">The Valve Selection Process</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig">
+        <img src="../assets/sourced/cvh5-valve-selection-process-flowchart.png" style="width:100%;height:100%;object-fit:contain" alt="Six-step Valve Selection Process flowchart: Determine Service Conditions, Calculate Preliminary Cv Required, Select Trim Type, Select Valve Body and Trim Type, Select Trim Materials, Consider Options.">
+      </div>
+      <ol class="tpl-steps">
+        <li>Determine service conditions &mdash; P1, &Delta;P, Q, T1, fluid properties, allowable noise, ANSI pressure class</li>
+        <li>Calculate a preliminary Cv &mdash; check the noise and cavitation levels it implies</li>
+        <li>Select trim type &mdash; standard, noise-reduction, or cavitation-reduction, from step 2's result</li>
+        <li><b>Select the valve body and trim size for the required Cv &mdash; this is where the rotary subtype gets chosen</b>, noting travel, trim group, and shutoff option</li>
+        <li>Select trim materials &mdash; compatible with the application and available in that trim group</li>
+        <li>Settle remaining options &mdash; packing, additional shutoff hardware</li>
+      </ol>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., unnumbered diagram, p. 100 &mdash; used directly (re-cropped this session to restore Step 6's body text, previously truncated). Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">44</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -3,34 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 016 &mdash; Where Both Failures Start</title>
+<title>CVE1 &middot; Slide 016 &mdash; Dynamic Response &mdash; Dead Time, Time Constant, T63</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m3, page 16 — eng.noise-cavitation.damage-diagnosis
-       [analyze · mechanism, develops]. The Model step: full vena-contracta
-       and flash/collapse mechanism, complete and correct on its own.
-       Citations added to cvh-topic-vena-contracta/cvh-topic-cavitation
-       (WC, rebuild attempt 4) — bullet 3's "collapse near solid surfaces"
-       detail and the noise description are the real source's own words,
-       not general knowledge. -->
+  <!-- cve1-ch1-m2, page 16 — eng.foundations.control-loop-and-final-control-element.
+       dynamic-response-characteristics [understand · mechanism]. GENERATED
+       FROM NOTHING, WITH FRANZ'S DIRECT HUMAN CONFIRMATION (this is the one
+       slide Stage 2 flagged as needing that confirmation before any art was
+       drawn — course.json templateRationale). A plain, standard step-response
+       timeline: nothing beyond the textbook control-engineering shape (step
+       input, dead time, first detectable response, time constant, the 63%
+       point). No component is registered (cvh-topic-dynamic-response-characteristics:
+       "No figure anchors any of this content," prose only, CVH Sec 1.5 pp.
+       28-29, 31). Following the established mechanism-role graph precedent
+       (tp-006, the deadband graph): no on-plot numbered dot markers — the two
+       lines are distinguished by dash/solid style and named in the list, and
+       the Td / T63 time positions are folded into horizontal x-axis tick
+       labels rather than floated in the plot (Style Guide Sec 5.5), the same
+       "axis-position callout" treatment cve1-011/012 already use elsewhere in
+       this module. Open-ended arrowheads on both axes per Sec 5.7 (time and
+       output level both continue past what's drawn; neither is a hard-bounded
+       percentage scale). -->
   <article class="slide slide--role-mechanism" data-slide="16" data-deck="cve1">
-    <h1 class="slide-title">Where Both Failures Start</h1>
+    <h1 class="slide-title">Dynamic Response &mdash; Dead Time, Time Constant, T63</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig5-6-vena-contracta.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.6, Vena Contracta Illustration">
+          <svg viewBox="0 0 480 320" role="img" aria-label="A step-response timeline: a dashed line shows the step change applied to the signal at time zero; a solid curve shows the valve assembly's output, flat during the dead time, then rising to approach its final value, with the dead time and the point where the output reaches 63 percent of final value marked on the time axis." font-family="Arial, Helvetica, sans-serif" style="width:100%;height:100%">
+            <defs>
+              <marker id="ax" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0,0 L7,3.5 L0,7 Z" fill="#3F4040"></path></marker>
+            </defs>
+            <line x1="70" y1="260" x2="450" y2="260" stroke="#3F4040" stroke-width="2.4" marker-end="url(#ax)"></line>
+            <line x1="70" y1="260" x2="70" y2="40" stroke="#3F4040" stroke-width="2.4" marker-end="url(#ax)"></line>
+            <text x="260" y="300" text-anchor="middle" font-size="14" font-weight="700" fill="#3F4040">Time &#8594;</text>
+            <text x="30" y="150" text-anchor="middle" font-size="14" font-weight="700" fill="#3F4040" transform="rotate(-90 30 150)">Output</text>
+            <path d="M70 235 H150 M150 235 V70 M150 70 H450" fill="none" stroke="#959797" stroke-width="2" stroke-dasharray="6 4"></path>
+            <path d="M70 235 H150" fill="none" stroke="#004B8D" stroke-width="3"></path>
+            <path d="M150 235 C 190 235, 210 130, 250 118 S 330 100, 450 97" fill="none" stroke="#004B8D" stroke-width="3"></path>
+            <g stroke="#959797" stroke-width="1.4" stroke-dasharray="3 3">
+              <line x1="150" y1="260" x2="150" y2="235"></line>
+              <line x1="250" y1="260" x2="250" y2="118"></line>
+              <line x1="70" y1="118" x2="250" y2="118"></line>
+            </g>
+            <text x="150" y="278" text-anchor="middle" font-size="12.5" fill="#3F4040">Td</text>
+            <text x="250" y="278" text-anchor="middle" font-size="12.5" fill="#3F4040">T63</text>
+            <text x="58" y="122" text-anchor="end" font-size="12.5" fill="#3F4040">63%</text>
+          </svg>
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>Flow narrows through a restriction to a minimum area just downstream &mdash; the vena contracta &mdash; where pressure inside the valve is lowest, before recovering toward P2. This happens at the point of greatest restriction in every valve; what differs by design is how much pressure recovers afterward</li>
-        <li><span class="num">2</span>If that lowest pressure drops to or below the fluid's vapor pressure, the liquid flashes to vapor bubbles there</li>
-        <li><span class="num">3</span>If downstream pressure then recovers above vapor pressure, those bubbles collapse close to where they formed &mdash; releasing energy, producing a noise like gravel flowing through the valve, and tearing away material near solid surfaces. The collapse, not the flashing itself, is what erodes metal</li>
+        <li><span class="num">1</span>Dashed &mdash; the step change applied to the signal at t = 0; solid &mdash; the valve assembly's actual output</li>
+        <li><span class="num">2</span>Td (dead time) &mdash; the interval before any response is detectable at all</li>
+        <li><span class="num">3</span>Time constant &mdash; measured from the end of Td to the point marked T63, where output reaches 63% of its final value</li>
+        <li>T63 = Td + time constant &mdash; what "response time" usually means for the whole assembly, not the trim alone</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., &sect;5.14.1 and Figure 5.6 &ldquo;Vena Contracta Illustration,&rdquo; p.128. Component Index: cvh-topic-vena-contracta, cvh-topic-cavitation, cvh-cmp-vena-contracta-diagram.</p>
+      <p class="tpl-source">Originated step-response diagram, human-confirmed before authoring &mdash; no component is registered for this competency (Control Valve Handbook 6th ed. &sect;1.5, pp. 28-29, 31, prose only). Standard control-engineering step-response shape, not a redraw of any source figure.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">16</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

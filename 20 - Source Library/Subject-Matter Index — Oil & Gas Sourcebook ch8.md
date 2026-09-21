@@ -63,7 +63,7 @@ chapter's last figure — Chapter 9 "Natural Gas Treatment" begins
 immediately after with its own Figure 9-1. **Chapter 8 is now fully
 catalogued, Figures 8-1 through 8-22, with no gaps.**
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -343,7 +343,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-1 (drawing number
       E1490, printed p. 8-2) — "Figure 8-1. Process Flow Diagram of Topsides
       in Offshore Production."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig1-offshore-topsides-process-flow.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig1-offshore-topsides-process-flow.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 85 / printed 8-2) at 300 dpi, full block diagram (all three downstream paths) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -381,7 +381,7 @@ source:
     locator: >
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-2 (drawing number
       E1491, printed p. 8-5) — "Figure 8-2. Common Slug Catcher Valves."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig2-slug-catcher-valves.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig2-slug-catcher-valves.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 88 / printed 8-5) at 300 dpi, all four numbered valve stations, slug catcher and turret vessels, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -413,7 +413,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-3 (drawing number
       X0215-1, printed p. 8-6) — "Figure 8-3. Large ET Valve with Whisper III
       Trim and D3 Cage and Baffle."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig3-large-et-valve-whisper-iii-trim.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig3-large-et-valve-whisper-iii-trim.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 89 / printed 8-6) at 300 dpi, full valve cutaway (bonnet, stem, cage, body) + drawing number, caption excluded"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -446,7 +446,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-4 (drawing number
       X0187, printed p. 8-6) — "Figure 8-4. Vee-Ball V150 NPS 3 with 2052
       Size 1 Actuator and DVC6200."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig4-vee-ball-v150-2052-actuator.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig4-vee-ball-v150-2052-actuator.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 89 / printed 8-6) at 300 dpi, full valve photo (actuator, positioner, body, flanged inlet) + drawing number, caption excluded"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -482,7 +482,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-5 (drawing number
       W9498, printed p. 8-7) — "Figure 8-5. 8580 Rotary Valve with 2052
       Actuator and DVC6000."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig5-8580-rotary-valve-2052-actuator.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig5-8580-rotary-valve-2052-actuator.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 90 / printed 8-7) at 300 dpi, full valve photo (actuator, positioner, body, disc visible) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -520,7 +520,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-6 (drawing number
       E1492, printed p. 8-7) — "Figure 8-6. High Pressure Separation Process
       Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig6-high-pressure-separation-process-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig6-high-pressure-separation-process-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 90 / printed 8-7) at 300 dpi, both vessels, all 8 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -563,7 +563,7 @@ source:
     locator: >
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-7 (drawing number
       W8295, printed p. 8-8) — "Figure 8-7. Cavitrol III Trim."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig7-cavitrol-iii-trim-cage.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig7-cavitrol-iii-trim-cage.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 91 / printed 8-8) at 300 dpi, full disassembled trim photo (perforated cage + base ring) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -597,7 +597,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-8 (drawing number
       W9038, printed p. 8-9) — "Figure 8-8. EWT Metal Seat Valve with Whisper
       Trim I Cage."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig8-ewt-metal-seat-valve-whisper-trim-i-cage.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig8-ewt-metal-seat-valve-whisper-trim-i-cage.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 92 / printed 8-9) at 300 dpi, full valve body cutaway (bonnet, stem, cage, flow arrows) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -633,7 +633,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-9 (drawing number
       E1493, printed p. 8-10) — "Figure 8-9. Low Pressure Separation Process
       Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig9-low-pressure-separation-process-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig9-low-pressure-separation-process-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 93 / printed 8-10) at 300 dpi, LP separator and LP flare KO drum vessels, all 5 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -673,7 +673,7 @@ source:
     locator: >
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-10 (drawing
       number E1485, printed p. 8-12) — "Figure 8-10. Oil Treatment System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig10-oil-treatment-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig10-oil-treatment-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 95 / printed 8-12) at 300 dpi, bulk treater, dry oil tank, main pump, all 4 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -709,7 +709,7 @@ source:
     locator: >
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-11 (drawing
       number W9050, printed p. 8-12) — "Figure 8-11. 667 HP Control Valve."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig11-667-hp-control-valve.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig11-667-hp-control-valve.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 95 / printed 8-12) at 300 dpi, full valve photo (667 spring-and-diaphragm actuator, yoke, bonnet, body, flanged inlet/outlet) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -748,7 +748,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-13 (drawing
       number E1494, printed p. 8-13) — "Figure 8-13. Low Pressure
       Compression System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig13-low-pressure-compression-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig13-low-pressure-compression-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 96 / printed 8-13) at 300 dpi, compressor, suction and discharge scrubber vessels, all 4 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -788,7 +788,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-12 (drawing
       number E1486, printed p. 8-13) — "Figure 8-12. Electrostatic Coalescer
       Oil Treatment System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig12-electrostatic-coalescer-oil-treatment-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig12-electrostatic-coalescer-oil-treatment-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 96 / printed 8-13) at 200 dpi, full block diagram (both numbered valve stations, ELECTROSTATIC COALESCER vessel) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -829,7 +829,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-14 (drawing
       number E1495, printed p. 8-15) — "Figure 8-14. High Pressure
       Compression Train, Four stages."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig14-high-pressure-compression-train-four-stages.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig14-high-pressure-compression-train-four-stages.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 98 / printed 8-15) at 200 dpi, both parallel trains, all 12 numbered valve stations on the upper train, DEHYD offtakes, TO TURRET FOR INJECTION label, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -866,7 +866,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-15 (drawing
       number W7027-3, printed p. 8-16) — "Figure 8-15. EZ Control Valve
       Sectional."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig15-ez-control-valve-sectional.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig15-ez-control-valve-sectional.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 99 / printed 8-16) at 200 dpi, full valve body cutaway (bonnet, stem, cage, flow arrows) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -905,7 +905,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-16 (drawing
       number E1496, printed p. 8-20) — "Figure 8-16. TEG Gas Dehydration
       Unit."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig16-teg-gas-dehydration-unit.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig16-teg-gas-dehydration-unit.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 103 / printed 8-20) at 200 dpi, both vessels (inlet separator and glycol contactor), all 3 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -940,7 +940,7 @@ source:
     locator: >
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-17 (drawing
       number W8538-1, printed p. 8-21) — "Figure 8-17. Notchflo DST Trim."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig17-notchflo-dst-trim.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig17-notchflo-dst-trim.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 104 / printed 8-21) at 200 dpi, full trim cutaway + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -978,7 +978,7 @@ source:
     locator: >
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-18 (drawing
       number E1497, printed p. 8-21) — "Figure 8-18. Amine Treatment Unit."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig18-amine-treatment-unit.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig18-amine-treatment-unit.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 104 / printed 8-21) at 200 dpi, contactor, flash tank, rich/lean amine exchanger, regeneration vessel, both pumps, all 12 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -1025,7 +1025,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-19 (drawing
       number E1498, printed p. 8-25) — "Figure 8-19. Tail Gas Treatment
       System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig19-tail-gas-treatment-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig19-tail-gas-treatment-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 108 / printed 8-25) at 200 dpi, full block diagram (all 8 numbered valve stations, acid gas enrichment absorber, regeneration, rich amine flash drum, free acid gas drum, tail gas quench/absorber/KO drum vessels), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -1072,7 +1072,7 @@ source:
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-20 (drawing
       number E1499, printed p. 8-27) — "Figure 8-20. Water Injection System,
       FPSO Unit."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig20-water-injection-system-fpso.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig20-water-injection-system-fpso.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 110 / printed 8-27) at 200 dpi, surge vessel, booster and main pumps, all 4 numbered valve stations, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -1109,7 +1109,7 @@ source:
     locator: >
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-21 (drawing
       number W6787, printed p. 8-28) — "Figure 8-21. DST Trim."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig21-dst-trim.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig21-dst-trim.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 111 / printed 8-28) at 300 dpi, full disassembled trim photo (outer sleeve + internal staged stem assembly) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -1144,7 +1144,7 @@ source:
     locator: >
       Chapter 8 "Offshore Oil and Gas Production," Figure 8-22 (drawing
       number W9983-2, printed p. 8-29) — "Figure 8-22. Cavitrol IV Trim."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig22-cavitrol-iv-trim.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch8-fig22-cavitrol-iv-trim.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 112 / printed 8-29) at 300 dpi, full valve/actuator cutaway (actuator, bonnet, staged trim stack, angled body) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

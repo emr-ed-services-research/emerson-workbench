@@ -36,7 +36,7 @@ figure set (Figures 2-1 through 2-17, the chapter's complete run):
 See "Open items" below for what's still out of scope (the chapter's
 reference tables).
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -77,7 +77,7 @@ source:
       inexpensive, simple and have built-in, fail-safe action. Pictured
       above are cutaways of the popular 667 (left) and 657 (right)
       actuators."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig1-657-667-spring-diaphragm-cutaways.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig1-657-667-spring-diaphragm-cutaways.png
     locator: "already extracted — cropped directly from the source PDF (p. 29 / printed 2-3) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -112,7 +112,7 @@ source:
       "Spring-and-diaphragm actuators can be supplied with a top-mounted
       handwheel. The handwheel allows manual operation and also acts as a
       travel stop or means of emergency operation."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig2-spring-diaphragm-handwheel.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig2-spring-diaphragm-handwheel.png
     locator: "already extracted — cropped directly from the source PDF (p. 29 / printed 2-4) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -142,7 +142,7 @@ source:
       a spring-and-diaphragm actuator that has many features to provide
       precise control. The splined actuator connection features a clamped
       lever and single-joint linkage to help eliminate lost motion."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig3-2052-spring-diaphragm-splined.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig3-2052-spring-diaphragm-splined.png
     locator: "already extracted — cropped directly from the source PDF (p. 30 / printed 2-4) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -179,7 +179,7 @@ source:
       spring-and-diaphragm actuators. Piston actuators require a higher
       supply pressure, but have benefits such as high stiffness and small
       size."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig4-1061-double-acting-piston.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig4-1061-double-acting-piston.png
     locator: "already extracted — cropped directly from the source PDF (p. 30 / printed 2-5) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -213,7 +213,7 @@ source:
       example of a spring-bias piston actuator. Process pressure can aid
       fail-safe action, or the actuator can be configured for full
       spring-fail closure."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig5-585c-spring-bias-piston.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig5-585c-spring-bias-piston.png
     locator: "already extracted — cropped directly from the source PDF (p. 30 / printed 2-5) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -242,7 +242,7 @@ source:
       Chapter 2, Figure 2-6 (drawing W3827, printed p. 2-6) — "This 1061
       actuator is a double-acting rotary piston actuator for throttling
       service."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig6-1061-rotary-piston-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig6-1061-rotary-piston-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 31 / printed 2-6) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -418,7 +418,7 @@ source:
       motion are unnecessary for on-off service, cost savings can be
       achieved by simplifying the actuator design. The 1066SR incorporates
       spring-return capability."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig7-1066sr-onoff-piston-actuator-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig7-1066sr-onoff-piston-actuator-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 31 / printed 2-6) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -448,7 +448,7 @@ source:
     locator: >
       Chapter 2 "Actuator Selection," Figure 2-8 (drawing W9933-2, printed
       p. 2-7) — "Fisher D4 Control Valve with easy-Drive Electric Actuator"
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig8-d4-valve-easydrive-electric-actuator.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig8-d4-valve-easydrive-electric-actuator.png
     locator: "already extracted — cropped directly from the source PDF (p. 32 / printed 2-7) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -477,7 +477,7 @@ source:
       (CLASS II / III / IV / V) plotted on a gridded X-Y chart, X axis
       "SHUTOFF PRESSURE DROP, PSI" (0–6000), Y axis "REQUIRED SEAT LOAD (LB
       PER LINEAL INCH)" (0–900).
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig9-recommended-seat-load-chart.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig9-recommended-seat-load-chart.png
     locator: "already extracted — cropped directly from the source PDF (p. 34 / printed 2-9) at 600 dpi, chart + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -511,7 +511,7 @@ source:
       flexible as separate units." (source text reads "combustion unit" —
       an evident typo/OCR artifact for "combination unit," consistent with
       the sentence's own contrast against "separate units.")
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig10-3620jp-electropneumatic-positioner.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig10-3620jp-electropneumatic-positioner.png
     locator: "already extracted — cropped directly from the source PDF (p. 37 / printed 2-12) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -542,7 +542,7 @@ source:
       cams to alter its input/output relationship." Eight printed field
       labels on the figure itself: ROTARY SHAFT ARM, NOZZLE, ADJUSTING
       SCREW, BYPASS LEVER, BELLOWS, OPERATING CAM, FLAPPER, SCREENED VENT.
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig11-3582-pneumatic-positioner-labeled-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig11-3582-pneumatic-positioner-labeled-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (p. 37 / printed 2-12) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -574,7 +574,7 @@ source:
       control accuracy and flexibility. When utilized with AMS ValveLink™
       software, FIELDVUE instruments provide valuable diagnostic data that
       helps avoid maintenance problems."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig12-fieldvue-digital-valve-controller.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig12-fieldvue-digital-valve-controller.png
     locator: "already extracted — cropped directly from the source PDF (p. 37 / printed 2-12) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -798,7 +798,7 @@ source:
       accessory. They take a milliamp signal and produce a proportional
       pneumatic output. The i2P-100 is compact, accurate and has low air
       consumption."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig13-i2p100-electropneumatic-transducer.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig13-i2p100-electropneumatic-transducer.png
     locator: "already extracted — cropped directly from the source PDF (p. 38 / printed 2-13) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -831,7 +831,7 @@ source:
       react quickly enough to be of use. In these situations, performance
       of spring-and-diaphragm actuators can be improved by use of pneumatic
       boosters such as the SS-263."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig14-ss263-pneumatic-booster.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig14-ss263-pneumatic-booster.png
     locator: "already extracted — cropped directly from the source PDF (p. 38 / printed 2-13) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -864,7 +864,7 @@ source:
       transmitters continue the tradition of durable and dependable Fisher
       pressure instrumentation while addressing air or gas consumption
       concerns."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig15-c1-pneumatic-controller.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig15-c1-pneumatic-controller.png
     locator: "already extracted — cropped directly from the source PDF (p. 38 / printed 2-13) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -900,7 +900,7 @@ source:
       signal from the controller is either electric or pneumatic and sent
       to an on/off dump valve to open or close it. The L2e shown is the
       electric output version of this controller."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig16-l2e-electric-level-controller.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig16-l2e-electric-level-controller.png
     locator: "already extracted — cropped directly from the source PDF (p. 38 / printed 2-13) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -940,7 +940,7 @@ source:
       controller converts this rotational motion to an electronic signal
       that is used by a control valve to maintain the level or specific
       gravity set point."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig17-fieldvue-dlc3010-digital-level-controller.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch2-fig17-fieldvue-dlc3010-digital-level-controller.png
     locator: "already extracted — cropped directly from the source PDF (p. 39 / printed 2-14) at 600 dpi, figure + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

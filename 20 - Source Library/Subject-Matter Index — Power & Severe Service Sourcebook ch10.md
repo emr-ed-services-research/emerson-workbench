@@ -31,7 +31,7 @@ properties, wear/corrosion mechanisms, standard body/bonnet/trim/bolting
 material selections, materials designation systems) with genuinely few
 figures — the opposite shape from Chapters 8 and 9B, with no mode-sequence
 or progressive-diagram bundling question to resolve. All figures are from
-`20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook
+`20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook
 - Power & Severe Service.pdf`. No extracted-figures crop folder exists for
 this book — each record's `source` carries a single locator. Every record's
 `used-by` is `[]`.

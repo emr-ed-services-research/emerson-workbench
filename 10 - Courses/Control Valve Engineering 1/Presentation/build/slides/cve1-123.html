@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 123 &mdash; How Packing Friction Is Measured</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch7-m1, page 123 — eng.packing.selection-and-fugitive-emissions.
+       apply-packing-friction-guidelines [understand · mechanism].
+       Component: cvh-cmp-packing-friction-values-table (CVH Fig. 5.5,
+       printed p. 125) — a table-formatted figure, catalogued as a figure
+       per the Subject-Matter Index's own table-as-figure rule, used as the
+       .tpl-fig content inside the mechanism shape (not switched to
+       .slide--tmpl-table) since the teaching point is the sizing
+       methodology this data feeds into, not the table as a standalone
+       reference object — matching this course's own cve1-094.html
+       precedent (Fig. 5.2's unbalance-area table used the same way). No
+       markers on the image; the .tpl-list carries the primitive's own t
+       as three numbered teaching points, in order. -->
+  <article class="slide slide--role-mechanism" data-slide="123" data-deck="cve1">
+    <h1 class="slide-title">How Packing Friction Is Measured</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh5-fig5-5-packing-friction-values.png" style="width:100%;height:100%;object-fit:contain" alt="Control Valve Handbook Figure 5.5, Typical Packing Friction Values — a table of frictional force in lbf by stem size, pressure class, and packing type (single/double PTFE, graphite ribbon/filament).">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Friction is measured empirically, by stem size and pressure class, and tabulated per packing type &mdash; not a fixed design constant the way seat load is</li>
+        <li><span class="num">2</span>The spread is real: a 5/16 in. stem at Class 125 runs 20 lbf with single PTFE; a 3/4 in. stem at Class 600 runs 320 lbf with graphite &mdash; roughly an order of magnitude apart</li>
+        <li><span class="num">3</span>Not 100% repeatable: live-loaded designs, graphite especially, carry real shot-to-shot variation &mdash; an actuator force-margin calculation treats packing friction as a variable input, not a trusted lookup number</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 5.5 (printed p. 125) &mdash; table-formatted figure used directly. Component Index: cvh-cmp-packing-friction-values-table.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">123</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

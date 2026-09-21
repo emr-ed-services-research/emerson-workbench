@@ -38,7 +38,7 @@ PDF pp. 209-216. **The book ends here** — 218 PDF pages total (confirmed via
 `pdfinfo`), with p. 217 a genuine trailing blank and p. 218 the colophon;
 there is no Chapter 19 or further content of any kind.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/Control
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control
 Valve Sourcebook - Pulp & Paper.pdf`. This pass catalogs existence and location
 only — it does not crop or extract images. Record shape: `id` · `kind` ·
 `teaches` · `concept-tags` · `status` · `source` (`doc` + `locator`) ·

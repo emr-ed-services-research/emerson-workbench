@@ -3,29 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 020 &mdash; Check Your Knowledge: Sizing for Real Shutoff</title>
+<title>CVE1 &middot; Slide 020 &mdash; The Economic Case for a Better Valve</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m3, page 20 — the chapter's check slide (course.json carries
-       no keyConcepts entry for it by schema design, per CVB/prior-build
-       precedent). Exercises eng.sizing.actuator-force-awareness directly
-       against the real Figure 5.3 values — answerable only by recognizing
-       Class V's real seat-load demand, not a generic "check more carefully". -->
-  <article class="slide slide--role-check" data-slide="20" data-deck="cve1">
-    <h1 class="slide-title">Check Your Knowledge: Sizing for Real Shutoff</h1>
+  <!-- cve1-ch2-m1, page 20 — eng.foundations.process-variability-and-loop-
+       performance.interpret-variability-and-economics [analyze ·
+       application]. Fig. 2.7 is the same component CVB's cvb-060.html
+       already verified and uses (cvh-cmp-closed-loop-disturbance-summary)
+       — reused verbatim, no re-cropping, per Style Guide §5.8. Base
+       (non-keyed) application layout, matching cvb-060's own precedent:
+       the source figure already carries its own printed labels (Valve
+       A/B/C legend, Manual/Auto region labels, a leader-labelled Minimum
+       Variability line, Faster/Slower Tuning axis annotations), so per
+       Style Guide §6.2/6.3 no course-added .tpl-list key is layered on
+       top — .tpl-chart used, not .tpl-fig, same class cvb-060 uses for
+       this exact "single already-labelled analytical figure, no key"
+       shape. Takeaway states the source's own worked number (read from
+       the CVH p.49 body text, confirmed against the Subject-Matter Index
+       entry) — this is also the exact chart the module's own activity
+       (cve1-ch2-m1-act1) has the class read and then extend to an
+       oversized-valve prediction, so the takeaway is written to prime
+       that follow-on reasoning (both reference lines named), not just
+       restate the one number. -->
+  <article class="slide slide--role-application" data-slide="20" data-deck="cve1">
+    <h1 class="slide-title">The Economic Case for a Better Valve</h1>
     <div class="tpl-content">
-      <p class="tpl-prompt">A service specifies Class V metal-seat shutoff. The actuator has been sized to the calculated stroking thrust only. Per Figure 5.3, what is the real risk?</p>
-      <ul class="tpl-options">
-        <li>A.&nbsp;&nbsp;None &mdash; stroking thrust and seat load are the same requirement</li>
-        <li data-correct="true">B.&nbsp;&nbsp;The actuator likely can't generate the seat load Class V requires &mdash; five to ten times a lower class's demand</li>
-        <li>C.&nbsp;&nbsp;The risk is packing friction, not seat load</li>
-        <li>D.&nbsp;&nbsp;Class V only matters for rotary valves, not this globe valve</li>
-      </ul>
-      <p class="tpl-reveal">B &middot; Total actuator force = A + B + C + D. Stroking thrust covers part of A. Class V's seat load (B) can run 700-1000+ lbf per lineal inch — checking it is a separate step Figure 5.3 exists for.</p>
+      <div class="tpl-chart">
+        <img src="../assets/sourced/cvh2-fig2-7-closed-loop-disturbance-summary.png" style="width:100%;height:100%;object-fit:contain" alt="Graph of process variability (2-sigma over mu, percent) versus closed-loop time constant for three 4-inch valve designs tested at 600 gpm, tuned from faster to slower. Valve A tracks closely along a Minimum Variability reference line across the whole tuning range. Valve B and Valve C start higher and stay above Valve A at every tuning speed, worsening as tuning gets faster.">
+      </div>
+      <p class="tpl-takeaway">Every real valve design falls somewhere between the "Manual" line (no control at all) and "Minimum Variability" (the calculated ideal) &mdash; valves that meet the same static purchase spec do not perform the same dynamically. Replacing Valve B with Valve A at a 2.0-second closed-loop time constant measures a 1.4% variability improvement &mdash; a real, quantified cost, not just "this one seems better."</p>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 2.7 &mdash; used directly. Component Index: cvh-cmp-closed-loop-disturbance-summary.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">20</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

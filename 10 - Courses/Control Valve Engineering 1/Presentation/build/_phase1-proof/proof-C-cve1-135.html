@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phase 1 Proof C &middot; CVE1 Slide 135 as Application-Pick &mdash; Selecting a Bonnet Type</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- ================================================================
+       PHASE 1 REMEDIATION PROOF -- CANDIDATE C (application-pick
+       conversion). Scratch proof only -- NOT a production file, does
+       not replace cve1-135.html.
+
+       Real slide (CVE1 ch7-m3, page 135) is "Selecting a Bonnet Type":
+       four real named alternatives (Standard, Extension-cast,
+       Extension-fabricated, Bellows-seal), each with a real driver and
+       a real limitation, composed as a static .tmpl-table -- a
+       comparison table, not a chosen-and-justified decision. The
+       template system already has a dedicated interactive template for
+       exactly "pick one of several named options, see its own worked
+       reasoning" -- .slide--role-application-pick (gallery.css Sec 13,
+       already used correctly elsewhere in this course on cve1-049.html
+       and cve1-091.html) -- but it was not used here.
+
+       This proof takes the real slide's own four named options and
+       their real driver/limitation reasoning -- nothing invented, no
+       new fact added -- and recomposes them as four tpl-pick-item
+       buttons with the same reasoning written out as each option's
+       data-work analysis, matching cve1-091.html's real markup shape
+       exactly (tpl-howto / tpl-pick-list / tpl-pick-work).
+
+       JUDGMENT CALL flagged for review: the task brief for this proof
+       asked that the first option's own analysis be shown by default in
+       .tpl-pick-work. Checked against the real production behaviour
+       (slides.js, the .tpl-pick-item click handler) and the real
+       cve1-091.html markup: the production default is actually a
+       neutral placeholder ("Pick a scenario above...") until a real
+       click fires, not the first option pre-filled. This proof follows
+       the brief's explicit instruction (first option's analysis shown
+       by default) since it was asked for directly, but that is a
+       deliberate deviation from how the real template currently
+       initializes -- worth reconciling before this pattern is adopted
+       for real. The real slides.js click handler is unmodified and
+       genuinely works if this file is opened with JavaScript enabled
+       and another pick-item is clicked. -->
+  <article class="slide slide--role-application-pick" data-slide="135" data-deck="cve1">
+    <h1 class="slide-title">Selecting a Bonnet Type</h1>
+    <div class="tpl-content" style="grid-template-rows:auto auto 1fr auto">
+      <p class="tpl-howto"><span class="tpl-howto__badge">1</span> Pick one of the four bonnet types below. See its real driver, and where it falls short.</p>
+      <div class="tpl-pick-list">
+        <button class="tpl-pick-item is-selected" type="button" data-work="&lt;p&gt;&lt;b&gt;Standard bonnet&lt;/b&gt; &mdash; the baseline choice whenever neither a temperature extreme nor a leakage/isolation requirement applies. Limited to near-ambient service only &mdash; a service point outside that band rules it out immediately, before any other criterion is even considered.&lt;/p&gt;">Standard &mdash; neither a temperature extreme nor a leakage requirement applies</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Extension bonnet &mdash; cast&lt;/b&gt; &mdash; specified for a high-temperature extreme (&ge;&sim;427&deg;C/800&deg;F), giving the packing box distance from the hot process fluid. It solves the temperature problem only &mdash; it adds no leakage or fugitive-emissions benefit on its own, so a service that also needs low emissions isn&rsquo;t satisfied by this choice alone.&lt;/p&gt;">High-temperature extreme (&ge;&sim;427&deg;C/800&deg;F)</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Extension bonnet &mdash; fabricated&lt;/b&gt; &mdash; the cryogenic/cold-extreme counterpart to the cast version, extending the packing box away from a very cold process fluid instead of a hot one. Like the cast extension, it solves temperature only &mdash; no leakage benefit comes with it.&lt;/p&gt;">Cryogenic/cold extreme</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Bellows-seal bonnet&lt;/b&gt; &mdash; the choice when the requirement is near-zero stem leakage for a toxic, volatile, radioactive, or high-value fluid, not a temperature extreme. Between its two constructions, welded-leaf versus mechanically-formed only differ in package height traded against service life &mdash; not in the leakage guarantee itself.&lt;/p&gt;">Near-zero stem leakage for toxic/volatile/radioactive/high-value fluid</button>
+      </div>
+      <div class="tpl-pick-work"><p>Standard bonnet &mdash; the baseline choice whenever neither a temperature extreme nor a leakage/isolation requirement applies. Limited to near-ambient service only &mdash; a service point outside that band rules it out immediately, before any other criterion is even considered.</p></div>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., &sect;3.3. Component Index: cvh-cmp-bonnet-assembly, cvh-cmp-fabricated-extension-bonnet, cvh-cmp-enviroseal-bellows-seal-bonnet. Same four named alternatives and same driver/limitation reasoning as the real cve1-135.html decision table &mdash; recomposed as a pick-and-see-why interaction, no new fact added.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">135 (Phase 1 proof)</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

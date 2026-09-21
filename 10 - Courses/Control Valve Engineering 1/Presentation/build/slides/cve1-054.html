@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 054 &mdash; Check Your Knowledge &mdash; Check Valves, End Connections &amp; Pressure Class</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch3-m4, page 54 — the module's check-your-knowledge slide. No
+       keyConcepts/primitive entry exists for a check slide by schema
+       design (Stage 2 never authors one) — composed fresh here, synthesized
+       from the module's whole arc (slides 46-53), not any one slide.
+       levelTarget is evaluate, so per this run's own instructions the stem
+       is framed as a concrete situation, not "which is true," and draws on
+       BOTH halves of the module together: check-valve style selection
+       (stop-check function, slide 47; disk-stability/orientation criteria,
+       slides 48-49) and pressure-class verification (bonnet construction,
+       slide 51; the four-step verification sequence, slide 52). The
+       distractors are real, plausible conflations: A picks a plain stop
+       valve, ignoring that the scenario explicitly needs backflow
+       protection (the stop-check framing from slide 47); C reads the
+       bolted bonnet as automatically Class 900+, the exact inversion of
+       slide 51's own rule (pressure-seal, not bolted, is the Class-900
+       signal); D jumps straight to a nameplate reading, skipping the
+       verification-by-measurement slide 52 itself establishes as the
+       correct method. data-correct="true" marks the right option per the
+       interactive check convention (gallery.css Sec 8.2 / slides.js);
+       reveal is terse per cve1-009/018/023/032/038/045's established
+       convention. -->
+  <article class="slide slide--role-check" data-slide="54" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Check Valves, End Connections &amp; Pressure Class</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A vertical reheat-steam line needs a valve that both isolates the line AND stops steam from returning to the turbine on a trip. The body-bonnet detail on the part in front of you shows a bolted bonnet with no nameplate; the piping spec calls for Class 600. What do you specify, and how do you confirm the class?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;A plain stop valve, sized from the line's nominal pipe size alone</li>
+        <li data-correct="true">B.&nbsp;&nbsp;A stop-check (or dedicated check) valve; confirm the class by measuring face-to-face against the steel ANSI table for the body material, not by the missing nameplate</li>
+        <li>C.&nbsp;&nbsp;Any check valve is fine here; the bolted bonnet alone already confirms Class 900 or higher, so no further check is needed</li>
+        <li>D.&nbsp;&nbsp;A stop-check valve; since the nameplate is missing, assume the lowest class the body could be built to and proceed</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; Stop-check, verified by measurement</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">54</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

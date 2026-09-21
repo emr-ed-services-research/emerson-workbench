@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 070 &mdash; ISO 15848-1 Qualification: Three Measures Together</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m1, page 70 — eng.selection.shutoff-leakage-and-standards.
+       interpret-iso15848-qualification-data [understand · mechanism].
+       Component: cvh-cmp-iso15848-1-qualification-requirements (CVH 6th
+       ed. Sec 3.4.4, Fig. 3.26, printed p.70). Delivery note said "existing
+       figure — use directly; not yet cropped/extracted from source": the
+       only asset on file was the shared ch3-fig25-26-emissions-composite.png
+       (Fig. 3.25 VOC-LDAR flowchart + Fig. 3.26 side by side). Cropped this
+       session (System.Drawing) to isolate Fig. 3.26 alone —
+       cvh3-fig3-26-iso15848-1-qualification-requirements.png, saved to
+       assets/sourced/. VERIFIED against the real PDF page (pdftoppm/
+       pdftotext, p.70): the table is genuinely 4 columns (Valve Type,
+       Mechanical Cycle Class, Mechanical Cycles Required, Temp. Cycles) —
+       the crop is complete, confirming the Subject-Matter Index's own
+       "right edge is in fact complete" note. FLAGGED LOW CONFIDENCE: this
+       component's own "teaches" text describes the figure as including
+       "tightness classes (AM/BM/CM), cross-referenced to measured leak
+       concentration thresholds" — verified directly against the source
+       page and the real crop, Fig. 3.26 itself carries NO such column;
+       the AM/BM/CM tightness-class/concentration cross-reference belongs
+       to Fig. 3.28 (taught next, slide 71). The catalog's teaches summary
+       appears to have folded in content from the adjacent figure printed
+       on the same page. The on-slide list below is scoped to what Fig.
+       3.26 actually shows, not the catalog's fuller description. Per
+       Style Guide Sec 6.3 (a figure with its own printed field labels):
+       no added numbered markers on the image — the list names each
+       printed field by its own label with a plain-language gloss, drawn
+       from this concept's own primitive t. -->
+  <article class="slide slide--role-mechanism" data-slide="70" data-deck="cve1">
+    <h1 class="slide-title">ISO 15848-1 Qualification: Three Measures Together</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh3-fig3-26-iso15848-1-qualification-requirements.png" style="width:100%;height:100%;object-fit:contain" alt="ISO 15848-1 Qualification Requirements table: Valve Type, Mechanical Cycle Class, Mechanical Cycles Required, Temp. Cycles">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span><b>Valve type</b> &mdash; Control Valve or Isolation Valve; sets which class ladder applies.</li>
+        <li><span class="num">2</span><b>Mechanical cycle class</b> &mdash; CC1/CC2/CC3 for a control valve, CO1/CO2/CO3 for an isolation valve.</li>
+        <li><span class="num">3</span><b>Mechanical cycles required</b> &mdash; 20,000/60,000/100,000 for a control valve; a far lower 205/1,500/2,500 for an isolation valve, which doesn't stroke as often in service.</li>
+        <li><span class="num">4</span><b>Temp. cycles</b> &mdash; the thermal-cycle count run alongside the mechanical cycling, rising with class the same way (2/3/4).</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 3.26 &mdash; cropped from the shared Fig. 3.25/3.26 extraction to isolate the qualification-requirements table alone. Component Index: cvh-cmp-iso15848-1-qualification-requirements.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">70</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

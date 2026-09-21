@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 068 &mdash; ANSI/FCI 70-2 Seat-Leakage Classes I&ndash;VI</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m1, page 68 — eng.selection.shutoff-leakage-and-standards.
+       classify-and-select-shutoff-class [understand · nomenclature].
+       CORRECTION (2026-09-19, carried from course.json's own sourceNote):
+       the registry's citation for this competency, cvh-cmp-fci91-1-
+       leakage-class-summary, does NOT depict FCI 70-2 seat-leakage Class
+       I-VI — verified directly against the Subject-Matter Index, that
+       figure teaches ANSI/FCI 91-1's stem-seal/fugitive-emissions leakage
+       classes A1/A2/B1/B2 (CVH Sec 3.4.4, Fig. 3.29), a different standard
+       governing packing leakage to atmosphere, not seat shutoff. No figure
+       anywhere in the registry or the wider CVH ch5 index depicts the real
+       FCI 70-2 Class I-VI table (cvh-topic-seat-leakage-classification's
+       own relatedFigures is empty — Sec 5.2-5.3's class table is a
+       reference table in source, excluded from figure cataloguing under
+       the standing tables-vs-figures rule). Content below is built
+       directly from that topic's own teaches text (Control Valve
+       Handbook, 6th ed., Sec 5.2 p.107 / Sec 5.3 p.108), cross-confirmed
+       against its Oil & Gas / Pulp & Paper / Power & Severe Service
+       Sourcebook parallels, all of which independently restate the same
+       six-class structure. Per Style Guide Sec 9.2/Template 3, six
+       classes with a name, test basis, and allowable-leakage figure is a
+       genuine classification table, not a labelled physical part — no
+       valve-seat photo or cutaway exists to attach numbered part markers
+       to; the table IS the content. gallery.css has no
+       .slide--role-nomenclature:has(.tmpl-table) gate (same gap already
+       flagged on this course's own slides 15/17 for the contrast role),
+       so the production .tmpl-table is placed directly into the
+       nomenclature role's existing grid via an inline grid-column/grid-row
+       span, matching that exact precedent, rather than inventing a new
+       template class. Flagged again here under Concept-map gaps. -->
+  <article class="slide slide--role-nomenclature" data-slide="68" data-deck="cve1">
+    <h1 class="slide-title">ANSI/FCI 70-2 Seat-Leakage Classes I&ndash;VI</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1; grid-row:1; align-self:center;">
+        <thead>
+          <tr><th>Class</th><th>Test medium &amp; basis</th><th>Maximum allowable leakage</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>I</td><td>No test &mdash; supplier/user agreement only</td><td>&mdash;</td></tr>
+          <tr><td>II</td><td>Air or water, fixed differential pressure</td><td class="num">0.5% of rated capacity</td></tr>
+          <tr><td>III</td><td>Air or water, fixed differential pressure</td><td class="num">0.1% of rated capacity</td></tr>
+          <tr><td>IV</td><td>Air or water, fixed differential pressure</td><td class="num">0.01% of rated capacity</td></tr>
+          <tr><td>V</td><td>Water, at the valve's actual max. service &Delta;P</td><td>ml/min per inch of port diameter per psi &Delta;P</td></tr>
+          <tr><td>VI</td><td>Air/nitrogen, bubbles/min, submerged-tube apparatus</td><td>Tabulated separately by port diameter</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-source">Originated classification table &mdash; no figure in the registry depicts ANSI/FCI 70-2 Class I&ndash;VI (see this slide's own correction note above). After Control Valve Handbook, 6th ed., &sect;5.2 (p.107) &amp; &sect;5.3 (p.108) &mdash; reference table, prose only. Component Index: cvh-topic-seat-leakage-classification, ogas-topic-shutoff-leakage-classification, pp-topic-shutoff-leakage-classification, pss-topic-shutoff-leakage-selection-criteria.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">68</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

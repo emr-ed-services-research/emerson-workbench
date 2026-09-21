@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 109 &mdash; How Fail-Safe Action Actually Works</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m3, page 109 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.select-extreme-service-actuator-variant [understand ·
+       mechanism]. No figure registered for this competency's fail-safe
+       concept (course.json sourceNote) — the registry's four figures for
+       this competency are reserved for the multi-spring/diaphragm-rotary
+       pair (slide 110) and the handwheel pair (slide 113), per this
+       module's own figure-distribution instruction. Grounded in
+       ogas-topic-fail-safe-action-mechanism and pss-topic-failsafe-
+       mechanism, identical across both sourcebooks. Structural note,
+       matching this course's own cve1-100 precedent exactly: the
+       mechanism template's grid reserves a 36cqw figure column
+       (gallery.css); with no figure to place there, this slide overrides
+       .tpl-content to a single column so the list and source line take
+       the full width rather than leaving a blank gutter. -->
+  <article class="slide slide--role-mechanism" data-slide="109" data-deck="cve1">
+    <h1 class="slide-title">How Fail-Safe Action Actually Works</h1>
+    <div class="tpl-content" style="grid-template-columns:1fr">
+      <ul class="tpl-list" style="grid-column:1">
+        <li><span class="num">1</span>Fail-safe action always works the same way: energy is stored while the actuator is powered, then released to drive the valve to its required position when power is lost.</li>
+        <li><span class="num">2</span>A spring-and-diaphragm actuator stores that energy mechanically &mdash; the diaphragm compresses the spring as pneumatic pressure loads the casing &mdash; and needs nothing extra to fail open or fail closed by construction.</li>
+        <li><span class="num">3</span>Actuator types without a return spring must add the stored-energy source deliberately: a pneumatic volume tank, or a hydraulic accumulator for an electro-hydraulic unit; an electric actuator typically has no inherent fail-safe at all and instead holds its last position on power loss.</li>
+        <li><span class="num">4</span>A third option beyond simple open/closed &mdash; fail-lock &mdash; pipes a pneumatic switching valve (a Fisher 164A is the named example) as a lock valve, holding the actuator exactly where it was rather than driving it to either end.</li>
+      </ul>
+      <p class="tpl-source" style="grid-column:1">Grounded in Control Valve Handbook prose plus ogas-topic-fail-safe-action-mechanism / pss-topic-failsafe-mechanism (identical across both sourcebooks) &mdash; no figure placed here; this competency's registered figures are reserved for slides 110 and 113. Component Index: ogas-topic-fail-safe-action-mechanism, pss-topic-failsafe-mechanism.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">109</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 094 &mdash; Unbalance Force (A) &mdash; Reading Figure 5.2</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m2, page 94 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.calculate-sliding-stem-thrust [apply · mechanism].
+       Existing figure (crop), Style Guide Sec 5.8 default — Fig. 5.2's
+       port-diameter/balanced-vs-unbalanced table, used directly.
+       Component Index: cvh-cmp-unbalance-area-table. Per Style Guide
+       Sec 6.3 (a figure that already carries its own printed field
+       labels — here, its own row/column headers by port diameter and
+       balance type — is not overlaid with our own numbered markers); the
+       list is still numbered as the teaching order, naming the figure's
+       own row/column scheme rather than pointing at coordinates on it. -->
+  <article class="slide slide--role-mechanism" data-slide="94" data-deck="cve1">
+    <h1 class="slide-title">Unbalance Force (A) &mdash; Reading Figure 5.2</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <img src="../assets/sourced/cvh5-fig5-2-unbalance-area-table.png" alt="Control Valve Handbook Figure 5.2, Typical Unbalance Areas of Control Valves — a table of unbalance area in square inches by port diameter, for single-seated unbalanced valves and for balanced valves.">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Find the row for the actual port diameter, the column for the trim's balance type</li>
+        <li><span class="num">2</span>Single-seated, flow-up, unbalanced trim &mdash; net unbalance area is simply the port area</li>
+        <li><span class="num">3</span>Balanced trim &mdash; pressure routed to both sides of the plug cancels most of the force, but a small residual unbalance area remains; never assumed to be zero</li>
+        <li><span class="num">4</span>Unbalance force A = net pressure differential &times; net unbalance area &mdash; the differential is usually the maximum upstream gauge pressure, unless back pressure at maximum inlet pressure is guaranteed</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 5.2 &mdash; used directly. Component Index: cvh-cmp-unbalance-area-table.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">94</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

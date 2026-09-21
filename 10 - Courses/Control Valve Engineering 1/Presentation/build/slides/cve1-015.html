@@ -3,30 +3,46 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 015 &mdash; Two Independent Failures, One Spec</title>
+<title>CVE1 &middot; Slide 015 &mdash; Deadband's Two Mechanical Causes</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m3, page 15 — eng.sizing.actuator-force-awareness
-       [understand · mechanism, applies]. Second, independent Consequence —
-       establishes the two-gap difficulty this tier is built around. -->
-  <article class="slide slide--role-mechanism" data-slide="15" data-deck="cve1">
-    <h1 class="slide-title">Two Independent Failures, One Spec</h1>
+  <!-- cve1-ch1-m2, page 15 — eng.foundations.control-loop-and-final-control-element.
+       deadband-friction-effects [understand · contrast]. Franz's confirmed
+       safer default for this slide (no component registered — see
+       course.json sourceNote): a PLAIN COMPARISON TABLE, not an originated
+       two-panel illustration. Axis 3 names "a comparison table" as a valid
+       contrast shape (see also ch2-m2 slide 188's own table-as-contrast
+       precedent in course.json). NOTE: gallery.css's .slide--role-contrast
+       has no :has(.tmpl-table) gate the way .slide--role-application does —
+       the production .tmpl-table is placed directly into the contrast grid's
+       existing panel rows via an inline grid-column/grid-row span (the same
+       discipline the application decision-table variant established), rather
+       than inventing a new template class. Flagged under Concept-map gaps in
+       the Stage 3 report as a candidate for a real gallery.css
+       .slide--role-contrast:has(.tmpl-table) variant. Third row (dynamic/
+       running friction) included for completeness against source — the
+       primitive's own text distinguishes it from stiction as a load-bearing
+       point ("a packing selected against a running-friction spec alone can
+       still deadband badly on stiction it was never checked against"), not
+       decoration to trim per teaching-philosophy.md's completeness standard. -->
+  <article class="slide slide--role-contrast" data-slide="15" data-deck="cve1">
+    <h1 class="slide-title">Deadband's Two Mechanical Causes</h1>
     <div class="tpl-content">
-      <div class="tpl-fig-wrap">
-        <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig5-3-seat-load-graph.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.3, Minimum Required Seat Load for Improved Seat Life on Metal-Seated Valves Class II-V">
-        </div>
-      </div>
-      <ul class="tpl-list">
-        <li><span class="num">1</span>Same inspection, second finding: commissioning also flagged a seat leak &mdash; the valve never achieved Class V shutoff, even before the trim erosion began</li>
-        <li><span class="num">2</span>Two separate, independent real failures from one spec: a trim-erosion problem and an entirely different shutoff-force problem</li>
-        <li><span class="num">3</span>Both trace back to real checks the flowchart lists that this spec did not run</li>
-      </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., Figure 5.3, p.124. Component Index: cvh-topic-seat-load, cvh-cmp-seat-load-graph.</p>
+      <table class="tmpl-table" style="grid-column:1 / -1; grid-row:1 / span 3; align-self:center;">
+        <thead>
+          <tr><th>Term</th><th>What it is</th><th>Causes deadband?</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Backlash</td><td>Slack or looseness in a mechanical connection &mdash; a linkage, a coupling, a loose stem connector</td><td>Yes</td></tr>
+          <tr><td>Static friction (stiction)</td><td>The force that must be overcome before there is any relative motion at all between two surfaces &mdash; most often at the packing or seating surfaces</td><td>Yes &mdash; the more common of the two</td></tr>
+          <tr><td>Dynamic (running) friction</td><td>The smaller force that sustains motion once stiction is already overcome</td><td>No &mdash; but a packing spec'd only against running friction can still stiction-deadband</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-source">Originated comparison table &mdash; no component is registered for either cause (Control Valve Handbook 6th ed. &sect;1.4/&sect;1.5, pp. 28-29, prose only; cvh-cmp-deadband-graph anchors the plot itself, used directly on slide 14, and does not distinguish backlash from stiction).</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">15</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

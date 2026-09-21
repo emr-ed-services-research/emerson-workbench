@@ -32,7 +32,7 @@ Chapter boundaries confirmed directly by rendering: PDF page 59 = printed p.
 = Chapter 5 divider ("Gas Sizing"). Zero page offset throughout (PDF page =
 printed page number + 58). Chapter 4 = PDF pp. 59-72.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/Control
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control
 Valve Sourcebook - Pulp & Paper.pdf`. This pass catalogs existence and location
 only — it does not crop or extract images. Record shape: `id` · `kind` ·
 `teaches` · `concept-tags` · `status` · `source` (`doc` + `locator`) ·

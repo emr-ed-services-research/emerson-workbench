@@ -3,36 +3,45 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 018 &mdash; The Evidence, Confirmed</title>
+<title>CVE1 &middot; Slide 018 &mdash; Check Your Knowledge &mdash; Gain, Rangeability, Deadband &amp; Response</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m3, page 18 — eng.noise-cavitation.damage-diagnosis
-       [analyze · contrast, develops]. Real two-panel photo contrast,
-       complete on its own; closes the loop back to page 14's field photo
-       by content reference, not a module number. -->
-  <article class="slide slide--role-contrast" data-slide="18" data-deck="cve1">
-    <h1 class="slide-title">The Evidence, Confirmed</h1>
+  <!-- cve1-ch1-m2, page 18 — the module's check-your-knowledge slide
+       (course.json module.check: [18]). No keyConcepts entry exists for a
+       check slide by schema design — composed fresh here per the Stage 3
+       origination prompt. levelTarget is apply, so Style Guide Sec 8.4
+       requires a concrete situation, not "which is true": the stem asks the
+       learner to distinguish rangeability failure from the other three
+       properties this module names (installed-gain drift, deadband, and
+       second-order dynamic response), which is exactly the module's own
+       objective — testing the WHOLE arc, not one slide's content in
+       isolation. Distractors are the other three real mechanisms this
+       module taught, not throwaways: gain drift (slide 10), deadband from
+       backlash/stiction (slides 14-15), and second-order overshoot
+       (slides 16-17) are all real, plausible misdiagnoses a technician who
+       only half-learned this module could make, since a valve can genuinely
+       exhibit any of the four. The stem's stated confirmation ("dead time
+       and time constant are both fast") is what lets a learner who actually
+       worked through this module rule out D specifically, and the
+       "only at low flow" symptom is the signature slide 13's caution card
+       states directly for rangeability. data-correct="true" marks the right
+       option per the interactive check convention (gallery.css Sec 8 /
+       slides.js); reveal is terse per cve1-009's established convention. -->
+  <article class="slide slide--role-check" data-slide="18" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Gain, Rangeability, Deadband &amp; Response</h1>
     <div class="tpl-content">
-      <div class="tpl-panel" data-side="left">
-        <p class="panel-label">Flashing</p>
-        <div class="placeholder-img" style="background:none;border:none">
-          <img src="../assets/sourced/cvh5-fig5-8-flashing-damage.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Flashing damage: smooth, polished erosion.">
-        </div>
-        <p class="panel-caption">Smooth, polished &mdash; a clean erosion pattern, no pitting</p>
-      </div>
-      <div class="tpl-divider"></div>
-      <div class="tpl-panel" data-side="right">
-        <p class="panel-label">Cavitation</p>
-        <div class="placeholder-img" style="background:none;border:none">
-          <img src="../assets/sourced/cvh5-fig5-9-cavitation-damage.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Cavitation damage: rough, pitted erosion.">
-        </div>
-        <p class="panel-caption">Rough, cinder-like &mdash; pitted, gouged from repeated bubble-collapse impacts</p>
-      </div>
-      <p class="tpl-source" style="grid-column:1 / -1">Page 14's field photo matches the pitted, gouged signature &mdash; cavitation, not flashing. Control Valve Handbook, 6th ed., &sect;5.14.1&ndash;5.14.3 and Figures 5.8-5.9, pp.129-130. Component Index: cvh-topic-cavitation, cvh-topic-flashing, cvh-cmp-flashing-damage-photo, cvh-cmp-cavitation-damage-photo.</p>
+      <p class="tpl-prompt">A valve was spec'd with the correct Cv at design flow and the correct pressure class. In service it controls smoothly at high flow, but hunts and loses control whenever demand drops to a small fraction of design flow &mdash; even though bench data confirm the actuator's dead time and time constant are both fast. What is the most likely cause?</p>
+      <ul class="tpl-options">
+        <li data-correct="true">A.&nbsp;&nbsp;The valve's rated rangeability doesn't clear the loop's actual required turndown</li>
+        <li>B.&nbsp;&nbsp;Backlash or stiction in the assembly is producing deadband</li>
+        <li>C.&nbsp;&nbsp;Installed gain has drifted from the bench-tested (inherent) curve as &#916;P shifts with flow</li>
+        <li>D.&nbsp;&nbsp;The assembly is behaving as a second-order system and overshooting</li>
+      </ul>
+      <p class="tpl-reveal">A &middot; Rated rangeability doesn't clear required turndown</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">18</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

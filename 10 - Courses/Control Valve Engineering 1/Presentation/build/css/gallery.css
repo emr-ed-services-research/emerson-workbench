@@ -352,6 +352,38 @@
   grid-column: 1;
 }
 
+/* .has-no-fig — MECHANISM ONLY (nomenclature's own figure-less shape is the
+   separate `nomenclature-reveal` role variant, §9 below — this modifier
+   does not apply to plain `nomenclature`). Formalizes the
+   `style="grid-template-columns:1fr"` inline override CVE1 repeated across
+   several shipped slides (e.g. cve1-100, cve1-109, cve1-143..170) into a
+   real class: collapses the fig/list two-column skeleton to one full-width
+   list column.
+
+   RESERVED FOR GENUINELY NON-VISUAL CONCEPTS — a purely definitional
+   distinction, a named framework, a numeric threshold with no physical or
+   spatial referent. THIS IS NOT THE DEFAULT FOR "NO SOURCE FIGURE WAS
+   FOUND." Composing a figure-less slide because no component was earmarked
+   in the reference library — rather than because the concept itself has
+   nothing to draw — was the actual root cause traced from CVE1's shipped
+   course (2026-09-20 review): a large share of this course's own content is
+   physical/spatial (valves, control loops, flow paths) and needs an
+   originated diagram regardless of whether a source figure exists (see
+   buildStage3OriginatePrompt's "generate from nothing" guidance, extended
+   to figures). Reach for `.has-no-fig` only after confirming the concept
+   has nothing to draw, never as a shortcut around drawing it. */
+.slide--role-mechanism.has-no-fig .tpl-content {
+  grid-template-columns: 1fr;
+}
+.slide--role-mechanism.has-no-fig .tpl-list {
+  grid-column: 1;
+  max-width: 72cqw;
+  margin: 0 auto;
+}
+.slide--role-mechanism.has-no-fig .tpl-source {
+  grid-column: 1;
+}
+
 /* ---------------------------------------------------------------------- *
  * 4a. PROCEDURE — list + single image.
  * ---------------------------------------------------------------------- */
@@ -709,6 +741,23 @@
   grid-row: 3;
 }
 
+/* .has-no-fig — same reservation as role-mechanism's own `.has-no-fig`
+   above (§2&3): for an application that is genuinely prose-only by design
+   (a definitional judgment, a named threshold — nothing to plot or
+   photograph), never a default for "no chart was available." The base
+   single-column skeleton already has no separate figure column to remove
+   here; this only restyles `.tpl-chart` itself to read as flowing prose —
+   centered, body-sized text — instead of an empty box sized for a graph or
+   photo (`width/height: 100%` with nothing to fill it). */
+.slide--role-application.has-no-fig .tpl-chart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.6cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+
 /* ---------------------------------------------------------------------- *
  * 6. CONTRAST — two panels, mirrored. `subgrid` locks the label / image /
  *    caption rows to the SAME height on both sides — captions align row to
@@ -761,6 +810,34 @@
 .slide--role-contrast .tpl-source {
   grid-row: 4;
   grid-column: 1 / -1;
+  text-align: center;
+}
+
+/* :has(.tmpl-table) — a 3+-way comparison composed as a real table, not the
+   strict mirrored 2-panel layout above (that layout structurally assumes
+   exactly two sides). CVE1 needed this repeatedly (e.g. a 3-row Greening
+   OF/BY/WITH comparison, cve1-015's two-cause deadband table) and worked
+   around it each time by hand-placing the production `.tmpl-table` — the
+   same table styling role-application's own `:has(.tmpl-table)`
+   decision-table variant above reuses — into the panel grid via an inline
+   `grid-column`/`grid-row` span, flagged in those slides' own comments as a
+   candidate for a real variant. Formalized here the same way: a table
+   comparison doesn't use the panel/divider columns at all (no `.tpl-panel`
+   markup is present), so the gate replaces them outright with one
+   full-width column rather than spanning a table across them. */
+.slide--role-contrast:has(.tmpl-table) .tpl-content {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  row-gap: 1.2cqh;
+}
+.slide--role-contrast:has(.tmpl-table) .tmpl-table {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+}
+.slide--role-contrast:has(.tmpl-table) .tpl-source {
+  grid-column: 1;
+  grid-row: 2;
   text-align: center;
 }
 
@@ -860,6 +937,48 @@
 }
 .slide--role-check .tpl-reveal.is-shown {
   display: block;
+}
+
+/* .has-fig — a supporting diagram alongside the check-your-knowledge
+   prompt (Decision 1, Franz's review of CVE1's origination pass,
+   2026-09-20): the base check skeleton above has no figure track at all,
+   which forced a per-file scoped `<style>` override the first time a check
+   stem needed one (a control-loop scenario, a P&ID) — explicitly rejected
+   as the permanent answer. Reuses the same `.tpl-fig-wrap`/`.tpl-fig`
+   pattern nomenclature/mechanism already use (§2&3 above), including
+   `object-fit: contain` — a check figure is a diagram to read accurately,
+   never cropped like a procedure-worked photo. Fixed-width figure column
+   beside the prompt/options/reveal column, which keeps its own three
+   explicit rows unchanged. */
+.slide--role-check.has-fig .tpl-content {
+  grid-template-columns: 1fr 34cqw;
+  column-gap: 3.2cqw;
+}
+.slide--role-check.has-fig .tpl-prompt,
+.slide--role-check.has-fig .tpl-options,
+.slide--role-check.has-fig .tpl-reveal {
+  grid-column: 1;
+}
+.slide--role-check.has-fig .tpl-fig-wrap {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+}
+.slide--role-check.has-fig .tpl-fig {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-check.has-fig .tpl-fig img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 /* ---------------------------------------------------------------------- *
@@ -1093,6 +1212,18 @@
 .slide--role-procedure-worked .tpl-source {
   grid-column: 1 / span 2;
   grid-row: 3;
+}
+
+/* .has-no-fig — same reservation as role-mechanism's own `.has-no-fig`
+   above (§2&3): genuinely non-visual worked content only (a judgment or
+   procedural distinction with no physical setup to show), never a default
+   for "no source photo was available." Collapses the fixed 32cqw figure
+   column so the tabs/tabpanes run the full content width. */
+.slide--role-procedure-worked.has-no-fig .tpl-content {
+  grid-template-columns: 1fr;
+}
+.slide--role-procedure-worked.has-no-fig .tpl-source {
+  grid-column: 1;
 }
 
 /* ---------------------------------------------------------------------- *

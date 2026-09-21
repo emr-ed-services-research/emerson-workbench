@@ -31,7 +31,7 @@ starts at PDF p.43.
 This is a sizing/procedure chapter (ISA/IEC liquid-sizing equations, worked
 sample problems) — genuinely low in figure count, confirmed by reading every
 page, not assumed from the chapter's subject matter. All figures are from
-`20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook
+`20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook
 - Power & Severe Service.pdf`. This pass catalogs existence and location
 only — it does not crop or extract images (this book has no
 extracted-figures folder yet), so each record's `source` carries a single

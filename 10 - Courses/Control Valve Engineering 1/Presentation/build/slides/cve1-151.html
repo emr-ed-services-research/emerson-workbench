@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 151 &mdash; Check Your Knowledge &mdash; Liquid Sizing &amp; Critical Pressure Ratio</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m1, page 151 — module check slide (role: check). No
+       component earmarked by design (Stage 2 never gives a check slide its
+       own keyConcept) — synthesized from the whole module arc (slides
+       142-150), origination-mode Stage 3, no prior slide file to fall back
+       to. Apply-level module, so the stem is a concrete situation, not
+       "which of the following is true," per Style Guide Sec 8.4. Draws on
+       the choked-flow rule (slides 148, 150 — whichever of ΔPmax and the
+       actual ΔP is SMALLER goes into the Cv equation) and ties its
+       consequence directly back to the module's own stakes line (slide
+       142: an undersized valve can't pass rated flow at any opening) —
+       using the actual ΔP when the flow is really choked plugs a LARGER
+       number under the square root, which returns a SMALLER computed Cv
+       than the true requirement: exactly the undersizing failure mode the
+       module opens on. Distractors are real plausible mistakes: A always
+       reaches for the real service ΔP regardless of the choked-flow check;
+       C is the real misconception that ΔPmax only matters after
+       installation, not at sizing time; D is a naive average, not a real
+       procedure. Follows this course's own cve1-125/129/141 precedent:
+       data-correct="true" on the right option, terse letter-plus-summary
+       reveal, not a restated sentence. -->
+  <article class="slide slide--role-check" data-slide="151" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Liquid Sizing &amp; Critical Pressure Ratio</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">You are running the six-step liquid-sizing procedure on a service and find &Delta;P<sub>max</sub> = 30 psi against an actual service &Delta;P of 45 psi. Which value belongs in the Cv equation, and what happens if you use 45 psi instead?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Use 45 psi &mdash; it&rsquo;s the real service &Delta;P, so it&rsquo;s always the correct value to plug in</li>
+        <li data-correct="true">B.&nbsp;&nbsp;Use 30 psi &mdash; the flow is choked past that point, and using 45 psi instead would compute a Cv that&rsquo;s too small, undersizing the valve</li>
+        <li>C.&nbsp;&nbsp;Use 45 psi &mdash; &Delta;P<sub>max</sub> only matters once the valve is installed, not during initial sizing</li>
+        <li>D.&nbsp;&nbsp;Average the two values (37.5 psi) since both are real, measured pressure drops</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; Use &Delta;P<sub>max</sub> (30 psi)</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">151</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

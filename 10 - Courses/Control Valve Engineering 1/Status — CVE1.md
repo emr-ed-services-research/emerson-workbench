@@ -10,6 +10,233 @@ updated: 2026-09-17
 
 # Status — CVE1
 
+## STAGE 3 COMPLETE (2026-09-20) — all 24 modules composed against v3 course.json
+
+Real Stage 3 (origination-mode slide composition) ran to completion across
+every module of the current 10-chapter, 24-module v3 course structure —
+ch1-m1 through ch10-m2, dispatched strictly sequentially, one real headless
+agent per module, each verified individually against `verify.ps1` before the
+next was started. Every single dispatch reported **0 FAIL**. The build now
+holds 190 slide files (`cve1-005.html`–`cve1-186.html` plus the pre-existing
+`cve1-187.html`–`cve1-194.html` block that belongs to an earlier chapter's
+numbering) with a matching 190-row `build/manifest.js`.
+
+This closes out the clearing/rebuild documented in the "SUPERSEDED
+(2026-09-19)" note directly below: this is that fresh Stage 3 pass, run for
+real, all the way through the course.
+
+**Known open findings from this pass, not yet fixed:**
+- `cve1-122.html` (ch7-m1) states "Meets 100 ppmv" for three packing systems
+  (ENVIRO-SEAL PTFE, Duplex, Graphite ULF) that the Subject-Matter Index only
+  documents as general "environmental service," with no specific ppmv figure
+  stated anywhere in source. Needs a correction pass.
+- ch7-m1's Figs. 3.30/3.31 (`cvh-cmp-single-ptfe-vring-packing`,
+  `cvh-cmp-enviroseal-ptfe-packing-system`) are pixel-identical crops despite
+  being catalogued as two different spring designs (coil vs. Belleville).
+  Used as delivered per the bounded-research rule and flagged in-slide; needs
+  investigation/re-cropping against the real source.
+- `cvh-cmp-iso15848-1-qualification-requirements`'s Subject-Matter Index
+  `teaches` field overclaims a tightness-class column that actually belongs
+  to the neighboring Figure 3.28, not the cited Figure 3.26 (caught and
+  correctly worked around during ch5-m1, but the index entry itself is still
+  wrong).
+- `buildStage3OriginatePrompt`'s check-slide instructions (PipelineConsole
+  source, `src/main/runners/prompts.js`) contain a self-contradictory clause
+  — "For a module at apply level or higher (this one: `understand`)..." —
+  logically false whenever the module is below apply level. Agents have
+  consistently ignored the contradiction and followed the correct situational
+  framing anyway, with no bad output across 24 modules, but the template
+  text itself should be fixed.
+- Several `gallery.css` structural gaps, worked around by inline overrides
+  every time rather than fixed: no `:has(.tmpl-table)` gate for
+  `nomenclature`/`mechanism`/`contrast` roles; no figure-less variant for
+  `mechanism`/`application`/`procedure-worked` (worked around via
+  `.tpl-content{grid-template-columns:1fr}` inline override, a pattern reused
+  consistently from ch6-m2 onward); no shape for a chartless sequential
+  case-walkthrough (ch5-m2 slide 79, hand-built inside `.tpl-chart`). Worth
+  consolidating into one real CSS pass rather than continuing to patch
+  inline per-slide.
+- Citation-style inconsistency: whether a prose-only, no-figure slide's
+  citation line includes a `Component Index: <topic-id>` clause varies by
+  chapter (ch8 omits it, ch9/ch10 include it) — each chapter is internally
+  consistent but the vault has no single standing rule for this yet.
+
+None of the above block the course from being complete and verified; they are
+real quality/consistency findings queued for a follow-up pass.
+
+**Phase 3 progress (2026-09-20):** the visual-grounding retrofit landed —
+real P&ID on the check slide (`cve1-009.html`), real physical-setup diagrams
+on all five ch8 procedure-worked slides (`cve1-146/147/150/155/158.html`,
+not just the one the Phase 1 proof covered), the bonnet-selection slide
+(`cve1-135.html`) converted to a real working `application-pick` (verified
+with a live Puppeteer click test, not just markup review), and
+`cve1-122.html`'s ppmv overstatement corrected against the real source text
+(the 100 ppmv figure is genuinely source-stated for Single PTFE V-Ring and
+rotary Graphite only — ENVIRO-SEAL PTFE, Duplex, and Graphite ULF were
+changed to "Qualifies for environmental service"). The Figs. 3.30/3.31
+pixel-identical-crop finding (queued below) also resolved: the real citing
+slide was `cve1-119.html`, not 135 — a bad crop (missing companion parts
+photo) has been fixed at the source and the slide's own asset/alt
+text/comment brought into line. `verify.ps1`: 0 FAIL, 1 warn (pre-existing).
+
+**New infrastructure finding, surfaced during this retrofit:** CVE1's own
+`build/css/gallery.css` had silently drifted 131 lines out of sync from the
+Template Gallery/Engine master copy — it was missing the check-role
+`.has-fig` variant Phase 2 had just added there. The retrofit agent patched
+only that one block directly into CVE1's copy (CVE1 still lacks Phase 2's
+`.has-no-fig`, contrast-table-gate, and other additions). Confirmed via
+`verify.ps1`: its "engine-lock" check reported "12 assembled files match the
+engine" both before and after this drift was found and partially patched —
+`gallery.css` is not among the files that check tracks, so this class of
+drift is currently invisible to the course's own verification pipeline.
+Real, standing gap, not CVE1-specific — any course using the Template
+Gallery system could have the same silent drift.
+
+**Fixed (2026-09-20):** root cause was that `gallery.css` never lived under
+`40 - Engine/Presentation/`, the tree `build-course.ps1` actually syncs and
+`_engine-lock.json` actually tracks — it only existed at the disconnected
+`40 - Engine/_template-gallery/gallery.css` (documented in `Style Guide.md`
+as "the master template," but never wired into the real distribution
+mechanism). Fix: the current, Phase-2-complete content (from
+`10 - Courses/_Template Gallery/Presentation/build/css/gallery.css`, the
+file Phase 2 actually edited) is now the real file at
+`40 - Engine/Presentation/build/css/gallery.css`; the old disconnected copy
+is left in place with a clear superseded-redirect header rather than
+deleted; `Style Guide.md`'s reference updated to the new path. Re-ran
+`build-course.ps1 -Force` on CVE1 — `gallery.css` is now genuinely tracked
+(`_engine-lock.json`: 13 files, up from 12). `verify.ps1`: 0 FAIL, 1 warn
+(pre-existing). **Not yet done, out of this phase's scope:** every other
+course on the Template Gallery system (CVB, CVE2, CVE-Industry O&G, IfE,
+etc.) still needs its own `build-course.ps1` run to pick this up — each
+will independently hit the same one-time `DIVERGED`-then-`-Force` step CVE1
+just did, the first time it's synced after this fix.
+
+**Phase 3 complete (2026-09-20).** All six queued items done, plus the
+gallery.css infrastructure fix folded in mid-phase. Final combined
+`verify.ps1`: 0 FAIL, 1 warn (pre-existing).
+
+- **Depth-block paragraph structure**: the Workshop shell's reground panel
+  now renders real `<p>` elements (was `.textContent`, silently collapsing
+  any structure); `course.json`'s `reground.depth` field restructured into
+  3-9 natural paragraphs across 23 modules (ch8-m2 already had this),
+  verified byte-for-byte that no prose changed, only breaks inserted.
+- **Citation-style rule**: decided and documented in `Style Guide.md` §5.9
+  (also caught and fixed a separate, pre-existing drift there — the guide
+  said "Subject-Matter Index:" while all 197 real citations in the shipped
+  course say "Component Index:"). Applied across CVE1: 5 ch8 slides
+  (`cve1-100/148/154/156/157.html`) gained the clause where a real id
+  existed but wasn't cited. **New gap surfaced, not yet fixed**: 6 slides
+  (`cve1-143/144/145/153/015/017.html`) have no traceable Subject-Matter
+  Index id at all backing their prose — genuinely missing index entries,
+  not a citation-formatting issue; needs new `kind: topic` entries authored
+  before these can be cited.
+
+**Fixed directly (2026-09-20), outside the queued list above:** the
+Show/Tell/Do tab pattern used on five ch8 procedure-worked slides
+(`cve1-146/147/150/155/158.html`) had a broken "Do" tab in every instance —
+two (146, 155) were bare "continued on the next slide" bridges with no
+learner action, and three (147, 150, 158) referenced "the practice exercise
+that follows," which does not exist anywhere in the course (confirmed by
+search). All five "Do" tabs were rewritten into genuine attempt-it-yourself
+or predict-it prompts grounded only in numbers already present on their own
+slide — no new exercise infrastructure invented, no unverified facts added.
+`verify.ps1`: 0 FAIL, 1 warn (pre-existing, unrelated).
+
+---
+
+## Phase 4 complete (2026-09-20) — depth-pane expand affordance, and a major pipeline gap found along the way
+
+**The feature itself**: a real "⤢ Expand" control in the reground rail
+panel opens a wide, centered reading overlay (same overlay convention as
+the existing Source Library shelf — backdrop, rounded panel, Esc/backdrop-
+click/close-button to dismiss) showing hook/bridge/depth at generous
+type size, module title in the header. Rail copy is untouched — this is a
+second view, not a replacement. Built at the Engine level
+(`40 - Engine/Presentation/course/{index.html,course.js,course.css}`) and
+synced into CVE1 via `build-course.ps1`. Verified with a real headless-
+Chrome/Puppeteer script (the claude-in-chrome extension was not connected
+in this environment) — screenshotted, confirmed 11 real paragraphs render
+(1 hook + 1 bridge + 9 depth, matching Phase 3's own ch6-m3 restructuring),
+confirmed Escape closes it.
+
+**Major finding, not part of the original plan**: that same verification
+run showed only 3 paragraphs instead of 11 on the first pass. Root cause:
+`course.js`'s boot logic is `if (window.EW_COURSE) { boot(window.EW_COURSE); }
+else fetch("course.json")` — `course-data.js` (which sets `window.EW_COURSE`)
+is loaded unconditionally by `index.html` before `course.js` runs, so **the
+live Workshop always prefers course-data.js over the live course.json**;
+the fetch fallback only fires if course-data.js is missing outright, not as
+a "prefer current data" path. CVE1's `course-data.js` was last generated
+2026-09-19, a full day before ANY of today's Phase 1-3 work — meaning
+**none of today's course.json edits (the depth-paragraph restructuring, and
+by extension everything else touching course.json this session) were ever
+visible in the actual running course**, with nothing in `verify.ps1`
+checking for this drift. This is the same class of gap as the `gallery.css`
+finding earlier in this phase, but with a much larger blast radius — it
+silently hides course.json's entire content, not one CSS variant.
+
+**Fixed**: regenerated CVE1's `course-data.js` from the current
+`course.json` (confirmed via the Puppeteer test: 11 paragraphs render
+correctly now). Built a permanent fix, not a one-off: `verify.ps1` section
+"1b. course-data.js drift" now FAILs (not warns) if the two files disagree,
+and a new `40 - Engine/gen-course-data.ps1` does the actual regeneration —
+tested the check both ways (confirmed it FAILs on an intentionally
+corrupted file, confirmed it passes clean after the real fix).
+`verify.ps1`: 0 FAIL, 1 warn (pre-existing).
+
+**Not yet done, out of this phase's scope**: every other course
+(CVB, CVE2, CVE-Industry O&G, IfE, 14101, etc.) needs the same check —
+almost certainly some or all have their own stale `course-data.js` right
+now, invisible until someone runs `verify.ps1` (with today's fix) or
+`gen-course-data.ps1` against them.
+
+## Phase 5 complete (2026-09-20) — competency/objectives artifact for external review
+
+Built from the existing v3 competency hierarchy document
+(`00 - Project/Competency Hierarchy — CVE1, CVE2, CVE3 v3.md`) — no new
+content generation, a presentation layer on data that already existed and
+was already reviewed. Published as a standalone page: Terminal Competencies
+up top as the executive summary, then all 10 chapters as scannable
+disclosure cards (objective/stakes/timing visible closed, full Learning
+Objectives and module breakdown on expand). Scoped to CVE1 only, not the
+full CVE1/CVE2/CVE3 document.
+
+---
+
+## SUPERSEDED (2026-09-19) — the entire "productive-failure single-scenario" track below (attempts 1-4) no longer reflects the current course
+
+Everything below this note — the whole `cve1-ch1-m1`/`m2`/`m3` continuous
+Case A/B/C scenario, its 20 slide files, and `manifest.js` as it stood — was
+built against a competency hierarchy that Franz and RC independently
+rebuilt from zero this session (v3), given only a 3-line spec, because the
+prior versions (this track included) had drifted from what CVE1 was
+actually supposed to teach. The current `course.json` is a full 10-chapter,
+24-module structure (Control Loop Fundamentals through Decarbonization &
+Emissions Strategy) driven by the Instructional Primitives Pathway, with no
+relationship to the case-study narrative documented below.
+
+This was caught before Stage 3 ran against the real course.json: the build
+folder still had this track's 20 slide files sitting in `build/slides/`
+(committed 2026-09-15, commit `a82a16b`), content-mismatched against v3 —
+e.g. slide 5 was "Case A: Service Conditions and Preliminary Cv" (a sizing
+worked example) where v3's real ch1-m1 page 5 is
+`eng.foundations.control-loop-and-final-control-element.identify-final-control-element`.
+Franz confirmed clearing them. Removed: all 20 `build/slides/cve1-*.html`
+files; `manifest.js` reset to empty (Stage 3 will populate it fresh, module
+by module). Left untouched: `_engine-lock.json` and the shared
+`build/assets`/`build/css` files, which are generic engine sync state, not
+content tied to either competency version. The 5 sourced sizing/cavitation
+images this track extracted (`build/assets/sourced/cvh5-fig5-*.png`,
+`cvh5-valve-selection-process-flowchart.png`) were left in place too — they
+may still be genuinely useful once v3's ch8 ("Valve Sizing Fundamentals:
+Liquid & Compressible Flow") reaches Stage 3, since that's the same subject
+matter; they are simply unreferenced by anything right now.
+
+Nothing below this note is current. Kept as history, same convention this
+file already used for its own superseded attempts.
+
+---
+
 ## PHASE 1 REBUILD, ATTEMPT 4 (2026-09-17) — grounds conceptual explanation in real Subject-Matter Index topic entries, awaiting Franz's review
 
 **Why this pass exists.** Attempt 3 (below) fixed narrative/pacing/data

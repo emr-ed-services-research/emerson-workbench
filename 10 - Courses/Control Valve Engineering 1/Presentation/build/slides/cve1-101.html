@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 101 &mdash; Working a Real Torque Case &mdash; 6 in. V-Notch Ball Valve</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m2, page 101 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.calculate-rotary-torque [apply · procedure]. Per
+       Franz's explicit instruction for this slide: the natural
+       supporting content is the torque-factor table (Table 5.13.1) —
+       real, cited reference data, reproduced directly as a small on-slide
+       table (placed in the template's figure slot), not an originated
+       illustration. Table data verified directly against the Control
+       Valve Handbook's own printed Table Sec 5.13.1 (PDF pp. 126-127) per
+       course.json's sourceNote. LOW CONFIDENCE / terminology: Style Guide
+       Sec 7.3 states torque as N&middot;m primary with lbf&middot;ft in
+       parentheses; this source publishes lbf&middot;in directly with no
+       worked value to convert without introducing a derived number not
+       in the source, so lbf&middot;in is used as printed rather than
+       invented-converted — flagged in this run's report as a terminology
+       decision for Franz, per course.json's own identical flag. -->
+  <article class="slide slide--role-procedure-image" data-slide="101" data-deck="cve1">
+    <h1 class="slide-title">Working a Real Torque Case &mdash; 6 in. V-Notch Ball Valve</h1>
+    <div class="tpl-content">
+      <ol class="tpl-steps">
+        <li>6 in. NPS V-notch ball valve, 1 in. composition-bearing shaft &mdash; A = 1.80, B = 500, C = 1.10 at 60&deg; maximum rotation, maximum T<sub>D</sub> = 4,140 lbf&middot;in</li>
+        <li>Breakout torque: T<sub>B</sub> = 1.80(&Delta;P<sub>shutoff</sub>) + 500 lbf&middot;in &mdash; the fixed B term alone is 500 lbf&middot;in before any pressure differential is even applied</li>
+        <li>Dynamic torque: T<sub>D</sub> = 1.10(&Delta;P<sub>eff</sub>) lbf&middot;in, capped at this valve's own published maximum of 4,140 lbf&middot;in regardless of what a larger &Delta;P<sub>eff</sub> would otherwise compute</li>
+        <li>&Delta;P<sub>shutoff</sub> and &Delta;P<sub>eff</sub> come from the actual service, not the table &mdash; A, B, and C are the fixed, valve-specific factors the job's real pressure differentials get multiplied through</li>
+      </ol>
+      <div class="tpl-fig">
+        <table class="tmpl-table" style="font-size:1.3cqw">
+          <thead>
+            <tr><th>Valve / shaft</th><th class="num">A</th><th class="num">B</th><th class="num">C (60&deg;)</th><th class="num">Max T<sub>D</sub> (lbf&middot;in)</th></tr>
+          </thead>
+          <tbody>
+            <tr class="is-example">
+              <td>6 in. NPS V-Notch, 1 in. shaft</td>
+              <td class="num">1.80</td>
+              <td class="num">500</td>
+              <td class="num">1.10</td>
+              <td class="num">4,140</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Table 5.13.1 &mdash; reproduced as printed (reference-table data, excluded from the Component Index's figure catalog per the standing tables-vs-figures rule).</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">101</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

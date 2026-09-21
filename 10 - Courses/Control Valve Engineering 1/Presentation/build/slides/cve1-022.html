@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 022 &mdash; Control Range: Butterfly vs. Globe</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch2-m1, page 22 — eng.foundations.process-variability-and-loop-
+       performance.oversizing-distortion-effects [understand · contrast],
+       progression: develops. Component: cvh-cmp-valve-style-control-
+       range-comparison (Fig. 2.6). Per the concept's own
+       templateRationale: "CVH's own Figure 2.6 is already a genuine
+       two-panel this-vs-that pairing ... one source figure serving both
+       panels (no items needed, single source)." Checked the real figure
+       geometry (same crop CVB's cvb-058.html already verified and uses,
+       cvh2-fig2-6-valve-style-control-range-comparison.png): both curves
+       (Butterfly, Globe) are plotted TOGETHER on the same pair of shared
+       axes (installed characteristic on top, installed gain on bottom),
+       not as two independently croppable halves — there is no vertical
+       seam that separates a "butterfly half" from a "globe half" of the
+       image. A genuine per-style split crop is therefore not available
+       without a redraw, and Style Guide §5.8 does not license a redraw
+       here ("matches our system"/"wanted two separate images" is not a
+       stated reason). Resolution: both .tpl-panel slots show the SAME
+       full Fig. 2.6 crop (matching the templateRationale's own "one
+       source figure serving both panels" framing literally), with each
+       panel's label and caption directing the reader to that valve's
+       curve within the shared image rather than showing a distinct crop.
+       Flagged in the report (Concept-map gaps) as a real limit case of
+       the contrast template against a single-source overlay figure. Each
+       image gets its own data-lightbox-caption per Style Guide §5.13
+       since there are two separate clickable <img> elements on this
+       slide, even though they share one source file. -->
+  <article class="slide slide--role-contrast" data-slide="22" data-deck="cve1">
+    <h1 class="slide-title">Control Range: Butterfly vs. Globe</h1>
+    <div class="tpl-content">
+      <div class="tpl-panel" data-side="left">
+        <div class="panel-label">Butterfly</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <img src="../assets/sourced/cvh2-fig2-6-valve-style-control-range-comparison.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Two stacked graphs against a shared valve-travel x-axis comparing a butterfly valve and a globe valve; the butterfly's installed-gain curve falls out of the EnTec spec band at a much lower travel percentage than the globe's does." data-lightbox-caption="Fig. 2.6, Effect of Valve Style on Control Range &mdash; butterfly curve. Component Index: cvh-cmp-valve-style-control-range-comparison.">
+        </div>
+        <div class="panel-caption">Installed gain drops out of the EnTec spec band low in the travel range &mdash; a narrow window of controllable travel, the exposure high-capacity rotary designs carry when picked at line size</div>
+      </div>
+      <div class="tpl-divider"></div>
+      <div class="tpl-panel" data-side="right">
+        <div class="panel-label">Globe</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <img src="../assets/sourced/cvh2-fig2-6-valve-style-control-range-comparison.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Two stacked graphs against a shared valve-travel x-axis comparing a butterfly valve and a globe valve; the globe's installed-gain curve stays inside the EnTec spec band across roughly the middle-to-upper half of its travel." data-lightbox-caption="Fig. 2.6, Effect of Valve Style on Control Range &mdash; globe curve. Component Index: cvh-cmp-valve-style-control-range-comparison.">
+        </div>
+        <div class="panel-caption">Installed gain stays inside the spec band across roughly the middle-to-upper half of travel &mdash; a controllable range wide enough to absorb the same oversizing that would badly hurt a butterfly</div>
+      </div>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 2.6 &mdash; used directly, same crop serving both panels. Component Index: cvh-cmp-valve-style-control-range-comparison.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">22</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

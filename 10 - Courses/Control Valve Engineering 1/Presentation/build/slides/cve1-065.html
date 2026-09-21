@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 065 &mdash; Selecting the Characteristic That Survives All Three Checks</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch4-m2, page 65 — eng.selection.flow-characteristic-and-
+       rangeability.select-characteristic-for-rangeability [evaluate ·
+       application]. Component: ogas-cmp-flow-characteristic-curves
+       (Fisher Control Valve Sourcebook — Oil & Gas, Fig. 1-10, p.1-7) —
+       used directly, own printed curve labels retained (Style Guide Sec
+       6.2); the near-duplicate of slide 64's Power & Severe Service
+       figure, deliberately not repeated there per course.json's own
+       sourceNote. Canonical (non-decision-table) application shape per
+       templateRationale: chart + a numbered worked-reasoning list (the
+       :has(.tpl-list) gallery variant, same shape tp-010 proofs) +
+       takeaway + source. The reasoning steps are composed from this
+       primitive's own "t" text, reframed as a 3-step chain, not
+       re-derived from the citation. Turndown/pressure-drop-ratio/
+       positioner reasoning verified against ogas-topic-flow-
+       characteristic-and-rangeability (pp. 1-6-1-7) and pss-topic-flow-
+       characteristic-rangeability-positioners (positioner limits) — no
+       invented numbers; this slide applies, not re-derives, the
+       mechanisms already taught on slides 61-64. -->
+  <article class="slide slide--role-application" data-slide="65" data-deck="cve1">
+    <h1 class="slide-title">Selecting the Characteristic That Survives All Three Checks</h1>
+    <div class="tpl-content">
+      <div class="tpl-chart-wrap">
+        <div class="tpl-chart">
+          <img src="../assets/sourced/ogas1-fig1-10-flow-characteristic-curves.png" style="width:100%;height:100%;object-fit:contain" alt="Graph of percent of maximum flow against percent of rated travel, plotting three curves with their own printed labels: Quick Opening, Linear, and Equal Percentage.">
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>Read the pressure-drop ratio (slide 62) &mdash; predict how far this candidate's installed curve will drift from its inherent one</li>
+        <li><span class="num">2</span>Screen rangeability (slide 64) &mdash; reject a candidate whose rated rangeability can't clear the required turndown, even before distortion is considered</li>
+        <li><span class="num">3</span>Check the positioner &mdash; available to help close a gap, or ruled out here by its own frequency-response/phase-lag limit for this loop</li>
+      </ul>
+      <p class="tpl-takeaway">The characteristic that survives all three checks &mdash; not the one with the best-looking inherent curve on the bench &mdash; is the one to specify.</p>
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil & Gas, Fig. 1-10 &mdash; used directly, own printed curve labels retained; the near-duplicate of slide 64's Power & Severe Service figure, deliberately not repeated. Component Index: ogas-cmp-flow-characteristic-curves.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">65</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

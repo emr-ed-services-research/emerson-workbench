@@ -3,35 +3,37 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 017 &mdash; The Assumption That Was Backwards</title>
+<title>CVE1 &middot; Slide 017 &mdash; First-Order vs. Second-Order Response</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m3, page 17 — eng.noise-cavitation.damage-diagnosis
-       [evaluate · mechanism, develops]. Names the specific real gap against
-       Case C's own numbers. Rewritten (WC, rebuild attempt 4) to state the
-       real causal mechanism from cvh-topic-flow-recovery instead of just
-       asserting the correlation — a high-recovery design has LESS internal
-       turbulence/energy dissipation, which is why ITS vena-contracta
-       pressure specifically is lower, not just why its downstream recovery
-       is higher. Bullet 2's quote is verbatim from the real source. -->
-  <article class="slide slide--role-mechanism" data-slide="17" data-deck="cve1">
-    <h1 class="slide-title">The Assumption That Was Backwards</h1>
+  <!-- cve1-ch1-m2, page 17 — eng.foundations.control-loop-and-final-control-element.
+       dynamic-response-characteristics [understand · contrast]. Franz's
+       confirmed safer default for this slide (no component registered for
+       either state — see course.json sourceNote): a PLAIN COMPARISON TABLE,
+       not an originated response-curve sketch. Same contrast-as-table
+       construction as slide 15 (see that slide's note on the missing
+       gallery.css :has(.tmpl-table) gate for the contrast role — flagged
+       again here under Concept-map gaps). Columns oriented category-by-
+       category (First-order / Second-order), mirroring the two-panel
+       left/right contrast metaphor. -->
+  <article class="slide slide--role-contrast" data-slide="17" data-deck="cve1">
+    <h1 class="slide-title">First-Order vs. Second-Order Response</h1>
     <div class="tpl-content">
-      <div class="tpl-fig-wrap">
-        <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig5-7-pressure-profile-high-low-recovery.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.7, Comparison of Pressure Profiles for High- and Low-Recovery Valves">
-        </div>
-      </div>
-      <ul class="tpl-list">
-        <li><span class="num">1</span>What matters for cavitation is the drop between P1 and the vena contracta specifically, not the overall &Delta;P. A high-recovery design has less internal turbulence and dissipates less energy, so more of the total pressure drop shows up right at the vena contracta itself</li>
-        <li><span class="num">2</span>The source states it directly: &ldquo;High-recovery valves tend to be more subject to cavitation, since the vena contracta pressure is lower and more likely to reach down to the liquid's vapor pressure&rdquo; &mdash; less energy dissipated overall is exactly why the local low point is more severe</li>
-        <li><span class="num">3</span>Case C's streamlined trim (page 12) was chosen for Cv efficiency and space &mdash; the higher-recovery option, at an 80%-of-P1 pressure drop, exactly the wrong one</li>
-      </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., &sect;5.14.1 and Figure 5.7 &ldquo;Comparison of Pressure Profiles for High- and Low-Recovery Valves,&rdquo; pp.128&ndash;129. Component Index: cvh-topic-flow-recovery, cvh-cmp-pressure-profile-high-low-recovery.</p>
+      <table class="tmpl-table" style="grid-column:1 / -1; grid-row:1 / span 3; align-self:center;">
+        <thead>
+          <tr><th>Property</th><th>First-order</th><th>Second-order</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Energy-storage elements</td><td>One</td><td>Two &mdash; exchange kinetic and potential energy back and forth</td></tr>
+          <tr><td>Response shape</td><td>A single smooth exponential curve toward the new value</td><td>Can oscillate before settling</td></tr>
+          <tr><td>Overshoot</td><td>Never</td><td>Possible</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-source">Originated comparison table &mdash; no component is registered for either state (Control Valve Handbook 6th ed. &sect;1.5, pp. 28-29, 31, prose only; see slide 16's sourceNote).</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">17</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

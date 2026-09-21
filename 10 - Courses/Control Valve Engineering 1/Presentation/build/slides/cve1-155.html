@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 155 &mdash; Working the Steam Case &mdash; Design ED Valve</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m2, page 155 — eng.sizing.fundamentals-liquid-and-compressible.
+       calculate-compressible-cv [apply · procedure]. Confirmed prose-only
+       (Fisher Control Valve Sourcebook — Power & Severe Service, 4th ed.,
+       Ch. 4, "Compressible Fluid Sizing Sample Problem No. 2," printed
+       pp. 4-4–4-6) — w, P1, P2, x, T1, g1, k, N6, Fp=0.95, and Cv=176
+       transcribed exactly from the source's own steps 1, 2, 3, 5. Y=0.73 is
+       the source's own step-4 result, carried forward here as a given input;
+       slides 157-158 derive it and its companion xTP correction, continuing
+       this same case (same pattern as this course's own cve1-146/147→150,
+       m1's propane case: a procedure slide for one competency citing a
+       worked value that a later slide, for a different competency, actually
+       derives). Show/Tell/Do mapped onto the calculation: Show = the
+       worked steps, Tell = the common failure (treating Y as 1.0), Do = a
+       predict-before-reveal prompt grounded in this slide's own x=0.49,
+       checked against slides 157-158's derivation (2026-09-20 fix: prior Do
+       content was a bare forward-pointer with no actual learner action).
+
+       2026-09-20 fix (Phase 1 remediation, Decision 1): the figure-less
+       adaptation flagged above no longer applies — restored the real fixed
+       32cqw figure column (gallery.css Sec 10) with a labelled physical
+       schematic of the installation this worked case describes: a 6-inch
+       steam line necking down through a concentric reducer to the 4-inch
+       Design ED valve, P1/P2 taps at the valve's own connections, and a
+       second reducer expanding back to 6-inch — same schematic language as
+       m1's cve1-146, sized and labelled for THIS case's own numbers (w,
+       P1, P2, x=&Delta;P/P1, T1), not copied from 146's. -->
+  <article class="slide slide--role-procedure-worked" data-slide="155" data-deck="cve1">
+    <h1 class="slide-title">Working the Steam Case &mdash; Design ED Valve</h1>
+    <div class="tpl-content">
+      <div class="tpl-tabs">
+        <button class="tpl-tab is-active" type="button">1 &middot; Show</button>
+        <button class="tpl-tab" type="button">2 &middot; Tell</button>
+        <button class="tpl-tab" type="button">3 &middot; Do</button>
+      </div>
+      <div class="tpl-tabpanes">
+        <div class="tpl-tabpane is-active">
+          4-inch ANSI Class 300 Design ED valve, linear cage, installed with reducers in a 6-inch line, superheated steam.
+          <ol class="tpl-steps">
+            <li>Given: w = 125,000 lb/h, P1 = 500 psig (514.7 psia), P2 = 250 psig (264.7 psia), x = &Delta;P/P1 = 0.49, T1 = 500&deg;F, g1 = 1.0434 lb/ft&sup3;, k = 1.28</li>
+            <li>N6 = 63.3 (mass-flow units, g1 specified)</li>
+            <li>Between the 4-in valve and its 6-in reducers: &Sigma;K = 1.5&middot;(1&minus;(4/6)&sup2;)&sup2; = 0.463 &rarr; Fp = 0.95, the same method m1 teaches</li>
+            <li>With Y = 0.73 (derived on the next two slides): Cv = w &divide; (N6&middot;Fp&middot;Y&middot;&radic;(x&middot;P1&middot;g1)) = 125,000 &divide; (63.3&middot;0.95&middot;0.73&middot;&radic;(0.49&middot;514.7&middot;1.0434)) = 176</li>
+          </ol>
+        </div>
+        <div class="tpl-tabpane">
+          <div class="tpl-callout"><span class="tpl-callout__label">Common failure</span>Treating Y as 1.0, as if this were still a liquid calculation. Dropping Y out of the denominator here returns Cv &asymp; 128 &mdash; about 27% smaller than the true 176 &mdash; because the expansion factor is doing real work in this equation, not sitting there as a formality. A calculation that quietly skips Y specs a valve that reads as adequate on paper and can&rsquo;t deliver rated flow in the field.</div>
+        </div>
+        <div class="tpl-tabpane">
+          Predict it before the next two slides derive it: with x = &Delta;P/P1 = 0.49 &mdash; a large pressure ratio, not a small one &mdash; would you expect the expansion factor Y to land close to 1.0 (barely compressible) or well below it? See how close your instinct comes to the derived Y = 0.73.
+        </div>
+      </div>
+
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <svg viewBox="0 0 260 520" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="Schematic of the steam line: a 6-inch line necks down through a concentric reducer to the 4-inch Design ED control valve, with P1 and P2 pressure taps at the valve's own connections, then expands back to 6-inch through a second reducer.">
+            <rect x="1" y="1" width="258" height="518" fill="#ffffff"></rect>
+
+            <text x="130" y="22" font-size="13" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">6-in steam line</text>
+
+            <!-- Wide inlet pipe (6-in) -->
+            <rect x="100" y="30" width="60" height="80" fill="#f3ded0" stroke="#004B8D" stroke-width="2"></rect>
+            <line x1="130" y1="34" x2="130" y2="70" stroke="#004B8D" stroke-width="2.5" marker-end="url(#cve1155FlowArrow)"></line>
+            <text x="168" y="75" font-size="11" fill="#3F4040" font-family="Arial, sans-serif">D = 6 in</text>
+
+            <defs>
+              <marker id="cve1155FlowArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#004B8D"></path>
+              </marker>
+            </defs>
+
+            <!-- Concentric reducer, 6in -> 4in -->
+            <polygon points="100,110 160,110 148,150 112,150" fill="#e7eaec" stroke="#3F4040" stroke-width="1.8"></polygon>
+            <text x="168" y="132" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif">reducer</text>
+
+            <!-- Narrow run into valve (4-in) -->
+            <rect x="112" y="150" width="36" height="35" fill="#f3ded0" stroke="#004B8D" stroke-width="2"></rect>
+
+            <!-- P1 tap, at valve inlet -->
+            <line x1="98" y1="178" x2="112" y2="178" stroke="#3F4040" stroke-width="1.6"></line>
+            <text x="52" y="182" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">P1</text>
+            <text x="52" y="195" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">514.7 psia</text>
+
+            <!-- Valve body: two triangles apex-to-apex -->
+            <polygon points="112,185 148,185 130,207" fill="#e7eaec" stroke="#3F4040" stroke-width="2"></polygon>
+            <polygon points="112,245 148,245 130,207" fill="#e7eaec" stroke="#3F4040" stroke-width="2"></polygon>
+            <text x="168" y="212" font-size="11" fill="#3F4040" font-family="Arial, sans-serif">4-in Design ED</text>
+            <text x="168" y="226" font-size="10" fill="#3F4040" font-family="Arial, sans-serif">linear cage, Cv = 176</text>
+
+            <!-- Actuator on top of valve, offset -->
+            <line x1="130" y1="207" x2="130" y2="185" stroke="#3F4040" stroke-width="1.4"></line>
+
+            <!-- narrow run out of valve -->
+            <rect x="112" y="245" width="36" height="27" fill="#f3ded0" stroke="#004B8D" stroke-width="2"></rect>
+
+            <!-- P2 tap, at valve outlet -->
+            <line x1="98" y1="260" x2="112" y2="260" stroke="#3F4040" stroke-width="1.6"></line>
+            <text x="52" y="264" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">P2</text>
+            <text x="52" y="277" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">264.7 psia</text>
+
+            <!-- deltaP / x bracket -->
+            <path d="M44,178 L36,178 L36,260 L44,260" fill="none" stroke="#959797" stroke-width="1.3"></path>
+            <text x="12" y="222" font-size="10.5" fill="#959797" font-family="Arial, sans-serif" text-anchor="middle" transform="rotate(-90 12 222)">x = &Delta;P/P1 = 0.49</text>
+
+            <text x="154" y="262" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif">d = 4 in</text>
+
+            <!-- Second reducer, 4in -> 6in -->
+            <polygon points="112,272 148,272 160,312 100,312" fill="#e7eaec" stroke="#3F4040" stroke-width="1.8"></polygon>
+
+            <!-- Wide outlet pipe -->
+            <rect x="100" y="312" width="60" height="150" fill="#f3ded0" stroke="#004B8D" stroke-width="2"></rect>
+            <line x1="130" y1="420" x2="130" y2="462" stroke="#004B8D" stroke-width="2.5" marker-end="url(#cve1155FlowArrow)"></line>
+            <text x="130" y="484" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">w = 125,000 lb/h</text>
+            <text x="130" y="500" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">superheated steam, T1 = 500&deg;F</text>
+
+            <text x="130" y="342" font-size="13" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">6-in steam line</text>
+          </svg>
+        </div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4, &ldquo;Compressible Fluid Sizing Sample Problem No. 2,&rdquo; printed pp. 4-4&ndash;4-6 &mdash; worked case transcribed as printed, not recomputed. Physical schematic (piping/reducer/P1&ndash;P2 layout) is an originated diagram illustrating the source&rsquo;s own stated geometry, not a source figure.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">155</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

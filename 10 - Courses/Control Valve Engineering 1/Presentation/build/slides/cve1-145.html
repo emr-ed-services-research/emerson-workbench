@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 145 &mdash; The Piping Geometry Factor (Fp)</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m1, page 145 — eng.sizing.fundamentals-liquid-and-compressible.
+       calculate-liquid-cv [apply · mechanism]. Confirmed prose-only (Fisher
+       Control Valve Sourcebook — Oil & Gas, Ch. 3, pp. 3-2–3-4, "Determining
+       Piping Geometry Factor"). Same figure-less mechanism adaptation as
+       slides 143-144. -->
+  <article class="slide slide--role-mechanism" data-slide="145" data-deck="cve1">
+    <h1 class="slide-title">The Piping Geometry Factor (Fp)</h1>
+    <div class="tpl-content" style="grid-template-columns:1fr">
+      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:72cqw;margin:0 auto">
+        <li><span class="num">1</span>Fp only enters the equation when reducers, elbows, or tees are bolted directly onto the valve&rsquo;s own inlet/outlet</li>
+        <li><span class="num">2</span>Fp = [1 + (&Sigma;K/N2)&middot;(Cv/d&sup2;)&sup2;]<sup>&minus;&frac12;</sup>, where &Sigma;K = K1 + K2 + K<sub>B1</sub> &minus; K<sub>B2</sub></li>
+        <li><span class="num">3</span>K<sub>B1</sub> and K<sub>B2</sub> cancel when the piping is the same size on both sides of the valve &mdash; the common case</li>
+        <li><span class="num">4</span>Between two identical concentric reducers: &Sigma;K collapses to K1 + K2 = 1.5&middot;(1 &minus; d&sup2;/D&sup2;)&sup2;, d = the valve&rsquo;s nominal size, D = the line size</li>
+      </ul>
+      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Determining Piping Geometry Factor,&rdquo; printed pp. 3-2&ndash;3-4 &mdash; the Fp equation and the concentric-reducer case transcribed as printed.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">145</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

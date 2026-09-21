@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 158 &mdash; Checking the Steam Case for Choked Flow</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m2, page 158 — eng.sizing.fundamentals-liquid-and-compressible.
+       determine-compressible-choked-flow [apply · procedure]. Numbers
+       verified directly against the source PDF's "Compressible Fluid Sizing
+       Sample Problem No. 2," steps 3-6 (Fisher Control Valve Sourcebook —
+       Power & Severe Service, 4th ed., Ch. 4, printed pp. 4-4–4-6) — xT,
+       Ki, xTP≈0.67, Fk, Y=0.73, and the 236-vs-148 size confirmation
+       transcribed exactly. Closes the same case slide 155 opened, same
+       cross-reference pattern as m1's cve1-150 ("Same propane case as
+       slides 146-147") rather than a "part N of N" label, since this and
+       slide 155 belong to two different competencies bridged by the
+       mechanism content on slides 156-157, not one contiguous primitive.
+       This example converges on the first assumed size — no second
+       procedure slide needed, unlike m1's propane iteration (course.json's
+       own resolved Stage-1 flag). Do tab (2026-09-20 fix): replaced a false
+       "practice exercise that follows" reference — no such exercise exists
+       anywhere in this course, confirmed by search — with a margin-judgment
+       prompt grounded only in this slide's own numbers.
+
+       2026-09-20 fix (Phase 1 remediation, Decision 1): the figure-less
+       adaptation flagged above no longer applies — restored the real fixed
+       32cqw figure column (gallery.css Sec 10) with a margin diagram, NOT
+       a valve/piping schematic (that's already covered by slide 155's own
+       figure for this same case; this competency's own visual content is
+       how close the actual x sits to the choking boundary, which is what
+       the whole callout/Do prompt are about). Plots x (actual, 0.49)
+       against Fk&middot;xTP (the corrected choking boundary, 0.61) and
+       Fk&middot;xT (the uncorrected boundary the common-failure callout
+       warns against using, 0.626) on one scale, so the reader can see the
+       margin the steps/callout describe in words, not just read the
+       numbers — same purpose as slide 150's pressure ladder for the
+       propane case's own choked-flow check. -->
+  <article class="slide slide--role-procedure-worked" data-slide="158" data-deck="cve1">
+    <h1 class="slide-title">Checking the Steam Case for Choked Flow</h1>
+    <div class="tpl-content">
+      <div class="tpl-tabs">
+        <button class="tpl-tab is-active" type="button">1 &middot; Show</button>
+        <button class="tpl-tab" type="button">2 &middot; Tell</button>
+        <button class="tpl-tab" type="button">3 &middot; Do</button>
+      </div>
+      <div class="tpl-tabpanes">
+        <div class="tpl-tabpane is-active">
+          Same Design ED case as slide 155.
+          <ol class="tpl-steps">
+            <li>x<sub>T</sub> = 0.688 (rated, 4-in valve at 100% travel), K<sub>i</sub> = 0.5&middot;(1&minus;(4/6)&sup2;)&sup2; + [1&minus;(4/6)&#8308;] = 0.96, Fp = 0.95 (slide 155), N5 = 1000, Cv = 236 (assumed valve&rsquo;s rated capacity)</li>
+            <li>x<sub>TP</sub> = (0.688/0.95&sup2;)&middot;[1 + (0.688&middot;0.96/1000)&middot;(236/16)&sup2;]<sup>&minus;1</sup> &asymp; 0.67 &mdash; well below the 0.688 the flow-coefficient table alone would suggest</li>
+            <li>F<sub>k</sub> = k/1.4 = 1.28/1.40 = 0.91, so F<sub>k</sub>&middot;x<sub>TP</sub> = 0.61</li>
+            <li>Against the actual x = 0.49: NOT choked (0.49 &lt; 0.61), so Y = 1 &minus; 0.49/(3&middot;0.91&middot;0.67) = 0.73 &mdash; the value slide 155&rsquo;s Cv calculation already used</li>
+          </ol>
+        </div>
+        <div class="tpl-tabpane">
+          <div class="tpl-callout"><span class="tpl-callout__label">Common failure</span>Using the flow-coefficient table&rsquo;s rated x<sub>T</sub> (0.688) directly instead of correcting it to x<sub>TP</sub> for this valve&rsquo;s reducer geometry. The uncorrected number gives F<sub>k</sub>&middot;x<sub>T</sub> = 0.626 against F<sub>k</sub>&middot;x<sub>TP</sub> = 0.61 &mdash; both still clear the actual x = 0.49 in this case, but the margin to choked flow is narrower than the uncorrected number suggests, and on a service closer to the edge, skipping the fittings correction can flip the pass/fail call outright.</div>
+        </div>
+        <div class="tpl-tabpane">
+          Try it yourself: with F<sub>k</sub>&middot;x<sub>TP</sub> = 0.61 against the actual x = 0.49, how much margin sits between this case and choked flow &mdash; and does that margin feel comfortable, or close enough to the edge that you&rsquo;d flag it for a second look on a real job?
+        </div>
+      </div>
+
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <svg viewBox="0 0 260 520" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="Margin diagram for the steam case's choked-flow check, to scale from 0 to 0.75: the actual pressure-drop ratio x at 0.49 sits below both the corrected choking boundary Fk times xTP at 0.61 and the uncorrected boundary Fk times xT at 0.626, so the flow is not choked, but the margin is narrower once the fittings correction is applied.">
+            <rect x="1" y="1" width="258" height="518" fill="#ffffff"></rect>
+            <text x="130" y="22" font-size="12.5" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">Margin to choked flow</text>
+
+            <!-- Vertical scale, 0 at bottom (y=460) to 0.75 at top (y=50) -->
+            <defs>
+              <marker id="cve1158AxisArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#3F4040"></path>
+              </marker>
+            </defs>
+            <line x1="130" y1="460" x2="130" y2="50" stroke="#3F4040" stroke-width="2" marker-end="url(#cve1158AxisArrow)"></line>
+            <line x1="122" y1="460" x2="138" y2="460" stroke="#3F4040" stroke-width="2"></line>
+            <text x="130" y="474" font-size="10" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">x = 0</text>
+
+            <!-- shaded region above the corrected choking boundary Fk*xTP = 0.61 (y=135) -->
+            <rect x="110" y="50" width="40" height="85" fill="var(--emerson-orange)" fill-opacity="0.16"></rect>
+            <text x="130" y="66" font-size="9" fill="var(--emerson-orange)" font-family="Arial, sans-serif" text-anchor="middle">choked</text>
+
+            <!-- Fk . xT (uncorrected), 0.626 -->
+            <line x1="108" y1="126" x2="152" y2="126" stroke="#959797" stroke-width="1.6" stroke-dasharray="4 3"></line>
+            <text x="158" y="112" font-size="10" fill="#3F4040" font-family="Arial, sans-serif">F<tspan baseline-shift="sub" font-size="7">k</tspan>&middot;x<tspan baseline-shift="sub" font-size="7">T</tspan> (uncorrected)</text>
+            <text x="158" y="124" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif">0.626</text>
+
+            <!-- Fk . xTP (corrected boundary), 0.61 -->
+            <line x1="106" y1="135" x2="154" y2="135" stroke="var(--emerson-orange)" stroke-width="2.4"></line>
+            <text x="158" y="149" font-size="10" fill="var(--emerson-orange)" font-family="Arial, sans-serif" font-weight="700">F<tspan baseline-shift="sub" font-size="7">k</tspan>&middot;x<tspan baseline-shift="sub" font-size="7">TP</tspan> (corrected)</text>
+            <text x="158" y="161" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif">0.61 &mdash; choking boundary</text>
+
+            <!-- x actual = 0.49 -->
+            <line x1="108" y1="199" x2="152" y2="199" stroke="#004B8D" stroke-width="2.6"></line>
+            <circle cx="130" cy="199" r="4.5" fill="#004B8D"></circle>
+            <text x="60" y="196" font-size="12" fill="#004B8D" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">x (actual)</text>
+            <text x="60" y="209" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">0.49</text>
+
+            <!-- margin bracket between x actual and the corrected boundary -->
+            <path d="M96,135 L88,135 L88,199 L96,199" fill="none" stroke="#3F4040" stroke-width="1.3"></path>
+            <text x="20" y="167" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle" transform="rotate(-90 20 167)">margin to choked</text>
+
+            <text x="130" y="438" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">x<tspan baseline-shift="sub" font-size="7">T</tspan> (rated, 100% travel) = 0.688</text>
+            <text x="130" y="452" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">x<tspan baseline-shift="sub" font-size="7">TP</tspan> &asymp; 0.67 once corrected for reducers</text>
+          </svg>
+        </div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4, &ldquo;Compressible Fluid Sizing Sample Problem No. 2,&rdquo; printed pp. 4-4&ndash;4-6 &mdash; steps 3&ndash;6 transcribed as printed, continuing slide 155. Margin diagram (x, F<sub>k</sub>&middot;x<sub>TP</sub>, F<sub>k</sub>&middot;x<sub>T</sub> plotted to scale) is an originated diagram illustrating the source&rsquo;s own stated values, not a source figure.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">158</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

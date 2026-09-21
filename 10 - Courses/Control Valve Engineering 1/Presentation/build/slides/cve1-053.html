@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 053 &mdash; Body-Family Selection &mdash; Pressure Drop, Capacity &amp; Size</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch3-m4, page 53 — eng.selection.valve-body-and-type-taxonomy.
+       verify-end-connection-and-pressure-class [evaluate · application].
+       No component earmarked by design (course.json sourceNote): all three
+       backing citations (pss-topic-pressure-drop-capacity-selection-
+       criteria, pss-topic-valve-type-selection-guidelines, pp-topic-flow-
+       capacity-selection-tradeoff) are topics, not figures — no
+       corroborating image exists in the Source Library for this synthesis.
+       Per course.json's own templateRationale, this runs the decision
+       table full-width with NO paired figure rather than force-fitting an
+       unrelated image into the figure slot (:has(.tmpl-table) gate fires
+       on the table alone). The variant's own column 2 is reserved for a
+       corroborating .tpl-fig (Sec 5); with no figure element at all that
+       column would sit empty instead of the full width the task asks for
+       — no figure-less variant exists yet in gallery.css, so this is
+       fixed at the slide level with an inline style="grid-column:1 / -1"
+       on the table itself, spanning both column tracks. Flagged Low
+       confidence / Concept-map gaps: a genuinely new case, no prior
+       production slide has used this variant with no figure. Size-banded
+       rule of thumb
+       and pressure-drop/capacity rule both drawn directly from this
+       concept's own t. Columns ordered given-to-answer per Style Guide Sec
+       9.4 (size band -> recommended style -> rationale). This is the
+       module's and the whole chapter's closing synthesis — the body-family
+       call the chapter has been building toward since cve1-ch3-m1. -->
+  <article class="slide slide--role-application" data-slide="53" data-deck="cve1">
+    <h1 class="slide-title">Body-Family Selection &mdash; Pressure Drop, Capacity &amp; Size</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1">
+        <thead>
+          <tr><th>Size band</th><th>Recommended body style</th><th>Rationale</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Below 3 in.</td><td>General-purpose sliding-stem</td><td>Best performance and service life for a minimal price premium</td></tr>
+          <tr><td>4&ndash;6 in.</td><td>Transitional (eccentric plug or ball)</td><td>Favored on body-material cost and capacity</td></tr>
+          <tr><td>8 in. and larger</td><td>High-performance butterfly</td><td>Economical on shutoff and capacity well beyond a globe design</td></tr>
+          <tr><td>Any size, high &Delta;P or shutoff</td><td>Sliding-stem</td><td>Rugged moving parts win where available pressure drop is large</td></tr>
+          <tr><td>Any size, small available &Delta;P</td><td>Rotary</td><td>Much higher maximum capacity for a given body size, where capacity is the constraint, not pressure drop</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-takeaway">Past the largest sizes, the remaining choices become a matter of price versus other operational advantages &mdash; not a hard technical criterion.</p>
+      <p class="tpl-source">No corroborating figure exists in the Source Library for this synthesis. After Power &amp; Severe Service Sourcebook, 4th ed., Ch. 1 (pressure-drop/capacity and valve-type selection guidelines) and Pulp &amp; Paper Sourcebook, Ch. 1 (flow-capacity/selection tradeoff). Component Index: pss-topic-pressure-drop-capacity-selection-criteria, pss-topic-valve-type-selection-guidelines, pp-topic-flow-capacity-selection-tradeoff.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">53</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

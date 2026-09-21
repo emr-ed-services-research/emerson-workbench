@@ -129,7 +129,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.243, §11.6 "Greening With", Figure 11.1 "Greenhouse Gas"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch11-fig1-greenhouse-gas-scopes.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: An infographic-style diagram (icons + labelled arrows), not a technical cutaway or engineering schematic — consistent with this chapter's non-hardware subject matter.
 ```
@@ -181,7 +183,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.245, §11.5 "Greening By" (figure appears within this section, before §11.6), Figure 11.2 "Sustainability and Decarbonization"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch11-fig2-sustainability-decarbonization-table.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: A structured reference table (5 columns, bulleted cells) captioned as a Figure — catalogued per the standing rule that a source-numbered figure is a component regardless of pictorial-vs-tabular content.
 ```
@@ -228,7 +232,9 @@ status: current
 source:
   - doc: Control Valve Handbook, 6th ed. (D101881X012)
     locator: p.246, §11.9 "ESG - Approach by Companies", Figure 11.3 "ESG Approach by Different Industries"
-delivery: not yet determined
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch11-fig3-esg-approach-by-industries.png
+    locator: ""
+delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Structured reference table (3 category rows, each with a nested bulleted list), captioned as a Figure — same treatment as Figure 11.2.
 ```

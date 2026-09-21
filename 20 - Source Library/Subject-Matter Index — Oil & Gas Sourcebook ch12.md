@@ -22,7 +22,7 @@ chapter's full page range (12-1 through 12-8, across two batches) confirmed
 against the real page text and a 300 dpi page-image render before
 extraction — none were skipped or fabricated.
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -146,7 +146,7 @@ source:
     locator: >
       Chapter 12 "Natural Gas Storage," Figure 12-1 (drawing number E1524,
       printed p. 12-2) — "Figure 12-1. Underground Storage Process."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig1-underground-storage-process-block-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig1-underground-storage-process-block-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 144, printed p. 12-2) at 300 dpi, full block diagram (dashed salt-caverns-only sub-box, four sub-processes, shared underground reservoir) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -188,7 +188,7 @@ source:
       Chapter 12 "Natural Gas Storage," Figure 12-2 (drawing number E1525,
       printed p. 12-3) — "Figure 12-2. Water Injection System Valve
       Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig2-water-injection-system-valve-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig2-water-injection-system-valve-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 145, printed p. 12-3) at 300 dpi, full schematic (all 4 numbered valve stations, feedwater tank, pump), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -222,7 +222,7 @@ source:
       Chapter 12 "Natural Gas Storage," Figure 12-3 (drawing number X0188,
       printed p. 12-4) — "Figure 12-3. Vee-Ball V200 NPS 3 with a 2052
       Size 1 Actuator and DVC6200."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig3-vee-ball-v200-2052-actuator-dvc6200.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig3-vee-ball-v200-2052-actuator-dvc6200.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 146, printed p. 12-4) at 300 dpi, full product photo (Vee-Ball rotary body, 2052 actuator, DVC6200) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -269,7 +269,7 @@ source:
       Chapter 12 "Natural Gas Storage," Figure 12-4 (drawing number E1526,
       printed p. 12-4) — "Figure 12-4. Brine Disposal System Valve
       Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig4-brine-disposal-system-valve-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig4-brine-disposal-system-valve-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 146, printed p. 12-4) at 300 dpi, full schematic (hydrocyclone, solids slurry disposal, brine storage tank, pump, 3 numbered valve stations feeding 4 parallel disposal-well valves), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -305,7 +305,7 @@ source:
     locator: >
       Chapter 12 "Natural Gas Storage," Figure 12-5 (drawing number W8433,
       printed p. 12-5) — "Figure 12-5. NotchFlo DST Trim."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig5-notchflo-dst-trim-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig5-notchflo-dst-trim-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 147, printed p. 12-5) at 300 dpi, full cutaway product photo (bolted body, drilled-stack trim assembly) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -341,7 +341,7 @@ source:
       Chapter 12 "Natural Gas Storage," Figure 12-6 (drawing number E1527,
       printed p. 12-5) — "Figure 12-6. Gas Injection System Valve
       Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig6-gas-injection-system-valve-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig6-gas-injection-system-valve-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 147, printed p. 12-5) at 300 dpi, full schematic (anti-surge valve/compressor loop, 4 parallel cavern-injection valve stations), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -426,7 +426,7 @@ source:
     locator: >
       Chapter 12 "Natural Gas Storage," Figure 12-7 (drawing number W7065,
       printed p. 12-6) — "Figure 12-7. WhisperFlo Trim."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig7-whisperflo-trim.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig7-whisperflo-trim.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 148, printed p. 12-6) at 300 dpi, full cutaway product photo (contoured drilled trim disk stack) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -471,7 +471,7 @@ source:
       Chapter 12 "Natural Gas Storage," Figure 12-8 (drawing number E1528,
       printed p. 12-6) — "Figure 12-8. Gas Withdrawal & Export System Valve
       Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig8-gas-withdrawal-export-valve-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch12-fig8-gas-withdrawal-export-valve-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 148, printed p. 12-6) at 300 dpi, full schematic (all 6 numbered valve stations, withdrawal separator, glycol contactor, compressor), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

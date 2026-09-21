@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 157 &mdash; The Expansion Factor (Y) and the Xtp Correction</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m2, page 157 — eng.sizing.fundamentals-liquid-and-compressible.
+       determine-compressible-choked-flow [apply · mechanism]. Confirmed
+       prose-only (pss-topic-choked-flow-expansion-factor /
+       pss-topic-xtp-piping-geometry-correction, Power & Severe Service
+       Sourcebook, Ch. 4, "Determining xTP" section and Y-factor derivation,
+       printed pp. 4-1–4-2, 4-4–4-5). The xTP form is confirmed by
+       independently reproducing the source's own Sample Problem 2 result
+       (xTP≈0.67, verified on slide 158) from these exact terms, since the
+       source PDF's own equation typesetting extracts with garbled symbols
+       (course.json sourceNote). Same figure-less mechanism adaptation as
+       slide 154, matching m1's cve1-145 treatment. -->
+  <article class="slide slide--role-mechanism" data-slide="157" data-deck="cve1">
+    <h1 class="slide-title">The Expansion Factor (Y) and the Xtp Correction</h1>
+    <div class="tpl-content" style="grid-template-columns:1fr">
+      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:76cqw;margin:0 auto">
+        <li><span class="num">1</span>Y = 1 &minus; x &divide; (3&middot;F<sub>k</sub>&middot;x<sub>TP</sub>) &mdash; the expansion factor drops linearly from 1.0 (no expansion) toward its 0.667 floor as x approaches the choked ratio</li>
+        <li><span class="num">2</span>With reducers or other fittings at the valve&rsquo;s own connections, x<sub>T</sub> is replaced by x<sub>TP</sub> = (x<sub>T</sub>/Fp&sup2;)&middot;[1 + (x<sub>T</sub>&middot;K<sub>i</sub>/N5)&middot;(Cv/d&sup2;)&sup2;]<sup>&minus;1</sup></li>
+        <li><span class="num">3</span>K<sub>i</sub> = K1 + K<sub>B1</sub>, the inlet head-loss coefficient &mdash; built from the same K-factor piping geometry m1&rsquo;s Fp equation already uses</li>
+        <li><span class="num">4</span>x<sub>TP</sub> folds the fittings&rsquo; own resistance into the choking threshold itself &mdash; a smaller valve in a larger line can choke at a different point than the flow-coefficient table&rsquo;s rated x<sub>T</sub> alone would suggest</li>
+      </ul>
+      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4, &ldquo;Determining x<sub>TP</sub>, the Pressure Drop Ratio Factor,&rdquo; printed pp. 4-1&ndash;4-2, 4-4&ndash;4-5 &mdash; the Y and x<sub>TP</sub> equations as stated in the source. Component Index: pss-topic-choked-flow-expansion-factor, pss-topic-xtp-piping-geometry-correction.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">157</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

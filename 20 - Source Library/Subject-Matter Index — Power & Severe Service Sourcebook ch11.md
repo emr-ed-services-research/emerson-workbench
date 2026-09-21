@@ -27,7 +27,7 @@ established in `Subject-Matter Index — Power & Severe Service Sourcebook
 ch12.md`) — zero page offset against the chapter's own printed numbering
 (11-1 through 11-10), no trailing blank page.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/
 Control Valve Sourcebook - Power & Severe Service.pdf`. No extracted-figures
 crop folder exists for this book — each record's `source` carries a single
 locator. Every record's `used-by` is `[]`.

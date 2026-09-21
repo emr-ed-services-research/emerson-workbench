@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 074 &mdash; ANSI B16.34's Four Pressure-Temperature Rating Tiers</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m2, page 74 — eng.selection.shutoff-leakage-and-standards.
+       verify-pt-rating-and-material [understand · nomenclature]. Source:
+       pss-topic-pressure-rating-classes (figures: [] in the registry,
+       confirmed real against the Subject-Matter Index — no B16.34 tier
+       table exists as a catalogued figure anywhere in the library).
+       Content built directly from that topic's own teaches text. Per
+       Style Guide Sec 9.2/Template 3, four rating tiers each defined by a
+       specific combination of wall-thickness/bolting and NDE requirements
+       is a genuine classification table, not a labelled physical part —
+       same shape as this module's own m1 sibling's slide 68 six-class
+       leakage table. gallery.css has no
+       .slide--role-nomenclature:has(.tmpl-table) gate (the same gap
+       already flagged on this course's slides 15/17/68), so the
+       production .tmpl-table is placed directly into the nomenclature
+       role's existing grid via an inline grid-column/grid-row span,
+       matching that exact precedent. The NDE-method-preference/
+       SNT-TC-1A-personnel/pricing point is genuinely coupled to all four
+       tiers at once (not one tier's own row), so it is carried as a
+       full-span tfoot note rather than duplicated or dropped — per
+       working rule 4/teaching-philosophy's completeness standard, this is
+       load-bearing content, not decoration to trim. -->
+  <article class="slide slide--role-nomenclature" data-slide="74" data-deck="cve1">
+    <h1 class="slide-title">ANSI B16.34's Four Pressure-Temperature Rating Tiers</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1; grid-row:1; align-self:center;">
+        <thead>
+          <tr><th>Tier</th><th>Reached by</th><th>Construction requirement</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Standard Class</td><td>Normal ANSI 150&ndash;4500 ratings</td><td>Published for a variety of materials &mdash; most products use this tier</td></tr>
+          <tr><td>Intermediate Standard</td><td>Extra body/bonnet wall thickness &amp; stronger body-to-bonnet bolting &mdash; no NDE required</td><td>Butt-weld-end (BWE) valves only</td></tr>
+          <tr><td>Special Class</td><td>Ultrasonic or radiographic testing (NDE) of the body &amp; bonnet castings</td><td>Any BWE globe or angle valve</td></tr>
+          <tr><td>Intermediate Special</td><td><b>Both</b> Special Class's NDE <b>and</b> Intermediate Standard's extra wall thickness/bolting</td><td>BWE valves that already carry intermediate ratings</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td colspan="3">NDE method (radiographic, ultrasonic, magnetic-particle, or liquid-penetrant &mdash; B16.34's own methods preferred over the comparable MSS standards for broader acceptance) gates every tier above Intermediate Standard, and the personnel performing it must be <b>SNT-TC-1A qualified</b> &mdash; rating class and personnel qualification are coupled requirements, not independent purchasing choices. All three non-standard tiers carry real pricing implications.</td></tr>
+        </tfoot>
+      </table>
+      <p class="tpl-source">Originated classification table &mdash; no figure in the registry depicts ANSI B16.34's rating tiers. After Fisher Power &amp; Severe Service Sourcebook's pressure-rating-classes topic &mdash; reference table, prose only. Component Index: pss-topic-pressure-rating-classes.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">74</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

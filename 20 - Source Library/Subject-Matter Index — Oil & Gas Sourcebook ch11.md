@@ -42,7 +42,7 @@ were skipped or fabricated.
 > doesn't propagate the wrong title, and so this is understood as the
 > confirmation of the ch10 file's own forward flag, not a fresh discovery.
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries instead
 of triggering reactive cataloging.
@@ -149,7 +149,7 @@ source:
       Chapter 11 "Fractionation," Figure 11-1 (drawing number E1520, printed
       p. 11-2) — "Figure 11-1. Typical Fractionation Process Recovering C2,
       C3, and C4."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig1-fractionation-process-block-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig1-fractionation-process-block-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 134, printed p. 11-2) at 300 dpi, full block diagram (mixed NGL feed, three towers, four product streams) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -217,7 +217,7 @@ source:
     locator: >
       Chapter 11 "Fractionation," Figure 11-2 (drawing number E1521, printed
       p. 11-3) — "Figure 11-2. Process Diagram of Typical Deethanizer Unit."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig2-deethanizer-process-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig2-deethanizer-process-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 135, printed p. 11-3) at 300 dpi, full schematic (all 8 numbered valve stations, tower, reflux accumulator, two reflux pumps), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -252,7 +252,7 @@ source:
       Chapter 11 "Fractionation," Figure 11-3 (drawing number W8917-1,
       printed p. 11-5) — "Figure 11-3. NPS 4 EH or HP Control Valve and 657
       Actuator Size 80 with DVC6010."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig3-nps4-eh-hp-657-actuator-dvc6010.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig3-nps4-eh-hp-657-actuator-dvc6010.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 137, printed p. 11-5) at 300 dpi, full product photo (657 actuator, DVC6010, globe valve body) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -288,7 +288,7 @@ source:
     locator: >
       Chapter 11 "Fractionation," Figure 11-4 (drawing number E1522, printed
       p. 11-6) — "Figure 11-4. Process Diagram of Typical Depropanizer Unit."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig4-depropanizer-process-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig4-depropanizer-process-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 138, printed p. 11-6) at 300 dpi, full schematic (all 8 numbered valve stations, tower, reflux accumulator, two pumps), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -332,7 +332,7 @@ source:
     locator: >
       Chapter 11 "Fractionation," Figure 11-5 (drawing number W6022-2,
       printed p. 11-6) — "Figure 11-5. NPS 10-24 EWT or EWD."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig5-nps10-24-ewt-ewd-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig5-nps10-24-ewt-ewd-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 138, printed p. 11-6) at 300 dpi, full cutaway product photo (bolted body, internal trim, actuator stem) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -368,7 +368,7 @@ source:
       Chapter 11 "Fractionation," Figure 11-6 (drawing number W9498-2,
       printed p. 11-7) — "Figure 11-6. 8580 Valve with 2052 Actuator and
       DVC6000."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig6-8580-valve-2052-actuator-dvc6000.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig6-8580-valve-2052-actuator-dvc6000.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 139, printed p. 11-7) at 300 dpi, full product photo (butterfly disc/body, 2052 actuator, DVC6000) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -403,7 +403,7 @@ source:
     locator: >
       Chapter 11 "Fractionation," Figure 11-7 (drawing number E1523, printed
       p. 11-9) — "Figure 11-7. Process Diagram of Typical Debutanizer Unit."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig7-debutanizer-process-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig7-debutanizer-process-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 141, printed p. 11-9) at 300 dpi, full schematic (all 7 numbered valve stations, tower, reflux accumulator, two pumps), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -453,7 +453,7 @@ source:
       Chapter 11 "Fractionation," Figure 11-8 (drawing number X0187, printed
       p. 11-10) — "Figure 11-8. Vee-Ball V150 NPS 3 with 2052 Size 1 Actuator
       and DVC6200."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig8-vee-ball-v150-2052-actuator-dvc6200.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch11-fig8-vee-ball-v150-2052-actuator-dvc6200.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 142, printed p. 11-10) at 300 dpi, full product photo (Vee-Ball rotary body, 2052 actuator, DVC6200) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

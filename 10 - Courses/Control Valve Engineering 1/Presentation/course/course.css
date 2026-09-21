@@ -365,6 +365,32 @@ body.page-view .page__frame { width: 100%; height: 100%; aspect-ratio: auto; }
 }
 .ctx__check:hover { background: #f2faee; }
 
+.ctx__reground-btn {
+  width: 100%; display: flex; align-items: center; justify-content: center; gap: 8px;
+  background: var(--rail-bg); border: 1px solid var(--rail-line); color: var(--emerson-charcoal);
+  border-radius: 6px; padding: 9px; cursor: pointer; font-size: 12.5px; font-weight: 700;
+}
+.ctx__reground-btn:hover { background: #eef1f3; }
+.ctx__reground-btn[aria-expanded="true"] { border-color: var(--accent); color: var(--emerson-blue); }
+.ctx__reground {
+  margin-top: 10px; padding: 12px 13px; background: var(--emerson-white);
+  border: 1px solid var(--rail-line); border-left: 3px solid var(--accent); border-radius: 4px;
+}
+.ctx__reground-expand {
+  display: block; margin: 0 0 10px auto; background: none; border: none;
+  color: var(--emerson-blue); font-size: 11.5px; font-weight: 700; cursor: pointer;
+  padding: 2px 0;
+}
+.ctx__reground-expand:hover { text-decoration: underline; }
+.ctx__reground-part { margin-bottom: 12px; }
+.ctx__reground-part:last-child { margin-bottom: 0; }
+.ctx__reground-part h5 {
+  margin: 0 0 4px; font-size: 10.5px; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 700;
+}
+.ctx__reground-part p { margin: 0; font-size: 13px; line-height: 1.5; }
+.ctx__reground-part p + p { margin-top: 0.6em; }
+
 /* the home / course-overview view has no "current module" — drop the context rail */
 body.view-home .shell { grid-template-columns: var(--w-toc) minmax(0,1fr) 0; }
 body.view-home .shell__ctx { visibility: hidden; }
@@ -513,6 +539,55 @@ body.lib-open .libov__panel { transform: none; }
 
 .libov__frame { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 .libov__frame[data-active="false"] { visibility: hidden; }
+
+/* ---------- reground overlay ---------------------------------------
+   Same overlay convention as .libov above (absolute, backdrop, rounded
+   white panel, click-backdrop/Esc/close-button to dismiss) - reused
+   rather than sharing selectors, so a change to the library shelf can
+   never regress this. The reground panel's own rail copy stays exactly
+   as it is; this is purely a wider, more readable second view of the
+   same hook/bridge/depth content for when the rail is too narrow to
+   read comfortably (Franz, 2026-09-20). */
+.regroundov {
+  position: absolute; inset: 0; z-index: 20; display: flex; padding: 14px;
+  justify-content: center; align-items: flex-start;
+  background: rgba(18, 22, 27, .30);
+  visibility: hidden; opacity: 0;
+  transition: opacity .14s ease, visibility .14s ease;
+}
+body.reground-open .regroundov { visibility: visible; opacity: 1; }
+
+.regroundov__panel {
+  width: 100%; max-width: 720px; max-height: 100%; display: flex; flex-direction: column;
+  background: var(--emerson-white); border-radius: 10px; overflow: hidden;
+  box-shadow: 0 14px 46px rgba(0, 0, 0, .30);
+  transform: translateY(8px); transition: transform .14s ease;
+}
+body.reground-open .regroundov__panel { transform: none; }
+
+.regroundov__bar {
+  flex: none; display: flex; align-items: center; gap: 9px; padding: 12px 16px;
+  background: var(--rail-bg); border-bottom: 1px solid var(--rail-line);
+}
+.regroundov__title { flex: 1; font-weight: 700; color: var(--emerson-blue); font-size: 14px; }
+.regroundov__nav {
+  flex: none; border: 1px solid var(--rail-line); background: var(--emerson-white);
+  color: var(--ink); border-radius: 6px; padding: 5px 10px; font-size: 12.5px;
+  line-height: 1; cursor: pointer;
+}
+.regroundov__close { font-size: 13px; padding: 5px 9px; }
+
+.regroundov__body { flex: 1; min-height: 0; overflow-y: auto; padding: 22px 28px 30px; }
+.regroundov__part { margin-bottom: 22px; }
+.regroundov__part:last-child { margin-bottom: 0; }
+.regroundov__part h5 {
+  margin: 0 0 6px; font-size: 11.5px; letter-spacing: .07em; text-transform: uppercase;
+  color: var(--ink-soft); font-weight: 700;
+}
+.regroundov__part p { margin: 0; font-size: 15.5px; line-height: 1.65; color: var(--ink); }
+.regroundov__part p + p { margin-top: 0.9em; }
+
+@media (max-width: 640px) { .regroundov { padding: 0; } .regroundov__panel { max-width: none; border-radius: 0; } }
 
 /* ---------- footer ------------------------------------------------- */
 .shell__ft {

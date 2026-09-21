@@ -25,7 +25,7 @@ p. 8-1 (Chapter 8 divider, "Process Overview"), PDF page 114 = printed p.
 Zero page offset throughout (PDF page = printed page number + 104). Chapter
 8 = PDF pp. 105-114.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/Control
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control
 Valve Sourcebook - Pulp & Paper.pdf`. This pass catalogs existence and location
 only — it does not crop or extract images. Record shape: `id` · `kind` ·
 `teaches` · `concept-tags` · `status` · `source` (`doc` + `locator`) ·

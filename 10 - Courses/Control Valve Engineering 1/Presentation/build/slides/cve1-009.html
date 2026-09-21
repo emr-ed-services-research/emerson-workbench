@@ -3,29 +3,137 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 009 &mdash; Case B: A Tighter Requirement</title>
+<title>CVE1 &middot; Slide 009 &mdash; Check Your Knowledge &mdash; Loop Role &amp; Body Family</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m2, page 9 — eng.sizing.actuator-force-awareness [apply ·
-       mechanism, develops]. -->
-  <article class="slide slide--role-mechanism" data-slide="9" data-deck="cve1">
-    <h1 class="slide-title">Case B: A Tighter Requirement</h1>
+  <!-- cve1-ch1-m1, page 9 — the module's check-your-knowledge slide
+       (course.json module.check: [9]). No keyConcepts entry exists for a
+       check slide by schema design (Stage 2 never authors one) — composed
+       fresh here per the Stage 3 origination prompt, drawing on the whole
+       module's arc: slide 5 (the valve as final control element, changing
+       the process) and slides 6-8 (sliding-stem vs. rotary body families).
+       levelTarget is understand, not apply-or-higher, so Style Guide Sec
+       8.4's "situation, never which-is-true" rule is not mandatory here —
+       written as a concrete situation anyway so it tests integration
+       across both halves of the module rather than recall of either alone;
+       distractors are real conflations (mistaking the valve for a sensor,
+       misreading a rotary closure member as sliding-stem, confusing the
+       valve's loop role with the controller's). data-correct="true" marks
+       the right option per the interactive check convention (gallery.css
+       Sec 8 / slides.js); reveal is terse per the current Stage 3
+       origination convention, not the older tp-014/015 full-sentence
+       precedent.
+
+       2026-09-20 fix (Phase 1 remediation, Decision 1): the prompt
+       describes a full level-control loop scenario entirely in prose with
+       nothing grounding the arrangement it depends on — flagged in Franz's
+       review as the systemic "visual concept composed as text" gap. Uses
+       the real `.slide--role-check.has-fig` gallery.css variant (added for
+       this fix, proof at _Template Gallery tg-020.html) to add a fixed
+       figure column beside the prompt/options/reveal column — NOT the
+       proof's rejected per-file scoped <style> workaround
+       (_phase1-proof/proof-A-cve1-009.html). Prompt/options/reveal text is
+       byte-for-byte unchanged from the pre-fix version. Diagram is an
+       ISA-5.1-style P&amp;ID: a level-controlled tank, an LT/LC instrument
+       pair, and the rotary control valve (generic two-triangle body
+       symbol) as the loop's final control element on the tank's outlet —
+       exactly the scenario the prompt states. Colour/line convention
+       (solid dark-blue process piping, dashed grey signal lines) follows
+       this course's own cve1-005.html, sourced from the Handbook's Fig.
+       1.1 feedback-loop figure (Component Index: cvh-cmp-feedback-control-
+       loop); the P&amp;ID itself is course-original (no true P&amp;ID exists
+       in the Source Library for this generic scenario), ISA-5.1 symbol
+       conventions only. -->
+  <article class="slide slide--role-check has-fig" data-slide="9" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Loop Role &amp; Body Family</h1>
     <div class="tpl-content">
+      <p class="tpl-prompt">A valve in a level-control loop turns a shaft to swing a contoured, V-notched ball across the flow path &mdash; and it sits in the loop right where the controller's output signal arrives. What is this valve's body family, and what does it actually do in the loop?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Sliding-stem &mdash; it measures the level and sends that signal to the controller</li>
+        <li data-correct="true">B.&nbsp;&nbsp;Rotary &mdash; it is the final control element that changes the actual flow into the process</li>
+        <li>C.&nbsp;&nbsp;Sliding-stem &mdash; it is the final control element that changes the actual flow into the process</li>
+        <li>D.&nbsp;&nbsp;Rotary &mdash; it compares the measured level to setpoint and computes the correction</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; Rotary &mdash; final control element</p>
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-valve-selection-process-flowchart.png" style="width:100%;height:100%;object-fit:contain" alt="The full six-step valve selection flowchart">
+          <svg viewBox="0 0 380 460" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
+               aria-label="P&amp;ID: a tank with level transmitter LT feeding a level controller LC, whose output signal drives a rotary control valve on the tank's outlet line, throttling outlet flow to hold level.">
+            <defs>
+              <marker id="cve1009ProcArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#004B8D"></path>
+              </marker>
+              <marker id="cve1009SigArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5.5" markerHeight="5.5" orient="auto-start-reverse">
+                <path d="M0,0 L10,5 L0,10 z" fill="#959797"></path>
+              </marker>
+            </defs>
+
+            <!-- Feed line into tank -->
+            <line x1="6" y1="66" x2="66" y2="66" stroke="#004B8D" stroke-width="4" marker-end="url(#cve1009ProcArrow)"></line>
+            <text x="8" y="55" font-size="13" fill="#3F4040" font-family="Arial, sans-serif">Feed</text>
+
+            <!-- Tank -->
+            <rect x="66" y="34" width="120" height="150" fill="#ffffff" stroke="#3F4040" stroke-width="2.5"></rect>
+            <rect x="69" y="120" width="114" height="61" fill="#cfe3f4"></rect>
+            <line x1="66" y1="120" x2="186" y2="120" stroke="#004B8D" stroke-width="1.6" stroke-dasharray="4 3"></line>
+            <text x="126" y="20" font-size="14" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">Tank (level-controlled)</text>
+            <text x="126" y="112" font-size="11" fill="#004B8D" font-family="Arial, sans-serif" text-anchor="middle">liquid level</text>
+
+            <!-- Process tap: tank wall to LT bubble (solid, thin -- instrument connection) -->
+            <line x1="186" y1="120" x2="246" y2="120" stroke="#3F4040" stroke-width="1.5"></line>
+
+            <!-- LT bubble -->
+            <circle cx="266" cy="120" r="20" fill="#ffffff" stroke="#3F4040" stroke-width="2"></circle>
+            <text x="266" y="125" font-size="14" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">LT</text>
+            <text x="266" y="152" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">sensor +</text>
+            <text x="266" y="164" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">transmitter</text>
+
+            <!-- Signal: LT down to LC (dashed grey) -->
+            <line x1="266" y1="140" x2="266" y2="286" stroke="#959797" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#cve1009SigArrow)"></line>
+
+            <!-- LC bubble -->
+            <circle cx="266" cy="306" r="20" fill="#ffffff" stroke="#3F4040" stroke-width="2"></circle>
+            <text x="266" y="311" font-size="14" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">LC</text>
+            <text x="266" y="338" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">controller</text>
+
+            <!-- Signal: LC output across and down to valve actuator (dashed grey) -->
+            <line x1="246" y1="306" x2="126" y2="306" stroke="#959797" stroke-width="2" stroke-dasharray="6 4"></line>
+            <line x1="126" y1="306" x2="126" y2="356" stroke="#959797" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#cve1009SigArrow)"></line>
+
+            <!-- Tank outlet pipe down to valve -->
+            <line x1="126" y1="184" x2="126" y2="370" stroke="#004B8D" stroke-width="4"></line>
+
+            <!-- Actuator (simple diaphragm-on-yoke symbol, offset from the run since
+                 the valve body below is drawn as a generic two-triangle symbol -- the
+                 same simplification used for sliding-stem actuators on this course's
+                 own slides; this scenario's valve is rotary, called out in the label
+                 rather than a distinct rotary-actuator glyph, since ISA's two-triangle
+                 body symbol does not itself distinguish body family. -->
+            <path d="M108,356 h36 l-8,-16 h-20 z" fill="#e7eaec" stroke="#3F4040" stroke-width="1.6"></path>
+            <line x1="126" y1="340" x2="126" y2="356" stroke="#3F4040" stroke-width="1.6"></line>
+
+            <!-- Valve body: two triangles apex-to-apex (standard ISA control-valve
+                 body symbol), oriented for vertical (top-to-bottom) flow -->
+            <polygon points="108,372 144,372 126,400" fill="#e7eaec" stroke="#3F4040" stroke-width="2"></polygon>
+            <polygon points="108,428 144,428 126,400" fill="#e7eaec" stroke="#3F4040" stroke-width="2"></polygon>
+
+            <!-- Outlet pipe continuing to process -->
+            <line x1="126" y1="428" x2="126" y2="454" stroke="#004B8D" stroke-width="4" marker-end="url(#cve1009ProcArrow)"></line>
+
+            <text x="200" y="416" font-size="11.5" fill="#3F4040" font-family="Arial, sans-serif">Final control element</text>
+            <text x="200" y="430" font-size="11.5" fill="#3F4040" font-family="Arial, sans-serif">(rotary, V-notch ball)</text>
+
+            <text x="132" y="452" font-size="12" fill="#3F4040" font-family="Arial, sans-serif">Outlet flow</text>
+
+            <text x="372" y="18" font-size="10" fill="#959797" font-family="Arial, sans-serif" font-style="italic" text-anchor="end">Solid = process piping</text>
+            <text x="372" y="31" font-size="10" fill="#959797" font-family="Arial, sans-serif" font-style="italic" text-anchor="end">Dashed = signal</text>
+          </svg>
         </div>
       </div>
-      <ul class="tpl-list">
-        <li><span class="num">1</span>Boiler-feedwater trim valve: P1 = 200 psig, P2 = 140 psig, &Delta;P = 60 psi, Q = 150 gpm water, Class III shutoff (tighter than Case A's Class II)</li>
-        <li><span class="num">2</span>Preliminary Cv = 150 &times; &radic;(1.0/60) = 150 &times; 0.129 &asymp; 19</li>
-        <li><span class="num">3</span>&Delta;P is again a modest fraction of P1 &mdash; 2-in. globe valve, standard trim, rated Cv &asymp; 22, correctly sized, no cavitation risk. This case's gap is entirely in how the actuator gets sized next</li>
-      </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., unnumbered flowchart, p.100 &mdash; used directly. Component Index: cvh-cmp-valve-selection-process-flowchart.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">9</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

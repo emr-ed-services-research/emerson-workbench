@@ -66,6 +66,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.1 'Feedback Control Loop,' p. 17"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig1-feedback-control-loop.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-005.html}]
 notes: >
@@ -123,6 +125,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.2 'Sliding-Stem Control Valve,' p. 18"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig2-sliding-stem-valve.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-006.html}]
 notes: >
@@ -144,6 +148,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.3 'Sliding-Stem Control Valve,' p. 18 — 11-part numbered exploded view (1. Stem, 2. Packing Flange, 3. Actuator Locknut, 4. Bonnet, 5. Bonnet Gasket, 6. Piston Ring, 7. Plug, 8. Cage, 9. Seat Ring, 10. Body/Bonnet Bolting, 11. Body)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig3-sliding-stem-exploded.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-007.html}]
 notes: >
@@ -169,6 +175,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.4 'Angle Valve,' p. 18"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig4-angle-valve.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-008.html}]
 notes: >
@@ -187,6 +195,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.5 'Bellows Seal Bonnet,' p. 19 — 5-part numbered cutaway (1. Bonnet, 2. Packing, 3. Packing Box, 4. Bellows, 5. Valve Stem)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig5-bellows-seal-bonnet.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-009.html}]
 notes: >
@@ -208,6 +218,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.6 'Bonnet Assembly,' p. 19 — 4-part numbered cutaway (1. Bonnet, 2. Packing, 3. Packing Box, 4. Valve Stem)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig6-bonnet-assembly.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-009.html}]
 notes: >
@@ -233,6 +245,12 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.7 'Cages (left to right): Linear, Equal-Percentage, Quick-Opening,' p. 19"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig7a-linear-cage.png
+    locator: ""
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig7b-equal-percentage-cage.png
+    locator: ""
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig7c-quick-opening-cage.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default. THREE
   INDIVIDUAL CROPS available as of 2026-09-14 (Post-Stage-4 Architecture
   Bundle item 6, per Style Guide §5.14): cvh1-fig1-7a-linear-cage.png,
@@ -263,6 +281,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.8 'Three-Way Globe Valve,' p. 20"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig8-three-way-globe-valve.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-008.html}]
 notes: >
@@ -291,6 +311,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.9 'Direct-Acting Actuator,' p. 20 — 12-part numbered cutaway (1. Diaphragm Casing, 2. Diaphragm, 3. Diaphragm Plate, 4. Actuator Spring, 5. Actuator Stem, 6. Spring Seat, 7. Spring Adjuster, 8. Yoke, 9. Stem Connector, 10. Valve Stem, 11. Travel Indicator Disk, 12. Travel Scale)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig9-direct-acting-actuator.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-010.html}]
 notes: >
@@ -313,6 +335,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.10 'Piston-Type Actuator,' p. 21 — 7-part numbered cutaway (1. Loading Pressure Connection, 2. Piston, 3. Piston Seal, 4. Cylinder, 5. Cylinder Closure Seal, 6. Seal Bushing, 7. Stem Connector)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig10-piston-actuator.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-010.html}]
 notes: >
@@ -336,6 +360,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.11 'Packing,' p. 21 — 2-panel composite, PTFE Packing (9-part callout: Upper Wiper, Packing Follower, Female Adaptor, V-Ring, Male Adaptor, Lantern Ring, Washer, Spring, Box Ring/Lower Wiper) and Graphite Packing (4-part callout: Filament Ring, Laminated Ring, Lantern Ring, Zinc Washer)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig11-stem-packing-types.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: >
@@ -363,6 +389,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.12 'Reverse-Acting Actuator,' p. 22 — 16-part numbered cutaway (1. Diaphragm Casing, 2. Diaphragm, 3. Diaphragm Plate, 4. Seal Bushing and O-rings, 5. Actuator Spring, 6. Actuator Stem, 7. Spring Seat, 8. Spring Adjuster, 9. Yoke, 10. Stem Connector, 11. Travel Indicator Disk, 12. Valve Stem, 13. Integrated Handwheel Mounting Bosses, 14. Integral Air Passage, 15. Integral DVC6200 Mounting Pad, 16. Travel Scale)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig12-reverse-acting-actuator.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-010.html}]
 notes: >
@@ -390,6 +418,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.13 'Rotary Control Valve,' p. 23"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig13-rotary-control-valve.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-012.html}]
 notes: >
@@ -409,6 +439,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.14 'Segmented Ball,' p. 24"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig14-segmented-ball.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-013.html}]
 notes: >
@@ -428,6 +460,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.15 'V-Notch Ball,' p. 24"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig15-v-notch-ball.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-013.html}]
 notes: >
@@ -447,6 +481,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.16 'Eccentric Disk Valve,' p. 24"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig16-eccentric-disk-valve.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-013.html}]
 notes: >
@@ -470,6 +506,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.17 'Rotary Control Valve,' p. 25 — 14-part numbered cutaway (1. Loading Pressure Connection, 2. Diaphragm Case, 3. Diaphragm, 4. Diaphragm Plate, 5. Spring, 6. Actuator Stem, 7. Lever, 8. Shaft, 9. Travel Stop, 10. Packing, 11. Disk, 12. Body, 13. Seal, 14. Seal Retainer)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig17-rotary-actuator-cutaway.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-014.html}]
 notes: >
@@ -498,6 +536,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.18 'Deadband,' p. 29 — Process Variable (%) vs. Controller Output (%) plot showing the open hysteresis loop"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig18-deadband-graph.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: [{course: CVB, slide: cvb-017.html}]
 notes: >
@@ -519,6 +559,8 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 1.19 'Inherent Valve Characteristics,' p. 30 — Rated Flow Coefficient (%) vs. Rated Travel (%), three curves labelled Quick-Opening, Linear, Equal-Percentage"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch1-fig19-inherent-characteristics-graph.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: []
 notes: >

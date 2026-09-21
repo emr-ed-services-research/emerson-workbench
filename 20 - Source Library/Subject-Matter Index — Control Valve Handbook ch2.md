@@ -86,6 +86,8 @@ status: current
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1 Process Variability; Figure 2.1 'Process Variability' (p. 35)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch2-fig1-process-variability-distributions.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: [{course: CVB, slide: cvb-053.html}]
 notes: Foundational framing figure for the whole chapter; no companion figure.
@@ -104,6 +106,8 @@ status: current
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.2 Performance Testing; Figure 2.2 'Performance Test Loop' (p. 36)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch2-fig2-performance-test-loop-photo.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-054.html}]
 notes: Photo, not a graph; labelled equipment not individually called out in caption.
@@ -184,6 +188,8 @@ status: current
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1.3 Valve Response Time; Figure 2.4 'Valve Response Time Summary' (p. 41)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch2-fig4-valve-response-time-summary-table.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: []
 notes: Table-formatted content; no companion figure.
@@ -240,6 +246,8 @@ status: current
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1.5 Installed Gain; Figure 2.5 'Installed Flow Characteristic and Gain' (p. 44)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch2-fig5-installed-characteristic-and-gain.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: [{course: CVB, slide: cvb-057.html}]
 notes: Companion pair of stacked graphs sharing one x-axis (valve travel); treat as one figure/one crop.
@@ -257,6 +265,8 @@ status: current
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1.5 Installed Gain; Figure 2.6 'Effect of Valve Style on Control Range' (p. 46)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch2-fig6-valve-style-control-range-comparison.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: [{course: CVB, slide: cvb-058.html}]
 notes: >
@@ -341,6 +351,8 @@ status: current
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.1.6 Economic Results (unlabeled subhead text); Figure 2.7 'Closed Loop Random Load Disturbance Summary' (p. 49)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch2-fig7-closed-loop-disturbance-summary.png
+    locator: ""
 delivery: analytical graph — falls under Style Guide §5 if ever placed on a slide
 used-by: [{course: CVB, slide: cvb-060.html}]
 notes: Feeds directly into the chapter's economics discussion (return on investment from tighter control).
@@ -389,6 +401,8 @@ status: current
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.3 Signature Series Performance Testing; captioned 'Figure 2.8 Effect of Valve Style on Control Range' (p. 50)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch2-fig8-signature-series-testing-photo.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-061.html}]
 notes: >
@@ -417,6 +431,8 @@ status: current
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.3.3 Signature Series 3 / Data Comparison text; Figure 2.9 'Data Comparision' (p. 51) [sic — source spells 'Comparision']"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch2-fig9-signature-data-comparison-overlay.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-062.html}]
 notes: Caption spelling "Comparision" is the source document's own typo, reproduced verbatim above rather than silently corrected.
@@ -434,6 +450,8 @@ status: current
 source:
   - doc: Control Valve Handbook 6th ed.
     locator: "§2.3 closing text 'Take Advantage of the Signature Series'; Figure 2.10 'ValveLink Software' (p. 51)"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch2-fig10-valvelink-software-screens.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
 used-by: [{course: CVB, slide: cvb-063.html}]
 notes: Two-screenshot composite under one figure number; treat as one figure/one crop.

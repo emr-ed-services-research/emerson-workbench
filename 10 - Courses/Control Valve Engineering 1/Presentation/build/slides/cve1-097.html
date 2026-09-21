@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 097 &mdash; Checking a Diaphragm Actuator Against 275 lbf Required</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m2, page 97 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.calculate-sliding-stem-thrust [apply · procedure].
+       GENERATED FROM NOTHING, per Franz's explicit editorial constraint
+       for this slide: no figure anchors the worked check (course.json
+       sourceNote) — grounded in cvh-topic-actuator-force-selection
+       (Control Valve Handbook Sec 5.11.2, p. 126), independently
+       confirmed by pss-topic-actuator-force-calculation-globe's own
+       identical worked example. Plain force-total/precompression
+       comparison graphic per Franz's stated constraint: two simple bars,
+       275 lbf required vs. 300 lbf precompression, 25 lbf margin —
+       nothing elaborate, same minimal register as cve1-012's rangeability
+       comparison bars (the direct precedent this course already used for
+       an identical "two bars, one clears/falls-short comparison" shape). -->
+  <article class="slide slide--role-procedure-image" data-slide="97" data-deck="cve1">
+    <h1 class="slide-title">Checking a Diaphragm Actuator Against 275 lbf Required</h1>
+    <div class="tpl-content">
+      <ol class="tpl-steps">
+        <li>Total force required = 275 lbf, from the A + B + C + D calculation just built</li>
+        <li>Candidate: air-to-open diaphragm, 100 sq. in. effective area, bench set 6&ndash;15 psig, operating range 3&ndash;15 psig</li>
+        <li>Precompression force = (6 psig bench-set floor &minus; 3 psig operating-range floor) &times; 100 sq. in. = 3 psig &times; 100 sq. in. = 300 lbf</li>
+        <li>Compare: 300 lbf exceeds the 275 lbf required &mdash; the actuator is an adequate selection, with 25 lbf of real margin</li>
+      </ol>
+      <div class="tpl-fig">
+        <svg viewBox="0 0 380 260" role="img" aria-label="Two bars compared: 275 pounds-force required versus 300 pounds-force of precompression force from the candidate actuator, showing a 25 pound-force margin." style="width:100%;height:100%">
+          <text x="190" y="24" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#3F4040">Force required vs. precompression available</text>
+          <!-- Bar A: force required = 275 lbf -->
+          <rect x="30" y="60" width="238" height="30" fill="#004B8D"></rect>
+          <text x="30" y="52" font-family="Arial, Helvetica, sans-serif" font-size="12.5" fill="#3F4040">Force required</text>
+          <text x="276" y="80" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#3F4040">275 lbf</text>
+          <!-- Bar B: precompression = 300 lbf -->
+          <rect x="30" y="130" width="260" height="30" fill="#004B8D"></rect>
+          <text x="30" y="122" font-family="Arial, Helvetica, sans-serif" font-size="12.5" fill="#3F4040">Precompression available</text>
+          <text x="298" y="150" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#3F4040">300 lbf</text>
+          <!-- reference line at 275 lbf mark projected onto bar B, plus margin bracket -->
+          <line x1="268" y1="55" x2="268" y2="165" stroke="#959797" stroke-width="1.5" stroke-dasharray="3 3"></line>
+          <path d="M268,180 L268,190 L290,190 L290,180" fill="none" stroke="#F79428" stroke-width="1.8"></path>
+          <text x="279" y="205" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="12.5" fill="#3F4040">25 lbf margin</text>
+          <text x="30" y="232" font-family="Arial, Helvetica, sans-serif" font-size="12.5" fill="#3F4040">300 &gt; 275 &mdash; adequate selection</text>
+        </svg>
+      </div>
+      <p class="tpl-source">Originated worked-comparison graphic &mdash; no component is registered for this competency (Control Valve Handbook, 6th ed., &sect;5.11.2, p. 126). Values are the source's own worked case, not invented.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">97</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

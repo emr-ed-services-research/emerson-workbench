@@ -29,7 +29,7 @@ TOC's "Power & Recovery Boiler" (see `Subject-Matter Index — Pulp & Paper
 Sourcebook ch18.md` for that naming note). Zero page offset throughout
 (PDF page = printed page number + 180). Chapter 17 = PDF pp. 197-208.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/Control
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control
 Valve Sourcebook - Pulp & Paper.pdf`. This pass catalogs existence and location
 only — it does not crop or extract images. Record shape: `id` · `kind` ·
 `teaches` · `concept-tags` · `status` · `source` (`doc` + `locator`) ·

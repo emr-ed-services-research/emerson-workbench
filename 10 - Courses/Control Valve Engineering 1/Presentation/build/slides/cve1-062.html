@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 062 &mdash; Pressure-Drop Ratio Drives the Divergence</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch4-m2, page 62 — eng.selection.flow-characteristic-and-
+       rangeability.predict-installed-vs-inherent-divergence [analyze ·
+       mechanism]. GENERATED FROM NOTHING: figures: [] in the registry for
+       this competency (see slide 61's note for the full non-borrowing
+       rationale). Content verified against cvh-topic-installed-vs-
+       inherent-characteristic (CVH 6th ed. Sec 2.1.4/2.1.4.1/2.1.4.2, pp.
+       44-46), which states the pressure-drop-ratio mechanism, the
+       equal-percentage/vessel-gain rationale, and the EnTech 4:1
+       loop-gain figure as prose, not figure-anchored. Originated
+       diagram per Franz's editorial constraint: a plain, standard-
+       textbook-simple two-bar schematic of the pressure-drop-ratio split
+       (piping/process share vs. valve share) at high vs. low ratio — the
+       causal driver the concept states directly. The equal-percentage/
+       vessel-gain pairing and the EnTech 4:1 target are analytical/
+       quantitative statements with no drawable geometry of their own;
+       per the visual-concept check (Course Porting Pipeline.md), they are
+       genuinely text content and carried in the list, not forced into the
+       figure. -->
+  <article class="slide slide--role-mechanism" data-slide="62" data-deck="cve1">
+    <h1 class="slide-title">Pressure-Drop Ratio Drives the Divergence</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <svg viewBox="0 0 640 260" role="img" aria-label="Two horizontal bars showing how the total system pressure drop splits between piping/process equipment and the valve at design flow. The top bar, a high pressure-drop ratio, is mostly the valve's own share. The bottom bar, a low pressure-drop ratio, is mostly the piping and process equipment's share." style="width:100%;height:100%">
+            <rect x="110" y="14" width="22" height="14" fill="#959797"></rect>
+            <text x="140" y="26" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#3F4040">Piping / process &#916;P</text>
+            <rect x="340" y="14" width="22" height="14" fill="#004B8D"></rect>
+            <text x="370" y="26" font-family="Arial, Helvetica, sans-serif" font-size="13" fill="#3F4040">Valve &#916;P</text>
+            <circle cx="40" cy="83" r="14" fill="#004B8D"></circle>
+            <text x="40" y="83" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#ffffff">1</text>
+            <rect x="70" y="60" width="104" height="46" fill="#959797"></rect>
+            <rect x="174" y="60" width="416" height="46" fill="#004B8D"></rect>
+            <text x="332" y="126" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#3F4040">High &#916;P ratio</text>
+            <circle cx="40" cy="193" r="14" fill="#004B8D"></circle>
+            <text x="40" y="193" text-anchor="middle" dominant-baseline="central" font-family="Arial, Helvetica, sans-serif" font-size="13" font-weight="700" fill="#ffffff">2</text>
+            <rect x="70" y="170" width="416" height="46" fill="#959797"></rect>
+            <rect x="486" y="170" width="104" height="46" fill="#004B8D"></rect>
+            <text x="332" y="236" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" fill="#3F4040">Low &#916;P ratio</text>
+          </svg>
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><span class="num">1</span>High ratio &mdash; the valve holds most of the system &#916;P &mdash; installed tracks close to the inherent curve</li>
+        <li><span class="num">2</span>Low ratio &mdash; piping/process equipment hold most of the &#916;P, and vary it as load shifts &mdash; installed gain distorts heavily, regardless of which inherent curve was ordered</li>
+        <li>Equal-percentage is paired deliberately with a process vessel's own falling gain &mdash; its rising-with-flow gain nets out to a roughly linear, well-behaved installed characteristic</li>
+        <li>Target: loop gain (every device's gain except the controller) held within about a 4:1 spread across the operating range &mdash; the EnTech consensus figure, a practitioner benchmark, not a hard physical law</li>
+      </ul>
+      <p class="tpl-source">Originated schematic &mdash; no component is registered for this competency (Control Valve Handbook 6th ed. &sect;2.1.4/&sect;2.1.4.1/&sect;2.1.4.2, pp. 44-46, prose only). Not a redraw of any source figure.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">62</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

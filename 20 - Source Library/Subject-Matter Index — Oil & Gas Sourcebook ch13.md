@@ -23,7 +23,7 @@ chapter's remaining figures, exhausting its full figure list). All eleven
 figures confirmed against the real page text and a 300 dpi page-image
 render before extraction — none were skipped or fabricated.
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -134,7 +134,7 @@ source:
     locator: >
       Chapter 13 "LNG Liquefaction," Figure 13-1 (drawing number E1529,
       printed p. 13-2) — "Figure 13-1. LNG Process Flow Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig1-lng-process-flow-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig1-lng-process-flow-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 152, printed p. 13-2) at 300 dpi, full block diagram (both dashed chapter cross-reference boxes, all named process blocks), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -170,7 +170,7 @@ source:
       Chapter 13 "LNG Liquefaction," Figure 13-2 (drawing number E1530,
       printed p. 13-2) — "Figure 13-2. Refrigerant Cycles and
       Liquefaction."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig2-refrigerant-cycles-and-liquefaction.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig2-refrigerant-cycles-and-liquefaction.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 152, printed p. 13-2) at 300 dpi, full block diagram (MR and propane cycles, natural gas scrubber, MHE), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -263,7 +263,7 @@ source:
     locator: >
       Chapter 13 "LNG Liquefaction," Figure 13-3 (drawing number E1531,
       printed p. 13-3) — "Figure 13-3. Feed Gas Pressure Letdown Valves."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig3-feed-gas-pressure-letdown-valves.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig3-feed-gas-pressure-letdown-valves.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 153, printed p. 13-3) at 300 dpi, full diagram (two parallel letdown valve symbols, slug catchers block, NG/condensate outlets), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -297,7 +297,7 @@ source:
     locator: >
       Chapter 13 "LNG Liquefaction," Figure 13-4 (drawing number W9518-1,
       printed p. 13-4) — "Figure 13-4. EWT with Whisper Trim III Cage."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig4-ewt-whisper-trim-iii-cage-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig4-ewt-whisper-trim-iii-cage-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 154, printed p. 13-4) at 300 dpi, full cutaway illustration (globe body, cage trim, bonnet bolting), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -365,7 +365,7 @@ source:
     locator: >
       Chapter 13 "LNG Liquefaction," Figure 13-5 (drawing number E1532,
       printed p. 13-4) — "Figure 13-5. Typical Compressor Map."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig5-typical-compressor-map.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig5-typical-compressor-map.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 154, printed p. 13-4) at 300 dpi, full map (surge/stonewall boundary, speed lines, operating zone, control-margin annotations), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -438,7 +438,7 @@ source:
       Chapter 13 "LNG Liquefaction," Figure 13-6 (drawing number X0210,
       printed p. 13-5) — "Figure 13-6. ODV Package with FB NPS 16x20,
       585CLS Actuator, DVC6200, and SS-263 Booster."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig6-odv-package-fb-585cls-dvc6200.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig6-odv-package-fb-585cls-dvc6200.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 155, printed p. 13-5) at 300 dpi, full product photo (double-acting piston actuator stack, valve body, instrumentation), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -506,7 +506,7 @@ source:
       Chapter 13 "LNG Liquefaction," Figure 13-7 (drawing number X0204-1,
       printed p. 13-6) — "Figure 13-7. DVC6200 Instrument for ODV
       Package."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig7-dvc6200-odv-package-instrument.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig7-dvc6200-odv-package-instrument.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 156, printed p. 13-6) at 300 dpi, full product photo (instrument body, cover nameplate, gauges), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -540,7 +540,7 @@ source:
     locator: >
       Chapter 13 "LNG Liquefaction," Figure 13-8 (drawing number E1533,
       printed p. 13-6) — "Figure 13-8. Propane Compressor."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig8-propane-compressor-antisurge-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig8-propane-compressor-antisurge-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 156, printed p. 13-6) at 300 dpi, full diagram (three flash-drum/compressor/antisurge-valve stages, numbered ①②③, shared discharge header), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -575,7 +575,7 @@ source:
     locator: >
       Chapter 13 "LNG Liquefaction," Figure 13-9 (drawing number E1534,
       printed p. 13-7) — "Figure 13-9. Mixed Refrigerant Compressor."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig9-mixed-refrigerant-compressor-antisurge-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig9-mixed-refrigerant-compressor-antisurge-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 157, printed p. 13-7) at 300 dpi, full diagram (both compressor stages, KO drums, numbered ①②③ antisurge valves, HP MR separator outlet), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -607,7 +607,7 @@ source:
     locator: >
       Chapter 13 "LNG Liquefaction," Figure 13-10 (drawing number X0266,
       printed p. 13-7) — "Figure 13-10. WhisperFlo Trim Disk Stack."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig10-whisperflo-trim-disk-stack.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig10-whisperflo-trim-disk-stack.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 157, printed p. 13-7) at 300 dpi, full product illustration, drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -680,7 +680,7 @@ source:
       Chapter 13 "LNG Liquefaction," Figure 13-11 (drawing number E1535,
       printed p. 13-9) — "Figure 13-11. Common Valves Associated with the
       MHE."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig11-common-valves-mhe-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch13-fig11-common-valves-mhe-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 159, printed p. 13-9) at 300 dpi, full diagram (MHE tube/shell schematic, all three numbered valves, KO drum, all labelled inlet/outlet blocks), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

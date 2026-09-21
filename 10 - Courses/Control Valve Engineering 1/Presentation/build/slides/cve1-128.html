@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 128 &mdash; Meeting a Stated Emissions Target</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch7-m2, page 128 — eng.packing.selection-and-fugitive-emissions.
+       select-packing-for-emissions-target [apply · application].
+       Decision-table variant (Style Guide Sec 5.10/9.2,
+       .slide--role-application:has(.tmpl-table)), tp-009 precedent,
+       directly re-cross-referencing this course's own cve1-122.html
+       (m1's five-system table) — no new component or figure for this
+       slide, per this module's own no-new-slide-files instruction and
+       course.json's own templateRationale. Table runs FULL WIDTH via
+       inline style="grid-column:1 / -1", matching cve1-122.html's own
+       precedent exactly (no figure-less variant exists yet in
+       gallery.css, so this is fixed at the slide level, same as 053/069).
+       Column order follows Sec 9.4's given-to-answer default: body style
+       and envelope (what the reader already knows from Module 1) come
+       first, the documented-100-ppmv-match verdict (the answer) comes
+       last.
+
+       FACTUAL VERIFICATION (working rule 2 / the Stage 4 factual-content
+       discipline, applied here in Stage 3 since this table directly
+       reproduces a fact-bearing claim): checked each of the five
+       Subject-Matter Index entries directly (Control Valve Handbook ch3)
+       rather than trusting the concept map's own claim on faith. Confirmed
+       accurate: only cvh-cmp-single-ptfe-vring-packing ("Meets the 100
+       ppmv criterion for sliding-stem valves") and
+       cvh-cmp-enviroseal-graphite-packing-rotary ("...while still
+       satisfying the 100 ppmv EPA leakage criterion") state an explicit
+       100 ppmv number in their own teaches text; cvh-cmp-enviroseal-ptfe-
+       packing-system, cvh-cmp-enviroseal-duplex-packing-system, and
+       cvh-cmp-enviroseal-graphite-ulf-packing-system are each described
+       only as "environmental[-service]" with no stated ppmv figure. LOW
+       CONFIDENCE / flagged in this run's report: this course's OWN sibling
+       slide, cve1-122.html (m1, already shipped, not touched by this run),
+       writes "Meets 100 ppmv" in its own table for those same three
+       systems — a real discrepancy between two already-authored citations
+       of the identical component ids, not something this slide invented.
+       This slide's own table follows the verified Subject-Matter Index
+       text rather than repeating cve1-122's overstatement. -->
+  <article class="slide slide--role-application" data-slide="128" data-deck="cve1">
+    <h1 class="slide-title">Meeting a Stated Emissions Target</h1>
+    <div class="tpl-content">
+      <table class="tmpl-table" style="grid-column:1 / -1">
+        <thead>
+          <tr><th>Packing system</th><th>Body style</th><th>Pressure / temperature envelope</th><th>Documented against 100 ppmv EPA target</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Single PTFE V-Ring</td><td>Sliding-stem only</td><td>&le;300 psi (20.7 bar) / 93&deg;C (200&deg;F)</td><td>Yes &mdash; stated</td></tr>
+          <tr><td>ENVIRO-SEAL PTFE</td><td>Sliding-stem or rotary</td><td>&le;750 psi (51.7 bar) / 232&deg;C (450&deg;F)</td><td>Not stated in this citation</td></tr>
+          <tr><td>ENVIRO-SEAL Duplex</td><td>Sliding-stem only</td><td>&le;232&deg;C (450&deg;F)</td><td>Not stated in this citation</td></tr>
+          <tr><td>ENVIRO-SEAL Graphite ULF</td><td>Sliding-stem only</td><td>Above 232&deg;C (450&deg;F)</td><td>Not stated in this citation</td></tr>
+          <tr><td>ENVIRO-SEAL Graphite (rotary)</td><td>Rotary only</td><td>&le;1500 psi (103 bar) to 316&deg;C (600&deg;F)</td><td>Yes &mdash; stated</td></tr>
+        </tbody>
+      </table>
+      <p class="tpl-takeaway">Meeting a stated emissions target is a real cross-reference against what a system is actually documented to meet &mdash; not an assumption that any &ldquo;environmental&rdquo;-labelled system satisfies any stated number.</p>
+      <p class="tpl-source">No corroborating figure exists for this synthesis &mdash; this slide re-cross-references Module 1&rsquo;s five systems, already placed on slides 117-121, against the 100 ppmv EPA criterion. After Control Valve Handbook, 6th ed., &sect;3.4.5&ndash;&sect;3.4.12. Component Index: cvh-cmp-single-ptfe-vring-packing, cvh-cmp-enviroseal-ptfe-packing-system, cvh-cmp-enviroseal-duplex-packing-system, cvh-cmp-enviroseal-graphite-ulf-packing-system, cvh-cmp-enviroseal-graphite-packing-rotary.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">128</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

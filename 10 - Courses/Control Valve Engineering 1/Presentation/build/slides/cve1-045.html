@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 045 &mdash; Check Your Knowledge &mdash; Rotary Subtypes &amp; Selection Process</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch3-m3, page 45 — the module's check-your-knowledge slide. No
+       keyConcepts/primitive entry exists for a check slide by schema
+       design (Stage 2 never authors one) &mdash; composed fresh here,
+       synthesized from the module's whole arc (slides 40-44), not any
+       one slide. levelTarget is understand, but per this run's own
+       instructions the stem is still framed as a concrete situation
+       rather than "which is true." Draws on THREE concept threads
+       together: the ball-valve capacity/control split (slide 40) and its
+       service-driver split (slide 41 &mdash; segmented+trim for process
+       duty, full-port trunnion for fire-safe ESD), plus the selection-
+       process flowchart's step 4 (slide 44 &mdash; the rotary subtype gets
+       chosen against process/safety conditions, not by name). The
+       distractors are real, plausible conflations: A picks the
+       segmented-ball+trim variant on the strength of its erosion/slurry
+       resistance, ignoring that the stated duty is fire-safe ESD, not
+       process throttling; C picks the eccentric plug, a real severe-
+       service rotary pick but for abrasive/flashing duty, not fire
+       safety, and it carries no API 6/6FA certification in this module's
+       own text; D picks the high-performance butterfly, plausible on
+       "general service" but explicitly NOT the fire-safe/ESD-certified
+       pick this module names. data-correct="true" marks the right option
+       per the interactive check convention (gallery.css Sec 8.2 /
+       slides.js); reveal is terse per cve1-009/018/023/032/038's
+       established convention. -->
+  <article class="slide slide--role-check" data-slide="45" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Rotary Subtypes &amp; Selection Process</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A spec calls for automated emergency shutoff (ESD) on a large, clean-service gas line, with fire-safe certification to API 6/6FA required. Running the selection-process flowchart's step 4 against these conditions, which rotary subtype actually fits &mdash; and why do the others fail?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;Segmented ball with noise/cavitation trim &mdash; its continuous seal contact handles the harshest service of any option here</li>
+        <li data-correct="true">B.&nbsp;&nbsp;Full-port trunnion-mounted ball &mdash; little or no flow restriction, and the only one of these four fire-tested and certified to API 6/6FA for ESD duty</li>
+        <li>C.&nbsp;&nbsp;Eccentric plug &mdash; its massive, rigid seat design is built for exactly this kind of severe, safety-critical service</li>
+        <li>D.&nbsp;&nbsp;High-performance butterfly &mdash; a general-service body, so it is the safe default when the duty isn't a precision-throttling one</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; Full-port trunnion ball</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">45</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

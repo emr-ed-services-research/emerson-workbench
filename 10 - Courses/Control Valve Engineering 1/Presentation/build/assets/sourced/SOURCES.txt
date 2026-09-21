@@ -1,0 +1,1367 @@
+Control Valve Engineering 1 — cve1-ch1-m1 (Feedback Loop & Valve Body Families)
+Origination-mode Stage 3, 2026-09-19. All files below are DIRECT crops
+(no redraw) from the Control Valve Handbook, Sixth Edition (D101881X012,
+Aug 2023), reused verbatim from Control Valve Basics' own already-verified
+crops (10 - Courses/Control Valve Basics/Presentation/build/assets/sourced/)
+— no re-cropping performed, no content altered. Where the source figure
+carries its own printed numbered callouts, those numbers are shown as-is
+(Style Guide Sec 6.2/6.3).
+
+cvh1-fig1-1-feedback-control-loop.png
+  Fig. 1.1 "Feedback Control Loop," p. 17 (own printed block labels retained,
+  no added markers). Component Index: cvh-cmp-feedback-control-loop.
+  Used by: cve1-005.html.
+
+cvh1-fig1-2-sliding-stem-valve.png
+  Fig. 1.2 "Sliding-Stem Control Valve," p. 18 (unlabelled overview photo).
+  Component Index: cvh-cmp-sliding-stem-valve-photo.
+  Used by: cve1-006.html (photo 1 of 4), cve1-008.html (left panel).
+
+cvh1-fig1-3-sliding-stem-exploded.png
+  Fig. 1.3 "Sliding-Stem Control Valve," p. 18 — 11-part numbered exploded
+  view, own printed callouts 1-11 retained as-is (a separate numbering
+  scheme from cve1-006's own 1-4 photo badges).
+  Component Index: cvh-cmp-sliding-stem-exploded.
+  Used by: cve1-006.html (photo 2 of 4).
+
+cvh1-fig1-4-angle-valve.png
+  Fig. 1.4 "Angle Valve," p. 18 (unlabelled photo).
+  Component Index: cvh-cmp-angle-valve-photo.
+  Used by: cve1-006.html (photo 3 of 4).
+
+cvh1-fig1-8-three-way-globe-valve.png
+  Fig. 1.8 "Three-Way Globe Valve," p. 20 (unlabelled photo).
+  Component Index: cvh-cmp-three-way-globe-valve-overview.
+  Used by: cve1-006.html (photo 4 of 4).
+
+cvh1-fig1-13-rotary-control-valve.png
+  Fig. 1.13 "Rotary Control Valve," p. 23 (unlabelled overview photo).
+  Component Index: cvh-cmp-rotary-valve-photo.
+  Used by: cve1-007.html (photo 1 of 4), cve1-008.html (right panel).
+
+cvh1-fig1-14-segmented-ball.png
+  Fig. 1.14 "Segmented Ball," p. 24 (unlabelled photo).
+  Component Index: cvh-cmp-segmented-ball.
+  Used by: cve1-007.html (photo 2 of 4).
+
+cvh1-fig1-15-v-notch-ball.png
+  Fig. 1.15 "V-Notch Ball," p. 24 (unlabelled photo; short/wide crop,
+  618x280 — reads wider than its neighbours once scaled to a common row
+  height, a property of the source crop, not a distortion introduced here).
+  Component Index: cvh-cmp-v-notch-ball.
+  Used by: cve1-007.html (photo 3 of 4).
+
+cvh1-fig1-16-eccentric-disk-valve.png
+  Fig. 1.16 "Eccentric Disk Valve," p. 24 (unlabelled photo).
+  Component Index: cvh-cmp-eccentric-disk-valve.
+  Used by: cve1-007.html (photo 4 of 4).
+
+Control Valve Engineering 1 — cve1-ch1-m2 (Gain, Rangeability, Deadband &
+Dynamic Response)
+Origination-mode Stage 3, 2026-09-19.
+
+cvh1-fig1-18-deadband.png
+  Fig. 1.18 "Deadband," p. 29 — Process Variable (%) vs. Controller Output (%)
+  plot, single hysteresis loop, no line labels/key in the source (Style Guide
+  Sec 5.4). DIRECT crop, reused verbatim from Control Valve Basics' own
+  already-verified crop (10 - Courses/Control Valve Basics/Presentation/build/
+  assets/sourced/cvh1-fig1-18-deadband.png) — no re-cropping performed.
+  Component Index: cvh-cmp-deadband-graph.
+  Used by: cve1-014.html.
+
+Control Valve Engineering 1 — cve1-ch2-m1 (Reading Variability & Its Cost)
+Origination-mode Stage 3, 2026-09-19. All files below are DIRECT crops
+(no redraw) from the Control Valve Handbook, Sixth Edition (D101881X012,
+Aug 2023), Chapter 2, reused verbatim from Control Valve Basics' own
+already-verified crops (10 - Courses/Control Valve Basics/Presentation/
+build/assets/sourced/) — no re-cropping performed, no content altered.
+Where the source figure carries its own printed labels, those labels are
+shown as-is (Style Guide Sec 6.2/6.3).
+
+cvh2-fig2-1-process-variability-distributions.png
+  Fig. 2.1 "Process Variability," p. 35 — two stacked distribution-curve
+  plots, own printed labels (Lower Limit Specification, Set Point,
+  2-Sigma, Pv Distribution) retained as-is.
+  Component Index: cvh-cmp-process-variability-distributions.
+  Used by: cve1-019.html.
+
+cvh2-fig2-5-installed-characteristic-and-gain.png
+  Fig. 2.5 "Installed Flow Characteristic and Gain," p. 44 — two stacked
+  line graphs sharing one valve-travel x-axis, own printed labels
+  (Installed Characteristic, Installed Gain, Control Range, EnTec Gain
+  Specification) retained as-is.
+  Component Index: cvh-cmp-installed-characteristic-and-gain.
+  Used by: cve1-021.html.
+
+cvh2-fig2-6-valve-style-control-range-comparison.png
+  Fig. 2.6 "Effect of Valve Style on Control Range," p. 46 — two stacked
+  line graphs comparing a butterfly and a globe valve, own printed labels
+  (Butterfly, Globe, Installed Characteristic, Installed Gain, EnTec Gain
+  Specification) retained as-is. Both curves are plotted together on one
+  shared pair of axes with no seam separating a "butterfly half" from a
+  "globe half" — not independently croppable into two panel-specific
+  images (see cve1-022.html's own authoring comment and the Stage 3
+  report's Concept-map gaps). Used AS THE SAME FULL CROP in both of
+  cve1-022's contrast panels, each with its own data-lightbox-caption
+  naming which curve that panel is about.
+  Component Index: cvh-cmp-valve-style-control-range-comparison.
+  Used by: cve1-022.html (both panels).
+
+cvh2-fig2-7-closed-loop-disturbance-summary.png
+  Fig. 2.7 "Closed Loop Random Load Disturbance Summary," p. 49 — own
+  printed labels (Valve A/B/C legend, Manual, Auto, Minimum Variability,
+  Faster/Slower Tuning axis annotations) retained as-is.
+  Component Index: cvh-cmp-closed-loop-disturbance-summary.
+  Used by: cve1-020.html.
+
+No component was earmarked for cve1-023.html (the module check slide) —
+by design, per this run's own instructions; its content is synthesized
+directly from the module's arc (cve1-019 through cve1-022), not from a
+source figure.
+
+Control Valve Engineering 1 — cve1-ch2-m2 (Diagnosing Valve-Level Causes)
+Origination-mode Stage 3, 2026-09-19. Chapter 2, Control Valve Handbook,
+Sixth Edition (D101881X012, Aug 2023). Four files below are DIRECT crops
+reused verbatim from Control Valve Basics' own already-verified crops
+(10 - Courses/Control Valve Basics/Presentation/build/assets/sourced/) — no
+re-cropping performed, no content altered. The fifth (fig2-4) is a DIRECT
+crop freshly extracted from the real Control Valve Handbook PDF this same
+session (not previously used by any course), copied in from
+20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook —
+extracted-figures/ch2-fig4-valve-response-time-summary-table.png. Where a
+source figure carries its own printed labels or callouts, those are shown
+as-is (Style Guide Sec 6.2/6.3).
+
+cvh2-fig2-4-valve-response-time-summary-table.png
+  Fig. 2.4 "Valve Response Time Summary," p. 41 (910x1080) — a data-grid
+  table the source itself numbers as a Figure (Component Index note): Td
+  and T63 in seconds for Valves A/B/C at 2/5/10% step sizes, both
+  directions, against an ENTECH 4" spec row; Valve C's -2% closing step
+  is recorded "NR" (no response). Shown as the full source grid (not a
+  condensed transcription) so the NR data point the concept's own claim
+  rests on is not dropped.
+  Component Index: cvh-cmp-valve-response-time-summary-table.
+  Used by: cve1-188.html.
+
+cvh2-fig2-2-performance-test-loop.png
+  Fig. 2.2 "Performance Test Loop," p. 36 (1377x990, landscape — unlabelled
+  overview photo). Numbered markers (piping loop, pump drive, valve under
+  test, instrumentation) placed by direct visual inspection, no native
+  printed labels on the photo. Used under has-wide-fig (landscape photo,
+  four separate marker targets).
+  Component Index: cvh-cmp-performance-test-loop-photo.
+  Used by: cve1-189.html.
+
+cvh2-fig2-8-signature-series-testing-photo.png
+  Fig. 2.8, p. 50 (660x640) — unlabelled photo of a technician running a
+  ValveLink Signature Series test. CONFIRMED SOURCE CAPTIONING ERRATUM: the
+  printed caption duplicates Fig. 2.6's ("Effect of Valve Style on Control
+  Range"); the photo itself is unambiguously the Signature Series test
+  (Component Index's own note, carried forward here and on the slide).
+  Component Index: cvh-cmp-signature-series-testing-photo.
+  Used by: cve1-190.html.
+
+cvh2-fig2-9-signature-data-comparison-overlay.png
+  Fig. 2.9, p. 51 (660x530) — ValveLink screenshot overlaying an original
+  factory signature trace with a new in-service trace, own printed callout
+  boxes ("ORIGINAL TEST," "NEW TEST," "INCREASED SPAN INDICATES INCREASED
+  FRICTION") retained as-is, no added markers (Style Guide Sec 6.2/6.3).
+  Component Index: cvh-cmp-signature-data-comparison-overlay.
+  Used by: cve1-191.html.
+
+cvh2-fig2-10-valvelink-software-screens.png
+  Fig. 2.10 "ValveLink Software," p. 51 (660x850, portrait) — two stacked
+  screenshots (Total Scan, Valve Step Response), each with its own printed
+  window-title label retained as-is; no numbered markers added per Style
+  Guide Sec 6.3.
+  Component Index: cvh-cmp-valvelink-software-screens.
+  Used by: cve1-192.html.
+
+No component was earmarked for cve1-187.html (prime — opens on the
+module's own stakes question, per course.json's sourceNote) or cve1-193.html
+(caution — the direct pedagogical consequence of slides 191-192, no new
+figure) or cve1-194.html (the module check slide, synthesized from the
+module's arc). This matches the same design already used for cve1-023.html
+above.
+
+Control Valve Engineering 1 — cve1-ch3-m1 (Body Family Taxonomy)
+Origination-mode Stage 3, 2026-09-19. Control Valve Handbook, Sixth
+Edition (D101881X012), Chapters 3 and 10. Six files below (Figs. 3.3,
+3.5, 3.1, 3.6, 3.7, 3.13) are DIRECT crops reused verbatim from Control
+Valve Basics' own already-verified crops (10 - Courses/Control Valve
+Basics/Presentation/build/assets/sourced/) — no re-cropping performed,
+no content altered. The other six (Figs. 3.8, 3.14, 10.3, 10.31, 10.33,
+10.38) are DIRECT crops freshly extracted this session from 20 - Source
+Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-
+figures/ (not previously used by any course). Where a source figure
+carries its own printed labels or callouts, those are shown as-is
+(Style Guide Sec 6.2/6.3).
+
+cvh3-fig3-3-single-ported-globe-body.png
+  Fig. 3.3 "Single-Ported Globe-Style Valve Body," p. 56 (unlabelled
+  cutaway). Reused verbatim from CVB.
+  Component Index: cvh-cmp-single-ported-globe-valve-body.
+  Used by: cve1-024.html (photo 1 of 2).
+
+cvh3-fig3-5-double-ported-reverse-acting.png
+  Fig. 3.5 "Reverse-Acting Double-Ported Globe-Style Valve Body," p. 57
+  (unlabelled cutaway). Reused verbatim from CVB.
+  Component Index: cvh-cmp-double-ported-globe-valve-body-reverse-acting.
+  Used by: cve1-024.html (photo 2 of 2).
+
+cvh3-fig3-1-flanged-angle-body.png
+  Fig. 3.1 "Flanged Angle-Style Control Valve Body," p. 55 (unlabelled
+  photo). Reused verbatim from CVB.
+  Component Index: cvh-cmp-flanged-angle-valve-body.
+  Used by: cve1-025.html (photo 1 of 2).
+
+cvh3-fig3-6-three-way-globe-valve.png
+  Fig. 3.6 "Three-Way Globe Valve," p. 58 (unlabelled cutaway, mid-
+  travel). Reused verbatim from CVB. Distinct from cvh1-fig1-8's own
+  three-way overview photo (already in this course's assets, used by
+  cve1-006.html) — two different figures for the same family, per the
+  id-split note in Subject-Matter Index — Control Valve Handbook ch3.md.
+  Component Index: cvh-cmp-three-way-globe-valve-cutaway.
+  Used by: cve1-025.html (photo 2 of 2).
+
+cvh3-fig3-7-butterfly-shaft-offset.png
+  Fig. 3.7 "Shaft Center Line Offset with Disc Center," p. 59 — a
+  schematic geometry diagram (not a body photo), genuinely tall/narrow
+  at its native 660x1265; scaled to the row's common height like its
+  two row-mates, not re-cropped. Reused verbatim from CVB.
+  Component Index: cvh-cmp-butterfly-shaft-offset-disc-center.
+  Used by: cve1-026.html (image 1 of 3).
+
+cvh3-fig3-8-segmented-v-notch-ball.png
+  Fig. 3.8 "Segmented V-Notch Ball," p. 59 (unlabelled photo). Freshly
+  extracted this session (not previously used by any course).
+  Component Index: cvh-cmp-segmented-v-notch-ball.
+  Used by: cve1-026.html (image 2 of 3).
+
+cvh3-fig3-14-full-port-ball-control-valve.png
+  Fig. 3.14 "Full-Port Ball Control Valve," p. 62 (unlabelled photo,
+  distinct from Fig. 3.15's trunnion variant already in CVB's assets).
+  Freshly extracted this session.
+  Component Index: cvh-cmp-full-port-ball-control-valve.
+  Used by: cve1-026.html (image 3 of 3).
+
+cvh10-fig10-3-solid-wedge-gate-valve.png
+  Fig. 10.3 "Solid-Wedge Gate Valve," p. 212 — own printed leader-line
+  labels (Handwheel, Gland Flange, Stem, Solid Wedge, Seat) retained
+  as-is, no added markers (Style Guide Sec 6.3). Freshly extracted this
+  session.
+  Component Index: cvh-cmp-solid-wedge-gate-valve.
+  Used by: cve1-027.html.
+
+cvh10-fig10-31-weir-type-diaphragm-valve.png
+  Fig. 10.31 "Weir-Type Diaphragm Valve," p. 222 — own printed leader-
+  line labels for all 8 named parts (Handwheel, Stem, Bonnet,
+  Compressor, Diaphragm & Backing, Weir, Valve Liner, Valve Body)
+  retained as-is, no added markers. Freshly extracted this session.
+  Component Index: cvh-cmp-weir-type-diaphragm-valve.
+  Used by: cve1-028.html.
+
+cvh10-fig10-33-air-operated-pinch-valve.png
+  Fig. 10.33 "Air-Operated Pinch Valve," p. 222 (435x220) — three-panel
+  composite (main sleeve/air-tap cutaway plus small Valve Open / Valve
+  Pinched Closed end-on views) under one figure number, own printed
+  labels retained as-is; kept as ONE flat image per Style Guide Sec
+  5.14's inseparable-context exception (the two state views exist only
+  to be read alongside the main cutaway, not as independently meaningful
+  figures). Used under has-wide-fig. Freshly extracted this session.
+  Component Index: cvh-cmp-air-operated-pinch-valve.
+  Used by: cve1-029.html.
+
+cvh3-fig3-13-eccentric-plug-body.png
+  Fig. 3.13 "Eccentric Plug Control Valve Body," p. 62 (unlabelled
+  product photo). Reused verbatim from CVB.
+  Component Index: cvh-cmp-eccentric-plug-valve-body.
+  Used by: cve1-030.html (left panel), cve1-031.html (pane 8 citation
+  only, no image re-shown).
+
+cvh10-fig10-38-lubricated-plug-valve.png
+  Fig. 10.38 "Lubricated Plug Valve," p. 224 — own printed leader-line
+  labels (Lubricant Screw, Stem, Gland, Cover Plate, Gland Packing,
+  Lubricant Grooves, Flow Way, Plug, Valve Body) retained as-is, no
+  added markers. Freshly extracted this session.
+  Component Index: cvh-cmp-lubricated-plug-valve.
+  Used by: cve1-030.html (right panel), cve1-031.html (pane 8 citation
+  only, no image re-shown).
+
+No component was earmarked for cve1-032.html (the module check slide,
+synthesized from the module's arc — slides 24, 27, and 30). Slide
+cve1-031.html (the nomenclature-reveal capstone) cites all eight
+components above by id in its own per-pane .tpl-cite text but shows no
+new images, per its templateRationale's own instruction not to
+re-display figures already shown on slides 24-30.
+
+Control Valve Engineering 1 — cve1-ch3-m2 (Guiding & Restricted-Capacity
+Trim)
+Origination-mode Stage 3, 2026-09-19. Control Valve Handbook, Sixth
+Edition (D101881X012), Chapters 3 and 10. Two files (Figs. 3.4, 3.42) are
+DIRECT crops reused verbatim from Control Valve Basics' own
+already-verified crops (10 - Courses/Control Valve Basics/Presentation/
+build/assets/sourced/) — no re-cropping performed, no content altered.
+The other two (Figs. 10.19, 10.20) are DIRECT crops freshly copied this
+session from 20 - Source Library/Handbooks & Sourcebooks/Control Valve
+Handbook — extracted-figures/ (not previously used by any course).
+
+cvh3-fig3-4-cage-style-balanced-plug.png
+  Fig. 3.4 "Valve Body with Cage-Style Trim, Balanced Valve Plug, and Soft
+  Seat," p. 57 (unlabelled cutaway, no printed callouts of its own).
+  Reused verbatim from CVB. Three numbered markers added (cage, plug,
+  seat ring) per Style Guide Sec 6.1, placed by direct visual inspection
+  of this specific crop — no prior CVE1/CVB slide places markers on this
+  image (CVB's cvb-019.html shows it unmarked in an application-case
+  pane). Flagged Low confidence in this run's report.
+  Component Index: cvh-cmp-cage-style-trim-balanced-plug-soft-seat.
+  Used by: cve1-034.html.
+
+cvh3-fig3-42-adapter-reduced-flow-capacity.png
+  Fig. 3.42 "Adapter Method for Providing Reduced Flow Capacity," p. 77
+  (unlabelled, irregular hand-cut cutaway photo). Reused verbatim from
+  CVB. Four numbered markers added (adapter above the cage; cage; plug;
+  seat ring & its own adapter below) per Style Guide Sec 6.1 — the
+  adapter-piece boundary is not sharply distinguishable from the cage/
+  seat-ring steps at this image's resolution, so marker positions
+  approximate the two mating locations the primitive's own t describes
+  rather than a pixel-verified seam. Flagged Low confidence in this run's
+  report. CVB's own cvb-035.html shows this same image only as an
+  unmarked companion beside Fig. 3.41 — no prior verified marker
+  coordinates exist to reuse.
+  Component Index: cvh-cmp-adapter-reduced-flow-capacity.
+  Used by: cve1-036.html (mechanism), cve1-037.html (application, same
+  image reused unmarked with a takeaway, no re-cropping).
+
+cvh10-fig10-19-body-guiding.png
+  Fig. 10.19 "Body Guiding," p. 217 — 3D photo-render with its own
+  printed leader-line label ("Body Guiding") retained as-is, no added
+  markers (Style Guide Sec 6.3). Freshly copied this session.
+  Component Index: cvh-cmp-body-guiding.
+  Used by: cve1-035.html (left panel).
+
+cvh10-fig10-20-stem-bonnet-guiding.png
+  Fig. 10.20 "Stem Bonnet Guiding," p. 217 — 3D photo-render with its own
+  printed leader-line labels ("Guide Bushing"; "Valvehead Connected or
+  Guided on Stem") retained as-is, no added markers. Freshly copied this
+  session.
+  Component Index: cvh-cmp-stem-bonnet-guiding.
+  Used by: cve1-035.html (right panel).
+
+No component was earmarked for cve1-033.html (prime — opens on the
+module's own stability-requirement question, no figure represents "why
+guiding matters" without pre-empting slides 34-35's own reveal) or
+cve1-038.html (the module check slide, synthesized from the module's
+whole arc — slides 34 through 37).
+
+Control Valve Engineering 1 — cve1-ch3-m3 (Rotary Subtypes & Selection
+Process)
+Origination-mode Stage 3, 2026-09-19. Control Valve Handbook, 6th ed.
+(D101881X012), Chapter 3 and Chapter 5; Fisher Control Valve Sourcebook —
+Power & Severe Service, 4th ed. (D101449X012); Fisher Control Valve
+Sourcebook — Oil & Gas (2013 ed.).
+
+cvh3-fig3-14-full-port-ball-control-valve.png / cvh3-fig3-8-segmented-v-
+notch-ball.png
+  Figs. 3.14 & 3.8 — already in this course's assets (extracted for
+  ch3-m1 slide 26). Reused VERBATIM, no re-cropping, reframed around the
+  selection decision rather than repeated as construction nomenclature.
+  Component Index: cvh-cmp-full-port-ball-control-valve,
+  cvh-cmp-segmented-v-notch-ball.
+  Used by: cve1-040.html.
+
+cvh3-fig3-10-ball-valve-options.png
+  Fig. 3.10 "Ball Valve Options," p. 60 — a three-panel composite (three
+  example segmented-ball trim configurations) under one figure number.
+  Freshly copied this session from Control Valve Handbook extracted-
+  figures/; the printed caption ("Figure 3.10 Ball Valve Options") was
+  cropped off (System.Drawing, height 1535 -> 1450) to match this
+  course's tight-crop convention. Kept as ONE flat image per Style Guide
+  Sec 5.14's inseparable-context exception — no image-editing tool
+  available this session to split the three photos into independent
+  crops; flagged in this run's report, Low confidence/Concept-map gaps.
+  Component Index: cvh-cmp-ball-valve-cavitation-noise-options.
+  Used by: cve1-041.html (left panel).
+
+cvh3-fig3-15-full-port-ball-trunnion.png
+  Fig. 3.15 "Full-Port Ball Valve" (trunnion-mounted), p. 62 — a cutaway
+  view plus a front-facing bore view under one figure number. Freshly
+  copied this session; already tightly cropped, no caption present.
+  Component Index: cvh-cmp-full-port-ball-valve-trunnion.
+  Used by: cve1-041.html (right panel).
+
+ogas1-fig1-8-v500-eccentric-plug-cutaway.png
+  Fisher Control Valve Sourcebook — Power & Severe Service, Fig. 1-10
+  (drawing W4170-3/IL) — catalogued as pss-cmp-v500-eccentric-plug-
+  cutaway, but per the Subject-Matter Index's own note this is a
+  CONFIRMED CROSS-SOURCEBOOK DUPLICATE of the same drawing, delivered via
+  the Oil & Gas Sourcebook's own Fig. 1-8 extracted-figures crop —
+  nothing further needed there, used as delivered per this run's
+  instructions. Freshly copied this session; the printed caption
+  paragraph and drawing-code line were cropped off (System.Drawing,
+  height 2220 -> 1790) to match this course's tight-crop convention. All
+  11 printed leader-line labels (Retainer, Valve Plug, Seat Ring, Face
+  Seals, Bearing, Taper and Expansion Pins, Thrust Washer, Valve Body,
+  Packing, Valve Shaft, Bearing Stop) retained as-is (Style Guide Sec
+  6.3); no added markers. Used under has-wide-fig (landscape 4200x1790).
+  11 list entries is above gallery.css's own 7-entry comfortable ceiling
+  (Style Guide Sec 6.4) — flagged in this run's report, Concept-map gaps
+  (same call already made on ch3-m1 slide 28's 8-entry weir-valve list).
+  Component Index: pss-cmp-v500-eccentric-plug-cutaway.
+  Used by: cve1-042.html.
+
+pss1-fig1-12-lined-butterfly-valve.png
+  Fisher Control Valve Sourcebook — Power & Severe Service, Fig. 1-12
+  (drawing W4081), p. 1-6 — production photo of the assembled valve with
+  actuator/positioner. Freshly copied this session; the printed caption
+  paragraph was cropped off (System.Drawing, height 850 -> 605) to match
+  this course's tight-crop convention. The tiny drawing-reference code
+  ("W4081") remains at the bottom, left as-is per the same tolerance
+  already accepted elsewhere in this course (e.g. cvh10-fig10-38's own
+  truncated caption fragment).
+  Component Index: pss-cmp-lined-butterfly-valve.
+  Used by: cve1-043.html (left panel).
+
+cvh3-fig3-11-high-performance-butterfly.png
+  Fig. 3.11 "High-Performance Butterfly Control Valve," p. 61 — unlabelled
+  production photo, alone at the top of its section. Freshly copied this
+  session from Control Valve Handbook extracted-figures/; no caption
+  present in the crop.
+  Component Index: cvh-cmp-high-performance-butterfly-valve.
+  Used by: cve1-043.html (right panel).
+
+CITATION NOTE (cve1-043.html): the lined-butterfly and high-performance-
+butterfly figures come from two different source documents (Power &
+Severe Service Sourcebook vs. Control Valve Handbook) — a case Style
+Guide Sec 5.9 does not explicitly cover (its "name the ONE primary
+document, never chain with and/;" rule reads as written for a single
+figure's own citation). Resolved by giving each document its own short
+clause on the slide's .tpl-source line, separated by a period rather
+than "and"/";", instead of naming one document for both figures. Flagged
+in this run's report as a genuinely open style-guide question.
+
+cvh5-valve-selection-process-flowchart.png
+  Control Valve Handbook, 6th ed., unnumbered diagram, printed p. 100 —
+  the chapter-opening "Valve Selection Process" 6-step flowchart. THIS
+  FILE ALREADY EXISTED in this course's assets (980x665) before this
+  session but was CROPPED SHORT — it cut off Step 6's own body text
+  ("Consider options on shutoff, stem packing, etc."), confirmed present
+  on the real source page via pdftotext. Corrected this session: re-
+  rendered PDF page 100 at 300dpi (poppler pdftoppm) and re-cropped to
+  the complete six-box diagram (1434x1101, System.Drawing), overwriting
+  the incomplete asset. A real, caught defect in a pre-staged asset, not
+  a hypothetical — see this run's report.
+  Component Index: cvh-cmp-valve-selection-process-flowchart.
+  Used by: cve1-044.html.
+
+No component was earmarked for cve1-039.html (prime — opens on the
+"every rotary vendor calls their line universal" stakes question, no
+single figure represents the myth itself) or cve1-045.html (the module
+check slide, synthesized from the module's whole arc — slides 40
+through 44).
+
+Control Valve Engineering 1 — cve1-ch3-m4 (Check Valves, End Connections
+& Pressure Class)
+Origination-mode Stage 3, 2026-09-19. Control Valve Handbook, 6th ed.
+(D101881X012), Chapters 3 and 10. All thirteen files below (Figs. 3.17,
+3.18, 10.1, 10.2, 10.8, 10.17, 10.18, 10.21, 10.22, 10.23, 10.24, 10.40,
+10.42) are DIRECT crops freshly copied this session from 20 - Source
+Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-
+figures/ (none previously used by any course). Per Franz's 2026-09-18 decision recorded in
+Subject-Matter Index — Control Valve Handbook ch10.md, this chapter's own
+content is credited to IPT's Pipe Trades Handbook by Robert A. Lee — every
+Chapter 10 citation below carries that credit forward rather than naming
+Control Valve Handbook alone. Chapter 3 carries no such third-party
+credit. Where a source figure carries its own printed labels or callouts,
+those are shown as-is (Style Guide Sec 6.2/6.3).
+
+cvh10-fig10-17-stop-function.png
+  Fig. 10.17 "Stop Function," p. 216 — color-coded cutaway highlighting
+  the captive split ring connecting valvehead and stem.
+  Component Index: cvh-cmp-stop-function.
+  Used by: cve1-047.html (left panel).
+
+cvh10-fig10-18-stop-check-function.png
+  Fig. 10.18 "Stop-Check Function," p. 217 — color-coded cutaway
+  highlighting that the valvehead and stem are NOT connected.
+  Component Index: cvh-cmp-stop-check-function.
+  Used by: cve1-047.html (right panel).
+
+cvh10-fig10-21-swing-check-valve.png
+  Fig. 10.21 "Swing Check Valve," p. 218 — own printed leader-line labels
+  (cap, disk hinge, disk, body seat ring, body, normal-flow arrow)
+  retained as-is, no added part markers. Composed into a multi-image SVG
+  (Style Guide Sec 5.14) with Figs. 10.22 and 10.23; this slide's own
+  1-3 corner badges are a separate scheme (Sec 6.2), naming which figure
+  is which, not a part callout.
+  Component Index: cvh-cmp-swing-check-valve.
+  Used by: cve1-048.html (image 1 of 3).
+
+cvh10-fig10-22-lever-weight-swing-check-valve.png
+  Fig. 10.22 "Lever and Weight Swing Check Valve," p. 218 — own printed
+  labels (cap, weight, lever, disk hinge, disk, body seat ring, body)
+  retained as-is.
+  Component Index: cvh-cmp-lever-weight-swing-check-valve.
+  Used by: cve1-048.html (image 2 of 3).
+
+cvh10-fig10-23-tilting-check-valve.png
+  Fig. 10.23 "Tilting Check Valve," p. 218 — own printed normal-flow
+  arrow and disk-hinge-location callout retained as-is.
+  Component Index: cvh-cmp-tilting-check-valve.
+  Used by: cve1-048.html (image 3 of 3).
+
+cvh10-fig10-24-horizontal-lift-check-valve.png
+  Fig. 10.24 "Horizontal-Lift Check Valve," p. 219 — own printed labels
+  (cap, union cap ring, disk, body seat ring, body, normal-flow arrow)
+  retained as-is. Copied this session but NOT actually placed on any
+  slide — cve1-049.html (application-pick) names this design in text only
+  (its assigned template has no figure slot; a dynamically-injected image
+  would not receive the lightbox behavior every other course image has,
+  per slides.js's initLightbox() running once at load). Flagged as a real
+  Concept-map gap in this run's report, not silently worked around.
+  Component Index: cvh-cmp-horizontal-lift-check-valve.
+  Used by: (none — see note above).
+
+cvh3-fig3-17-bolted-flange-connections.png
+  Control Valve Handbook, 6th ed., Ch. 3, Fig. 3.17 "Popular Varieties of
+  Bolted Flange Connections," p. 64. Not chapter-10 content — no IPT
+  credit applies. This component and Fig. 3.18 are NOT in the CVE1
+  registry's own citation for this competency (which lists only a Power &
+  Severe Service Sourcebook topic and no figures at all for end-connection
+  types) — closed by checking the Control Valve Handbook ch3
+  Subject-Matter Index directly, per this run's own instruction. Flagged
+  as a registry gap in this run's report.
+  Component Index: cvh-cmp-bolted-flange-end-connections.
+  Used by: cve1-050.html (left panel), cve1-136.html (left panel).
+
+cvh3-fig3-18-welded-end-connections.png
+  Control Valve Handbook, 6th ed., Ch. 3, Fig. 3.18 "Common Welded End
+  Connections," p. 65. Same registry-gap note as Fig. 3.17 above.
+  Component Index: cvh-cmp-welded-end-connections.
+  Used by: cve1-050.html (right panel), cve1-136.html (right panel).
+
+cvh10-fig10-1-gate-valve-pressure-seal.png
+  Fig. 10.1 "Gate Valve Pressure Seal," p. 211 — 3D structural cutaway
+  render, no internal callouts of its own.
+  Component Index: cvh-cmp-gate-valve-pressure-seal.
+  Used by: cve1-051.html (right panel).
+
+cvh10-fig10-2-gate-valve-bolted-bonnet.png
+  Fig. 10.2 "Gate Valve Bolted Bonnet," p. 211 — the chapter's most
+  extensively labelled gate-valve figure (gland flange, packing gland,
+  packing, bonnet bushing, yoke, bonnet nuts, bonnet gasket, bonnet
+  studs, etc.), own printed labels retained as-is.
+  Component Index: cvh-cmp-gate-valve-bolted-bonnet.
+  Used by: cve1-051.html (left panel).
+
+cvh10-fig10-8-pressure-seal-detail.png
+  Fig. 10.8 "Pressure Seal," p. 214 — color-coded mechanism detail
+  (expanded graphite seal ring, segment ring, stop ring, pressure
+  arrows), distinct from Fig. 10.1's structural render of the same
+  general concept. Composed into a multi-image SVG (Style Guide Sec
+  5.14) with Figs. 10.40 and 10.42, each independently lightbox-
+  navigable (Sec 5.13) so the dense dimension tables can be read full
+  size on click.
+  Component Index: cvh-cmp-pressure-seal-detail.
+  Used by: cve1-052.html (image 1 of 3).
+
+cvh10-fig10-40-cast-iron-gate-valve-dimensions.png
+  Fig. 10.40 "Cast Iron Gate Valves" (ANSI dimension table), p. 225 —
+  nominal pipe size vs. face-to-face, Classes 125/250/800. Captioned as a
+  Figure in the source though its content is tabular, per the ch10
+  Subject-Matter Index's own standing rule.
+  Component Index: cvh-cmp-cast-iron-gate-valve-dimensions.
+  Used by: cve1-052.html (image 2 of 3).
+
+cvh10-fig10-42-steel-gate-valve-class150-dimensions.png
+  Fig. 10.42 "Steel Gate Valve (Class 150)" (ANSI dimension table),
+  p. 227 — nominal pipe size vs. face-to-face, raised-face and
+  beveled-end, solid-wedge and double-disk.
+  Component Index: cvh-cmp-steel-gate-valve-class150-dimensions.
+  Used by: cve1-052.html (image 3 of 3).
+
+No component was earmarked for cve1-046.html (prime — opens on the
+check-valve-style half of the module's own stakes, per this concept's
+own sourceNote; no single figure represents the framing without
+pre-empting slides 47-49's reveals), cve1-053.html (application/
+decision-table — all three backing citations are topics, not figures;
+no corroborating figure exists), or cve1-054.html (the module check
+slide, synthesized from the module's whole arc — slides 46 through 53).
+
+Control Valve Engineering 1 — cve1-ch4-m1 (Inherent Characteristics & How
+They're Made)
+Origination-mode Stage 3, 2026-09-19. Control Valve Handbook, 6th ed.
+(D101881X012), Chapters 1, 3, and 5. All five files below are DIRECT
+crops freshly copied this session from 20 - Source Library/Handbooks &
+Sourcebooks/Control Valve Handbook — extracted-figures/ (none previously
+in this course's own assets, though the Fig. 3.37/3.39 pair mirrors
+Control Valve Basics' own already-verified cvb-033/034 crops of the same
+figures). Where a source figure carries its own printed labels, those
+are shown as-is (Style Guide Sec 6.2/6.3).
+
+cvh1-fig1-19-inherent-characteristics-graph.png
+  Control Valve Handbook, 6th ed., Ch. 1, Fig. 1.19 "Inherent Valve
+  Characteristics," p. 30 — Rated Flow Coefficient (%) vs. Rated Travel
+  (%), three curves (Quick-Opening, Linear, Equal-Percentage) with their
+  own printed in-plot labels, retained as-is. Cited here per this
+  concept's own sourceNote rather than the identical chart's ch3 (Fig.
+  3.38) or ch5 (Fig. 5.1) instances, per the Subject-Matter Index's own
+  instruction not to cite all three redundantly — the ch5 instance is
+  reserved for slide 56.
+  Component Index: cvh-cmp-inherent-characteristics-graph.
+  Used by: cve1-055.html.
+
+cvh5-fig5-1-flow-characteristic-curves.png
+  Control Valve Handbook, 6th ed., Ch. 5, Fig. 5.1 (printed caption reads
+  "Feedback Control Loop," a confirmed source captioning error — the
+  actual figure is the same three-curve chart as Fig. 1.19/3.38), p. 108
+  — cited here, per the primitive's own sourceNote, as the instance whose
+  backing topic states the distinguishing-behavior/service-use reasoning
+  slide 56 teaches. NOT used directly as a raster crop on slide 56 — the
+  three curves share one set of axes with no seam separating "Linear"
+  from "Equal-Percentage," so cve1-056.html redraws each named curve in
+  its own panel instead (Style Guide Sec 5.8, reason 2), spec'd against
+  this figure's own axis convention and curve shape. This source file
+  itself is not directly embedded in any slide as a result; kept here as
+  the citation target and the redraw's spec reference.
+  Component Index: cvh-cmp-flow-characteristic-curves-repeat.
+  Used by: (redraw reference only — see cve1-056.html).
+
+cvh3-fig3-37-characterized-cages-globe.png
+  Control Valve Handbook, 6th ed., Ch. 3, Fig. 3.37 "Characterized Cages
+  for Globe-Style Valve Bodies," p. 74 — one printed photo showing three
+  named cages (Quick-Opening, Linear, Equal-Percentage) side by side.
+  Kept as ONE image (not split into three further crops) — same
+  treatment Control Valve Basics' cvb-033.html already gives this
+  identical figure; flagged for completeness in this run's report per
+  Style Guide Sec 5.14.
+  Component Index: cvh-cmp-characterized-cages-globe.
+  Used by: cve1-057.html (left image), cve1-059.html (left panel).
+
+cvh3-fig3-39-plug-contour-flow-characterization.png
+  Control Valve Handbook, 6th ed., Ch. 3, Fig. 3.39 "Various Plug Contour
+  for Different Flow Characterization," p. 75 — one printed drawing
+  showing three named plug contours (QO, Linear, EQ%) side by side. Kept
+  as ONE image, same treatment as Fig. 3.37 above and as Control Valve
+  Basics' cvb-034.html.
+  Component Index: cvh-cmp-plug-contour-flow-characterization.
+  Used by: cve1-057.html (right image), cve1-059.html (right panel).
+
+cvh3-fig3-40-quick-opening-construction.png
+  Control Valve Handbook, 6th ed., Ch. 3, Fig. 3.40 "Typical Construction
+  to Provide Quick-Opening Flow Characteristic," p. 76 — own printed
+  leader-line labels (Stem, Valve Plug, Seat Ring, Flow Area, Port
+  Diameter) retained as-is, no added markers (Style Guide Sec 6.3).
+  Component Index: cvh-cmp-quick-opening-construction.
+  Used by: cve1-058.html.
+
+No component was earmarked for cve1-060.html (the module check slide,
+synthesized from the module's whole arc — slides 55 through 59), matching
+the same design already used for every other module's check slide in
+this course.
+
+---
+
+cve1-ch4-m2 (Installed Characteristic & Rangeability) — origination-mode
+Stage 3, 2026-09-19.
+
+No component is registered for eng.selection.flow-characteristic-and-
+rangeability.predict-installed-vs-inherent-divergence (slides 61-63) — the
+topically-closest figures (cvh-cmp-installed-characteristic-and-gain,
+cvh-cmp-valve-style-control-range-comparison) are already committed to
+cve1-ch2-m1 with no declared buildsOn to license reuse here, the same
+non-borrowing call cve1-ch1-m2 slide 10 already made against this
+identical topic (see each slide's own HTML comment for the full
+rationale). cve1-061.html and cve1-062.html carry originated schematics
+(a two-box open-question diagram and a pressure-drop-ratio bar diagram,
+respectively) — neither is a redraw of any named source figure, so
+neither has a SOURCES.txt entry of its own; their `.tpl-source` lines
+state this directly. cve1-063.html is a caution card with no figure at
+all (matching cve1-013.html's and cve1-193.html's own precedent).
+
+pss1-fig1-14-flow-characteristic-curves.png
+  Fisher Control Valve Sourcebook — Power & Severe Service, 4th ed.
+  (D101449X012), Fig. 1-14 "Many control valves offer a choice of
+  characteristic...," p. 1-8 (drawing A1265) — four curves (Quick Opening,
+  Linear, Modified Parabolic, Equal Percentage) with their own printed
+  in-plot labels, retained as-is. Copied directly from
+  `20 - Source Library/Handbooks & Sourcebooks/Industry Specific
+  Sourcebooks/Control Valve Sourcebook - Power & Severe Service —
+  extracted-figures/ch1-fig14-flow-characteristic-curves.png`, no
+  re-cropping performed. Re-anchors the flow-characteristic vocabulary
+  with a different sourcebook's chart than ch4-m1's own (slides 55/56),
+  avoiding the redundant-figure citation those slides already ruled out.
+  Component Index: pss-cmp-flow-characteristic-curves.
+  Used by: cve1-064.html.
+
+ogas1-fig1-10-flow-characteristic-curves.png
+  Fisher Control Valve Sourcebook — Oil & Gas (© 2013), Ch. 1, Fig. 1-10
+  "Many control valves offer a choice of characteristic...," p. 1-7
+  (drawing E1541) — three curves (Quick Opening, Linear, Equal
+  Percentage) with their own printed in-plot labels, retained as-is.
+  Copied directly from `20 - Source Library/Handbooks & Sourcebooks/
+  Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas —
+  extracted-figures/ch1-fig10-flow-characteristic-curves.png`, no
+  re-cropping performed. The near-duplicate of cve1-064.html's Power &
+  Severe Service figure, deliberately not repeated there per course.json's
+  own sourceNote.
+  Component Index: ogas-cmp-flow-characteristic-curves.
+  Used by: cve1-065.html.
+
+No component was earmarked for cve1-066.html (the module check slide,
+synthesized from the module's whole arc — slides 61 through 65), matching
+the same design already used for every other module's check slide in
+this course.
+
+Control Valve Engineering 1 — cve1-ch5-m1 (Leakage Classification &
+Fugitive-Emissions Standards)
+Origination-mode Stage 3, 2026-09-19. Control Valve Handbook, 6th ed.
+(D101881X012), Chapter 3, §3.4.4 (printed p.70).
+
+cvh3-fig3-26-iso15848-1-qualification-requirements.png
+  Fig. 3.26 "ISO 15848-1 Qualification Requirements," p. 70. The only
+  asset on file for this component (cvh-cmp-iso15848-1-qualification-
+  requirements) was the shared ch3-fig25-26-emissions-composite.png (Fig.
+  3.25's VOC-LDAR flowchart plus Fig. 3.26 side by side) — the Subject-
+  Matter Index's own delivery note flagged it "not yet cropped/extracted
+  from source." Cropped this session (System.Drawing, 2087x590 ->
+  672x575) to isolate Fig. 3.26 alone. VERIFIED against the real PDF page
+  (poppler pdftotext, p.70): the table is genuinely 4 columns (Valve
+  Type, Mechanical Cycle Class, Mechanical Cycles Required, Temp.
+  Cycles) — confirms the Index's own "right edge is in fact complete"
+  note. Own printed column headers retained as-is, no added markers
+  (Style Guide Sec 6.3).
+  Component Index: cvh-cmp-iso15848-1-qualification-requirements.
+  Used by: cve1-070.html.
+
+cvh3-fig3-27-iso15848-1-measured-leak-rate.png
+  Fig. 3.27 "ISO 15848-1 Measured Leak Rate," p. 70 (450x440). Copied
+  verbatim from 20 - Source Library/Handbooks & Sourcebooks/Control
+  Valve Handbook — extracted-figures/ (already individually cropped
+  there) — no re-cropping performed. Own printed tightness classes
+  (AH/BH/CH) and footnotes retained as-is.
+  Component Index: cvh-cmp-iso15848-1-measured-leak-rate.
+  Used by: cve1-071.html (paired with Fig. 3.28 in one multi-image SVG,
+  Style Guide Sec 5.13/5.14 — each image keeps its own lightbox caption).
+
+cvh3-fig3-28-iso15848-1-measured-leak-concentration.png
+  Fig. 3.28 "ISO 15848-1 Measured Leak Concentration," p. 70 (440x385).
+  Copied verbatim from the same extracted-figures folder — no
+  re-cropping performed. Own printed tightness classes (AM/BM/CM) and
+  footnotes retained as-is.
+  Component Index: cvh-cmp-iso15848-1-measured-leak-concentration.
+  Used by: cve1-071.html (paired with Fig. 3.27, see above).
+
+No component was earmarked for cve1-067.html (prime — opens on the
+module's own over-spec/under-spec stakes question, no single figure
+represents that tension itself) or cve1-069.html (application/
+decision-table — all four backing citations are topics, not figures; no
+corroborating figure exists, same shape as this course's own slide 53)
+or cve1-072.html (the module check slide, synthesized from the module's
+whole arc — slides 67 through 71).
+
+cve1-068.html (nomenclature — ANSI/FCI 70-2 Class I-VI table) carries no
+SOURCES.txt entry of its own: it is an ORIGINATED reference table (no
+source figure exists — see the slide's own HTML comment for the full
+correction note on the registry's mismatched cvh-cmp-fci91-1-leakage-
+class-summary citation), built from cvh-topic-seat-leakage-
+classification's own teaches text (Control Valve Handbook Sec 5.2-5.3),
+cross-confirmed against its Oil & Gas / Pulp & Paper / Power & Severe
+Service Sourcebook parallels. Its `.tpl-source` line states this
+directly, matching cve1-015.html's and cve1-017.html's own precedent
+for an originated table with no backing figure.
+
+Control Valve Engineering 1 — cve1-ch6-m1 (Actuator Mechanism Types &
+Selection)
+Origination-mode Stage 3, 2026-09-19. All twelve files below are DIRECT
+crops (no re-cropping performed here) copied verbatim from
+20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook —
+extracted-figures/ (already individually cropped there). Where a source
+figure carries its own printed numbered callouts, those numbers are shown
+as-is (Style Guide Sec 6.2) and no house-added markers are layered on top.
+
+cvh1-fig1-9-direct-acting-actuator.png
+  Fig. 1.9 "Direct-Acting Actuator," p. 20 (1450x1050) — own printed
+  12-part numbered key retained as-is. Component Index:
+  cvh-cmp-direct-acting-actuator. Used by: cve1-081.html.
+
+cvh1-fig1-10-piston-actuator.png
+  Fig. 1.10 "Piston-Type Actuator," p. 21 (650x690) — own printed 7-part
+  numbered key retained as-is. Component Index: cvh-cmp-piston-actuator.
+  Used by: cve1-083.html.
+
+cvh1-fig1-12-reverse-acting-actuator.png
+  Fig. 1.12 "Reverse-Acting Actuator," p. 22 (1358x900) — own printed
+  16-part numbered key retained as-is. Component Index:
+  cvh-cmp-reverse-acting-actuator. Used by: cve1-081.html.
+
+cvh1-fig1-17-rotary-actuator-cutaway.png
+  Fig. 1.17 "Rotary Control Valve," p. 25 (1358x770) — own printed 14-part
+  numbered key retained as-is. Component Index:
+  cvh-cmp-rotary-actuator-cutaway. Used by: cve1-082.html.
+
+cvh3-fig3-46-double-acting-piston-actuator.png
+  Fig. 3.46 "Control Valve with Double-Acting Piston Actuator," p. 78
+  (638x420), unlabelled installed photo. Component Index:
+  cvh-cmp-double-acting-piston-actuator. Used by: cve1-083.html.
+
+cvh3-fig3-47-scotch-yoke-piston-actuator.png
+  Fig. 3.47 "Control Valve with Scotch-Yoke Piston Actuator," p. 79
+  (650x345), unlabelled installed photo. Component Index:
+  cvh-cmp-scotch-yoke-piston-actuator. Used by: cve1-084.html.
+
+cvh3-fig3-48-manual-actuator-sliding-stem.png
+  Fig. 3.48 "Manual Actuator for Sliding-Stem Valves," p. 79 (470x555),
+  unlabelled photo. Component Index: cvh-cmp-manual-actuator-sliding-stem.
+  Used by: cve1-085.html.
+
+cvh3-fig3-49-manual-actuator-rotary.png
+  Fig. 3.49 "Manual Actuator for Rotary Valves," p. 79 (680x375),
+  unlabelled photo. Component Index: cvh-cmp-manual-actuator-rotary.
+  Used by: cve1-085.html.
+
+cvh3-fig3-50-rack-and-pinion-actuator.png
+  Fig. 3.50 "Rack-and-Pinion Actuator," p. 79 (638x460), unlabelled photo.
+  Component Index: cvh-cmp-rack-and-pinion-actuator. Used by:
+  cve1-086.html.
+
+cvh3-fig3-51-electric-actuator-sliding-stem.png
+  Fig. 3.51 "Electric Actuator for Sliding-Stem Valve," p. 80 (542x500),
+  unlabelled photo. Component Index: cvh-cmp-electric-actuator-sliding-stem.
+  Used by: cve1-087.html.
+
+cvh3-fig3-52-electric-actuator-rotary.png
+  Fig. 3.52 "Electric Actuator for Rotary Valve," p. 80 (650x375),
+  unlabelled photo. Component Index: cvh-cmp-electric-actuator-rotary.
+  Used by: cve1-087.html.
+
+cvh8-fig8-4-spring-diaphragm-actuator.png
+  Fig. 8.4 "Typical Spring-and-Diaphragm Actuator," p. 182 (470x460),
+  unlabelled generic assembly photo (not specific to direct- or
+  reverse-acting configuration, per the Subject-Matter Index's own catalog
+  note). Component Index: cvh-cmp-spring-diaphragm-actuator-generic. Used
+  by: cve1-082.html.
+
+No component was earmarked for cve1-088.html (prime — the five
+selection-parameter framing question, no single figure represents it),
+cve1-090.html (contrast/table — the type-comparison tradeoffs are the
+source's own Table 2-6, prose-only, no figure), cve1-091.html
+(application-pick — no single figure could represent an applied
+selection judgment), or cve1-092.html (the module check slide,
+synthesized from the module's whole arc — slides 81 through 91).
+
+cve1-089.html (mechanism — four actuator categories and the rotary-
+linkage-vs-sliding-stem-no-linkage contrast) carries no SOURCES.txt entry
+of its own: it is an ORIGINATED schematic, per Franz's explicit editorial
+constraint for this slide (no source figure exists for this competency —
+pss-topic-actuator-design-categories-and-linkage is prose-only). Plain,
+simple geometric icons and short labels only — see the slide's own HTML
+comment for the full composition note.
+
+--- cve1-ch6-m2 (Force & Torque Sizing) ---
+
+cvh5-fig5-2-unbalance-area-table.png
+  Fig. 5.2 "Typical Unbalance Areas of Control Valves," p. 123, table-
+  formatted (printed with a Figure number, not a Table number). Component
+  Index: cvh-cmp-unbalance-area-table. Used by: cve1-094.html.
+
+cvh5-fig5-3-seat-load-graph.png
+  Fig. 5.3 "Minimum Required Seat Load for Improved Seat Life on
+  Metal-Seated Valves Class II-V," p. 124, analytical graph, five class
+  lines used directly (no redraw reason applies). Component Index:
+  cvh-cmp-seat-load-graph. Used by: cve1-095.html.
+
+cvh5-fig5-4-recommended-seat-load-table.png
+  Fig. 5.4 "Recommended Seat Load," p. 124, table-formatted. Copied into
+  this course's own assets/sourced/ this session from
+  "20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook —
+  extracted-figures/ch5-table4-recommended-seat-load.png" (previously
+  only in the shared extracted-figures folder, not yet in any course).
+  Component Index: cvh-cmp-recommended-seat-load-table. Used by:
+  cve1-096.html.
+
+cve1-093.html (prime — the A+B+C+D total-force framing question) and
+cve1-100.html (mechanism — rotary breakout/dynamic torque equations)
+carry no SOURCES.txt entry: no figure is placed on either slide. 100 in
+particular is a deliberate NO-FIGURE composition — the concept map flags
+a human decision (whether to reuse cvh-cmp-rotary-actuator-cutaway,
+already placed at slide 82 for a different competency) that this pass
+does not make; grounded in the cited topic text only, per Franz's
+explicit instruction. See both slides' own HTML comments.
+
+cve1-097.html (procedure-image — the 275 lbf / 300 lbf diaphragm-
+actuator precompression check) and cve1-098.html (procedure-image —
+piston/cylinder thrust schematic) carry no SOURCES.txt entry: both are
+ORIGINATED schematics, per Franz's explicit editorial constraint for
+this module's several no-figure slides. Plain bars / plain cylinder
+cross-section only — see each slide's own HTML comment.
+
+cve1-101.html (procedure-image — the 6 in. V-Notch ball-valve worked
+torque case) carries no SOURCES.txt entry: its supporting content is
+Table 5.13.1's own A/B/C/max-T_D factors, reproduced directly as a small
+on-slide HTML table (real cited reference data), not an image asset.
+
+cve1-102.html (contrast — 90° standard vs. 60-75° limited rotation)
+carries no SOURCES.txt entry: it is an ORIGINATED schematic, per
+Franz's explicit editorial constraint for this slide (no figure in the
+registry depicts rotation angle). Two plain pivot-and-arc diagrams only
+— see the slide's own HTML comment.
+
+cve1-099.html (caution) and cve1-103.html (module check, synthesized
+from the whole module arc — slides 93 through 102) carry no figure by
+design; see each slide's own HTML comment.
+
+Control Valve Engineering 1 — cve1-ch7-m2 (Emissions Standards &
+Compliance)
+Origination-mode Stage 3, 2026-09-20.
+
+cvh3-fig3-25-voc-ldar-measurement-frequency.png
+  Fig. 3.25 "Measurement Frequency for Valves Controlling Volatile
+  Organic Chemicals (VOC)," p. 69. The only asset on file for this
+  component (cvh-cmp-voc-ldar-measurement-frequency) was the shared
+  ch3-fig25-26-emissions-composite.png (Fig. 3.25's VOC-LDAR flowchart
+  plus Fig. 3.26's ISO 15848-1 table side by side) — the same composite
+  file this course's own cve1-070.html SOURCES.txt entry already cropped
+  once, there isolating Fig. 3.26 instead. Cropped this session (System.
+  Drawing, 2087x590 -> 1360x590) to isolate Fig. 3.25 alone; verified by
+  direct inspection that no part of the Fig. 3.26 table bleeds into the
+  crop. Own printed box labels and branch percentages retained as-is, no
+  added markers (Style Guide Sec 6.3). Used under has-wide-fig (landscape
+  1360x590, ~2.3:1).
+  Component Index: cvh-cmp-voc-ldar-measurement-frequency.
+  Used by: cve1-127.html.
+
+No component was earmarked for cve1-126.html (prime — opens on the
+module's own stakes line and the regulatory scale/threshold facts, per
+this concept's own sourceNote; no single figure represents the
+ongoing-verification stakes as a concept in its own right) or
+cve1-128.html (application/decision-table — re-cross-references Module
+1's five already-placed figures, slides 117-121, conceptually rather
+than as new sources; no corroborating figure exists, same shape as this
+course's own slides 053/069/122) or cve1-129.html (the module check
+slide, synthesized from the module's whole arc — slides 126 through
+128).
+
+FACTUAL VERIFICATION NOTE (cve1-128.html): checked each of the five
+Subject-Matter Index entries directly (Control Valve Handbook ch3)
+rather than trusting the concept map's own claim on faith. Confirmed
+accurate: only cvh-cmp-single-ptfe-vring-packing and cvh-cmp-enviroseal-
+graphite-packing-rotary state an explicit 100 ppmv number in their own
+teaches text; cvh-cmp-enviroseal-ptfe-packing-system, cvh-cmp-enviroseal-
+duplex-packing-system, and cvh-cmp-enviroseal-graphite-ulf-packing-
+system are each described only as "environmental[-service]" with no
+stated ppmv figure. LOW CONFIDENCE, flagged in this run's report: this
+course's OWN sibling slide cve1-122.html (m1, already shipped, not
+touched by this run) writes "Meets 100 ppmv" in its own table for those
+same three systems — a real discrepancy between two already-authored
+citations of the identical component ids, not something this slide
+invented. cve1-128.html's own table follows the verified Subject-Matter
+Index text rather than repeating cve1-122's overstatement.
+
+--- cve1-ch6-m3 (Bench Set & Extreme-Service Variants) ---
+
+cvh8-fig8-10-bench-set-seating-force-graph.png
+  Fig. 8.10 "Bench Set Seating Force," p. 186, used DIRECTLY per Style
+  Guide Sec 5.8 default (Stage 3 judgment call — none of Sec 5.8's three
+  redraw reasons apply: the axis layout already matches this course's own
+  travel-axis convention, the slide teaches the whole relationship rather
+  than one isolated sub-concept, and the crop is clean vector-quality art).
+  Freshly re-verified/re-cropped from the real source PDF this session,
+  copied into this course's own assets/sourced/ from the shared
+  extracted-figures folder. Component Index:
+  cvh-cmp-bench-set-seating-force-graph. Used by: cve1-105.html.
+
+cvh3-fig3-44-field-reversible-multi-spring-actuator.png
+  Fig. 3.44 "Field-Reversible Multi-Spring Actuator," p. 78, used directly,
+  composed as one of two images in a multi-image SVG per Style Guide
+  Sec 5.14. Copied into this course's own assets/sourced/ this session
+  from the shared extracted-figures folder. Component Index:
+  cvh-cmp-field-reversible-multi-spring-actuator. Used by: cve1-110.html.
+
+cvh3-fig3-45-diaphragm-actuator-rotary-valve.png
+  Fig. 3.45 "Diaphragm Actuator for Rotary Valve," p. 78, used directly,
+  the companion image in the same multi-image SVG as Fig. 3.44 above.
+  Copied into this course's own assets/sourced/ this session from the
+  shared extracted-figures folder. Component Index:
+  cvh-cmp-diaphragm-actuator-rotary-valve. Used by: cve1-110.html.
+
+cvh4-fig4-26-actuator-side-handwheel.png
+  Fig. 4.26 "Actuator with Side-Mounted Handwheel," p. 97, used directly.
+  Re-verified this session (already a good crop); copied into this
+  course's own assets/sourced/ from the shared extracted-figures folder.
+  Component Index: cvh-cmp-actuator-side-handwheel. Used by: cve1-113.html.
+
+cvh4-fig4-27-actuator-top-handwheel.png
+  Fig. 4.27 "Actuator with Top-Mounted Handwheel," p. 97, used directly.
+  Freshly re-cropped this session — the prior crop (found on a different
+  course) was cropped too tight to show the handwheel; this crop is
+  correct and complete. Copied into this course's own assets/sourced/
+  from the shared extracted-figures folder. Component Index:
+  cvh-cmp-actuator-top-handwheel. Used by: cve1-113.html.
+
+cve1-104.html (prime) and cve1-108.html (prime) carry no SOURCES.txt
+entry: no figure is placed on either slide, per this module's own
+figure-distribution instruction (bare .tpl-tagline framing questions,
+matching this course's own cve1-093 precedent). See each slide's own
+HTML comment.
+
+cve1-106.html (procedure-list — the bench-set adjustment steps) carries
+no SOURCES.txt entry: a genuine physical step sequence with nothing to
+photograph or diagram at this tier; the seating-force graph (slide 105)
+is the reference consulted while performing the procedure, not re-cited
+here per the asset-variant reuse discipline.
+
+cve1-107.html (caution) and cve1-109.html (mechanism — the fail-safe
+stored-energy mechanism) carry no SOURCES.txt entry: no figure is
+registered for either concept; see each slide's own HTML comment.
+
+cve1-111.html (contrast — full-stroke speed vs. small-signal response)
+carries no SOURCES.txt entry: per Franz's explicit editorial constraint
+for this slide, it stays text/swatch-only rather than an originated
+comparison graphic — no art was drawn.
+
+cve1-112.html (contrast — electric vs. electro-hydraulic block diagrams)
+carries no SOURCES.txt entry: it is an ORIGINATED pair of plain block
+diagrams, per Franz's explicit editorial constraint for this slide (no
+figure exists for either type anywhere in the registry, or in the Oil &
+Gas Sourcebook's own chapter for the electro-hydraulic half). See the
+slide's own HTML comment.
+
+cve1-114.html (application-pick, synthesized from the module's own
+selection-tradeoff content) and cve1-115.html (module check, synthesized
+from the whole module arc — slides 104 through 114) carry no figure by
+design; see each slide's own HTML comment.
+
+Control Valve Engineering 1 — cve1-ch7-m1 (Packing Material & Arrangement
+Selection)
+Origination-mode Stage 3, 2026-09-20. All ten files below are DIRECT
+crops (no redraw) copied verbatim this session from 20 - Source Library/
+Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/
+(Control Valve Handbook, 6th ed., D101881X012), Chapters 1, 3, and 5.
+Where a source figure carries its own printed labels or callouts, those
+are shown as-is (Style Guide Sec 6.2/6.3).
+
+cvh1-fig1-11-stem-packing-types.png
+  Fig. 1.11 "Packing," p. 21 — 2-panel composite, PTFE Packing (9-part
+  printed key) and Graphite Packing (4-part printed key), own printed
+  numbered callouts retained as-is. Used under has-wide-fig (1000x380).
+  Component Index: cvh-cmp-stem-packing-types.
+  Used by: cve1-117.html.
+
+cvh3-fig3-24-packing-material-arrangements.png
+  Fig. 3.24 "Packing Material Arrangements for Globe-Style Valve Bodies,"
+  printed p. 68 — the SECOND of two source figures both captioned
+  "Figure 3.24" (confirmed against the Subject-Matter Index's own
+  duplicate-caption note; distinct from the bellows-bonnet Fig. 3.24 on
+  printed p. 67, not used in this module). Standard TFE V-Ring cutaway
+  plus three Graphite Packing Arrangements diagrams (Single/Double/
+  Leak-Off), own printed numbered callouts retained as-is. Used under
+  has-wide-fig (1384x733).
+  Component Index: cvh-cmp-packing-material-arrangements-globe.
+  Used by: cve1-118.html.
+
+cvh3-fig3-30-single-ptfe-vring-packing.png
+  Fig. 3.30 "Single PTFE V-Ring Packing," p. 71. 2026-09-20 fix: re-cropped
+  at 300dpi to the full figure extent (cutaway + companion parts photo +
+  caption); the prior crop had been cut too tight and omitted the parts
+  photo, which made it look pixel-identical to Fig. 3.31's own cutaway.
+  Investigation confirmed the cutaway line art genuinely IS identical
+  between Figs. 3.30 and 3.31 in the source book itself (a real source
+  duplication, not an extraction error), and the source's own
+  coil-spring-vs-"Belleville Spring Pack Assembly" label inconsistency for
+  this figure is likewise a genuine source quirk — both now documented in
+  the Subject-Matter Index rather than left as an unresolved flag.
+  Component Index: cvh-cmp-single-ptfe-vring-packing.
+  Used by: cve1-119.html (left panel).
+
+cvh3-fig3-31-enviroseal-ptfe-packing-system.png
+  Fig. 3.31 "ENVIRO-SEAL PTFE Packing System," p. 72 — the same schematic
+  as Fig. 3.30 above plus a companion assembled-component photo. Own
+  printed labels retained as-is.
+  Component Index: cvh-cmp-enviroseal-ptfe-packing-system.
+  Used by: cve1-119.html (right panel).
+
+cvh3-fig3-32-enviroseal-duplex-packing-system.png
+  Fig. 3.32 "ENVIRO-SEAL Duplex (PTFE and Graphite) Packing System,"
+  p. 72 — fully labelled cutaway (spring pack assembly, bushings,
+  PTFE-carbon/PTFE packing set, lantern ring, graphite packing ring,
+  packing ring, packing washers), own printed labels retained as-is.
+  Component Index: cvh-cmp-enviroseal-duplex-packing-system.
+  Used by: cve1-120.html (left panel).
+
+cvh3-fig3-33-enviroseal-graphite-ulf-packing-system.png
+  Fig. 3.33 "ENVIRO-SEAL Graphite ULF Packing System," p. 72 — fully
+  labelled cutaway (stud, anti-seize lubricant, packing nut, spring pack
+  assembly, packing flange, guide bushings, packing rings, packing
+  washer, packing box ring), own printed labels retained as-is.
+  Component Index: cvh-cmp-enviroseal-graphite-ulf-packing-system.
+  Used by: cve1-120.html (right panel).
+
+cvh3-fig3-34-enviroseal-graphite-packing-rotary.png
+  Fig. 3.34 "ENVIRO-SEAL Graphite Packing System for Rotary Valves,"
+  p. 73. LOW CONFIDENCE (flagged in this run's report): unlike every
+  other packing figure in this module, this drawing carries NO printed
+  part labels at all — confirmed by direct inspection. No numbered
+  markers were added (no verified locator data to place one against, per
+  working rule 2 / Style Guide Sec 6.0); the slide's list enumerates
+  rated specs in teaching order instead of part names.
+  Component Index: cvh-cmp-enviroseal-graphite-packing-rotary.
+  Used by: cve1-121.html.
+
+cvh5-fig5-5-packing-friction-values.png
+  Fig. 5.5 "Typical Packing Friction Values," p. 125 — table-formatted
+  figure (stem size x pressure class x packing type), catalogued as a
+  figure per the Subject-Matter Index's own table-as-figure rule. Used
+  directly as the mechanism template's .tpl-fig content, matching this
+  course's own cve1-094.html precedent for Fig. 5.2.
+  Component Index: cvh-cmp-packing-friction-values-table.
+  Used by: cve1-123.html.
+
+cvh5-fig5-17-packing-guidelines-100ppm.png
+  Fig. 5.17 "Application Guidelines Chart for 100 PPM Service," p. 136 —
+  dense multi-envelope analytical graph (Style Guide Sec 5), own printed
+  in-plot line labels retained as-is; used directly, no redraw.
+  Component Index: cvh-cmp-packing-guidelines-chart-100ppm.
+  Used by: cve1-124.html (left panel).
+
+cvh5-fig5-18-packing-guidelines-non-environmental.png
+  Fig. 5.18 "Application Guidelines Chart for Non-Environmental Service,"
+  p. 136 — direct companion to Fig. 5.17, same packing-system set, wider
+  envelopes; own printed in-plot line labels retained as-is; used
+  directly, no redraw.
+  Component Index: cvh-cmp-packing-guidelines-chart-non-environmental.
+  Used by: cve1-124.html (right panel).
+
+cve1-116.html (prime — the friction/price-vs-emissions-class stakes
+question) carries no SOURCES.txt entry: no single figure represents the
+two-axis selection risk itself, per this concept's own sourceNote — bare
+.tpl-tagline, matching this course's own cve1-033/104 precedent.
+
+cve1-122.html (application — the five-system decision table) carries no
+SOURCES.txt entry: no corroborating figure exists for this synthesis (all
+seven registry figures for this competency are already placed on slides
+117-121, per course.json's own templateRationale) — the table runs full
+width, matching this course's own cve1-053.html precedent exactly.
+
+cve1-125.html (the module check slide, synthesized from the module's
+whole arc — slides 116 through 124) carries no figure by design, matching
+the same design already used for every other module's check slide in
+this course.
+
+cvh1-fig1-6-bonnet-assembly.png
+  Fig. 1.6 "Bonnet Assembly," p. 19 — 4-part numbered cutaway, own printed
+  callouts 1-4 retained as-is. Copied directly from Control Valve Basics'
+  already-verified crop (cvb-009.html left panel) — same source figure,
+  no re-crop needed.
+  Component Index: cvh-cmp-bonnet-assembly.
+  Used by: cve1-131.html.
+
+cvh3-fig3-20-bonnet-variations.png
+  Fig. 3.20 "Bonnet Variations," p. 66 — two photos with their own
+  printed labels (Plain Bonnet, Extension bonnet), retained as-is.
+  LOW CONFIDENCE per the Subject-Matter Index's own flag: the source page
+  text never enumerates which specific bonnet types the photo shows, and
+  the image was not visually inspected at the time that record was
+  written — used here as a general supporting illustration only, not
+  asserted as a per-type key for the four types tabulated on cve1-132.
+  Copied directly from Control Valve Basics' already-verified crop
+  (cvb-026.html, composited there; used here uncomposited).
+  Component Index: cvh-cmp-bonnet-variations.
+  Used by: cve1-132.html.
+
+cvh3-fig3-21-fabricated-extension-bonnet.png
+  Fig. 3.21 "Valve Body with Fabricated Extension Bonnet," p. 66. No
+  numbered markers placed — visual inspection (working rule 2) could not
+  confidently identify the small stud/spring assembly near the top as one
+  single named part without a verified locator, so the slide carries it
+  as a plain, unmarked photo with the mechanism explained in the list
+  instead. Copied directly from Control Valve Basics' already-verified
+  crop (cvb-026.html, composited there; used here uncomposited).
+  Component Index: cvh-cmp-fabricated-extension-bonnet.
+  Used by: cve1-133.html.
+
+cvh1-fig1-5-bellows-seal-bonnet.png
+  Fig. 1.5 "Bellows Seal Bonnet," p. 19 — 5-part numbered cutaway, own
+  printed callouts 1-5 retained as-is. Copied directly from Control Valve
+  Basics' already-verified crop (cvb-009.html right panel).
+  Component Index: cvh-cmp-bellows-seal-bonnet.
+  Used by: cve1-134.html (image 1 of 4, in one <svg> per Style Guide
+  Sec 5.14 — not flattened into a composite).
+
+cvh3-fig3-22-enviroseal-bellows-seal-bonnet.png
+  Fig. 3.22 "ENVIRO-SEAL Bellows Seal Bonnet," p. 67. Copied directly from
+  Control Valve Basics' already-verified crop (cvb-027.html, composited
+  there; used here uncomposited as its own independently-clickable image
+  per Style Guide Sec 5.14).
+  Component Index: cvh-cmp-enviroseal-bellows-seal-bonnet.
+  Used by: cve1-134.html (image 2 of 4).
+
+cvh3-fig3-23-welded-leaf-bellows.png
+  Fig. 3.23 "Welded-Leaf Bellows," p. 67. Copied directly from Control
+  Valve Basics' already-verified crop (cvb-027.html, composited there;
+  used here uncomposited).
+  Component Index: cvh-cmp-welded-leaf-bellows.
+  Used by: cve1-134.html (image 3 of 4).
+
+cvh3-fig3-24-mechanically-formed-bellows.png
+  Fig. 3.24 "Mechanically-Formed Bellows," p. 67, Sec 3.3.2 — the FIRST
+  of two real, distinct figures both captioned "Figure 3.24" in the
+  source (see the Component Index's own note on the duplicate figure
+  number, and cve1-118.html for the SECOND, "Packing Material
+  Arrangements," on p. 68 — not the same image). Copied directly from
+  Control Valve Basics' already-verified crop (cvb-027.html, composited
+  there; used here uncomposited).
+  Component Index: cvh-cmp-mechanically-formed-bellows.
+  Used by: cve1-134.html (image 4 of 4).
+
+cvh3-fig3-19-typical-bonnet-stud-bolts.png
+  Fig. 3.19 "Typical Bonnet, Flange, and Stud Bolts," p. 65 — not
+  documented as carrying its own printed field labels or numbered key,
+  so house numbered markers were placed per Style Guide Sec 6.1's own
+  default. LOW CONFIDENCE: marker coordinates were set by direct visual
+  inspection (working rule 2), not against a pre-verified locator
+  manifest — flagged in this run's report for a Stage 4 zoom-check.
+  Copied directly from Control Valve Basics' already-verified crop
+  (cvb-026.html, composited there; used here uncomposited).
+  Component Index: cvh-cmp-typical-bonnet-flange-stud-bolts.
+  Used by: cve1-137.html.
+
+cve1-130.html (prime — the bonnet-defeats-packing stakes question)
+carries no SOURCES.txt entry: no single figure represents the stakes
+concept itself, per this concept's own sourceNote — bare .tpl-tagline,
+matching this course's own cve1-116/126 precedent.
+
+cve1-138.html and cve1-139.html (the two end-connection-and-precautions
+caution slides) carry no SOURCES.txt entry: both source topics
+(pss-topic-galvanic-corrosion-and-storage, pss-topic-oxygen-service-
+packing-precautions) are prose-only with no supporting figure anywhere
+in the source, per each concept's own sourceNote.
+
+cve1-135.html and cve1-140.html (the bonnet-type and end-connection
+decision-table syntheses) carry no SOURCES.txt entry of their own: no new
+corroborating figure is placed for either — all cited figures already
+appear on slides 131/133/134 and 136 respectively, per course.json's own
+templateRationale — the tables run full width, matching this course's own
+cve1-053.html precedent exactly.
+
+cve1-141.html (the module check slide, synthesized from the module's
+whole arc — slides 130 through 140) carries no figure by design, matching
+the same design already used for every other module's check slide in
+this course.
+
+Control Valve Engineering 1 — cve1-ch8-m1 (Liquid Sizing & Critical
+Pressure Ratio)
+Origination-mode Stage 3, 2026-09-20. Module is formula/worked-example
+heavy — slides 142-148 and 150 carry no figure at all (confirmed
+prose-only against the source PDF, not a citation gap; no art was
+originated for any of them, per this run's explicit instructions). Only
+slide 149 carries real figures, both DIRECT crops (no redraw).
+
+ogas3-fig3-1-liquid-critical-pressure-ratio-water.png
+  Fig. 3-1 "Liquid critical pressure ratio factor for water," Fisher
+  Control Valve Sourcebook — Oil & Gas, Chapter 3, printed p. 3-4
+  (drawing A2737-1). Copied directly from
+  20 - Source Library/Handbooks & Sourcebooks/Industry Specific
+  Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/
+  ch3-fig1-liquid-critical-pressure-ratio-water.png — no re-cropping
+  performed, no content altered.
+  Component Index: ogas-cmp-ff-chart-water.
+  Used by: cve1-149.html (left panel).
+
+ogas3-fig3-2-liquid-critical-pressure-ratio-nonwater.png
+  Fig. 3-2 "Liquid critical pressure ratio factor for liquids other than
+  water," Fisher Control Valve Sourcebook — Oil & Gas, Chapter 3, printed
+  p. 3-6 (no drawing number printed on this figure). Copied directly from
+  the same extracted-figures folder,
+  ch3-fig2-liquid-critical-pressure-ratio-nonwater.png — no re-cropping
+  performed, no content altered.
+  Component Index: ogas-cmp-ff-chart-nonwater.
+  Used by: cve1-149.html (right panel).
+
+cve1-142.html (prime — the undersize/oversize sizing-stakes question)
+carries no SOURCES.txt entry: no single figure represents the stakes
+concept itself, matching this course's own cve1-039 precedent.
+
+cve1-143.html, cve1-144.html, cve1-145.html, cve1-148.html
+(mechanism-role) and cve1-146.html, cve1-147.html, cve1-150.html
+(procedure-worked-role) carry no SOURCES.txt entry: each is confirmed
+prose-only against the real source PDF (see each slide's own HTML
+comment for its exact locator) — no figure exists to place, and per this
+run's instructions no art was originated to fill the gap. Each of these
+also required a minimal single-column override of its Gallery template's
+.tpl-content grid, since neither the mechanism nor the procedure-worked
+shape has a figure-less variant today — flagged under Concept-map gaps
+in this run's report.
+
+cve1-151.html (the module check slide, synthesized from the whole
+module arc — slides 142 through 150) carries no figure by design,
+matching the same design already used for every other module's check
+slide in this course.
+
+cvh11-fig11-1-greenhouse-gas-scopes.png
+  Fig. 11.1 "Greenhouse Gas," Control Valve Handbook, 6th ed., p. 243
+  (own printed field labels retained — Scope 1/2/3 icon groups with
+  upstream/downstream flow arrows — no added markers, per Style Guide
+  Sec 6.3). Freshly copied into this course's own assets/sourced/ this
+  session from 20 - Source Library/Handbooks & Sourcebooks/Control Valve
+  Handbook — extracted-figures/ch11-fig1-greenhouse-gas-scopes.png — no
+  re-cropping performed, no content altered.
+  Component Index: cvh-cmp-greenhouse-gas-scopes.
+  Used by: cve1-174.html.
+
+cvh11-fig11-2-sustainability-decarbonization-table.png
+  Fig. 11.2 "Sustainability and Decarbonization," Control Valve Handbook,
+  6th ed., p. 245 (5-category emerging-technology reference table, own
+  printed column headers/bullets retained). Freshly copied into this
+  course's own assets/sourced/ this session from the same extracted-
+  figures folder, ch11-fig2-sustainability-decarbonization-table.png —
+  no re-cropping performed, no content altered.
+  Component Index: cvh-cmp-sustainability-decarbonization-table.
+  Used by: cve1-178.html (composed as 1 of 2 images in one multi-image
+  SVG, per Style Guide Sec 5.14 / this course's own cve1-110 precedent).
+
+cvh11-fig11-3-esg-approach-by-industries.png
+  Fig. 11.3 "ESG Approach by Different Industries," Control Valve
+  Handbook, 6th ed., p. 246 (3-pillar ESG reference table — Environmental/
+  Social/Governance, own printed bullets retained). Freshly copied into
+  this course's own assets/sourced/ this session from the same extracted-
+  figures folder, ch11-fig3-esg-approach-by-industries.png — no
+  re-cropping performed, no content altered.
+  Component Index: cvh-cmp-esg-approach-by-industries.
+  Used by: cve1-178.html (composed as 1 of 2 images in one multi-image
+  SVG, per Style Guide Sec 5.14 / this course's own cve1-110 precedent).
+
+cve1-173.html (prime — the scope-accounting stakes question) carries no
+SOURCES.txt entry: no figure represents the framing point itself
+(Figure 11.1 is reserved for the following nomenclature slide, 174),
+matching this course's own cve1-142/cve1-167 precedent.
+
+cve1-175.html (application — classifying a valve-related source into a
+scope) carries no SOURCES.txt entry: confirmed prose-only against the
+real source (cvh-topic-emissions-scopes' own Scope 1/2/3 definitions,
+no figure registered at this slot) — composed as a plain scenario list,
+no art originated, matching this course's own cve1-143/144/145/148
+precedent for a figure-less mechanism/application concept.
+
+cve1-176.html (mechanism — the two decarbonization pathways plus the
+efficiency lever behind both) carries no SOURCES.txt entry: no figure
+is registered for this competency (Figures 11.2/11.3 are reserved for
+178). Per the visual-concept check (Course Porting Pipeline.md, Stage 3),
+this concept genuinely describes a relationship between its parts — two
+pathways sharing one underlying lever — so an ORIGINAL diagram was
+authored inline (not a separate asset file, so no entry above), spec'd
+directly against cvh-topic-decarbonization-pathways' own prose (the
+90-99% CCUS figure and the one-third/two-thirds efficiency figure are
+both stated directly in that source, not invented).
+
+cve1-177.html (contrast — Greening OF/BY/WITH) carries no SOURCES.txt
+entry: no figure is registered for this slot (cvh-topic-greening-
+framework's own related figure, cvh-cmp-sustainability-decarbonization-
+table, is reserved for 178) — composed as an originated 3-row table
+under the contrast role, per this course's own cve1-078 precedent for a
+genuine multi-way split that doesn't fit the two-panel contrast default.
+
+cve1-179.html (the module check slide, synthesized from the whole
+module arc — slides 173 through 178) carries no figure by design,
+matching the same design already used for every other module's check
+slide in this course.

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 090 &mdash; Actuator Type Comparison &mdash; Cost, Thrust, Speed, Fail-Safe</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m1, page 90 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.select-actuator-type-and-failsafe [evaluate ·
+       contrast]. figures: [] in the registry (course.json sourceNote) —
+       pss-topic-actuator-type-comparison-summary (Power &amp; Severe Service
+       Sourcebook's own real Table 2-6) is prose-only; the comparison is the
+       source's own named table, not an image. Per course.json
+       templateRationale, role stays contrast (a genuine multi-way "this vs.
+       that vs. that") but the CSS TEMPLATE is .slide--tmpl-table (Template
+       3), not the gallery two-panel .slide--role-contrast — Style Guide
+       Sec 9.2 routes a straight reference table there. NOTE: unlike this
+       course's own slides 15/68 (which kept the .slide--role-* class and
+       placed a .tmpl-table inside its grid via an inline override), this
+       slide uses the standalone production Template 3 class directly, per
+       course.json's own explicit "template" field — flagged under
+       Concept-map gaps as a second, differing precedent for the same
+       "role says contrast, content is a table" situation. Table content:
+       the primitive's own t names cost/thrust/speed/fail-safe tradeoffs for
+       FOUR types (spring-and-diaphragm, piston, electric, electro-hydraulic)
+       despite the source text's own "all five actuator types" phrase —
+       manual and rack-and-pinion carry no stated tradeoffs in this
+       competency's text (their own selection-relevant facts were already
+       taught on slides 85/86); no data is invented to fill a fifth row.
+       Two cells with no stated fact in source (electric's cost;
+       electro-hydraulic's fail-safe) are marked "&mdash;" rather than
+       guessed. Spring-and-diaphragm is marked tr.is-example per the
+       primitive's own closing guidance ("consider the simplest design
+       first") — Style Guide Sec 9.1's is-example row is the row a slide is
+       "working through," which fits this closing recommendation exactly;
+       .tmpl-note has no CSS scope on .slide--tmpl-table, so the guidance is
+       carried this way rather than as an unstyled paragraph. -->
+  <article class="slide slide--tmpl-table" data-slide="90" data-deck="cve1">
+    <h1 class="slide-title">Actuator Type Comparison &mdash; Cost, Thrust, Speed, Fail-Safe</h1>
+    <div class="tmpl-wrap">
+      <table class="tmpl-table">
+        <thead>
+          <tr><th>Actuator Type</th><th>Cost</th><th>Thrust, Stiffness &amp; Speed</th><th>Fail-Safe</th><th>Throttling / Duty</th></tr>
+        </thead>
+        <tbody>
+          <tr class="is-example">
+            <td>Spring-and-diaphragm</td>
+            <td>Lowest</td>
+            <td>Limited output; larger size/weight for the thrust delivered</td>
+            <td>Inherent</td>
+            <td>Throttles without a positioner &mdash; start here first</td>
+          </tr>
+          <tr>
+            <td>Pneumatic piston</td>
+            <td>Higher</td>
+            <td>High thrust, compact &amp; lightweight; fast stroking</td>
+            <td>Needs an accessory or spring</td>
+            <td>Needs a positioner to throttle</td>
+          </tr>
+          <tr>
+            <td>Electric motor</td>
+            <td>&mdash;</td>
+            <td>Compact, very stiff, high output; slow stroking</td>
+            <td>No inherent fail-safe</td>
+            <td>Traditionally on/off only; limited duty cycle</td>
+          </tr>
+          <tr>
+            <td>Electro-hydraulic</td>
+            <td>Highest</td>
+            <td>Highest output &amp; stiffness; fast stroking</td>
+            <td>&mdash;</td>
+            <td>Best throttling performance; hardest maintenance</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tpl-source">Grounded in Power &amp; Severe Service Sourcebook's own Table 2-6 (prose-only in the registry, no figure). Component Index: pss-topic-actuator-type-comparison-summary.</p>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">90</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

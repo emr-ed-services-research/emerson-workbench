@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 114 &mdash; Selecting an Actuator for the Real Service</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m3, page 114 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.select-extreme-service-actuator-variant [evaluate ·
+       application]. No figure anchors this evaluate-level synthesis
+       (course.json sourceNote) — grounded in ogas-topic-actuator-
+       selection-process-summary's Table 2-6 comparative tradeoffs. Per
+       course.json templateRationale, matches this course's own
+       application-pick precedent (cve1-049, cve1-091): no items[] array
+       given in the concept map (the three scenario-and-justification
+       cases are written directly in the primitive's merged t), so this
+       pass decomposes t's three named scenarios into three tpl-pick-item
+       buttons itself, the same construction cve1-091 used for its own
+       merged t — each data-work is that scenario's own reasoning from t,
+       reframed as the worked-analysis HTML the template expects, not new
+       content. -->
+  <article class="slide slide--role-application-pick" data-slide="114" data-deck="cve1">
+    <h1 class="slide-title">Selecting an Actuator for the Real Service</h1>
+    <div class="tpl-content" style="grid-template-rows:auto auto 1fr auto">
+      <p class="tpl-howto"><span class="tpl-howto__badge">1</span> Pick one of the three service scenarios below. See it as stated, then the actuator-type call it drives.</p>
+      <div class="tpl-pick-list">
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Electric actuation&lt;/b&gt; &mdash; it needs no compressed-air infrastructure at all, and the infrequent-cycling duty here doesn't demand the high-duty-cycle unit a continuous throttling loop would need. Lock-in-last-position fail action is acceptable because this is an on/off block valve, not a service depending on a true fail-open or fail-closed.&lt;/p&gt;">Remote pipeline block valve, no instrument air, moderate force, infrequent position changes</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Electro-hydraulic&lt;/b&gt; fits better than electric here &mdash; it reaches the stiffness, positioning accuracy, and frequency response continuous throttling needs, at the cost of the complexity and maintenance burden that's worth paying specifically because electric's precision at small signal sizes doesn't compete with a piston or diaphragm design working the same duty on instrument air.&lt;/p&gt;">High-cycle throttling loop needing fine small-signal correction, still no instrument air</button>
+        <button class="tpl-pick-item" type="button" data-work="&lt;p&gt;&lt;b&gt;Field-reversible multi-spring diaphragm&lt;/b&gt; (or piston, if the margin is large) &mdash; the diaphragm family doesn't have to be abandoned for a force above a standard single-spring design's range; multi-spring construction reaches higher force while keeping fail-safe inherent and construction familiar, unless the margin needed is large enough that piston's higher raw thrust is the only real fit &mdash; and even then, which of piston's two spring-return variants to specify still depends on whether full spring-fail closure is a hard requirement or valve fluid forces can help.&lt;/p&gt;">Standard throttling loop, instrument air available, force above a standard single-spring diaphragm's range</button>
+      </div>
+      <div class="tpl-pick-work"><p class="tpl-pick-work__placeholder">Pick a scenario above to see its worked selection call.</p></div>
+      <p class="tpl-source">Grounded in ogas-topic-actuator-selection-process-summary's Table 2-6 comparative tradeoffs across all four actuator families &mdash; no figure represents this evaluate-level synthesis. Component Index: ogas-topic-actuator-selection-process-summary.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">114</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

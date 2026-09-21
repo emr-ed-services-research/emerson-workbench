@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 149 &mdash; Reading F<sub>F</sub> &mdash; Water vs. Other Liquids</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch8-m1, page 149 — eng.sizing.fundamentals-liquid-and-compressible.
+       determine-liquid-choked-flow [apply · contrast]. Components:
+       ogas-cmp-ff-chart-water (Fisher Control Valve Sourcebook — Oil & Gas,
+       Fig. 3-1, printed p. 3-4) and ogas-cmp-ff-chart-nonwater (Fig. 3-2,
+       printed p. 3-6) — two genuinely distinct charts, the canonical
+       two-panel contrast shape (course.json templateRationale). Both
+       existing figures used directly (crop), no redraw — per Style Guide
+       §5.8 default and the index's own "delivery: existing figure (crop)"
+       note. Per-image data-lightbox-caption added to both (Style Guide
+       §5.13) even though this course's own cve1-085 contrast precedent
+       predates that rule being applied to a two-panel contrast — Style
+       Guide is authoritative over an earlier shipped slide per §10.3;
+       flagged in this run's report as a Low-confidence/precedent note, not
+       left unresolved. The pss-cmp duplicates of this same chart pair are
+       NOT additionally cited, per course.json's own sourceNote (same
+       drawing reused verbatim across sourcebooks; citing all four on one
+       two-panel slide would double-cite one chart pair under two id sets). -->
+  <article class="slide slide--role-contrast" data-slide="149" data-deck="cve1">
+    <h1 class="slide-title">Reading FF &mdash; Water vs. Other Liquids</h1>
+    <div class="tpl-content">
+      <div class="tpl-panel" data-side="left">
+        <div class="panel-label">Water</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <img src="../assets/sourced/ogas3-fig3-1-liquid-critical-pressure-ratio-water.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Chart: liquid critical pressure ratio factor F_F for water, plotted against absolute vapor pressure at the valve inlet on a dual psia/bar scale." data-lightbox-caption="Fig. 3-1, liquid critical pressure ratio factor for water. Component Index: ogas-cmp-ff-chart-water.">
+        </div>
+        <div class="panel-caption">Enter on the abscissa at the water vapor pressure at the valve inlet; proceed vertically to the curve, then horizontally left to read F<sub>F</sub></div>
+      </div>
+      <div class="tpl-divider"></div>
+      <div class="tpl-panel" data-side="right">
+        <div class="panel-label">Other Liquids</div>
+        <div class="placeholder-img" style="background:none;border:none">
+          <img src="../assets/sourced/ogas3-fig3-2-liquid-critical-pressure-ratio-nonwater.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Chart: liquid critical pressure ratio factor F_F for liquids other than water, plotted against the dimensionless ratio of vapor pressure to critical pressure." data-lightbox-caption="Fig. 3-2, liquid critical pressure ratio factor for liquids other than water. Component Index: ogas-cmp-ff-chart-nonwater.">
+        </div>
+        <div class="panel-caption">Divide vapor pressure by critical pressure (P<sub>v</sub>/P<sub>c</sub>) first, then read the same way against the 0&ndash;1.00 dimensionless scale</div>
+      </div>
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Figs. 3-1 &amp; 3-2 &mdash; used directly. Component Index: ogas-cmp-ff-chart-water, ogas-cmp-ff-chart-nonwater.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">149</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

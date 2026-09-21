@@ -3,34 +3,59 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 007 &mdash; Four Forces, Not One</title>
+<title>CVE1 &middot; Slide 007 &mdash; Rotary Valves &mdash; Segmented Ball, V-Notch Ball, Eccentric Disk</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m1, page 7 — eng.sizing.actuator-force-awareness [apply ·
-       mechanism]. Rewritten to cite cvh-topic-valve-balance (WC, rebuild
-       attempt 4) — the real source text explains WHY unbalance area is what
-       it is (net pressure differential x net unbalance area; a balanced
-       trim routes pressure to both sides of the plug to largely, never
-       completely, cancel the net force), not just the lookup step. -->
-  <article class="slide slide--role-mechanism" data-slide="7" data-deck="cve1">
-    <h1 class="slide-title">Four Forces, Not One</h1>
+  <!-- cve1-ch1-m1, page 7 — eng.foundations.control-loop-and-final-control-element.
+       distinguish-body-families [understand · nomenclature], rotary half.
+       Four distinct product photos (Figs. 1.13, 1.14, 1.15, 1.16), none
+       printed-labelled — composed as one multi-image SVG per Style Guide
+       Sec 5.14, each independently lightbox-navigable with its own
+       data-lightbox-caption (Sec 5.13), scaled to a common height and
+       placed left-to-right, same construction as cve1-006's sliding-stem
+       counterpart. LOW CONFIDENCE (flagged in the Stage 3 report): Fig.
+       1.15 (V-Notch Ball) is a short, wide crop (618x280) — scaling it to
+       the same height as the other three makes it noticeably wider than
+       its neighbours in the row; this is the source crop's own proportion,
+       not a distortion introduced here. -->
+  <article class="slide slide--role-nomenclature has-wide-fig" data-slide="7" data-deck="cve1">
+    <h1 class="slide-title">Rotary Valves &mdash; Segmented Ball, V-Notch Ball, Eccentric Disk</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig5-2-unbalance-area-table.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.2, Typical Unbalance Areas of Control Valves">
+          <svg viewBox="0 0 2855 400" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Four rotary control-valve photos: a complete rotary valve assembly, and its three closure-member types — segmented ball, V-notch ball, and eccentric disk.">
+            <image href="../assets/sourced/cvh1-fig1-13-rotary-control-valve.png" x="0" y="0" width="550" height="400" data-lightbox-caption="Fig. 1.13, Rotary Control Valve. Component Index: cvh-cmp-rotary-valve-photo."></image>
+            <image href="../assets/sourced/cvh1-fig1-14-segmented-ball.png" x="570" y="0" width="668" height="400" data-lightbox-caption="Fig. 1.14, Segmented Ball. Component Index: cvh-cmp-segmented-ball."></image>
+            <image href="../assets/sourced/cvh1-fig1-15-v-notch-ball.png" x="1258" y="0" width="883" height="400" data-lightbox-caption="Fig. 1.15, V-Notch Ball. Component Index: cvh-cmp-v-notch-ball."></image>
+            <image href="../assets/sourced/cvh1-fig1-16-eccentric-disk-valve.png" x="2161" y="0" width="694" height="400" data-lightbox-caption="Fig. 1.16, Eccentric-Disk Valve. Component Index: cvh-cmp-eccentric-disk-valve."></image>
+            <g font-family="Arial, Helvetica, sans-serif" font-weight="700" text-anchor="middle">
+              <circle cx="24" cy="26" r="22" fill="#ffffff"></circle>
+              <circle cx="24" cy="26" r="18" fill="var(--emerson-blue)"></circle>
+              <text x="24" y="32" fill="#ffffff" font-size="18">1</text>
+              <circle cx="594" cy="26" r="22" fill="#ffffff"></circle>
+              <circle cx="594" cy="26" r="18" fill="var(--emerson-blue)"></circle>
+              <text x="594" y="32" fill="#ffffff" font-size="18">2</text>
+              <circle cx="1282" cy="26" r="22" fill="#ffffff"></circle>
+              <circle cx="1282" cy="26" r="18" fill="var(--emerson-blue)"></circle>
+              <text x="1282" y="32" fill="#ffffff" font-size="18">3</text>
+              <circle cx="2185" cy="26" r="22" fill="#ffffff"></circle>
+              <circle cx="2185" cy="26" r="18" fill="var(--emerson-blue)"></circle>
+              <text x="2185" y="32" fill="#ffffff" font-size="18">4</text>
+            </g>
+          </svg>
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>Total actuator force = A (unbalance) + B (seat load) + C (packing friction) + D (other) &mdash; stroking thrust covers only part of A</li>
-        <li><span class="num">2</span>A comes from fluid pressure at shutoff: net pressure differential &times; net unbalance area. This valve is single-seated and unbalanced, so its full port area counts &mdash; a balanced trim would route pressure to both sides of the plug to cancel most, but never all, of that force</li>
-        <li><span class="num">3</span>Port dia. 2-5/16 in &rarr; unbalance area 4.20 in&sup2; (Fig. 5.2). A = 4.20 &times; 50 psi = 210 lbf</li>
-        <li><span class="num">4</span>Fig. 5.3 at Class II, 50 psi &asymp; 15 lbf/in. Circumference = &pi; &times; 2.3125 = 7.27 in, so B &asymp; 15 &times; 7.27 = 109 lbf</li>
+        <li><span class="num">1</span>Rotary valve overview &mdash; a butterfly-style body with actuator and positioner mounted</li>
+        <li><span class="num">2</span>Segmented ball &mdash; a flanged, shaft-mounted ball segment</li>
+        <li><span class="num">3</span>V-notch ball &mdash; a contoured V-shaped notch; wider rangeability than a plain segmented ball</li>
+        <li><span class="num">4</span>Eccentric disk &mdash; the butterfly-style disk closure member</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., &sect;5.11&ndash;5.11.1.1 and Figure 5.2 &ldquo;Typical Unbalance Areas of Control Valves,&rdquo; p.123. Component Index: cvh-topic-valve-balance, cvh-cmp-unbalance-area-table.</p>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Figs. 1.13, 1.14, 1.15, 1.16 &mdash; used directly. Component Index: cvh-cmp-rotary-valve-photo, cvh-cmp-segmented-ball, cvh-cmp-v-notch-ball, cvh-cmp-eccentric-disk-valve.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">7</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

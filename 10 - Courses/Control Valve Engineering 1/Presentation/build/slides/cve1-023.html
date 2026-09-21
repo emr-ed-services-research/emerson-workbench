@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 023 &mdash; Check Your Knowledge &mdash; Variability &amp; Oversizing</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch2-m1, page 23 — the module's check-your-knowledge slide
+       (course.json module.check: [23]). No keyConcepts entry exists for a
+       check slide by schema design (Stage 2 never authors one) — composed
+       fresh here per the Stage 3 origination prompt, synthesized from the
+       module's whole arc rather than any one slide: slide 19 (variability
+       as distribution spread, the 80%-of-loops finding), slide 20 (the
+       closed-loop economics chart and its 1.4%/2.0s worked number), slide
+       21 (the two named oversizing mechanisms — gain concentration in the
+       valve, exaggerated low-opening friction), and slide 22 (butterfly
+       vs. globe control-range exposure). levelTarget is analyze, so Style
+       Guide §8.4 requires a concrete situation, not "which is true." The
+       stem places a badly oversized line-size butterfly valve (slide 22's
+       own exposed case) in a real hunting/off-spec scenario and asks the
+       learner to trace the SPECIFIC mechanism (not just "it's oversized")
+       — distractors are real, plausible misdiagnoses: C is deadband
+       (buildsOn ch1-m2 content, a genuine but wrong mechanism for THIS
+       symptom pattern — a properly-sized valve with bad packing would
+       show constant lag regardless of setpoint, not this flow-dependent
+       degradation); D is dynamic response (also buildsOn ch1-m2, also
+       plausible but wrong for the same reason); B names oversizing but
+       picks the wrong one of the two real mechanisms slide 21 taught
+       (loop-gain concentration, not the friction/low-opening one that
+       actually fits a butterfly valve's worst exposure per slide 22).
+       A is correct: it names the friction/low-opening mechanism AND ties
+       it to the control-range narrowing slide 22 showed is worst for a
+       rotary body style — the only option that integrates slides 21 and
+       22 together, which is the whole point of testing the module's arc,
+       not one slide in isolation. data-correct="true" marks the right
+       option per the interactive check convention (gallery.css §8 /
+       slides.js); reveal is terse per cve1-009/018's established
+       convention. -->
+  <article class="slide slide--role-check" data-slide="23" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Variability &amp; Oversizing</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">A 6-inch butterfly valve was selected at line size for a service that only needs a fraction of its rated Cv. Bench data confirm its deadband and dynamic response are both within spec. In service, the loop hunts and its process-variability trend is wide &mdash; but only when demand drops well below design flow; at high flow it controls smoothly. What is the most likely cause?</p>
+      <ul class="tpl-options">
+        <li data-correct="true">A.&nbsp;&nbsp;The valve spends most of its time at low openings, where an oversized valve's already-worse seal friction is exaggerated by its own large flow-change-per-travel &mdash; and a butterfly's control range narrows there faster than a globe's would</li>
+        <li>B.&nbsp;&nbsp;Too much of the loop's total gain is concentrated in the controller rather than the valve</li>
+        <li>C.&nbsp;&nbsp;Backlash or stiction in the actuator linkage is producing deadband</li>
+        <li>D.&nbsp;&nbsp;The actuator/positioner combination has a slow dynamic time from an undersized air-chamber volume</li>
+      </ul>
+      <p class="tpl-reveal">A &middot; Oversizing's low-opening friction penalty, worst on a butterfly</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">23</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

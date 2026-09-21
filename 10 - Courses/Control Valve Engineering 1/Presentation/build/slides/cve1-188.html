@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 188 &mdash; Dead Time and T63 Move Independently</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch2-m2, page 188 — eng.foundations.process-variability-and-loop-
+       performance.distinguish-deadband-response-time [understand ·
+       contrast]. Component: cvh-cmp-valve-response-time-summary-table
+       (Fig. 2.4, p. 41) — a data-grid table the source itself numbers as a
+       Figure (Component Index note). Per the concept's own
+       templateRationale: "a table treatment is the correct contrast shape
+       ... reusing the real source figure directly per Style Guide Sec 5.8
+       rather than compressing it into an artificial two-panel split."
+       Read literally: Style Guide Sec 5.8's default is USE THE SOURCE
+       FIGURE DIRECTLY (the real printed table, as an image), not a
+       hand-transcribed HTML table — unlike Control Valve Basics' own
+       cvb-056.html, which transcribed a condensed SUBSET (spec row + one
+       step size) as .tmpl-table. This slide instead shows the FULL table
+       (all three valves, all three step sizes, both directions) as the
+       source figure, freshly extracted from the real Control Valve
+       Handbook PDF this same session (910x1080px,
+       ch2-fig4-valve-response-time-summary-table.png, copied into
+       assets/sourced/ as cvh2-fig2-4-...). Chose the full grid over a
+       condensed transcription because the primitive's own claim rests on
+       an NR (no-response) data point (Valve C, -2% step) that a condensed
+       subset would drop — completeness against source (working rule 4)
+       favors showing the real grid entire.
+       No panels/divider used — matches this course's own established
+       precedent for a contrast-role table (cve1-015.html, cve1-017.html:
+       a single .tmpl-table/.tpl-fig spanning grid-column:1/-1, grid-row:1/
+       span 3, align-self:center — the contrast role's panel/divider CSS has
+       no reserved slot for a single full-width figure, so this reuses the
+       already-flagged local workaround rather than inventing a new one
+       (see Concept-map gaps in the report).
+       RENDER FIX: the wrapping .tpl-fig div needs explicit width:100%;
+       height:100% (not align-self:center) — role-contrast's CSS defines
+       no .tpl-fig rules of its own, so with an underspecified (auto)
+       height, the img's max-height:100% could not resolve against it and
+       the image rendered at native aspect scaled only by width, clipping
+       the slide box (confirmed by verify.ps1's render check: div.tpl-fig
+       top-clipping in both 4:3 and 16:9 on the first pass). Fixed by
+       giving the wrapper a definite height so object-fit:contain can
+       actually bound the image on both axes; re-verified clean. -->
+  <article class="slide slide--role-contrast" data-slide="188" data-deck="cve1">
+    <h1 class="slide-title">Dead Time and T63 Move Independently</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig" style="grid-column:1 / -1; grid-row:1 / span 3; width:100%; height:100%; display:flex; align-items:center; justify-content:center;">
+        <img src="../assets/sourced/cvh2-fig2-4-valve-response-time-summary-table.png" style="max-width:100%;max-height:100%;object-fit:contain" alt="Valve Response Time Summary table listing dead time (Td) and total response time (T63), in seconds, for three valve/actuator/positioner assemblies (A, B, C) at 2%, 5%, and 10% step sizes in both the opening and closing directions, against an ENTECH spec of 0.2 s dead time and 0.6 s response time for a 4-inch valve. Valve A holds both numbers small and close together across every step and direction. Valve B and Valve C's dead time increases sharply on the smallest 2% step, and Valve C shows no response at all (NR) on the -2% closing step.">
+      </div>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 2.4 &mdash; used directly. Component Index: cvh-cmp-valve-response-time-summary-table.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">188</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

@@ -52,7 +52,7 @@ system-detail diagram that is not part of a mode sequence) is catalogued
 individually. 40 real figure numbers (9B-3 through 9B-42) resulted in 23
 records — see Open Items for the full accounting.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/
 Control Valve Sourcebook - Power & Severe Service.pdf`. No extracted-figures
 crop folder exists for this book — each record's `source` carries a single
 locator. Every record's `used-by` is `[]`.

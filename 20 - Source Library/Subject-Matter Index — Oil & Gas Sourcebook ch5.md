@@ -24,7 +24,7 @@ triggered."
   Figure 5-6) was **not** part of this batch's assigned scope and is not
   catalogued here — see "Open items" below.
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -64,7 +64,7 @@ source:
       Chapter 5 "Control Valve Noise," Figure 5-1 (drawing numbers W1257
       [upper view] and E0863 [lower view], printed p. 5-1) — "Figure 5-1.
       Valve Trim Designs for Reducing Aerodynamic Noise."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig1-cage-trim-designs-aerodynamic-noise.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig1-cage-trim-designs-aerodynamic-noise.png
     locator: "already extracted — cropped directly from the source PDF (p. 56 / printed 5-1) at 300 dpi, both views + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -93,7 +93,7 @@ source:
     locator: >
       Chapter 5 "Control Valve Noise," Figure 5-2 (drawing number W2618,
       printed p. 5-2) — "Figure 5-2. Valve and Inline Diffuser Combination."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig2-valve-inline-diffuser-combination.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig2-valve-inline-diffuser-combination.png
     locator: "already extracted — cropped directly from the source PDF (p. 57 / printed 5-2) at 300 dpi, chart + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -122,7 +122,7 @@ source:
     locator: >
       Chapter 5 "Control Valve Noise," Figure 5-3 (drawing number W2672,
       printed p. 5-2) — "Figure 5-3. Valve and Vent Diffuser Combination."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig3-valve-vent-diffuser-combination.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig3-valve-vent-diffuser-combination.png
     locator: "already extracted — cropped directly from the source PDF (p. 57 / printed 5-2) at 300 dpi, chart + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -155,7 +155,7 @@ source:
       Chapter 5 "Control Valve Noise," Figure 5-4 (drawing number W2673,
       printed p. 5-3) — "Figure 5-4. Special Valve Design to Eliminate
       Cavitation."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig4-special-valve-design-eliminate-cavitation.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig4-special-valve-design-eliminate-cavitation.png
     locator: "already extracted — cropped directly from the source PDF (p. 58 / printed 5-3) at 300 dpi, chart + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -185,7 +185,7 @@ source:
     locator: >
       Chapter 5 "Control Valve Noise," Figure 5-5 (drawing number W1304,
       printed p. 5-3) — "Figure 5-5. Typical Inline Silencer."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig5-typical-inline-silencer.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig5-typical-inline-silencer.png
     locator: "already extracted — cropped directly from the source PDF (p. 58 / printed 5-3) at 300 dpi, chart + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -216,7 +216,7 @@ source:
       Chapter 5 "Control Valve Noise," Figure 5-6 (drawing number W6851,
       printed p. 5-4) — "Figure 5-6. Globe-Style Valve with Noise Abatement
       Cage for Aerodynamic Flow."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig6-globe-valve-noise-abatement-cage.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig6-globe-valve-noise-abatement-cage.png
     locator: "already extracted — cropped directly from the source PDF (p. 59 / printed 5-4) at 300 dpi, chart + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -250,7 +250,7 @@ source:
       Chapter 5 "Control Valve Noise," Figure 5-7 (drawing number W6343,
       printed p. 5-4) — "Figure 5-7. Ball-Style Valve with Attenuator to
       Reduce Hydrodynamic Noise."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig7-ball-valve-hydrodynamic-noise-attenuator.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch5-fig7-ball-valve-hydrodynamic-noise-attenuator.png
     locator: "already extracted — cropped directly from the source PDF (p. 59 / printed 5-4) at 300 dpi, cutaway + drawing number + caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

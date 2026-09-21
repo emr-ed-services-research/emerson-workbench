@@ -47,7 +47,7 @@ catalogued.
 > title, and so a future "Chapter 11 — Fractionation" batch is understood to
 > be genuinely new territory, not a duplicate of this one.
 
-All from `20 - Source Library/Industry Specific Sourcebooks/Control Valve
+All from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve
 Sourcebook - Oil & Gas.pdf`. Every record's `used-by` is `[]` — none are
 placed on a slide yet; a future course resolves against these entries
 instead of triggering reactive cataloging.
@@ -100,7 +100,7 @@ source:
       Chapter 10 "Oil and Gas Transportation," Figure 10-1 (drawing number
       E1515, printed p. 10-1, the chapter's opening page) — "Figure 10-1.
       Gas Transportation Process Flow Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig1-gas-transportation-process-flow.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig1-gas-transportation-process-flow.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 127, printed p. 10-1) at 300 dpi, full block diagram (production field, two compressor stations, metering station) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -201,7 +201,7 @@ source:
       Chapter 10 "Oil and Gas Transportation," Figure 10-2 (drawing number
       E1516, printed p. 10-2) — "Figure 10-2. Oil Transportation Process
       Flow Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig2-oil-transportation-process-flow.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig2-oil-transportation-process-flow.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 128, printed p. 10-2) at 300 dpi, full block diagram (production field, two pump stations, oil terminal) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -271,7 +271,7 @@ source:
       Chapter 10 "Oil and Gas Transportation," Figure 10-3 (drawing number
       E1517, printed p. 10-3) — "Figure 10-3. Metering Station Control Valve
       Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig3-metering-station-control-valve-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig3-metering-station-control-valve-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 129, printed p. 10-3) at 300 dpi, full schematic (both numbered valve stations, flow meter), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -309,7 +309,7 @@ source:
     locator: >
       Chapter 10 "Oil and Gas Transportation," Figure 10-4 (drawing number
       E1484, printed p. 10-3) — "Figure 10-4. Compressor System."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig4-compressor-system.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig4-compressor-system.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 129, printed p. 10-3) at 300 dpi, full schematic (scrubber, compressor, all 4 numbered valve stations), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -385,7 +385,7 @@ source:
       Chapter 10 "Oil and Gas Transportation," Figure 10-5 (drawing number
       X0265, printed p. 10-4) — "Figure 10-5. ET Class 300 with WhisperFlo
       trim and Spoked Plug."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig5-et-class300-whisperflo-spoked-plug.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig5-et-class300-whisperflo-spoked-plug.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 130, printed p. 10-4) at 300 dpi, full valve cutaway photo (actuator, yoke, bonnet, spoked plug, flanged body) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -422,7 +422,7 @@ source:
       Chapter 10 "Oil and Gas Transportation," Figure 10-6 (drawing number
       E1518, printed p. 10-4) — "Figure 10-6. Pump Station Control Valve
       Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig6-pump-station-control-valve-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig6-pump-station-control-valve-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 130, printed p. 10-4) at 300 dpi, full schematic (pump, single numbered valve station), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -463,7 +463,7 @@ source:
       Chapter 10 "Oil and Gas Transportation," Figure 10-7 (drawing number
       E1519, printed p. 10-5) — "Figure 10-7. Oil Terminal Receiving Unit
       Control Valve Diagram."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig7-oil-terminal-receiving-unit-diagram.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig7-oil-terminal-receiving-unit-diagram.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 131, printed p. 10-5) at 300 dpi, full schematic (all three numbered valve stations, four flow-meter runs), drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -539,7 +539,7 @@ source:
       Chapter 10 "Oil and Gas Transportation," Figure 10-8 (drawing number
       X0082-2, printed p. 10-5) — "Figure 10-8. V260B with Hydrodome
       Attenuator."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig8-v260b-hydrodome-attenuator.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig8-v260b-hydrodome-attenuator.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 131, printed p. 10-5) at 300 dpi, full cutaway product photo (ball, hydrodome trim, bolted body) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default
@@ -574,7 +574,7 @@ source:
       Chapter 10 "Oil and Gas Transportation," Figure 10-9 (drawing number
       X0334, printed p. 10-6) — "Figure 10-9. Cutaway of Vee-Ball V150/2052
       Size 3 Actuator and DVC6200."
-  - doc: 20 - Source Library/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig9-vee-ball-v150-2052-dvc6200-cutaway.png
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control Valve Sourcebook - Oil & Gas — extracted-figures/ch10-fig9-vee-ball-v150-2052-dvc6200-cutaway.png
     locator: "already extracted — cropped directly from the source PDF (PDF p. 132, printed p. 10-6) at 300 dpi, full cutaway product photo (Vee-Ball body, size 3 spring-and-diaphragm actuator, DVC6200 digital valve controller) + drawing number and caption"
     bucket: done
 delivery: existing figure (crop) — used directly per Style Guide §5.8 default

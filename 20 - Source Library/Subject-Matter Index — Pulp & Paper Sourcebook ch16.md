@@ -28,7 +28,7 @@ page as the divider), PDF page 196 = printed p. 16-4, confirmed **blank**
 197 = Chapter 17 divider ("Paper Machine"). Zero page offset throughout
 (PDF page = printed page number + 177). Chapter 16 = PDF pp. 193-196.
 
-All figures are from `20 - Source Library/Industry Specific Sourcebooks/Control
+All figures are from `20 - Source Library/Handbooks & Sourcebooks/Industry Specific Sourcebooks/Control
 Valve Sourcebook - Pulp & Paper.pdf`. This pass catalogs existence and location
 only — it does not crop or extract images. Record shape: `id` · `kind` ·
 `teaches` · `concept-tags` · `status` · `source` (`doc` + `locator`) ·

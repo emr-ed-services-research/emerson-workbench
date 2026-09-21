@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 031 &mdash; The Eight Body Families</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch3-m1, page 31 — eng.selection.valve-body-and-type-taxonomy.
+       classify-body-family [understand · contrast, TEMPLATE OVERRIDE:
+       slide--role-nomenclature-reveal per course.json templateRationale
+       — an 8-way capstone doesn't fit slide--role-contrast (structurally
+       exactly two .tpl-panel siblings); this figure-less click-to-reveal
+       grid names all eight families as a fixed set with no new images,
+       each pane citing back to the earlier slide that already showed
+       that family's figure (slides 24-30), per the templateRationale's
+       own instruction not to re-display images already shown. --n:4 so
+       the 8 buttons wrap into 2 rows of 4 via CSS Grid's implicit
+       row-placement (gallery.css's grid-template-columns: repeat(var(
+       --n,5),1fr) auto-wraps once item count exceeds --n — no CSS
+       change needed). -->
+  <article class="slide slide--role-nomenclature-reveal" data-slide="31" data-deck="cve1">
+    <h1 class="slide-title">The Eight Body Families</h1>
+    <div class="tpl-content">
+      <div class="tpl-reveal-grid" style="--n:4">
+        <button class="tpl-reveal-item is-open" type="button"><span class="tpl-reveal-item__label"><span class="num">1</span>Globe</span></button>
+        <button class="tpl-reveal-item" type="button"><span class="tpl-reveal-item__label"><span class="num">2</span>Angle</span></button>
+        <button class="tpl-reveal-item" type="button"><span class="tpl-reveal-item__label"><span class="num">3</span>Three-Way</span></button>
+        <button class="tpl-reveal-item" type="button"><span class="tpl-reveal-item__label"><span class="num">4</span>Rotary</span></button>
+        <button class="tpl-reveal-item" type="button"><span class="tpl-reveal-item__label"><span class="num">5</span>Gate</span></button>
+        <button class="tpl-reveal-item" type="button"><span class="tpl-reveal-item__label"><span class="num">6</span>Diaphragm</span></button>
+        <button class="tpl-reveal-item" type="button"><span class="tpl-reveal-item__label"><span class="num">7</span>Pinch</span></button>
+        <button class="tpl-reveal-item" type="button"><span class="tpl-reveal-item__label"><span class="num">8</span>Plug</span></button>
+      </div>
+      <div class="tpl-reveal-detail">
+        <div class="tpl-reveal-detail__pane is-active">Globe &mdash; flow turns through a seat-and-plug port; the default sliding-stem throttling body.<span class="tpl-cite">See slide 24. Component Index: cvh-cmp-single-ported-globe-valve-body.</span></div>
+        <div class="tpl-reveal-detail__pane">Angle &mdash; a single-port globe variant that also serves as a pipe elbow.<span class="tpl-cite">See slide 25. Component Index: cvh-cmp-flanged-angle-valve-body.</span></div>
+        <div class="tpl-reveal-detail__pane">Three-way &mdash; converges or diverges flow through a third connection, throttled mid-travel.<span class="tpl-cite">See slide 25. Component Index: cvh-cmp-three-way-globe-valve-cutaway.</span></div>
+        <div class="tpl-reveal-detail__pane">Rotary (butterfly/ball) &mdash; a shaft rotates a disc, segment, or ball across the bore instead of sliding a stem.<span class="tpl-cite">See slide 26. Component Index: cvh-cmp-butterfly-shaft-offset-disc-center.</span></div>
+        <div class="tpl-reveal-detail__pane">Gate &mdash; a wedge slides across a straight-through body; on/off only, never a throttling spec.<span class="tpl-cite">See slide 27. Component Index: cvh-cmp-solid-wedge-gate-valve.</span></div>
+        <div class="tpl-reveal-detail__pane">Diaphragm &mdash; a flexible diaphragm closes against a weir; no metal trim in the flow path.<span class="tpl-cite">See slide 28. Component Index: cvh-cmp-weir-type-diaphragm-valve.</span></div>
+        <div class="tpl-reveal-detail__pane">Pinch &mdash; a flexible sleeve collapses shut; the choice for slurry and solids service.<span class="tpl-cite">See slide 29. Component Index: cvh-cmp-air-operated-pinch-valve.</span></div>
+        <div class="tpl-reveal-detail__pane">Plug &mdash; a tapered or eccentric plug rotates in the body; eccentric variants throttle, lubricated variants are on/off only.<span class="tpl-cite">See slide 30. Component Index: cvh-cmp-eccentric-plug-valve-body, cvh-cmp-lubricated-plug-valve.</span></div>
+      </div>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">31</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

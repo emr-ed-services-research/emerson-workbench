@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 083 &mdash; Piston Actuators &mdash; Single- vs. Double-Acting</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m1, page 83 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.distinguish-actuator-mechanism-types [understand ·
+       mechanism]. Components: cvh-cmp-piston-actuator (CVH ch1 Fig. 1.10 —
+       a fully labelled 7-part cutaway, own printed key) and
+       cvh-cmp-double-acting-piston-actuator (ch3 Fig. 3.46 — an installed
+       valve+actuator photo, unlabelled). Composed per Style Guide Sec 5.14
+       as two separate images in one multi-image SVG (has-wide-fig), each
+       with its own data-lightbox-caption (Sec 5.13). Because the left-hand
+       image already carries its own printed 7-part key, no house-added
+       numbered badges are layered on either image (same Sec 6.2 reasoning
+       as slides 81/82) — plain (no .num) whole-image captions, bold-led by
+       construction, matching items[].t verbatim. -->
+  <article class="slide slide--role-mechanism has-wide-fig" data-slide="83" data-deck="cve1">
+    <h1 class="slide-title">Piston Actuators &mdash; Single- vs. Double-Acting</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <svg viewBox="0 0 1738 690" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Left: a piston-type actuator, a fully labelled 7-part cutaway. Right: a control valve with a double-acting piston actuator, supplied with air on both sides of the piston.">
+            <image href="../assets/sourced/cvh1-fig1-10-piston-actuator.png" x="0" y="0" width="650" height="690" data-lightbox-caption="Fig. 1.10, Piston-Type Actuator. Component Index: cvh-cmp-piston-actuator."></image>
+            <image href="../assets/sourced/cvh3-fig3-46-double-acting-piston-actuator.png" x="690" y="0" width="1048" height="690" data-lightbox-caption="Fig. 3.46, Control Valve with Double-Acting Piston Actuator. Component Index: cvh-cmp-double-acting-piston-actuator."></image>
+          </svg>
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li><b>Baseline (single-acting)</b> &mdash; loading pressure connection, piston, piston seal, cylinder, cylinder closure seal, seal bushing, stem connector; air to one side of the piston only.</li>
+        <li><b>Double-acting</b> &mdash; air supplied to both sides of the piston for maximum force in either direction, at the cost of needing a fail-safe accessory the single-acting design doesn't.</li>
+      </ul>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Figs. 1.10 &amp; 3.46 &mdash; used directly; Fig. 1.10's own printed numbered key retained as-is. Component Index: cvh-cmp-piston-actuator, cvh-cmp-double-acting-piston-actuator.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">83</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

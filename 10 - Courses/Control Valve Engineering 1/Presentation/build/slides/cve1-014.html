@@ -3,30 +3,40 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CVE1 &middot; Slide 014 &mdash; Field Inspection, Three Weeks In</title>
+<title>CVE1 &middot; Slide 014 &mdash; Deadband on the Open Loop</title>
 <link rel="stylesheet" href="../css/emerson-workbench.css">
 <link rel="stylesheet" href="../css/gallery.css">
 <script src="../assets/slides.js" defer></script>
 </head>
 <body class="ew-deck">
 <main class="ew-stage">
-  <!-- cve1-ch1-m3, page 14 — eng.noise-cavitation.damage-diagnosis
-       [understand · mechanism, develops]. First real Consequence for tier 3
-       — plain field-inspection finding, no persona voice. -->
+  <!-- cve1-ch1-m2, page 14 — eng.foundations.control-loop-and-final-control-element.
+       deadband-friction-effects [understand · mechanism]. Fig. 1.18 is exactly
+       the single-series case Style Guide Sec 5.4 describes (one hysteresis
+       loop, no line labels/key in the source) — used DIRECTLY, the same crop
+       Control Valve Basics' cvb-017 already verified and uses. Component Index:
+       cvh-cmp-deadband-graph. Asset copied from Control Valve Basics'
+       already-verified crop (no re-cropping performed) — see SOURCES.txt.
+       Keyed here to the CAUSAL MECHANISM (backlash/stiction) rather than CVB's
+       flatter loop-reading list, per course.json's templateRationale — this
+       course's level goes one step past "what the loop shows" into "what
+       produces it." Slide 15's contrast then splits backlash vs. stiction in
+       full; this list only introduces both by name. -->
   <article class="slide slide--role-mechanism" data-slide="14" data-deck="cve1">
-    <h1 class="slide-title">Field Inspection, Three Weeks In</h1>
+    <h1 class="slide-title">Deadband on the Open Loop</h1>
     <div class="tpl-content">
       <div class="tpl-fig-wrap">
         <div class="tpl-fig">
-          <img src="../assets/sourced/cvh5-fig5-9-cavitation-damage.png" style="width:100%;height:100%;object-fit:contain" alt="Figure 5.9, Typical Appearance of Cavitation Damage">
+          <img src="../assets/sourced/cvh1-fig1-18-deadband.png" style="width:100%;height:100%;object-fit:contain" alt="Deadband plot: Process Variable on the vertical axis against Controller Output on the horizontal axis. A path runs along the bottom then up the right side to the top-right corner; a second path in the middle shows the controller output reversing direction with no immediate change in process variable, forming an open hysteresis loop.">
         </div>
       </div>
       <ul class="tpl-list">
-        <li><span class="num">1</span>The trim is pitted and gouged &mdash; a cinder-like erosion pattern, not the smooth polish of simple wear</li>
-        <li><span class="num">2</span>The calculated Cv (5.6) was correct. This trim is failing for a different, specific reason the selection steps never directly tested for</li>
-        <li><span class="num">3</span>That reason has a specific, teachable mechanism &mdash; the flowchart's own step-3 cavitation check, skipped in Case C's spec</li>
+        <li><span class="num">1</span>The open loop is deadband made visible &mdash; reverse direction anywhere on the plot, and the process variable doesn't move again until the whole gap is crossed</li>
+        <li><span class="num">2</span>Backlash &mdash; slack or looseness in a mechanical connection &mdash; can produce it</li>
+        <li><span class="num">3</span>More often: static friction (stiction) &mdash; the force that must be overcome before there is any relative motion at all between two surfaces</li>
+        <li>A spec that never asks how much stiction a packing/trim combination carries is ignoring the mechanism most likely to produce this exact gap</li>
       </ul>
-      <p class="tpl-source">Control Valve Handbook, 6th ed., Figure 5.9 &ldquo;Typical Appearance of Cavitation Damage,&rdquo; p.130. Component Index: cvh-topic-cavitation, cvh-cmp-cavitation-damage-photo.</p>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Fig. 1.18 &mdash; used directly; single hysteresis loop, no line labels or key in the source (Style Guide &sect;5.4). Component Index: cvh-cmp-deadband-graph.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">14</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

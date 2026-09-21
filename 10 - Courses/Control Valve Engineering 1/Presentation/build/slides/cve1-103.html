@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 103 &mdash; Check Your Knowledge &mdash; Force &amp; Torque Sizing</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m2, page 103 — module check slide (role: check). No
+       component earmarked, by design (Stage 2 never gives a check slide
+       its own keyConcept). Synthesized from the whole module arc (slides
+       93-102), origination-mode Stage 3 — this module has no prior slide
+       file to fall back to. Stem re-runs slide 97's own precompression
+       worked-example shape with new numbers (300 lbf required; 8-20 psig
+       bench set; 60 sq. in.; 4-20 psig operating range = 240 lbf
+       precompression, a real shortfall) and then pivots to slide 99's own
+       caution (too much force is its own failure mode — buckled stem,
+       leaking, damaged internals) as the actual teaching point of the
+       stem: the correct next check is NOT simply "install a bigger
+       actuator." Distractors are real, plausible mix-ups: A restates the
+       "bigger is always safer" misconception slide 93's own prime framing
+       and slide 99's caution directly refute; C and D each conflate force
+       (sliding-stem, slides 94-99) with torque (rotary, slides 100-101) —
+       a real distinction this module's own two-competency structure
+       depends on a technician not blurring. Follows this course's own
+       cve1-092.html precedent exactly: data-correct="true" on the right
+       option, terse letter-plus-phrase reveal, not a restated sentence. -->
+  <article class="slide slide--role-check" data-slide="103" data-deck="cve1">
+    <h1 class="slide-title">Check Your Knowledge &mdash; Force &amp; Torque Sizing</h1>
+    <div class="tpl-content">
+      <p class="tpl-prompt">You calculate a sliding-stem valve's total required force at 300 lbf. A candidate diaphragm actuator has bench set 8&ndash;20 psig, 60 sq. in. effective area, and an operating range of 4&ndash;20 psig &mdash; giving 240 lbf of precompression, a real shortfall against the 300 lbf required. A colleague suggests fixing it by installing a bigger actuator with double the effective area. What is the more careful next check before doing that?</p>
+      <ul class="tpl-options">
+        <li>A.&nbsp;&nbsp;None needed &mdash; a bigger actuator is always the safer fix for a force shortfall</li>
+        <li data-correct="true">B.&nbsp;&nbsp;Confirm the larger actuator's thrust doesn't exceed the valve's own maximum-stem-load rating, since too much force can buckle the stem or damage internals</li>
+        <li>C.&nbsp;&nbsp;Recompute the actuator's torque rating instead of its force rating, since torque governs every actuator selection</li>
+        <li>D.&nbsp;&nbsp;Switch to a rotary valve, since rotary actuators use published A/B/C torque factors instead of a force calculation</li>
+      </ul>
+      <p class="tpl-reveal">B &middot; Check max stem load</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">103</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

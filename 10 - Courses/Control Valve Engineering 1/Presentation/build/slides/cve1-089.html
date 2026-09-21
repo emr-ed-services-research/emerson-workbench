@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 089 &mdash; Four Actuator Categories &mdash; Linkage Is the Real Difference</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch6-m1, page 89 — eng.actuation.actuator-selection-and-force-
+       torque-sizing.select-actuator-type-and-failsafe [evaluate ·
+       mechanism]. GENERATED FROM NOTHING, per Franz's explicit editorial
+       constraint for this slide: figures: [] in the registry for this
+       competency (course.json sourceNote) — pss-topic-actuator-design-
+       categories-and-linkage is prose-only, no figure anchors the
+       four-category/linkage distinction. Originated diagram, deliberately
+       plain and simple per the standing approach already approved elsewhere
+       in this course for a no-figure mechanism concept (cve1-061's minimal
+       schematic is the direct precedent: geometric shapes and short labels
+       only, nothing embellished or speculative beyond what the primitive's
+       own text states). Two halves: (1) four generic category icons —
+       spring-and-diaphragm, piston, electric motor, electro-hydraulic — as
+       plain schematic shapes (dome+spring, cylinder+piston, motor+gearbox,
+       cylinder+piston+pump), not photographs of real hardware, so the
+       working-rule-2 geometry check does not apply the way it would to a
+       drawing of a real physical part; (2) the rotary-linkage vs.
+       sliding-stem-no-linkage contrast, matching the mechanism already
+       shown pictorially on slide 82 (lever+shaft for rotary, direct stem
+       for sliding-stem) but drawn schematically here to isolate the ONE
+       point this concept teaches — that the categories differ only by
+       linkage, not by power source. has-wide-fig: the two-part diagram
+       needs the full slide width. -->
+  <article class="slide slide--role-mechanism has-wide-fig" data-slide="89" data-deck="cve1">
+    <h1 class="slide-title">Four Actuator Categories &mdash; Linkage Is the Real Difference</h1>
+    <div class="tpl-content">
+      <div class="tpl-fig-wrap">
+        <div class="tpl-fig">
+          <svg viewBox="0 0 1600 800" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Top: four schematic actuator-category icons — spring-and-diaphragm, pneumatic piston, electric motor, electro-hydraulic. Bottom: a rotary actuator needing a lever-and-shaft linkage to convert linear motion into 90-degree rotation, contrasted with a sliding-stem actuator connected directly to the stem with no linkage at all.">
+            <g stroke="#3F4040" stroke-width="3" fill="none" font-family="Arial, Helvetica, sans-serif">
+              <!-- Icon 1: Spring-and-Diaphragm -->
+              <rect x="115" y="90" width="200" height="70" rx="35"></rect>
+              <polyline points="215,160 195,174 235,188 195,202 235,216 215,230"></polyline>
+              <line x1="215" y1="230" x2="215" y2="290"></line>
+              <text x="215" y="325" text-anchor="middle" font-size="24" font-weight="700" fill="#3F4040" stroke="none">Spring-and-Diaphragm</text>
+
+              <!-- Icon 2: Pneumatic Piston -->
+              <rect x="525" y="90" width="160" height="130" rx="8"></rect>
+              <rect x="525" y="140" width="160" height="16" fill="#3F4040" stroke="none"></rect>
+              <line x1="605" y1="220" x2="605" y2="290"></line>
+              <path d="M508,148 L522,140 L522,156 Z" fill="#3F4040" stroke="none"></path>
+              <path d="M702,148 L688,140 L688,156 Z" fill="#3F4040" stroke="none"></path>
+              <text x="605" y="325" text-anchor="middle" font-size="24" font-weight="700" fill="#3F4040" stroke="none">Pneumatic Piston</text>
+
+              <!-- Icon 3: Electric Motor -->
+              <circle cx="940" cy="155" r="55"></circle>
+              <rect x="985" y="125" width="90" height="60" rx="8"></rect>
+              <line x1="1030" y1="185" x2="1030" y2="290"></line>
+              <text x="995" y="325" text-anchor="middle" font-size="24" font-weight="700" fill="#3F4040" stroke="none">Electric Motor</text>
+
+              <!-- Icon 4: Electro-Hydraulic -->
+              <rect x="1300" y="90" width="140" height="120" rx="8"></rect>
+              <rect x="1300" y="135" width="140" height="14" fill="#3F4040" stroke="none"></rect>
+              <line x1="1370" y1="210" x2="1370" y2="290"></line>
+              <line x1="1440" y1="150" x2="1462" y2="150"></line>
+              <circle cx="1490" cy="150" r="34"></circle>
+              <circle cx="1490" cy="108" r="15"></circle>
+              <text x="1400" y="325" text-anchor="middle" font-size="24" font-weight="700" fill="#3F4040" stroke="none">Electro-Hydraulic</text>
+            </g>
+
+            <line x1="40" y1="360" x2="1560" y2="360" stroke="#959797" stroke-width="2"></line>
+            <line x1="800" y1="390" x2="800" y2="760" stroke="#959797" stroke-width="2"></line>
+
+            <g stroke="#3F4040" stroke-width="3" fill="none" font-family="Arial, Helvetica, sans-serif">
+              <!-- Left: Rotary — needs a linkage -->
+              <text x="400" y="410" text-anchor="middle" font-size="26" font-weight="700" fill="#004B8D" stroke="none">Rotary &mdash; needs a linkage</text>
+              <rect x="330" y="430" width="140" height="80" rx="8"></rect>
+              <text x="400" y="476" text-anchor="middle" font-size="18" fill="#3F4040" stroke="none">Actuator</text>
+              <line x1="400" y1="510" x2="400" y2="570"></line>
+              <line x1="400" y1="570" x2="520" y2="620"></line>
+              <text x="440" y="580" font-size="17" fill="#3F4040" stroke="none">Lever</text>
+              <circle cx="520" cy="620" r="13" fill="#004B8D" stroke="none"></circle>
+              <path d="M495,595 A36,36 0 0 1 545,600" stroke="#F79428" fill="none"></path>
+              <path d="M545,600 L540,589 L552,596 Z" fill="#F79428" stroke="none"></path>
+              <ellipse cx="630" cy="620" rx="55" ry="20"></ellipse>
+              <text x="565" y="670" font-size="17" fill="#3F4040" stroke="none">Shaft &mdash; 90&#176; rotation</text>
+
+              <!-- Right: Sliding-stem — no linkage -->
+              <text x="1200" y="410" text-anchor="middle" font-size="26" font-weight="700" fill="#004B8D" stroke="none">Sliding-Stem &mdash; no linkage</text>
+              <rect x="1130" y="430" width="140" height="80" rx="8"></rect>
+              <text x="1200" y="476" text-anchor="middle" font-size="18" fill="#3F4040" stroke="none">Actuator</text>
+              <line x1="1200" y1="510" x2="1200" y2="650"></line>
+              <text x="1215" y="590" font-size="17" fill="#3F4040" stroke="none">Stem</text>
+              <path d="M1178,650 L1222,650 L1210,690 L1190,690 Z"></path>
+              <text x="1085" y="670" font-size="17" fill="#3F4040" stroke="none">No lost motion</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+      <ul class="tpl-list">
+        <li>Four categories, same job &mdash; spring-and-diaphragm, piston, electric motor, electro-hydraulic &mdash; for either sliding-stem or rotary bodies; they differ only by linkage, not by power source.</li>
+        <li>Coupling matters where a linkage exists &mdash; a slotted connector on a milled flat is generally unsatisfactory, a pinned connection suits nominal torque, a splined, clamped connector eliminates lost motion and handles high torque.</li>
+      </ul>
+      <p class="tpl-source">Originated schematic &mdash; no component is registered for this competency (Power &amp; Severe Service Sourcebook, pss-topic-actuator-design-categories-and-linkage, prose only). Not a redraw of any source figure.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">89</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>

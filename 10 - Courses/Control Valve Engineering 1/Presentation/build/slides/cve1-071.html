@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CVE1 &middot; Slide 071 &mdash; Reading a Real ISO 15848-1 Qualification Report</title>
+<link rel="stylesheet" href="../css/emerson-workbench.css">
+<link rel="stylesheet" href="../css/gallery.css">
+<script src="../assets/slides.js" defer></script>
+</head>
+<body class="ew-deck">
+<main class="ew-stage">
+  <!-- cve1-ch5-m1, page 71 — eng.selection.shutoff-leakage-and-standards.
+       interpret-iso15848-qualification-data [analyze · application].
+       Components: cvh-cmp-iso15848-1-measured-leak-rate (CVH 6th ed.
+       Fig. 3.27, p.70) and cvh-cmp-iso15848-1-measured-leak-concentration
+       (Fig. 3.28, p.70) — both already individually cropped and on file
+       in the Source Library extracted-figures folder (no re-cropping
+       needed), copied verbatim into this course's own assets/sourced/.
+       Two genuinely separate figures paired for one reading exercise —
+       per Style Guide Sec 5.13/5.14, composed as two embedded images
+       inside one shared SVG wrapper rather than two stacked plain image
+       tags, so each stays its own independently-navigable, independently-
+       captioned lightbox item
+       (neither is a sub-panel of the other; each is its own numbered
+       Handbook figure). Matches this module's own cve1-ch5-m1-act2
+       activity, which already frames these same two figures as a paired
+       data-reading exercise. No .tpl-list — this is the base application
+       shape (chart + takeaway + source), not the keyed-graph or
+       decision-table variant; the two source tables ARE the content, with
+       nothing further to key beside them. -->
+  <article class="slide slide--role-application" data-slide="71" data-deck="cve1">
+    <h1 class="slide-title">Reading a Real ISO 15848-1 Qualification Report</h1>
+    <div class="tpl-content">
+      <div class="tpl-chart">
+        <svg viewBox="0 0 993 440" width="100%" height="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="ISO 15848-1 measured leak-rate table (AH/BH/CH) beside the measured leak-concentration table (AM/BM/CM)">
+          <image href="../assets/sourced/cvh3-fig3-27-iso15848-1-measured-leak-rate.png" x="0" y="0" width="450" height="440" data-lightbox-caption="Fig. 3.27, ISO 15848-1 Measured Leak Rate (AH/BH/CH). Component Index: cvh-cmp-iso15848-1-measured-leak-rate."></image>
+          <image href="../assets/sourced/cvh3-fig3-28-iso15848-1-measured-leak-concentration.png" x="490" y="0" width="503" height="440" data-lightbox-caption="Fig. 3.28, ISO 15848-1 Measured Leak Concentration (AM/BM/CM). Component Index: cvh-cmp-iso15848-1-measured-leak-concentration."></image>
+        </svg>
+      </div>
+      <p class="tpl-takeaway">A stem-seal design earns two independent letters &mdash; H for measured leak rate, M for measured leak concentration &mdash; not the same number read two ways; Class A on either scale is realistically achievable only with a bellows design.</p>
+      <p class="tpl-source">After Control Valve Handbook, 6th ed., Figs. 3.27 &amp; 3.28 &mdash; both used directly. Component Index: cvh-cmp-iso15848-1-measured-leak-rate, cvh-cmp-iso15848-1-measured-leak-concentration.</p>
+    </div>
+    <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">71</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
+  </article>
+</main>
+</body>
+</html>
