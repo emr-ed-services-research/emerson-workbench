@@ -30,6 +30,9 @@
     ctxConcepts: byId("ctxConcepts"), ctxCheckWrap: byId("ctxCheckWrap"), ctxCheck: byId("ctxCheck"),
     ctxRegroundWrap: byId("ctxRegroundWrap"), ctxRegroundBtn: byId("ctxRegroundBtn"), ctxReground: byId("ctxReground"),
     ctxRegroundHook: byId("ctxRegroundHook"), ctxRegroundBridge: byId("ctxRegroundBridge"), ctxRegroundDepth: byId("ctxRegroundDepth"),
+    ctxRegroundExpandBtn: byId("ctxRegroundExpandBtn"),
+    regroundov: byId("regroundov"), regroundovBody: byId("regroundovBody"), regroundovClose: byId("regroundovClose"),
+    regroundovTitle: byId("regroundovTitle"),
     ftRight: byId("ftRight"), progressPct: byId("progressPct"),
     progressBar: byId("progressBar"), hdProgress: byId("hdProgress"),
     hdDay: byId("hdDay")
@@ -104,6 +107,7 @@
     buildToc();
     wireChrome();
     wireLibrary();
+    wireRegroundOverlay();
     window.addEventListener("hashchange", render);
     render();
   }
@@ -593,6 +597,18 @@
      "Instructor reorientation" in Project Log & Backlog.md. Collapsed by
      default on every module change so it never lingers open into a module
      it wasn't written for. */
+  function regroundParas(text) {
+    return (text || "").split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean);
+  }
+  function fillParaBlock(container, text) {
+    container.innerHTML = "";
+    regroundParas(text).forEach(function (para) {
+      var p = document.createElement("p");
+      p.textContent = para;
+      container.appendChild(p);
+    });
+  }
+
   function renderReground(m) {
     var rg = m.reground;
     if (!rg || (!rg.hook && !rg.bridge && !rg.depth)) {
@@ -604,12 +620,51 @@
     el.ctxRegroundBtn.setAttribute("aria-expanded", "false");
     el.ctxRegroundHook.textContent = rg.hook || "";
     el.ctxRegroundBridge.textContent = rg.bridge || "";
-    el.ctxRegroundDepth.textContent = rg.depth || "";
+    fillParaBlock(el.ctxRegroundDepth, rg.depth);
     el.ctxRegroundBtn.onclick = function () {
       var open = el.ctxReground.hidden;
       el.ctxReground.hidden = !open;
       el.ctxRegroundBtn.setAttribute("aria-expanded", String(open));
     };
+    el.ctxRegroundExpandBtn.onclick = function () { openRegroundOverlay(m.title || m.id, rg); };
+  }
+
+  /* ---------- reground overlay (wide reading view) ------------------
+     A second, larger-type view of the same hook/bridge/depth content the
+     rail already shows, opened from the rail's own Expand button - the
+     rail copy is never removed, this is purely for when its fixed width
+     makes the depth text hard to read (Franz, 2026-09-20). Same
+     open/close/Esc/backdrop-click convention as wireLibrary(). */
+  var regroundOpen = false;
+  function closeRegroundOverlay() { regroundOpen = false; document.body.classList.remove("reground-open"); }
+  function openRegroundOverlay(title, rg) {
+    el.regroundovTitle.textContent = title ? ("What are we doing, and why? — " + title) : "What are we doing, and why?";
+    el.regroundovBody.innerHTML = "";
+    var parts = [["In plain terms", rg.hook], ["The real vocabulary", rg.bridge], ["The actual engineering", rg.depth]];
+    parts.forEach(function (pair) {
+      if (!pair[1]) return;
+      var part = document.createElement("div");
+      part.className = "regroundov__part";
+      var h5 = document.createElement("h5");
+      h5.textContent = pair[0];
+      part.appendChild(h5);
+      var body = document.createElement("div");
+      fillParaBlock(body, pair[1]);
+      while (body.firstChild) part.appendChild(body.firstChild);
+      el.regroundovBody.appendChild(part);
+    });
+    regroundOpen = true;
+    document.body.classList.add("reground-open");
+  }
+  function wireRegroundOverlay() {
+    var ov = el.regroundov;
+    if (!ov) return;
+    el.regroundovClose.onclick = closeRegroundOverlay;
+    ov.addEventListener("mousedown", function (e) { if (e.target === ov) closeRegroundOverlay(); });
+    document.addEventListener("keydown", function (e) {
+      if (!regroundOpen) return;
+      if (e.key === "Escape") { e.stopPropagation(); e.preventDefault(); closeRegroundOverlay(); }
+    }, true);
   }
 
   /* ---------- stage nav ------------------------------------- */

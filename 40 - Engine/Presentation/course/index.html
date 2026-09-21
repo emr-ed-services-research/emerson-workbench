@@ -70,6 +70,16 @@
         </div>
       </div>
     </div>
+
+    <div class="regroundov" id="regroundov" aria-label="Where are we, and why?">
+      <div class="regroundov__panel">
+        <div class="regroundov__bar">
+          <span class="regroundov__title" id="regroundovTitle">What are we doing, and why?</span>
+          <button class="regroundov__nav regroundov__close" id="regroundovClose" title="Close (Esc)">✕</button>
+        </div>
+        <div class="regroundov__body" id="regroundovBody"></div>
+      </div>
+    </div>
   </main>
 
   <aside class="shell__ctx" id="ctx" aria-label="Current context">
@@ -86,6 +96,7 @@
     <div class="ctx__block" id="ctxRegroundWrap">
       <button class="ctx__reground-btn" id="ctxRegroundBtn" aria-expanded="false" title="Reground on this module ( G )">↺&nbsp;What are we doing, and why?</button>
       <div class="ctx__reground" id="ctxReground" hidden>
+        <button class="ctx__reground-expand" id="ctxRegroundExpandBtn" title="Read full-width">⤢&nbsp;Expand</button>
         <div class="ctx__reground-part">
           <h5>In plain terms</h5>
           <p id="ctxRegroundHook"></p>
@@ -96,7 +107,7 @@
         </div>
         <div class="ctx__reground-part">
           <h5>The actual engineering</h5>
-          <p id="ctxRegroundDepth"></p>
+          <div id="ctxRegroundDepth"></div>
         </div>
       </div>
     </div>

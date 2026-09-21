@@ -2,9 +2,9 @@
 #  verify.ps1  -  integrity checks for a Workbench course
 #
 #  Folds in the checks that were run by hand through the 14101 four-part pass:
-#  JSON validity, key-concept page-ref integrity, slide-HTML tag balance,
-#  manifest parse + title drift, CSS brace balance, engine-lock drift, and the
-#  reference-data (data-ref) drift lint.
+#  JSON validity, key-concept page-ref integrity, course-data.js drift,
+#  slide-HTML tag balance, manifest parse + title drift, CSS brace balance,
+#  engine-lock drift, and the reference-data (data-ref) drift lint.
 #
 #  Usage:  .\verify.ps1 -Course "14101 Valve Trim and Body Maintenance"
 #
@@ -98,6 +98,28 @@ if ($C) {
   if ($figureOnly.Count) { $figureOnly | ForEach-Object { Warn $_ } } else { Pass "no module is sourced entirely from figures with zero topic backing" }
 
   if ($C.slidePrefix) { Pass "slidePrefix = $($C.slidePrefix)" } else { Warn "no slidePrefix (course.js will use code + '-')" }
+}
+
+# ---- 1b. course-data.js drift ------------------------------------------
+# course.js's own boot logic (`if (window.EW_COURSE) { boot(window.EW_COURSE); }
+# else fetch("course.json")...`) means a course-data.js that EXISTS is always
+# preferred over the live course.json, in every normal open of the course -
+# the fetch fallback only ever fires if the file is missing outright. There
+# is no automated regeneration step, so an edit to course.json alone is
+# silently invisible in the real running Workshop until course-data.js is
+# regenerated (found 2026-09-20: CVE1's own copy had gone a full day and an
+# entire Phase 1-3 remediation pass out of sync with no check catching it -
+# see `gen-course-data.ps1` for the fix and how to regenerate). FAIL, not
+# warn: a stale copy means the course a learner or reviewer actually opens
+# is not the course this file just validated.
+$courseData = Join-Path $pres 'course\course-data.js'
+if (Test-Path $courseData) {
+  $expected = "window.EW_COURSE = " + (Get-Content $courseJson -Raw -Encoding UTF8) + ";`n"
+  $actual   = Get-Content $courseData -Raw -Encoding UTF8
+  if ($expected -eq $actual) { Pass "course-data.js matches course.json" }
+  else { Fail "course-data.js is STALE - out of sync with course.json (the running Workshop will show old content). Regenerate: .\gen-course-data.ps1 -Course `"$Course`"" }
+} else {
+  Pass "no course-data.js (course.js will fetch course.json live)"
 }
 
 # ---- 2. slide HTML tag balance -----------------------------------------

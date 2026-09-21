@@ -502,6 +502,54 @@
     if (def) def.textContent = key.getAttribute("data-def") || "";
   });
 
+  /* role-nomenclature-equation (added 2026-09-21, Phase 3): click a step
+     key -> reveal that step's part(s) AND every earlier step's part(s) on
+     both the persistent schematic and the equation (cumulative, sticky),
+     highlight only the current step's own part(s), and swap the shared
+     description pane. Deliberately a NEW, additive-only handler scoped to
+     its own class names (.tpl-step-keys / .tpl-step-key / .tpl-step-def)
+     rather than an edit to role-nomenclature-parse's handler above: that
+     handler's toggle is exclusive (one data-part "on" at a time, every
+     other .tpl-tok turned off), which is correct for highlighting one
+     sentence part but wrong here, where the whole point is a schematic
+     that only ever gains labels as steps advance. Clicking an EARLIER
+     step retracts every later callout (confirmed wanted behaviour, not a
+     bug) rather than leaving a trail. */
+  document.addEventListener("click", function (e) {
+    var key = e.target.closest ? e.target.closest(".tpl-step-keys .tpl-step-key") : null;
+    if (!key) return;
+
+    var keys = key.closest(".tpl-step-keys");
+    var stepKeys = Array.prototype.slice.call(keys.querySelectorAll(".tpl-step-key"));
+    var idx = stepKeys.indexOf(key);
+
+    stepKeys.forEach(function (k, i) {
+      k.classList.toggle("is-active", i === idx);
+      k.classList.toggle("is-done", i < idx);
+    });
+
+    // Union of every data-part named by this step and every step before it
+    // (a step's data-part may itself be a space-separated list of 1-2 parts,
+    // for a step that introduces two variables at once).
+    var seenParts = [];
+    stepKeys.slice(0, idx + 1).forEach(function (k) {
+      (k.getAttribute("data-part") || "").split(/\s+/).forEach(function (p) {
+        if (p && seenParts.indexOf(p) === -1) seenParts.push(p);
+      });
+    });
+    var currentParts = (key.getAttribute("data-part") || "").split(/\s+/).filter(Boolean);
+
+    var content = keys.closest(".tpl-content");
+    Array.prototype.forEach.call(content.querySelectorAll(".tpl-tok"), function (t) {
+      var p = t.getAttribute("data-part");
+      t.classList.toggle("is-revealed", seenParts.indexOf(p) !== -1);
+      t.classList.toggle("is-on", currentParts.indexOf(p) !== -1);
+    });
+
+    var def = content.querySelector(".tpl-step-def");
+    if (def) def.textContent = key.getAttribute("data-def") || "";
+  });
+
   /* role-application-pick: click an item -> mark it selected and render
      its own authored worked-analysis markup (data-work, an HTML string
      the slide author writes the same way any other slide content is

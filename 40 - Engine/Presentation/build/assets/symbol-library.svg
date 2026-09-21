@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Emerson Workbench — ISA-Standard Schematic Symbol Library (Phase 1)
+  =====================================================================
+  Reusable SVG symbol primitives for CVE1 Chapter 8 (and other courses)
+  loop/P&ID-style teaching schematics. Built for Franz's review before
+  Phase 2 (Gallery template) uses these.
+
+  GROUNDING (see reference.md for full detail):
+    - sym-valve-body       : REAL vault source — the filled "bowtie" valve
+                              glyph in Control Valve Handbook Fig. 14.14/14.15
+                              (20 - Source Library/Handbooks & Sourcebooks/
+                              Control Valve Handbook — extracted-figures/
+                              ch4-fig14.14-sov-3port-spring-return-symbol.png
+                              and ch4-fig14.15-...png). Geometry (two solid
+                              triangles meeting apex-to-apex) and fill colour
+                              (Emerson blue) both taken directly from that
+                              figure. Port numbering removed — this is a
+                              generic 2-port control valve, not the 3-port
+                              SOV the source figure depicts.
+    - line-process / line-signal / flow-arrow : REAL vault source for the
+                              *distinction itself* — Control Valve Handbook
+                              Fig. 1.1 (cvh-cmp-feedback-control-loop, used
+                              on cve1-005.html) draws the process/variable
+                              path as a thick solid line with a filled
+                              arrowhead and the signal/feedback path as a
+                              thinner line — carried here into true ISA
+                              process-line vs. signal-line convention
+                              (solid heavy = process piping, dashed lighter
+                              = instrument signal), which is also standard,
+                              uncontroversial ISA 5.1 usage.
+    - sym-instrument-field,
+      sym-instrument-panel  : GENERAL ISA 5.1 convention (not vault-sourced
+                              as a line-schematic bubble). The vault's own
+                              SOV figures do place a tag in a small square
+                              badge (the "S" pilot tag) next to the valve
+                              body, which is a real, if different-shaped,
+                              precedent for "a tagged shape beside/on the
+                              line" — but the round instrument bubble and
+                              the field-mounted-vs-panel-mounted (plain
+                              circle vs. bisected circle) distinction are
+                              standard ISA 5.1 textbook convention, supplied
+                              from general knowledge.
+    - sym-vessel-tank       : GENERAL convention. No loop/P&ID vessel or
+                              tank symbol was found anywhere in this vault's
+                              Source Library (checked all 15 Control Valve
+                              Handbook chapter indexes and the extracted-
+                              figures folder listing).
+    - sym-pipe-reducer      : GENERAL convention. Added because CVE1
+                              Chapter 8's real content (the piping-geometry
+                              factor Fp, ΣK = K1+K2+KB1−KB2, the concentric-
+                              reducer case in course.json cve1-ch8-m1)
+                              explicitly teaches reducers bolted directly to
+                              the valve's own connections — a schematic that
+                              cannot show Fp's physical cause without one.
+
+  Colour tokens are the exact hex values from this course's own
+  tokens.css / Style Guide.md §3.1 — no non-palette colour is used.
+    emerson-blue     #004B8D   (valve body fill — "the real thing")
+    emerson-charcoal #3F4040   (process line / structural outline / text)
+    emerson-grey     #959797   (signal line / secondary)
+    emerson-white    #FFFFFF   (component fill, page background)
+
+  Stroke weights follow Style Guide §5.6's existing real/ideal vocabulary
+  (solid-heavy vs. dashed-light), carried from graphs into piping lines:
+  process line 4px solid, signal line 2px dashed.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="0 0 1000 900" width="1000" height="900" font-family="Arial, Helvetica, sans-serif">
+
+  <style>
+    :root {
+      --emerson-blue: #004B8D;
+      --emerson-charcoal: #3F4040;
+      --emerson-grey: #959797;
+      --emerson-white: #FFFFFF;
+    }
+    .lbl { font-size: 18px; fill: var(--emerson-charcoal); font-weight: bold; }
+    .cap { font-size: 13px; fill: var(--emerson-charcoal); }
+    .tag-fill { fill: var(--emerson-white); }
+  </style>
+
+  <defs>
+
+    <!-- ============================================================
+         sym-valve-body — plain two-port control valve "bowtie" body.
+         REAL vault grounding: CVH Fig. 14.14 / 14.15 (see header note).
+         viewBox: 0 0 120 100. Pipe centerline at y=50.
+         ============================================================ -->
+    <symbol id="sym-valve-body" viewBox="0 0 120 100">
+      <!-- inlet / outlet pipe stubs -->
+      <line x1="0" y1="50" x2="20" y2="50" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+      <line x1="100" y1="50" x2="120" y2="50" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+      <!-- bowtie: two filled triangles meeting apex-to-apex -->
+      <polygon points="20,20 20,80 60,50" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
+      <polygon points="100,20 100,80 60,50" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
+    </symbol>
+
+    <!-- ============================================================
+         sym-valve-actuator — the same bowtie body with a spring-and-
+         diaphragm pneumatic actuator on top (composite symbol).
+         GENERAL ISA convention for the actuator housing/stem/diaphragm-
+         split; the bowtie body beneath it is the same real-grounded
+         geometry as sym-valve-body.
+         viewBox: 0 0 120 200. Pipe centerline at y=170.
+         ============================================================ -->
+    <symbol id="sym-valve-actuator" viewBox="0 0 120 200">
+      <!-- inlet / outlet pipe stubs -->
+      <line x1="0" y1="170" x2="20" y2="170" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+      <line x1="100" y1="170" x2="120" y2="170" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+      <!-- bowtie valve body -->
+      <polygon points="20,140 20,200 60,170" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
+      <polygon points="100,140 100,200 60,170" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
+      <!-- stem -->
+      <line x1="60" y1="140" x2="60" y2="95" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+      <!-- diaphragm actuator housing: two stacked cases split by the diaphragm line -->
+      <path d="M 20 95 L 100 95 L 100 60 Q 100 40 60 40 Q 20 40 20 60 Z"
+            fill="var(--emerson-white)" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+      <line x1="20" y1="67" x2="100" y2="67" stroke="var(--emerson-charcoal)" stroke-width="2.5"/>
+      <!-- yoke legs connecting housing to body -->
+      <line x1="30" y1="95" x2="30" y2="140" stroke="var(--emerson-charcoal)" stroke-width="2"/>
+      <line x1="90" y1="95" x2="90" y2="140" stroke="var(--emerson-charcoal)" stroke-width="2"/>
+    </symbol>
+
+    <!-- ============================================================
+         sym-instrument-field — field-mounted instrument bubble.
+         GENERAL ISA 5.1 convention: plain circle = field-mounted.
+         Tag text is added by the composing document (kept out of the
+         symbol so any two-letter tag can be reused).
+         viewBox: 0 0 100 100.
+         ============================================================ -->
+    <symbol id="sym-instrument-field" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="42" class="tag-fill" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+    </symbol>
+
+    <!-- ============================================================
+         sym-instrument-panel — panel/DCS-mounted instrument bubble.
+         GENERAL ISA 5.1 convention: circle bisected by a horizontal
+         line = mounted behind a panel or in a control-room/DCS,
+         distinguishing e.g. a controller from a field-mounted
+         transmitter.
+         viewBox: 0 0 100 100.
+         ============================================================ -->
+    <symbol id="sym-instrument-panel" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="42" class="tag-fill" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+      <!-- bisecting line split with a gap so a centered tag label never renders through it -->
+      <line x1="10" y1="50" x2="35" y2="50" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+      <line x1="65" y1="50" x2="90" y2="50" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+    </symbol>
+
+    <!-- ============================================================
+         sym-vessel-tank — generic process vessel/tank.
+         GENERAL convention — no vault figure found for this.
+         viewBox: 0 0 140 180. Side nozzle at y=70 for a tap connection;
+         bottom nozzle at x=70 for an outlet.
+         ============================================================ -->
+    <symbol id="sym-vessel-tank" viewBox="0 0 140 180">
+      <path d="M 15 40 A 55 25 0 0 1 125 40 L 125 150 L 15 150 Z"
+            fill="var(--emerson-white)" stroke="var(--emerson-charcoal)" stroke-width="4" stroke-linejoin="round"/>
+      <path d="M 15 40 A 55 25 0 0 0 125 40" fill="none" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+      <!-- fluid level fill (illustrative, low alpha) -->
+      <path d="M 18 95 L 122 95 L 122 148 L 18 148 Z" fill="var(--emerson-blue)" opacity="0.12"/>
+      <!-- outlet nozzle, bottom center -->
+      <line x1="70" y1="150" x2="70" y2="170" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+      <!-- side tap nozzle for a level connection -->
+      <line x1="125" y1="80" x2="140" y2="80" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+    </symbol>
+
+    <!-- ============================================================
+         sym-pipe-reducer — concentric pipe reducer fitting.
+         GENERAL convention — added because CVE1 ch8's own sizing content
+         (piping-geometry factor Fp, concentric-reducer ΣK case) requires
+         showing a reducer bolted directly to the valve's connections.
+         viewBox: 0 0 100 60. Large bore on the left, reduced bore right.
+         ============================================================ -->
+    <symbol id="sym-pipe-reducer" viewBox="0 0 100 60">
+      <polygon points="0,12 0,48 70,38 70,22" fill="var(--emerson-white)" stroke="var(--emerson-charcoal)" stroke-width="3" stroke-linejoin="round"/>
+      <line x1="70" y1="30" x2="100" y2="30" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+    </symbol>
+
+    <!-- Flow-direction arrowhead for process lines. Geometry echoes the
+         filled arrowhead in CVH Fig. 1.1's Manipulated/Controlled Variable
+         arrows (real vault grounding for "process flow gets a filled
+         solid arrowhead"). -->
+    <marker id="arrow-process" viewBox="0 0 10 10" refX="8" refY="5"
+            markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--emerson-charcoal)"/>
+    </marker>
+
+    <!-- Small arrowhead for signal lines (lighter, matches the thinner
+         grey feedback arrows in the same CVH Fig. 1.1 loop diagram). -->
+    <marker id="arrow-signal" viewBox="0 0 10 10" refX="8" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--emerson-grey)"/>
+    </marker>
+
+  </defs>
+
+  <!-- ================================================================
+       SWATCH SHEET — every symbol shown standalone, plus the two line
+       styles, so this file can be opened directly for review.
+       ================================================================ -->
+  <rect x="0" y="0" width="1000" height="900" fill="var(--emerson-white)"/>
+  <text x="30" y="40" class="lbl" font-size="24">Emerson Workbench — ISA Schematic Symbol Library (Phase 1)</text>
+  <line x1="30" y1="52" x2="970" y2="52" stroke="var(--emerson-blue)" stroke-width="2"/>
+
+  <!-- Row 1 -->
+  <g transform="translate(40,90)">
+    <use href="#sym-valve-body" width="150" height="125"/>
+    <text x="10" y="150" class="cap" font-weight="bold">Control valve body</text>
+    <text x="10" y="168" class="cap">(vault-grounded)</text>
+  </g>
+
+  <g transform="translate(260,90)">
+    <use href="#sym-valve-actuator" width="120" height="200"/>
+    <text x="5" y="225" class="cap" font-weight="bold">Valve + diaphragm actuator</text>
+    <text x="5" y="243" class="cap">(body: vault; actuator: ISA general)</text>
+  </g>
+
+  <g transform="translate(460,90)">
+    <use href="#sym-instrument-field" width="90" height="90"/>
+    <text x="34" y="45" class="cap" font-weight="bold" text-anchor="middle">LT</text>
+    <text x="0" y="130" class="cap" font-weight="bold">Field instrument</text>
+    <text x="0" y="148" class="cap">(ISA general)</text>
+  </g>
+
+  <g transform="translate(610,90)">
+    <use href="#sym-instrument-panel" width="90" height="90"/>
+    <text x="34" y="45" class="cap" font-weight="bold" text-anchor="middle">LC</text>
+    <text x="0" y="130" class="cap" font-weight="bold">Panel/DCS instrument</text>
+    <text x="0" y="148" class="cap">(ISA general)</text>
+  </g>
+
+  <!-- Row 2 -->
+  <g transform="translate(40,340)">
+    <use href="#sym-vessel-tank" width="130" height="170"/>
+    <text x="0" y="200" class="cap" font-weight="bold">Process vessel / tank</text>
+    <text x="0" y="218" class="cap">(ISA general — no vault figure found)</text>
+  </g>
+
+  <g transform="translate(230,340)">
+    <use href="#sym-pipe-reducer" width="130" height="80"/>
+    <text x="0" y="110" class="cap" font-weight="bold">Concentric pipe reducer</text>
+    <text x="0" y="128" class="cap">(ISA general — added for ch8's Fp content)</text>
+  </g>
+
+  <!-- Line-style key -->
+  <g transform="translate(60,590)">
+    <line x1="0" y1="10" x2="140" y2="10" stroke="var(--emerson-charcoal)" stroke-width="4" marker-end="url(#arrow-process)"/>
+    <text x="150" y="16" class="cap" font-weight="bold">Process / piping line — solid, 4px, charcoal</text>
+    <line x1="0" y1="45" x2="140" y2="45" stroke="var(--emerson-grey)" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#arrow-signal)"/>
+    <text x="150" y="51" class="cap" font-weight="bold">Instrument signal line — dashed, 2px, grey</text>
+    <text x="0" y="80" class="cap">Both grounded in CVH Fig. 1.1's own thick-solid-variable / thin-signal</text>
+    <text x="0" y="98" class="cap">line distinction (cvh-cmp-feedback-control-loop, used on cve1-005.html),</text>
+    <text x="0" y="116" class="cap">carried into standard ISA process-line vs. signal-line convention.</text>
+  </g>
+
+  <!-- Footer note -->
+  <text x="30" y="860" class="cap" font-style="italic">
+    Phase 1 asset build — foundation only. Does not touch any course content, Gallery template, or gallery.css.
+  </text>
+  <text x="30" y="878" class="cap" font-style="italic">
+    See reference.md for full per-symbol sourcing and demo.html for a composed horizontal loop example.
+  </text>
+
+</svg>

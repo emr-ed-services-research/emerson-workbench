@@ -1,17 +1,4 @@
 /* ============================================================================
-   SUPERSEDED — 2026-09-20. This copy is STALE (last current as of Canvas
-   Phase 1b, 2026-09-10) and is NOT distributed to courses by
-   build-course.ps1, which only copies from `40 - Engine/Presentation/`.
-   That gap let CVE1's own assembled gallery.css silently drift 131 lines
-   out of sync with no drift check catching it (`_engine-lock.json` never
-   tracked this file at all). Fixed: the real, current, actively-maintained
-   copy now lives at `40 - Engine/Presentation/build/css/gallery.css`,
-   which build-course.ps1 DOES sync and DOES track. Edit that file, not
-   this one — this copy is kept only so the Style Guide's own prior
-   reference and any bookmark to this path still resolve to real content;
-   it will drift again if treated as a place to make real changes.
-   ============================================================================ */
-/* ============================================================================
    gallery.css
 
    Eight master slide templates, one per Axis C concept role (see
@@ -362,6 +349,38 @@
 .slide--role-nomenclature.has-wide-fig .tpl-source,
 .slide--role-mechanism.has-wide-fig .tpl-source {
   grid-row: 3;
+  grid-column: 1;
+}
+
+/* .has-no-fig — MECHANISM ONLY (nomenclature's own figure-less shape is the
+   separate `nomenclature-reveal` role variant, §9 below — this modifier
+   does not apply to plain `nomenclature`). Formalizes the
+   `style="grid-template-columns:1fr"` inline override CVE1 repeated across
+   several shipped slides (e.g. cve1-100, cve1-109, cve1-143..170) into a
+   real class: collapses the fig/list two-column skeleton to one full-width
+   list column.
+
+   RESERVED FOR GENUINELY NON-VISUAL CONCEPTS — a purely definitional
+   distinction, a named framework, a numeric threshold with no physical or
+   spatial referent. THIS IS NOT THE DEFAULT FOR "NO SOURCE FIGURE WAS
+   FOUND." Composing a figure-less slide because no component was earmarked
+   in the reference library — rather than because the concept itself has
+   nothing to draw — was the actual root cause traced from CVE1's shipped
+   course (2026-09-20 review): a large share of this course's own content is
+   physical/spatial (valves, control loops, flow paths) and needs an
+   originated diagram regardless of whether a source figure exists (see
+   buildStage3OriginatePrompt's "generate from nothing" guidance, extended
+   to figures). Reach for `.has-no-fig` only after confirming the concept
+   has nothing to draw, never as a shortcut around drawing it. */
+.slide--role-mechanism.has-no-fig .tpl-content {
+  grid-template-columns: 1fr;
+}
+.slide--role-mechanism.has-no-fig .tpl-list {
+  grid-column: 1;
+  max-width: 72cqw;
+  margin: 0 auto;
+}
+.slide--role-mechanism.has-no-fig .tpl-source {
   grid-column: 1;
 }
 
@@ -722,6 +741,23 @@
   grid-row: 3;
 }
 
+/* .has-no-fig — same reservation as role-mechanism's own `.has-no-fig`
+   above (§2&3): for an application that is genuinely prose-only by design
+   (a definitional judgment, a named threshold — nothing to plot or
+   photograph), never a default for "no chart was available." The base
+   single-column skeleton already has no separate figure column to remove
+   here; this only restyles `.tpl-chart` itself to read as flowing prose —
+   centered, body-sized text — instead of an empty box sized for a graph or
+   photo (`width/height: 100%` with nothing to fill it). */
+.slide--role-application.has-no-fig .tpl-chart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.6cqw;
+  line-height: 1.4;
+  color: var(--body-text);
+}
+
 /* ---------------------------------------------------------------------- *
  * 6. CONTRAST — two panels, mirrored. `subgrid` locks the label / image /
  *    caption rows to the SAME height on both sides — captions align row to
@@ -774,6 +810,34 @@
 .slide--role-contrast .tpl-source {
   grid-row: 4;
   grid-column: 1 / -1;
+  text-align: center;
+}
+
+/* :has(.tmpl-table) — a 3+-way comparison composed as a real table, not the
+   strict mirrored 2-panel layout above (that layout structurally assumes
+   exactly two sides). CVE1 needed this repeatedly (e.g. a 3-row Greening
+   OF/BY/WITH comparison, cve1-015's two-cause deadband table) and worked
+   around it each time by hand-placing the production `.tmpl-table` — the
+   same table styling role-application's own `:has(.tmpl-table)`
+   decision-table variant above reuses — into the panel grid via an inline
+   `grid-column`/`grid-row` span, flagged in those slides' own comments as a
+   candidate for a real variant. Formalized here the same way: a table
+   comparison doesn't use the panel/divider columns at all (no `.tpl-panel`
+   markup is present), so the gate replaces them outright with one
+   full-width column rather than spanning a table across them. */
+.slide--role-contrast:has(.tmpl-table) .tpl-content {
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr auto;
+  row-gap: 1.2cqh;
+}
+.slide--role-contrast:has(.tmpl-table) .tmpl-table {
+  grid-column: 1;
+  grid-row: 1;
+  align-self: center;
+}
+.slide--role-contrast:has(.tmpl-table) .tpl-source {
+  grid-column: 1;
+  grid-row: 2;
   text-align: center;
 }
 
@@ -873,6 +937,48 @@
 }
 .slide--role-check .tpl-reveal.is-shown {
   display: block;
+}
+
+/* .has-fig — a supporting diagram alongside the check-your-knowledge
+   prompt (Decision 1, Franz's review of CVE1's origination pass,
+   2026-09-20): the base check skeleton above has no figure track at all,
+   which forced a per-file scoped `<style>` override the first time a check
+   stem needed one (a control-loop scenario, a P&ID) — explicitly rejected
+   as the permanent answer. Reuses the same `.tpl-fig-wrap`/`.tpl-fig`
+   pattern nomenclature/mechanism already use (§2&3 above), including
+   `object-fit: contain` — a check figure is a diagram to read accurately,
+   never cropped like a procedure-worked photo. Fixed-width figure column
+   beside the prompt/options/reveal column, which keeps its own three
+   explicit rows unchanged. */
+.slide--role-check.has-fig .tpl-content {
+  grid-template-columns: 1fr 34cqw;
+  column-gap: 3.2cqw;
+}
+.slide--role-check.has-fig .tpl-prompt,
+.slide--role-check.has-fig .tpl-options,
+.slide--role-check.has-fig .tpl-reveal {
+  grid-column: 1;
+}
+.slide--role-check.has-fig .tpl-fig-wrap {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+}
+.slide--role-check.has-fig .tpl-fig {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slide--role-check.has-fig .tpl-fig img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
 }
 
 /* ---------------------------------------------------------------------- *
@@ -1106,6 +1212,18 @@
 .slide--role-procedure-worked .tpl-source {
   grid-column: 1 / span 2;
   grid-row: 3;
+}
+
+/* .has-no-fig — same reservation as role-mechanism's own `.has-no-fig`
+   above (§2&3): genuinely non-visual worked content only (a judgment or
+   procedural distinction with no physical setup to show), never a default
+   for "no source photo was available." Collapses the fixed 32cqw figure
+   column so the tabs/tabpanes run the full content width. */
+.slide--role-procedure-worked.has-no-fig .tpl-content {
+  grid-template-columns: 1fr;
+}
+.slide--role-procedure-worked.has-no-fig .tpl-source {
+  grid-column: 1;
 }
 
 /* ---------------------------------------------------------------------- *
@@ -1416,4 +1534,258 @@
   font-size: 1.4cqw;
   color: var(--emerson-grey);
   line-height: 1.3;
+}
+
+/* ---------------------------------------------------------------------- *
+ * 15. NOMENCLATURE-EQUATION — names the symbols of ONE real sizing/
+ *    selection equation both physically (on a persistent horizontal
+ *    schematic) and numerically (real worked values), one or two terms
+ *    per step. A fourth nomenclature shape, alongside plain nomenclature
+ *    (a fixed source figure), nomenclature-reveal (a fixed named set, no
+ *    figure), and nomenclature-parse (the parts of one real sentence, no
+ *    figure) — this one is for an equation whose schematic GAINS labels
+ *    as steps advance and never loses one already shown, which neither
+ *    of those three shapes supports. Added 2026-09-21, Phase 3 of a
+ *    dedicated 5-phase build-out (Phase 1: the shared ISA symbol library
+ *    at assets/symbol-library.svg; Phase 2: this role proved standalone
+ *    against a real cve1-ch8 propane Cv-sizing case through several Franz
+ *    review rounds; Phase 3: ported here, real slides.js handler wired;
+ *    Phase 4: CVE1 ch8's own sizing slides rebuilt against it).
+ *
+ *    Structure: three stacked rows inside .tpl-content —
+ *      1. .tpl-fig-wrap  — the persistent horizontal schematic (SVG built
+ *         from the shared ISA symbol library's own <symbol> defs, reused
+ *         via <use> — see assets/symbol-library.svg and its companion
+ *         reference.md for full per-symbol sourcing; do not redraw a
+ *         symbol's geometry inline).
+ *      2. .tpl-eq-wrap   — the equation, persistent, plus a solved-line
+ *         that only appears once every term has been introduced.
+ *      3. .tpl-step-row  — a horizontal row of step buttons (left) driving
+ *         a shared description pane (right) — the same "keys drive a
+ *         shared pane" shape nomenclature-parse (§12) already uses.
+ *
+ *    Interaction: a DEDICATED slides.js handler, scoped to its own class
+ *    names (.tpl-step-keys / .tpl-step-key / .tpl-step-def) so it can
+ *    never fire on, or be fired by, nomenclature-parse's markup — it does
+ *    not edit that handler or touch its semantics anywhere. The one real
+ *    difference from nomenclature-parse's exclusive toggle: this role's
+ *    callouts ACCUMULATE (.is-revealed is sticky going forward — clicking
+ *    an earlier step retracts later ones, clicking forward never resets
+ *    what is already shown) because its whole premise is a schematic that
+ *    only ever gains labels. .is-on (the one shared blue-accent emphasis
+ *    used everywhere else in the system) still applies exclusively, to
+ *    only the current step's own part(s), layered on top of is-revealed.
+ * ---------------------------------------------------------------------- */
+.slide--role-nomenclature-equation .tpl-content {
+  /* Four explicit tracks, matching the four real children (fig-wrap,
+     eq-wrap, step-row, source) — the row count must match or an
+     un-declared child becomes an implicit row that silently steals space
+     from "1fr" (GALLERY FIX above, re-confirmed here the hard way during
+     the Phase 2 proof). */
+  grid-template-rows: 42cqh auto 1fr auto;
+  row-gap: 0.7cqh;
+}
+
+/* --- 1. Schematic row -------------------------------------------------- */
+.slide--role-nomenclature-equation .tpl-fig-wrap {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 0.07cqw solid color-mix(in srgb, var(--emerson-charcoal) 14%, #fff);
+  border-radius: 0.5cqw;
+  background: color-mix(in srgb, var(--emerson-charcoal) 3%, #fff);
+}
+.slide--role-nomenclature-equation .tpl-fig-wrap svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+/* Schematic identification labels shown from the start (e.g. an NPS
+   callout naming the hardware) — not gated behind a step; these name
+   the setup, not a taught variable. */
+.slide--role-nomenclature-equation .schem-persist text {
+  fill: var(--emerson-charcoal);
+  font-family: Arial, sans-serif;
+}
+/* A callout group not yet reached by the step sequence: fully invisible,
+   the schematic literally hasn't "gained" it yet. */
+.slide--role-nomenclature-equation .tpl-schem-part {
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+/* Once introduced, a callout STAYS on the schematic (sticky) even after
+   focus moves to a later step — the core requirement this role exists to
+   satisfy (a schematic that only ever gains labels, never resets). */
+.slide--role-nomenclature-equation .tpl-schem-part.is-revealed {
+  opacity: 1;
+}
+.slide--role-nomenclature-equation .tpl-schem-part text {
+  fill: var(--emerson-charcoal);
+  font-family: Arial, sans-serif;
+}
+.slide--role-nomenclature-equation .tpl-schem-part line,
+.slide--role-nomenclature-equation .tpl-schem-part path {
+  stroke: var(--emerson-charcoal);
+}
+.slide--role-nomenclature-equation .tpl-schem-part rect.callout-box {
+  fill: var(--emerson-white);
+  stroke: var(--emerson-charcoal);
+}
+/* The CURRENT step's callout gets the one extra emphasis layer, on top of
+   the settled "revealed" state — same blue-accent language as every other
+   callout marker in the system (Style Guide §6.1: filled emerson-blue,
+   never a second accent colour invented for emphasis). */
+.slide--role-nomenclature-equation .tpl-schem-part.is-on text {
+  fill: var(--emerson-blue);
+  font-weight: 700;
+}
+.slide--role-nomenclature-equation .tpl-schem-part.is-on line,
+.slide--role-nomenclature-equation .tpl-schem-part.is-on path.hl-path {
+  stroke: var(--emerson-blue);
+}
+.slide--role-nomenclature-equation .tpl-schem-part.is-on rect.callout-box {
+  stroke: var(--emerson-blue);
+  stroke-width: 3;
+}
+.slide--role-nomenclature-equation .flow-line {
+  stroke: var(--emerson-charcoal);
+  stroke-width: 4;
+}
+.slide--role-nomenclature-equation .tpl-schem-part.is-on .flow-line {
+  stroke: var(--emerson-blue);
+}
+
+/* --- 2. Equation row ----------------------------------------------------- */
+.slide--role-nomenclature-equation .tpl-eq-wrap {
+  text-align: center;
+  padding: 0.2cqh 0;
+}
+.slide--role-nomenclature-equation .tpl-eq {
+  font-size: 2.3cqw;
+  font-weight: 700;
+  color: var(--body-text);
+  letter-spacing: 0.02em;
+}
+.slide--role-nomenclature-equation .tpl-eq-op,
+.slide--role-nomenclature-equation .tpl-eq-cv {
+  color: var(--body-text);
+}
+.slide--role-nomenclature-equation .tpl-eq-const {
+  color: var(--emerson-grey);
+  font-weight: 400;
+}
+/* Equation term default: not yet introduced — dim, same "hasn't happened
+   yet" grey the schematic uses via opacity, expressed here as colour
+   since the equation's structure (the operators, the parens) has to stay
+   visible throughout, unlike a schematic callout which can be truly
+   absent. */
+.slide--role-nomenclature-equation .tpl-eq-term {
+  display: inline-block;
+  color: color-mix(in srgb, var(--emerson-grey) 70%, #fff);
+  border-radius: 0.25cqw;
+  padding: 0.08em 0.15em 0.3em;
+  transition: color 0.15s, background-color 0.15s;
+}
+/* Previously introduced, not the current step: "known", settled — full
+   body-text weight, no accent. */
+.slide--role-nomenclature-equation .tpl-eq-term.is-revealed {
+  color: var(--body-text);
+}
+/* The current step's term(s): the one shared "is-on" treatment
+   nomenclature-parse's own .tpl-tok.is-on already uses everywhere else in
+   the system (filled blue, white text) — reused verbatim, not
+   reinvented. */
+.slide--role-nomenclature-equation .tpl-eq-term.is-on {
+  background: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-nomenclature-equation .tpl-eq-solved {
+  margin-top: 0.3cqh;
+  font-size: 1.3cqw;
+  font-weight: 400;
+  color: color-mix(in srgb, var(--emerson-grey) 55%, #fff);
+  min-height: 1.5em;
+}
+.slide--role-nomenclature-equation .tpl-eq-solved::before {
+  content: "Solve once every term above is known \2026";
+  font-style: italic;
+}
+.slide--role-nomenclature-equation .tpl-eq-solved .tpl-eq-solved__line,
+.slide--role-nomenclature-equation .tpl-eq-solved .tpl-eq-solved__flag {
+  display: none;
+}
+.slide--role-nomenclature-equation .tpl-eq-solved.is-on::before {
+  content: "";
+}
+.slide--role-nomenclature-equation .tpl-eq-solved.is-on {
+  color: var(--body-text);
+  font-weight: 400;
+}
+.slide--role-nomenclature-equation .tpl-eq-solved.is-on .tpl-eq-solved__line {
+  display: inline;
+}
+.slide--role-nomenclature-equation .tpl-eq-solved .tpl-eq-solved__flag {
+  margin-top: 0.15cqh;
+  font-size: 0.9em;
+  font-weight: 700;
+  color: var(--emerson-orange);
+}
+.slide--role-nomenclature-equation .tpl-eq-solved.is-on .tpl-eq-solved__flag {
+  display: block;
+}
+
+/* --- 3. Step buttons + description pane ----------------------------------
+   A compact horizontal stepper strip above the description pane, not a
+   tall vertical button stack: a vertical stack only fits a 4:3 frame — a
+   16:9 slide gives ~27% less total height, and five-plus stacked buttons
+   cannot share that with a properly-sized diagram without either clipping
+   or crushing the schematic. A horizontal row reclaims that height for
+   the diagram instead; this is the only shape the role offers, not a
+   per-slide choice. */
+.slide--role-nomenclature-equation .tpl-step-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7cqh;
+  min-height: 0;
+}
+.slide--role-nomenclature-equation .tpl-step-keys {
+  display: flex;
+  flex-direction: row;
+  gap: 0.6cqw;
+  flex: none;
+}
+.slide--role-nomenclature-equation .tpl-step-key {
+  font: inherit;
+  text-align: center;
+  cursor: pointer;
+  background: var(--emerson-white);
+  border: 0.09cqw solid color-mix(in srgb, var(--emerson-charcoal) 16%, #fff);
+  border-radius: 0.4cqw;
+  padding: 0.5cqh 0.6cqw;
+  font-size: 1.05cqw;
+  font-weight: 700;
+  color: var(--body-text);
+  flex: 1 1 0;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+.slide--role-nomenclature-equation .tpl-step-key:hover {
+  border-color: var(--emerson-blue);
+}
+.slide--role-nomenclature-equation .tpl-step-key.is-done {
+  border-color: color-mix(in srgb, var(--emerson-blue) 40%, #fff);
+  color: var(--emerson-blue);
+}
+.slide--role-nomenclature-equation .tpl-step-key.is-active {
+  background: var(--emerson-blue);
+  border-color: var(--emerson-blue);
+  color: var(--emerson-white);
+}
+.slide--role-nomenclature-equation .tpl-step-def {
+  display: flex;
+  align-items: center;
+  font-size: 1.5cqw;
+  line-height: 1.4;
+  color: var(--body-text);
 }
