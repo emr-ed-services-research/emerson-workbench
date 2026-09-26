@@ -141,15 +141,15 @@ center = [[int(x), float(y)] for x, y in zip(_xs, _ys)]
 
 # symmetrize the drape floor the same way (mirror-average by x): the
 # reconstructed lower casing is symmetric, so the drape must be too
-_fx = {int(p[0]): (f if f is not None else None) for p, f in zip(center, floor)}
-_floor_s = []
-for p, f in zip(center, floor):
-    fm = _fx.get(int(round(2*CX - p[0])))
-    if f is not None and fm is not None:
-        _floor_s.append((f + fm) / 2.0)
-    else:
-        _floor_s.append(f if f is not None else fm)
-floor = _floor_s
+_cx_arr = np.array([p[0] for p in center], float)
+_fl_arr = np.array([np.nan if f is None else float(f) for f in floor])
+_valid = ~np.isnan(_fl_arr)
+_fmir = np.interp(2*CX - _cx_arr, _cx_arr[_valid], _fl_arr[_valid],
+                  left=np.nan, right=np.nan)
+_avg = np.where(np.isnan(_fmir), _fl_arr, (_fl_arr + _fmir) / 2.0)
+_changed = np.nanmax(np.abs(_avg - _fl_arr))
+print(f"floor symmetrized: max change {_changed:.1f}px")
+floor = [None if np.isnan(v) else float(v) for v in _avg]
 
 parts["_dia"] = {
     "clampL": [lx, ly], "clampR": [rx, ry],
