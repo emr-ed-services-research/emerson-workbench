@@ -139,6 +139,18 @@ print(f"diaphragm denoise: max dev {np.abs(_ys-_ys0).max():.2f}px, "
       f"mean {np.abs(_ys-_ys0).mean():.2f}px (band 2.5)")
 center = [[int(x), float(y)] for x, y in zip(_xs, _ys)]
 
+# symmetrize the drape floor the same way (mirror-average by x): the
+# reconstructed lower casing is symmetric, so the drape must be too
+_fx = {int(p[0]): (f if f is not None else None) for p, f in zip(center, floor)}
+_floor_s = []
+for p, f in zip(center, floor):
+    fm = _fx.get(int(round(2*CX - p[0])))
+    if f is not None and fm is not None:
+        _floor_s.append((f + fm) / 2.0)
+    else:
+        _floor_s.append(f if f is not None else fm)
+floor = _floor_s
+
 parts["_dia"] = {
     "clampL": [lx, ly], "clampR": [rx, ry],
     "dipL": [int(dipx), int(dipy)],
