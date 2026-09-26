@@ -13,6 +13,48 @@ plate-to-casing contact, the nameplate is a live, field-addressable legend.
   Steve). First consumer: the 657 bench-set video; the model is
   course-independent and reusable.
 
+## End-to-end pipeline (manual figure -> working model)
+
+The complete chain,each stage's tool and authority:
+
+1. **Source figure** — 657 IOM (`20 - Source Library/Equipment Manuals/
+   Actuators/instruction-manual-fisher-657-...-11746662.pdf`), page 24:
+   Figure 6 cross-section; the parts key is "Actuator Assembly" on p23.
+2. **Extract at 600 DPI** — `pdftoppm -png -r 600 -f 24 -l 24 <pdf> p24`
+   (Poppler; see the reading-source-library-pdfs memory for the local
+   install path). Output: `ground-truth/p24-24.png`.
+3. **Crop to the figure body** — `pipeline/preprocess.py` s0 stage,
+   `BBOX = (1820, 1050, 3300, 3300)` on the 600-DPI page. Output:
+   `ground-truth/s0_crop.png` (1480x2250). THIS CROP DEFINES THE MASTER
+   COORDINATE FRAME — every mask, path, and model coordinate downstream
+   lives in it. Never re-crop.
+4. **Franz hand-paints the part masks** (the step that made everything
+   work): flood-fill every part region in a distinct flat color over the
+   crop, any editor (Snipping Tool worked). No prescribed palette —
+   actual colors are DISCOVERED downstream, so editor palette drift
+   doesn't matter. Output: `ground-truth/s0_crop_painted.png` (immutable
+   ground truth).
+5. **Masks from paint** — `pipeline/masks-from-paint.py`: quantized-
+   histogram color discovery, nearest-color assignment (cap 45), 5px
+   grow into linework, per-mask hole fill. Output: `pipeline/parts2/`.
+6. **Trace / measure** — `pipeline/refine2.py`: per-part contours,
+   ortho-snap, exact diaphragm centerline + casing floor profile
+   (-> `refined2-parts.js`); parametric hardware (spring, seat,
+   adjuster, scale...) is generated in the build from mask-measured
+   dimensions, adopted with Franz's sign-off.
+7. **Declared-geometry finish** (per part, Franz's grammar + binding
+   audit — see the method section below): `pipeline/centerline-upper2.py`
+   + `pipeline/assemble-upper3.py` (upper casing done; lower casing and
+   yoke queued).
+8. **Model build** — `pipeline/build_refined2.py` assembles the
+   interactive HTML (physics, playback choreography, narration timing
+   from `narration/output/657/timing.json`).
+9. **Publish** — artifact f7448bd3 (same URL every republish); vault copy
+   `657-working-model.html`.
+
+Human gates: step 4 (Franz paints), step 7's grammar declaration and
+per-part sign-off, and review of every visual change before publish.
+
 ## Contents
 
 | Path | What it is |
@@ -68,6 +110,26 @@ measured plate-on-casing stop. A travel-mark annotation layer (?mark=1)
 shows Franz's field method: mark the valve stem 3/4 in below the actuator
 stem bottom with the plug seated, actuate down to the mark (within 1/16 in)
 — travel is set off the measurement, never off bench-set pressure.
+
+## Declared-geometry shell reconstruction (method, proven 2026-09-26)
+
+For casting shells, edge finish comes from CONSTRUCTED geometry, not
+smoothing. Franz declares the part's grammar (e.g. "constant thickness
+from the lip until the geometry changes toward center"); the pipeline
+then: (1) extracts the shell CENTERLINE as the distance-transform ridge
+of the painted mask, excluding feature zones, (2) fits one half and
+mirrors it (symmetry by construction, horizontal tangent at CX),
+(3) offsets +-t/2 with t measured from the paint, (4) stops the band at
+the declared feature boundaries and splices the original approved trace
+for the feature spans (travel stops, boss), (5) blends seams flat and
+tangent, per-side measured heights symmetrized to the thin side, edits
+guarded to the intended edge only, and (6) runs a BINDING audit of the
+painted contour against the result — beyond-allowance deviations reject
+the build outright. Scripts: pipeline/centerline-upper2.py +
+pipeline/assemble-upper3.py (upper casing, approved). Same recipe planned
+for the lower casing and the yoke's curved regions. Four rounds of
+generic smoothing/fairing preceded this and were rejected; the archive
+lives in the session scratchpad, not here.
 
 ## Planned next steps
 

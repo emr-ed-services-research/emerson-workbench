@@ -1,8 +1,24 @@
 # -*- coding: utf-8 -*-
 """Assemble 657-refined.html rev B per Franz's correction list."""
 parts_js = open("refined2-parts.js", encoding="utf-8").read()
+# upper casing: declared-geometry shell reconstruction (approved 2026-09-26)
+import re as _re
+_shell = _json.load(open("upper-shell-path.json", encoding="utf-8")) if False else None
+import json as _json2
+_shell = _json2.load(open("upper-shell-path.json", encoding="utf-8"))
+_shell_lo = _json2.load(open("lower-shell-path.json", encoding="utf-8"))
+parts_js = _re.sub(r'"lower-diaphragm-casing":\s*"[^"]*"',
+    '"lower-diaphragm-casing": "' + _shell_lo["lower-diaphragm-casing"] + '"',
+    parts_js)
+parts_js = _re.sub(r'"upper-diaphragm-casing":\s*"[^"]*"',
+    '"upper-diaphragm-casing": "' + _shell["upper-diaphragm-casing"].replace("\\", "") + '"',
+    parts_js)
+import json as _json
+_timing = _json.load(open("C:/Users/E1552882/Documents-Local/Projects/EmersonWorkbench/narration/output/657/timing.json", encoding="utf-8"))
+timing_js = _json.dumps([{k: s[k] for k in ("start","duration","text","section")} for s in _timing])
 
-html = """<title>Fisher 657 Working Model</title>
+html = """<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fisher 657 Working Model</title>
 <style>
 body{margin:0;background:#eef2f6;color:#1c2530;font-family:system-ui,sans-serif;padding:18px;}
 .row{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;}
@@ -42,10 +58,45 @@ input[type=range]{width:100%;}
 .vsil{fill:#dde5ee;stroke:#8ba0b8;stroke-width:2.5;stroke-linejoin:round;}
 .anno{stroke:#c25016;stroke-width:3;fill:none;}
 .anno-lbl{font-family:system-ui;font-size:22px;font-weight:600;fill:#c25016;}
+#cap{min-height:44px;padding:8px 12px;margin-top:6px;border-top:1px solid #cdd7e1;
+  font-size:15px;line-height:1.45;color:#1c2530;font-style:italic;}
+#pb-play{font-size:14px;padding:6px 14px;border:1px solid #2f6fb2;background:#2f6fb2;
+  color:#fff;border-radius:6px;cursor:pointer;}
+#pb-play.playing{background:#c25016;border-color:#c25016;}
+#nameplate g.np-hl .np-box{fill:#ffdd66;}
+#nameplate g.np-hl .np-lbl{fill:#ffdd66;}
+#ctrlbar{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
+#ctrlbar .ctl label{display:block;font-size:13.5px;color:#44525f;}
+#ctrlbar .readout{display:block;margin-top:2px;}
+.pb-word{margin-left:4px;}
+@media (max-width:700px){
+  body{padding:10px 10px 210px;}
+  h1{font-size:17px;}
+  .row{flex-direction:column;}
+  .fig{flex:none;}
+  .panel{max-width:none;}
+  #ctrlbar{position:fixed;left:0;right:0;bottom:0;z-index:60;margin:0;
+    background:#fff;border-top:2px solid #b9c7d6;
+    box-shadow:0 -6px 18px rgba(20,40,60,0.14);
+    padding:10px 14px calc(12px + env(safe-area-inset-bottom));
+    display:grid;grid-template-columns:56px 1fr;grid-auto-rows:auto;
+    column-gap:14px;row-gap:6px;align-items:center;}
+  #ctrlbar button#pb-play{grid-row:1 / span 2;height:64px;font-size:22px;
+    padding:0;border-radius:12px;}
+  .pb-word{display:none;}
+  #ctrlbar .ctl{grid-column:2;}
+  #ctrlbar .ctl label{font-size:12.5px;}
+  .ctl-hint{display:none;}
+  #ctrlbar .readout{font-size:11.5px;margin-top:0;}
+  #pb-status{display:none;}
+  input[type=range]{height:28px;}
+}
+#asm > g, #asm > path{transition:opacity 0.4s ease;}
+.pulse{animation:pbpulse 1.1s ease-in-out 3;}
+@keyframes pbpulse{50%{opacity:0.3;}}
 </style>
 <script>__PARTSJS__</script>
 <h1>Fisher 657 Working Model</h1>
-<p>Straight edges kept straight (no rounding on yoke or casings); yoke housing top flush and connected behind the spring; nameplate, fasteners, connector, and indicator disk removed until needed; stem threaded on its bottom inch; the diaphragm keeps its molded shape and pivots at the inside of its down-curve.</p>
 <div class="row">
 <div class="fig">
 <svg id="asm" viewBox="0 0 1480 2250">
@@ -63,13 +114,17 @@ input[type=range]{width:100%;}
     <rect class="sp-stem" x="704" y="205" width="77" height="1320" rx="4"/>
     <g id="g-stem-threads"></g>
   </g>
-  <g id="g-coupling" style="display:none">
+  <g id="g-vgrp" style="display:none">
     <!-- all dims measured from the painted masks (see README) -->
     <rect class="vstem" x="722.5" y="1490" width="40" height="800"/>
+    <g id="g-dn">
+      <rect class="vdisk" x="641.5" y="1561" width="202" height="14" rx="2"/>
+      <rect class="vnut" x="700.5" y="1577" width="84" height="31" rx="3"/>
+      <rect class="vnut" x="700.5" y="1610" width="84" height="31" rx="3"/>
+    </g>
+  </g>
+  <g id="g-conn" style="display:none">
     <rect class="vconn" x="664.5" y="1415" width="156" height="147" rx="4"/>
-    <rect class="vdisk" x="641.5" y="1561" width="202" height="14" rx="2"/>
-    <rect class="vnut" x="700.5" y="1577" width="84" height="31" rx="3"/>
-    <rect class="vnut" x="700.5" y="1610" width="84" height="31" rx="3"/>
   </g>
   <g id="g-valve-sil" style="display:none">
     <!-- non-cutaway valve silhouette: bonnet flange under the yoke legs,
@@ -119,6 +174,20 @@ input[type=range]{width:100%;}
     <text class="anno-lbl" x="812" y="1604">3/4"</text>
     <text class="anno-lbl" x="778" y="1690">mark</text>
   </g>
+  <g id="g-vermark" style="display:none">
+    <!-- Spring Verification: mark where the stem's end sits at 11 psig,
+         then lower to 3 and measure mark-to-stem-end = rated travel -->
+    <line class="anno" x1="646" y1="1665" x2="702" y2="1665"/>
+    <text class="anno-lbl" x="586" y="1690">mark</text>
+    <g id="g-verbracket" style="display:none">
+      <line class="anno" x1="632" y1="1525" x2="632" y2="1665" stroke-dasharray="6 5" stroke-width="2"/>
+      <line class="anno" x1="624" y1="1531" x2="632" y2="1525" stroke-width="2"/>
+      <line class="anno" x1="640" y1="1531" x2="632" y2="1525" stroke-width="2"/>
+      <line class="anno" x1="624" y1="1659" x2="632" y2="1665" stroke-width="2"/>
+      <line class="anno" x1="640" y1="1659" x2="632" y2="1665" stroke-width="2"/>
+      <text class="anno-lbl" x="556" y="1604">3/4"</text>
+    </g>
+  </g>
   <g id="sp-adj-g">
     <!-- parametric adjuster: threaded rod + wrench flats; dims measured
          from the painted mask (rod w118 y1068-1338, flats w140 y1338-1386) -->
@@ -134,13 +203,29 @@ input[type=range]{width:100%;}
     <rect class="sp-seat" x="585.5" y="1008" width="314" height="29" rx="3"/>
     <rect class="sp-seat" x="659.5" y="1037" width="166" height="49" rx="3"/>
   </g>
-  <g id="sp-spring-front"></g>
   <g id="g-plate"><path id="p-plate" class="cast"/></g>
+  <g id="sp-spring-front"></g>
   <path id="p-dia" class="dia"/>
   <path id="p-upper" class="cast"/>
 </svg>
+<div id="cap"></div>
 </div>
 <div class="panel">
+<div id="ctrlbar">
+  <button id="pb-play" title="Play the SOP">&#9654;<span class="pb-word"> Play the SOP</span></button>
+  <div class="ctl">
+    <label>Spring adjuster <span class="ctl-hint">&mdash; tighten (+) raises seat and preload; loosen (&minus;) lowers</span></label>
+    <input type="range" id="adj" min="-24" max="24" value="0" step="1">
+    <span class="readout" id="adjout"></span>
+  </div>
+  <div class="ctl" id="pressrow">
+    <label>Diaphragm pressure <span class="ctl-hint">&mdash; 0 &rarr; 18 psig</span></label>
+    <input type="range" id="press" min="0" max="18" value="0" step="0.1">
+    <span class="readout" id="pressout"></span>
+  </div>
+  <span class="readout" id="pb-status"></span>
+  <audio id="pb-audio" src="657-narration.wav" preload="auto"></audio>
+</div>
 <p><label><input type="checkbox" id="valve"> Stem connector installed &mdash; valve coupled below the yoke</label><br>
 <label style="margin-left:22px;">Packing:
 <select id="packing">
@@ -153,12 +238,6 @@ input[type=range]{width:100%;}
   <option value="1.5">Graphite composite &mdash; high (&plusmn;1.5 psi, repr.)</option>
 </select></label>
 <span class="readout" id="fricout"></span></p>
-<p><label>Spring adjuster &mdash; tighten (+) raises the seat and preload; loosen (&minus;) lowers them</label>
-<input type="range" id="adj" min="-24" max="24" value="0" step="1">
-<span class="readout" id="adjout"></span></p>
-<p><label>Diaphragm pressure &mdash; 0 &rarr; 18 psig</label>
-<input type="range" id="press" min="0" max="18" value="0" step="0.1">
-<span class="readout" id="pressout"></span></p>
 <div class="np-wrap">
 <svg id="nameplate" viewBox="0 0 842 286" role="img" aria-label="657 actuator nameplate">
   <!-- layout measured box-for-box from the supplied nameplate image -->
@@ -193,6 +272,7 @@ input[type=range]{width:100%;}
     <rect class="np-box" x="401" y="205" width="287" height="25"/>
     <text class="np-val" x="544" y="224">0-18</text></g>
 </svg>
+<div id="cap"></div>
 </div>
 <p>Spring Verification, live: with the adjuster correct (0 offset), travel begins at exactly 3.0 psig and completes at 11.0. Tighten the adjuster and travel starts late (more than 3); loosen it and travel starts early (less than 3). The stem's bottom edge reads the scale: 0 at rest, 3/4 at rated stroke. Off the valve, pressure past the window keeps the mechanism moving beyond 3/4 in until the diaphragm plate lands on the lower casing &mdash; the lower travel stop.</p>
 </div>
@@ -204,7 +284,7 @@ document.getElementById('p-lower').setAttribute('d', R['lower-diaphragm-casing']
 document.getElementById('p-yoke').setAttribute('d', R['yoke']);
 document.getElementById('p-plate').setAttribute('d', R['diaphragm-plate']);
 
-const CXA=742.5, HALFW=146, WIRE=30, NHALF=13, TOP0=255, SEAT0=985;
+const CXA=742.5, HALFW=146, WIRE=30, NHALF=13, TOP0=202, SEAT0=1008;
 const STEM_BOT=1525, TRAVEL=140;  // grads = 3/5 of the 234 plate, centered
 const STOP=217;  // measured plate-to-lower-casing gap: the lower travel stop
                  // (off the valve, over-stroke ends metal-on-metal here)
@@ -306,6 +386,24 @@ function diaphragm(press){
     s+=`<line class="sp-thread" x1="645" y1="${y+2}" x2="840" y2="${y-2}"/>`;
   document.getElementById('boss-threads').innerHTML=s;
 })();
+// name-it, spotlight-it: named parts stay lit, the rest dim
+const FOCUSABLE=['p-upper','p-lower','p-yoke','g-plate','p-dia','g-stem',
+ 'sp-spring-back','sp-spring-front','sp-seat-g','sp-adj-g','g-scale',
+ 'g-vgrp','g-conn','g-valve-sil','g-mount','g-mount-back'];
+const SPRING=['sp-spring-back','sp-spring-front'];
+function focus(...ids){
+  const flat=ids.flat();
+  FOCUSABLE.forEach(f=>{ const el=document.getElementById(f); if(!el) return;
+    el.style.opacity = flat.length===0 ? '' : (flat.includes(f) ? '' : '0.25');
+  });
+}
+window.showVerMark = function(on){
+  document.getElementById('g-vermark').style.display = on ? '' : 'none';
+  if(!on) document.getElementById('g-verbracket').style.display='none';
+};
+window.showVerBracket = function(on){
+  document.getElementById('g-verbracket').style.display = on ? '' : 'none';
+};
 window.showTravelMark = function(on){
   document.getElementById('g-travelmark').style.display = on ? '' : 'none';
 };
@@ -317,18 +415,20 @@ function setPacking(){
   document.getElementById('g-belleville').style.display = live ? '' : 'none';
   document.getElementById('g-pflange').setAttribute('transform', live ? 'translate(0,-42)' : '');
 }
+const PB = { connected: true, nutsDy: 0, scaleDy: 0, connShown: true };
 function setValve(on){
   document.getElementById('g-valve-sil').style.display = on ? '' : 'none';
   document.getElementById('g-mount').style.display = on ? '' : 'none';
   document.getElementById('g-mount-back').style.display = on ? '' : 'none';
-  document.getElementById('g-coupling').style.display = on ? '' : 'none';
+  document.getElementById('g-vgrp').style.display = on ? '' : 'none';
+  document.getElementById('g-conn').style.display = (on && PB.connShown) ? '' : 'none';
   document.getElementById('asm').setAttribute('viewBox', on ? '0 0 1480 2620' : '0 0 1480 2250');
 }
 let strokeState = 0;   // remembered position: packing friction is hysteretic
 function update(){
   const adj=+document.getElementById('adj').value;   // seat offset, px (+ = tighter)
   const P=+document.getElementById('press').value;   // psig, 0-18
-  const coupled = document.getElementById('valve').checked;
+  const coupled = PB.connected && document.getElementById('valve').checked;
   // packing friction opposes motion BOTH ways, so it widens the start point
   // going down and holds the stem going back up. Zero when off the valve --
   // which is exactly why bench set is performed with zero valve forces.
@@ -359,7 +459,14 @@ function update(){
   diaphragm(stroke);
   document.getElementById('g-stem').setAttribute('transform',`translate(0,${stroke})`);
   document.getElementById('g-plate').setAttribute('transform',`translate(0,${stroke})`);
-  document.getElementById('g-coupling').setAttribute('transform',`translate(0,${stroke})`);
+  // connected: stems move as one. Pre-connection: the valve stem sits
+  // SEATED (plug on seat) = 140px below the painted assembled-at-rest
+  // frame, and does not follow the actuator.
+  document.getElementById('g-conn').setAttribute('transform',`translate(0,${stroke})`);
+  document.getElementById('g-vgrp').setAttribute('transform',
+    `translate(0,${PB.connected ? stroke : 140})`);
+  document.getElementById('g-dn').setAttribute('transform',`translate(0,${PB.nutsDy})`);
+  document.getElementById('g-scale').setAttribute('transform',`translate(0,${PB.scaleDy})`);
   document.getElementById('sp-seat-g').setAttribute('transform',`translate(0,${-adj})`);
   document.getElementById('sp-adj-g').setAttribute('transform',`translate(0,${-adj})`);
   adjThreads(adj*2);
@@ -369,13 +476,154 @@ function update(){
        : seated ? ' | PLUG SEATED - valve closed'
        : (stroke>TRAVEL ? ' (past rated)' : ''));
 }
+// ================= scripted SOP playback =================
+const TIMING = __TIMINGJSON__;
+const audio = document.getElementById('pb-audio');
+const capEl = document.getElementById('cap');
+let playing=false, curSeg=-1, seg8sw=false, firedCues=[];
+function setPress(v){ document.getElementById('press').value=v; }
+function setAdj(v){ document.getElementById('adj').value=v; }
+function hl(...ids){
+  for (const g of document.querySelectorAll('#nameplate g')) g.classList.remove('np-hl');
+  ids.forEach(id=>document.getElementById(id).classList.add('np-hl'));
+}
+function pulse(id){ const el=document.getElementById(id);
+  el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse'); }
+function benchReset(){
+  document.getElementById('valve').checked=false;
+  PB.connected=false; PB.connShown=false; PB.nutsDy=0; PB.scaleDy=0;
+  setValve(false); showTravelMark(false); showVerMark(false); setAdj(0); setPress(0); hl(); focus();
+}
+const CHOREO = [
+ // 1. air enters upper casing, presses diaphragm + plate
+ {enter(){ benchReset(); },
+  cues:[[0.18,()=>focus('p-upper')],[0.55,()=>focus('p-dia')],
+        [0.8,()=>focus('p-dia','g-plate')]]},
+ // 2. plate presses down, compresses spring against seat (motion happens)
+ {enter(){ focus('g-plate',SPRING,'sp-seat-g'); },
+  cues:[[0.55,()=>focus(SPRING,'sp-seat-g')]],
+  tick(p){ setPress((8*Math.min(1,p*1.15)).toFixed(2)); }},
+ // 3. air in, stem down; air out, spring returns
+ {enter(){ focus('g-stem',SPRING); },
+  cues:[[0.5,()=>focus(SPRING,'g-stem','g-plate','p-dia')]],
+  tick(p){ let v; if(p<0.4) v=11*(p/0.4); else if(p<0.52) v=11;
+           else v=Math.max(0,11*(1-(p-0.52)/0.4)); setPress(v.toFixed(2)); }},
+ // 4. adjuster raises seat, compresses spring upwards; loosening backs off
+ {enter(){ setPress(0); focus('sp-adj-g','sp-seat-g',SPRING); },
+  tick(p){ let a; if(p<0.3) a=20*(p/0.3); else if(p<0.5) a=20;
+           else if(p<0.8) a=20-44*((p-0.5)/0.3); else a=-24;
+           setAdj(Math.round(a)); }},
+ // 5. bench set defined; nameplate cited
+ {enter(){ setAdj(0); setPress(0); focus(); },
+  cues:[[0.1,()=>hl('np-benchset')],[0.35,()=>hl('np-benchset','np-travel')],
+        [0.62,()=>hl('np-benchset','np-travel','np-size')],[0.9,()=>hl()]]},
+ // 6. prove it on the bench: off valve, stem at top, air rigged
+ {enter(){ hl(); focus(); pulse('g-stem'); },
+  cues:[[0.6,()=>pulse('pressrow')]]},
+ // 7. raise from zero, first movement at exactly 3
+ {enter(){ focus('g-stem'); }, tick(p){ setPress((3.4*p).toFixed(2)); }},
+ // 8. too tight / too loose diagnosis
+ {enter(){ seg8sw=false; setAdj(12); setPress(0); focus('sp-adj-g','sp-seat-g','g-stem'); },
+  tick(p){ if(p<0.45){ setPress((6*p/0.45).toFixed(2)); }
+           else if(p<0.5){ setPress(0); }
+           else { if(!seg8sw){ setAdj(-12); seg8sw=true; }
+                  setPress((4*(p-0.5)/0.5).toFixed(2)); } }},
+ // 9. to exactly 11; over-stroke caution to the casing; mark stem end at 11
+ {enter(){ setAdj(0); setPress(3); focus(); },
+  cues:[[0.42,()=>focus('g-plate','p-lower')],[0.72,()=>focus()],
+        [0.84,()=>{ showVerMark(true); pulse('g-vermark'); }]],
+  tick(p){ let v; if(p<0.28) v=3+8*(p/0.28); else if(p<0.4) v=11;
+           else if(p<0.58) v=11+7*((p-0.4)/0.18);
+           else if(p<0.74) v=18-7*((p-0.58)/0.16); else v=11;
+           setPress(v.toFixed(2)); }},
+ // 10. lower to 3, measure mark-to-stem-end = 3/4
+ {cues:[[0.42,()=>{ showVerBracket(true); }],[0.6,()=>focus('g-stem','g-scale')]],
+  tick(p){ if(p<0.4) setPress((11-8*(p/0.4)).toFixed(2)); }},
+ // 11. matches -> complete
+ {enter(){ setPress(3); focus(); },
+  cues:[[0.25,()=>hl('np-travel')],[0.8,()=>hl()]]},
+ // 12. now the valve enters the picture
+ {enter(){ hl(); showVerMark(false); PB.connected=false; PB.connShown=false;
+           PB.nutsDy=34; setPress(0); setValve(true); showTravelMark(false);
+           focus('g-vgrp','g-valve-sil','g-mount','g-mount-back'); }},
+ // 13. push the valve stem down to the seat
+ {enter(){ focus('g-vgrp'); pulse('g-vgrp'); }},
+ // 14. mark the valve stem 3/4 below the actuator stem end
+ {enter(){ focus(); showTravelMark(true); pulse('g-travelmark'); }},
+ // 15. actuate down to the mark
+ {tick(p){ setPress(Math.min(11,11.4*p).toFixed(2)); }},
+ // 16. clamp the connector halves, tighten evenly
+ {enter(){ PB.connShown=true; setValve(true); focus('g-conn','g-stem','g-vgrp'); pulse('g-conn'); },
+  cues:[[0.6,()=>{ PB.connected=true; document.getElementById('valve').checked=true;
+                   showTravelMark(false); }]]},
+ // 17. run the locknuts up to the disk
+ {enter(){ focus('g-vgrp','g-conn'); }, tick(p){ PB.nutsDy=34*(1-p); }},
+ // 18. stroke open to closed, verify, align scale
+ {enter(){ focus(); },
+  cues:[[0.35,()=>focus('g-scale','g-vgrp','g-stem')],[0.85,()=>focus()]],
+  tick(p){ if(p<0.3){ setPress((11*(1-p/0.3)).toFixed(2)); PB.scaleDy=0; }
+           else if(p<0.5){ setPress(0); PB.scaleDy=36*((p-0.3)/0.2); }
+           else { PB.scaleDy=36; setPress((Math.min(12,12*(p-0.5)/0.5)).toFixed(2)); } }},
+];
+function pbFrame(){
+  if(!playing) return;
+  const t = audio.currentTime;
+  let i = TIMING.length-1;
+  while(i>0 && TIMING[i].start > t) i--;
+  if(i !== curSeg){ curSeg=i; capEl.textContent = TIMING[i].text;
+    firedCues = []; if(CHOREO[i] && CHOREO[i].enter) CHOREO[i].enter(); }
+  const p = Math.min(1, (t-TIMING[i].start)/TIMING[i].duration);
+  if(CHOREO[i] && CHOREO[i].cues){
+    CHOREO[i].cues.forEach((c,ci)=>{ if(p>=c[0] && !firedCues.includes(ci)){
+      firedCues.push(ci); c[1](); } }); }
+  if(CHOREO[i] && CHOREO[i].tick) CHOREO[i].tick(p);
+  update();
+  requestAnimationFrame(pbFrame);
+}
+function pbStop(){
+  playing=false; audio.pause();
+  document.getElementById('pb-play').classList.remove('playing');
+  document.getElementById('pb-play').innerHTML='&#9654; Play the SOP';
+  document.getElementById('pb-status').textContent='';
+  capEl.textContent='';
+  setPress(0); focus(); hl(); update();
+}
+document.getElementById('pb-play').addEventListener('click', ()=>{
+  if(playing){ pbStop(); return; }
+  playing=true; curSeg=-1;
+  audio.currentTime=0;
+  audio.play().then(()=>{
+    document.getElementById('pb-play').classList.add('playing');
+    document.getElementById('pb-play').innerHTML='&#9632; Stop';
+    requestAnimationFrame(pbFrame);
+  }).catch(e=>{ playing=false;
+    document.getElementById('pb-status').textContent=' audio failed to load';});
+});
+audio.addEventListener('ended', pbStop);
+// test hook: ?pbtest=N applies segments 1..N without audio
 const q=new URLSearchParams(location.search);
+if(q.get('pbtest')){
+  // deferred so it runs AFTER the page's own startup setValve/update calls
+  setTimeout(()=>{
+    const n=+q.get('pbtest');
+    for(let i=0;i<n && i<CHOREO.length;i++){
+      if(CHOREO[i].enter) CHOREO[i].enter();
+      if(CHOREO[i].cues) CHOREO[i].cues.forEach(c=>c[1]());
+      if(CHOREO[i].tick) CHOREO[i].tick(1);
+    }
+    capEl.textContent = TIMING[n-1] ? TIMING[n-1].text : '';
+    update();
+  }, 60);
+}
 if(q.get('adj'))document.getElementById('adj').value=q.get('adj');
 if(q.get('press'))document.getElementById('press').value=q.get('press');
 if(q.get('valve'))document.getElementById('valve').checked=true;
 if(q.get('packing'))document.getElementById('packing').value=q.get('packing');
 if(q.get('mark'))window.showTravelMark(true);
-document.getElementById('valve').addEventListener('change',()=>{setValve(document.getElementById('valve').checked);update();});
+document.getElementById('valve').addEventListener('change',()=>{
+  PB.connected = document.getElementById('valve').checked;
+  PB.connShown = true; PB.nutsDy = 0;
+  setValve(document.getElementById('valve').checked);update();});
 document.getElementById('packing').addEventListener('change',()=>{setPacking();update();});
 setPacking();
 setValve(document.getElementById('valve').checked);
@@ -385,5 +633,6 @@ update();
 </script>
 """
 html = html.replace("__PARTSJS__", parts_js)
+html = html.replace("__TIMINGJSON__", timing_js)
 open("../657-refined.html", "w", encoding="utf-8").write(html)
 print("written", len(html))
