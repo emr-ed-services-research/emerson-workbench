@@ -120,6 +120,25 @@ for x in range(lx, rx+1, 3):
         lc = np.nonzero(mlow[:, x])[0]
         lc = lc[lc > cy]
         floor.append(int(lc.min()) if len(lc) else None)
+# --- declared-geometry denoise (Franz 2026-09-26): the diaphragm is a
+# constant-thickness membrane; symmetrize the rest centerline and smooth
+# INSIDE a +-2.5px band of the measurement. Same 3px x-grid, y-only —
+# the piecewise warp breakpoints and the per-index floor stay valid.
+_xs = np.array([p[0] for p in center], float)
+_ys = np.array([p[1] for p in center], float)
+_ys0 = _ys.copy()
+_ymir = np.interp(2*CX - _xs, _xs, _ys)
+_ys = 0.5*(_ys + _ymir)
+for _ in range(40):
+    _ys[1:-1] = 0.25*_ys[:-2] + 0.5*_ys[1:-1] + 0.25*_ys[2:]
+    _dev = _ys - _ys0
+    _ys = np.where(_dev > 2.5, _ys0 + 2.5, _ys)
+    _ys = np.where(_dev < -2.5, _ys0 - 2.5, _ys)
+_ys[0], _ys[-1] = _ys0[0], _ys0[-1]   # clamp edges pinned
+print(f"diaphragm denoise: max dev {np.abs(_ys-_ys0).max():.2f}px, "
+      f"mean {np.abs(_ys-_ys0).mean():.2f}px (band 2.5)")
+center = [[int(x), float(y)] for x, y in zip(_xs, _ys)]
+
 parts["_dia"] = {
     "clampL": [lx, ly], "clampR": [rx, ry],
     "dipL": [int(dipx), int(dipy)],
