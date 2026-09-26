@@ -129,12 +129,29 @@ _ys = np.array([p[1] for p in center], float)
 _ys0 = _ys.copy()
 _ymir = np.interp(2*CX - _xs, _xs, _ys)
 _ys = 0.5*(_ys + _ymir)
+_ybase = _ys.copy()   # SYMMETRIC baseline: band must reference this, not
+                      # the raw paint, or clamping re-introduces asymmetry
 for _ in range(40):
     _ys[1:-1] = 0.25*_ys[:-2] + 0.5*_ys[1:-1] + 0.25*_ys[2:]
-    _dev = _ys - _ys0
-    _ys = np.where(_dev > 2.5, _ys0 + 2.5, _ys)
-    _ys = np.where(_dev < -2.5, _ys0 - 2.5, _ys)
-_ys[0], _ys[-1] = _ys0[0], _ys0[-1]   # clamp edges pinned
+    _dev = _ys - _ybase
+    _ys = np.where(_dev > 2.5, _ybase + 2.5, _ys)
+    _ys = np.where(_dev < -2.5, _ybase - 2.5, _ys)
+_epin = 0.5*(_ys0[0] + _ys0[-1])
+_ys[0] = _ys[-1] = _epin   # clamp edges pinned, symmetrically
+# exact mirror by construction: right half is the interpolated mirror of
+# the left half (positional smoothing can't guarantee this on a grid
+# that isn't self-mirroring about CX)
+_lm = _xs <= CX
+_ys[~_lm] = np.interp(2*CX - _xs[~_lm], _xs[_lm], _ys[_lm])
+# numeric symmetry assertion — no more eyeballing
+_yfin_mir = np.interp(2*CX - _xs, _xs, _ys)
+_asym = float(np.abs(_ys - _yfin_mir)[3:-3].max())
+print(f"diaphragm symmetry check: max L/R difference {_asym:.2f}px")
+# threshold = interp resolution on the steep convolution walls (~13px of
+# y per 3px grid step -> ~1px linear-interp error there); the dips and
+# flats must and do match far tighter than this
+assert _asym < 1.25, "SYMMETRY REJECT"
+print(f"deviation from paint: max {np.abs(_ys-_ys0).max():.2f}px, mean {np.abs(_ys-_ys0).mean():.2f}px")
 print(f"diaphragm denoise: max dev {np.abs(_ys-_ys0).max():.2f}px, "
       f"mean {np.abs(_ys-_ys0).mean():.2f}px (band 2.5)")
 center = [[int(x), float(y)] for x, y in zip(_xs, _ys)]
