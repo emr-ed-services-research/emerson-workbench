@@ -7,6 +7,10 @@ _shell = _json.load(open("upper-shell-path.json", encoding="utf-8")) if False el
 import json as _json2
 _shell = _json2.load(open("upper-shell-path.json", encoding="utf-8"))
 _shell_lo = _json2.load(open("lower-shell-path.json", encoding="utf-8"))
+_shell_yk = _json2.load(open("yoke-shell-path.json", encoding="utf-8"))
+parts_js = _re.sub(r'"yoke":\s*"[^"]*"',
+    '"yoke": "' + _shell_yk["yoke"] + '"',
+    parts_js)
 parts_js = _re.sub(r'"lower-diaphragm-casing":\s*"[^"]*"',
     '"lower-diaphragm-casing": "' + _shell_lo["lower-diaphragm-casing"] + '"',
     parts_js)
