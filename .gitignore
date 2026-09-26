@@ -77,6 +77,14 @@ desktop.ini
 40 - Engine/render/node_modules/
 40 - Engine/render/baseline.txt
 
+# ── Narration pipeline (Chatterbox voice cloning, all local) ────────
+# venv and generated audio are regenerable; the reference voice clip is
+# personal audio and deliberately NOT versioned. Scripts, glossary, and
+# voice-config.json (the chosen settings) ARE tracked.
+narration/.venv/
+narration/output/
+voice/
+
 # ── Stray artifact ─────────────────────────────────────────────────
 # invalid 20-byte file at the vault root from an aborted regen; the real
 # course data is 10 - Courses/.../Presentation/course/course-data.js

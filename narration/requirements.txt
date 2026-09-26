@@ -1,0 +1,7 @@
+# Narration pipeline — install into narration/.venv with its own python:
+#   python -m venv .venv && .venv\Scripts\pip install -r requirements.txt
+chatterbox-tts
+# perth (Chatterbox's watermarker) imports pkg_resources, which setuptools
+# removed in v81 — without this pin the watermarker silently loads as None
+# and model construction fails with "'NoneType' object is not callable".
+setuptools<81

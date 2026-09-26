@@ -1,0 +1,245 @@
+<title>Fisher 657 Working Model</title>
+<style>
+body{margin:0;background:#eef2f6;color:#1c2530;font-family:system-ui,sans-serif;padding:18px;}
+.row{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;}
+.fig{background:#fff;border:1px solid #cdd7e1;border-radius:10px;padding:10px;flex:0 1 620px;}
+.fig svg{width:100%;height:auto;display:block;}
+.panel{flex:1 1 300px;max-width:480px;}
+h1{font-size:19px;margin:0 0 6px;}
+p,label{font-size:13.5px;line-height:1.55;color:#44525f;}
+input[type=range]{width:100%;}
+.readout{font-family:ui-monospace,monospace;font-size:13px;color:#2f6fb2;}
+.cast{stroke:#1c3350;stroke-width:2.5;stroke-linejoin:round;fill-rule:evenodd;}
+#p-upper{fill:#9fb8d8;}
+#p-lower{fill:#b7cbe4;}
+#p-yoke{fill:#7e9cc4;}
+#p-plate{fill:#2f6fb2;}
+.sp-stem{fill:#2a5f9e;stroke:#1c3350;stroke-width:2;}
+.sp-seat{fill:#3c74ab;stroke:#1c3350;stroke-width:2;}
+.sp-adj{fill:#35689c;stroke:#1c3350;stroke-width:2;}
+.sp-coil{stroke:#58a6d8;stroke-linecap:round;fill:none;}
+.sp-coil-back{stroke:#3d7fae;}
+.sp-thread{stroke:#12283f;stroke-width:2.4;}
+.dia{stroke:#1d4f8c;stroke-width:12.0;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.prism{fill:#cdd9ea;stroke:#1c3350;stroke-width:2;}
+.tick{stroke:#1c3350;stroke-width:2;}
+.lbl{font-family:system-ui;font-size:15px;fill:#1c3350;}
+.np-wrap{margin:14px 0;}
+.np-wrap svg{width:100%;max-width:460px;display:block;}
+.np-title{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:25px;fill:#fff;}
+.np-logo{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:16px;fill:#0a0a0a;text-anchor:middle;letter-spacing:0.5px;}
+.np-lbl{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:19px;fill:#fff;text-anchor:end;}
+.np-box{fill:#fff;}
+.np-val{font-family:Arial,Helvetica,sans-serif;font-size:18px;fill:#0a0a0a;text-anchor:middle;}
+</style>
+<script>window.REFINED2 = {"yoke": "M 454.5,490.5 L 454.5,530.0 L 460.0,539.0 L 518.0,539.0 L 526.0,547.0 L 536.5,566.0 L 539.2,629.0 L 538.1,903.0 L 538.1,1024.0 L 529.0,1060.0 L 495.0,1109.0 L 484.0,1138.0 L 477.0,1142.0 L 477.0,1154.0 L 455.5,1211.0 L 453.2,1488.0 L 454.6,1540.0 L 454.6,1620.0 L 451.0,1621.0 L 451.0,1702.0 L 454.5,1703.0 L 454.5,1736.0 L 450.0,1741.0 L 452.5,1745.0 L 452.5,1994.0 L 460.0,2049.0 L 498.0,2106.0 L 510.0,2117.0 L 544.0,2132.0 L 555.0,2148.0 L 930.0,2148.0 L 941.0,2132.0 L 978.0,2115.0 L 1006.0,2082.0 L 1025.0,2049.0 L 1032.5,1994.0 L 1032.5,1745.0 L 1035.0,1741.0 L 1030.0,1703.0 L 1034.0,1702.0 L 1034.0,1621.0 L 1031.5,1620.0 L 1030.2,1540.0 L 1030.1,1488.0 L 1030.1,1211.0 L 1008.0,1154.0 L 1008.0,1142.0 L 1001.0,1138.0 L 990.0,1109.0 L 956.0,1060.0 L 945.5,1024.0 L 945.8,936.0 L 948.4,629.0 L 948.4,566.0 L 959.0,547.0 L 967.0,539.0 L 1025.0,539.0 L 1031.0,530.0 L 1031.0,492.0 L 872.0,492.0 L 861.0,498.0 L 823.0,505.0 L 662.0,505.0 L 624.0,498.0 L 613.0,490.5 Z M 563.0,539.5 L 922.5,539.5 L 922.5,1088.0 L 914.0,1102.0 L 900.0,1112.0 L 803.5,1112.0 L 803.5,1179.5 L 909.0,1179.5 L 934.0,1186.0 L 963.0,1211.0 L 972.5,1241.0 L 974.2,1530.0 L 974.2,1806.0 L 972.0,1810.0 L 976.5,1811.0 L 976.5,1996.0 L 972.0,1997.0 L 975.0,2014.0 L 970.5,2015.0 L 970.5,2026.0 L 966.0,2027.0 L 966.0,2035.0 L 941.0,2061.0 L 911.0,2061.0 L 902.0,2051.0 L 583.0,2051.0 L 578.0,2061.5 L 557.0,2061.5 L 541.0,2059.0 L 519.0,2035.0 L 519.0,2027.0 L 514.5,2026.0 L 514.5,2015.0 L 510.0,2014.0 L 513.0,1997.0 L 508.5,1996.0 L 508.5,1811.0 L 513.0,1807.0 L 509.0,1806.0 L 509.0,1685.0 L 513.0,1679.0 L 509.0,1678.0 L 509.0,1669.0 L 513.0,1665.0 L 509.0,1664.0 L 509.0,1657.0 L 512.0,1656.0 L 512.0,1241.0 L 522.0,1211.0 L 551.0,1186.0 L 576.0,1179.5 L 681.5,1179.5 L 681.5,1112.0 L 585.0,1112.0 L 571.0,1102.0 L 563.0,1088.0 Z", "upper-diaphragm-casing": "M 97.5,203.0 L 97.5,212.5 L 214.0,212.5 L 226.0,199.0 L 239.0,151.0 L 262.0,123.0 L 304.0,102.0 L 372.0,83.5 L 441.0,83.8 L 453.0,83.8 L 458.0,90.0 L 485.0,90.0 L 490.0,95.0 L 490.0,120.0 L 495.0,124.5 L 570.0,123.2 L 608.0,123.2 L 615.0,88.0 L 679.0,88.0 L 684.0,90.0 L 870.0,90.0 L 877.0,123.5 L 915.0,123.8 L 990.0,123.8 L 995.0,120.0 L 995.0,95.0 L 1000.0,86.5 L 1071.0,86.2 L 1129.0,86.2 L 1192.0,106.0 L 1223.0,123.0 L 1246.0,151.0 L 1259.0,199.0 L 1271.0,213.0 L 1383.0,213.0 L 1388.0,209.0 L 1385.0,196.0 L 1284.0,196.0 L 1277.0,186.0 L 1267.0,135.0 L 1262.0,135.0 L 1233.0,105.0 L 1167.0,75.0 L 1105.0,61.0 L 1081.0,61.0 L 1080.0,57.0 L 1074.0,62.5 L 811.5,62.5 L 811.5,27.0 L 673.5,27.0 L 673.5,62.5 L 411.0,62.5 L 405.0,57.0 L 404.0,61.0 L 380.0,61.0 L 335.0,70.0 L 266.0,97.0 L 246.0,109.0 L 223.0,135.0 L 218.0,135.0 L 208.0,186.0 L 201.0,196.0 L 100.0,196.0 Z M 884.0,84.0 L 982.5,84.0 L 982.5,112.0 L 978.0,118.0 L 890.0,118.0 L 884.0,114.0 Z M 502.0,84.0 L 600.5,84.0 L 600.5,114.0 L 595.0,118.0 L 507.0,118.0 L 502.0,112.0 Z", "lower-diaphragm-casing": "M 97.0,234.0 L 100.0,245.5 L 189.0,245.5 L 202.0,251.0 L 209.0,263.0 L 209.0,394.0 L 220.0,418.0 L 246.0,448.0 L 293.0,472.0 L 332.0,484.0 L 386.0,492.0 L 1099.0,492.0 L 1153.0,484.0 L 1192.0,472.0 L 1231.0,453.0 L 1265.0,418.0 L 1277.0,382.0 L 1277.0,263.0 L 1283.0,251.0 L 1296.0,245.5 L 1385.0,245.5 L 1388.0,236.0 L 1383.0,225.5 L 1281.0,225.5 L 1255.5,251.0 L 1255.5,387.0 L 1251.0,402.0 L 1216.0,437.0 L 1159.0,461.0 L 1110.0,472.0 L 1037.0,472.0 L 1018.0,471.5 L 943.0,472.8 L 542.0,470.9 L 360.0,470.9 L 307.0,455.0 L 269.0,437.0 L 237.0,408.0 L 231.0,387.0 L 231.0,269.0 L 229.0,251.0 L 204.0,225.5 L 102.0,225.5 Z", "spring-seat": "M 587.0,1007.0 L 583.0,1014.0 L 583.0,1028.0 L 589.0,1035.0 L 647.0,1035.0 L 659.0,1045.0 L 662.0,1053.0 L 662.0,1080.0 L 659.0,1085.0 L 683.0,1085.0 L 687.0,1070.0 L 699.0,1068.0 L 704.0,1062.0 L 704.0,982.0 L 701.0,973.0 L 667.0,973.0 L 662.0,977.0 L 662.0,1009.5 L 621.0,1009.5 L 609.0,1007.0 Z M 778.5,972.0 L 778.5,1007.0 L 781.0,1009.0 L 781.0,1017.0 L 777.0,1018.0 L 776.5,1026.0 L 776.5,1059.0 L 783.0,1066.0 L 797.0,1068.0 L 801.0,1085.0 L 825.0,1085.0 L 821.0,1080.0 L 821.0,1055.0 L 836.0,1036.0 L 890.0,1036.0 L 895.0,1028.0 L 899.0,1028.0 L 901.0,1009.0 L 820.5,1009.0 L 820.5,972.0 Z", "spring-adjustor": "M 703.5,1068.0 L 688.0,1070.0 L 684.5,1084.0 L 684.5,1166.0 L 682.0,1180.0 L 685.0,1181.0 L 685.0,1228.0 L 681.0,1232.0 L 685.0,1233.0 L 685.0,1244.0 L 683.0,1245.0 L 683.0,1327.0 L 669.0,1347.0 L 669.0,1376.0 L 679.0,1384.0 L 703.5,1384.0 Z M 778.0,1066.0 L 782.0,1071.0 L 782.0,1380.0 L 778.0,1386.0 L 803.0,1386.0 L 812.5,1380.0 L 812.5,1343.0 L 797.0,1334.0 L 797.0,1319.0 L 800.0,1314.0 L 801.5,1260.0 L 802.2,1220.0 L 802.2,1111.0 L 796.0,1068.0 Z", "diaphragm-plate": "M 299.0,186.0 L 302.0,196.0 L 309.0,201.0 L 368.0,201.0 L 377.0,199.0 L 612.0,197.0 L 661.0,197.0 L 661.0,243.0 L 673.0,248.0 L 675.0,254.0 L 705.0,249.0 L 715.0,217.0 L 715.0,190.0 L 721.0,187.5 L 769.0,187.5 L 769.0,217.0 L 780.0,249.0 L 810.0,254.0 L 812.0,248.0 L 824.0,243.0 L 824.0,197.5 L 873.0,197.8 L 1108.0,197.8 L 1117.0,201.0 L 1176.0,201.0 L 1186.0,188.0 L 1182.0,154.0 L 1163.0,134.5 L 943.0,134.8 L 322.0,134.8 L 303.0,154.0 Z", "_dia": {"clampL": [101, 219], "clampR": [1387, 220], "dipL": [257, 272], "dipR": [1228, 272], "joinL": [305], "joinR": [1180], "plateTop": 134, "cx": 742.5, "band": 12.0, "centerline": [[101, 217.0], [104, 219.5], [107, 219.5], [110, 219.5], [113, 219.5], [116, 219.5], [119, 219.5], [122, 219.5], [125, 219.5], [128, 219.5], [131, 219.0], [134, 219.0], [137, 218.5], [140, 219.0], [143, 219.0], [146, 219.0], [149, 219.0], [152, 219.0], [155, 219.5], [158, 219.5], [161, 220.0], [164, 220.5], [167, 220.0], [170, 220.5], [173, 220.5], [176, 220.5], [179, 220.5], [182, 220.5], [185, 220.5], [188, 220.0], [191, 220.0], [194, 220.5], [197, 220.5], [200, 219.0], [203, 218.5], [206, 218.0], [209, 220.0], [212, 222.5], [215, 226.0], [218, 228.0], [221, 230.5], [224, 234.5], [227, 237.5], [230, 242.0], [233, 250.0], [236, 253.5], [239, 258.5], [242, 264.0], [245, 267.0], [248, 269.5], [251, 271.0], [254, 272.5], [257, 272.5], [260, 272.5], [263, 272.5], [266, 272.0], [269, 271.5], [272, 270.0], [275, 268.5], [278, 263.0], [281, 253.5], [284, 243.5], [287, 230.5], [290, 222.5], [293, 198.5], [296, 180.0], [299, 166.0], [302, 152.0], [305, 144.0], [308, 139.5], [311, 136.5], [314, 133.5], [317, 131.5], [320, 130.0], [323, 129.0], [326, 128.5], [329, 128.5], [332, 128.5], [335, 127.5], [338, 127.5], [341, 127.5], [344, 127.5], [347, 127.5], [350, 127.5], [353, 127.5], [356, 127.5], [359, 127.5], [362, 128.0], [365, 128.0], [368, 128.5], [371, 128.5], [374, 128.5], [377, 128.5], [380, 128.5], [383, 128.5], [386, 128.0], [389, 128.0], [392, 128.0], [395, 128.0], [398, 128.0], [401, 128.0], [404, 128.0], [407, 128.0], [410, 128.0], [413, 128.0], [416, 128.0], [419, 128.0], [422, 128.0], [425, 128.0], [428, 128.0], [431, 128.0], [434, 128.0], [437, 128.0], [440, 128.0], [443, 128.0], [446, 128.0], [449, 128.0], [452, 128.0], [455, 128.0], [458, 128.0], [461, 128.0], [464, 128.0], [467, 128.0], [470, 128.0], [473, 128.0], [476, 128.0], [479, 128.0], [482, 128.0], [485, 128.0], [488, 128.0], [491, 128.0], [494, 128.0], [497, 128.0], [500, 128.0], [503, 128.5], [506, 129.0], [509, 129.0], [512, 129.0], [515, 129.0], [518, 129.0], [521, 129.0], [524, 129.0], [527, 129.0], [530, 129.0], [533, 129.5], [536, 129.5], [539, 129.5], [542, 129.0], [545, 129.0], [548, 129.0], [551, 129.0], [554, 129.0], [557, 129.0], [560, 129.0], [563, 129.0], [566, 129.0], [569, 129.0], [572, 129.5], [575, 129.5], [578, 130.0], [581, 130.0], [584, 130.0], [587, 129.5], [590, 129.5], [593, 129.5], [596, 129.5], [599, 130.0], [602, 130.0], [605, 129.5], [608, 129.5], [611, 129.5], [614, 129.5], [617, 129.5], [620, 129.5], [623, 129.0], [626, 129.0], [629, 129.0], [632, 129.0], [635, 129.0], [638, 129.0], [641, 129.0], [644, 129.0], [647, 129.0], [650, 129.5], [653, 129.5], [656, 129.5], [659, 129.0], [662, 129.5], [665, 129.0], [668, 129.0], [671, 129.0], [674, 128.5], [677, 129.0], [680, 129.5], [683, 130.0], [686, 130.0], [689, 130.0], [692, 130.0], [695, 130.0], [698, 129.0], [701, 128.5], [704, 128.5], [707, 128.5], [710, 128.5], [713, 128.5], [716, 128.5], [719, 128.5], [722, 128.5], [725, 128.5], [728, 128.5], [731, 128.5], [734, 128.5], [737, 128.5], [740, 128.5], [743, 129.0], [746, 129.0], [749, 129.0], [752, 129.0], [755, 129.0], [758, 129.0], [761, 129.0], [764, 129.0], [767, 129.5], [770, 129.5], [773, 129.5], [776, 129.5], [779, 129.5], [782, 129.5], [785, 129.5], [788, 128.5], [791, 128.5], [794, 129.5], [797, 129.0], [800, 129.0], [803, 128.5], [806, 128.5], [809, 129.5], [812, 129.5], [815, 129.5], [818, 129.0], [821, 129.0], [824, 129.0], [827, 129.0], [830, 128.5], [833, 128.0], [836, 128.5], [839, 129.0], [842, 129.0], [845, 129.0], [848, 129.0], [851, 129.0], [854, 129.0], [857, 129.0], [860, 129.0], [863, 130.5], [866, 130.5], [869, 130.0], [872, 130.0], [875, 130.0], [878, 130.5], [881, 130.5], [884, 128.5], [887, 129.0], [890, 129.0], [893, 129.0], [896, 129.0], [899, 129.0], [902, 129.0], [905, 129.0], [908, 129.0], [911, 129.0], [914, 130.0], [917, 130.5], [920, 130.5], [923, 130.5], [926, 130.5], [929, 130.5], [932, 130.5], [935, 130.0], [938, 129.0], [941, 129.0], [944, 130.5], [947, 130.5], [950, 130.5], [953, 130.5], [956, 130.0], [959, 130.0], [962, 130.5], [965, 130.5], [968, 130.5], [971, 130.5], [974, 130.5], [977, 130.5], [980, 130.0], [983, 130.0], [986, 130.0], [989, 130.0], [992, 130.5], [995, 130.5], [998, 130.5], [1001, 130.5], [1004, 130.0], [1007, 129.5], [1010, 129.5], [1013, 129.5], [1016, 129.5], [1019, 129.5], [1022, 130.0], [1025, 130.0], [1028, 129.5], [1031, 129.5], [1034, 130.0], [1037, 129.5], [1040, 129.5], [1043, 130.0], [1046, 130.0], [1049, 130.0], [1052, 130.0], [1055, 130.0], [1058, 130.0], [1061, 130.0], [1064, 130.0], [1067, 130.0], [1070, 130.0], [1073, 130.5], [1076, 130.5], [1079, 130.5], [1082, 130.5], [1085, 130.5], [1088, 130.5], [1091, 130.5], [1094, 130.0], [1097, 130.0], [1100, 130.0], [1103, 130.0], [1106, 130.0], [1109, 130.0], [1112, 130.0], [1115, 130.0], [1118, 130.0], [1121, 130.0], [1124, 129.0], [1127, 129.0], [1130, 130.0], [1133, 130.0], [1136, 130.0], [1139, 130.0], [1142, 130.0], [1145, 130.0], [1148, 130.0], [1151, 130.5], [1154, 130.0], [1157, 130.0], [1160, 130.0], [1163, 131.5], [1166, 132.0], [1169, 133.5], [1172, 134.5], [1175, 136.0], [1178, 138.5], [1181, 141.5], [1184, 153.5], [1187, 164.5], [1190, 182.0], [1193, 189.5], [1196, 208.0], [1199, 226.5], [1202, 240.5], [1205, 246.5], [1208, 264.5], [1211, 267.5], [1214, 273.0], [1217, 274.0], [1220, 275.5], [1223, 275.5], [1226, 275.5], [1229, 275.5], [1232, 275.5], [1235, 274.5], [1238, 273.5], [1241, 273.5], [1244, 270.5], [1247, 267.5], [1250, 261.5], [1253, 257.0], [1256, 250.5], [1259, 245.5], [1262, 237.5], [1265, 234.0], [1268, 230.5], [1271, 227.0], [1274, 225.0], [1277, 221.0], [1280, 220.0], [1283, 220.0], [1286, 220.0], [1289, 219.0], [1292, 219.5], [1295, 219.0], [1298, 219.5], [1301, 219.5], [1304, 219.5], [1307, 219.5], [1310, 219.5], [1313, 219.5], [1316, 219.5], [1319, 219.5], [1322, 219.5], [1325, 219.5], [1328, 219.5], [1331, 219.5], [1334, 219.5], [1337, 219.0], [1340, 219.5], [1343, 219.5], [1346, 219.5], [1349, 219.5], [1352, 219.5], [1355, 219.5], [1358, 219.5], [1361, 219.5], [1364, 219.0], [1367, 219.5], [1370, 219.5], [1373, 219.5], [1376, 219.5], [1379, 219.5], [1382, 220.0], [1385, 220.0]], "floor": [null, 227, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 228, 229, 228, 228, 228, 228, 228, 228, 228, 226, 228, 228, 228, 228, 225, 228, 230, 231, 234, 237, 244, 248, 251, 254, 395, 405, 411, 411, 417, 419, 423, 425, 429, 429, 433, 433, 437, 437, 439, 441, 443, 443, 445, 447, 449, 449, 451, 451, 453, 455, 455, 455, 455, 459, 459, 461, 461, 461, 463, 465, 465, 465, 466, 467, 467, 467, 468, 469, 469, 469, 469, 469, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 473, 473, 473, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 472, 473, 473, 473, 473, 473, 473, 474, 474, 474, 474, 474, 474, 474, 473, 472, 472, 471, 471, 471, 471, 471, 471, 471, 471, 471, 472, 473, 474, 474, 475, 475, 474, 474, 474, 474, 474, 474, 473, 474, 475, 475, 475, 475, 474, 474, 474, 474, 474, 474, 474, 474, 475, 475, 475, 475, 475, 475, 475, 475, 474, 473, 473, 473, 474, 474, 474, 474, 474, 474, 473, 473, 471, 471, 472, 472, 473, 474, 474, 474, 474, 474, 474, 474, 474, 474, 473, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 471, 473, 473, 473, 473, 473, 473, 473, 473, 473, 476, 476, 476, 476, 476, 476, 476, 476, 476, 476, 476, 476, 476, 474, 474, 474, 474, 474, 474, 473, 473, 473, 473, 473, 473, 473, 473, 472, 472, 473, 473, 473, 473, 473, 473, 473, 473, 473, 473, 473, 469, 471, 471, 473, 473, 473, 473, 473, 473, 473, 473, 472, 472, 472, 473, 473, 472, 473, 473, 473, 473, 473, 473, 473, 473, 473, 473, 473, 471, 471, 471, 471, 471, 471, 469, 469, 469, 468, 468, 467, 466, 465, 464, 463, 462, 462, 461, 460, 460, 459, 459, 457, 457, 458, 456, 456, 454, 451, 449, 449, 449, 448, 447, 441, 441, 441, 437, 441, 439, 436, 435, 432, 425, 425, 419, 413, 409, 403, 399, 291, 262, 253, 242, 239, 235, 232, 229, 227, 227, 226, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 225, 226, 225, 225, 225, 225, 225, 225, 226, 226, 226, 226, 229]}};
+</script>
+<h1>Fisher 657 Working Model</h1>
+<p>Straight edges kept straight (no rounding on yoke or casings); yoke housing top flush and connected behind the spring; nameplate, fasteners, connector, and indicator disk removed until needed; stem threaded on its bottom inch; the diaphragm keeps its molded shape and pivots at the inside of its down-curve.</p>
+<div class="row">
+<div class="fig">
+<svg id="asm" viewBox="0 0 1480 2250">
+  <g id="g-scale"></g>
+  <path id="p-yoke" class="cast"/>
+  <path id="p-lower" class="cast"/>
+  <g id="sp-spring-back"></g>
+  <g id="g-stem">
+    <rect class="sp-stem" x="704" y="205" width="77" height="1320" rx="4"/>
+    <g id="g-stem-threads"></g>
+  </g>
+  <g id="sp-adj-g">
+    <!-- parametric adjuster: threaded rod + wrench flats; dims measured
+         from the painted mask (rod w118 y1068-1338, flats w140 y1338-1386) -->
+    <rect class="sp-adj" x="683.5" y="1068" width="118" height="270" rx="3"/>
+    <rect class="sp-adj" x="672.5" y="1338" width="140" height="48" rx="4"/>
+    <clipPath id="adjclip"><rect x="683.5" y="1068" width="118" height="270" rx="3"/></clipPath>
+    <g id="sp-adj-threads" clip-path="url(#adjclip)"></g>
+  </g>
+  <g id="sp-seat-g">
+    <!-- parametric seat: locating boss inside the coil, flange the spring
+         rests on, hub seated on the adjuster (boss w156, flange w314, hub w166) -->
+    <rect class="sp-seat" x="664.5" y="972" width="156" height="40" rx="3"/>
+    <rect class="sp-seat" x="585.5" y="1008" width="314" height="29" rx="3"/>
+    <rect class="sp-seat" x="659.5" y="1037" width="166" height="49" rx="3"/>
+  </g>
+  <g id="sp-spring-front"></g>
+  <g id="g-plate"><path id="p-plate" class="cast"/></g>
+  <path id="p-dia" class="dia"/>
+  <path id="p-upper" class="cast"/>
+</svg>
+</div>
+<div class="panel">
+<p><label>Spring adjuster &mdash; tighten (+) raises the seat and preload; loosen (&minus;) lowers them</label>
+<input type="range" id="adj" min="-24" max="24" value="0" step="1">
+<span class="readout" id="adjout"></span></p>
+<p><label>Diaphragm pressure &mdash; 0 &rarr; 18 psig</label>
+<input type="range" id="press" min="0" max="18" value="0" step="0.1">
+<span class="readout" id="pressout"></span></p>
+<div class="np-wrap">
+<svg id="nameplate" viewBox="0 0 842 286" role="img" aria-label="657 actuator nameplate">
+  <!-- layout measured box-for-box from the supplied nameplate image -->
+  <rect x="12" y="13" width="817" height="260" rx="12" fill="#0a0a0a" stroke="#3a4654" stroke-width="2"/>
+  <rect x="30" y="31" width="45" height="16" rx="8" fill="#fff"/>
+  <rect x="770" y="31" width="42" height="16" rx="8" fill="#fff"/>
+  <rect x="31" y="246" width="45" height="16" rx="8" fill="#fff"/>
+  <rect x="772" y="246" width="42" height="16" rx="8" fill="#fff"/>
+  <text class="np-title" x="92" y="63">ACTUATOR</text>
+  <rect x="261" y="32" width="94" height="33" rx="14" fill="#fff"/>
+  <text class="np-logo" x="308" y="56">FISHER&#174;</text>
+  <text class="np-title" x="522" y="63">Fisher Controls</text>
+  <g id="np-serial"><text class="np-lbl" x="180" y="106">SERIAL NO</text>
+    <rect class="np-box" x="187" y="87" width="242" height="25"/>
+    <text class="np-val" x="308" y="106">XXXXXXXXX</text></g>
+  <g id="np-type"><text class="np-lbl" x="554" y="106">TYPE</text>
+    <rect class="np-box" x="561" y="86" width="219" height="26"/>
+    <text class="np-val" x="670" y="106">657</text></g>
+  <g id="np-size"><text class="np-lbl" x="135" y="144">SIZE</text>
+    <rect class="np-box" x="142" y="125" width="212" height="25"/>
+    <text class="np-val" x="248" y="144">30</text></g>
+  <g id="np-benchset"><text class="np-lbl" x="548" y="144">BENCH SET</text>
+    <rect class="np-box" x="555" y="125" width="225" height="25"/>
+    <text class="np-val" x="667" y="144">3-11</text></g>
+  <g id="np-travel"><text class="np-lbl" x="148" y="184">TRAVEL</text>
+    <rect class="np-box" x="155" y="164" width="214" height="27"/>
+    <text class="np-val" x="262" y="184">3/4 Inch</text></g>
+  <g id="np-units"><text class="np-lbl" x="578" y="184">PRESS UNITS</text>
+    <rect class="np-box" x="585" y="164" width="194" height="27"/>
+    <text class="np-val" x="682" y="184">PSI</text></g>
+  <g id="np-range"><text class="np-lbl" x="394" y="224">OPER RANGE</text>
+    <rect class="np-box" x="401" y="205" width="287" height="25"/>
+    <text class="np-val" x="544" y="224">0-18</text></g>
+</svg>
+</div>
+<p>Spring Verification, live: with the adjuster correct (0 offset), travel begins at exactly 3.0 psig and completes at 11.0. Tighten the adjuster and travel starts late (more than 3); loosen it and travel starts early (less than 3). The stem's bottom edge reads the scale: 0 at rest, 3/4 at rated stroke. Off the valve, pressure past the window keeps the mechanism moving beyond 3/4 in until the diaphragm plate lands on the lower casing &mdash; the lower travel stop.</p>
+</div>
+</div>
+<script>
+const R = window.REFINED2;
+document.getElementById('p-upper').setAttribute('d', R['upper-diaphragm-casing']);
+document.getElementById('p-lower').setAttribute('d', R['lower-diaphragm-casing']);
+document.getElementById('p-yoke').setAttribute('d', R['yoke']);
+document.getElementById('p-plate').setAttribute('d', R['diaphragm-plate']);
+
+const CXA=742.5, HALFW=146, WIRE=30, NHALF=13, TOP0=255, SEAT0=985;
+const STEM_BOT=1525, TRAVEL=140;  // grads = 3/5 of the 234 plate, centered
+const STOP=217;  // measured plate-to-lower-casing gap: the lower travel stop
+                 // (off the valve, over-stroke ends metal-on-metal here)
+const D = R._dia;
+
+// --- travel indicator scale: 0 at stem-bottom rest, 3/4 at +60px, OPEN at 0 ---
+(function(){
+  // HARD GEOMETRY: the scale plate keeps its measured size exactly
+  // (111 x 234, from the ground-truth mask). Only its POSITION moves so the
+  // 0 graduation aligns with the stem bottom at rest.
+  const w=111, h=234, x=848;
+  const y = STEM_BOT - 47;             // (234-140)/2: grads centered on the plate
+  let s = `<rect class="prism" x="${x}" y="${y}" width="${w}" height="${h}" rx="14"/>`;
+  for(let i=0;i<=6;i++){
+    const ty = STEM_BOT + TRAVEL*i/6;
+    const long = (i%2===0);
+    s += `<line class="tick" x1="${x+8}" y1="${ty}" x2="${x+8+(long?26:15)}" y2="${ty}"/>`;
+    if(long) s += `<text class="lbl" x="${x+42}" y="${ty+5}">${['0','1/4','1/2','3/4'][i/2]}</text>`;
+  }
+  s += `<text class="lbl" x="${x+8}" y="${STEM_BOT-16}" font-size="14">OPEN &#9650;</text>`;
+  document.getElementById('g-scale').innerHTML = s;
+})();
+
+// --- stem threads: bottom ~1 inch (80px) ---
+(function(){
+  let s='';
+  for(let y=STEM_BOT-80; y<=STEM_BOT-6; y+=11){
+    s+=`<line class="sp-thread" x1="706" y1="${y+4}" x2="779" y2="${y-4}"/>`;
+  }
+  document.getElementById('g-stem-threads').innerHTML=s;
+})();
+
+const backG=document.getElementById('sp-spring-back');
+const frontG=document.getElementById('sp-spring-front');
+function spring(topY, botY){
+  const n=NHALF, pitch=(botY-topY-WIRE)/n;
+  let back='', front='';
+  front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA-HALFW*0.55}" y1="${topY+WIRE/2}" x2="${CXA+HALFW*0.7}" y2="${topY+WIRE/2}"/>`;
+  for(let i=0;i<n;i++){
+    const y0=topY+WIRE/2+i*pitch, y1=y0+pitch;
+    if(i%2===0) back+=`<line class="sp-coil sp-coil-back" stroke-width="${WIRE*0.92}" x1="${CXA+HALFW}" y1="${y0}" x2="${CXA-HALFW}" y2="${y1}"/>`;
+    else front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA-HALFW}" y1="${y0}" x2="${CXA+HALFW}" y2="${y1}"/>`;
+  }
+  const ye=topY+WIRE/2+n*pitch;
+  front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA-HALFW*0.7}" y1="${ye}" x2="${CXA+HALFW*0.55}" y2="${ye}"/>`;
+  backG.innerHTML=back; frontG.innerHTML=front;
+}
+function adjThreads(offset){
+  // threads shown ON the adjuster face across its full threaded extent
+  // (top of the adjuster down to the wrench flats), clipped to its exact
+  // painted outline; the pattern scrolls as the adjuster turns.
+  let s=''; const pitch=13, TOP=1068, BOT=1338;
+  for(let y=TOP-pitch+((offset%pitch)+pitch)%pitch; y<BOT; y+=pitch){
+    if(y<TOP-6) continue;
+    s+=`<line class="sp-thread" x1="685" y1="${y+3}" x2="800" y2="${y-3}"/>`;
+  }
+  document.getElementById('sp-adj-threads').innerHTML=s;
+}
+function diaphragm(press){
+  // HARD GEOMETRY: the measured centerline is rendered VERBATIM at rest and
+  // warped piecewise under stroke — never re-approximated.
+  //  fixed: clamp legs through the molded down-curves (x <= 275, x >= 1210)
+  //  pivot: inside edge of each down-curve (275 / 1210)
+  //  inner walls (275-305, 1180-1210): lean down about the pivot
+  //  center (305-1180): rides the plate, straight down by press
+  // rolling-diaphragm kinematics: the molded fold ROLLS DOWN at half the
+  // plate rate (correct for longer strokes); clamps stay fixed; the
+  // measured points are still warped verbatim, never re-approximated.
+  const s = press;
+  function dyLeft(x){
+    if(x<=215) return 0;
+    if(x<260)  return s*0.5*(x-215)/45;     // outer wall feeding the roll
+    if(x<=285) return s*0.5;                 // fold bottom, rolling down
+    if(x<305)  return s*(0.5+0.5*(x-285)/20);// inner wall up to the plate
+    return s;                                // plate section
+  }
+  function dyRight(x){
+    if(x>=1270) return 0;
+    if(x>1225)  return s*0.5*(1270-x)/45;
+    if(x>=1200) return s*0.5;
+    if(x>1180)  return s*(0.5+0.5*(1200-x)/20);
+    return s;
+  }
+  // drape: rubber cannot pass metal — each warped point is limited by the
+  // casing's measured inner surface (floor profile), so the outer wall lays
+  // down against the casing as the fold rolls instead of passing through it.
+  const pts = D.centerline.map(([x,y],i)=>{
+    let yy = y + (x < 742.5 ? dyLeft(x) : dyRight(x));
+    const fl = D.floor[i];
+    if(fl !== null) yy = Math.min(yy, fl - D.band/2 - 1);
+    return [x, yy];
+  });
+  const d = 'M ' + pts.map(p=>p[0]+','+p[1].toFixed(1)).join(' L ');
+  document.getElementById('p-dia').setAttribute('d', d);
+}
+function update(){
+  const adj=+document.getElementById('adj').value;   // seat offset, px (+ = tighter)
+  const P=+document.getElementById('press').value;   // psig, 0-18
+  // bench-set physics: preload shifts the travel window. 8 px of seat = 1 psi.
+  const P0 = 3 + adj/8;                              // cracking pressure
+  // off the valve there is no load to stop over-stroke at rated travel:
+  // motion continues past 3/4 in until the plate lands on the lower casing.
+  const stroke = Math.min(Math.max(0, (P-P0)/8) * TRAVEL, STOP);
+  const onStop = stroke >= STOP;
+  spring(TOP0+stroke, SEAT0-adj);
+  diaphragm(stroke);
+  document.getElementById('g-stem').setAttribute('transform',`translate(0,${stroke})`);
+  document.getElementById('g-plate').setAttribute('transform',`translate(0,${stroke})`);
+  document.getElementById('sp-seat-g').setAttribute('transform',`translate(0,${-adj})`);
+  document.getElementById('sp-adj-g').setAttribute('transform',`translate(0,${-adj})`);
+  adjThreads(adj*2);
+  document.getElementById('adjout').textContent=`preload ${(adj/8>=0?'+':'')}${(adj/8).toFixed(1)} psi | travel window ${P0.toFixed(1)}-${(P0+8).toFixed(1)} psig`;
+  document.getElementById('pressout').textContent=`${P.toFixed(1)} psig | travel ${(stroke*0.75/TRAVEL).toFixed(2)} in`
+    + (onStop ? ' | LOWER TRAVEL STOP - plate on casing' : (stroke>TRAVEL ? ' (past rated)' : ''));
+}
+const q=new URLSearchParams(location.search);
+if(q.get('adj'))document.getElementById('adj').value=q.get('adj');
+if(q.get('press'))document.getElementById('press').value=q.get('press');
+document.getElementById('adj').addEventListener('input',update);
+document.getElementById('press').addEventListener('input',update);
+update();
+</script>

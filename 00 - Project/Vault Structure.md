@@ -17,7 +17,7 @@ How this Obsidian vault is organized and how to work in it.
 | --- | --- |
 | `00 - Project` | Charter, roadmap, open questions, glossary, this note |
 | `10 - Courses` | One folder per course; [[Courses]] is the map of content |
-| `20 - Source Library` | Handbooks and technical publications; [[Source Library]] is the MOC |
+| `20 - Source Library` | Handbooks and technical publications; [[Source Library]] is the MOC. Also hosts `Interactive Models/` — course-independent, exact-geometry equipment models derived from the manuals (first: `Fisher 657 Working Model`, built 2026-09-25 from Franz's hand-painted part masks over the 657 IOM's Figure 6; see its README for the hard-geometry rules and rebuild pipeline). Like the Component Index, these are derived teaching components that live in the library because courses reference them rather than own them. |
 | `30 - Templates` | Obsidian **note** templates (configured as the Templates plugin folder) — `Bench Book Module`, `Bench Notes Module`, `Course Home`, `Source Document` |
 | `40 - Engine` | The shared **course runtime** — the presentation engine every course is assembled from. See [[Engine]]. |
 | `99 - Attachments` | PDFs, images, exported decks — the default attachment folder |
@@ -33,8 +33,13 @@ Two different kinds of "template", kept apart deliberately:
 - **`40 - Engine`** holds the code that renders a course: the design system
   (`emerson-workbench.css`, `tokens.css`), the deck runner and learning-shell
   skeleton (`index.html`, `course.js`, `course.css`, `slides.js`), the four
-  reusable **slide** card templates (`build/css/TEMPLATES.md`), the
-  PPT→HTML generator (`generator/`), and the assembly + verification scripts
+  reusable **slide** card templates (`build/css/TEMPLATES.md`), a reusable
+  **ISA schematic symbol library** for redrawn piping/loop diagrams
+  (`Presentation/build/assets/symbol-library.svg`, with its own
+  `reference.md` documenting exactly which symbols are vault-grounded vs.
+  general ISA 5.1 convention — see Style Guide §5.15) — reuse it rather than
+  redrawing a valve/reducer/instrument-bubble glyph inline, the PPT→HTML
+  generator (`generator/`), and the assembly + verification scripts
   (`build-course.ps1`, `verify.ps1`). A course under `10 - Courses` is
   assembled from it and keeps only its own content (`course.json`,
   `slides/*.html`, media). It is separate from `30 - Templates` because it is

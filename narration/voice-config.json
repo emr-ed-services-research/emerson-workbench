@@ -1,0 +1,6 @@
+{
+  "comment": "Franz's pick from the 2026-09-25 three-way comparison (mild). Applies to every module.",
+  "model": "turbo",
+  "exaggeration": 0.4,
+  "cfg_weight": 0.3
+}

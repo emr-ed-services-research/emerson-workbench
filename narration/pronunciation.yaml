@@ -1,0 +1,46 @@
+# Pronunciation glossary — applied ONLY at synthesis time, never to source
+# scripts. Rules are literal text replacements applied in file order
+# (longest / most specific first). Build this up over time; the next module
+# reuses it.
+
+rules:
+  # model numbers
+  - match: "657"
+    say: "six fifty-seven"
+  - match: "667"
+    say: "six sixty-seven"
+
+  # pressure values and units (specific ranges before the bare unit)
+  - match: "3-11 psig"
+    say: "three to eleven pee-ess-eye-jee"
+  - match: "3-to-11"
+    say: "three to eleven"
+  - match: "0-18"
+    say: "zero to eighteen"
+  - match: "11 psig"
+    say: "eleven pee-ess-eye-jee"
+  - match: "3 psig"
+    say: "three pee-ess-eye-jee"
+  - match: "psig"
+    say: "pee-ess-eye-jee"
+  - match: "psi"
+    say: "pee-ess-eye"
+
+  # fractions and measurements
+  - match: "3/4 inch"
+    say: "three quarters of an inch"
+  - match: "3/4 in."
+    say: "three quarters of an inch"
+
+  # tricky words (Chatterbox read "actuator" as "acsuator"; Franz picked
+  # this respelling from a three-way test, 2026-09-25)
+  - match: "Actuator"
+    say: "Actchuator"
+  - match: "actuator"
+    say: "actchuator"
+
+  # abbreviations
+  - match: "IOM"
+    say: "I O M"
+  - match: "SOP"
+    say: "S O P"
