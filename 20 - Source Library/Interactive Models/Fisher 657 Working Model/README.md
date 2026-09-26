@@ -53,10 +53,24 @@ Needs Python 3.12 with opencv-python and numpy. Note: masks-from-paint.py
 references the painted PNG by absolute path; `ground-truth/` is the
 authoritative copy.
 
+## Coupling stage (signed off 2026-09-26)
+
+The "Stem connector installed" toggle mounts the valve below the yoke:
+stem connector, travel indicator disk, valve stem locknuts, and valve stem
+(all from the painted masks), the bonnet mounting stack per the easy-e IOM
+Figure 8 (bonnet neck, yoke locknut, packing follower, packing flange,
+studs, flange nuts — Belleville live-load stack appears for ENVIRO-SEAL
+packing selections), and a deliberately muted non-cutaway valve silhouette.
+Physics: packing friction is hysteretic (band widens with packing type,
+CVH 6th ed. 5.18 ordering; psi values representative); coupled, the plug
+seats at exactly rated travel; off the valve, over-stroke ends at the
+measured plate-on-casing stop. A travel-mark annotation layer (?mark=1)
+shows Franz's field method: mark the valve stem 3/4 in below the actuator
+stem bottom with the plug seated, actuate down to the mark (within 1/16 in)
+— travel is set off the measurement, never off bench-set pressure.
+
 ## Planned next steps
 
-- Valve coupling stage: stem connector, indicator disk, valve stem
-  (parts exist in the painted masks; deliberately not yet mounted).
-- Scripted bench-set SOP sequence driven by `narration/output/657/timing.json`
-  — one animation step per narration segment, then screen-record for the
+- Scripted playback mode driven by `narration/output/657/timing.json` —
+  one animation step per narration segment, then screen-record for the
   micro-learning video.

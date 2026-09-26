@@ -42,7 +42,9 @@ Now the valve enters the picture.
 
 Push the valve stem down to the seat.
 
-Raise pressure to 11 psig — the same upper bench-set value.
+With the plug seated, measure down from the bottom of the actuator stem and mark the valve stem at exactly 3/4 inch — the rated travel.
+
+Actuate down to your mark, within a sixteenth of an inch. Set travel off this measurement, not off the bench-set pressure. The pressure it takes should land near 11 psig — if it doesn't, recheck the spring verification.
 
 Position one stem-connector half between the stems; each stem must engage the connector by at least one full stem diameter.
 

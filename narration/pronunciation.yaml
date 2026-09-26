@@ -38,6 +38,10 @@ rules:
     say: "Actchuator"
   - match: "actuator"
     say: "actchuator"
+  - match: "Actuate"
+    say: "Actchuate"
+  - match: "actuate"
+    say: "actchuate"
 
   # abbreviations
   - match: "IOM"
