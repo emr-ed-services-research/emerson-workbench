@@ -24,30 +24,73 @@ timing_js = _json.dumps([{k: s[k] for k in ("start","duration","text","section")
 html = """<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fisher 657 Working Model</title>
 <style>
-body{margin:0;background:#eef2f6;color:#1c2530;font-family:system-ui,sans-serif;padding:18px;}
+:root{
+  --bg:#eef2f6; --panel:#ffffff; --border:#cdd7e1; --border-strong:#b9c7d6;
+  --ink:#1c2530; --sub:#44525f; --muted:#6a7784;
+  --accent:#2f6fb2; --accent-alt:#c25016; --good:#2f9e6e; --highlight:#ffdd66;
+  --thumb:#ffffff; --ring:rgba(47,111,178,0.18);
+  --track:#dbe3ec; --track-shadow:rgba(28,51,80,0.18);
+  --c-cast-line:#1c3350; --c-hw-line:#39434e;
+  --c-upper:#9fb8d8; --c-lower:#b7cbe4; --c-yoke:#7e9cc4; --c-plate:#2f6fb2;
+  --c-stem:#2a5f9e; --c-seat:#3c74ab; --c-adj:#cdd9ea;
+  --c-coil:#58a6d8; --c-coil-back:#3d7fae; --c-thread:#12283f; --c-dia:#1d4f8c;
+  --c-vstem:#6b7683; --c-vnut:#7d8894; --c-vsil:#dde5ee; --c-vsil-line:#8ba0b8;
+  --c-anno:#c25016;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12181f; --panel:#1a222c; --border:#2c3846; --border-strong:#3a4a5c;
+    --ink:#e7edf3; --sub:#9fb0c0; --muted:#7e8ea0;
+    --accent:#5b9bdb; --accent-alt:#ff8a4a; --good:#3ecb92; --highlight:#ffdd66;
+    --thumb:#e7edf3; --ring:rgba(91,155,219,0.3);
+    --track:#232e3a; --track-shadow:rgba(0,0,0,0.45);
+    --c-cast-line:#b8c6d8; --c-hw-line:#a8b2bc;
+    --c-upper:#5878a8; --c-lower:#6c8ebc; --c-yoke:#48628a; --c-plate:#5b9bdb;
+    --c-stem:#4a7db0; --c-seat:#5688bc; --c-adj:#93abc9;
+    --c-coil:#6bb8e8; --c-coil-back:#3e6d94; --c-thread:#0a1929; --c-dia:#4a7db0;
+    --c-vstem:#8892a0; --c-vnut:#9aa3ae; --c-vsil:#26313e; --c-vsil-line:#4d5d70;
+    --c-anno:#ff8a4a;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12181f; --panel:#1a222c; --border:#2c3846; --border-strong:#3a4a5c;
+  --ink:#e7edf3; --sub:#9fb0c0; --muted:#7e8ea0;
+  --accent:#5b9bdb; --accent-alt:#ff8a4a; --good:#3ecb92; --highlight:#ffdd66;
+  --thumb:#e7edf3; --ring:rgba(91,155,219,0.3);
+  --track:#232e3a; --track-shadow:rgba(0,0,0,0.45);
+  --c-cast-line:#b8c6d8; --c-hw-line:#a8b2bc;
+  --c-upper:#5878a8; --c-lower:#6c8ebc; --c-yoke:#48628a; --c-plate:#5b9bdb;
+  --c-stem:#4a7db0; --c-seat:#5688bc; --c-adj:#93abc9;
+  --c-coil:#6bb8e8; --c-coil-back:#3e6d94; --c-thread:#0a1929; --c-dia:#4a7db0;
+  --c-vstem:#8892a0; --c-vnut:#9aa3ae; --c-vsil:#26313e; --c-vsil-line:#4d5d70;
+  --c-anno:#ff8a4a;
+}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,sans-serif;padding:18px;}
 .row{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;}
-.fig{background:#fff;border:1px solid #cdd7e1;border-radius:10px;padding:10px;flex:0 1 620px;}
+.fig{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:10px;flex:0 1 620px;}
 .fig svg{width:100%;height:auto;display:block;}
 .panel{flex:1 1 300px;max-width:480px;}
-h1{font-size:19px;margin:0 0 6px;}
-p,label{font-size:13.5px;line-height:1.55;color:#44525f;}
-input[type=range]{width:100%;}
-.readout{font-family:ui-monospace,monospace;font-size:13px;color:#2f6fb2;}
-.cast{stroke:#1c3350;stroke-width:2.5;stroke-linejoin:round;fill-rule:evenodd;}
-#p-upper{fill:#9fb8d8;}
-#p-lower{fill:#b7cbe4;}
-#p-yoke{fill:#7e9cc4;}
-#p-plate{fill:#2f6fb2;}
-.sp-stem{fill:#2a5f9e;stroke:#1c3350;stroke-width:2;}
-.sp-seat{fill:#3c74ab;stroke:#1c3350;stroke-width:2;}
-.sp-adj{fill:#35689c;stroke:#1c3350;stroke-width:2;}
-.sp-coil{stroke:#58a6d8;stroke-linecap:round;fill:none;}
-.sp-coil-back{stroke:#3d7fae;}
-.sp-thread{stroke:#12283f;stroke-width:2.4;}
-.dia{stroke:#1d4f8c;stroke-width:12.0;fill:none;stroke-linecap:round;stroke-linejoin:round;}
-.prism{fill:#cdd9ea;stroke:#1c3350;stroke-width:2;}
-.tick{stroke:#1c3350;stroke-width:2;}
-.lbl{font-family:system-ui;font-size:15px;fill:#1c3350;}
+.pagehead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:6px;}
+h1{font-size:19px;margin:0;}
+#theme-toggle{font-size:15px;line-height:1;padding:7px 10px;border:1px solid var(--border-strong);
+  background:var(--panel);color:var(--ink);border-radius:8px;cursor:pointer;}
+p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
+.readout{font-family:ui-monospace,monospace;font-size:13px;color:var(--accent);}
+.cast{stroke:var(--c-cast-line);stroke-width:2.5;stroke-linejoin:round;fill-rule:evenodd;}
+#p-upper{fill:var(--c-upper);}
+#p-lower{fill:var(--c-lower);}
+#p-yoke{fill:var(--c-yoke);}
+#p-plate{fill:var(--c-plate);}
+.sp-stem{fill:var(--c-stem);stroke:var(--c-cast-line);stroke-width:2;}
+.sp-seat{fill:var(--c-seat);stroke:var(--c-cast-line);stroke-width:2;}
+.sp-adj{fill:var(--c-adj);stroke:var(--c-cast-line);stroke-width:2;}
+.sp-coil{stroke:var(--c-coil);stroke-linecap:round;fill:none;}
+.sp-coil-back{stroke:var(--c-coil-back);}
+.sp-thread{stroke:var(--c-thread);stroke-width:2.4;}
+.dia{stroke:var(--c-dia);stroke-width:12.0;fill:none;stroke-linecap:round;stroke-linejoin:round;}
+.prism{fill:var(--c-adj);stroke:var(--c-cast-line);stroke-width:2;}
+.tick{stroke:var(--c-cast-line);stroke-width:2;}
+.lbl{font-family:system-ui;font-size:15px;fill:var(--c-cast-line);}
 .np-wrap{margin:14px 0;}
 .np-wrap svg{width:100%;max-width:460px;display:block;}
 .np-title{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:25px;fill:#fff;}
@@ -55,52 +98,158 @@ input[type=range]{width:100%;}
 .np-lbl{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:19px;fill:#fff;text-anchor:end;}
 .np-box{fill:#fff;}
 .np-val{font-family:Arial,Helvetica,sans-serif;font-size:18px;fill:#0a0a0a;text-anchor:middle;}
-.vstem{fill:#6b7683;stroke:#39434e;stroke-width:2;}
-.vnut{fill:#7d8894;stroke:#39434e;stroke-width:2;}
-.vconn{fill:#3c74ab;stroke:#1c3350;stroke-width:2;}
-.vdisk{fill:#cdd9ea;stroke:#1c3350;stroke-width:2;}
-.vsil{fill:#dde5ee;stroke:#8ba0b8;stroke-width:2.5;stroke-linejoin:round;}
-.anno{stroke:#c25016;stroke-width:3;fill:none;}
-.anno-lbl{font-family:system-ui;font-size:22px;font-weight:600;fill:#c25016;}
-#cap{min-height:44px;padding:8px 12px;margin-top:6px;border-top:1px solid #cdd7e1;
-  font-size:15px;line-height:1.45;color:#1c2530;font-style:italic;}
-#pb-play{font-size:14px;padding:6px 14px;border:1px solid #2f6fb2;background:#2f6fb2;
+.vstem{fill:var(--c-vstem);stroke:var(--c-hw-line);stroke-width:2;}
+.vnut{fill:var(--c-vnut);stroke:var(--c-hw-line);stroke-width:2;}
+.vconn{fill:var(--c-seat);stroke:var(--c-cast-line);stroke-width:2;}
+.vdisk{fill:var(--c-adj);stroke:var(--c-cast-line);stroke-width:2;}
+.vsil{fill:var(--c-vsil);stroke:var(--c-vsil-line);stroke-width:2.5;stroke-linejoin:round;}
+.vfast{fill:var(--c-vnut);stroke:var(--c-hw-line);stroke-width:2;}
+.anno{stroke:var(--c-anno);stroke-width:3;fill:none;}
+.anno-lbl{font-family:system-ui;font-size:22px;font-weight:600;fill:var(--c-anno);}
+#cap{min-height:44px;padding:8px 12px;margin-top:6px;border-top:1px solid var(--border);
+  font-size:15px;line-height:1.45;color:var(--ink);font-style:italic;}
+#pb-play{font-size:14px;padding:6px 14px;border:1px solid var(--accent);background:var(--accent);
   color:#fff;border-radius:6px;cursor:pointer;}
-#pb-play.playing{background:#c25016;border-color:#c25016;}
-#nameplate g.np-hl .np-box{fill:#ffdd66;}
-#nameplate g.np-hl .np-lbl{fill:#ffdd66;}
+#pb-play.playing{background:var(--accent-alt);border-color:var(--accent-alt);}
+#nameplate g.np-hl .np-box{fill:var(--highlight);}
+#nameplate g.np-hl .np-lbl{fill:var(--highlight);}
 #ctrlbar{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
-#ctrlbar .ctl label{display:block;font-size:13.5px;color:#44525f;}
-#ctrlbar .readout{display:block;margin-top:2px;}
+#ctrlbar .ctl label{display:block;font-size:13.5px;color:var(--sub);}
+#ctrlbar .readout{display:block;margin-top:2px;white-space:nowrap;overflow:hidden;
+  font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums;transition:color 0.2s ease;}
+#ctrlbar .readout.inwin{color:var(--good);font-weight:700;}
+@keyframes readoutPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
+.readout-pulse{animation:readoutPulse 0.35s ease;display:inline-block;}
+#statusline{font-size:12px;color:var(--muted);line-height:1.4;}
+.legend{font-size:11.5px;color:var(--sub);line-height:1.3;font-variant-numeric:tabular-nums;}
+#pv-play{font-size:14px;padding:6px 14px;border:1px solid var(--c-yoke);background:var(--c-yoke);
+  color:#fff;border-radius:6px;cursor:pointer;margin-left:8px;}
+#practiceView{display:none;}
+.stepbadge{font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;
+  color:var(--accent);}
+.pv-head{display:flex;align-items:center;justify-content:space-between;}
+#pv-exit{font-size:11px;color:var(--muted);text-decoration:underline;background:none;border:none;
+  padding:0;cursor:pointer;}
+.instr{margin:0;font-size:14px;line-height:1.4;color:var(--ink);font-weight:600;min-height:2.8em;}
+.controlsrow{display:flex;gap:10px;justify-content:center;}
+.ctl2{flex:0 1 180px;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.readout-big{font-family:ui-monospace,monospace;font-size:24px;font-weight:700;
+  color:var(--accent);font-variant-numeric:tabular-nums;transition:color 0.2s ease;}
+.readout-big.inwin{color:var(--good);}
+.btnrow{display:flex;gap:6px;width:100%;}
+.ctllabel{font-size:11.5px;color:var(--sub);font-weight:600;}
+#pv-next{font-size:15px;font-weight:700;padding:11px;border:none;border-radius:9px;width:100%;
+  background:var(--border);color:var(--muted);cursor:not-allowed;transition:background 0.2s,color 0.2s;}
+#pv-next.ready{background:var(--good);color:#fff;cursor:pointer;}
+body.practicing #ctrlbar,
+body.practicing .panel > p,
+body.practicing .np-wrap{display:none;}
+body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 .pb-word{margin-left:4px;}
+.stepper{position:relative;height:34px;display:flex;align-items:stretch;gap:6px;}
+.stepper .stepbtn{flex:0 0 40px;border:none;border-radius:8px;background:var(--c-yoke);color:#fff;
+  font-size:19px;line-height:1;font-weight:600;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;-webkit-user-select:none;user-select:none;touch-action:manipulation;
+  box-shadow:0 1px 0 rgba(0,0,0,0.15);}
+.stepper .stepbtn:active{filter:brightness(0.88);}
+.stepper .stepmid{position:relative;flex:1 1 auto;display:flex;align-items:center;min-width:0;}
+.stepper .track{position:relative;width:100%;height:8px;border-radius:4px;background:var(--track);
+  box-shadow:inset 0 1px 3px var(--track-shadow);overflow:hidden;}
+.stepper .fill{position:absolute;left:0;top:0;bottom:0;background:var(--c-yoke);border-radius:4px 0 0 4px;}
+.stepper .band{position:absolute;top:0;bottom:0;background:var(--good);opacity:0.55;
+  transition:left 0.2s ease, width 0.2s ease;}
+.stepper .centertick{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--c-cast-line);opacity:0.35;}
+/* ===== Mobile-only sandbox controls: real HTML, positioned from the SVG's
+   own real empty-canvas geometry (verified with check_safe_zones.py), not
+   guessed. Desktop keeps the .panel reference layout untouched -- these are
+   display:none until the mobile media query turns them on. ===== */
+.fig{position:relative;}
+#railLeft, #railRight, #mobileLegend{display:none;}
+.mrail{position:absolute;display:flex;flex-direction:column;overflow:hidden;}
+.msliders{flex:1 1 auto;min-height:0;display:flex;gap:16px;justify-content:center;}
+.mvslide{flex:0 0 auto;height:100%;display:flex;flex-direction:column;align-items:center;gap:6px;}
+.mreadout{flex:0 0 auto;font-family:ui-monospace,monospace;font-weight:700;font-size:14px;
+  color:var(--accent);white-space:nowrap;transition:color 0.2s ease;}
+.mreadout.inwin{color:var(--good);}
+.mtrackwrap{position:relative;flex:1 1 auto;min-height:0;width:44px;display:flex;
+  justify-content:center;touch-action:none;cursor:grab;}
+.mtrackwrap:active{cursor:grabbing;}
+.mtrack{position:relative;width:12px;height:100%;border-radius:6px;background:var(--track);}
+.mfill{position:absolute;left:0;right:0;background:var(--c-yoke);border-radius:6px;}
+.mband{position:absolute;left:0;right:0;background:var(--good);opacity:0.55;}
+.mcenter{position:absolute;left:-6px;right:-6px;height:2px;background:var(--c-cast-line);opacity:0.35;}
+.mthumb{position:absolute;left:50%;width:30px;height:30px;margin-left:-15px;margin-top:-15px;
+  border-radius:50%;background:var(--panel);border:4px solid var(--accent);
+  box-shadow:0 2px 5px rgba(20,40,70,0.3);}
+.mlabel{flex:0 0 14px;font-size:10.5px;font-weight:600;color:var(--sub);text-align:center;
+  line-height:14px;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+#mobileLegend{position:absolute;display:flex;flex-direction:column;justify-content:center;
+  gap:10px;overflow:hidden;}
+.mlrow{display:flex;gap:5px;align-items:baseline;white-space:nowrap;overflow:hidden;
+  text-overflow:ellipsis;min-width:0;font-family:ui-monospace,monospace;font-size:8px;}
+.mlrow b{font-weight:700;color:var(--ink);}
+.mlrow span{font-weight:400;color:var(--sub);}
 @media (max-width:700px){
-  body{padding:10px 10px 210px;}
-  h1{font-size:17px;}
-  .row{flex-direction:column;}
-  .fig{flex:none;}
+  /* The sandbox view: the fig fills the first screen (Franz -- mobile is a
+     real-estate constraint, so the illustration gets priority), with the
+     new rail sliders/legend positioned in its own genuinely-empty canvas
+     space instead of a separate control bar stealing room from the picture.
+     Everything #ctrlbar used to hold that isn't Play/Practice moves into
+     the rails; the nameplate/packing/valve controls stay reachable by
+     scrolling below the fig, not removed. */
+  body{padding:0;}
+  .pagehead{padding:8px 10px 0;}
+  h1{font-size:15px;}
+  /* .row's desktop align-items:flex-start sizes children to their own
+     content width instead of stretching -- without overriding it here,
+     .fig collapses to a narrow column with the rest of the screen empty. */
+  .row{flex-direction:column;align-items:stretch;}
+  /* The desktop .fig svg rule is width:100%;height:auto -- the SVG grows to
+     its own natural aspect-based height with nothing constraining it. On a
+     narrow phone that natural height happens to be close to one screen, so
+     this looked fine there, but it's coincidence, not the fit-to-screen
+     behavior actually built and verified in the prototype: height:100% on
+     a FIXED-height parent, so the SVG is contained within whatever box it's
+     given (letterboxed as needed) instead of dictating the box's height. */
+  .fig{flex:none;height:88vh;height:88dvh;padding:4px;}
+  .fig svg{height:100%;}
   .panel{max-width:none;}
-  #ctrlbar{position:fixed;left:0;right:0;bottom:0;z-index:60;margin:0;
-    background:#fff;border-top:2px solid #b9c7d6;
-    box-shadow:0 -6px 18px rgba(20,40,60,0.14);
-    padding:10px 14px calc(12px + env(safe-area-inset-bottom));
-    display:grid;grid-template-columns:56px 1fr;grid-auto-rows:auto;
-    column-gap:14px;row-gap:6px;align-items:center;}
-  #ctrlbar button#pb-play{grid-row:1 / span 2;height:64px;font-size:22px;
-    padding:0;border-radius:12px;}
-  .pb-word{display:none;}
-  #ctrlbar .ctl{grid-column:2;}
-  #ctrlbar .ctl label{font-size:12.5px;}
-  .ctl-hint{display:none;}
-  #ctrlbar .readout{font-size:11.5px;margin-top:0;}
-  #pb-status{display:none;}
-  input[type=range]{height:28px;}
+  #ctrlbar{display:flex;gap:8px;margin-bottom:8px;}
+  #ctrlbar .ctl, #statusline, #npLegend, #pb-status{display:none;}
+  #pb-play, #pv-play{flex:1 1 0;font-size:13px;padding:9px 6px;}
+  .stepper{height:38px;}
+  .stepper .stepbtn{flex-basis:44px;font-size:21px;}
+  #railLeft, #railRight{display:flex;}
+  #mobileLegend{display:flex;}
+  body.practicing{overflow:hidden;}
+  body.practicing .pagehead{display:none;}
+  body.practicing #railLeft, body.practicing #railRight,
+  body.practicing #mobileLegend{display:none;}
+  body.practicing .row{height:100dvh;height:100vh;flex-direction:column;flex-wrap:nowrap;
+    gap:6px;padding-top:8px;}
+  body.practicing .fig{flex:1 1 auto;min-height:0;padding:6px;}
+  body.practicing .fig svg{height:100%;width:100%;}
+  body.practicing .panel{flex:0 0 auto;max-width:none;}
+  body.practicing #cap{display:none;}
 }
 #asm > g, #asm > path{transition:opacity 0.4s ease;}
 .pulse{animation:pbpulse 1.1s ease-in-out 3;}
 @keyframes pbpulse{50%{opacity:0.3;}}
 </style>
 <script>__PARTSJS__</script>
+<script>
+(function(){
+  try{
+    const saved = localStorage.getItem('657-theme');
+    if(saved === 'light' || saved === 'dark')
+      document.documentElement.setAttribute('data-theme', saved);
+  }catch(e){}
+})();
+</script>
+<div class="pagehead">
 <h1>Fisher 657 Working Model</h1>
+<button id="theme-toggle" title="Toggle light/dark mode" aria-label="Toggle light/dark mode">&#9680;</button>
+</div>
 <div class="row">
 <div class="fig">
 <svg id="asm" viewBox="0 0 1480 2250">
@@ -110,6 +259,15 @@ input[type=range]{width:100%;}
          (easy-e IOM Figure 8; yoke locknut = key 15) -->
     <rect class="vnut" x="642.5" y="2028" width="200" height="140"/>
     <g id="boss-threads"></g>
+  </g>
+  <g id="g-fasteners">
+    <!-- casing + yoke-top bolts, measured from the painted mask, symmetric about CX -->
+    <rect class="vfast" x="1289" y="170" width="66" height="29" rx="3"/>
+    <rect class="vfast" x="127.5" y="170" width="66" height="29" rx="3"/>
+    <rect class="vfast" x="1289.5" y="245" width="67" height="42" rx="3"/>
+    <rect class="vfast" x="128" y="245" width="67" height="42" rx="3"/>
+    <rect class="vfast" x="916.5" y="446" width="65.5" height="27" rx="3"/>
+    <rect class="vfast" x="536" y="446" width="65.5" height="27" rx="3"/>
   </g>
   <path id="p-yoke" class="cast"/>
   <path id="p-lower" class="cast"/>
@@ -138,13 +296,13 @@ input[type=range]{width:100%;}
       L 872,2290 L 1010,2330 L 1092,2330 L 1092,2560 L 1010,2560
       L 940,2540 L 545,2540 L 475,2560 L 392,2560 L 392,2330 L 475,2330
       L 613,2290 L 598,2192 L 527,2192 Z"/>
-    <line x1="392" y1="2445" x2="1092" y2="2445" stroke="#8ba0b8" stroke-width="2" stroke-dasharray="8 7"/>
+    <line x1="392" y1="2445" x2="1092" y2="2445" stroke="var(--c-vsil-line)" stroke-width="2" stroke-dasharray="8 7"/>
   </g>
   <g id="g-mount" style="display:none">
     <!-- yoke locknut clamps the yoke ring down onto the bonnet shoulder -->
     <rect class="vnut" x="617.5" y="2052" width="250" height="46" rx="5"/>
-    <line x1="700" y1="2052" x2="700" y2="2098" stroke="#39434e" stroke-width="2"/>
-    <line x1="785" y1="2052" x2="785" y2="2098" stroke="#39434e" stroke-width="2"/>
+    <line x1="700" y1="2052" x2="700" y2="2098" stroke="var(--c-hw-line)" stroke-width="2"/>
+    <line x1="785" y1="2052" x2="785" y2="2098" stroke="var(--c-hw-line)" stroke-width="2"/>
     <!-- packing follower (key 13): collar rising out of the bonnet -->
     <rect class="vnut" x="694.5" y="1972" width="96" height="10" rx="2"/>
     <rect class="vnut" x="698.5" y="1975" width="88" height="60"/>
@@ -207,28 +365,121 @@ input[type=range]{width:100%;}
     <rect class="sp-seat" x="585.5" y="1008" width="314" height="29" rx="3"/>
     <rect class="sp-seat" x="659.5" y="1037" width="166" height="49" rx="3"/>
   </g>
-  <g id="g-plate"><path id="p-plate" class="cast"/></g>
+  <g id="g-plate">
+  <path id="p-plate" class="cast"/>
+  <!-- fill the white slivers between the plate's boss (x715-769) and the
+       stem's actual width (x704-781): the boss is narrower than the stem
+       above y205 where the stem hasn't started yet -->
+  <rect x="704" y="186" width="11" height="20" fill="var(--c-plate)"/>
+  <rect x="769" y="186" width="12" height="20" fill="var(--c-plate)"/>
+  <!-- the actual hole (measured via isPointInFill scan): x715-769,
+       y187.5 down to well past the stem's top at y205 -->
+  <rect x="715" y="186" width="54" height="21" fill="var(--c-plate)"/>
+</g>
   <g id="sp-spring-front"></g>
   <path id="p-dia" class="dia"/>
   <path id="p-upper" class="cast"/>
 </svg>
+<!-- Mobile-only sandbox controls. Positioned in JS (layoutRail) from the
+     drawing's own real empty-canvas rectangles -- verified with
+     check_safe_zones.py against the actual part geometry (every part's full
+     range of adj/stroke motion), not guessed. Desktop never shows these
+     (display:none until the mobile media query turns them on). -->
+<div class="mrail" id="railLeft">
+  <div class="msliders">
+    <div class="mvslide">
+      <div class="mreadout" id="mAdjOut"></div>
+      <div class="mtrackwrap" id="mAdjHit">
+        <div class="mtrack">
+          <div class="mfill" id="mAdjFill"></div>
+          <div class="mcenter" id="mAdjCenter"></div>
+        </div>
+        <div class="mthumb" id="mAdjThumb"></div>
+      </div>
+      <div class="mlabel">TIGHTEN / LOOSEN</div>
+    </div>
+  </div>
+</div>
+<div class="mrail" id="railRight">
+  <div class="msliders">
+    <div class="mvslide">
+      <div class="mreadout" id="mPressOut"></div>
+      <div class="mtrackwrap" id="mPressHit">
+        <div class="mtrack">
+          <div class="mband" id="mPressBand"></div>
+          <div class="mfill" id="mPressFill"></div>
+        </div>
+        <div class="mthumb" id="mPressThumb"></div>
+      </div>
+      <div class="mlabel">PRESSURE</div>
+    </div>
+  </div>
+</div>
+<div id="mobileLegend">
+  <div class="mlrow"><b>SIZE</b><span>30</span></div>
+  <div class="mlrow"><b>BENCH SET</b><span>3&ndash;11 PSI</span></div>
+  <div class="mlrow"><b>TRAVEL</b><span>3/4 IN</span></div>
+  <div class="mlrow"><b>RANGE</b><span>0&ndash;18 PSI</span></div>
+</div>
 <div id="cap"></div>
 </div>
 <div class="panel">
 <div id="ctrlbar">
   <button id="pb-play" title="Play the SOP">&#9654;<span class="pb-word"> Play the SOP</span></button>
+  <button id="pv-play" title="Practice the SOP">Practice the SOP</button>
   <div class="ctl">
     <label>Spring adjuster <span class="ctl-hint">&mdash; tighten (+) raises seat and preload; loosen (&minus;) lowers</span></label>
-    <input type="range" id="adj" min="-24" max="24" value="0" step="1">
+    <div class="stepper">
+      <button type="button" class="stepbtn" id="adjMinus" aria-label="Loosen adjuster">&minus;</button>
+      <div class="stepmid">
+        <div class="track"><div class="fill" id="fillAdj"></div><div class="centertick" style="left:50%;"></div></div>
+      </div>
+      <button type="button" class="stepbtn" id="adjPlus" aria-label="Tighten adjuster">&plus;</button>
+    </div>
     <span class="readout" id="adjout"></span>
   </div>
   <div class="ctl" id="pressrow">
     <label>Diaphragm pressure <span class="ctl-hint">&mdash; 0 &rarr; 18 psig</span></label>
-    <input type="range" id="press" min="0" max="18" value="0" step="0.1">
+    <div class="stepper">
+      <button type="button" class="stepbtn" id="pressMinus" aria-label="Decrease pressure">&minus;</button>
+      <div class="stepmid">
+        <div class="track"><div class="band" id="bandPress"></div><div class="fill" id="fillPress"></div></div>
+      </div>
+      <button type="button" class="stepbtn" id="pressPlus" aria-label="Increase pressure">&plus;</button>
+    </div>
     <span class="readout" id="pressout"></span>
   </div>
+  <div id="npLegend" class="legend">SIZE 30 &middot; BENCH SET 3&ndash;11 PSI &middot; TRAVEL 3/4 IN &middot; RANGE 0&ndash;18 PSI</div>
+  <div id="statusline"></div>
   <span class="readout" id="pb-status"></span>
   <audio id="pb-audio" src="657-narration.wav" preload="auto"></audio>
+</div>
+<div id="practiceView">
+  <div class="pv-head">
+    <span class="stepbadge" id="pv-badge">Step 1</span>
+    <button id="pv-exit">Exit practice</button>
+  </div>
+  <p class="instr" id="pv-instr"></p>
+  <div class="controlsrow">
+    <div class="ctl2" id="pv-ctlAdj">
+      <div class="readout-big" id="pv-adjout"></div>
+      <div class="btnrow">
+        <button type="button" class="stepbtn" id="pv-adjMinus" aria-label="Loosen adjuster">&minus;</button>
+        <button type="button" class="stepbtn" id="pv-adjPlus" aria-label="Tighten adjuster">&plus;</button>
+      </div>
+      <div class="ctllabel">Loosen &nbsp;/&nbsp; Tighten</div>
+    </div>
+    <div class="ctl2" id="pv-ctlPress">
+      <div class="readout-big" id="pv-pressout"></div>
+      <div class="btnrow">
+        <button type="button" class="stepbtn" id="pv-pressMinus" aria-label="Decrease pressure">&minus;</button>
+        <button type="button" class="stepbtn" id="pv-pressPlus" aria-label="Increase pressure">&plus;</button>
+      </div>
+      <div class="ctllabel">Diaphragm pressure</div>
+    </div>
+  </div>
+  <div class="legend">SIZE 30 &middot; BENCH SET 3&ndash;11 PSI &middot; TRAVEL 3/4 IN &middot; RANGE 0&ndash;18 PSI</div>
+  <button id="pv-next" disabled>Next</button>
 </div>
 <p><label><input type="checkbox" id="valve"> Stem connector installed &mdash; valve coupled below the yoke</label><br>
 <label style="margin-left:22px;">Packing:
@@ -288,28 +539,48 @@ document.getElementById('p-lower').setAttribute('d', R['lower-diaphragm-casing']
 document.getElementById('p-yoke').setAttribute('d', R['yoke']);
 document.getElementById('p-plate').setAttribute('d', R['diaphragm-plate']);
 
-const CXA=742.5, HALFW=146, WIRE=30, NHALF=13, TOP0=202, SEAT0=1008;
+const CXA=742.5, HALFW=146, WIRE=56, NHALF=13, TOP0=197.5, SEAT0=1008;
 const STEM_BOT=1525, TRAVEL=140;  // grads = 3/5 of the 234 plate, centered
 const STOP=217;  // measured plate-to-lower-casing gap: the lower travel stop
                  // (off the valve, over-stroke ends metal-on-metal here)
 const D = R._dia;
 
-// --- travel indicator scale: 0 at stem-bottom rest, 3/4 at +60px, OPEN at 0 ---
+// --- travel indicator scale: locked to Figure 6 pixel measurements ---
 (function(){
-  // HARD GEOMETRY: the scale plate keeps its measured size exactly
-  // (111 x 234, from the ground-truth mask). Only its POSITION moves so the
-  // 0 graduation aligns with the stem bottom at rest.
+  // plate 111 x 234 (measured mask); zero = header bottom (rel 46)
   const w=111, h=234, x=848;
-  const y = STEM_BOT - 47;             // (234-140)/2: grads centered on the plate
-  let s = `<rect class="prism" x="${x}" y="${y}" width="${w}" height="${h}" rx="14"/>`;
-  for(let i=0;i<=6;i++){
-    const ty = STEM_BOT + TRAVEL*i/6;
-    const long = (i%2===0);
-    s += `<line class="tick" x1="${x+8}" y1="${ty}" x2="${x+8+(long?26:15)}" y2="${ty}"/>`;
-    if(long) s += `<text class="lbl" x="${x+42}" y="${ty+5}">${['0','1/4','1/2','3/4'][i/2]}</text>`;
+  const y = STEM_BOT - 46;
+  // mount pad: flush casting behind the slot region (Figure 6)
+  let bosses = `<rect x="${x+w-10}" y="${y+40}" width="38" height="182" fill="var(--c-yoke)" stroke="var(--c-cast-line)" stroke-width="2"/>`;
+  let fixed = "";
+  let s = `<g id="g-scaleplate">`;
+  s += `<rect class="prism" x="${x}" y="${y}" width="${w}" height="${h}" rx="13"/>`;
+  s += `<path d="M ${x},${y+46} L ${x},${y+13} Q ${x},${y} ${x+13},${y} L ${x+w-13},${y} Q ${x+w},${y} ${x+w},${y+13} L ${x+w},${y+46} Z" fill="var(--c-stem)"/>`;
+  // slots (measured): x rel 68-85; y rel 46-113 and 162-215
+  for (const [s0, s1] of [[46, 113], [162, 215]]) {
+    s += `<rect x="${x+68}" y="${y+s0}" width="17" height="${s1-s0}" rx="8.5" fill="var(--c-yoke)" stroke="var(--c-cast-line)" stroke-width="2"/>`;
   }
-  s += `<text class="lbl" x="${x+8}" y="${STEM_BOT-16}" font-size="14">OPEN &#9650;</text>`;
-  document.getElementById('g-scale').innerHTML = s;
+  // 10 graduations (the real plate); zero is the header edge itself,
+  // the 10th mark lands at rated travel
+  for(let i=1;i<=10;i++){
+    const ty = y + 46 + TRAVEL*i/10;
+    const long = (i%2===0);
+    s += `<line class="tick" x1="${x+2}" y1="${ty}" x2="${x+2+(long?19:11)}" y2="${ty}"/>`;
+  }
+  // OPEN (measured: rel y 52-117, ~19px glyphs) + arrow (apex 130, base 155, shaft to 187)
+  s += `<text class="lbl" font-size="19" font-weight="600" letter-spacing="2" transform="translate(${x+49},${y+118}) rotate(-90)">OPEN</text>`;
+  s += `<line class="tick" x1="${x+42}" y1="${y+187}" x2="${x+42}" y2="${y+153}" stroke-width="5"/>`;
+  s += `<path d="M ${x+42},${y+130} L ${x+35},${y+155} L ${x+49},${y+155} Z" fill="var(--c-cast-line)"/>`;
+  s += `</g>`;
+  // screws fixed to the yoke: small cross screw (upper), ringed screw (lower)
+  fixed += `<circle cx="${x+76}" cy="${y+100}" r="9" fill="var(--c-vnut)" stroke="var(--c-hw-line)" stroke-width="2"/>`
+         + `<line x1="${x+70}" y1="${y+100}" x2="${x+82}" y2="${y+100}" stroke="var(--c-hw-line)" stroke-width="2"/>`
+         + `<line x1="${x+76}" y1="${y+94}" x2="${x+76}" y2="${y+106}" stroke="var(--c-hw-line)" stroke-width="2"/>`;
+  fixed += `<circle cx="${x+76}" cy="${y+200}" r="13" fill="var(--c-vnut)" stroke="var(--c-hw-line)" stroke-width="2"/>`
+         + `<circle cx="${x+76}" cy="${y+200}" r="6" fill="none" stroke="var(--c-hw-line)" stroke-width="2"/>`
+         + `<line x1="${x+67}" y1="${y+200}" x2="${x+85}" y2="${y+200}" stroke="var(--c-hw-line)" stroke-width="2"/>`
+         + `<line x1="${x+76}" y1="${y+191}" x2="${x+76}" y2="${y+209}" stroke="var(--c-hw-line)" stroke-width="2"/>`;
+  document.getElementById('g-scale').innerHTML = bosses + s + fixed;
 })();
 
 // --- stem threads: bottom ~1 inch (80px) ---
@@ -324,16 +595,24 @@ const D = R._dia;
 const backG=document.getElementById('sp-spring-back');
 const frontG=document.getElementById('sp-spring-front');
 function spring(topY, botY){
+  // Connecting end stays at the TRUE coil edge (HALFW), matching every
+  // interior turn exactly -- no artificial inward step. The cap is made
+  // SHORT by sliding its FREE end over toward that same outer edge, so
+  // the whole cap sits in a short stub at the rim instead of a long bar
+  // crossing the width where interior turns bunch (that crossing was the
+  // actual overlap -- shortening from the connecting end never touched it).
   const n=NHALF, pitch=(botY-topY-WIRE)/n;
   let back='', front='';
-  front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA-HALFW*0.55}" y1="${topY+WIRE/2}" x2="${CXA+HALFW*0.7}" y2="${topY+WIRE/2}"/>`;
+  // free end lands at the stem centerline -- a real landmark, not a
+  // guessed fraction -- while the connecting end stays at the true edge
+  front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA}" y1="${topY+WIRE/2}" x2="${CXA+HALFW}" y2="${topY+WIRE/2}"/>`;
   for(let i=0;i<n;i++){
     const y0=topY+WIRE/2+i*pitch, y1=y0+pitch;
     if(i%2===0) back+=`<line class="sp-coil sp-coil-back" stroke-width="${WIRE*0.92}" x1="${CXA+HALFW}" y1="${y0}" x2="${CXA-HALFW}" y2="${y1}"/>`;
     else front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA-HALFW}" y1="${y0}" x2="${CXA+HALFW}" y2="${y1}"/>`;
   }
   const ye=topY+WIRE/2+n*pitch;
-  front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA-HALFW*0.7}" y1="${ye}" x2="${CXA+HALFW*0.55}" y2="${ye}"/>`;
+  front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA-HALFW}" y1="${ye}" x2="${CXA}" y2="${ye}"/>`;
   backG.innerHTML=back; frontG.innerHTML=front;
 }
 function adjThreads(offset){
@@ -427,11 +706,17 @@ function setValve(on){
   document.getElementById('g-vgrp').style.display = on ? '' : 'none';
   document.getElementById('g-conn').style.display = (on && PB.connShown) ? '' : 'none';
   document.getElementById('asm').setAttribute('viewBox', on ? '0 0 1480 2620' : '0 0 1480 2250');
+  // the viewBox change rescales the SVG's fit, so the mobile rails' real
+  // on-screen position (computed from that scale) goes stale unless
+  // recomputed right away.
+  if (typeof layoutRail === 'function') layoutRail();
 }
 let strokeState = 0;   // remembered position: packing friction is hysteretic
+let ADJ = 0, PRESS = 0;   // stepper-button state: no native range input backs these any more
+let lastStroke = 0;   // exposed for Practice-mode step gates (read-only outside update())
 function update(){
-  const adj=+document.getElementById('adj').value;   // seat offset, px (+ = tighter)
-  const P=+document.getElementById('press').value;   // psig, 0-18
+  const adj=ADJ;   // seat offset, px (+ = tighter)
+  const P=PRESS;   // psig, 0-18
   const coupled = PB.connected && document.getElementById('valve').checked;
   // packing friction opposes motion BOTH ways, so it widens the start point
   // going down and holds the stem going back up. Zero when off the valve --
@@ -454,6 +739,7 @@ function update(){
   const frictionless = Math.min(Math.max(0, (P-P0)/8) * TRAVEL, LIM);
   const held = Ff > 0 && Math.abs(strokeState - frictionless) > 0.5;
   const stroke = strokeState;
+  lastStroke = stroke;
   const onStop = !coupled && stroke >= STOP;
   const seated = coupled && stroke >= TRAVEL;
   document.getElementById('fricout').textContent = coupled
@@ -470,23 +756,211 @@ function update(){
   document.getElementById('g-vgrp').setAttribute('transform',
     `translate(0,${PB.connected ? stroke : 140})`);
   document.getElementById('g-dn').setAttribute('transform',`translate(0,${PB.nutsDy})`);
-  document.getElementById('g-scale').setAttribute('transform',`translate(0,${PB.scaleDy})`);
+  const _sp = document.getElementById('g-scaleplate');
+  if (_sp) _sp.setAttribute('transform',`translate(0,${PB.scaleDy})`);
   document.getElementById('sp-seat-g').setAttribute('transform',`translate(0,${-adj})`);
   document.getElementById('sp-adj-g').setAttribute('transform',`translate(0,${-adj})`);
   adjThreads(adj*2);
-  document.getElementById('adjout').textContent=`preload ${(adj/8>=0?'+':'')}${(adj/8).toFixed(1)} psi | travel window ${P0.toFixed(1)}-${(P0+8).toFixed(1)} psig`;
-  document.getElementById('pressout').textContent=`${P.toFixed(1)} psig | travel ${(stroke*0.75/TRAVEL).toFixed(2)} in`
-    + (onStop ? ' | LOWER TRAVEL STOP - plate on casing'
-       : seated ? ' | PLUG SEATED - valve closed'
+  // fixed-format, single-line readouts -- never wrap, so the sliders
+  // above them never shift position regardless of value or state
+  const preload = adj/8;
+  document.getElementById('adjout').textContent = `${preload>=0?'+':''}${preload.toFixed(1)} psi`;
+  const inWindow = P >= P0 && P <= (P0+8);
+  const pressoutEl = document.getElementById('pressout');
+  pressoutEl.textContent = `${P.toFixed(1)} psig`;
+  if (pressoutEl.classList.contains('inwin') !== inWindow){
+    pressoutEl.classList.toggle('inwin', inWindow);
+    pressoutEl.classList.remove('readout-pulse'); void pressoutEl.offsetWidth; pressoutEl.classList.add('readout-pulse');
+  }
+  // custom track fill + live calibration-window band (slides with preload)
+  document.getElementById('fillAdj').style.width = ((adj+24)/48*100) + '%';
+  document.getElementById('fillPress').style.width = (P/18*100) + '%';
+  const bandLo = Math.max(0, P0/18*100), bandHi = Math.min(100, (P0+8)/18*100);
+  const bandEl = document.getElementById('bandPress');
+  bandEl.style.left = bandLo + '%';
+  bandEl.style.width = Math.max(0, bandHi-bandLo) + '%';
+  // secondary diagnostics move here, free to wrap without touching a slider
+  document.getElementById('statusline').textContent =
+    `travel window ${P0.toFixed(1)}-${(P0+8).toFixed(1)} psig · travel ${(stroke*0.75/TRAVEL).toFixed(2)} in`
+    + (onStop ? ' · LOWER TRAVEL STOP - plate on casing'
+       : seated ? ' · PLUG SEATED - valve closed'
        : (stroke>TRAVEL ? ' (past rated)' : ''));
+  // mirror into Practice mode's own readouts -- same numbers, no duplicate physics
+  const pvA = document.getElementById('pv-adjout');
+  if (pvA) pvA.textContent = document.getElementById('adjout').textContent;
+  const pvP = document.getElementById('pv-pressout');
+  if (pvP) { pvP.textContent = pressoutEl.textContent; pvP.classList.toggle('inwin', inWindow); }
+  pvCheckGate();
+  updateMobileRails(adj, P, P0, inWindow);
 }
+// ================= mobile rail sliders: same state, same physics, just a
+// different real-HTML control surface (see layoutRail for positioning) =====
+const THUMB_R = 15;   // half the thumb's 30px diameter
+function railPct(v, vMin, vMax){ return (vMax-v)/(vMax-vMin); }
+function thumbY(v, vMin, vMax, trackH){
+  return THUMB_R + railPct(v, vMin, vMax) * Math.max(0, trackH - 2*THUMB_R);
+}
+function updateMobileRails(adj, P, P0, inWindow){
+  const adjTrack = document.querySelector('#mAdjHit .mtrack');
+  if (!adjTrack) return;   // not on mobile / rails not in DOM state yet
+  document.getElementById('mAdjOut').textContent = document.getElementById('adjout').textContent;
+  const hA = adjTrack.clientHeight;
+  const pA = thumbY(adj, -24, 24, hA), pCenter = thumbY(0, -24, 24, hA);
+  document.getElementById('mAdjThumb').style.top = pA + 'px';
+  document.getElementById('mAdjCenter').style.top = pCenter + 'px';
+  const fillA = document.getElementById('mAdjFill');
+  fillA.style.top = Math.min(pA, pCenter) + 'px';
+  fillA.style.height = Math.abs(pA - pCenter) + 'px';
+
+  const mPressOut = document.getElementById('mPressOut');
+  mPressOut.textContent = `${P.toFixed(1)} psig`;
+  mPressOut.classList.toggle('inwin', inWindow);
+  const pressTrack = document.querySelector('#mPressHit .mtrack');
+  const hP = pressTrack.clientHeight;
+  const pP = thumbY(P, 0, 18, hP);
+  document.getElementById('mPressThumb').style.top = pP + 'px';
+  const fillP = document.getElementById('mPressFill');
+  fillP.style.top = pP + 'px'; fillP.style.bottom = '0';
+  const pLo = thumbY(Math.min(18,P0+8), 0, 18, hP), pHi = thumbY(Math.max(0,P0), 0, 18, hP);
+  const band = document.getElementById('mPressBand');
+  band.style.top = pLo + 'px'; band.style.height = Math.max(0, pHi-pLo) + 'px';
+}
+function bindMobileVSlider(hitId, vMin, vMax, setFn){
+  const hit = document.getElementById(hitId);
+  let dragging=false;
+  function move(e){
+    if(!dragging) return;
+    const rect = hit.getBoundingClientRect();
+    const t = Math.min(1, Math.max(0, (e.clientY-rect.top)/rect.height));
+    setFn(vMax - t*(vMax-vMin));
+    update();
+  }
+  hit.addEventListener('pointerdown', e=>{ dragging=true; hit.setPointerCapture(e.pointerId); move(e); });
+  hit.addEventListener('pointermove', move);
+  hit.addEventListener('pointerup', ()=> dragging=false);
+  hit.addEventListener('pointercancel', ()=> dragging=false);
+}
+bindMobileVSlider('mAdjHit', -24, 24, v=>setAdj(v));
+bindMobileVSlider('mPressHit', 0, 18, v=>setPress(v));
+function svgToScreen(x, y){
+  const svg = document.getElementById('asm');
+  const pt = svg.createSVGPoint();
+  pt.x = x; pt.y = y;
+  return pt.matrixTransform(svg.getScreenCTM());
+}
+function placeRail(id, x0, y0, x1, y1){
+  const figRect = document.querySelector('.fig').getBoundingClientRect();
+  const p1 = svgToScreen(x0, y0);
+  const p2 = svgToScreen(x1, y1);
+  const rail = document.getElementById(id);
+  rail.style.left = (p1.x - figRect.left) + 'px';
+  rail.style.top = (p1.y - figRect.top) + 'px';
+  rail.style.width = (p2.x - p1.x) + 'px';
+  rail.style.height = (p2.y - p1.y) + 'px';
+}
+function layoutRail(){
+  // Verified against real part geometry (check_safe_zones.py): left column
+  // clear x0-453, right column clear x1032-1480, for y500 down. Housing
+  // wall (not the full yoke -- that includes the legs, which run all the
+  // way to the valve mount) is y490-1265, center y877, nudged up ~70 units
+  // on Franz's on-device read. Sliders sit below it, matched length.
+  placeRail('mobileLegend', 1050, 550, 1465, 1060);
+  placeRail('railLeft', 20, 1090, 435, 1720);
+  placeRail('railRight', 1050, 1090, 1465, 1720);
+}
+window.addEventListener('resize', layoutRail);
+window.addEventListener('orientationchange', layoutRail);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', layoutRail);
+// ResizeObserver's callback is async, so it can't be the only trigger -- the
+// very first render would compute thumb positions before it's fired even
+// once. Also re-runs update() (not just layoutRail) since a resize changes
+// the track's clientHeight, which the thumb math depends on directly.
+new ResizeObserver(()=>{ layoutRail(); update(); }).observe(document.querySelector('.fig'));
+layoutRail();
 // ================= scripted SOP playback =================
 const TIMING = __TIMINGJSON__;
 const audio = document.getElementById('pb-audio');
 const capEl = document.getElementById('cap');
 let playing=false, curSeg=-1, seg8sw=false, firedCues=[];
-function setPress(v){ document.getElementById('press').value=v; }
-function setAdj(v){ document.getElementById('adj').value=v; }
+function setPress(v){ PRESS = Math.min(18, Math.max(0, +v)); }
+function setAdj(v){ ADJ = Math.min(24, Math.max(-24, Math.round(+v))); }
+function bindStepper(id, fn){
+  // tap = one step; hold = auto-repeat, like a real button
+  const btn = document.getElementById(id);
+  let delay=null, repeat=null;
+  function go(){ fn(); update(); }
+  function start(e){ e.preventDefault(); go();
+    delay = setTimeout(()=>{ repeat = setInterval(go, 90); }, 350); }
+  function stop(){ clearTimeout(delay); clearInterval(repeat); delay=null; repeat=null; }
+  btn.addEventListener('pointerdown', start);
+  btn.addEventListener('pointerup', stop);
+  btn.addEventListener('pointerleave', stop);
+  btn.addEventListener('pointercancel', stop);
+}
+bindStepper('adjMinus', ()=>setAdj(ADJ-1));
+bindStepper('adjPlus', ()=>setAdj(ADJ+1));
+bindStepper('pressMinus', ()=>setPress(PRESS-0.2));
+bindStepper('pressPlus', ()=>setPress(PRESS+0.2));
+bindStepper('pv-adjMinus', ()=>setAdj(ADJ-1));
+bindStepper('pv-adjPlus', ()=>setAdj(ADJ+1));
+bindStepper('pv-pressMinus', ()=>setPress(PRESS-0.2));
+bindStepper('pv-pressPlus', ()=>setPress(PRESS+0.2));
+
+// ================= Practice mode: step-by-step, gated Next =================
+// Bench-set section only (off the valve) -- coupling-to-the-valve steps are a
+// separate, not-yet-approved second section (wording still pending review).
+const PV_STEPS = [
+  { crop:[0,850,1480,600], showAdj:true, showPress:true,
+    instr:"First movement is starting too late. Loosen the adjuster, then raise pressure again until it first moves — aim for exactly 3 psig.",
+    enter(){ setAdj(12); setPress(0); },
+    gate(){ return ADJ===0 && PRESS>0 && lastStroke>0; } },
+  { crop:[0,1380,1480,400], showAdj:false, showPress:true,
+    instr:"Raise pressure to 11 psig. Confirm the stem reaches full rated travel — the top mark on the scale, 3/4 inch.",
+    enter(){ setPress(3); },
+    gate(){ return PRESS>=10.8 && lastStroke>=TRAVEL-5; } },
+  { crop:[0,1380,1480,400], showAdj:false, showPress:true,
+    instr:"Lower pressure back to exactly 3 psig. Confirm the stem returns to zero travel — the scale should read 0.",
+    enter(){ setPress(11); },
+    gate(){ return Math.abs(PRESS-3)<=0.15 && lastStroke<=5; } },
+  { crop:[0,150,1480,1650], showAdj:false, showPress:false,
+    instr:"Bench set confirmed: first movement at 3 psig, full stroke at 11, travel 3/4 inch. This actuator is calibrated to a 3–11 bench set.",
+    enter(){}, gate(){ return true; } },
+];
+let pvIdx = 0;
+function pvEnter(i){
+  pvIdx = i;
+  const st = PV_STEPS[i];
+  document.getElementById('pv-badge').textContent = `Step ${i+1} of ${PV_STEPS.length}`;
+  document.getElementById('pv-instr').textContent = st.instr;
+  document.getElementById('asm').setAttribute('viewBox', st.crop.join(' '));
+  document.getElementById('pv-ctlAdj').style.display = st.showAdj ? '' : 'none';
+  document.getElementById('pv-ctlPress').style.display = st.showPress ? '' : 'none';
+  st.enter();
+  update();
+}
+function pvCheckGate(){
+  if (!document.body.classList.contains('practicing')) return;
+  const ready = PV_STEPS[pvIdx].gate();
+  const btn = document.getElementById('pv-next');
+  btn.disabled = !ready;
+  btn.classList.toggle('ready', ready);
+  btn.textContent = ready ? 'Next →' : 'Next';
+}
+document.getElementById('pv-play').addEventListener('click', ()=>{
+  document.body.classList.add('practicing');
+  pvEnter(0);
+});
+document.getElementById('pv-exit').addEventListener('click', ()=>{
+  document.body.classList.remove('practicing');
+  document.getElementById('asm').setAttribute('viewBox', '0 0 1480 2250');
+  setAdj(0); setPress(0); update();
+});
+document.getElementById('pv-next').addEventListener('click', ()=>{
+  if (document.getElementById('pv-next').disabled) return;
+  const next = pvIdx + 1;
+  if (next >= PV_STEPS.length) document.getElementById('pv-exit').click();
+  else pvEnter(next);
+});
 function hl(...ids){
   for (const g of document.querySelectorAll('#nameplate g')) g.classList.remove('np-hl');
   ids.forEach(id=>document.getElementById(id).classList.add('np-hl'));
@@ -619,8 +1093,8 @@ if(q.get('pbtest')){
     update();
   }, 60);
 }
-if(q.get('adj'))document.getElementById('adj').value=q.get('adj');
-if(q.get('press'))document.getElementById('press').value=q.get('press');
+if(q.get('adj')) setAdj(q.get('adj'));
+if(q.get('press')) setPress(q.get('press'));
 if(q.get('valve'))document.getElementById('valve').checked=true;
 if(q.get('packing'))document.getElementById('packing').value=q.get('packing');
 if(q.get('mark'))window.showTravelMark(true);
@@ -631,9 +1105,24 @@ document.getElementById('valve').addEventListener('change',()=>{
 document.getElementById('packing').addEventListener('change',()=>{setPacking();update();});
 setPacking();
 setValve(document.getElementById('valve').checked);
-document.getElementById('adj').addEventListener('input',update);
-document.getElementById('press').addEventListener('input',update);
 update();
+// light/dark toggle: explicit choice wins over OS preference, persisted per viewer
+(function(){
+  const btn = document.getElementById('theme-toggle');
+  function isDark(){
+    const explicit = document.documentElement.getAttribute('data-theme');
+    if(explicit) return explicit === 'dark';
+    return window.matchMedia('(prefers-color-scheme: dark)').matches;
+  }
+  function paint(){ btn.textContent = isDark() ? '☀' : '☽'; }
+  btn.addEventListener('click', ()=>{
+    const next = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try{ localStorage.setItem('657-theme', next); }catch(e){}
+    paint();
+  });
+  paint();
+})();
 </script>
 """
 html = html.replace("__PARTSJS__", parts_js)
