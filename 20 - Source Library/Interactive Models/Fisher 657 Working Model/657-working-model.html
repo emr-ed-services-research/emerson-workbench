@@ -136,6 +136,60 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 .stepper .band{position:absolute;top:0;bottom:0;background:var(--good);opacity:0.55;
   transition:left 0.2s ease, width 0.2s ease;}
 .stepper .centertick{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--c-cast-line);opacity:0.35;}
+/* ===== Desktop-only gauge + hex-slider controls (approved 2026-09-27):
+   the diaphragm-pressure stepper is replaced by a real analog gauge (pure
+   display, driven by a horizontal slider) and the spring-adjuster stepper
+   by a vertical slider whose thumb is a top-down hex nut that genuinely
+   rotates as it travels -- the one view where a hex's rotation is honest,
+   not faked perspective. No numeric readout on the adjuster: a real
+   distance/turns figure isn't verified against an actual thread pitch, so
+   it stays qualitative (TIGHTEN/LOOSEN + a center reference tick only).
+   Desktop only -- mobile keeps its own separate rail sliders untouched;
+   these controls live inside .ctl, which the mobile media query already
+   hides in full. ===== */
+.instrument{display:flex;flex-direction:column;align-items:center;gap:10px;}
+.gaugeface{fill:var(--panel);stroke:var(--border);stroke-width:2;}
+.gaugearc{fill:none;stroke:var(--border);stroke-width:10;stroke-linecap:round;}
+.gaugeband{fill:none;stroke:var(--good);stroke-width:10;stroke-linecap:butt;opacity:0.65;}
+.gaugetick{stroke:var(--c-cast-line);stroke-width:2;opacity:0.55;}
+.gaugetickmaj{stroke:var(--c-cast-line);stroke-width:2.5;}
+.gaugenum{font-family:system-ui;font-size:11px;fill:var(--sub);text-anchor:middle;}
+.needle{stroke:var(--accent);stroke-width:3;stroke-linecap:round;transition:stroke 0.2s ease;}
+.needle.inwin{stroke:var(--good);}
+.needlehub{fill:var(--panel);stroke:var(--accent);stroke-width:3;transition:stroke 0.2s ease;}
+.needlehub.inwin{stroke:var(--good);}
+#ctrlbar .digitalreadout{font-size:20px;font-weight:700;}
+.hslide{width:100%;max-width:260px;display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px auto 0;}
+.htrackwrap{position:relative;width:100%;height:40px;display:flex;align-items:center;
+  touch-action:none;cursor:grab;}
+.htrackwrap:active{cursor:grabbing;}
+.htrackwrap:focus{outline:none;}
+.htrackwrap:focus-visible .htrack{box-shadow:inset 0 1px 3px var(--track-shadow), 0 0 0 3px var(--accent);}
+.htrack{position:relative;width:100%;height:12px;border-radius:6px;background:var(--track);
+  box-shadow:inset 0 1px 3px var(--track-shadow);}
+.hfill{position:absolute;top:0;bottom:0;left:0;background:var(--c-yoke);border-radius:6px 0 0 6px;}
+.hband{position:absolute;top:0;bottom:0;background:var(--good);opacity:0.55;}
+.hthumb{position:absolute;top:50%;width:30px;height:30px;margin-top:-15px;margin-left:-15px;
+  border-radius:50%;background:var(--panel);border:4px solid var(--accent);
+  box-shadow:0 2px 5px rgba(20,40,70,0.3);}
+.endlbl{font-size:11px;font-weight:600;color:var(--sub);}
+.endrow{display:flex;justify-content:space-between;width:100%;}
+.vrod{display:flex;flex-direction:column;align-items:center;gap:8px;}
+.vrodtrackwrap{position:relative;width:60px;height:200px;display:flex;justify-content:center;
+  touch-action:none;cursor:grab;margin:0 auto;}
+.vrodtrackwrap:active{cursor:grabbing;}
+.vrodtrackwrap:focus{outline:none;}
+.vrodtrackwrap:focus-visible .vrodtrack{box-shadow:inset 0 1px 3px var(--track-shadow), 0 0 0 3px var(--accent);}
+.vrodtrack{position:relative;width:12px;height:100%;border-radius:6px;background:var(--track);
+  box-shadow:inset 0 1px 3px var(--track-shadow);}
+.vrodfill{position:absolute;left:0;right:0;background:var(--c-yoke);border-radius:6px;}
+.vrodcenter{position:absolute;top:50%;left:-9px;right:-9px;height:2px;background:var(--c-cast-line);
+  opacity:0.4;pointer-events:none;}
+.hexthumb{position:absolute;left:50%;width:34px;height:34px;margin-left:-17px;margin-top:-17px;
+  pointer-events:none;}
+.hexthumb polygon{fill:var(--c-yoke);stroke:var(--c-cast-line);stroke-width:2.5;}
+.hexthumb .hexmark{fill:var(--c-cast-line);opacity:0.55;}
+.vendlbl{font-size:11px;font-weight:600;color:var(--sub);}
 /* ===== Mobile-only sandbox controls: real HTML, positioned from the SVG's
    own real empty-canvas geometry (verified with check_safe_zones.py), not
    guessed. Desktop keeps the .panel reference layout untouched -- these are
@@ -407,25 +461,48 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   <button id="pv-play" title="Practice the SOP">Practice the SOP</button>
   <div class="ctl">
     <label>Spring adjuster <span class="ctl-hint">&mdash; tighten (+) raises seat and preload; loosen (&minus;) lowers</span></label>
-    <div class="stepper">
-      <button type="button" class="stepbtn" id="adjMinus" aria-label="Loosen adjuster">&minus;</button>
-      <div class="stepmid">
-        <div class="track"><div class="fill" id="fillAdj"></div><div class="centertick" style="left:50%;"></div></div>
+    <div class="vrod">
+      <span class="vendlbl">TIGHTEN</span>
+      <div class="vrodtrackwrap" id="adjHit" tabindex="0" role="slider" aria-label="Spring adjuster"
+           aria-valuemin="-24" aria-valuemax="24">
+        <div class="vrodtrack"><div class="vrodfill" id="adjFill"></div></div>
+        <div class="vrodcenter"></div>
+        <!-- top-down hex: the one view where rotation is genuinely correct,
+             not faked perspective. The off-center dot (not a diametric line,
+             which would read as a dial/clock-hand indicator) is what makes
+             the rotation visible at all -- a plain hexagon is 6-fold
+             symmetric and looks identical every 60 degrees. -->
+        <div class="hexthumb" id="adjThumb">
+          <svg viewBox="0 0 34 34">
+            <polygon id="adjHexPoly" points=""/>
+            <circle class="hexmark" cx="17" cy="8" r="2.4"/>
+          </svg>
+        </div>
       </div>
-      <button type="button" class="stepbtn" id="adjPlus" aria-label="Tighten adjuster">&plus;</button>
+      <span class="vendlbl">LOOSEN</span>
     </div>
-    <span class="readout" id="adjout"></span>
+    <!-- no numeric readout here by design (no verified real thread pitch to
+         report a distance/turns figure honestly) -- textContent is still
+         kept current for Practice mode / mobile, which do show a number. -->
+    <span class="readout" id="adjout" style="display:none"></span>
   </div>
   <div class="ctl" id="pressrow">
     <label>Diaphragm pressure <span class="ctl-hint">&mdash; 0 &rarr; 18 psig</span></label>
-    <div class="stepper">
-      <button type="button" class="stepbtn" id="pressMinus" aria-label="Decrease pressure">&minus;</button>
-      <div class="stepmid">
-        <div class="track"><div class="band" id="bandPress"></div><div class="fill" id="fillPress"></div></div>
+    <div class="instrument">
+      <svg width="220" height="200" viewBox="0 0 220 200" id="gaugeSvg"></svg>
+      <span class="readout digitalreadout" id="pressout"></span>
+      <div class="hslide">
+        <div class="htrackwrap" id="pressHit" tabindex="0" role="slider" aria-label="Diaphragm pressure"
+             aria-valuemin="0" aria-valuemax="18">
+          <div class="htrack">
+            <div class="hband" id="bandPress"></div>
+            <div class="hfill" id="fillPress"></div>
+          </div>
+          <div class="hthumb" id="pressThumb"></div>
+        </div>
+        <div class="endrow"><span class="endlbl">0</span><span class="endlbl">18 psig</span></div>
       </div>
-      <button type="button" class="stepbtn" id="pressPlus" aria-label="Increase pressure">&plus;</button>
     </div>
-    <span class="readout" id="pressout"></span>
   </div>
   <div id="npLegend" class="legend">SIZE 30 &middot; BENCH SET 3&ndash;11 PSI &middot; TRAVEL 3/4 IN &middot; RANGE 0&ndash;18 PSI</div>
   <div id="statusline"></div>
@@ -647,6 +724,93 @@ function diaphragm(press){
     s+=`<line class="sp-thread" x1="645" y1="${y+2}" x2="840" y2="${y-2}"/>`;
   document.getElementById('boss-threads').innerHTML=s;
 })();
+// ================= desktop gauge + hex-slider: geometry helpers =================
+const GSWEEP = 135;   // total needle sweep is 2*GSWEEP degrees
+function polarPt(cx, cy, r, deg){
+  const rad = deg*Math.PI/180;
+  return [cx + r*Math.sin(rad), cy - r*Math.cos(rad)];
+}
+function describeArc(cx, cy, r, deg0, deg1){
+  const [x0,y0] = polarPt(cx,cy,r,deg0);
+  const [x1,y1] = polarPt(cx,cy,r,deg1);
+  const large = Math.abs(deg1-deg0) > 180 ? 1 : 0;
+  return `M ${x0.toFixed(2)},${y0.toFixed(2)} A ${r},${r} 0 ${large} 1 ${x1.toFixed(2)},${y1.toFixed(2)}`;
+}
+function valueToAngle(v, vMin, vMax){
+  const t = (v-vMin)/(vMax-vMin);
+  return -GSWEEP + t*(2*GSWEEP);
+}
+function pct(v, vMin, vMax){ return (v-vMin)/(vMax-vMin); }
+const GCX=110, GCY=120, GR1=92, GR2=78;
+(function(){
+  // gauge face: built once, the needle/band are the only parts update() touches
+  const svg = document.getElementById('gaugeSvg');
+  let s = `<path class="gaugearc" d="${describeArc(GCX,GCY,GR1,-GSWEEP,GSWEEP)}"/>`;
+  s += `<circle class="gaugeface" cx="${GCX}" cy="${GCY}" r="${GR2-4}"/>`;
+  for(let v=0; v<=18; v++){
+    const deg = valueToAngle(v,0,18);
+    const major = v%3===0;
+    const [x0,y0] = polarPt(GCX,GCY,GR2, deg);
+    const [x1,y1] = polarPt(GCX,GCY,GR2-(major?12:7), deg);
+    s += `<line class="${major?'gaugetickmaj':'gaugetick'}" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
+    if(major){
+      const [tx,ty] = polarPt(GCX,GCY,GR2-22,deg);
+      s += `<text class="gaugenum" x="${tx.toFixed(1)}" y="${(ty+4).toFixed(1)}">${v}</text>`;
+    }
+  }
+  s += `<path class="gaugeband" id="gaugeBand" d=""/>`;
+  s += `<line class="needle" id="gaugeNeedle" x1="${GCX}" y1="${GCY}" x2="${GCX}" y2="${GCY-GR2+18}"/>`;
+  s += `<circle class="needlehub" id="gaugeHub" cx="${GCX}" cy="${GCY}" r="7"/>`;
+  svg.innerHTML = s;
+})();
+// top-down hex thumb: the one view where a hex genuinely rotates with no
+// ambiguity or faked perspective -- looking straight down the nut's axis.
+(function(){
+  const cx=17, cy=17, hr=15;
+  let pts=[];
+  for(let i=0;i<6;i++) pts.push(polarPt(cx,cy,hr,-90+i*60).map(n=>n.toFixed(1)).join(','));
+  document.getElementById('adjHexPoly').setAttribute('points', pts.join(' '));
+})();
+function updateDesktopGauge(adj, P, P0, inWindow){
+  const pTrack = document.querySelector('#pressHit .htrack');
+  if (!pTrack) return;   // desktop controls not in DOM state yet
+  const [nx,ny] = polarPt(GCX,GCY,GR2-18, valueToAngle(P,0,18));
+  const needle = document.getElementById('gaugeNeedle');
+  needle.setAttribute('x2', nx.toFixed(1)); needle.setAttribute('y2', ny.toFixed(1));
+  needle.classList.toggle('inwin', inWindow);
+  document.getElementById('gaugeHub').classList.toggle('inwin', inWindow);
+  const bandLo = Math.max(0,P0), bandHi = Math.min(18,P0+8);
+  document.getElementById('gaugeBand').setAttribute('d',
+    bandHi>bandLo ? describeArc(GCX,GCY,GR2, valueToAngle(bandLo,0,18), valueToAngle(bandHi,0,18)) : '');
+
+  const wP = pTrack.clientWidth;
+  const xP = pct(P,0,18)*wP;
+  document.getElementById('pressThumb').style.left = xP+'px';
+  document.getElementById('fillPress').style.width = xP+'px';
+  const xLo = pct(bandLo,0,18)*wP, xHi = pct(bandHi,0,18)*wP;
+  const pBand = document.getElementById('bandPress');
+  pBand.style.left = xLo+'px'; pBand.style.width = Math.max(0,xHi-xLo)+'px';
+
+  // vertical: up = tighten (max), matching the real part's own motion and
+  // the mobile slider's existing convention. Inset by the hex thumb's own
+  // radius so it never overruns the track into the TIGHTEN/LOOSEN labels
+  // (same fix as the mobile rail thumbs, applied to this thumb's own size).
+  const ADJ_THUMB_R = 17;
+  const aTrack = document.querySelector('#adjHit .vrodtrack');
+  const hA = aTrack.clientHeight;
+  const yA = ADJ_THUMB_R + (1-pct(adj,-24,24)) * Math.max(0, hA - 2*ADJ_THUMB_R);
+  const yC = hA/2;
+  document.getElementById('adjThumb').style.top = yA+'px';
+  const aFill = document.getElementById('adjFill');
+  aFill.style.top = Math.min(yA,yC)+'px'; aFill.style.height = Math.abs(yA-yC)+'px';
+  // Rotation tied directly to adj, never to pixel position (yA runs opposite
+  // to adj -- up=tighten=smaller y -- so deriving rotation from yA silently
+  // flips the direction). Positive adj (tighten) gives positive (clockwise)
+  // rotation, matching righty-tighty. One full turn across the whole range.
+  const ROT_RANGE = 360;
+  document.getElementById('adjThumb').style.transform =
+    `rotate(${(adj/24*ROT_RANGE).toFixed(1)}deg)`;
+}
 // name-it, spotlight-it: named parts stay lit, the rest dim
 const FOCUSABLE=['p-upper','p-lower','p-yoke','g-plate','p-dia','g-stem',
  'sp-spring-back','sp-spring-front','sp-seat-g','sp-adj-g','g-scale',
@@ -750,13 +914,6 @@ function update(){
     pressoutEl.classList.toggle('inwin', inWindow);
     pressoutEl.classList.remove('readout-pulse'); void pressoutEl.offsetWidth; pressoutEl.classList.add('readout-pulse');
   }
-  // custom track fill + live calibration-window band (slides with preload)
-  document.getElementById('fillAdj').style.width = ((adj+24)/48*100) + '%';
-  document.getElementById('fillPress').style.width = (P/18*100) + '%';
-  const bandLo = Math.max(0, P0/18*100), bandHi = Math.min(100, (P0+8)/18*100);
-  const bandEl = document.getElementById('bandPress');
-  bandEl.style.left = bandLo + '%';
-  bandEl.style.width = Math.max(0, bandHi-bandLo) + '%';
   // secondary diagnostics move here, free to wrap without touching a slider
   document.getElementById('statusline').textContent =
     `travel window ${P0.toFixed(1)}-${(P0+8).toFixed(1)} psig · travel ${(stroke*0.75/TRAVEL).toFixed(2)} in`
@@ -770,6 +927,7 @@ function update(){
   if (pvP) { pvP.textContent = pressoutEl.textContent; pvP.classList.toggle('inwin', inWindow); }
   pvCheckGate();
   updateMobileRails(adj, P, P0, inWindow);
+  updateDesktopGauge(adj, P, P0, inWindow);
 }
 // ================= mobile rail sliders: same state, same physics, just a
 // different real-HTML control surface (see layoutRail for positioning) =====
@@ -860,7 +1018,12 @@ const TIMING = [{"start": 0.0, "duration": 7.88, "text": "Here's how a 657 actua
 const audio = document.getElementById('pb-audio');
 const capEl = document.getElementById('cap');
 let playing=false, curSeg=-1, seg8sw=false, firedCues=[];
-function setPress(v){ PRESS = Math.min(18, Math.max(0, +v)); }
+// 0.1-step rounding: the original native <input type=range step="0.1">
+// snapped to a clean decimal grid for free; the custom drag slider lost
+// that (continuous float), which is exactly why landing precisely on 3.0
+// psig by mouse felt hard. Restored here rather than in the slider code so
+// every caller (drag, keyboard, SOP playback) gets the same clean grid.
+function setPress(v){ PRESS = Math.min(18, Math.max(0, Math.round(+v*10)/10)); }
 function setAdj(v){ ADJ = Math.min(24, Math.max(-24, Math.round(+v))); }
 function bindStepper(id, fn){
   // tap = one step; hold = auto-repeat, like a real button
@@ -875,10 +1038,73 @@ function bindStepper(id, fn){
   btn.addEventListener('pointerleave', stop);
   btn.addEventListener('pointercancel', stop);
 }
-bindStepper('adjMinus', ()=>setAdj(ADJ-1));
-bindStepper('adjPlus', ()=>setAdj(ADJ+1));
-bindStepper('pressMinus', ()=>setPress(PRESS-0.2));
-bindStepper('pressPlus', ()=>setPress(PRESS+0.2));
+// desktop bench-set controls are now drag sliders (bindHSlider/bindVRod,
+// bound below, once they're declared) -- the button-stepper pattern stays
+// for Practice mode's own controls only.
+function bindHSlider(hitId, vMin, vMax, step, setFn){
+  const hit = document.getElementById(hitId);
+  let dragging=false;
+  function move(e){
+    if(!dragging) return;
+    const rect = hit.getBoundingClientRect();
+    const t = Math.min(1, Math.max(0, (e.clientX-rect.left)/rect.width));
+    setFn(vMin + t*(vMax-vMin));
+    update();
+  }
+  function endDrag(e){ dragging=false; try{ hit.releasePointerCapture(e.pointerId); }catch(err){} }
+  hit.addEventListener('pointerdown', e=>{
+    // Without this, the browser's own default mousedown handling (focusing
+    // a tabindex element, starting a text-selection drag) races with our
+    // imperative hit.focus() + setPointerCapture() below -- on a focusable
+    // element that race is exactly what makes a slider "stick" after one
+    // successful drag: the next pointerdown gets eaten by native handling
+    // instead of reaching this listener, until focus/selection gets reset
+    // by clicking something else. Mobile's rail sliders never hit this
+    // because they aren't focusable (no tabindex), only these are.
+    e.preventDefault();
+    dragging=true; hit.setPointerCapture(e.pointerId); hit.focus(); move(e);
+  });
+  hit.addEventListener('pointermove', move);
+  hit.addEventListener('pointerup', endDrag);
+  hit.addEventListener('pointercancel', endDrag);
+  hit.addEventListener('lostpointercapture', ()=> dragging=false);
+  // keyboard: coarse drag can be imprecise at small step sizes; arrow keys
+  // nudge to an exact value without ever hinting what that value should be
+  hit.addEventListener('keydown', e=>{
+    const big = e.shiftKey ? step*10 : step;
+    if(e.key==='ArrowRight' || e.key==='ArrowUp'){ setFn(PRESS+big); update(); e.preventDefault(); }
+    else if(e.key==='ArrowLeft' || e.key==='ArrowDown'){ setFn(PRESS-big); update(); e.preventDefault(); }
+  });
+}
+function bindVRod(hitId, vMin, vMax, step, setFn){
+  const hit = document.getElementById(hitId);
+  let dragging=false;
+  function move(e){
+    if(!dragging) return;
+    const rect = hit.getBoundingClientRect();
+    // top of the track = max value (up = tighten), inverted from a plain
+    // top-down percentage
+    const t = 1 - Math.min(1, Math.max(0, (e.clientY-rect.top)/rect.height));
+    setFn(vMin + t*(vMax-vMin));
+    update();
+  }
+  function endDrag(e){ dragging=false; try{ hit.releasePointerCapture(e.pointerId); }catch(err){} }
+  hit.addEventListener('pointerdown', e=>{
+    e.preventDefault();
+    dragging=true; hit.setPointerCapture(e.pointerId); hit.focus(); move(e);
+  });
+  hit.addEventListener('pointermove', move);
+  hit.addEventListener('pointerup', endDrag);
+  hit.addEventListener('pointercancel', endDrag);
+  hit.addEventListener('lostpointercapture', ()=> dragging=false);
+  hit.addEventListener('keydown', e=>{
+    const big = e.shiftKey ? step*10 : step;
+    if(e.key==='ArrowUp'){ setFn(ADJ+big); update(); e.preventDefault(); }
+    else if(e.key==='ArrowDown'){ setFn(ADJ-big); update(); e.preventDefault(); }
+  });
+}
+bindHSlider('pressHit', 0, 18, 0.1, setPress);
+bindVRod('adjHit', -24, 24, 1, setAdj);
 bindStepper('pv-adjMinus', ()=>setAdj(ADJ-1));
 bindStepper('pv-adjPlus', ()=>setAdj(ADJ+1));
 bindStepper('pv-pressMinus', ()=>setPress(PRESS-0.2));
@@ -1084,6 +1310,13 @@ document.getElementById('packing').addEventListener('change',()=>{setPacking();u
 setPacking();
 setValve(document.getElementById('valve').checked);
 update();
+// update() reads the desktop sliders' live clientWidth/clientHeight to place
+// their thumbs; on the very first call the browser may not have finished
+// laying out the just-inserted DOM yet, so those can read stale/zero. Same
+// safety net already used for the mobile rails (ResizeObserver there covers
+// .fig; window resize covers the .panel-side desktop controls here).
+requestAnimationFrame(update);
+window.addEventListener('resize', update);
 // light/dark toggle: explicit choice wins over OS preference, persisted per viewer
 (function(){
   const btn = document.getElementById('theme-toggle');
