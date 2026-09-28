@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fisher 657 Working Model</title>
 <style>
@@ -13,6 +14,14 @@
   --c-coil:#58a6d8; --c-coil-back:#3d7fae; --c-thread:#12283f; --c-dia:#1d4f8c;
   --c-vstem:#6b7683; --c-vnut:#7d8894; --c-vsil:#dde5ee; --c-vsil-line:#8ba0b8;
   --c-anno:#c25016;
+  /* Nameplate palette: fixed, not theme-swapped -- a physical plate doesn't
+     change color with the app's light/dark toggle. Two-tone blue (dark
+     plate, lighter accent for the value boxes/trim) replaces both the
+     original photographic black-and-white and the first blue re-skin, which
+     read too bright and had light-on-light-blue label text (Franz,
+     2026-09-27 round 2). */
+  --np-plate:#173a5c; --np-accent:#4f93d6;
+  --np-text:#eef4fb; --np-text-dim:#a9cbec; --np-text-on-accent:#0d2338;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -68,13 +77,28 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
 .prism{fill:var(--c-adj);stroke:var(--c-cast-line);stroke-width:2;}
 .tick{stroke:var(--c-cast-line);stroke-width:2;}
 .lbl{font-family:system-ui;font-size:15px;fill:var(--c-cast-line);}
-.np-wrap{margin:14px 0;}
-.np-wrap svg{width:100%;max-width:460px;display:block;}
-.np-title{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:25px;fill:#fff;}
-.np-logo{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:16px;fill:#0a0a0a;text-anchor:middle;letter-spacing:0.5px;}
-.np-lbl{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:19px;fill:#fff;text-anchor:end;}
-.np-box{fill:#fff;}
-.np-val{font-family:Arial,Helvetica,sans-serif;font-size:18px;fill:#0a0a0a;text-anchor:middle;}
+/* Nameplate tab (round 4, 2026-09-27): a native part of the drawing, not an
+   HTML overlay aligned to it afterward -- see the <g id="npTab"> comment in
+   the markup for why. Styled like a real UI control (cursor, hover) even
+   though it's drawn as SVG shapes. Hidden on mobile in the media query
+   below -- mobile keeps its own separate nameplate access, unchanged. */
+.np-tab-svg{cursor:pointer;}
+.np-tab-svg rect{fill:var(--panel);stroke:var(--border-strong);stroke-width:2.5;}
+.np-tab-svg:hover rect{fill:var(--bg);}
+.np-tab-svg text{fill:var(--sub);font-family:Arial,Helvetica,sans-serif;
+  font-weight:700;font-size:26px;letter-spacing:1.5px;text-anchor:middle;
+  dominant-baseline:middle;}
+/* Nameplate re-skinned in a fixed two-tone blue palette rather than a
+   literal black-and-white photographic replica or a theme-token scheme
+   (approved 2026-09-27, refined round 2 -- same fields and box-for-box
+   layout throughout, just the palette). Dark plate + light text directly on
+   it; lighter-blue boxes + dark text inside them -- two clear legible
+   pairings instead of one flat surface. */
+.np-title{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:25px;fill:var(--np-text);}
+.np-logo{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:16px;fill:var(--np-text-on-accent);text-anchor:middle;letter-spacing:0.5px;}
+.np-lbl{font-family:Arial,Helvetica,sans-serif;font-weight:bold;font-size:19px;fill:var(--np-text-dim);text-anchor:end;}
+.np-box{fill:var(--np-accent);}
+.np-val{font-family:Arial,Helvetica,sans-serif;font-size:18px;fill:var(--np-text-on-accent);text-anchor:middle;}
 .vstem{fill:var(--c-vstem);stroke:var(--c-hw-line);stroke-width:2;}
 .vnut{fill:var(--c-vnut);stroke:var(--c-hw-line);stroke-width:2;}
 .vconn{fill:var(--c-seat);stroke:var(--c-cast-line);stroke-width:2;}
@@ -91,7 +115,16 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
 #nameplate g.np-hl .np-box{fill:var(--highlight);}
 #nameplate g.np-hl .np-lbl{fill:var(--highlight);}
 #ctrlbar{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
-#ctrlbar .ctl label{display:block;font-size:13.5px;color:var(--sub);}
+/* This selector's higher specificity (#id .class tag) than the desktop
+   media query's plain ".ctl label" rule below meant that rule's font-size
+   change was silently never actually applying, regardless of source order
+   -- specificity beats cascade position. Franz: "the font size of the
+   controls seemed unchanged" (2026-09-27, round 6) -- it genuinely hadn't.
+   Sized directly here instead, and bumped more assertively this time. */
+/* Scales together with the rest of .ctl (see fitScale/placeAt, round 9) --
+   sized for how it reads at the resulting ~0.7 shared scale, not inflated
+   to compensate for it in isolation (round 8's mistake). */
+#ctrlbar .ctl label{display:block;font-size:20px;font-weight:700;color:var(--sub);}
 #ctrlbar .readout{display:block;margin-top:2px;white-space:nowrap;overflow:hidden;
   font-family:ui-monospace,monospace;font-variant-numeric:tabular-nums;transition:color 0.2s ease;}
 #ctrlbar .readout.inwin{color:var(--good);font-weight:700;}
@@ -119,9 +152,19 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
   background:var(--border);color:var(--muted);cursor:not-allowed;transition:background 0.2s,color 0.2s;}
 #pv-next.ready{background:var(--good);color:#fff;cursor:pointer;}
 body.practicing #ctrlbar,
-body.practicing .panel > p,
-body.practicing .np-wrap{display:none;}
+body.practicing #valveRow,
+body.practicing .np-tab-svg,
+body.practicing #npCard,
+body.practicing #sopTopics{display:none;}
 body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
+/* Desktop-only title block (round 11) -- without this, a bare div defaults
+   to display:block and would show up inside #ctrlbar's MOBILE flex row too,
+   mixed in with the Play/Practice buttons mobile still needs there.
+   #titleblock{display:flex} in the desktop media query turns it back on. */
+#titleblock{display:none;}
+/* Same reasoning for the desktop-only topic list (round 12): hidden by
+   default so it doesn't show up in mobile's #ctrlbar flex row. */
+#sopTopics{display:none;}
 .pb-word{margin-left:4px;}
 .stepper{position:relative;height:34px;display:flex;align-items:stretch;gap:6px;}
 .stepper .stepbtn{flex:0 0 40px;border:none;border-radius:8px;background:var(--c-yoke);color:#fff;
@@ -153,12 +196,12 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 .gaugeband{fill:none;stroke:var(--good);stroke-width:10;stroke-linecap:butt;opacity:0.65;}
 .gaugetick{stroke:var(--c-cast-line);stroke-width:2;opacity:0.55;}
 .gaugetickmaj{stroke:var(--c-cast-line);stroke-width:2.5;}
-.gaugenum{font-family:system-ui;font-size:11px;fill:var(--sub);text-anchor:middle;}
+.gaugenum{font-family:system-ui;font-size:17px;fill:var(--sub);text-anchor:middle;}
 .needle{stroke:var(--accent);stroke-width:3;stroke-linecap:round;transition:stroke 0.2s ease;}
 .needle.inwin{stroke:var(--good);}
 .needlehub{fill:var(--panel);stroke:var(--accent);stroke-width:3;transition:stroke 0.2s ease;}
 .needlehub.inwin{stroke:var(--good);}
-#ctrlbar .digitalreadout{font-size:20px;font-weight:700;}
+#ctrlbar .digitalreadout{font-size:24px;font-weight:700;}
 .hslide{width:100%;max-width:260px;display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px auto 0;}
 .htrackwrap{position:relative;width:100%;height:40px;display:flex;align-items:center;
   touch-action:none;cursor:grab;}
@@ -172,7 +215,7 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 .hthumb{position:absolute;top:50%;width:30px;height:30px;margin-top:-15px;margin-left:-15px;
   border-radius:50%;background:var(--panel);border:4px solid var(--accent);
   box-shadow:0 2px 5px rgba(20,40,70,0.3);}
-.endlbl{font-size:11px;font-weight:600;color:var(--sub);}
+.endlbl{font-size:17px;font-weight:600;color:var(--sub);}
 .endrow{display:flex;justify-content:space-between;width:100%;}
 .vrod{display:flex;flex-direction:column;align-items:center;gap:8px;}
 .vrodtrackwrap{position:relative;width:60px;height:200px;display:flex;justify-content:center;
@@ -189,7 +232,7 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   pointer-events:none;}
 .hexthumb polygon{fill:var(--c-yoke);stroke:var(--c-cast-line);stroke-width:2.5;}
 .hexthumb .hexmark{fill:var(--c-cast-line);opacity:0.55;}
-.vendlbl{font-size:11px;font-weight:600;color:var(--sub);}
+.vendlbl{font-size:17px;font-weight:600;color:var(--sub);}
 /* ===== Mobile-only sandbox controls: real HTML, positioned from the SVG's
    own real empty-canvas geometry (verified with check_safe_zones.py), not
    guessed. Desktop keeps the .panel reference layout untouched -- these are
@@ -214,7 +257,13 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   box-shadow:0 2px 5px rgba(20,40,70,0.3);}
 .mlabel{flex:0 0 14px;font-size:10.5px;font-weight:600;color:var(--sub);text-align:center;
   line-height:14px;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-#mobileLegend{position:absolute;display:flex;flex-direction:column;justify-content:center;
+/* display:none is the real default (set above with #railLeft/#railRight) --
+   this was wrongly re-declaring display:flex unconditionally, which stayed
+   invisible while desktop's .fig was a small boxed card but started
+   colliding with the new full-bleed #npLegend the moment the illustration
+   grew to fill the screen (found 2026-09-27). Only max-width:700px below
+   turns this on. */
+#mobileLegend{position:absolute;flex-direction:column;justify-content:center;
   gap:10px;overflow:hidden;}
 .mlrow{display:flex;gap:5px;align-items:baseline;white-space:nowrap;overflow:hidden;
   text-overflow:ellipsis;min-width:0;font-family:ui-monospace,monospace;font-size:8px;}
@@ -226,8 +275,8 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
      new rail sliders/legend positioned in its own genuinely-empty canvas
      space instead of a separate control bar stealing room from the picture.
      Everything #ctrlbar used to hold that isn't Play/Practice moves into
-     the rails; the nameplate/packing/valve controls stay reachable by
-     scrolling below the fig, not removed. */
+     the rails; the nameplate/valve controls stay reachable by scrolling
+     below the fig, not removed. */
   body{padding:0;}
   .pagehead{padding:8px 10px 0;}
   h1{font-size:15px;}
@@ -252,6 +301,9 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   .stepper .stepbtn{flex-basis:44px;font-size:21px;}
   #railLeft, #railRight{display:flex;}
   #mobileLegend{display:flex;}
+  /* desktop-only nameplate tab, now drawn into the svg itself -- mobile
+     keeps its own separate nameplate access (scroll below the fig) */
+  .np-tab-svg{display:none;}
   body.practicing{overflow:hidden;}
   body.practicing .pagehead{display:none;}
   body.practicing #railLeft, body.practicing #railRight,
@@ -262,6 +314,114 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   body.practicing .fig svg{height:100%;width:100%;}
   body.practicing .panel{flex:0 0 auto;max-width:none;}
   body.practicing #cap{display:none;}
+}
+/* ===== Desktop: single full-bleed background, no card, no side panel
+   (approved 2026-09-27). The actuator fills the screen exactly like the
+   mobile fig already does; the gauge/hex-slider/legend stay DOM children of
+   #ctrlbar (unchanged) but escape to the viewport via position:fixed and
+   are placed by layoutDesktopControls() in the SAME verified-empty
+   SVG-space rectangles already proven for the mobile rails (they're facts
+   about the drawing itself, not the screen, so they hold at any scale).
+   Play/Practice move into a slim fixed bottom bar; the nameplate becomes a
+   collapsed drawer with a pull-tab, off by default, so it's available
+   without permanently taking up screen real estate. ===== */
+@media (min-width:701px){
+  body{overflow:hidden;}
+  .pagehead{position:fixed;top:0;left:0;right:0;z-index:9;padding:14px 20px;
+    display:flex;align-items:center;justify-content:space-between;pointer-events:none;}
+  .pagehead > *{pointer-events:auto;}
+  h1{font-size:13px;font-weight:600;color:var(--sub);letter-spacing:0.3px;}
+  .row{display:block;height:100vh;height:100dvh;}
+  .fig{width:100%;height:100%;background:none;border:none;border-radius:0;padding:0;
+    display:flex;align-items:center;justify-content:center;}
+  .fig svg{height:92vh;height:92dvh;width:auto;max-width:96vw;display:block;}
+  /* .panel's own box disappears (no flex-basis, no leftover width) while its
+     children -- all position:fixed once placed -- still render normally. */
+  .panel{display:contents;}
+  /* #ctrlbar is the drawing sheet's title block now (Franz, round 11) --
+     Emerson/title/provenance, not controls. pb-play/pv-play/#valveRow stay
+     DOM children of #ctrlbar (mobile still needs them there) but escape to
+     the top bar via their own position:fixed, laid out by layoutTopBar().
+     #statusline/#pb-status are diagnostic text, not drawing-sheet content,
+     so they're hidden here rather than cluttering the title block; nothing
+     stops bringing them back into the margin space deliberately later. */
+  #ctrlbar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;
+    padding:14px 28px;margin:0;background:var(--panel);
+    border-top:1px solid var(--border-strong);z-index:6;min-height:34px;}
+  #ctrlbar audio, #statusline, #pb-status{display:none;}
+  #titleblock{display:flex;align-items:center;justify-content:space-between;
+    width:100%;gap:28px;}
+  .tb-brand{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:19px;
+    letter-spacing:1.5px;color:var(--ink);flex:0 0 auto;}
+  .tb-title{flex:1 1 auto;text-align:center;min-width:0;}
+  .tb-title-main{font-size:15px;font-weight:700;letter-spacing:0.4px;color:var(--ink);}
+  .tb-title-sub{font-size:12px;color:var(--sub);margin-top:2px;}
+  .tb-provenance{flex:0 0 auto;font-size:11px;color:var(--muted);text-align:right;
+    max-width:260px;}
+  .ctl{position:fixed;transform:translate(-50%,-50%);width:max-content;z-index:5;
+    text-align:center;}
+  /* display/font-size/color/weight are set on the higher-specificity
+     "#ctrlbar .ctl label" rule above -- this only adds what that rule
+     doesn't set, so there's no repeat of the specificity bug fixed there. */
+  .ctl label{letter-spacing:0.4px;text-transform:uppercase;margin-bottom:8px;}
+  #cap{position:fixed;left:50%;bottom:60px;transform:translateX(-50%);max-width:560px;
+    text-align:center;border:none;padding:0 12px;min-height:0;margin:0;
+    background:none;pointer-events:none;}
+  /* #valveRow, #pv-play stay DOM children of #ctrlbar/#panel (mobile needs
+     them there, unchanged) but are laid out into the top bar on desktop by
+     layoutTopBar() (JS), which sets position/top/left directly -- no
+     position or offsets set here, just the visual sizing that JS-driven
+     placement doesn't touch. #pb-play is desktop-hidden in favor of
+     #sopTopics below (mobile keeps the single button, unchanged). */
+  #valveRow{display:flex;align-items:center;margin:0;z-index:9;font-size:12.5px;
+    background:var(--panel);padding:6px 10px;border-radius:6px;
+    border:1px solid var(--border);}
+  #pv-play{z-index:9;}
+  #pb-play{display:none;}
+  /* Table of contents (round 12): a real list in the left margin, above the
+     spring adjuster, positioned by layoutDesktopControls() like the other
+     margin content -- not grouped into the adjuster's own flex column,
+     since that would disturb its precise centering on the real adjuster
+     part (round 6). */
+  #sopTopics{display:block;position:fixed;z-index:5;text-align:left;
+    width:max-content;max-width:260px;}
+  .sop-topics-title{font-size:12px;font-weight:700;letter-spacing:1.2px;
+    text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
+  .sop-topic{display:flex;align-items:baseline;gap:10px;width:100%;
+    text-align:left;background:none;border:none;border-bottom:1px solid var(--border);
+    padding:9px 0;cursor:pointer;font-size:15px;font-weight:600;color:var(--ink);
+    font-family:inherit;}
+  .sop-topic:last-child{border-bottom:none;}
+  .sop-topic .num{color:var(--sub);font-weight:700;flex:0 0 auto;}
+  .sop-topic.playing{color:var(--accent);}
+  .sop-topic.playing .num{color:var(--accent);}
+  /* Nameplate: a small tab attached to the actuator's own right edge, right
+     by the legend -- NOT a full-height screen-edge drawer (tried, rejected
+     2026-09-27: read as unrelated screen chrome, and its paragraph of text
+     was noise). Clicking it tabs a card out to the right from that same
+     point on the actuator, collapsing back into the tab -- positioned by
+     placeAnchor like the other instruments, so it's anchored to real
+     verified-empty geometry, not a fixed screen edge.
+     Round 2 tried making it look like it emerges from BEHIND the wall via a
+     lower z-index than .fig, relying on .fig's painted content to cover the
+     overlapping sliver. Dropped in round 3: it rendered differently across
+     three different loads (fully hidden, a thin sliver, not occluded at
+     all in Franz's own two browsers) -- a cross-stacking-context z-index
+     trick like that is evidently not reliable here. Simpler and correct
+     beats a nicer effect that doesn't reproduce: normal z-index, same tier
+     as the other instruments, flush against the wall and fully visible. */
+  /* No card/border wrapper here by design (Franz, 2026-09-27) -- the plate
+     itself (drawn into the nameplate SVG below) is the only visible shape.
+     This element just handles the tab-out/collapse mechanics. */
+  #npCard{position:fixed;z-index:5;max-width:0;opacity:0;overflow:hidden;
+    transition:max-width 0.3s ease, opacity 0.25s ease;}
+  #npCard.open{max-width:420px;opacity:1;}
+  #npCard svg{display:block;width:380px;max-width:80vw;
+    filter:drop-shadow(0 6px 16px rgba(0,0,0,0.28));}
+  body.practicing #practiceView{position:fixed;left:50%;bottom:24px;
+    transform:translateX(-50%);background:var(--panel);border:1px solid var(--border);
+    border-radius:12px;padding:16px 22px;box-shadow:0 8px 30px rgba(0,0,0,0.2);
+    width:min(92vw,540px);z-index:6;margin:0;}
 }
 #asm > g, #asm > path{transition:opacity 0.4s ease;}
 .pulse{animation:pbpulse 1.1s ease-in-out 3;}
@@ -411,6 +571,26 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   <g id="sp-spring-front"></g>
   <path id="p-dia" class="dia"/>
   <path id="p-upper" class="cast"/>
+  <!-- Nameplate tab: a native part of the drawing itself, not a separate
+     HTML overlay aligned to it after the fact -- see round 4 in the JS
+     comment for why. Round 7 (2026-09-27) root cause, found by directly
+     querying the rendered path with isPointInFill instead of trusting
+     check_safe_zones.py's reported number: x=888 was never the yoke wall at
+     all. check_safe_zones.py's "occupied 596-888" for this y-band is the
+     SPRING's modeled bounding box (596.5-888.5, from its ADJ/stroke-range
+     rectangle in that script) -- the script's vertex-bbox approach for the
+     yoke's own arc-heavy evenodd path apparently underestimated its true
+     extent, so the union silently reported the spring's box instead,
+     nowhere close to the real wall. Every prior round's fix was tuned
+     against that wrong number, which is why none of them ever looked right
+     no matter how carefully the offset was recomputed. isPointInFill()
+     against the live rendering shows the yoke's actual right wall is a
+     constant 21-unit-thick band at x=925-946 for y600-1000 (verified at
+     600/650/.../1000, all identical) -- x=946 is the true outside edge. -->
+  <g id="npTab" class="np-tab-svg" role="button" tabindex="0" aria-label="Nameplate" aria-expanded="false" aria-controls="npCard">
+    <rect x="946" y="685" width="44" height="170" rx="10"/>
+    <text x="968" y="770" transform="rotate(-90 968 770)">NAMEPLATE</text>
+  </g>
 </svg>
 <!-- Mobile-only sandbox controls. Positioned in JS (layoutRail) from the
      drawing's own real empty-canvas rectangles -- verified with
@@ -457,10 +637,21 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 </div>
 <div class="panel">
 <div id="ctrlbar">
+  <!-- "Play the SOP" as one button is desktop-hidden (mobile keeps it,
+       unchanged) in favor of a real table of contents here -- Franz
+       (2026-09-27, round 12): "not the first one I would list... a list
+       like 1. Principle of Operation, 2. Bench Set, 3. Setting Travel".
+       Built from TIMING's own `section` field (already divides the 18
+       narrated segments into exactly 3 groups matching that shape) rather
+       than hardcoded, so it can't drift out of sync with the narration. -->
   <button id="pb-play" title="Play the SOP">&#9654;<span class="pb-word"> Play the SOP</span></button>
   <button id="pv-play" title="Practice the SOP">Practice the SOP</button>
-  <div class="ctl">
-    <label>Spring adjuster <span class="ctl-hint">&mdash; tighten (+) raises seat and preload; loosen (&minus;) lowers</span></label>
+  <div id="sopTopics">
+    <div class="sop-topics-title">Contents</div>
+    <div id="sopTopicList"></div>
+  </div>
+  <div class="ctl" id="adjCtl">
+    <label>Spring adjuster</label>
     <div class="vrod">
       <span class="vendlbl">TIGHTEN</span>
       <div class="vrodtrackwrap" id="adjHit" tabindex="0" role="slider" aria-label="Spring adjuster"
@@ -487,7 +678,7 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     <span class="readout" id="adjout" style="display:none"></span>
   </div>
   <div class="ctl" id="pressrow">
-    <label>Diaphragm pressure <span class="ctl-hint">&mdash; 0 &rarr; 18 psig</span></label>
+    <label>Diaphragm pressure</label>
     <div class="instrument">
       <svg width="220" height="200" viewBox="0 0 220 200" id="gaugeSvg"></svg>
       <span class="readout digitalreadout" id="pressout"></span>
@@ -504,10 +695,23 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
       </div>
     </div>
   </div>
-  <div id="npLegend" class="legend">SIZE 30 &middot; BENCH SET 3&ndash;11 PSI &middot; TRAVEL 3/4 IN &middot; RANGE 0&ndash;18 PSI</div>
   <div id="statusline"></div>
   <span class="readout" id="pb-status"></span>
   <audio id="pb-audio" src="657-narration.wav" preload="auto"></audio>
+  <!-- Title block (Franz, 2026-09-27, round 11): the page is being redrawn
+       as a technical drafting template -- a large drawing area plus a real
+       title block, not a web widget with buttons bolted on. pb-play/pv-play
+       above are repositioned into the top bar by layoutTopBar() (JS, desktop
+       only) rather than moved in the DOM, so mobile's existing layout (which
+       still expects them as #ctrlbar's own flex children) is untouched. -->
+  <div id="titleblock">
+    <div class="tb-brand">EMERSON</div>
+    <div class="tb-title">
+      <div class="tb-title-main">Fisher 657 Diaphragm Actuator</div>
+      <div class="tb-title-sub">Working Model &mdash; Interactive Schematic</div>
+    </div>
+    <div class="tb-provenance">Geometry traced from the Fisher 657 Instruction Manual (IOM)</div>
+  </div>
 </div>
 <div id="practiceView">
   <div class="pv-head">
@@ -536,28 +740,26 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   <div class="legend">SIZE 30 &middot; BENCH SET 3&ndash;11 PSI &middot; TRAVEL 3/4 IN &middot; RANGE 0&ndash;18 PSI</div>
   <button id="pv-next" disabled>Next</button>
 </div>
-<p><label><input type="checkbox" id="valve"> Stem connector installed &mdash; valve coupled below the yoke</label><br>
-<label style="margin-left:22px;">Packing:
-<select id="packing">
-  <!-- friction ordering per Control Valve Handbook 6th ed. 5.18 packing
-       selection guidelines (very low / low / medium / high); psi values
-       representative, see Fisher Catalog 14 for actual friction data -->
-  <option value="0.5">Single PTFE V-ring &mdash; very low (&plusmn;0.5 psi, repr.)</option>
-  <option value="0.75">ENVIRO-SEAL PTFE &mdash; low (&plusmn;0.75 psi, repr.)</option>
-  <option value="1.0">ENVIRO-SEAL Graphite ULF &mdash; medium (&plusmn;1.0 psi, repr.)</option>
-  <option value="1.5">Graphite composite &mdash; high (&plusmn;1.5 psi, repr.)</option>
-</select></label>
-<span class="readout" id="fricout"></span></p>
-<div class="np-wrap">
-<svg id="nameplate" viewBox="0 0 842 286" role="img" aria-label="657 actuator nameplate">
+<p id="valveRow"><label><input type="checkbox" id="valve"> Stem connector installed &mdash; valve coupled below the yoke</label></p>
+</div>
+</div>
+<!-- Nameplate card: the clickable tab that opens this is now drawn directly
+     into the #asm SVG itself (#npTab, near its closing tag) rather than a
+     separate HTML overlay -- see that comment for why. This card is what
+     tabs out to the right of it; positioned by placeAnchor like the other
+     instruments. Redrawn in a fixed two-tone blue palette instead of a
+     literal black-and-white photographic replica -- same fields, same
+     box-for-box layout, just re-skinned to match. -->
+<div id="npCard">
+  <svg id="nameplate" viewBox="0 0 842 286" role="img" aria-label="657 actuator nameplate">
   <!-- layout measured box-for-box from the supplied nameplate image -->
-  <rect x="12" y="13" width="817" height="260" rx="12" fill="#0a0a0a" stroke="#3a4654" stroke-width="2"/>
-  <rect x="30" y="31" width="45" height="16" rx="8" fill="#fff"/>
-  <rect x="770" y="31" width="42" height="16" rx="8" fill="#fff"/>
-  <rect x="31" y="246" width="45" height="16" rx="8" fill="#fff"/>
-  <rect x="772" y="246" width="42" height="16" rx="8" fill="#fff"/>
+  <rect x="12" y="13" width="817" height="260" rx="12" fill="var(--np-plate)" stroke="var(--np-accent)" stroke-width="2"/>
+  <rect x="30" y="31" width="45" height="16" rx="8" fill="var(--np-accent)"/>
+  <rect x="770" y="31" width="42" height="16" rx="8" fill="var(--np-accent)"/>
+  <rect x="31" y="246" width="45" height="16" rx="8" fill="var(--np-accent)"/>
+  <rect x="772" y="246" width="42" height="16" rx="8" fill="var(--np-accent)"/>
   <text class="np-title" x="92" y="63">ACTUATOR</text>
-  <rect x="261" y="32" width="94" height="33" rx="14" fill="#fff"/>
+  <rect x="261" y="32" width="94" height="33" rx="14" fill="var(--np-accent)"/>
   <text class="np-logo" x="308" y="56">FISHER&#174;</text>
   <text class="np-title" x="522" y="63">Fisher Controls</text>
   <g id="np-serial"><text class="np-lbl" x="180" y="106">SERIAL NO</text>
@@ -581,11 +783,7 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   <g id="np-range"><text class="np-lbl" x="394" y="224">OPER RANGE</text>
     <rect class="np-box" x="401" y="205" width="287" height="25"/>
     <text class="np-val" x="544" y="224">0-18</text></g>
-</svg>
-<div id="cap"></div>
-</div>
-<p>Spring Verification, live: with the adjuster correct (0 offset), travel begins at exactly 3.0 psig and completes at 11.0. Tighten the adjuster and travel starts late (more than 3); loosen it and travel starts early (less than 3). The stem's bottom edge reads the scale: 0 at rest, 3/4 at rated stroke. Off the valve, pressure past the window keeps the mechanism moving beyond 3/4 in until the diaphragm plate lands on the lower casing &mdash; the lower travel stop.</p>
-</div>
+  </svg>
 </div>
 <script>
 const R = window.REFINED2;
@@ -783,11 +981,20 @@ function updateDesktopGauge(adj, P, P0, inWindow){
   document.getElementById('gaugeBand').setAttribute('d',
     bandHi>bandLo ? describeArc(GCX,GCY,GR2, valueToAngle(bandLo,0,18), valueToAngle(bandHi,0,18)) : '');
 
+  // Franz (2026-09-27): "the slider on its far left is still making contact
+  // with the actuator". Root cause: this thumb never got the same
+  // thumb-radius inset already applied to the vertical adjuster's hex thumb
+  // and the mobile rails -- at P=0 its raw left:0 plus its own -15px margin
+  // put its visible edge 15px to the LEFT of the track's own nominal edge,
+  // outside the box placeInstrument's scale-to-fit was measuring. Same
+  // PRESS_THUMB_R inset fix as everywhere else the thumb has a radius.
+  const PRESS_THUMB_R = 15;   // half the .hthumb's 30px diameter
   const wP = pTrack.clientWidth;
-  const xP = pct(P,0,18)*wP;
+  const xSpan = Math.max(0, wP - 2*PRESS_THUMB_R);
+  const xP = PRESS_THUMB_R + pct(P,0,18)*xSpan;
   document.getElementById('pressThumb').style.left = xP+'px';
   document.getElementById('fillPress').style.width = xP+'px';
-  const xLo = pct(bandLo,0,18)*wP, xHi = pct(bandHi,0,18)*wP;
+  const xLo = PRESS_THUMB_R + pct(bandLo,0,18)*xSpan, xHi = PRESS_THUMB_R + pct(bandHi,0,18)*xSpan;
   const pBand = document.getElementById('bandPress');
   pBand.style.left = xLo+'px'; pBand.style.width = Math.max(0,xHi-xLo)+'px';
 
@@ -832,14 +1039,12 @@ window.showVerBracket = function(on){
 window.showTravelMark = function(on){
   document.getElementById('g-travelmark').style.display = on ? '' : 'none';
 };
-function setPacking(){
-  // ENVIRO-SEAL systems are live-loaded: Belleville stack appears and the
-  // flange rides up on it; plain PTFE / graphite flange bears on the follower
-  const v = document.getElementById('packing').value;
-  const live = (v === '0.75' || v === '1.0');
-  document.getElementById('g-belleville').style.display = live ? '' : 'none';
-  document.getElementById('g-pflange').setAttribute('transform', live ? 'translate(0,-42)' : '');
-}
+// Packing is a fixed single PTFE V-ring (the lowest-friction, most common
+// baseline) rather than a user-facing choice -- the selector was pure
+// friction-modeling detail that added noise without teaching anything about
+// the bench-set procedure (removed 2026-09-27). Non-live-loaded, so the
+// Belleville stack and flange stay at their default painted position.
+const PACKING_FRICTION = 0.5;
 const PB = { connected: true, nutsDy: 0, scaleDy: 0, connShown: true };
 function setValve(on){
   document.getElementById('g-valve-sil').style.display = on ? '' : 'none';
@@ -848,10 +1053,10 @@ function setValve(on){
   document.getElementById('g-vgrp').style.display = on ? '' : 'none';
   document.getElementById('g-conn').style.display = (on && PB.connShown) ? '' : 'none';
   document.getElementById('asm').setAttribute('viewBox', on ? '0 0 1480 2620' : '0 0 1480 2250');
-  // the viewBox change rescales the SVG's fit, so the mobile rails' real
-  // on-screen position (computed from that scale) goes stale unless
-  // recomputed right away.
-  if (typeof layoutRail === 'function') layoutRail();
+  // the viewBox change rescales the SVG's fit, so the rails' and desktop
+  // instruments' real on-screen position (computed from that scale) goes
+  // stale unless recomputed right away.
+  if (typeof layoutAll === 'function') layoutAll();
 }
 let strokeState = 0;   // remembered position: packing friction is hysteretic
 let ADJ = 0, PRESS = 0;   // stepper-button state: no native range input backs these any more
@@ -863,7 +1068,7 @@ function update(){
   // packing friction opposes motion BOTH ways, so it widens the start point
   // going down and holds the stem going back up. Zero when off the valve --
   // which is exactly why bench set is performed with zero valve forces.
-  const Ff = coupled ? +document.getElementById('packing').value : 0;
+  const Ff = coupled ? PACKING_FRICTION : 0;
   // bench-set physics: preload shifts the travel window. 8 px of seat = 1 psi.
   const P0 = 3 + adj/8;                              // cracking pressure
   // off the valve there is no load to stop over-stroke at rated travel:
@@ -884,9 +1089,6 @@ function update(){
   lastStroke = stroke;
   const onStop = !coupled && stroke >= STOP;
   const seated = coupled && stroke >= TRAVEL;
-  document.getElementById('fricout').textContent = coupled
-    ? ` friction: first movement now at ${(P0+Ff).toFixed(1)} psig${held ? ' | stem HELD by packing friction' : ''}`
-    : '';
   spring(TOP0+stroke, SEAT0-adj);
   diaphragm(stroke);
   document.getElementById('g-stem').setAttribute('transform',`translate(0,${stroke})`);
@@ -919,7 +1121,8 @@ function update(){
     `travel window ${P0.toFixed(1)}-${(P0+8).toFixed(1)} psig · travel ${(stroke*0.75/TRAVEL).toFixed(2)} in`
     + (onStop ? ' · LOWER TRAVEL STOP - plate on casing'
        : seated ? ' · PLUG SEATED - valve closed'
-       : (stroke>TRAVEL ? ' (past rated)' : ''));
+       : (stroke>TRAVEL ? ' (past rated)' : ''))
+    + (coupled && held ? ' · stem HELD by packing friction' : '');
   // mirror into Practice mode's own readouts -- same numbers, no duplicate physics
   const pvA = document.getElementById('pv-adjout');
   if (pvA) pvA.textContent = document.getElementById('adjout').textContent;
@@ -1004,20 +1207,147 @@ function layoutRail(){
   placeRail('railLeft', 20, 1090, 435, 1720);
   placeRail('railRight', 1050, 1090, 1465, 1720);
 }
-window.addEventListener('resize', layoutRail);
-window.addEventListener('orientationchange', layoutRail);
-if (window.visualViewport) window.visualViewport.addEventListener('resize', layoutRail);
+// ================= desktop instruments: placed in the page margin outside
+// the SVG's own rendered box (see layoutDesktopControls below) rather than
+// a verified-empty rectangle inside the SVG's coordinate space -- that
+// approach (rounds 2-10) kept needing re-verification against the drawing's
+// real geometry and was fundamentally capped by how little room exists
+// inside the SVG's own narrow bounding box. label and instrument still
+// scale together as one unit (round 9) -- placeAt applies one transform to
+// the whole element, never text separately from the graphics it labels. =====
+function placeAt(id, cx, cy, scale){
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.style.left = cx+'px';
+  el.style.top = cy+'px';
+  el.style.transform = `translate(-50%,-50%) scale(${scale})`;
+}
+// Anchors a single point (not a centered rectangle) with the element's LEFT
+// edge pinned there -- for the nameplate tab, which should read as attached
+// to that point on the actuator and growing rightward from it, not centered
+// on top of it.
+function placeAnchor(id, x, y, pxOffset){
+  const el = document.getElementById(id);
+  if (!el) return;
+  const p = svgToScreen(x, y);
+  // pxOffset is real screen pixels, applied AFTER the svg->screen
+  // conversion -- unlike shifting x in SVG-space, this stays a constant
+  // on-screen amount no matter how large the SVG renders (see the call
+  // site's note on why an SVG-space inset isn't scale-invariant here).
+  el.style.left = (p.x + (pxOffset||0)) + 'px';
+  el.style.top = p.y + 'px';
+  el.style.transform = 'translate(0,-50%)';
+}
+// Round 11 (2026-09-27): every prior round's fight over gauge size versus
+// overlap was against the wrong constraint. adjCtl/pressrow were confined to
+// the narrow space INSIDE the SVG's own coordinate box (verifying and
+// re-verifying exactly where the actuator's geometry allowed a sliver of
+// room beside it) -- but on a wide window, the SVG itself (tall and
+// narrow, height-constrained to fit the drawing) doesn't come close to
+// filling the viewport width. The real open space Franz pointed out is
+// OUTSIDE the SVG's own rendered box entirely: page margin, not SVG margin.
+// Positioning instruments there instead structurally cannot overlap the
+// actuator (they're not even inside the SVG's bounding box) and uses the
+// actual available room instead of a hand-verified sliver of it -- no more
+// wall-coordinate bookkeeping needed at all for this.
+function layoutDesktopControls(){
+  if (window.innerWidth <= 700) return;
+  const svgRect = document.getElementById('asm').getBoundingClientRect();
+  const inset = 28;   // breathing room from the true viewport edge
+  const leftW = Math.max(0, svgRect.left - inset*2);
+  const rightW = Math.max(0, window.innerWidth - inset*2 - svgRect.right);
+  const marginH = svgRect.height * 0.85;   // leave headroom top/bottom of the drawing's own height
+  const adjEl = document.getElementById('adjCtl'), pressEl = document.getElementById('pressrow');
+  const adjScale = Math.min(1, leftW/adjEl.offsetWidth, marginH/adjEl.offsetHeight);
+  const pressScale = Math.min(1, rightW/pressEl.offsetWidth, marginH/pressEl.offsetHeight);
+  const sharedScale = Math.min(adjScale, pressScale);
+  // Vertically, still centered on the real adjuster part (sp-adj-g,
+  // y1068-1386, center ~1227) -- that part of round 6 still holds. Pressure
+  // matches the same height for a clean, symmetric, drafting-sheet-style
+  // composition, since it has no equivalent single part to align to.
+  const cy = svgToScreen(0, 1227).y;
+  placeAt('adjCtl', inset + leftW/2, cy, sharedScale);
+  placeAt('pressrow', svgRect.right + inset + rightW/2, cy, sharedScale);
+  // Table of contents (round 12): same left-margin column as the adjuster,
+  // horizontally centered to match it, but positioned independently near
+  // the top of the drawing's own height rather than grouped into the
+  // adjuster's flex column -- stacking it there would shift the adjuster
+  // off its precise centering on the real part (round 6).
+  const topics = document.getElementById('sopTopics');
+  topics.style.left = (inset + leftW/2) + 'px';
+  topics.style.top = (svgRect.top + 20) + 'px';
+  topics.style.transform = 'translateX(-50%)';
+  // The nameplate tab itself is drawn natively into #asm (see <g
+  // id="npTab">), so it can't misalign with the wall next to it -- only the
+  // pop-out CARD is an HTML overlay needing placement, anchored just past
+  // the tab's own right edge.
+  placeAnchor('npCard', 990, 770, 0);
+}
+// Play/Practice/valve-coupled stay DOM children of #ctrlbar/#panel (mobile
+// needs them there, unchanged) but are laid out into the top bar on desktop
+// here -- computed from the theme toggle's real position and each element's
+// own measured width rather than hardcoded offsets, so it stays correct
+// regardless of button label length or localization.
+function layoutTopBar(){
+  if (window.innerWidth <= 700) return;
+  const gap = 14;
+  let cursor = document.getElementById('theme-toggle').getBoundingClientRect().left - gap;
+  for (const id of ['valveRow', 'pv-play']){
+    const el = document.getElementById(id);
+    if (!el) continue;
+    const w = el.offsetWidth;
+    el.style.position = 'fixed';
+    el.style.top = '18px';
+    el.style.left = (cursor - w) + 'px';
+    cursor -= (w + gap);
+  }
+}
+function layoutAll(){ layoutRail(); layoutDesktopControls(); layoutTopBar(); }
+window.addEventListener('resize', layoutAll);
+window.addEventListener('orientationchange', layoutAll);
+if (window.visualViewport) window.visualViewport.addEventListener('resize', layoutAll);
 // ResizeObserver's callback is async, so it can't be the only trigger -- the
 // very first render would compute thumb positions before it's fired even
-// once. Also re-runs update() (not just layoutRail) since a resize changes
+// once. Also re-runs update() (not just the layout) since a resize changes
 // the track's clientHeight, which the thumb math depends on directly.
-new ResizeObserver(()=>{ layoutRail(); update(); }).observe(document.querySelector('.fig'));
-layoutRail();
+new ResizeObserver(()=>{ layoutAll(); update(); }).observe(document.querySelector('.fig'));
+layoutAll();
+// nameplate: collapsed by default, tab toggles the card out to the right.
+// The tab is the <g id="npTab"> drawn into #asm -- a real SVG element, not
+// an HTML button, so Enter/Space are wired up manually to match native
+// button keyboard behavior for the tabindex="0"/role="button" it carries.
+(function(){
+  const tab = document.getElementById('npTab');
+  const card = document.getElementById('npCard');
+  function toggle(){
+    const open = card.classList.toggle('open');
+    tab.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  tab.addEventListener('click', toggle);
+  tab.addEventListener('keydown', e=>{
+    if(e.key==='Enter' || e.key===' '){ e.preventDefault(); toggle(); }
+  });
+})();
 // ================= scripted SOP playback =================
 const TIMING = [{"start": 0.0, "duration": 7.88, "text": "Here's how a 657 actuator works. Air enters the upper casing and presses down on the diaphragm and the diaphragm plate.", "section": "How the Actuator Works"}, {"start": 8.33, "duration": 5.04, "text": "As the diaphragm plate presses down, it compresses the spring against the spring seat.", "section": "How the Actuator Works"}, {"start": 13.82, "duration": 4.08, "text": "Air in, the stem travels down. Air out, the spring returns everything up.", "section": "How the Actuator Works"}, {"start": 18.35, "duration": 11.76, "text": "Tightening the spring adjuster raises the spring seat and compresses the spring upwards \u2014 before any air is applied at all. That is initial spring compression. Loosening the adjuster lowers the seat and backs it off.", "section": "How the Actuator Works"}, {"start": 30.56, "duration": 18.44, "text": "Bench set is that initial compression. For our Size 30: bench set 3-11 psig, rated travel 3/4 inch \u2014 meaning travel starts at exactly 3 and finishes at exactly 11. It's set with zero valve forces on the actuator \u2014 and here's the whole procedure.", "section": "How the Actuator Works"}, {"start": 49.9, "duration": 8.0, "text": "Prove it on the bench. Actuator off the valve, stem at the top of its travel, an adjustable air supply rigged to the diaphragm.", "section": "Spring Verification"}, {"start": 58.35, "duration": 8.52, "text": "Raise pressure from zero. The stem's first movement should come at exactly 3 psig \u2014 not before, not after.", "section": "Spring Verification"}, {"start": 67.32, "duration": 10.48, "text": "Starts above 3? Too much preload \u2014 loosen the adjuster. Below 3? Too little \u2014 tighten it in. Recheck from zero until first movement lands at exactly 3.", "section": "Spring Verification"}, {"start": 78.25, "duration": 15.28, "text": "Raise pressure to exactly 11 psig \u2014 not past it. Off the valve, nothing stops travel at rated: keep adding air and the plate keeps moving until it lands on the lower casing. Mark where the stem's end sits at 11.", "section": "Spring Verification"}, {"start": 93.98, "duration": 8.08, "text": "Lower back to 3, and measure from your mark to the stem's end. It must equal 3/4 inch \u2014 the nameplate rated travel.", "section": "Spring Verification"}, {"start": 102.51, "duration": 7.16, "text": "If it matches, bench set is complete. Off slightly? Spring tolerance is the usual cause. Out of tolerance \u2014 contact Emerson.", "section": "Spring Verification"}, {"start": 110.57, "duration": 2.24, "text": "Now the valve enters the picture.", "section": "Installing the Stem Connector"}, {"start": 113.26, "duration": 2.12, "text": "Push the valve stem down to the seat.", "section": "Installing the Stem Connector"}, {"start": 115.83, "duration": 5.6, "text": "With the plug seated, mark the valve stem exactly 3/4 inch below the actuator stem's end.", "section": "Installing the Stem Connector"}, {"start": 121.88, "duration": 12.56, "text": "Actuate down to your mark, within a sixteenth of an inch. Travel is set off this measurement, not off bench-set pressure \u2014 though the pressure should land near 11. If it doesn't, recheck the spring.", "section": "Installing the Stem Connector"}, {"start": 134.89, "duration": 7.0, "text": "Clamp the connector halves over both stems \u2014 each stem engaged by at least one full stem diameter \u2014 and tighten evenly.", "section": "Installing the Stem Connector"}, {"start": 142.34, "duration": 4.72, "text": "Run the valve stem locknuts up until the travel indicator disk contacts the connector.", "section": "Installing the Stem Connector"}, {"start": 147.51, "duration": 7.36, "text": "Stroke open to closed, verify 3/4 inch of travel, and align the indicator scale to the disk with the valve closed.", "section": "Installing the Stem Connector"}];
 const audio = document.getElementById('pb-audio');
 const capEl = document.getElementById('cap');
 let playing=false, curSeg=-1, seg8sw=false, firedCues=[];
+// Desktop's table of contents (round 12). TIMING's own `section` field only
+// splits the 18 narrated segments into 3 groups (segments 0-4 are ALL "How
+// the Actuator Works"), but Franz wants segments 0-4 split further --
+// "Principle of Operation comes first, but is separate" from "Set the
+// Spring Adjuster" -- since 0-2 explain the general mechanism and 3-4 are
+// specifically about the adjuster/bench-set. That distinction doesn't exist
+// in the narration data, so these 4 topics are explicit rather than derived.
+const SECTIONS = [
+  {name:'Principle of Operation', startIdx:0, endIdx:2},
+  {name:'Set the Spring Adjuster', startIdx:3, endIdx:4},
+  {name:'Verify Bench Set to Rated Travel', startIdx:5, endIdx:10},
+  {name:'Set Valve Travel', startIdx:11, endIdx:17},
+];
+let activeSection = -1;   // which SECTIONS entry is currently playing, -1 = none/mobile's full playback
+let playEndTime = null;   // section-bounded playback stops here; null = play to the end (mobile's button)
 // 0.1-step rounding: the original native <input type=range step="0.1">
 // snapped to a clean decimal grid for free; the custom drag slider lost
 // that (continuous float), which is exactly why landing precisely on 3.0
@@ -1250,6 +1580,12 @@ const CHOREO = [
 function pbFrame(){
   if(!playing) return;
   const t = audio.currentTime;
+  // Round 12: section-bounded playback (the topic list) stops here instead
+  // of running into whatever comes next -- each topic reads as its own
+  // self-contained item, not a scrub position within one long recording.
+  // playEndTime stays null for mobile's single button, which still plays
+  // straight through like it always has.
+  if(playEndTime !== null && t >= playEndTime){ pbStop(); return; }
   let i = TIMING.length-1;
   while(i>0 && TIMING[i].start > t) i--;
   if(i !== curSeg){ curSeg=i; capEl.textContent = TIMING[i].text;
@@ -1264,15 +1600,26 @@ function pbFrame(){
 }
 function pbStop(){
   playing=false; audio.pause();
+  activeSection = -1; playEndTime = null;
   document.getElementById('pb-play').classList.remove('playing');
   document.getElementById('pb-play').innerHTML='&#9654; Play the SOP';
   document.getElementById('pb-status').textContent='';
   capEl.textContent='';
+  updateTopicButtons();
   setPress(0); focus(); hl(); update();
 }
+function updateTopicButtons(){
+  document.querySelectorAll('.sop-topic').forEach(btn=>{
+    const isActive = playing && +btn.dataset.section === activeSection;
+    btn.classList.toggle('playing', isActive);
+    btn.querySelector('.label').textContent = isActive ? 'Stop' : btn.dataset.label;
+  });
+}
+// Mobile's own single button: plays straight through start to finish,
+// exactly as it always has (playEndTime stays null).
 document.getElementById('pb-play').addEventListener('click', ()=>{
   if(playing){ pbStop(); return; }
-  playing=true; curSeg=-1;
+  playing=true; curSeg=-1; activeSection=-1; playEndTime=null;
   audio.currentTime=0;
   audio.play().then(()=>{
     document.getElementById('pb-play').classList.add('playing');
@@ -1281,6 +1628,42 @@ document.getElementById('pb-play').addEventListener('click', ()=>{
   }).catch(e=>{ playing=false;
     document.getElementById('pb-status').textContent=' audio failed to load';});
 });
+// Desktop's table of contents: each topic plays just its own section, from
+// a clean reset (benchReset), and stops at that section's own end rather
+// than continuing into the next topic -- clicking the currently-playing
+// topic again stops it, matching a normal play/stop toggle.
+function playSection(idx){
+  if(playing && activeSection === idx){ pbStop(); return; }
+  const sec = SECTIONS[idx];
+  benchReset();
+  playing=true; curSeg=-1; activeSection=idx;
+  playEndTime = TIMING[sec.endIdx].start + TIMING[sec.endIdx].duration;
+  audio.currentTime = TIMING[sec.startIdx].start;
+  updateTopicButtons();
+  audio.play().then(()=>{
+    requestAnimationFrame(pbFrame);
+  }).catch(e=>{ playing=false; activeSection=-1;
+    updateTopicButtons();
+    document.getElementById('pb-status').textContent=' audio failed to load'; });
+}
+// Franz's final wording for the 3 topics (2026-09-27, round 12 follow-up) --
+// more procedural than TIMING's own descriptive `section` titles ("How the
+// Actuator Works" etc.), which still drive the actual start/end boundaries
+// above; this only overrides what's displayed. Falls back to the derived
+// name if TIMING ever has more sections than labels given here.
+(function buildTopicList(){
+  const list = document.getElementById('sopTopicList');
+  SECTIONS.forEach((sec,idx)=>{
+    const btn = document.createElement('button');
+    btn.className = 'sop-topic';
+    btn.type = 'button';
+    btn.dataset.section = idx;
+    btn.dataset.label = sec.name;
+    btn.innerHTML = `<span class="num">${idx+1}.</span><span class="label">${sec.name}</span>`;
+    btn.addEventListener('click', ()=>playSection(idx));
+    list.appendChild(btn);
+  });
+})();
 audio.addEventListener('ended', pbStop);
 // test hook: ?pbtest=N applies segments 1..N without audio
 const q=new URLSearchParams(location.search);
@@ -1300,14 +1683,11 @@ if(q.get('pbtest')){
 if(q.get('adj')) setAdj(q.get('adj'));
 if(q.get('press')) setPress(q.get('press'));
 if(q.get('valve'))document.getElementById('valve').checked=true;
-if(q.get('packing'))document.getElementById('packing').value=q.get('packing');
 if(q.get('mark'))window.showTravelMark(true);
 document.getElementById('valve').addEventListener('change',()=>{
   PB.connected = document.getElementById('valve').checked;
   PB.connShown = true; PB.nutsDy = 0;
   setValve(document.getElementById('valve').checked);update();});
-document.getElementById('packing').addEventListener('change',()=>{setPacking();update();});
-setPacking();
 setValve(document.getElementById('valve').checked);
 update();
 // update() reads the desktop sliders' live clientWidth/clientHeight to place
