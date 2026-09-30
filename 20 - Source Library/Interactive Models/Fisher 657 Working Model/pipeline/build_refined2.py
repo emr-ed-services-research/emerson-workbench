@@ -24,6 +24,9 @@ timing_js = _json.dumps([{k: s[k] for k in ("start","duration","text","section")
 html = """<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Fisher 657 Working Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#eef2f6; --panel:#ffffff; --border:#cdd7e1; --border-strong:#b9c7d6;
@@ -37,6 +40,15 @@ html = """<meta charset="utf-8">
   --c-coil:#58a6d8; --c-coil-back:#3d7fae; --c-thread:#12283f; --c-dia:#1d4f8c;
   --c-vstem:#6b7683; --c-vnut:#7d8894; --c-vsil:#dde5ee; --c-vsil-line:#8ba0b8;
   --c-anno:#c25016;
+  /* Travel-indicator scale-plate markings: fixed dark, not theme-swapped
+     (2026-09-29). These ticks/OPEN-label/arrow used --c-cast-line, which is
+     intentionally LIGHT in dark mode (for cast-iron shading against dark
+     casting surfaces elsewhere) -- but the scale plate itself (--c-adj) is a
+     light blue-gray in BOTH themes, so dark mode put light markings on a
+     light plate: unreadable ("white text...on a light gray background",
+     Franz). Same fix philosophy as the nameplate below: an engraved plate's
+     markings don't change color with the app's theme toggle. */
+  --c-scale-mark:#1c3350;
   /* Nameplate palette: fixed, not theme-swapped -- a physical plate doesn't
      change color with the app's light/dark toggle. Two-tone blue (dark
      plate, lighter accent for the value boxes/trim) replaces both the
@@ -45,6 +57,25 @@ html = """<meta charset="utf-8">
      2026-09-27 round 2). */
   --np-plate:#173a5c; --np-accent:#4f93d6;
   --np-text:#eef4fb; --np-text-dim:#a9cbec; --np-text-on-accent:#0d2338;
+  /* Drafting-template layout shell (Stage 1, 2026-09-28): token ALIASES onto
+     our existing palette, not a second competing color system. Because
+     var() resolves live against whatever the underlying token currently is,
+     these only need declaring once here -- they automatically pick up the
+     dark-mode values too, no need to repeat them in the dark blocks below. */
+  --sheet:var(--panel); --rule:var(--border-strong); --ink-soft:var(--sub);
+  --part-live:var(--accent); --band:var(--good); --focus:var(--accent-alt);
+  --lead:var(--ink);
+  --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --font-body:"Barlow","Segoe UI",Arial,sans-serif;
+  --tb-h:64px; --railw-collapsed:58px; --railw-open:330px;
+  /* Correction (2026-09-28): the real approved template draws the whole
+     composition -- figure, both instrument columns, titleblock, rail,
+     corner -- inside ONE single-bordered sheet inset a consistent amount
+     from the true browser edge (final-panel-open.png). Our prior build had
+     every piece position:fixed flush to 0 with no unifying border at all.
+     One shared inset constant, used both by the decorative border overlay
+     and by every fixed element's edge offset, keeps them all in registration. */
+  --sheet-inset:14px;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -83,6 +114,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,sans-s
 h1{font-size:19px;margin:0;}
 #theme-toggle{font-size:15px;line-height:1;padding:7px 10px;border:1px solid var(--border-strong);
   background:var(--panel);color:var(--ink);border-radius:8px;cursor:pointer;}
+/* Base (mobile-safe) hide for the corner button's text label -- only the
+   desktop rail-open override (in the min-width:701px block) re-shows it. */
+.theme-label{display:none;font-size:13px;color:var(--ink);white-space:nowrap;}
 p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
 .readout{font-family:ui-monospace,monospace;font-size:13px;color:var(--accent);}
 .cast{stroke:var(--c-cast-line);stroke-width:2.5;stroke-linejoin:round;fill-rule:evenodd;}
@@ -98,8 +132,8 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
 .sp-thread{stroke:var(--c-thread);stroke-width:2.4;}
 .dia{stroke:var(--c-dia);stroke-width:12.0;fill:none;stroke-linecap:round;stroke-linejoin:round;}
 .prism{fill:var(--c-adj);stroke:var(--c-cast-line);stroke-width:2;}
-.tick{stroke:var(--c-cast-line);stroke-width:2;}
-.lbl{font-family:system-ui;font-size:15px;fill:var(--c-cast-line);}
+.tick{stroke:var(--c-scale-mark);stroke-width:2;}
+.lbl{font-family:system-ui;font-size:15px;fill:var(--c-scale-mark);}
 /* Nameplate tab (round 4, 2026-09-27): a native part of the drawing, not an
    HTML overlay aligned to it afterward -- see the <g id="npTab"> comment in
    the markup for why. Styled like a real UI control (cursor, hover) even
@@ -178,16 +212,19 @@ body.practicing #ctrlbar,
 body.practicing #valveRow,
 body.practicing .np-tab-svg,
 body.practicing #npCard,
-body.practicing #sopTopics{display:none;}
+body.practicing #indexRail{display:none;}
 body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 /* Desktop-only title block (round 11) -- without this, a bare div defaults
    to display:block and would show up inside #ctrlbar's MOBILE flex row too,
    mixed in with the Play/Practice buttons mobile still needs there.
    #titleblock{display:flex} in the desktop media query turns it back on. */
 #titleblock{display:none;}
-/* Same reasoning for the desktop-only topic list (round 12): hidden by
-   default so it doesn't show up in mobile's #ctrlbar flex row. */
-#sopTopics{display:none;}
+/* Stage 1 (2026-09-28): the desktop-only topic list moved from a plain
+   left-margin list (#sopTopics, round 12) into the template-style index
+   rail on the right edge (#indexRail). Same reasoning as #titleblock above
+   -- hidden by default so a bare block-level nav doesn't show up in
+   mobile's flow; the desktop media query turns it on. */
+#indexRail{display:none;}
 .pb-word{margin-left:4px;}
 .stepper{position:relative;height:34px;display:flex;align-items:stretch;gap:6px;}
 .stepper .stepbtn{flex:0 0 40px;border:none;border-radius:8px;background:var(--c-yoke);color:#fff;
@@ -202,14 +239,13 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 .stepper .band{position:absolute;top:0;bottom:0;background:var(--good);opacity:0.55;
   transition:left 0.2s ease, width 0.2s ease;}
 .stepper .centertick{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--c-cast-line);opacity:0.35;}
-/* ===== Desktop-only gauge + hex-slider controls (approved 2026-09-27):
-   the diaphragm-pressure stepper is replaced by a real analog gauge (pure
-   display, driven by a horizontal slider) and the spring-adjuster stepper
-   by a vertical slider whose thumb is a top-down hex nut that genuinely
-   rotates as it travels -- the one view where a hex's rotation is honest,
-   not faked perspective. No numeric readout on the adjuster: a real
-   distance/turns figure isn't verified against an actual thread pitch, so
-   it stays qualitative (TIGHTEN/LOOSEN + a center reference tick only).
+/* ===== Desktop-only gauge + slider controls (approved 2026-09-27, slider
+   unified 2026-09-29): both the diaphragm-pressure gauge and the spring-
+   adjustor dial are pure displays, each driven by an identical .hslide
+   slider underneath -- same layout, same interaction, matched pair. The
+   adjustor's hex nut genuinely rotates (the one view where that's honest,
+   not faked perspective); a bench-set line sits below its slider, real
+   computed physics -- see .dial-benchset further down.
    Desktop only -- mobile keeps its own separate rail sliders untouched;
    these controls live inside .ctl, which the mobile media query already
    hides in full. ===== */
@@ -225,6 +261,12 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 .needlehub{fill:var(--panel);stroke:var(--accent);stroke-width:3;transition:stroke 0.2s ease;}
 .needlehub.inwin{stroke:var(--good);}
 #ctrlbar .digitalreadout{font-size:24px;font-weight:700;}
+/* Secondary caliper-verification reference (2026-09-29, Franz): the smaller
+   "(0.19 in)" alongside "2.3 Turns" -- inline in the SAME readout line
+   rather than a stacked second line, deliberately, so the adjuster's
+   readout stays exactly one row tall like pressure's "0.0 psig" and the two
+   cards' rows keep lining up (see the row-alignment fix earlier today). */
+.readout-sub{font-size:15px;font-weight:500;color:var(--sub);margin-left:6px;}
 .hslide{width:100%;max-width:260px;display:flex;flex-direction:column;align-items:center;gap:10px;margin:8px auto 0;}
 .htrackwrap{position:relative;width:100%;height:40px;display:flex;align-items:center;
   touch-action:none;cursor:grab;}
@@ -235,27 +277,47 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   box-shadow:inset 0 1px 3px var(--track-shadow);}
 .hfill{position:absolute;top:0;bottom:0;left:0;background:var(--c-yoke);border-radius:6px 0 0 6px;}
 .hband{position:absolute;top:0;bottom:0;background:var(--good);opacity:0.55;}
+.hband-dead{background:var(--muted);opacity:0.35;}
 .hthumb{position:absolute;top:50%;width:30px;height:30px;margin-top:-15px;margin-left:-15px;
   border-radius:50%;background:var(--panel);border:4px solid var(--accent);
-  box-shadow:0 2px 5px rgba(20,40,70,0.3);}
+  box-shadow:0 2px 5px rgba(20,40,70,0.3);box-sizing:border-box;}
 .endlbl{font-size:17px;font-weight:600;color:var(--sub);}
 .endrow{display:flex;justify-content:space-between;width:100%;}
-.vrod{display:flex;flex-direction:column;align-items:center;gap:8px;}
-.vrodtrackwrap{position:relative;width:60px;height:200px;display:flex;justify-content:center;
-  touch-action:none;cursor:grab;margin:0 auto;}
-.vrodtrackwrap:active{cursor:grabbing;}
-.vrodtrackwrap:focus{outline:none;}
-.vrodtrackwrap:focus-visible .vrodtrack{box-shadow:inset 0 1px 3px var(--track-shadow), 0 0 0 3px var(--accent);}
-.vrodtrack{position:relative;width:12px;height:100%;border-radius:6px;background:var(--track);
-  box-shadow:inset 0 1px 3px var(--track-shadow);}
-.vrodfill{position:absolute;left:0;right:0;background:var(--c-yoke);border-radius:6px;}
-.vrodcenter{position:absolute;top:50%;left:-9px;right:-9px;height:2px;background:var(--c-cast-line);
-  opacity:0.4;pointer-events:none;}
-.hexthumb{position:absolute;left:50%;width:34px;height:34px;margin-left:-17px;margin-top:-17px;
-  pointer-events:none;}
-.hexthumb polygon{fill:var(--c-yoke);stroke:var(--c-cast-line);stroke-width:2.5;}
-.hexthumb .hexmark{fill:var(--c-cast-line);opacity:0.55;}
-.vendlbl{font-size:17px;font-weight:600;color:var(--sub);}
+/* Correction (2026-09-29): the spring adjustor is a fixed-position rotary
+   dial (same top-down hex nut, built from the same polarPt hex-point math,
+   the one view where its rotation is honest) driven by a linear slider
+   below it, not by dragging the dial itself or by Loosen/Tighten buttons --
+   Franz found the dial's own drag interaction "not fluid" and asked for
+   "the same kind of layout" as the pressure control, which is a display-only
+   gauge driven by a slider underneath. The slider reuses .hslide/.htrack/
+   .hfill/.hthumb/.endrow verbatim (see the pressure control below). The
+   decorative clockwise-tighten arc (.dialcw/.dialcwhead) is removed -- with
+   the slider's own "Loosen"/"Tighten" end labels making direction explicit,
+   the arc was redundant, and Franz couldn't tell what it was for anyway. The
+   turns readout is removed too (Franz: "turns is inaccurate... we don't want
+   to confuse anybody") -- the bench-set line stays, it's real computed
+   physics, not an invented figure. */
+.dialSvg{pointer-events:none;}
+.dialface{fill:var(--panel);stroke:var(--border);stroke-width:2;}
+.dialtick{stroke:var(--c-cast-line);stroke-width:2;opacity:0.55;}
+.dialtickmaj{stroke:var(--c-cast-line);stroke-width:2.5;}
+.dialnut polygon{fill:var(--c-yoke);stroke:var(--c-cast-line);stroke-width:2.5;}
+.dialnut .hexmark{fill:var(--c-cast-line);opacity:0.55;}
+/* Smoothing the rotation (Franz: wants "a little bit of a smoother
+   rotation") is done in JS (see the animateDial() rAF loop near DCX/DCY),
+   not a CSS transition -- confirmed by direct testing that a plain
+   `transition:transform` on this element, whose only rotation comes from
+   the SVG presentation attribute (not a CSS transform: value), renders
+   correctly for some target angles but silently gets stuck at a stale
+   rotation for others: the transform ATTRIBUTE updates every time (verified
+   via getAttribute), but the PAINTED shape doesn't move, with no pattern
+   simple enough to work around. A real browser bug/edge case in that
+   specific attribute+transition combination, not a race in our own code --
+   removed rather than chased further. */
+.dial-benchset{font-size:13px;color:var(--sub);}
+.dial-benchset strong{color:var(--good);font-weight:700;}
+.gauge-status{font-size:13.5px;color:var(--sub);text-align:center;}
+.gauge-status strong{color:var(--ink);font-weight:700;}
 /* ===== Mobile-only sandbox controls: real HTML, positioned from the SVG's
    own real empty-canvas geometry (verified with check_safe_zones.py), not
    guessed. Desktop keeps the .panel reference layout untouched -- these are
@@ -277,7 +339,7 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 .mcenter{position:absolute;left:-6px;right:-6px;height:2px;background:var(--c-cast-line);opacity:0.35;}
 .mthumb{position:absolute;left:50%;width:30px;height:30px;margin-left:-15px;margin-top:-15px;
   border-radius:50%;background:var(--panel);border:4px solid var(--accent);
-  box-shadow:0 2px 5px rgba(20,40,70,0.3);}
+  box-shadow:0 2px 5px rgba(20,40,70,0.3);box-sizing:border-box;}
 .mlabel{flex:0 0 14px;font-size:10.5px;font-weight:600;color:var(--sub);text-align:center;
   line-height:14px;letter-spacing:0.3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 /* display:none is the real default (set above with #railLeft/#railRight) --
@@ -327,6 +389,12 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   /* desktop-only nameplate tab, now drawn into the svg itself -- mobile
      keeps its own separate nameplate access (scroll below the fig) */
   .np-tab-svg{display:none;}
+  /* Stage 1 drafting-template shell (2026-09-28): the index rail and the
+     inert lesson note/leader stubs are desktop-only, defensively hidden
+     here too even though #indexRail already defaults to display:none
+     above -- matches this file's existing pattern of an explicit mobile
+     kill switch for every desktop-only addition. */
+  #indexRail, .note, .leader{display:none;}
   body.practicing{overflow:hidden;}
   body.practicing .pagehead{display:none;}
   body.practicing #railLeft, body.practicing #railRight,
@@ -349,38 +417,118 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
    collapsed drawer with a pull-tab, off by default, so it's available
    without permanently taking up screen real estate. ===== */
 @media (min-width:701px){
-  body{overflow:hidden;}
+  /* Correction (2026-09-28): the base body{padding:18px} rule (pre-existing,
+     from before the drafting-template layout) was never overridden here --
+     only mobile's own media query zeroes it. Harmless while the SVG was
+     hardcoded to 92vh (8vh of slack absorbed the offset invisibly), but once
+     the SVG was tightened to fill the new bordered/padded .fig box exactly,
+     that same un-zeroed 18px surfaced as a real, measured overlap between
+     the figure's bottom edge and the fixed-position titleblock above it (all
+     spacing here is meant to come from --sheet-inset / .fig's own padding,
+     not a leftover base rule). Mirrors mobile's existing body{padding:0}. */
+  body{padding:0;overflow:hidden;}
   .pagehead{position:fixed;top:0;left:0;right:0;z-index:9;padding:14px 20px;
     display:flex;align-items:center;justify-content:space-between;pointer-events:none;}
   .pagehead > *{pointer-events:auto;}
-  h1{font-size:13px;font-weight:600;color:var(--sub);letter-spacing:0.3px;}
+  /* Stage 1 (2026-09-28): the "Fisher 657 Working Model" h1 is redundant
+     once the title block carries that identity (EMERSON / title+subtitle /
+     provenance) -- hidden rather than deleted so #theme-toggle, its DOM
+     sibling, can stay exactly where it is in the markup (mobile still shows
+     both, unchanged) and just get repositioned below via its own
+     position:fixed rule. .pagehead itself stays in the DOM with zero visual
+     footprint once its only visible child is display:none. */
+  .pagehead h1{display:none;}
   .row{display:block;height:100vh;height:100dvh;}
-  .fig{width:100%;height:100%;background:none;border:none;border-radius:0;padding:0;
-    display:flex;align-items:center;justify-content:center;}
-  .fig svg{height:92vh;height:92dvh;width:auto;max-width:96vw;display:block;}
+  /* Correction (2026-09-28): the figure now lives INSIDE the bordered sheet
+     inset, clear of the titleblock (bottom) and the index rail (right) --
+     previously it filled the raw viewport via vh/vw units with no awareness
+     of either. Padding on .fig reserves that clearance; the padding-right
+     widens in lockstep with the rail via the same var(--railw-*) swap every
+     other edge-anchored element already uses. The SVG itself switches from
+     hardcoded vh/vw to height:100%/width:auto of this now-correctly-sized
+     box, so it's never wider/taller than the space actually left for it --
+     #asm's live getBoundingClientRect() (which every placement function in
+     this file reads) reflects the new, smaller box automatically; no other
+     function needs to change. */
+  .fig{width:100%;height:100%;background:none;border:none;border-radius:0;
+    box-sizing:border-box;
+    padding:var(--sheet-inset) var(--railw-collapsed) calc(var(--tb-h) + var(--sheet-inset)) var(--sheet-inset);
+    display:flex;align-items:center;justify-content:center;
+    transition:padding-right .3s ease;}
+  body.rail-open .fig{padding-right:var(--railw-open);}
+  .fig svg{height:100%;width:auto;max-width:100%;display:block;}
+  /* Decorative single border around the whole sheet (figure + both
+     instrument columns + titleblock + rail + corner) -- purely visual,
+     inert (pointer-events:none), sits at the same inset every fixed element
+     below is anchored to. Static regardless of rail state, matching the
+     reference (only the interior content reflows, not the outer frame). */
+  #sheetBorder{position:fixed;top:var(--sheet-inset);left:var(--sheet-inset);
+    right:var(--sheet-inset);bottom:var(--sheet-inset);border:1px solid var(--rule);
+    box-sizing:border-box;pointer-events:none;z-index:1;}
   /* .panel's own box disappears (no flex-basis, no leftover width) while its
      children -- all position:fixed once placed -- still render normally. */
   .panel{display:contents;}
-  /* #ctrlbar is the drawing sheet's title block now (Franz, round 11) --
-     Emerson/title/provenance, not controls. pb-play/pv-play/#valveRow stay
-     DOM children of #ctrlbar (mobile still needs them there) but escape to
-     the top bar via their own position:fixed, laid out by layoutTopBar().
-     #statusline/#pb-status are diagnostic text, not drawing-sheet content,
-     so they're hidden here rather than cluttering the title block; nothing
-     stops bringing them back into the margin space deliberately later. */
-  #ctrlbar{position:fixed;left:0;right:0;bottom:0;display:flex;align-items:center;
-    padding:14px 28px;margin:0;background:var(--panel);
-    border-top:1px solid var(--border-strong);z-index:6;min-height:34px;}
+  /* Stage 1 (2026-09-28): #ctrlbar's own box no longer needs to visually
+     BE the title block -- that job moves onto #titleblock directly below,
+     which also now leaves room on its right for the index rail and reflows
+     with it. #ctrlbar stays in normal flow (harmless, zero footprint) so
+     mobile's own #ctrlbar flex-row markup is completely untouched; only
+     its diagnostic children stay hidden on desktop. */
   #ctrlbar audio, #statusline, #pb-status{display:none;}
-  #titleblock{display:flex;align-items:center;justify-content:space-between;
-    width:100%;gap:28px;}
+  /* Title block: bottom bar, left edge to the index rail's near edge
+     (var(--railw-collapsed), widening to var(--railw-open) when the rail
+     opens -- .transition on `right` is what makes the whole bar reflow in
+     sync with the rail instead of being covered by it). */
+  #titleblock{position:fixed;left:var(--sheet-inset);
+    right:calc(var(--railw-collapsed) + var(--sheet-inset));bottom:var(--sheet-inset);
+    height:var(--tb-h);display:flex;align-items:center;justify-content:space-between;
+    gap:28px;padding:0 28px;margin:0;background:var(--panel);
+    border-top:1px solid var(--border-strong);z-index:6;box-sizing:border-box;
+    transition:right .3s ease;}
+  body.rail-open #titleblock{right:calc(var(--railw-open) + var(--sheet-inset));}
   .tb-brand{font-family:Arial,Helvetica,sans-serif;font-weight:800;font-size:19px;
     letter-spacing:1.5px;color:var(--ink);flex:0 0 auto;}
-  .tb-title{flex:1 1 auto;text-align:center;min-width:0;}
+  /* Correction (2026-09-29): flex-centering .tb-title in the space left over
+     between .tb-brand and .tb-provenance only centers it on the TITLEBLOCK's
+     own leftover space -- not on the actuator, since brand and provenance
+     are different widths (Franz: "the title isn't centered... on the
+     actuator"). Taken out of flex flow and positioned by JS instead
+     (positionTitle(), called from layoutDesktopControls() alongside the
+     other real-geometry-driven placement in this file) directly on top of
+     the figure's true horizontal center (#asm's own getBoundingClientRect,
+     the same reference the instruments are already centered against) --
+     #titleblock's position:fixed makes it the containing block. brand/
+     provenance stay flex children of #titleblock and keep hugging their own
+     edges via justify-content:space-between once .tb-title is out of flow. */
+  .tb-title{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    text-align:center;min-width:0;}
   .tb-title-main{font-size:15px;font-weight:700;letter-spacing:0.4px;color:var(--ink);}
   .tb-title-sub{font-size:12px;color:var(--sub);margin-top:2px;}
   .tb-provenance{flex:0 0 auto;font-size:11px;color:var(--muted);text-align:right;
     max-width:260px;}
+  /* Corner cell (template rule: same row as the title block, same height,
+     continuous top rule) -- no separate wrapper element needed since
+     #theme-toggle is already position:fixed once placed elsewhere in this
+     file; it just IS the corner cell's box directly. DOM location is
+     unchanged (still a .pagehead child, mobile-safe) -- only its desktop
+     position/sizing is overridden here. */
+  #theme-toggle{position:fixed;top:auto;left:auto;right:var(--sheet-inset);
+    bottom:var(--sheet-inset);
+    width:var(--railw-collapsed);height:var(--tb-h);margin:0;padding:0;
+    border:1px solid var(--border-strong);border-right:none;border-radius:0;
+    border-top:1px solid var(--border-strong);background:var(--panel);
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    box-sizing:border-box;z-index:8;transition:width .3s ease;}
+  body.rail-open #theme-toggle{width:var(--railw-open);}
+  /* Correction (2026-09-28): the reference (final-panel-open.png) shows the
+     corner button carrying a text label ("Dark mode"/"Light mode") once the
+     rail panel is open, icon-only when collapsed -- same pattern as the
+     approved template's own .theme-label rule. #theme-glyph/.theme-label
+     are separate children now (paint() below sets both) rather than one
+     textContent overwrite, which only ever fit the icon alone. Base hide
+     (mobile-safe) is a plain, non-media rule below; this just re-shows it
+     once desktop's rail is open. */
+  body.rail-open .theme-label{display:inline;}
   .ctl{position:fixed;transform:translate(-50%,-50%);width:max-content;z-index:5;
     text-align:center;}
   /* display/font-size/color/weight are set on the higher-specificity
@@ -391,33 +539,125 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     text-align:center;border:none;padding:0 12px;min-height:0;margin:0;
     background:none;pointer-events:none;}
   /* #valveRow, #pv-play stay DOM children of #ctrlbar/#panel (mobile needs
-     them there, unchanged) but are laid out into the top bar on desktop by
-     layoutTopBar() (JS), which sets position/top/left directly -- no
-     position or offsets set here, just the visual sizing that JS-driven
-     placement doesn't touch. #pb-play is desktop-hidden in favor of
-     #sopTopics below (mobile keeps the single button, unchanged). */
+     them there, unchanged) but are laid out into the top-right bar on
+     desktop by layoutTopBar() (JS), which sets position/top/left directly
+     -- no position or offsets set here, just the visual sizing that
+     JS-driven placement doesn't touch. #pb-play is desktop-hidden in favor
+     of the index rail below (mobile keeps the single button, unchanged). */
   #valveRow{display:flex;align-items:center;margin:0;z-index:9;font-size:12.5px;
     background:var(--panel);padding:6px 10px;border-radius:6px;
     border:1px solid var(--border);}
   #pv-play{z-index:9;}
   #pb-play{display:none;}
-  /* Table of contents (round 12): a real list in the left margin, above the
-     spring adjuster, positioned by layoutDesktopControls() like the other
-     margin content -- not grouped into the adjuster's own flex column,
-     since that would disturb its precise centering on the real adjuster
-     part (round 6). */
-  #sopTopics{display:block;position:fixed;z-index:5;text-align:left;
-    width:max-content;max-width:260px;}
-  .sop-topics-title{font-size:12px;font-weight:700;letter-spacing:1.2px;
-    text-transform:uppercase;color:var(--muted);margin-bottom:10px;}
-  .sop-topic{display:flex;align-items:baseline;gap:10px;width:100%;
+  /* Correction (2026-09-28): Franz -- "Practice the SOP and stem connector
+     stuff is in the way." Neither appears anywhere in the real approved
+     template (final-panel-open.png reference). Hidden on desktop only;
+     mobile keeps both exactly as they are. The underlying valve-coupling
+     mechanism (setValve(), the #valve checkbox's own change handler, PB
+     state) stays fully intact -- only the manual desktop toggle is hidden.
+     layoutTopBar() still runs harmlessly over these (a display:none
+     element's offsetWidth is 0), left as-is rather than special-cased. */
+  #pv-play, #valveRow{display:none;}
+  /* Index rail (Stage 1, 2026-09-28): replaces the round-12 left-margin
+     #sopTopics list. Right edge of the sheet, collapsed to a numbered-dot
+     strip by default, opens to a full lesson-name list; widening it is
+     what pushes #titleblock/#theme-toggle over via the shared
+     var(--railw-*) custom properties (see body.rail-open rules above).
+     layoutDesktopControls() reads this element's live width so the
+     pressure-gauge margin shrinks to stay clear of it when open -- see the
+     JS comment there. */
+  #indexRail{display:flex;flex-direction:column;align-items:center;gap:12px;
+    position:fixed;top:var(--sheet-inset);right:var(--sheet-inset);
+    bottom:calc(var(--tb-h) + var(--sheet-inset));width:var(--railw-collapsed);
+    padding:14px 0;background:var(--panel);border-left:1px solid var(--border-strong);
+    box-sizing:border-box;overflow:hidden;z-index:7;transition:width .3s ease;}
+  body.rail-open #indexRail{width:var(--railw-open);align-items:stretch;padding:0;}
+  .rail-toggle{flex:none;width:34px;height:34px;border:1px solid var(--border-strong);
+    background:transparent;border-radius:4px;display:grid;place-items:center;
+    cursor:pointer;color:var(--ink);}
+  .rail-toggle:hover{border-color:var(--accent);}
+  /* Bug fix (2026-09-28): this used to only reposition the toggle (margin)
+     when the rail opened, leaving it visible alongside the panel's own
+     Close button -- two disconnected-looking controls instead of the
+     reference's one. The whole collapsed strip (toggle + numbered dots)
+     hides together when the panel opens; only the panel's own header
+     Close button is the close affordance, matching the reference exactly. */
+  body.rail-open .rail-toggle{display:none;}
+  .rail-nums{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;
+    align-items:center;gap:9px;overflow-y:auto;}
+  body.rail-open .rail-nums{display:none;}
+  .num-btn{--p:0;flex:none;width:32px;height:32px;border-radius:50%;border:0;
+    padding:2.5px;cursor:pointer;
+    background:conic-gradient(var(--accent) calc(var(--p)*1%), var(--border-strong) 0);}
+  .num-btn span{display:grid;place-items:center;width:100%;height:100%;border-radius:50%;
+    background:var(--panel);font-family:system-ui;font-weight:700;font-size:.9rem;
+    color:var(--ink);}
+  .num-btn.playing{background:conic-gradient(var(--good) 100%, var(--border-strong) 0);}
+  .num-btn.playing span{color:var(--good);}
+  .rail-panel{display:none;}
+  body.rail-open .rail-panel{display:flex;flex-direction:column;height:100%;
+    padding:16px 18px;box-sizing:border-box;animation:railFadeIn .25s ease;}
+  @keyframes railFadeIn{from{opacity:0}to{opacity:1}}
+  .rail-panel-head{display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:14px;}
+  .rail-panel-head h2{font-family:var(--display);font-weight:600;font-size:1.3rem;
+    margin:0;color:var(--ink);}
+  .rp-close{border:1px solid var(--border-strong);background:transparent;
+    border-radius:3px;padding:2px 9px;cursor:pointer;font-size:.85rem;color:var(--ink);}
+  .rp-list{list-style:none;margin:0;padding:0;overflow-y:auto;}
+  .sop-topic{display:flex;align-items:center;gap:10px;width:100%;
     text-align:left;background:none;border:none;border-bottom:1px solid var(--border);
-    padding:9px 0;cursor:pointer;font-size:15px;font-weight:600;color:var(--ink);
-    font-family:inherit;}
+    padding:9px 6px;cursor:pointer;font-size:15px;font-weight:600;color:var(--ink);
+    font-family:inherit;border-radius:4px;}
+  .sop-topic:hover{background:var(--ring);}
   .sop-topic:last-child{border-bottom:none;}
-  .sop-topic .num{color:var(--sub);font-weight:700;flex:0 0 auto;}
-  .sop-topic.playing{color:var(--accent);}
-  .sop-topic.playing .num{color:var(--accent);}
+  /* Circled number badge (2026-09-29): matches the reference template's own
+     opened-panel row numbering (a thin-outlined circle around the digit),
+     not the plain "1." text this had before -- Franz caught the mismatch
+     against final-panel-open.png directly. Same visual family as the
+     collapsed rail's .num-btn dots, just unfilled/simpler for an inline row. */
+  .sop-topic .num{flex:0 0 auto;width:22px;height:22px;box-sizing:border-box;
+    border:1.5px solid var(--border-strong);border-radius:50%;
+    display:grid;place-items:center;font-size:.8rem;font-weight:700;color:var(--sub);}
+  .sop-topic.playing{color:var(--good);}
+  .sop-topic.playing .num{color:var(--good);border-color:var(--good);}
+  /* Correction (2026-09-28): rail panel content rebuilt to match the real
+     approved template (final-panel-open.png) -- a prominent "Play all
+     lessons" row with the total duration, each lesson row showing its own
+     duration, and a References section (Objectives/Parts/Procedure) below
+     the list. Durations are computed from TIMING/SECTIONS, not invented. */
+  .sop-topic .dur{margin-left:auto;flex:0 0 auto;color:var(--sub);
+    font-size:.82rem;font-weight:400;font-variant-numeric:tabular-nums;}
+  .rail-playall{display:flex;align-items:center;gap:10px;width:100%;
+    border:1px solid var(--border-strong);background:transparent;border-radius:6px;
+    padding:10px 12px;cursor:pointer;font-weight:700;font-size:.95rem;color:var(--ink);
+    margin:0 0 14px;font-family:inherit;}
+  .rail-playall:hover{background:var(--ring);}
+  .rail-playall.playing{color:var(--good);border-color:var(--good);}
+  .rail-playall .playicon{flex:none;color:var(--accent);}
+  .rail-playall.playing .playicon{color:var(--good);}
+  .rail-playall .dur{margin-left:auto;font-weight:400;color:var(--sub);
+    font-variant-numeric:tabular-nums;}
+  .rail-divider{border:0;border-top:1px solid var(--border);margin:18px 0 10px;}
+  .rail-refs-head{font-size:.75rem;font-weight:700;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 8px;}
+  .rail-ref-link{display:block;background:none;border:0;padding:6px 0;
+    text-align:left;cursor:pointer;font-size:.92rem;color:var(--accent);
+    text-decoration:underline;font-family:inherit;}
+  .rail-ref-link:hover{color:var(--accent-alt);}
+  /* Inert lesson note + leader stubs (Stage 1): present so Stage 3 has
+     somewhere to wire real lesson narration/leader-lines into, but fully
+     dormant -- the [hidden] attribute keeps them out of the render tree
+     entirely until something explicitly un-hides them, which nothing does
+     yet. Not positioned/styled beyond what's needed to prove they're inert
+     and harmless; Stage 3 owns the real transition/positioning polish. */
+  .note{position:fixed;top:80px;left:28px;max-width:34ch;z-index:4;
+    background:var(--panel);border-left:2px solid var(--band);padding:10px 14px;
+    border-radius:4px;box-shadow:0 4px 14px rgba(0,0,0,.12);}
+  .note-head{font-family:var(--display);font-weight:600;font-size:.9rem;
+    color:var(--ink-soft);margin:0 0 6px;}
+  .note-text{margin:0;font-size:1.05rem;line-height:1.4;color:var(--ink);}
+  .leader{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:3;}
   /* Nameplate: a small tab attached to the actuator's own right edge, right
      by the legend -- NOT a full-height screen-edge drawer (tried, rejected
      2026-09-27: read as unrelated screen chrome, and its paragraph of text
@@ -460,9 +700,12 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   }catch(e){}
 })();
 </script>
+<div id="sheetBorder"></div>
 <div class="pagehead">
 <h1>Fisher 657 Working Model</h1>
-<button id="theme-toggle" title="Toggle light/dark mode" aria-label="Toggle light/dark mode">&#9680;</button>
+<button id="theme-toggle" title="Toggle light/dark mode" aria-label="Toggle light/dark mode">
+  <span id="theme-glyph" aria-hidden="true">&#9680;</span><span class="theme-label"></span>
+</button>
 </div>
 <div class="row">
 <div class="fig">
@@ -565,19 +808,39 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     </g>
   </g>
   <g id="sp-adj-g">
-    <!-- parametric adjuster: threaded rod + wrench flats; dims measured
-         from the painted mask (rod w118 y1068-1338, flats w140 y1338-1386) -->
+    <!-- parametric adjuster: rod + wrench flats; dims measured from the
+         painted mask (rod w118 y1068-1338, flats w140 y1338-1386). Rod
+         stays ONE uniform width the full length -- boss and threaded
+         section are the same solid material, no step in the rod's own
+         outline (2026-09-29 correction: a first pass widened the threaded
+         section's actual material, which Franz caught: "you actually
+         widened the adjuster width, I just wanted the threads extended
+         because I didn't want a smooth outer edge"). The clip below is
+         wider than the rod itself, purely so the thread TEXTURE'S strokes
+         can visibly poke a couple units past the rod's real edge -- a
+         toothed silhouette from the texture alone, not a wider part. The
+         top INSERTION_TRAVEL of the rod stays blank (see adjThreads()) --
+         the real non-threaded boss segment that disappears into the
+         seat's hub during insertion. -->
     <rect class="sp-adj" x="683.5" y="1068" width="118" height="270" rx="3"/>
     <rect class="sp-adj" x="672.5" y="1338" width="140" height="48" rx="4"/>
-    <clipPath id="adjclip"><rect x="683.5" y="1068" width="118" height="270" rx="3"/></clipPath>
+    <clipPath id="adjclip"><rect x="677.5" y="1068" width="130" height="270" rx="3"/></clipPath>
     <g id="sp-adj-threads" clip-path="url(#adjclip)"></g>
   </g>
   <g id="sp-seat-g">
     <!-- parametric seat: locating boss inside the coil, flange the spring
-         rests on, hub seated on the adjuster (boss w156, flange w314, hub w166) -->
-    <rect class="sp-seat" x="664.5" y="972" width="156" height="40" rx="3"/>
-    <rect class="sp-seat" x="585.5" y="1008" width="314" height="29" rx="3"/>
-    <rect class="sp-seat" x="659.5" y="1037" width="166" height="49" rx="3"/>
+         rests on, hub seated on the adjuster (boss w156, flange w314, hub w166).
+         Shifted down 24 (2026-09-29, Franz) -- moved the REAL seat geometry
+         itself to sit lower, rather than propping the old position up with
+         invented geometry (a fixed "shelf" was tried and explicitly rejected:
+         "You can't add geometry!"). 24 reuses the exact position Franz
+         confirmed was correct when it was drawn as the (now removed) shelf,
+         not a new invented number. SEAT0 below is shifted the same amount so
+         the spring's own rendered coil stays exactly coincident with the
+         seat's new position. -->
+    <rect class="sp-seat" x="664.5" y="996" width="156" height="40" rx="3"/>
+    <rect class="sp-seat" x="585.5" y="1032" width="314" height="29" rx="3"/>
+    <rect class="sp-seat" x="659.5" y="1061" width="166" height="49" rx="3"/>
   </g>
   <g id="g-plate">
   <path id="p-plate" class="cast"/>
@@ -660,43 +923,61 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 <div class="panel">
 <div id="ctrlbar">
   <!-- "Play the SOP" as one button is desktop-hidden (mobile keeps it,
-       unchanged) in favor of a real table of contents here -- Franz
-       (2026-09-27, round 12): "not the first one I would list... a list
-       like 1. Principle of Operation, 2. Bench Set, 3. Setting Travel".
-       Built from TIMING's own `section` field (already divides the 18
-       narrated segments into exactly 3 groups matching that shape) rather
-       than hardcoded, so it can't drift out of sync with the narration. -->
+       unchanged) in favor of the index rail (#indexRail, below the SVG in
+       DOM order but positioned by CSS, not JS) -- Franz (2026-09-27, round
+       12): "not the first one I would list... a list like 1. Principle of
+       Operation, 2. Bench Set, 3. Setting Travel". Content still comes from
+       SECTIONS, unchanged, just rendered into the rail's markup now. -->
   <button id="pb-play" title="Play the SOP">&#9654;<span class="pb-word"> Play the SOP</span></button>
   <button id="pv-play" title="Practice the SOP">Practice the SOP</button>
-  <div id="sopTopics">
-    <div class="sop-topics-title">Contents</div>
-    <div id="sopTopicList"></div>
-  </div>
   <div class="ctl" id="adjCtl">
     <label>Spring adjuster</label>
-    <div class="vrod">
-      <span class="vendlbl">TIGHTEN</span>
-      <div class="vrodtrackwrap" id="adjHit" tabindex="0" role="slider" aria-label="Spring adjuster"
-           aria-valuemin="-24" aria-valuemax="24">
-        <div class="vrodtrack"><div class="vrodfill" id="adjFill"></div></div>
-        <div class="vrodcenter"></div>
-        <!-- top-down hex: the one view where rotation is genuinely correct,
-             not faked perspective. The off-center dot (not a diametric line,
-             which would read as a dial/clock-hand indicator) is what makes
-             the rotation visible at all -- a plain hexagon is 6-fold
-             symmetric and looks identical every 60 degrees. -->
-        <div class="hexthumb" id="adjThumb">
-          <svg viewBox="0 0 34 34">
-            <polygon id="adjHexPoly" points=""/>
-            <circle class="hexmark" cx="17" cy="8" r="2.4"/>
-          </svg>
+    <div class="instrument">
+      <!-- top-down hex nut on a fixed rotary dial (Stage 2): the one view
+           where rotation is genuinely correct, not faked perspective. The
+           off-center dot (not a diametric line, which would read as a
+           dial/clock-hand indicator) is what makes the rotation visible at
+           all -- a plain hexagon is 6-fold symmetric and looks identical
+           every 60 degrees. Built by JS (matches the gauge's own
+           built-once-then-updated pattern) -- see the IIFE near
+           adjHexPoly/DCX/DCY. -->
+      <!-- Correction (2026-09-29): the dial is now a pure display (like
+           #gaugeSvg is for pressure) -- no role/tabindex/aria-value* of its
+           own, since input now happens on #adjHit2 below, exactly mirroring
+           the pressure control's own gauge+slider split. -->
+      <svg class="dialSvg" id="adjDial" width="220" height="200" viewBox="0 0 220 200" aria-hidden="true"></svg>
+      <!-- Correction (2026-09-29, Franz): "I did all of this so that instead
+           of a spacer we could put real units" -- the empty slot a plain
+           alignment spacer would have occupied here now holds the actual
+           physical quantity the real force-balance physics (2026-09-29)
+           produces: spring preload force, in lbs, the adjuster's own
+           equivalent of the pressure gauge's "X.X psig" readout directly
+           above. Same class, same slot, same row -- structural match, not
+           a spacer match, is what keeps the two cards' rows aligned now. -->
+      <span class="readout digitalreadout" id="preloadOut"></span>
+      <div class="hslide">
+        <div class="htrackwrap" id="adjHit2" tabindex="0" role="slider" aria-label="Spring adjuster"
+             aria-valuemin="-24" aria-valuemax="24">
+          <div class="htrack">
+            <!-- Dead-zone marker (2026-09-29, Franz): shows the 0-40% thread-
+                 slack region as visually distinct from real preload, matching
+                 the physics -- no preload exists there, so the track itself
+                 should say so before the fill/readouts do. -->
+            <div class="hband hband-dead" id="deadZoneAdj"></div>
+            <div class="hfill" id="fillAdj"></div>
+          </div>
+          <div class="hthumb" id="adjThumb2"></div>
         </div>
+        <div class="endrow"><span class="endlbl">Loosen</span><span class="endlbl">Tighten</span></div>
       </div>
-      <span class="vendlbl">LOOSEN</span>
+      <!-- Bench-set line surfaces P0, already computed in update() for the
+           gauge's own green band -- no new physics, just a second display of
+           the same number. The turns readout that used to sit here is
+           removed (Franz: inaccurate, would confuse people). -->
+      <div class="dial-benchset" id="adjBenchSet"></div>
     </div>
-    <!-- no numeric readout here by design (no verified real thread pitch to
-         report a distance/turns figure honestly) -- textContent is still
-         kept current for Practice mode / mobile, which do show a number. -->
+    <!-- kept for Practice mode / mobile, which show their own distance-in-psi
+         readout -- unrelated to the turns readout above. -->
     <span class="readout" id="adjout" style="display:none"></span>
   </div>
   <div class="ctl" id="pressrow">
@@ -715,6 +996,10 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
         </div>
         <div class="endrow"><span class="endlbl">0</span><span class="endlbl">18 psig</span></div>
       </div>
+      <!-- Correction (2026-09-28): status text matching the approved
+           template's reference -- reuses inWindow/P/P0, already computed in
+           update() for the gauge's own green band, wording only. -->
+      <div class="gauge-status" id="pressStatus"></div>
     </div>
   </div>
   <div id="statusline"></div>
@@ -765,6 +1050,38 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 <p id="valveRow"><label><input type="checkbox" id="valve"> Stem connector installed &mdash; valve coupled below the yoke</label></p>
 </div>
 </div>
+<!-- Index rail (Stage 1, 2026-09-28): desktop-only, positioned entirely by
+     CSS (#indexRail rules above), not JS placeAt/placeAnchor -- it doesn't
+     need to track any drawing geometry, just the viewport edge. Collapsed
+     strip = numbered dots built by buildTopicList() from SECTIONS; opened
+     panel = the same topics as a real list, reusing playSection()/
+     updateTopicButtons() unchanged. -->
+<nav id="indexRail" aria-label="Lessons">
+  <button id="railToggle" class="rail-toggle" aria-expanded="false" aria-controls="railPanel" aria-label="Open lesson list" title="Lessons">
+    <svg viewBox="0 0 18 18" width="16" height="16" aria-hidden="true"><path d="M3 4.5h12M3 9h12M3 13.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <div id="railNums" class="rail-nums"></div>
+  <div id="railPanel" class="rail-panel" aria-hidden="true">
+    <div class="rail-panel-head"><h2>Lessons</h2><button id="railClose" class="rp-close">Close</button></div>
+    <button type="button" id="playAllRow" class="rail-playall">
+      <svg class="playicon" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 1l8 5-8 5z" fill="currentColor"/></svg>
+      Play all lessons<span class="dur" id="playAllDur"></span>
+    </button>
+    <ol id="railList" class="rp-list"></ol>
+    <hr class="rail-divider">
+    <div class="rail-refs-head">References</div>
+    <button type="button" class="rail-ref-link">Objectives</button>
+    <button type="button" class="rail-ref-link">Parts</button>
+    <button type="button" class="rail-ref-link">Procedure</button>
+  </div>
+</nav>
+<!-- Inert lesson note/leader stubs (Stage 1): not wired to anything yet.
+     Stage 3 wires real narration text + leader-line targeting into these. -->
+<aside class="note" id="lessonNote" aria-live="polite" hidden>
+  <p class="note-head" id="noteHead"></p>
+  <p class="note-text" id="noteText"></p>
+</aside>
+<svg class="leader" id="leaderSvg" aria-hidden="true"></svg>
 <!-- Nameplate card: the clickable tab that opens this is now drawn directly
      into the #asm SVG itself (#npTab, near its closing tag) rather than a
      separate HTML overlay -- see that comment for why. This card is what
@@ -814,9 +1131,118 @@ document.getElementById('p-lower').setAttribute('d', R['lower-diaphragm-casing']
 document.getElementById('p-yoke').setAttribute('d', R['yoke']);
 document.getElementById('p-plate').setAttribute('d', R['diaphragm-plate']);
 
-const CXA=742.5, HALFW=146, WIRE=56, NHALF=13, TOP0=197.5, SEAT0=1008;
+// Spring proportions re-derived against the real source (2026-09-29, Franz):
+// measured directly off both the traced 657-cross-section.svg (getBBox on
+// the real #spring/#spring-seat paths) and Fisher 657 IOM Figure 6 (PDF
+// page 24, the manual this vault's illustration was traced from). The
+// traced spring's own real bbox is 293.4 wide (596.6-890) -- CXA/HALFW
+// below were already centered right (742.5 matches the real ~741.7
+// midpoint), but the OLD HALFW=146 was the nominal zigzag half-span BEFORE
+// stroke-linecap:round bleed -- with WIRE=56, that bleed adds WIRE/2=28 of
+// extra visible width past each end, so the actual rendered spring came out
+// (146+28)*2=348 wide, ~19% fatter than the real 293.4 and wide enough to
+// visually overrun the seat's own 314-wide flange even though the seat is
+// the wider part in the real source (319 vs the spring's 293.4). Solving
+// backwards from the real 293.4 total (nominal span + the same WIRE=56
+// bleed, wire diameter itself unchanged) gives the new HALFW.
+// Coil count: Figure 6 shows roughly 8 full turns top to bottom (Franz);
+// the old NHALF=13 half-segments read as ~6.5 turns, matching Franz's own
+// "six" -- 16 half-segments reads as 8, so NHALF moves 13->16.
+const CXA=742.5, HALFW=(293.4-56)/2, WIRE=56, NHALF=16, TOP0=197.5, SEAT0=1032;   // shifted +24 with sp-seat-g, 2026-09-29
 const STEM_BOT=1525, TRAVEL=140;  // grads = 3/5 of the 234 plate, centered
 const STOP=217;  // measured plate-to-lower-casing gap: the lower travel stop
+// Real force-balance physics (2026-09-29, Franz): replaces the earlier
+// calibrated-pressure-window model (a flat assumed 8psi span with no
+// diaphragm area or spring rate anywhere in it) with the actual Fisher 657
+// Size 30 numbers for a Dark Gray spring, back-solved against the fleet's
+// verified 3-11psig/0.75in bench-set spec: k=490 lbs/in (not the spring's
+// nameplate-catalog 735 lbs/in -- a fleet actually calibrated to a true 8psi
+// span implies this effective rate: 8psi*46in^2/0.75in = 490.67, rounded to
+// Franz's stated 490). Travel = clamp(F_net/k, 0, rated) -- Hooke's law on
+// the net of air force (P*area) against spring preload force, not a
+// pressure-window curve fit.
+const DIA_AREA = 46;          // sq in, effective diaphragm area
+const SPRING_RATE = 490;      // lbs/in, back-solved from the real 3-11psig/0.75in spec
+const RATED_TRAVEL_IN = 0.75; // in
+const PX_PER_IN = TRAVEL / RATED_TRAVEL_IN;   // 140px = 0.75in
+// Adjuster dead zone + calibration (Franz): 0-40% of the adjuster slider is
+// pure thread take-up (0 lbs preload, spring not yet touching working
+// compression); 85% is the fleet's real calibrated setting, where preload
+// force is exactly area*3psi = 138 lbs -- the printed "3-11psig" spec is
+// this exact point, not a generic default. Linear beyond the dead zone
+// (realistic for a screw adjuster: preload force is proportional to turns
+// past thread take-up), so the same slope extrapolates naturally past 85%
+// toward the slider's tightened end.
+const ADJ_DEADZONE_PCT = 0.40;
+const ADJ_CAL_PCT = 0.85;
+const ADJ_CAL_FORCE = DIA_AREA * 3;   // 138 lbs at the 85% calibration point
+// Real bench-set span: the pressure range above cracking that drives the
+// full 0.75in stroke, from the real force numbers -- not the old hardcoded
+// "+8" placeholder. ~7.98psi at Franz's real numbers (490 lbs/in, 46in^2),
+// which is why it still reads as "3-11psig" at the 85% calibration point --
+// that fleet spec IS this number, not a coincidence.
+const BENCH_SPAN = SPRING_RATE * RATED_TRAVEL_IN / DIA_AREA;
+// Real thread physics (2026-09-29, Franz): the Size 30 adjuster is a
+// 1-1/8"-12 UNF bolt -- 12 threads per inch, i.e. 1/12 in of linear travel
+// per full turn. Routes the dead-zone/calibration curve through actual
+// physical turns and inches of compression instead of jumping straight
+// from slider percent to force, so every step is auditable in real units.
+// IMPORTANT: this does NOT change the resulting force curve (same 0 lbs at
+// 40%, same 138 lbs at 85%) -- it only re-derives the SAME calibration
+// through thread pitch. Franz's own first pass at this (2.25 turns / 0.188in
+// to reach 138 lbs) was solved against the spring's 735 lbs/in catalog rate
+// from before the bench-set-derived correction to 490 -- at 490 lbs/in,
+// 0.188in only gives 92 lbs (490*0.1875=91.9), not 138. The turns figure
+// below is recomputed from the LOCKED 138lb/490lb-in target instead of
+// reusing the stale 2.25, which is what keeps the printed 3-11psig spec
+// (Franz's hard constraint) actually correct.
+const THREAD_TPI = 12;
+const THREAD_PITCH_IN = 1 / THREAD_TPI;      // 0.0833 in per turn
+const CAL_TURNS = (ADJ_CAL_FORCE / SPRING_RATE) / THREAD_PITCH_IN;   // turns past thread take-up needed for 138 lbs at 490 lbs/in: 3.38
+function preloadTurns(adj){
+  // physical turns of the bolt PAST thread take-up (0 at the end of the
+  // dead zone) -- linear in slider percent, same assumption as a real screw
+  // turned at a constant rate across the slider's active range.
+  const pct = (adj - (-24)) / 48;   // ADJ's real range is -24..24
+  if (pct <= ADJ_DEADZONE_PCT) return 0;
+  return CAL_TURNS * (pct - ADJ_DEADZONE_PCT) / (ADJ_CAL_PCT - ADJ_DEADZONE_PCT);
+}
+function preloadForce(adj){
+  const turns = preloadTurns(adj);
+  const inches = turns * THREAD_PITCH_IN;   // Franz's own conversion: turns / 12
+  return SPRING_RATE * inches;
+}
+// Insertion/contact geometry (2026-09-29, module scope now -- was recomputed
+// every update() call, and adjThreads() below needs INSERTION_TRAVEL too).
+// CONTACT_OFFSET=42: real distance from the adjuster's own baseline rod-top
+// (y1068) to the seat's hub-bottom (y1110, after moving the real seat
+// geometry down 24 -- see sp-seat-g). GAP=24 reuses that same seat-move
+// distance for how far below contact the adjuster starts at full loosen.
+// HUB_HEIGHT=49 is the seat hub's own real measured rect height -- the
+// boss's full possible insertion depth. Franz: "inserting too far before
+// preload starts -- half the insertion distance" -- INSERTION_TRAVEL is the
+// ACTUAL travel distance used for the motion (half of HUB_HEIGHT), separate
+// from HUB_HEIGHT itself (still the seat's own real dimension, unchanged).
+const CONTACT_OFFSET = 42;
+const GAP = 24;
+const HUB_HEIGHT = 49;
+const INSERTION_TRAVEL = HUB_HEIGHT / 2;   // 24.5
+const FULL_INSERTION_OFFSET = CONTACT_OFFSET - INSERTION_TRAVEL;   // 17.5
+// Turns at full tighten (adj=24) -- used to scale the VISUAL seat/spring
+// travel so it still reaches the same maximum pixel offset as before at
+// full tighten, while correctly staying at 0 throughout the dead zone.
+const MAX_CAL_TURNS = preloadTurns(24);
+// Neutral/reset reference (2026-09-29, Franz: "the spring seat is no longer
+// on the casing to start with"): ADJ=0 used to be the geometry's calibrated
+// "seated, touching the casing" reference point under the old model (where
+// adj WAS the seat offset directly). Under the real dead-zone+thread-pitch
+// model, adj=0 sits at 50% of the slider -- already 10 points past the 40%
+// dead zone, so the default view showed the spring already offset ~4px from
+// its seated position instead of properly resting. -24 (0% of the slider,
+// fully backed off) is the one point that's unambiguously "as delivered,
+// not yet adjusted" and sits inside the dead zone (seatOffset=0), so every
+// reset/neutral state in this file now uses this instead of a bare 0.
+const ADJ_RESET = -24;
                  // (off the valve, over-stroke ends metal-on-metal here)
 const D = R._dia;
 
@@ -845,7 +1271,7 @@ const D = R._dia;
   // OPEN (measured: rel y 52-117, ~19px glyphs) + arrow (apex 130, base 155, shaft to 187)
   s += `<text class="lbl" font-size="19" font-weight="600" letter-spacing="2" transform="translate(${x+49},${y+118}) rotate(-90)">OPEN</text>`;
   s += `<line class="tick" x1="${x+42}" y1="${y+187}" x2="${x+42}" y2="${y+153}" stroke-width="5"/>`;
-  s += `<path d="M ${x+42},${y+130} L ${x+35},${y+155} L ${x+49},${y+155} Z" fill="var(--c-cast-line)"/>`;
+  s += `<path d="M ${x+42},${y+130} L ${x+35},${y+155} L ${x+49},${y+155} Z" fill="var(--c-scale-mark)"/>`;
   s += `</g>`;
   // screws fixed to the yoke: small cross screw (upper), ringed screw (lower)
   fixed += `<circle cx="${x+76}" cy="${y+100}" r="9" fill="var(--c-vnut)" stroke="var(--c-hw-line)" stroke-width="2"/>`
@@ -879,25 +1305,53 @@ function spring(topY, botY){
   const n=NHALF, pitch=(botY-topY-WIRE)/n;
   let back='', front='';
   // free end lands at the stem centerline -- a real landmark, not a
-  // guessed fraction -- while the connecting end stays at the true edge
-  front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA}" y1="${topY+WIRE/2}" x2="${CXA+HALFW}" y2="${topY+WIRE/2}"/>`;
+  // guessed fraction -- while the connecting end stays at the true edge.
+  // Correction (2026-09-29, Franz): this top cap is the flat, ground
+  // terminal turn -- physically it still wraps AROUND the stem rod (g-stem,
+  // drawn between sp-spring-back and sp-spring-front in the DOM) exactly
+  // like every other turn does, so part of it has to pass BEHIND that rod,
+  // not float in front of it. Moved to the back bucket (same class/weight
+  // as every other occluded half-turn) so the real, already-existing g-stem
+  // rect naturally covers the portion that crosses behind it -- no new
+  // geometry, just the correct DOM bucket.
+  back+=`<line class="sp-coil sp-coil-back" stroke-width="${WIRE*0.92}" x1="${CXA}" y1="${topY+WIRE/2}" x2="${CXA+HALFW}" y2="${topY+WIRE/2}"/>`;
+  // Winding direction (2026-09-29, Franz, verified against Figure 6): the
+  // strand that passes IN FRONT OF THE STEM has to run bottom-left-to-
+  // upper-right ("/"), not bottom-right-to-upper-left ("\") -- Franz traced
+  // both the model and the manual's Figure 6 by eye and confirmed the two
+  // are mirror images of each other. Which strand is "in front" is purely a
+  // matter of which bucket (front, painted last, on top) a given half-turn
+  // lands in -- swapping the i%2 assignment below flips that without
+  // touching any coordinate, which is exactly a mirror of the coil's
+  // apparent handedness.
   for(let i=0;i<n;i++){
     const y0=topY+WIRE/2+i*pitch, y1=y0+pitch;
-    if(i%2===0) back+=`<line class="sp-coil sp-coil-back" stroke-width="${WIRE*0.92}" x1="${CXA+HALFW}" y1="${y0}" x2="${CXA-HALFW}" y2="${y1}"/>`;
-    else front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA-HALFW}" y1="${y0}" x2="${CXA+HALFW}" y2="${y1}"/>`;
+    if(i%2===0) front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA+HALFW}" y1="${y0}" x2="${CXA-HALFW}" y2="${y1}"/>`;
+    else back+=`<line class="sp-coil sp-coil-back" stroke-width="${WIRE*0.92}" x1="${CXA-HALFW}" y1="${y0}" x2="${CXA+HALFW}" y2="${y1}"/>`;
   }
+  // Bottom cap (2026-09-29, Franz): with NHALF even, the last interior
+  // segment (i=n-1, odd -> the back bucket per the winding-direction fix
+  // above) now lands its far end at the RIGHT edge (CXA+HALFW), not the
+  // left -- this cap has to match up with that same real endpoint instead
+  // of the old left-side span, or the two don't actually connect.
   const ye=topY+WIRE/2+n*pitch;
-  front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA-HALFW}" y1="${ye}" x2="${CXA}" y2="${ye}"/>`;
+  front+=`<line class="sp-coil" stroke-width="${WIRE}" x1="${CXA}" y1="${ye}" x2="${CXA+HALFW}" y2="${ye}"/>`;
   backG.innerHTML=back; frontG.innerHTML=front;
 }
 function adjThreads(offset){
-  // threads shown ON the adjuster face across its full threaded extent
-  // (top of the adjuster down to the wrench flats), clipped to its exact
-  // painted outline; the pattern scrolls as the adjuster turns.
-  let s=''; const pitch=13, TOP=1068, BOT=1338;
+  // threads shown below the blank boss only (2026-09-29, Franz: "blank the
+  // tip of the adjuster with no threads" for the boss) -- TOP starts at
+  // 1068+INSERTION_TRAVEL, not at the rod's own top. x1/x2 (679/806) sit a
+  // few units past the rod's own real edges (683.5/801.5) -- the ROD stays
+  // one uniform width the whole length (Franz: "I just wanted the threads
+  // extended because I didn't want a smooth outer edge" -- not a wider
+  // part, just the texture poking past its own material's edge). The wider
+  // clip-path (677.5-807.5) is what lets these strokes render instead of
+  // being clipped back down to the rod's own narrower outline.
+  let s=''; const pitch=13, TOP=1068+INSERTION_TRAVEL, BOT=1338;
   for(let y=TOP-pitch+((offset%pitch)+pitch)%pitch; y<BOT; y+=pitch){
     if(y<TOP-6) continue;
-    s+=`<line class="sp-thread" x1="685" y1="${y+3}" x2="800" y2="${y-3}"/>`;
+    s+=`<line class="sp-thread" x1="679" y1="${y+3}" x2="806" y2="${y-3}"/>`;
   }
   document.getElementById('sp-adj-threads').innerHTML=s;
 }
@@ -983,13 +1437,53 @@ const GCX=110, GCY=120, GR1=92, GR2=78;
   s += `<circle class="needlehub" id="gaugeHub" cx="${GCX}" cy="${GCY}" r="7"/>`;
   svg.innerHTML = s;
 })();
-// top-down hex thumb: the one view where a hex genuinely rotates with no
-// ambiguity or faked perspective -- looking straight down the nut's axis.
+// Rotary spring-adjustor dial (Stage 2, 2026-09-28): built once like the
+// gauge face -- ticks, a clockwise-tighten arrow, and a hex nut group
+// (still the same top-down hex genuinely rotating, no faked perspective).
+// Only the nut group's rotation changes per frame, in updateDesktopGauge().
+// Canvas/center/radii deliberately mirror the pressure gauge's own
+// (GCX/GCY/GR1/GR2) so the two controls read as a matched instrument pair.
+const DCX=110, DCY=104, DR1=90, DR2=74;
+// Bounded, non-wrapping sweep (correction, 2026-09-29): +-150deg, not a full
+// +-360deg -- see the ROT_RANGE comment inside updateDesktopGauge for why.
+// Shared at module scope so both updateDesktopGauge() (sets the TARGET) and
+// animateDial() (eases the DISPLAYED angle toward it every frame) agree on
+// the same mapping.
+const DIAL_ROT_RANGE = 150;
+let dialTargetDeg = 0, dialDisplayDeg = 0;
 (function(){
-  const cx=17, cy=17, hr=15;
+  const svg = document.getElementById('adjDial');
+  let s = `<circle class="dialface" cx="${DCX}" cy="${DCY}" r="${DR2}"/>`;
+  for(let i=0;i<24;i++){
+    const deg = i*15, major = i%6===0;
+    const [x0,y0] = polarPt(DCX,DCY,DR1, deg);
+    const [x1,y1] = polarPt(DCX,DCY,DR1-(major?12:7), deg);
+    s += `<line class="${major?'dialtickmaj':'dialtick'}" x1="${x0.toFixed(1)}" y1="${y0.toFixed(1)}" x2="${x1.toFixed(1)}" y2="${y1.toFixed(1)}"/>`;
+  }
+  // hex nut: same top-down hex + off-center dot as the original traveling
+  // thumb (the dot is what makes a 6-fold-symmetric hex's rotation visible
+  // at all through a full 360deg turn) -- grouped so it rotates as one unit.
   let pts=[];
-  for(let i=0;i<6;i++) pts.push(polarPt(cx,cy,hr,-90+i*60).map(n=>n.toFixed(1)).join(','));
-  document.getElementById('adjHexPoly').setAttribute('points', pts.join(' '));
+  for(let i=0;i<6;i++) pts.push(polarPt(DCX,DCY,32,-90+i*60).map(n=>n.toFixed(1)).join(','));
+  const [dotx,doty] = polarPt(DCX,DCY,19,0);
+  s += `<g class="dialnut" id="adjDialNut"><polygon id="adjHexPoly" points="${pts.join(' ')}"/>` +
+       `<circle class="hexmark" cx="${dotx.toFixed(1)}" cy="${doty.toFixed(1)}" r="5"/></g>`;
+  svg.innerHTML = s;
+})();
+// Rotation smoothing (correction, 2026-09-29): a persistent rAF loop that
+// eases the DISPLAYED angle toward whatever updateDesktopGauge() last set as
+// the target, via the same setAttribute('transform',...) mechanism already
+// proven correct (a CSS transition on this attribute was tried first and
+// found to render incorrectly for some target angles -- see the CSS comment
+// on #adjDialNut's old rule -- so this bypasses that entirely). Runs
+// continuously rather than only during a drag; cost is one attribute write
+// per frame when not already at rest, negligible.
+(function animateDial(){
+  const diff = dialTargetDeg - dialDisplayDeg;
+  dialDisplayDeg += Math.abs(diff) < 0.05 ? diff : diff * 0.3;
+  document.getElementById('adjDialNut').setAttribute('transform',
+    `rotate(${dialDisplayDeg.toFixed(2)} ${DCX} ${DCY})`);
+  requestAnimationFrame(animateDial);
 })();
 function updateDesktopGauge(adj, P, P0, inWindow){
   const pTrack = document.querySelector('#pressHit .htrack');
@@ -999,7 +1493,7 @@ function updateDesktopGauge(adj, P, P0, inWindow){
   needle.setAttribute('x2', nx.toFixed(1)); needle.setAttribute('y2', ny.toFixed(1));
   needle.classList.toggle('inwin', inWindow);
   document.getElementById('gaugeHub').classList.toggle('inwin', inWindow);
-  const bandLo = Math.max(0,P0), bandHi = Math.min(18,P0+8);
+  const bandLo = Math.max(0,P0), bandHi = Math.min(18,P0+BENCH_SPAN);
   document.getElementById('gaugeBand').setAttribute('d',
     bandHi>bandLo ? describeArc(GCX,GCY,GR2, valueToAngle(bandLo,0,18), valueToAngle(bandHi,0,18)) : '');
 
@@ -1020,25 +1514,74 @@ function updateDesktopGauge(adj, P, P0, inWindow){
   const pBand = document.getElementById('bandPress');
   pBand.style.left = xLo+'px'; pBand.style.width = Math.max(0,xHi-xLo)+'px';
 
-  // vertical: up = tighten (max), matching the real part's own motion and
-  // the mobile slider's existing convention. Inset by the hex thumb's own
-  // radius so it never overruns the track into the TIGHTEN/LOOSEN labels
-  // (same fix as the mobile rail thumbs, applied to this thumb's own size).
-  const ADJ_THUMB_R = 17;
-  const aTrack = document.querySelector('#adjHit .vrodtrack');
-  const hA = aTrack.clientHeight;
-  const yA = ADJ_THUMB_R + (1-pct(adj,-24,24)) * Math.max(0, hA - 2*ADJ_THUMB_R);
-  const yC = hA/2;
-  document.getElementById('adjThumb').style.top = yA+'px';
-  const aFill = document.getElementById('adjFill');
-  aFill.style.top = Math.min(yA,yC)+'px'; aFill.style.height = Math.abs(yA-yC)+'px';
-  // Rotation tied directly to adj, never to pixel position (yA runs opposite
-  // to adj -- up=tighten=smaller y -- so deriving rotation from yA silently
-  // flips the direction). Positive adj (tighten) gives positive (clockwise)
-  // rotation, matching righty-tighty. One full turn across the whole range.
-  const ROT_RANGE = 360;
-  document.getElementById('adjThumb').style.transform =
-    `rotate(${(adj/24*ROT_RANGE).toFixed(1)}deg)`;
+  // Correction (2026-09-29, second pass): the adjuster's own slider, same
+  // thumb-radius inset technique as pressure's (ADJ_THUMB_R = PRESS_THUMB_R,
+  // same 30px .hthumb). Fill used to be CENTER-anchored (grows from the
+  // arithmetic x=0 midpoint) -- but Franz correctly pointed out that once
+  // this slider drives real dead-zone physics, the meaningful boundary is
+  // where preload actually starts (ADJ_DEADZONE_PCT, 40% of the range), not
+  // the arbitrary center. Fill now anchors there instead: zero width while
+  // in the dead zone (nothing to show, no preload exists yet), then grows
+  // from that boundary toward the thumb once real compression begins --
+  // the highlighted amount now means "how far into actual preload," not
+  // "distance from an arbitrary midpoint." A muted dead-zone band marks the
+  // 0-40% region on the track itself, visible even before touching it.
+  const ADJ_THUMB_R = 15;
+  const aTrack = document.querySelector('#adjHit2 .htrack');
+  const wA = aTrack.clientWidth;
+  const aSpan = Math.max(0, wA - 2*ADJ_THUMB_R);
+  const xA = ADJ_THUMB_R + pct(adj,-24,24)*aSpan;
+  const xDeadZoneEnd = ADJ_THUMB_R + ADJ_DEADZONE_PCT*aSpan;
+  const deadBand = document.getElementById('deadZoneAdj');
+  deadBand.style.left = '0px'; deadBand.style.width = xDeadZoneEnd+'px';
+  document.getElementById('adjThumb2').style.left = xA+'px';
+  const aFill = document.getElementById('fillAdj');
+  aFill.style.left = Math.min(xA,xDeadZoneEnd)+'px';
+  aFill.style.width = Math.max(0, xA-xDeadZoneEnd)+'px';
+
+  // The dial is fixed in place; only the hex nut's rotation reflects adj.
+  // Same sign convention as before (positive adj/tighten = positive/
+  // clockwise rotation, righty-tighty) but the sweep is now a bounded,
+  // non-wrapping +-150deg (DIAL_ROT_RANGE, not a full +-360deg) -- Franz
+  // found the old full-360 sweep confusing because both full-loosen and
+  // full-tighten rotated all the way back around to look visually identical
+  // to the resting/center position. +-150deg keeps every position in the
+  // range visually distinct from center and from each other. This only sets
+  // the TARGET; animateDial()'s rAF loop (near DCX/DCY) eases the actually-
+  // displayed rotation toward it every frame, which is where the smoothing
+  // lives now (see that function's comment for why it's not a CSS
+  // transition).
+  dialTargetDeg = adj/24*DIAL_ROT_RANGE;
+  // Bench-set line reuses P0 (already this function's own parameter) --
+  // no new physics, just a second display of the same number driving the
+  // gauge's own green band. The turns readout that used to sit here is
+  // removed (Franz: inaccurate, would confuse people). Span is the real
+  // BENCH_SPAN constant (force-balance derived) -- not the old hardcoded
+  // "+8" placeholder.
+  // Correction (2026-09-29, Franz): "it can't really be in bench set... it
+  // needs to identify when preload begins or whether it's in a dead zone."
+  // At P0=0 (still in the dead zone, spring not engaged) the math happens
+  // to satisfy 0>=0 && 0<=span, which used to print a real-looking "Bench
+  // set 0.0-8.0 psig" even though no calibration exists yet -- misleading,
+  // not just a wording nitpick. Gate both this line and pressStatus's own
+  // wording (below) behind the same real dead-zone check.
+  //
+  // Second correction, same day: showing "Bench set X-Y psig" in green the
+  // instant the slider leaves the dead zone was ALSO misleading -- it reads
+  // as "confirmed calibration" throughout the whole climb, when only one
+  // exact position (85%, snapped via CAL_ADJ) really is the fleet's 3-11psig
+  // spec. Three real states now: dead zone (spring not touching yet),
+  // initial movement (spring compressing, live single rising crack-pressure
+  // number, not a range, not green -- nothing is confirmed yet), and the
+  // actual calibration point (only reachable via setAdj's magnetic snap),
+  // which is the sole state that earns the green "Bench set" treatment.
+  const inDeadZone = (adj - (-24))/48 <= ADJ_DEADZONE_PCT;
+  const atCalibration = adj === CAL_ADJ;
+  document.getElementById('adjBenchSet').innerHTML = inDeadZone
+    ? `<strong>Dead zone</strong> &ndash; spring not engaged`
+    : atCalibration
+      ? `Bench set <strong>${P0.toFixed(1)}&ndash;${(P0+BENCH_SPAN).toFixed(1)} psig</strong>`
+      : `Initial movement &ndash; ${P0.toFixed(1)} psig`;
 }
 // name-it, spotlight-it: named parts stay lit, the rest dim
 const FOCUSABLE=['p-upper','p-lower','p-yoke','g-plate','p-dia','g-stem',
@@ -1081,7 +1624,7 @@ function setValve(on){
   if (typeof layoutAll === 'function') layoutAll();
 }
 let strokeState = 0;   // remembered position: packing friction is hysteretic
-let ADJ = 0, PRESS = 0;   // stepper-button state: no native range input backs these any more
+let ADJ = ADJ_RESET, PRESS = 0;   // stepper-button state: no native range input backs these any more
 let lastStroke = 0;   // exposed for Practice-mode step gates (read-only outside update())
 function update(){
   const adj=ADJ;   // seat offset, px (+ = tighter)
@@ -1091,27 +1634,81 @@ function update(){
   // going down and holds the stem going back up. Zero when off the valve --
   // which is exactly why bench set is performed with zero valve forces.
   const Ff = coupled ? PACKING_FRICTION : 0;
-  // bench-set physics: preload shifts the travel window. 8 px of seat = 1 psi.
-  const P0 = 3 + adj/8;                              // cracking pressure
+  // Real force balance (2026-09-29, Franz): preload force from the
+  // adjuster's dead-zone+calibration curve, cracking pressure derived from
+  // it (not hardcoded), travel = net force / spring rate via Hooke's law.
+  const preload = preloadForce(adj);        // lbs
+  const P0 = preload / DIA_AREA;            // cracking pressure, psig
   // off the valve there is no load to stop over-stroke at rated travel:
   // motion continues past 3/4 in until the plate lands on the lower casing.
   // coupled, the plug seats at rated travel: 3/4 in IS the down-stop.
   // Only off the valve can the mechanism over-stroke to the casing (STOP).
   const LIM = coupled ? TRAVEL : STOP;
-  const dn = Math.min(Math.max(0, (P-P0-Ff)/8) * TRAVEL, LIM); // enough force to move down
-  const up = Math.min(Math.max(0, (P-P0+Ff)/8) * TRAVEL, LIM); // little enough to move up
+  const LIM_IN = LIM / PX_PER_IN;
+  // friction is a pressure-equivalent offset applied before converting to
+  // force (same structure as the old model: it widens the start point going
+  // down and holds the stem going back up), then Hooke's law converts net
+  // force to travel, capped at the real physical stop in inches.
+  const dn = Math.min(LIM_IN, Math.max(0, ((P-Ff)*DIA_AREA - preload) / SPRING_RATE)) * PX_PER_IN;
+  const up = Math.min(LIM_IN, Math.max(0, ((P+Ff)*DIA_AREA - preload) / SPRING_RATE)) * PX_PER_IN;
   if (strokeState > LIM) strokeState = LIM;
   if (strokeState < dn) strokeState = dn;
   else if (strokeState > up) strokeState = up;
   // "held" = friction is actually displacing the stem from its
   // frictionless position, not merely present
-  const frictionless = Math.min(Math.max(0, (P-P0)/8) * TRAVEL, LIM);
+  const frictionless = Math.min(LIM_IN, Math.max(0, (P*DIA_AREA - preload) / SPRING_RATE)) * PX_PER_IN;
   const held = Ff > 0 && Math.abs(strokeState - frictionless) > 0.5;
   const stroke = strokeState;
   lastStroke = stroke;
   const onStop = !coupled && stroke >= STOP;
   const seated = coupled && stroke >= TRAVEL;
-  spring(TOP0+stroke, SEAT0-adj);
+  // Seat Shutoff Force (Franz): once coupled and at full rated travel,
+  // further air pressure can't move the stem any more -- the excess force
+  // above what full travel already needs becomes load squeezing the plug
+  // against its seat, not more stroke. Zero until the stem actually reaches
+  // rated travel; grows linearly above that point at DIA_AREA lbs per psi.
+  const seatForce = (coupled && stroke >= TRAVEL - 0.5)
+    ? Math.max(0, P*DIA_AREA - preload - SPRING_RATE*RATED_TRAVEL_IN) : 0;
+  // Visual seat/spring travel (2026-09-29, Franz: "not even trying to
+  // emulate the physics") now follows the REAL compression curve for the
+  // SPRING's own drawn shape, but (2026-09-29, third pass) the adjuster's
+  // own boss tip moves CONTINUOUSLY the entire time, exactly like the real
+  // mechanism: "the spring adjuster actually has a boss looking tip...
+  // that presses up inside the spring seat... have the tip start a little
+  // lower than the top of the yoke housing to show it threading up into
+  // the spring seat then pushing the spring seat up." A second pass tried
+  // freezing the adjuster's position through the dead zone along with the
+  // spring, which broke two things at once: the seat no longer reached down
+  // to the yoke housing at full loosen, and the thread texture kept
+  // scrolling on a part that had stopped moving. Real fix: two-stage motion.
+  //   Stage 1 (0-40%, dead zone): the BOSS TIP alone rises continuously from
+  //   its resting point near the yoke housing (measured live: the housing's
+  //   collar opens into the yoke box at y=1120, so the tip rests at
+  //   y=1140, 20 units below it) up to the seat's hub (y=1086, the seat's
+  //   own baseline position) -- DEADZONE_TRAVEL=54 is exactly that gap. The
+  //   seat itself does not move yet; nothing is touching it.
+  //   Stage 2 (40-100%): boss tip and seat are now in contact and move
+  //   together, using the same seatOffset the spring's own shape already
+  //   follows -- pushing the seat up compresses the spring, matching the
+  //   real force curve exactly (adjOffset and seatOffset coincide at the
+  //   40% boundary, so there's no jump).
+  const seatOffset = MAX_CAL_TURNS > 0 ? (preloadTurns(adj) / MAX_CAL_TURNS) * 24 : 0;
+  const pctSlider = (adj - (-24)) / 48;
+  // Two-stage adjuster motion (see CONTACT_OFFSET/GAP/INSERTION_TRAVEL/
+  // FULL_INSERTION_OFFSET, module scope above): dead zone (0-40%) is ONE
+  // continuous linear motion from CONTACT_OFFSET+GAP (lowest, visibly
+  // separated, at pct=0) down through CONTACT_OFFSET (first touch) to
+  // FULL_INSERTION_OFFSET (fully inserted, at pct=0.4) -- no explicit phase
+  // split needed, the seat's own occlusion is what makes the visible-gap-
+  // closing and hidden-insertion read as two stages from one continuous
+  // motion. Past 40%, adjuster and seat are locked together at that same
+  // fully-inserted relationship (FULL_INSERTION_OFFSET-seatOffset),
+  // continuous with the dead-zone branch at the boundary (both equal
+  // FULL_INSERTION_OFFSET when seatOffset=0), so there's no jump.
+  const adjOffset = pctSlider <= ADJ_DEADZONE_PCT
+    ? FULL_INSERTION_OFFSET + (CONTACT_OFFSET + GAP - FULL_INSERTION_OFFSET) * (1 - pctSlider/ADJ_DEADZONE_PCT)
+    : FULL_INSERTION_OFFSET - seatOffset;
+  spring(TOP0+stroke, SEAT0-seatOffset);
   diaphragm(stroke);
   document.getElementById('g-stem').setAttribute('transform',`translate(0,${stroke})`);
   document.getElementById('g-plate').setAttribute('transform',`translate(0,${stroke})`);
@@ -1124,23 +1721,63 @@ function update(){
   document.getElementById('g-dn').setAttribute('transform',`translate(0,${PB.nutsDy})`);
   const _sp = document.getElementById('g-scaleplate');
   if (_sp) _sp.setAttribute('transform',`translate(0,${PB.scaleDy})`);
-  document.getElementById('sp-seat-g').setAttribute('transform',`translate(0,${-adj})`);
-  document.getElementById('sp-adj-g').setAttribute('transform',`translate(0,${-adj})`);
+  document.getElementById('sp-seat-g').setAttribute('transform',`translate(0,${-seatOffset})`);
+  document.getElementById('sp-adj-g').setAttribute('transform',`translate(0,${adjOffset})`);
+  // Thread texture tracks the bolt's own continuous motion again (it's
+  // rotation, not compression -- the bolt is genuinely turning the whole
+  // time, dead zone included, exactly like adjOffset now is).
   adjThreads(adj*2);
   // fixed-format, single-line readouts -- never wrap, so the sliders
-  // above them never shift position regardless of value or state
-  const preload = adj/8;
-  document.getElementById('adjout').textContent = `${preload>=0?'+':''}${preload.toFixed(1)} psi`;
-  const inWindow = P >= P0 && P <= (P0+8);
+  // above them never shift position regardless of value or state.
+  // Shows the actual crack pressure (P0) directly now -- the old "+/-
+  // psi shift from a nominal center" framing doesn't make sense against a
+  // dead-zone+calibration curve; an absolute cracking pressure is the
+  // honest number now, feeding mobile/Practice mode's own readout slots.
+  document.getElementById('adjout').textContent = `${P0.toFixed(1)} psig crack`;
+  // Turns-of-compression readout (2026-09-29, Franz): "they don't think in
+  // decimal inches or pounds of force while cranking a wrench -- they count
+  // physical rotations." Counts from ZERO at the end of the dead zone (bolt
+  // just touching the spring), not from the screw's absolute starting
+  // position -- staying at 0.0 through the dead zone keeps this in lockstep
+  // with preload force (also 0 there), instead of climbing on its own while
+  // force stays flat, which would read as two readouts disagreeing. Inches
+  // shown smaller alongside, in the same line, for caliper verification --
+  // pure unit conversion (turns * pitch), no separate physics.
+  const adjTurns = preloadTurns(adj);
+  const adjInches = adjTurns * THREAD_PITCH_IN;
+  document.getElementById('preloadOut').innerHTML =
+    `${adjTurns.toFixed(1)} Turns<span class="readout-sub">(${adjInches.toFixed(2)} in)</span>`;
+  const inWindow = P >= P0 && P <= (P0+BENCH_SPAN);
   const pressoutEl = document.getElementById('pressout');
   pressoutEl.textContent = `${P.toFixed(1)} psig`;
   if (pressoutEl.classList.contains('inwin') !== inWindow){
     pressoutEl.classList.toggle('inwin', inWindow);
     pressoutEl.classList.remove('readout-pulse'); void pressoutEl.offsetWidth; pressoutEl.classList.add('readout-pulse');
   }
+  // Correction (2026-09-28, extended 2026-09-29 for Seat Shutoff Force):
+  // status line matching the approved template's wording style. Reuses the
+  // EXISTING status-line slot for the new seat-load number rather than
+  // adding a new row -- adding a row here would need a matching spacer on
+  // the adjuster card to keep the two instruments' rows aligned (the
+  // alignment fix from earlier today), so folding it into the wording of
+  // the state that's already "above bench set" avoids reopening that.
+  // Correction (2026-09-29, Franz): "even if it's at zero... it can't
+  // really be in bench set" -- at P0=0 (dead zone, spring not engaged) the
+  // inWindow math (0psig >= 0 && 0psig <= span) technically passes, which
+  // used to print "In bench set, stem traveling" for a condition that isn't
+  // a real bench-set calibration at all. Same dead-zone gate as adjBenchSet
+  // above, checked first so it overrides every other state while true.
+  const inDeadZoneStatus = (adj - (-24))/48 <= ADJ_DEADZONE_PCT;
+  document.getElementById('pressStatus').innerHTML = inDeadZoneStatus
+    ? '<strong>Dead zone,</strong> spring not engaged'
+    : P < P0 ? '<strong>Below bench set,</strong> stem at rest'
+    : inWindow ? '<strong>In bench set,</strong> stem traveling'
+    : seatForce > 0.5 ? `<strong>Above bench set,</strong> seat load +${seatForce.toFixed(0)} lbs`
+    : '<strong>Above bench set,</strong> full travel';
   // secondary diagnostics move here, free to wrap without touching a slider
   document.getElementById('statusline').textContent =
-    `travel window ${P0.toFixed(1)}-${(P0+8).toFixed(1)} psig · travel ${(stroke*0.75/TRAVEL).toFixed(2)} in`
+    `travel window ${P0.toFixed(1)}-${(P0+BENCH_SPAN).toFixed(1)} psig · travel ${(stroke*0.75/TRAVEL).toFixed(2)} in`
+    + (seatForce > 0.5 ? ` · seat load +${seatForce.toFixed(0)} lbs` : '')
     + (onStop ? ' · LOWER TRAVEL STOP - plate on casing'
        : seated ? ' · PLUG SEATED - valve closed'
        : (stroke>TRAVEL ? ' (past rated)' : ''))
@@ -1182,7 +1819,7 @@ function updateMobileRails(adj, P, P0, inWindow){
   document.getElementById('mPressThumb').style.top = pP + 'px';
   const fillP = document.getElementById('mPressFill');
   fillP.style.top = pP + 'px'; fillP.style.bottom = '0';
-  const pLo = thumbY(Math.min(18,P0+8), 0, 18, hP), pHi = thumbY(Math.max(0,P0), 0, 18, hP);
+  const pLo = thumbY(Math.min(18,P0+BENCH_SPAN), 0, 18, hP), pHi = thumbY(Math.max(0,P0), 0, 18, hP);
   const band = document.getElementById('mPressBand');
   band.style.top = pLo + 'px'; band.style.height = Math.max(0, pHi-pLo) + 'px';
 }
@@ -1276,8 +1913,25 @@ function layoutDesktopControls(){
   if (window.innerWidth <= 700) return;
   const svgRect = document.getElementById('asm').getBoundingClientRect();
   const inset = 28;   // breathing room from the true viewport edge
+  // Stage 1 (2026-09-28): the index rail eats real width from the right
+  // margin when open (58px collapsed vs 330px open) -- subtracting it here
+  // is what keeps the pressure gauge clear of it instead of being covered
+  // when the rail opens. Reading the target CSS custom property (gated on
+  // the body class) rather than #indexRail's live offsetWidth is
+  // deliberate: offsetWidth mid-transition reflects whatever the rail's
+  // width happens to be AT THAT INSTANT (still close to its old value
+  // right when the toggle fires, since layoutAll() runs synchronously
+  // before the 0.3s transition has progressed), which raced the gauge's
+  // reposition against the rail's own animation and left it overlapped
+  // once the transition finished widening past where the gauge had
+  // already settled. The end-state constant is knowable up front, so read
+  // that directly instead of a value that's still mid-flight.
+  const rootCS = getComputedStyle(document.documentElement);
+  const railW = parseFloat(document.body.classList.contains('rail-open')
+    ? rootCS.getPropertyValue('--railw-open')
+    : rootCS.getPropertyValue('--railw-collapsed'));
   const leftW = Math.max(0, svgRect.left - inset*2);
-  const rightW = Math.max(0, window.innerWidth - inset*2 - svgRect.right);
+  const rightW = Math.max(0, window.innerWidth - railW - inset*2 - svgRect.right);
   const marginH = svgRect.height * 0.85;   // leave headroom top/bottom of the drawing's own height
   const adjEl = document.getElementById('adjCtl'), pressEl = document.getElementById('pressrow');
   const adjScale = Math.min(1, leftW/adjEl.offsetWidth, marginH/adjEl.offsetHeight);
@@ -1290,30 +1944,48 @@ function layoutDesktopControls(){
   const cy = svgToScreen(0, 1227).y;
   placeAt('adjCtl', inset + leftW/2, cy, sharedScale);
   placeAt('pressrow', svgRect.right + inset + rightW/2, cy, sharedScale);
-  // Table of contents (round 12): same left-margin column as the adjuster,
-  // horizontally centered to match it, but positioned independently near
-  // the top of the drawing's own height rather than grouped into the
-  // adjuster's flex column -- stacking it there would shift the adjuster
-  // off its precise centering on the real part (round 6).
-  const topics = document.getElementById('sopTopics');
-  topics.style.left = (inset + leftW/2) + 'px';
-  topics.style.top = (svgRect.top + 20) + 'px';
-  topics.style.transform = 'translateX(-50%)';
+  // Correction (2026-09-29): placeAt centers each .ctl's whole box at the
+  // same cy, but adjCtl and pressrow aren't the same total height (pressrow
+  // has a digital-readout line between its gauge and its slider that adjCtl
+  // has no counterpart for) -- so centering both boxes at the same cy lands
+  // their <label> text at different Y coordinates even though the boxes
+  // themselves are level. Franz: "the vertical location of where it says
+  // diaphragm pressure and where it says spring adjuster are not the same."
+  // Fixed with a corrective second pass on the real rendered label
+  // positions rather than trying to match the two cards' total heights --
+  // robust to any future content difference between them.
+  const adjLabelR = adjEl.querySelector('label').getBoundingClientRect();
+  const pressLabelR = pressEl.querySelector('label').getBoundingClientRect();
+  const labelDelta = (pressLabelR.top + pressLabelR.height/2) - (adjLabelR.top + adjLabelR.height/2);
+  if (Math.abs(labelDelta) > 0.5) {
+    adjEl.style.top = (cy + labelDelta/2) + 'px';
+    pressEl.style.top = (cy - labelDelta/2) + 'px';
+  }
   // The nameplate tab itself is drawn natively into #asm (see <g
   // id="npTab">), so it can't misalign with the wall next to it -- only the
   // pop-out CARD is an HTML overlay needing placement, anchored just past
   // the tab's own right edge.
   placeAnchor('npCard', 990, 770, 0);
+  // Correction (2026-09-29): center the title on the actuator's real
+  // horizontal center (same svgRect already computed above for the
+  // instruments), not on whatever space happens to be left between
+  // #tb-brand and #tb-provenance -- see the .tb-title CSS comment for why
+  // that flex-centering was wrong. #titleblock is position:fixed, so it's
+  // the containing block .tb-title's `left` resolves against.
+  const tbRect = document.getElementById('titleblock').getBoundingClientRect();
+  const figCenterX = (svgRect.left + svgRect.right) / 2;
+  document.querySelector('.tb-title').style.left = (figCenterX - tbRect.left) + 'px';
 }
 // Play/Practice/valve-coupled stay DOM children of #ctrlbar/#panel (mobile
-// needs them there, unchanged) but are laid out into the top bar on desktop
-// here -- computed from the theme toggle's real position and each element's
-// own measured width rather than hardcoded offsets, so it stays correct
+// needs them there, unchanged) but are laid out into the top-right bar on
+// desktop here -- anchored to the true viewport edge (Stage 1, 2026-09-28:
+// no longer to #theme-toggle's position, since that moved to the bottom
+// corner) using each element's own measured width, so it stays correct
 // regardless of button label length or localization.
 function layoutTopBar(){
   if (window.innerWidth <= 700) return;
   const gap = 14;
-  let cursor = document.getElementById('theme-toggle').getBoundingClientRect().left - gap;
+  let cursor = window.innerWidth - 28;
   for (const id of ['valveRow', 'pv-play']){
     const el = document.getElementById(id);
     if (!el) continue;
@@ -1324,6 +1996,28 @@ function layoutTopBar(){
     cursor -= (w + gap);
   }
 }
+// Index rail open/close (Stage 1, 2026-09-28): a body class drives the
+// #indexRail/#titleblock/#theme-toggle width/position via the shared
+// var(--railw-*) CSS custom properties (see the desktop media query), so
+// they reflow in lockstep from one toggle. layoutAll() re-runs afterward so
+// layoutDesktopControls() picks up the rail's new width immediately rather
+// than waiting for the next resize event.
+function openIndexRail(){
+  document.body.classList.add('rail-open');
+  document.getElementById('railToggle').setAttribute('aria-expanded', 'true');
+  document.getElementById('railPanel').setAttribute('aria-hidden', 'false');
+  layoutAll();
+}
+function closeIndexRail(){
+  document.body.classList.remove('rail-open');
+  document.getElementById('railToggle').setAttribute('aria-expanded', 'false');
+  document.getElementById('railPanel').setAttribute('aria-hidden', 'true');
+  layoutAll();
+}
+document.getElementById('railToggle').addEventListener('click', ()=>{
+  document.body.classList.contains('rail-open') ? closeIndexRail() : openIndexRail();
+});
+document.getElementById('railClose').addEventListener('click', closeIndexRail);
 function layoutAll(){ layoutRail(); layoutDesktopControls(); layoutTopBar(); }
 window.addEventListener('resize', layoutAll);
 window.addEventListener('orientationchange', layoutAll);
@@ -1334,6 +2028,15 @@ if (window.visualViewport) window.visualViewport.addEventListener('resize', layo
 // the track's clientHeight, which the thumb math depends on directly.
 new ResizeObserver(()=>{ layoutAll(); update(); }).observe(document.querySelector('.fig'));
 layoutAll();
+// Correction (2026-09-29): the label-alignment pass inside
+// layoutDesktopControls() measures each instrument's real rendered <label>
+// position -- on the very first synchronous call that can read stale/
+// not-yet-finished layout (confirmed directly: the label offset persisted
+// unchanged for a full second after load, until something else forced a
+// second layoutAll() call, which then computed it correctly). Same
+// first-paint safety net already used for update() below -- a second pass
+// one frame later catches it.
+requestAnimationFrame(layoutAll);
 // nameplate: collapsed by default, tab toggles the card out to the right.
 // The tab is the <g id="npTab"> drawn into #asm -- a real SVG element, not
 // an HTML button, so Enter/Space are wired up manually to match native
@@ -1375,8 +2078,37 @@ let playEndTime = null;   // section-bounded playback stops here; null = play to
 // that (continuous float), which is exactly why landing precisely on 3.0
 // psig by mouse felt hard. Restored here rather than in the slider code so
 // every caller (drag, keyboard, SOP playback) gets the same clean grid.
-function setPress(v){ PRESS = Math.min(18, Math.max(0, Math.round(+v*10)/10)); }
-function setAdj(v){ ADJ = Math.min(24, Math.max(-24, Math.round(+v))); }
+// Magnetic snap (2026-09-29, Franz: "it's hard for me to... stay at the
+// exact spot I'm trying to get it to"). Lives in the setter itself, same
+// reasoning as the 0.1 rounding above -- every caller (drag, keyboard,
+// steppers, SOP playback) gets it for free with no separate snap logic in
+// bindHSlider. Pressure snaps to the CURRENT crack pressure (P0, derived
+// live from wherever the adjuster happens to be) -- physically that's "the
+// exact point the stem starts to move," a real, useful thing to land on at
+// ANY adjuster setting, not just at the one calibration point. The adjuster
+// snaps to CAL_ADJ, the one real fleet-calibration position (85%, 3.0psig).
+const CAL_ADJ = -24 + ADJ_CAL_PCT*48;   // 16.8 -- the adj value at the 85% calibration point
+const PRESS_SNAP_TOL = 0.15;   // psig
+const ADJ_SNAP_TOL = 0.5;      // adj units, out of the -24..24 range
+function setPress(v){
+  v = Math.min(18, Math.max(0, Math.round(+v*10)/10));
+  const crack = preloadForce(ADJ) / DIA_AREA;
+  PRESS = Math.abs(v-crack) <= PRESS_SNAP_TOL ? crack : v;
+}
+// Bug fix (2026-09-28): this used to round to the nearest whole integer on
+// every call. The old dial's own drag handler called setAdj(ADJ + d/15)
+// incrementally from the CURRENT (already-rounded) ADJ on every pointermove
+// -- small drag deltas that didn't cross the 0.5 rounding threshold were
+// silently discarded, then motion suddenly jumped a full 15deg unit once
+// enough delta had accumulated. That quantization is what read as janky/
+// jerky instead of smooth. ADJ is now a continuous float (still clamped to
+// -24..24); every consumer (bench-set math, rotation, gauge band, mobile
+// slider, keyboard) does plain arithmetic or its own display-side
+// .toFixed() rounding, so none of them needed a change for this.
+function setAdj(v){
+  v = Math.min(24, Math.max(-24, +v));
+  ADJ = Math.abs(v-CAL_ADJ) <= ADJ_SNAP_TOL ? CAL_ADJ : v;
+}
 function bindStepper(id, fn){
   // tap = one step; hold = auto-repeat, like a real button
   const btn = document.getElementById(id);
@@ -1393,7 +2125,13 @@ function bindStepper(id, fn){
 // desktop bench-set controls are now drag sliders (bindHSlider/bindVRod,
 // bound below, once they're declared) -- the button-stepper pattern stays
 // for Practice mode's own controls only.
-function bindHSlider(hitId, vMin, vMax, step, setFn){
+// getFn added 2026-09-29 when this became a two-caller function (adjustor
+// slider added alongside pressure's): the keyboard handler used to hardcode
+// PRESS directly, which was invisible with only one caller but would have
+// silently nudged the WRONG variable (PRESS instead of ADJ) from the new
+// adjustor slider's own arrow keys. getFn lets each caller supply its own
+// current-value reader instead.
+function bindHSlider(hitId, vMin, vMax, step, setFn, getFn){
   const hit = document.getElementById(hitId);
   let dragging=false;
   function move(e){
@@ -1414,7 +2152,14 @@ function bindHSlider(hitId, vMin, vMax, step, setFn){
     // by clicking something else. Mobile's rail sliders never hit this
     // because they aren't focusable (no tabindex), only these are.
     e.preventDefault();
-    dragging=true; hit.setPointerCapture(e.pointerId); hit.focus(); move(e);
+    // dragging set before setPointerCapture, wrapped in try/catch (correction
+    // 2026-09-29, same fix already applied to the old dial's own binding):
+    // an untrusted/synthetic pointerId with no browser-tracked active
+    // pointer throws NotFoundError here, which would otherwise abort this
+    // handler before `dragging` gets set.
+    dragging=true; hit.focus();
+    try{ hit.setPointerCapture(e.pointerId); }catch(err){}
+    move(e);
   });
   hit.addEventListener('pointermove', move);
   hit.addEventListener('pointerup', endDrag);
@@ -1424,8 +2169,8 @@ function bindHSlider(hitId, vMin, vMax, step, setFn){
   // nudge to an exact value without ever hinting what that value should be
   hit.addEventListener('keydown', e=>{
     const big = e.shiftKey ? step*10 : step;
-    if(e.key==='ArrowRight' || e.key==='ArrowUp'){ setFn(PRESS+big); update(); e.preventDefault(); }
-    else if(e.key==='ArrowLeft' || e.key==='ArrowDown'){ setFn(PRESS-big); update(); e.preventDefault(); }
+    if(e.key==='ArrowRight' || e.key==='ArrowUp'){ setFn(getFn()+big); update(); e.preventDefault(); }
+    else if(e.key==='ArrowLeft' || e.key==='ArrowDown'){ setFn(getFn()-big); update(); e.preventDefault(); }
   });
 }
 function bindVRod(hitId, vMin, vMax, step, setFn){
@@ -1455,8 +2200,15 @@ function bindVRod(hitId, vMin, vMax, step, setFn){
     else if(e.key==='ArrowDown'){ setFn(ADJ-big); update(); e.preventDefault(); }
   });
 }
-bindHSlider('pressHit', 0, 18, 0.1, setPress);
-bindVRod('adjHit', -24, 24, 1, setAdj);
+bindHSlider('pressHit', 0, 18, 0.1, setPress, ()=>PRESS);
+// Correction (2026-09-29): the adjustor's own drag-angle-tracking dial
+// interaction (previously here) is removed entirely, replaced by this
+// linear slider -- same bindHSlider used for pressure, same proven
+// interaction, no separate angle math to get subtly wrong. bindVRod is left
+// defined above, unused, in case a future linear-drag control needs it
+// again; nothing else calls it now that the mobile adjuster uses its own
+// separate bindMobileVSlider.
+bindHSlider('adjHit2', -24, 24, 0.1, setAdj, ()=>ADJ);
 bindStepper('pv-adjMinus', ()=>setAdj(ADJ-1));
 bindStepper('pv-adjPlus', ()=>setAdj(ADJ+1));
 bindStepper('pv-pressMinus', ()=>setPress(PRESS-0.2));
@@ -1509,7 +2261,7 @@ document.getElementById('pv-play').addEventListener('click', ()=>{
 document.getElementById('pv-exit').addEventListener('click', ()=>{
   document.body.classList.remove('practicing');
   document.getElementById('asm').setAttribute('viewBox', '0 0 1480 2250');
-  setAdj(0); setPress(0); update();
+  setAdj(ADJ_RESET); setPress(0); update();
 });
 document.getElementById('pv-next').addEventListener('click', ()=>{
   if (document.getElementById('pv-next').disabled) return;
@@ -1526,7 +2278,7 @@ function pulse(id){ const el=document.getElementById(id);
 function benchReset(){
   document.getElementById('valve').checked=false;
   PB.connected=false; PB.connShown=false; PB.nutsDy=0; PB.scaleDy=0;
-  setValve(false); showTravelMark(false); showVerMark(false); setAdj(0); setPress(0); hl(); focus();
+  setValve(false); showTravelMark(false); showVerMark(false); setAdj(ADJ_RESET); setPress(0); hl(); focus();
 }
 const CHOREO = [
  // 1. air enters upper casing, presses diaphragm + plate
@@ -1636,6 +2388,18 @@ function updateTopicButtons(){
     btn.classList.toggle('playing', isActive);
     btn.querySelector('.label').textContent = isActive ? 'Stop' : btn.dataset.label;
   });
+  // Stage 1 (2026-09-28): the collapsed rail strip's numbered circles are a
+  // separate, simpler set of elements (no room for a "Stop" text swap) --
+  // painted alongside the row list above, from the same playing/
+  // activeSection state, rather than folded into the .sop-topic loop.
+  document.querySelectorAll('.num-btn').forEach(btn=>{
+    const isActive = playing && +btn.dataset.section === activeSection;
+    btn.classList.toggle('playing', isActive);
+  });
+  // Correction (2026-09-28): the "Play all lessons" row gets its own
+  // playing-state toggle, separate from the per-lesson rows above (it uses
+  // activeSection===-2, which never matches a real section index).
+  document.getElementById('playAllRow').classList.toggle('playing', playing && activeSection === -2);
 }
 // Mobile's own single button: plays straight through start to finish,
 // exactly as it always has (playEndTime stays null).
@@ -1668,23 +2432,75 @@ function playSection(idx){
     updateTopicButtons();
     document.getElementById('pb-status').textContent=' audio failed to load'; });
 }
+// Correction (2026-09-28): "Play all lessons" row (approved template,
+// final-panel-open.png) -- plays straight through all 4 SECTIONS in order
+// from a clean reset, same toggle-to-stop convention as playSection(). Uses
+// activeSection=-2 (distinct from -1='none' and any real 0..3 index) so no
+// individual lesson row/dot lights up while all of them are playing.
+function playAllSections(){
+  if(playing && activeSection === -2){ pbStop(); return; }
+  benchReset();
+  playing=true; curSeg=-1; activeSection=-2;
+  const last = SECTIONS[SECTIONS.length-1];
+  playEndTime = TIMING[last.endIdx].start + TIMING[last.endIdx].duration;
+  audio.currentTime = TIMING[SECTIONS[0].startIdx].start;
+  updateTopicButtons();
+  audio.play().then(()=>{
+    requestAnimationFrame(pbFrame);
+  }).catch(e=>{ playing=false; activeSection=-1;
+    updateTopicButtons();
+    document.getElementById('pb-status').textContent=' audio failed to load'; });
+}
+document.getElementById('playAllRow').addEventListener('click', playAllSections);
 // Franz's final wording for the 3 topics (2026-09-27, round 12 follow-up) --
 // more procedural than TIMING's own descriptive `section` titles ("How the
 // Actuator Works" etc.), which still drive the actual start/end boundaries
 // above; this only overrides what's displayed. Falls back to the derived
 // name if TIMING ever has more sections than labels given here.
+// Correction (2026-09-28): per-lesson and total durations, matching the
+// approved template's "0:17" / "1:01" style (MM:SS from real TIMING data,
+// not invented placeholder numbers).
+function sectionDuration(sec){
+  return TIMING[sec.endIdx].start + TIMING[sec.endIdx].duration - TIMING[sec.startIdx].start;
+}
+function fmtDur(sec){
+  sec = Math.round(sec);
+  return Math.floor(sec/60) + ':' + String(sec%60).padStart(2,'0');
+}
 (function buildTopicList(){
-  const list = document.getElementById('sopTopicList');
+  // Stage 1 (2026-09-28): builds BOTH the index rail's opened panel (a real
+  // list, identical markup/behavior to the old #sopTopicList) and its
+  // collapsed strip (numbered circles) from the same SECTIONS loop -- one
+  // source of content, two renderings of it.
+  const list = document.getElementById('railList');
+  const nums = document.getElementById('railNums');
+  let total = 0;
   SECTIONS.forEach((sec,idx)=>{
+    const dur = sectionDuration(sec);
+    total += dur;
     const btn = document.createElement('button');
     btn.className = 'sop-topic';
     btn.type = 'button';
     btn.dataset.section = idx;
     btn.dataset.label = sec.name;
-    btn.innerHTML = `<span class="num">${idx+1}.</span><span class="label">${sec.name}</span>`;
+    btn.innerHTML = `<span class="num">${idx+1}</span><span class="label">${sec.name}</span>` +
+      `<span class="dur">${fmtDur(dur)}</span>`;
     btn.addEventListener('click', ()=>playSection(idx));
-    list.appendChild(btn);
+    const li = document.createElement('li');
+    li.appendChild(btn);
+    list.appendChild(li);
+
+    const dot = document.createElement('button');
+    dot.className = 'num-btn';
+    dot.type = 'button';
+    dot.dataset.section = idx;
+    dot.title = sec.name;
+    dot.setAttribute('aria-label', `Play lesson ${idx+1}: ${sec.name}`);
+    dot.innerHTML = `<span>${idx+1}</span>`;
+    dot.addEventListener('click', ()=>playSection(idx));
+    nums.appendChild(dot);
   });
+  document.getElementById('playAllDur').textContent = fmtDur(total);
 })();
 audio.addEventListener('ended', pbStop);
 // test hook: ?pbtest=N applies segments 1..N without audio
@@ -1722,12 +2538,22 @@ window.addEventListener('resize', update);
 // light/dark toggle: explicit choice wins over OS preference, persisted per viewer
 (function(){
   const btn = document.getElementById('theme-toggle');
+  const glyph = document.getElementById('theme-glyph');
+  const label = document.querySelector('#theme-toggle .theme-label');
   function isDark(){
     const explicit = document.documentElement.getAttribute('data-theme');
     if(explicit) return explicit === 'dark';
     return window.matchMedia('(prefers-color-scheme: dark)').matches;
   }
-  function paint(){ btn.textContent = isDark() ? '☀' : '☽'; }
+  // Correction (2026-09-28): label text names the ACTION the button will
+  // perform (what clicking switches TO), matching the approved template's
+  // own paintTheme() convention -- e.g. currently light -> button offers
+  // "Dark mode". Glyph keeps its existing sun/moon convention, now a
+  // separate child instead of the whole button's textContent.
+  function paint(){
+    glyph.textContent = isDark() ? '☀' : '☽';
+    label.textContent = isDark() ? 'Light mode' : 'Dark mode';
+  }
   btn.addEventListener('click', ()=>{
     const next = isDark() ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
