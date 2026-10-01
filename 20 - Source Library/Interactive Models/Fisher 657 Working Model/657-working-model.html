@@ -3,7 +3,7 @@
 <title>Fisher 657 Working Model</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#eef2f6; --panel:#ffffff; --border:#cdd7e1; --border-strong:#b9c7d6;
@@ -44,7 +44,17 @@
   --lead:var(--ink);
   --display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
   --font-body:"Barlow","Segoe UI",Arial,sans-serif;
-  --tb-h:64px; --railw-collapsed:58px; --railw-open:330px;
+  /* Physics reference sheet only (2026-09-29): hand-lettering face for
+     figure numbers/equations -- never used on the live schematic, which
+     stays Barlow throughout. Everything else the sheet draws with (line
+     art, marginalia text) reuses the app's own existing tokens (--ink,
+     --sub, --accent-alt) rather than a separate fixed palette, so it
+     inherits light/dark theming exactly like the rest of the page --
+     corrected same day from a first pass that gave it its own fixed
+     "journal page" palette, which read as a separate world instead of
+     this project's own aesthetic with a sketched accent (Franz). */
+  --hand:"Caveat","Segoe Script",cursive;
+  --tb-h:64px; --railw-collapsed:58px; --railw-open:330px; --animw:640px;
   /* Correction (2026-09-28): the real approved template draws the whole
      composition -- figure, both instrument columns, titleblock, rail,
      corner -- inside ONE single-bordered sheet inset a consistent amount
@@ -97,10 +107,18 @@ h1{font-size:19px;margin:0;}
 p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
 .readout{font-family:ui-monospace,monospace;font-size:13px;color:var(--accent);}
 .cast{stroke:var(--c-cast-line);stroke-width:2.5;stroke-linejoin:round;fill-rule:evenodd;}
-#p-upper{fill:var(--c-upper);}
-#p-lower{fill:var(--c-lower);}
-#p-yoke{fill:var(--c-yoke);}
-#p-plate{fill:var(--c-plate);}
+#p-upper,#pf-upper{fill:var(--c-upper);}
+#p-lower,#pf-lower{fill:var(--c-lower);}
+#p-yoke,#pf-yoke{fill:var(--c-yoke);}
+#p-plate,#pf-plate,#pr-chamber-plate{fill:var(--c-plate);}
+/* Physics reference sheet (2026-09-30): the fill above these four real
+   parts is keyed to their specific #id, not a shared class (each casing
+   piece has its own color token) -- the sheet's cloned copies need the
+   same rule extended to their own ids, or they fall back to SVG's default
+   black fill. pr-chamber-upper reuses the SAME --c-upper token as the
+   live/left-column upper casing since it's the identical part, just a
+   tighter crop. */
+#pr-chamber-upper{fill:var(--c-upper);}
 .sp-stem{fill:var(--c-stem);stroke:var(--c-cast-line);stroke-width:2;}
 .sp-seat{fill:var(--c-seat);stroke:var(--c-cast-line);stroke-width:2;}
 .sp-adj{fill:var(--c-adj);stroke:var(--c-cast-line);stroke-width:2;}
@@ -433,6 +451,22 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     display:flex;align-items:center;justify-content:center;
     transition:padding-right .3s ease;}
   body.rail-open .fig{padding-right:var(--railw-open);}
+  /* Fixed a real bug Franz caught (2026-09-30): "the model is covered up
+     by the animator pane". #animatorPanel was position:fixed and docked
+     against the rail, but nothing told .fig to make room for it the way
+     it already does for the rail itself (the rule right above) -- so the
+     panel just sat on top of wherever the model happened to be rendering.
+     Same fix, same mechanism: .fig's own padding shrinks its real content
+     box, and #asm (which reads .fig's live box on every resize) draws
+     itself into whatever's left, automatically clear of the panel.
+     Docked against --railw-COLLAPSED, not --railw-open (2026-09-30, round
+     2 -- Franz: "more real estate, like it collapsing the vertical bar
+     pane"): openAnimator() now collapses the rail instead of forcing it
+     open the way Physics does, freeing 330-58=272px for a genuinely usable
+     writing/checklist width -- see openAnimator() for why the panel needs
+     its own close control once the rail (where "Animator" lives) tucks
+     itself away. */
+  body.animator-open .fig{padding-right:calc(var(--railw-collapsed) + var(--animw));}
   .fig svg{height:100%;width:auto;max-width:100%;display:block;}
   /* Decorative single border around the whole sheet (figure + both
      instrument columns + titleblock + rail + corner) -- purely visual,
@@ -622,6 +656,194 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     text-align:left;cursor:pointer;font-size:.92rem;color:var(--accent);
     text-decoration:underline;font-family:inherit;}
   .rail-ref-link:hover{color:var(--accent-alt);}
+  /* Physics reference sheet (2026-09-30, rebuilt again -- Franz: "nuke it
+     all... use our actual models... synthesize the handwritten parts into
+     our new attempt"). Third pass. What survives from the last two:
+     staying inside the app's own panel/token system (theme-aware, not a
+     separate world), replacing exactly #adjCtl/#pressrow/.fig and leaving
+     pagehead/rail/titleblock CHROME untouched (only titleblock's TEXT
+     updates -- see openPhysicsSheet()), and the handwritten Caveat layer
+     for labels/equations as an ACCENT. What's gone: the small invented
+     sketch-icon doodles, and the three-separate-card-overlay structure.
+     New structure -- one unified overlay laid out in two columns: LEFT is
+     the real full assembly (every part this model actually draws, cloned
+     live rather than redrawn -- see openPhysicsSheet()) with three
+     handwritten callouts + leader lines; RIGHT is three stacked rows, each
+     a real cropped rendering of one part plus its physics detail. Every
+     rendered part keeps its OWN real classes/colors (.cast/.sp-coil/
+     .sp-adj/...) -- nothing here is restyled into ink linework anymore.
+     Positioned against .fig's OWN reserved safe area (--sheet-inset/
+     --railw-open/--tb-h -- the exact tokens .fig's padding already uses)
+     rather than inset:0, which ignores an ancestor's padding and is why
+     earlier attempts kept landing under the rail/titleblock. */
+  body.physics-open #adjCtl>label, body.physics-open #adjCtl .instrument,
+  body.physics-open #pressrow>label, body.physics-open #pressrow .instrument,
+  body.physics-open #asm{visibility:hidden;}
+  #psFull{display:none;position:absolute;
+    top:var(--sheet-inset); left:var(--sheet-inset);
+    right:var(--railw-open); bottom:calc(var(--tb-h) + var(--sheet-inset));
+    box-sizing:border-box;gap:22px;}
+  body.physics-open #psFull{display:flex;}
+  #psLeftCol{position:relative;flex:1 1 56%;min-width:0;
+    background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    display:flex;align-items:center;justify-content:center;padding:14px;
+    box-sizing:border-box;}
+  /* height:auto, not height:100% (2026-09-30, fixing the real cutoff Franz
+     caught -- "the casing is cut off on the bottom"). height:100% forces a
+     literal box height regardless of aspect ratio; paired with max-width
+     clamping the resulting auto width back down, the two constraints
+     fought and the tall, narrow model (viewBox ~0.66 aspect) ended up
+     taller than the column, cut off at the bottom instead of scaled down
+     to fit. max-width+max-height with width:auto;height:auto (the same
+     "contain" pattern already used for .ps-row-fig svg below) lets the
+     browser shrink by whichever axis is tighter and never overflow either. */
+  #psLeftCol>svg{max-width:100%;max-height:100%;width:auto;height:auto;display:block;}
+  #psLeaders{position:absolute;inset:0;pointer-events:none;overflow:visible;}
+  #psLeaders path{fill:none;stroke:var(--sub);stroke-width:1.4;opacity:.8;}
+  #psRightCol{flex:1 1 44%;min-width:260px;display:flex;flex-direction:column;
+    gap:16px;overflow:auto;}
+  .ps-row{flex:1 1 0;min-height:0;background:var(--panel);
+    border:1px solid var(--border);border-radius:10px;padding:14px 20px;
+    display:flex;align-items:center;gap:20px;box-sizing:border-box;}
+  /* Contain by BOTH axes, not just width (2026-09-30, fixing real overflow
+     Franz caught -- the adjuster/spring crops are taller-than-wide, and
+     width:100%;height:auto;overflow:visible let their real height run past
+     the row's own height into the row below). max-width+max-height with
+     width:auto;height:auto is the standard "fit within a box, keep aspect
+     ratio" pairing -- the SVG's own viewBox ratio does the rest. */
+  .ps-row-fig{flex:0 0 auto;width:34%;max-width:170px;height:100%;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .ps-row-fig svg{max-width:100%;max-height:100%;width:auto;height:auto;
+    display:block;}
+  .ps-row-text{flex:1 1 auto;min-width:0;}
+  .ps-fignum{font-family:var(--hand);font-weight:700;font-size:21px;
+    color:var(--accent);display:block;margin-bottom:5px;}
+  .ps-eq{font-family:var(--hand);font-size:18px;line-height:1.35;
+    color:var(--ink);display:block;}
+  .ps-eq .ps-note{font-family:var(--font-body);font-size:10.5px;
+    letter-spacing:.02em;color:var(--sub);display:block;margin-top:4px;
+    font-style:italic;}
+  /* The three callouts on the full model -- handwritten label, positioned
+     in the letterboxed margin around the (taller-than-wide) model rather
+     than gridded, with a real leader line (computed in layoutPhysicsLeader
+     from the actual anchor points below, not guessed) pointing to the real
+     part on the model itself. */
+  .ps-callout{position:absolute;font-family:var(--hand);text-align:left;}
+  .ps-callout .ps-fignum{font-size:19px;margin-bottom:0;}
+  /* Repositioned 2026-09-30 (Franz: Fig. 1.1 "a little far from the
+     action... drop it down to below the lower diaphragm casing in some
+     open space there"; Fig. 1.3 "too far down in the corner, move it up
+     closer"). Real open space, not guessed: the lower casing's own real
+     bbox bottom sits at y~493 of the 0-2250 viewBox (~22%), and the wide
+     casing gives way to the much narrower yoke right there, so there's
+     real empty margin beside the yoke's neck just past that line --
+     top:25% lands the chamber callout in it. The adjuster anchor itself
+     sits at y=1200 (~53% down); bottom:38% (~62% down) keeps the callout
+     close to that without the box's own text overlapping the model. */
+  #psCalloutChamber{top:25%;left:3%;max-width:150px;transform:rotate(-1.6deg);}
+  #psCalloutSpring{top:40%;right:3%;max-width:150px;transform:rotate(1.1deg);}
+  #psCalloutAdjuster{bottom:38%;left:3%;max-width:150px;transform:rotate(-0.9deg);}
+  /* No separate "Back to schematic" button (2026-09-30, Franz: "just make
+     it so when we click the physics button to open, we can click it again
+     to close"). #physicsRefLink is the one control now -- toggled by
+     openPhysicsSheet()/closePhysicsSheet() checking body's own
+     physics-open class -- and this active state is how "click again to
+     close" stays discoverable: bold, green (the same "currently active"
+     color this rail already uses for .rail-playall.playing), underline
+     dropped so it doesn't read as a plain navigation link anymore. The
+     LABEL TEXT itself changes to "Close Physics" too (set in JS), which is
+     the actually-unambiguous part -- the color is reinforcement, not the
+     whole signal. */
+  #physicsRefLink.active{color:var(--good);font-weight:700;text-decoration:none;}
+  /* Animator (2026-09-30, Phase 1 -- Franz: a workspace for authoring the
+     narration rows + per-row highlight checklist/sequence, live against
+     the REAL model, not a static reference view like Physics. Same
+     open/close toggle mechanism and .active styling as #physicsRefLink
+     above, reused deliberately for consistency, not because the two tools
+     are the same thing -- see openAnimator()/closeAnimator() below.
+     Unlike Physics, the live schematic (.fig/#asm) stays fully visible and
+     untouched here -- the whole point is watching the real focus()/dim
+     behavior react as rows are edited, so nothing gets hidden or cloned
+     except the two instrument cards, which just aren't relevant while
+     authoring narration. */
+  #animatorRefLink.active{color:var(--good);font-weight:700;text-decoration:none;}
+  body.animator-open #adjCtl>label, body.animator-open #adjCtl .instrument,
+  body.animator-open #pressrow>label, body.animator-open #pressrow .instrument{visibility:hidden;}
+  /* width:var(--animw) exactly, not a separate vw-based guess -- it has to
+     match the SAME value .fig's padding-right reserves above, or the two
+     numbers drift apart again (which is exactly how this overlapped the
+     model the first time: the panel's own width and the space .fig was
+     told to leave were two unrelated numbers). */
+  #animatorPanel{display:none;position:fixed;
+    top:var(--sheet-inset); right:var(--railw-collapsed);
+    bottom:calc(var(--tb-h) + var(--sheet-inset)); width:var(--animw);
+    background:var(--panel);border:1px solid var(--border);border-radius:10px;
+    box-sizing:border-box;padding:16px;overflow-y:auto;}
+  body.animator-open #animatorPanel{display:block;}
+  .an-head{display:flex;align-items:center;justify-content:space-between;
+    margin-bottom:14px;}
+  .an-head h2{font-family:var(--display);font-weight:600;font-size:1.15rem;
+    margin:0;color:var(--ink);}
+  .an-head p{margin:2px 0 0;font-size:12px;color:var(--sub);}
+  .an-head-btns{display:flex;align-items:center;gap:8px;flex:none;}
+  #anAddRow{background:var(--accent);color:#fff;border:0;border-radius:6px;
+    padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;
+    flex:none;}
+  #anAddRow:hover{filter:brightness(1.1);}
+  #anClose{background:none;border:1px solid var(--border-strong);
+    color:var(--sub);border-radius:6px;width:32px;height:32px;font-size:18px;
+    line-height:1;cursor:pointer;flex:none;}
+  #anClose:hover{color:var(--ink);border-color:var(--ink-soft);}
+  /* Row management (2026-09-30, Franz: "some way to manage the rows for
+     sequencing... numbering or ability to collapse each row"). Row number
+     is computed from array position at render time, never stored -- it's
+     always right even after a reorder or delete. Reordering is up/down
+     buttons, not drag-and-drop, for the same reason the sequence-order
+     numbers are typed digits and not drawn arrows: same expressive result,
+     far more reliable to build and to use. */
+  .an-row{border:1px solid var(--border);border-radius:8px;padding:12px;
+    margin-bottom:12px;box-sizing:border-box;}
+  .an-row-head{display:flex;align-items:center;gap:8px;}
+  .an-collapse{background:none;border:0;color:var(--sub);font-size:10px;
+    cursor:pointer;flex:none;width:16px;padding:0;}
+  .an-collapse:hover{color:var(--ink);}
+  .an-row-num{font-family:var(--font-body);font-weight:600;font-size:12px;
+    color:var(--ink);flex:none;}
+  .an-row-preview{flex:1 1 auto;min-width:0;font-size:12px;color:var(--sub);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .an-row-preview em{font-style:italic;opacity:0.7;}
+  .an-row-move{display:flex;gap:2px;flex:none;margin-left:auto;}
+  .an-row-move button{background:none;border:1px solid var(--border);
+    color:var(--sub);border-radius:3px;width:20px;height:20px;font-size:11px;
+    cursor:pointer;line-height:1;padding:0;}
+  .an-row-move button:hover:not(:disabled){color:var(--ink);
+    border-color:var(--ink-soft);}
+  .an-row-move button:disabled{opacity:0.3;cursor:default;}
+  .an-row-delete{background:none;border:0;color:var(--sub);font-size:16px;
+    cursor:pointer;flex:none;width:20px;line-height:1;padding:0;}
+  .an-row-delete:hover{color:var(--accent-alt);}
+  .an-row-body{display:flex;gap:14px;margin-top:10px;}
+  .an-row-text{flex:1 1 58%;min-width:0;display:flex;flex-direction:column;
+    gap:8px;}
+  .an-row-text textarea{width:100%;min-height:110px;resize:vertical;
+    font-family:var(--font-body);font-size:13px;line-height:1.45;padding:9px;
+    border:1px solid var(--border);border-radius:4px;background:var(--bg);
+    color:var(--ink);box-sizing:border-box;}
+  .an-row-actions{display:flex;gap:6px;flex-wrap:wrap;}
+  .an-row-actions button{font-size:11px;padding:4px 9px;
+    border:1px solid var(--border-strong);border-radius:4px;background:none;
+    color:var(--sub);cursor:pointer;font-family:var(--font-body);}
+  .an-row-actions button:hover{color:var(--ink);border-color:var(--ink-soft);}
+  .an-row-checklist{flex:1 1 42%;min-width:0;display:flex;
+    flex-direction:column;gap:5px;}
+  .an-item{display:flex;align-items:center;gap:6px;font-size:12.5px;
+    color:var(--ink);}
+  .an-item input[type=checkbox]{flex:none;}
+  .an-item span{flex:1 1 auto;}
+  .an-item input[type=number]{width:34px;flex:none;padding:2px 3px;
+    font-size:11px;border:1px solid var(--border);border-radius:3px;
+    background:var(--bg);color:var(--ink);text-align:center;}
+  .an-item input[type=number]:disabled{opacity:0.35;}
   /* Inert lesson note + leader stubs (Stage 1): present so Stage 3 has
      somewhere to wire real lesson narration/leader-lines into, but fully
      dormant -- the [hidden] attribute keeps them out of the render tree
@@ -855,6 +1077,135 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     <text x="968" y="770" transform="rotate(-90 968 770)">NAMEPLATE</text>
   </g>
 </svg>
+<!-- Physics reference sheet (2026-09-30, rebuilt again per Franz -- see the
+     CSS comment on #psFull for the full history/reasoning). Every pf-*/
+     pr-*-prefixed element below starts empty or with a placeholder "d" and
+     is populated in openPhysicsSheet() by cloning the REAL live part
+     (innerHTML+transform for the dynamic ones, R[...] path strings for the
+     static ones) -- never hand-drawn, so this stays trustworthy as "our
+     actual model" even as the real geometry evolves. Two separate sets of
+     targets (pf- for the left column's full assembly, pr- for the right
+     column's three individual close-ups) because an SVG element can't be
+     shared across two <svg> roots -- each needs its own copy. No separate
+     "Back to schematic" control -- #physicsRefLink itself toggles closed
+     again (see its CSS comment above and openPhysicsSheet()/
+     closePhysicsSheet() below). -->
+<div id="psFull">
+  <div id="psLeftCol">
+    <svg viewBox="0 0 1480 2250" aria-hidden="true">
+      <path id="pf-yoke" class="cast"/>
+      <path id="pf-lower" class="cast"/>
+      <g id="pf-spring-back"></g>
+      <g id="pf-stem"></g>
+      <g id="pf-adj-g"></g>
+      <g id="pf-seat-g"></g>
+      <g id="pf-plate-wrap"><path id="pf-plate" class="cast"/></g>
+      <g id="pf-spring-front"></g>
+      <path id="pf-dia" class="dia"/>
+      <path id="pf-upper" class="cast"/>
+      <circle id="pf-anchor-chamber" cx="742.5" cy="80" r="3" fill="none" stroke="none"/>
+      <circle id="pf-anchor-spring" cx="742.5" cy="560" r="3" fill="none" stroke="none"/>
+      <circle id="pf-anchor-adjuster" cx="742.5" cy="1200" r="3" fill="none" stroke="none"/>
+    </svg>
+    <svg id="psLeaders"><path id="psLeaderChamber"/><path id="psLeaderSpring"/><path id="psLeaderAdjuster"/></svg>
+    <div class="ps-callout" id="psCalloutChamber">
+      <span class="ps-fignum">Fig. 1.1 &mdash; Diaphragm chamber</span>
+    </div>
+    <div class="ps-callout" id="psCalloutSpring">
+      <span class="ps-fignum">Fig. 1.2 &mdash; Spring</span>
+    </div>
+    <div class="ps-callout" id="psCalloutAdjuster">
+      <span class="ps-fignum">Fig. 1.3 &mdash; Adjuster</span>
+    </div>
+  </div>
+  <div id="psRightCol">
+    <div class="ps-row">
+      <div class="ps-row-fig">
+        <!-- Real z-order (2026-09-30, Franz: "the diaphragm is not included
+             in the diaphragm casing"): plate, then the rolling diaphragm
+             membrane itself, then the upper casing wrapping around/over
+             both -- same order #asm draws them in, so the diaphragm
+             actually reads as installed inside the chamber, not missing. -->
+        <!-- pr-chamber-plate-wrap's transform is cloned from the live
+             g-plate (2026-09-30, Franz: "open it to the 11psi distance to
+             show the open chamber") -- without it the plate/diaphragm would
+             always draw at rest, never reflecting the travel that actually
+             opens the chamber. The casing itself never moves, so pr-
+             chamber-upper stays a bare path with no transform. -->
+        <!-- viewBox set dynamically in openPhysicsSheet(), same reason and
+             same fix as the spring row (2026-09-30, Franz: "I still don't
+             see the entire diaphragm plate or diaphragm in the casing
+             figure") -- once the sheet poses the model at 11psig, the plate
+             translates down by a full 0.75in of travel and moves entirely
+             outside a viewBox sized for the plate's rest position. The
+             placeholder value only matters until that first computation
+             runs. -->
+        <svg id="prChamberSvg" viewBox="60 -10 1360 280" aria-hidden="true">
+          <g id="pr-chamber-plate-wrap"><path id="pr-chamber-plate" class="cast"/></g>
+          <path id="pr-chamber-dia" class="dia"/>
+          <path id="pr-chamber-upper" class="cast"/>
+        </svg>
+      </div>
+      <div class="ps-row-text">
+        <span class="ps-fignum">Fig. 1.1 &mdash; Diaphragm chamber</span>
+        <span class="ps-eq">F = P &middot; A<br>A = 46 in&sup2;<br>3 psig &rarr; 138 lbf<br>11 psig &rarr; 506 lbf</span>
+      </div>
+    </div>
+    <div class="ps-row">
+      <div class="ps-row-fig">
+        <!-- viewBox set dynamically in openPhysicsSheet() from the cloned
+             coil's own real bbox (2026-09-30, fixing a real cutoff: a
+             fixed crop tuned for the rest-state coil put the spring's real
+             extent outside the window entirely once the sheet started
+             posing the model at 11psig -- the coil runs lower and tighter
+             at full travel, so a static viewBox can't stay correct across
+             different reference poses). The placeholder value below only
+             matters until that first computation runs. -->
+        <svg id="prSpringSvg" viewBox="560 180 400 420" aria-hidden="true">
+          <g id="pr-spring-back"></g>
+          <g id="pr-spring-front"></g>
+        </svg>
+      </div>
+      <div class="ps-row-text">
+        <span class="ps-fignum">Fig. 1.2 &mdash; Spring</span>
+        <span class="ps-eq">F = kx<br>k = 490 lbf/in<br>138 lbf @ 3 psig<br>506 lbf @ 11 psig
+          <span class="ps-note">&Delta;368 lbf = k &times; 0.75in travel</span>
+        </span>
+      </div>
+    </div>
+    <div class="ps-row">
+      <div class="ps-row-fig">
+        <svg viewBox="640 1050 220 360" aria-hidden="true">
+          <g id="pr-adj-g"></g>
+        </svg>
+      </div>
+      <div class="ps-row-text">
+        <span class="ps-fignum">Fig. 1.3 &mdash; Adjuster</span>
+        <span class="ps-eq">x = n &middot; 1/12<br>1&#8539;&Prime;-12 UNF, 12 TPI<br>3.38 turns = 0.282 in
+          <span class="ps-note">&rarr; 138 lbf preload</span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Animator (2026-09-30, Phase 1): rows built entirely in JS
+     (renderAnimRows()) from ANIM_ROWS, persisted to localStorage so a
+     draft survives a reload -- this is a fiddle-and-see workspace, not
+     the real save/edit/trash/publish pipeline that's a later phase. -->
+<div id="animatorPanel">
+  <div class="an-head">
+    <div><h2>Animator</h2><p>One row per highlight state. Check a part, give it an order number if it should join later in sequence.</p></div>
+    <div class="an-head-btns">
+      <button type="button" id="anAddRow">+ Add row</button>
+      <!-- openAnimator() collapses the rail for more room (2026-09-30,
+           Franz), but "Animator" -- the only way in via the rail -- is
+           then hard to reach while collapsed, so this is the real way out,
+           not just a decoration next to the rail's own toggle. -->
+      <button type="button" id="anClose" title="Close Animator" aria-label="Close Animator">&times;</button>
+    </div>
+  </div>
+  <div id="anRows"></div>
+</div>
 <!-- Mobile-only sandbox controls. Positioned in JS (layoutRail) from the
      drawing's own real empty-canvas rectangles -- verified with
      check_safe_zones.py against the actual part geometry (every part's full
@@ -1051,6 +1402,16 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     <button type="button" class="rail-ref-link">Objectives</button>
     <button type="button" class="rail-ref-link">Parts</button>
     <button type="button" class="rail-ref-link">Procedure</button>
+    <button type="button" class="rail-ref-link" id="physicsRefLink">Physics</button>
+    <!-- Animator (2026-09-30, Phase 1, Franz): its own TOOLS group, not
+         another reference link -- it's a workspace, not static reference
+         text, and Franz asked for it "in the hamburger menu, in the
+         vertical sidebar" as its own thing. Same open/close mechanism as
+         Physics (one button, relabels itself while open) for consistency
+         and low risk, not because the two are conceptually the same. -->
+    <hr class="rail-divider">
+    <div class="rail-refs-head">Tools</div>
+    <button type="button" class="rail-ref-link" id="animatorRefLink">Animator</button>
   </div>
 </nav>
 <!-- Inert lesson note/leader stubs (Stage 1): not wired to anything yet.
@@ -1108,6 +1469,16 @@ document.getElementById('p-upper').setAttribute('d', R['upper-diaphragm-casing']
 document.getElementById('p-lower').setAttribute('d', R['lower-diaphragm-casing']);
 document.getElementById('p-yoke').setAttribute('d', R['yoke']);
 document.getElementById('p-plate').setAttribute('d', R['diaphragm-plate']);
+// Physics reference sheet (2026-09-30): the left column's full assembly and
+// the right column's "Diaphragm chamber" row both reuse these SAME real
+// traced paths -- never a redrawn silhouette. Each needs its own element
+// (a path can't be shared across two <svg> roots), same real R[...] strings.
+document.getElementById('pf-yoke').setAttribute('d', R['yoke']);
+document.getElementById('pf-lower').setAttribute('d', R['lower-diaphragm-casing']);
+document.getElementById('pf-plate').setAttribute('d', R['diaphragm-plate']);
+document.getElementById('pf-upper').setAttribute('d', R['upper-diaphragm-casing']);
+document.getElementById('pr-chamber-upper').setAttribute('d', R['upper-diaphragm-casing']);
+document.getElementById('pr-chamber-plate').setAttribute('d', R['diaphragm-plate']);
 
 // Spring proportions re-derived against the real source (2026-09-29, Franz):
 // measured directly off both the traced 657-cross-section.svg (getBBox on
@@ -1996,7 +2367,357 @@ document.getElementById('railToggle').addEventListener('click', ()=>{
   document.body.classList.contains('rail-open') ? closeIndexRail() : openIndexRail();
 });
 document.getElementById('railClose').addEventListener('click', closeIndexRail);
-function layoutAll(){ layoutRail(); layoutDesktopControls(); layoutTopBar(); }
+// Physics reference sheet open/close (2026-09-30, rebuilt again -- see the
+// CSS comment on #psFull for the full history). Same body-class-toggle
+// shape as rail-open above; #psFull and its visibility:hidden CSS on the
+// real controls do the actual swap. This flips the class, updates
+// #titleblock's TEXT to match (position/border/font untouched, only the
+// words change), clones every real part shown into its pf-/pr- targets,
+// and recomputes the three leader lines against their real anchors.
+const TB_SUB_DEFAULT = document.querySelector('.tb-title-sub').textContent;
+const TB_PROV_DEFAULT = document.querySelector('.tb-provenance').textContent;
+// Clones a real part's CURRENT rendered state -- transform and content --
+// verbatim into a fresh target element, classes and all, so every part on
+// this sheet keeps its own real color/style instead of a redrawn stand-in
+// (2026-09-30, Franz: "use our actual models... don't use the sketch parts
+// we tried making"). Safe to call once per open: the real controls (and
+// their generators) sit behind visibility:hidden while the sheet is open,
+// so nothing regenerates out from under the clone until it's closed again.
+// The coil's real vertical extent shifts with whatever pose the sheet is
+// showing -- topY moves with stroke, botY with seatOffset -- so a fixed
+// crop can't stay correct across reference poses (2026-09-30, Franz: "the
+// spring is cut off on the bottom too and not starting up in its card",
+// after the pose changed to 11psig). This measures the CLONED content's
+// own real bbox each time, after cloning, and frames it with a fixed
+// margin -- computed, not guessed, same spirit as the leader lines.
+function fitSpringRowViewBox(){
+  const back = document.getElementById('pr-spring-back').getBBox();
+  const front = document.getElementById('pr-spring-front').getBBox();
+  const x0 = Math.min(back.x, front.x), y0 = Math.min(back.y, front.y);
+  const x1 = Math.max(back.x+back.width, front.x+front.width);
+  const y1 = Math.max(back.y+back.height, front.y+front.height);
+  const pad = 20;
+  document.getElementById('prSpringSvg').setAttribute('viewBox',
+    `${(x0-pad).toFixed(1)} ${(y0-pad).toFixed(1)} ${(x1-x0+pad*2).toFixed(1)} ${(y1-y0+pad*2).toFixed(1)}`);
+}
+// Same fix, same reason, for the chamber row (2026-09-30, Franz: "I still
+// don't see the entire diaphragm plate or diaphragm in the casing
+// figure") -- pr-chamber-plate-wrap's translate at the 11psig pose moves
+// the plate/diaphragm well outside a viewBox sized for their rest
+// position. getBBox() ignores an element's own transform (it's a LOCAL
+// bbox), so the plate wrap's translateY has to be added back in by hand --
+// bboxWithTransform does that for any single translate(x,y) transform,
+// which is the only kind this file ever puts on a part.
+function bboxWithTransform(el){
+  const b = el.getBBox();
+  const t = el.getAttribute('transform');
+  const m = t && t.match(/translate\(([-\d.]+)[, ]+([-\d.]+)\)/);
+  const dx = m ? +m[1] : 0, dy = m ? +m[2] : 0;
+  return {x:b.x+dx, y:b.y+dy, width:b.width, height:b.height};
+}
+function fitChamberRowViewBox(){
+  const upper = document.getElementById('pr-chamber-upper').getBBox();
+  const plate = bboxWithTransform(document.getElementById('pr-chamber-plate-wrap'));
+  const dia = document.getElementById('pr-chamber-dia').getBBox();
+  const x0 = Math.min(upper.x, plate.x, dia.x), y0 = Math.min(upper.y, plate.y, dia.y);
+  const x1 = Math.max(upper.x+upper.width, plate.x+plate.width, dia.x+dia.width);
+  const y1 = Math.max(upper.y+upper.height, plate.y+plate.height, dia.y+dia.height);
+  const pad = 20;
+  document.getElementById('prChamberSvg').setAttribute('viewBox',
+    `${(x0-pad).toFixed(1)} ${(y0-pad).toFixed(1)} ${(x1-x0+pad*2).toFixed(1)} ${(y1-y0+pad*2).toFixed(1)}`);
+}
+// The upper casing's real interior ceiling, along its own centerline --
+// measured, not guessed (2026-09-30): isPointInFill() scanned down p-upper
+// at x=742.5 and found solid material y30-89, empty from y90 on (see the
+// working-model session notes for the actual scan). This is the real wall
+// the diaphragm chamber's open volume starts from.
+const CHAMBER_CEILING_Y = 90;
+// Points the two callouts whose anchors move with the model's own pose
+// (2026-09-30, Franz: Fig. 1.1 should point "to the empty chamber between
+// the diaphragm plate and the upper casing", Fig. 1.2 "to the middle of
+// the spring") at real, freshly-measured positions instead of one static
+// guess each -- both the chamber gap and the coil's own extent change with
+// whatever pose the sheet is showing (see setAdj/setPress above), so a
+// fixed cy would drift out of place exactly like the row crops already did
+// twice. Call after the spring and plate are cloned into the left column.
+function positionDynamicAnchors(){
+  const plate = bboxWithTransform(document.getElementById('pf-plate-wrap'));
+  const chamberMidY = (CHAMBER_CEILING_Y + plate.y) / 2;
+  document.getElementById('pf-anchor-chamber').setAttribute('cy', chamberMidY.toFixed(1));
+  const back = document.getElementById('pf-spring-back').getBBox();
+  const front = document.getElementById('pf-spring-front').getBBox();
+  const y0 = Math.min(back.y, front.y), y1 = Math.max(back.y+back.height, front.y+front.height);
+  document.getElementById('pf-anchor-spring').setAttribute('cy', ((y0+y1)/2).toFixed(1));
+}
+function cloneRealPart(sourceId, targetId){
+  const src = document.getElementById(sourceId);
+  const tgt = document.getElementById(targetId);
+  const t = src.getAttribute('transform');
+  if (t) tgt.setAttribute('transform', t); else tgt.removeAttribute('transform');
+  if (src.tagName === 'path'){ tgt.setAttribute('d', src.getAttribute('d')); return; }
+  tgt.innerHTML = src.innerHTML;
+  // De-duplicate clipPath ids (found via the adjuster's threads rendering
+  // invisible with no error): cloning sp-adj-g also clones its
+  // <clipPath id="adjclip">, and with the original plus two clones (left
+  // column + right column) all sharing that id, clip-path:url(#adjclip)
+  // resolves ambiguously -- Chrome picked a reference that clipped the
+  // thread lines away entirely, silently. Rename this clone's own
+  // clipPath(s) -- and the one element in this clone that points at each
+  // -- to a name unique to this target, so every clone owns an
+  // unambiguous clip.
+  tgt.querySelectorAll('clipPath[id]').forEach(cp=>{
+    const oldId = cp.id, newId = targetId+'-'+oldId;
+    cp.id = newId;
+    tgt.querySelectorAll(`[clip-path="url(#${oldId})"]`).forEach(el=>
+      el.setAttribute('clip-path', `url(#${newId})`));
+  });
+}
+function openPhysicsSheet(){
+  if (document.body.classList.contains('animator-open')) closeAnimator();
+  document.body.classList.add('physics-open');
+  // Pose the real model at the fleet's own calibrated top-of-travel (2026-
+  // 09-30, Franz: "open it to the 11psi distance to show the open chamber
+  // for our area") before cloning anything, then put it back exactly how
+  // the user left it -- safe because the real #asm is visibility:hidden
+  // for the whole time physics is open, so this never flickers on screen.
+  // CAL_ADJ is the same real calibration constant the adjuster's own snap
+  // uses; 11 is the fleet's real top-of-bench-set spec (matches the
+  // nameplate's own printed "3-11"). Every part below is cloned from this
+  // ONE pose so the assembly stays mechanically consistent -- spring
+  // compressed, stem/plate/diaphragm at full 0.75in travel together,
+  // rather than some parts at rest and others at travel.
+  const _savedAdj = ADJ, _savedPress = PRESS;
+  setAdj(CAL_ADJ); setPress(11); update();
+  // Left column: the full assembly, every part this model actually draws.
+  cloneRealPart('sp-spring-back', 'pf-spring-back');
+  cloneRealPart('sp-spring-front', 'pf-spring-front');
+  cloneRealPart('g-stem', 'pf-stem');
+  cloneRealPart('sp-adj-g', 'pf-adj-g');
+  cloneRealPart('sp-seat-g', 'pf-seat-g');
+  cloneRealPart('g-plate', 'pf-plate-wrap');
+  cloneRealPart('p-dia', 'pf-dia');
+  positionDynamicAnchors();
+  // Right column: the same generated parts, individually cropped -- plus
+  // the rolling diaphragm itself, which the chamber row was missing
+  // entirely until Franz caught it, and the plate's own travel transform,
+  // without which the chamber row's plate would always draw at rest no
+  // matter what pose the rest of the sheet is showing.
+  cloneRealPart('sp-spring-back', 'pr-spring-back');
+  cloneRealPart('sp-spring-front', 'pr-spring-front');
+  fitSpringRowViewBox();
+  cloneRealPart('sp-adj-g', 'pr-adj-g');
+  cloneRealPart('p-dia', 'pr-chamber-dia');
+  cloneRealPart('g-plate', 'pr-chamber-plate-wrap');
+  fitChamberRowViewBox();
+  setAdj(_savedAdj); setPress(_savedPress); update();
+  document.querySelector('.tb-title-sub').textContent = 'Physics Reference — Actuator Mechanics';
+  document.querySelector('.tb-provenance').textContent = 'The same real model, in section';
+  // "click again to close" (2026-09-30, Franz -- replaces the separate
+  // Back-to-schematic button) has to be discoverable, not just possible --
+  // the label itself says what a second click does, color/weight are
+  // reinforcement on top of that, not the whole signal.
+  const link = document.getElementById('physicsRefLink');
+  link.textContent = 'Close Physics'; link.classList.add('active');
+  layoutPhysicsLeaders();
+}
+function closePhysicsSheet(){
+  document.body.classList.remove('physics-open');
+  document.querySelector('.tb-title-sub').textContent = TB_SUB_DEFAULT;
+  document.querySelector('.tb-provenance').textContent = TB_PROV_DEFAULT;
+  const link = document.getElementById('physicsRefLink');
+  link.textContent = 'Physics'; link.classList.remove('active');
+}
+document.getElementById('physicsRefLink').addEventListener('click', ()=>
+  document.body.classList.contains('physics-open') ? closePhysicsSheet() : openPhysicsSheet());
+// Animator (2026-09-30, Phase 1 -- Franz: a workspace for authoring the
+// narration rows + per-row highlight checklist, "so I can kind of fiddle
+// and make a thing", with live preview against the REAL model instead of
+// a mockup or a cloned snapshot). Friendly labels map onto the real
+// FOCUSABLE ids this schematic already keys its own dim/highlight
+// behavior off of -- the checklist is never free text, so nothing here
+// can name a part the live focus() function doesn't already know.
+const ANIM_PARTS = [
+  {label:'Upper casing', ids:['p-upper']},
+  {label:'Lower casing', ids:['p-lower']},
+  {label:'Diaphragm plate', ids:['g-plate']},
+  {label:'Diaphragm', ids:['p-dia']},
+  {label:'Spring', ids:SPRING},
+  {label:'Spring seat', ids:['sp-seat-g']},
+  {label:'Lower spring adjuster', ids:['sp-adj-g']},
+  {label:'Stem', ids:['g-stem']},
+  {label:'Yoke', ids:['p-yoke']},
+  {label:'Travel scale', ids:['g-scale']},
+];
+function partIdsForLabel(label){ const p = ANIM_PARTS.find(x=>x.label===label); return p ? p.ids : []; }
+function newAnimRow(){ return {id:'r'+Math.random().toString(36).slice(2,9), text:'', items:{}}; }
+// localStorage only, deliberately (2026-09-30): this is the "fiddle and
+// see it work" phase, not the real save/edit/trash/publish pipeline --
+// just enough persistence that a draft survives a reload while iterating.
+function loadAnimRows(){
+  try{ const s = localStorage.getItem('657-animator-rows'); if (s){ const r = JSON.parse(s); if (r.length) return r; } }
+  catch(e){}
+  return [newAnimRow()];
+}
+function saveAnimRows(){ try{ localStorage.setItem('657-animator-rows', JSON.stringify(ANIM_ROWS)); }catch(e){} }
+let ANIM_ROWS = loadAnimRows();
+function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+// Row number is computed from array position at render time, never stored
+// (2026-09-30, Franz: "numbering or ability to collapse each row") -- it's
+// always right even after a reorder or a delete, with nothing to keep in
+// sync by hand. Collapsed rows show a one-line preview instead of the full
+// textarea/checklist, so a long list of rows stays scannable.
+function renderAnimRows(){
+  document.getElementById('anRows').innerHTML = ANIM_ROWS.map((row,idx) => {
+    const collapsed = !!row.collapsed;
+    const preview = escapeHtml((row.text||'').trim().slice(0,70));
+    return `
+    <div class="an-row" data-row="${row.id}">
+      <div class="an-row-head">
+        <button type="button" class="an-collapse" data-action="collapse" title="${collapsed?'Expand':'Collapse'} row">${collapsed?'&#9656;':'&#9662;'}</button>
+        <span class="an-row-num">Row ${idx+1}</span>
+        ${collapsed ? `<span class="an-row-preview">${preview || '<em>(no text yet)</em>'}</span>` : ''}
+        <div class="an-row-move">
+          <button type="button" data-action="moveup" title="Move up"${idx===0?' disabled':''}>&#8593;</button>
+          <button type="button" data-action="movedown" title="Move down"${idx===ANIM_ROWS.length-1?' disabled':''}>&#8595;</button>
+        </div>
+        <button type="button" class="an-row-delete" data-action="delete" title="Delete row">&times;</button>
+      </div>
+      ${collapsed ? '' : `
+      <div class="an-row-body">
+        <div class="an-row-text">
+          <textarea data-field="text" placeholder="Narration text for this beat...">${escapeHtml(row.text)}</textarea>
+          <div class="an-row-actions">
+            <button type="button" data-action="preview">Preview</button>
+            <button type="button" data-action="play">Play sequence</button>
+          </div>
+        </div>
+        <div class="an-row-checklist">
+          ${ANIM_PARTS.map((p,i) => { const ord = row.items[p.label]; const uid = `an-${row.id}-${i}`;
+            // Fixing a real bug Franz caught (2026-09-30): "I can only
+            // checkbox a couple of things, the rest don't work." Both
+            // inputs were nested inside ONE <label>, which browsers handle
+            // inconsistently -- a click on the number input could
+            // re-trigger the label's own implicit activation of the
+            // checkbox, so only some items behaved depending on exactly
+            // where a click landed. Checkbox and number input are siblings
+            // now, each its own control; the label only wraps the text and
+            // points at the checkbox by id, so it can't reach the number
+            // input at all.
+            return `<div class="an-item">
+              <input type="checkbox" id="${uid}" data-field="check" data-label="${p.label}" ${ord!=null?'checked':''}>
+              <label for="${uid}">${p.label}</label>
+              <input type="number" min="1" max="9" data-field="order" data-label="${p.label}"
+                value="${ord!=null?ord:''}" placeholder="#" ${ord!=null?'':'disabled'}>
+            </div>`; }).join('')}
+        </div>
+      </div>`}
+    </div>`; }).join('');
+}
+function animRowById(id){ return ANIM_ROWS.find(r=>r.id===id); }
+document.getElementById('anRows').addEventListener('input', e=>{
+  const rowEl = e.target.closest('.an-row'); if (!rowEl) return;
+  const row = animRowById(rowEl.dataset.row); if (!row) return;
+  if (e.target.dataset.field==='text'){ row.text = e.target.value; saveAnimRows(); }
+  else if (e.target.dataset.field==='order'){
+    const v = +e.target.value; if (v>0) row.items[e.target.dataset.label] = v;
+    saveAnimRows();
+  }
+});
+document.getElementById('anRows').addEventListener('change', e=>{
+  const rowEl = e.target.closest('.an-row'); if (!rowEl) return;
+  const row = animRowById(rowEl.dataset.row); if (!row) return;
+  if (e.target.dataset.field==='check'){
+    const label = e.target.dataset.label;
+    if (e.target.checked){ if (row.items[label]==null) row.items[label] = Object.keys(row.items).length+1; }
+    else delete row.items[label];
+    saveAnimRows(); renderAnimRows();
+  }
+});
+document.getElementById('anRows').addEventListener('click', e=>{
+  const rowEl = e.target.closest('.an-row'); if (!rowEl) return;
+  const row = animRowById(rowEl.dataset.row); if (!row) return;
+  const action = e.target.dataset.action; if (!action) return;
+  if (action==='preview'){ previewAnimRow(row); return; }
+  if (action==='play'){ playAnimRowSequence(row); return; }
+  const idx = ANIM_ROWS.indexOf(row);
+  if (action==='delete') ANIM_ROWS = ANIM_ROWS.filter(r=>r.id!==row.id);
+  else if (action==='collapse') row.collapsed = !row.collapsed;
+  else if (action==='moveup' && idx>0) [ANIM_ROWS[idx-1],ANIM_ROWS[idx]] = [ANIM_ROWS[idx],ANIM_ROWS[idx-1]];
+  else if (action==='movedown' && idx<ANIM_ROWS.length-1) [ANIM_ROWS[idx],ANIM_ROWS[idx+1]] = [ANIM_ROWS[idx+1],ANIM_ROWS[idx]];
+  else return;
+  saveAnimRows(); renderAnimRows();
+});
+document.getElementById('anAddRow').addEventListener('click', ()=>{
+  ANIM_ROWS.push(newAnimRow()); saveAnimRows(); renderAnimRows();
+});
+function previewAnimRow(row){ focus(Object.keys(row.items).flatMap(partIdsForLabel)); }
+// Steps through the row's order groups on a fixed delay -- purely so Franz
+// can SEE a sequence work before any real timing exists; once per-row
+// audio segments exist (a later phase), each step's delay comes from the
+// real segment duration instead of this placeholder 1.2s.
+function playAnimRowSequence(row){
+  const groups = {};
+  Object.entries(row.items).forEach(([label,ord])=>{ (groups[ord] = groups[ord]||[]).push(label); });
+  const orders = Object.keys(groups).map(Number).sort((a,b)=>a-b);
+  if (!orders.length){ focus([]); return; }
+  let revealed = [];
+  orders.forEach((ord,i)=>{
+    setTimeout(()=>{ revealed = revealed.concat(groups[ord]); focus(revealed.flatMap(partIdsForLabel)); }, i*1200);
+  });
+}
+function openAnimator(){
+  if (document.body.classList.contains('physics-open')) closePhysicsSheet();
+  // Collapse the rail instead of forcing it open, unlike Physics (2026-09-
+  // 30, Franz: "more real estate, like it collapsing the vertical bar
+  // pane") -- frees 330-58=272px for genuinely usable writing/checklist
+  // width (see --animw and the .fig padding-right rule above). "Animator"
+  // lives in that same rail, so #anClose (wired below) is the real way
+  // back out now, not just a convenience next to it.
+  closeIndexRail();
+  document.body.classList.add('animator-open');
+  const link = document.getElementById('animatorRefLink');
+  link.textContent = 'Close Animator'; link.classList.add('active');
+  renderAnimRows();
+}
+function closeAnimator(){
+  document.body.classList.remove('animator-open');
+  const link = document.getElementById('animatorRefLink');
+  link.textContent = 'Animator'; link.classList.remove('active');
+  focus();
+}
+document.getElementById('animatorRefLink').addEventListener('click', ()=>
+  document.body.classList.contains('animator-open') ? closeAnimator() : openAnimator());
+document.getElementById('anClose').addEventListener('click', closeAnimator);
+// Three leader lines, each computed in real screen space (getBoundingClientRect
+// on the actual anchor marker and the callout box), not hand-guessed
+// coordinates -- stays correct at any viewport width and regardless of how
+// much the model's own aspect ratio letterboxes inside #psLeftCol. Folded
+// into layoutAll()'s resize pipeline below; a no-op (guarded at the top)
+// whenever the sheet isn't open.
+function layoutPhysicsLeaders(){
+  if (!document.body.classList.contains('physics-open')) return;
+  const colRect = document.getElementById('psLeftCol').getBoundingClientRect();
+  const pairs = [
+    ['pf-anchor-chamber', 'psCalloutChamber', 'psLeaderChamber'],
+    ['pf-anchor-spring', 'psCalloutSpring', 'psLeaderSpring'],
+    ['pf-anchor-adjuster', 'psCalloutAdjuster', 'psLeaderAdjuster'],
+  ];
+  pairs.forEach(([anchorId, calloutId, pathId])=>{
+    const a = document.getElementById(anchorId).getBoundingClientRect();
+    const c = document.getElementById(calloutId).getBoundingClientRect();
+    const ax = a.left + a.width/2 - colRect.left, ay = a.top + a.height/2 - colRect.top;
+    // land on the callout's nearest edge point to the anchor, not its
+    // center, so the leader meets the card at its rim like a real one
+    const cx = Math.max(c.left, Math.min(a.left, c.right)) - colRect.left;
+    const cy = Math.max(c.top, Math.min(a.top, c.bottom)) - colRect.top;
+    const dx = cx-ax, dy = cy-ay, len = Math.hypot(dx,dy) || 1;
+    const px = -dy/len, py = dx/len, bowAmt = Math.min(30, len*0.15);
+    const qx = (ax+cx)/2 + px*bowAmt, qy = (ay+cy)/2 + py*bowAmt;
+    document.getElementById(pathId).setAttribute('d',
+      `M${ax.toFixed(1)},${ay.toFixed(1)} Q${qx.toFixed(1)},${qy.toFixed(1)} ${cx.toFixed(1)},${cy.toFixed(1)}`);
+  });
+}
+function layoutAll(){ layoutRail(); layoutDesktopControls(); layoutTopBar(); layoutPhysicsLeaders(); }
 window.addEventListener('resize', layoutAll);
 window.addEventListener('orientationchange', layoutAll);
 if (window.visualViewport) window.visualViewport.addEventListener('resize', layoutAll);
@@ -2032,22 +2753,53 @@ requestAnimationFrame(layoutAll);
   });
 })();
 // ================= scripted SOP playback =================
-const TIMING = [{"start": 0.0, "duration": 7.88, "text": "Here's how a 657 actuator works. Air enters the upper casing and presses down on the diaphragm and the diaphragm plate.", "section": "How the Actuator Works"}, {"start": 8.33, "duration": 5.04, "text": "As the diaphragm plate presses down, it compresses the spring against the spring seat.", "section": "How the Actuator Works"}, {"start": 13.82, "duration": 4.08, "text": "Air in, the stem travels down. Air out, the spring returns everything up.", "section": "How the Actuator Works"}, {"start": 18.35, "duration": 11.76, "text": "Tightening the spring adjuster raises the spring seat and compresses the spring upwards \u2014 before any air is applied at all. That is initial spring compression. Loosening the adjuster lowers the seat and backs it off.", "section": "How the Actuator Works"}, {"start": 30.56, "duration": 18.44, "text": "Bench set is that initial compression. For our Size 30: bench set 3-11 psig, rated travel 3/4 inch \u2014 meaning travel starts at exactly 3 and finishes at exactly 11. It's set with zero valve forces on the actuator \u2014 and here's the whole procedure.", "section": "How the Actuator Works"}, {"start": 49.9, "duration": 8.0, "text": "Prove it on the bench. Actuator off the valve, stem at the top of its travel, an adjustable air supply rigged to the diaphragm.", "section": "Spring Verification"}, {"start": 58.35, "duration": 8.52, "text": "Raise pressure from zero. The stem's first movement should come at exactly 3 psig \u2014 not before, not after.", "section": "Spring Verification"}, {"start": 67.32, "duration": 10.48, "text": "Starts above 3? Too much preload \u2014 loosen the adjuster. Below 3? Too little \u2014 tighten it in. Recheck from zero until first movement lands at exactly 3.", "section": "Spring Verification"}, {"start": 78.25, "duration": 15.28, "text": "Raise pressure to exactly 11 psig \u2014 not past it. Off the valve, nothing stops travel at rated: keep adding air and the plate keeps moving until it lands on the lower casing. Mark where the stem's end sits at 11.", "section": "Spring Verification"}, {"start": 93.98, "duration": 8.08, "text": "Lower back to 3, and measure from your mark to the stem's end. It must equal 3/4 inch \u2014 the nameplate rated travel.", "section": "Spring Verification"}, {"start": 102.51, "duration": 7.16, "text": "If it matches, bench set is complete. Off slightly? Spring tolerance is the usual cause. Out of tolerance \u2014 contact Emerson.", "section": "Spring Verification"}, {"start": 110.57, "duration": 2.24, "text": "Now the valve enters the picture.", "section": "Installing the Stem Connector"}, {"start": 113.26, "duration": 2.12, "text": "Push the valve stem down to the seat.", "section": "Installing the Stem Connector"}, {"start": 115.83, "duration": 5.6, "text": "With the plug seated, mark the valve stem exactly 3/4 inch below the actuator stem's end.", "section": "Installing the Stem Connector"}, {"start": 121.88, "duration": 12.56, "text": "Actuate down to your mark, within a sixteenth of an inch. Travel is set off this measurement, not off bench-set pressure \u2014 though the pressure should land near 11. If it doesn't, recheck the spring.", "section": "Installing the Stem Connector"}, {"start": 134.89, "duration": 7.0, "text": "Clamp the connector halves over both stems \u2014 each stem engaged by at least one full stem diameter \u2014 and tighten evenly.", "section": "Installing the Stem Connector"}, {"start": 142.34, "duration": 4.72, "text": "Run the valve stem locknuts up until the travel indicator disk contacts the connector.", "section": "Installing the Stem Connector"}, {"start": 147.51, "duration": 7.36, "text": "Stroke open to closed, verify 3/4 inch of travel, and align the indicator scale to the disk with the valve closed.", "section": "Installing the Stem Connector"}];
+const TIMING = [{"start": 0.0, "duration": 4.92, "text": "The Fisher 657 size 30 is a direct-acting, pneumatic actuator.", "section": "How the Actuator Works"}, {"start": 5.37, "duration": 7.56, "text": "Air entering the upper diaphragm casing expands the diaphragm, pushing the diaphragm plate and attached stem downward.", "section": "How the Actuator Works"}, {"start": 13.38, "duration": 6.16, "text": "This downward motion compresses the internal spring against the spring seat, which is supported by the actuator yoke.", "section": "How the Actuator Works"}, {"start": 21.04, "duration": 6.16, "text": "Before connecting the actuator to a valve body, a technician must tighten the spring adjuster through the yoke housing.", "section": "How the Actuator Works"}, {"start": 27.65, "duration": 11.64, "text": "This pushes the spring seat upward, compressing the spring between the seat and the diaphragm plate \u2014 which, with no air applied, sits at its upper travel stop against the upper diaphragm casing.", "section": "How the Actuator Works"}, {"start": 39.74, "duration": 6.48, "text": "This initial spring compression determines the pressure at which the stem begins to move and establishes what is called bench set.", "section": "How the Actuator Works"}, {"start": 46.67, "duration": 12.0, "text": "Tightening the spring adjuster raises the spring seat and compresses the spring upwards \u2014 before any air is applied at all. That is initial spring compression. Loosening the adjuster lowers the seat and backs it off.", "section": "How the Actuator Works"}, {"start": 59.12, "duration": 17.96, "text": "Bench set is that initial compression. For our Size 30: bench set 3-11 psig, rated travel 3/4 inch \u2014 meaning travel starts at exactly 3 and finishes at exactly 11. It's set with zero valve forces on the actuator \u2014 and here's the whole procedure.", "section": "How the Actuator Works"}, {"start": 77.98, "duration": 8.2, "text": "Prove it on the bench. Actuator off the valve, stem at the top of its travel, an adjustable air supply rigged to the diaphragm.", "section": "Spring Verification"}, {"start": 86.63, "duration": 7.44, "text": "Raise pressure from zero. The stem's first movement should come at exactly 3 psig \u2014 not before, not after.", "section": "Spring Verification"}, {"start": 94.52, "duration": 10.36, "text": "Starts above 3? Too much preload \u2014 loosen the adjuster. Below 3? Too little \u2014 tighten it in. Recheck from zero until first movement lands at exactly 3.", "section": "Spring Verification"}, {"start": 105.33, "duration": 14.52, "text": "Raise pressure to exactly 11 psig \u2014 not past it. Off the valve, nothing stops travel at rated: keep adding air and the plate keeps moving until it lands on the lower casing. Mark where the stem's end sits at 11.", "section": "Spring Verification"}, {"start": 120.3, "duration": 8.12, "text": "Lower back to 3, and measure from your mark to the stem's end. It must equal 3/4 inch \u2014 the nameplate rated travel.", "section": "Spring Verification"}, {"start": 128.87, "duration": 7.8, "text": "If it matches, bench set is complete. Off slightly? Spring tolerance is the usual cause. Out of tolerance \u2014 contact Emerson.", "section": "Spring Verification"}, {"start": 137.57, "duration": 2.08, "text": "Now the valve enters the picture.", "section": "Installing the Stem Connector"}, {"start": 140.1, "duration": 2.2, "text": "Push the valve stem down to the seat.", "section": "Installing the Stem Connector"}, {"start": 142.75, "duration": 6.2, "text": "With the plug seated, mark the valve stem exactly 3/4 inch below the actuator stem's end.", "section": "Installing the Stem Connector"}, {"start": 149.4, "duration": 13.16, "text": "Actuate down to your mark, within a sixteenth of an inch. Travel is set off this measurement, not off bench-set pressure \u2014 though the pressure should land near 11. If it doesn't, recheck the spring.", "section": "Installing the Stem Connector"}, {"start": 163.01, "duration": 7.16, "text": "Clamp the connector halves over both stems \u2014 each stem engaged by at least one full stem diameter \u2014 and tighten evenly.", "section": "Installing the Stem Connector"}, {"start": 170.62, "duration": 4.76, "text": "Run the valve stem locknuts up until the travel indicator disk contacts the connector.", "section": "Installing the Stem Connector"}, {"start": 175.83, "duration": 7.72, "text": "Stroke open to closed, verify 3/4 inch of travel, and align the indicator scale to the disk with the valve closed.", "section": "Installing the Stem Connector"}];
 const audio = document.getElementById('pb-audio');
 const capEl = document.getElementById('cap');
 let playing=false, curSeg=-1, seg8sw=false, firedCues=[];
 // Desktop's table of contents (round 12). TIMING's own `section` field only
-// splits the 18 narrated segments into 3 groups (segments 0-4 are ALL "How
-// the Actuator Works"), but Franz wants segments 0-4 split further --
-// "Principle of Operation comes first, but is separate" from "Set the
-// Spring Adjuster" -- since 0-2 explain the general mechanism and 3-4 are
-// specifically about the adjuster/bench-set. That distinction doesn't exist
-// in the narration data, so these 4 topics are explicit rather than derived.
+// splits the narrated segments into 3 groups ("How the Actuator Works" /
+// "Spring Verification" / "Installing the Stem Connector"), but Franz wants
+// the first group split further -- "Principle of Operation comes first, but
+// is separate" from "Set the Spring Adjuster". That distinction doesn't
+// exist in the narration data, so these 4 topics are explicit rather than
+// derived.
+// Re-indexed 2026-09-30 (Franz: "add all the physics for the diaphragm
+// pressure and the spring adjuster" was reverted the same day (2026-09-30,
+// Franz: "I made a mistake saying to include the physics") -- the physics
+// numbers (46in^2, 490lbf/in, 138/506lbf, 12 TPI, 3.38 turns) are GONE from
+// "Principle of Operation", replaced with Franz's own plainer dictated
+// script (no numbers at all: intro, air pushes the plate/stem down, spring
+// compresses against the seat/yoke, then tightening the adjuster before
+// connecting to the valve sets preload and establishes bench set).
+// Restructured again 2026-09-30, round 3 (Franz: "the overall animation is
+// exactly the same length... there wasn't much spacing inserted... I need
+// you to have beats"). A fraction-based cue can only rearrange WHEN the
+// visuals react within a segment's own fixed, already-spoken-length audio
+// -- it can't manufacture real silence. A real "beat" (his word, "like in
+// a play") requires an actual pause in the audio, which only exists at
+// paragraph/segment boundaries (PAUSE_S). So "How the Actuator Works" was
+// split into more, shorter paragraphs -- one idea per beat -- instead of
+// relying on in-segment timing tricks, and the content itself grew too
+// (added, at Franz's request: tightening the adjuster pushes the spring
+// seat up, compressing the spring between the seat and the diaphragm
+// plate, which rests at its upper travel stop against the upper
+// diaphragm casing with no air applied). Indices below are taken from the
+// REAL regenerated narration/output/657/timing.json (21 segments).
+// "Principle of Operation" is now 6 real segments (0-5): intro / air
+// pushes the plate+stem down / spring compresses against the seat+yoke /
+// tighten the adjuster / that pushes the seat up against the plate at its
+// upper stop / bench set established. "Set the Spring Adjuster" is
+// unchanged text, still 2 segments (6-7). Spring Verification (8-13, 6
+// segments) and Installing the Stem Connector (14-20, 7 segments) are
+// untouched text, just shifted 2 segments later than the prior round
+// because "Principle of Operation" picked up 2 extra real segments from
+// the new paragraph breaks.
 const SECTIONS = [
-  {name:'Principle of Operation', startIdx:0, endIdx:2},
-  {name:'Set the Spring Adjuster', startIdx:3, endIdx:4},
-  {name:'Verify Bench Set to Rated Travel', startIdx:5, endIdx:10},
-  {name:'Set Valve Travel', startIdx:11, endIdx:17},
+  {name:'Principle of Operation', startIdx:0, endIdx:5},
+  {name:'Set the Spring Adjuster', startIdx:6, endIdx:7},
+  {name:'Verify Bench Set to Rated Travel', startIdx:8, endIdx:13},
+  {name:'Set Valve Travel', startIdx:14, endIdx:20},
 ];
 let activeSection = -1;   // which SECTIONS entry is currently playing, -1 = none/mobile's full playback
 let playEndTime = null;   // section-bounded playback stops here; null = play to the end (mobile's button)
@@ -2258,41 +3010,139 @@ function benchReset(){
   PB.connected=false; PB.connShown=false; PB.nutsDy=0; PB.scaleDy=0;
   setValve(false); showTravelMark(false); showVerMark(false); setAdj(ADJ_RESET); setPress(0); hl(); focus();
 }
+// Re-choreographed 2026-09-30, twice in one day: first for the physics
+// version (add force/spring-rate/preload numbers), then reverted the same
+// day (Franz: "I made a mistake saying to include the physics") back to
+// his own plainer dictated script -- corrected against the REAL regenerated
+// narration/output/657/timing.json (19 segments). Every entry below is
+// indexed 1:1 against the real timing.json text. Everything from "prove it
+// on the bench" onward is untouched narration text, unchanged from before,
+// just naturally shifted later in this array by the 2 extra segments
+// "Principle of Operation" now carries versus the original pre-physics
+// baseline (3 paragraphs, but one of them splits into 2 segments -> 4).
 const CHOREO = [
- // 1. air enters upper casing, presses diaphragm + plate
- {enter(){ benchReset(); },
-  cues:[[0.18,()=>focus('p-upper')],[0.55,()=>focus('p-dia')],
-        [0.8,()=>focus('p-dia','g-plate')]]},
- // 2. plate presses down, compresses spring against seat (motion happens)
- {enter(){ focus('g-plate',SPRING,'sp-seat-g'); },
-  cues:[[0.55,()=>focus(SPRING,'sp-seat-g')]],
-  tick(p){ setPress((8*Math.min(1,p*1.15)).toFixed(2)); }},
- // 3. air in, stem down; air out, spring returns
- {enter(){ focus('g-stem',SPRING); },
-  cues:[[0.5,()=>focus(SPRING,'g-stem','g-plate','p-dia')]],
-  tick(p){ let v; if(p<0.4) v=11*(p/0.4); else if(p<0.52) v=11;
-           else v=Math.max(0,11*(1-(p-0.52)/0.4)); setPress(v.toFixed(2)); }},
- // 4. adjuster raises seat, compresses spring upwards; loosening backs off
+ // 0. intro, its own beat (own paragraph -> own segment -> a REAL pause on
+ //    both sides, from PAUSE_S). Fully lit the whole time, nothing moves --
+ //    this is the pause itself, not a lead-in to rush past. (Franz,
+ //    2026-09-30 round 3: a fraction-based cue can only rearrange WHEN
+ //    things happen inside one already-spoken segment, it can't invent
+ //    real silence -- "the overall animation is exactly the same length...
+ //    I need you to have beats." So the beat is now a real paragraph break
+ //    with a real audio gap before segment 1 starts, not a held fraction
+ //    inside a combined segment.)
+ {enter(){ benchReset(); focus(); }},
+ // 1. air enters the upper casing, expands the diaphragm, pushes the plate
+ //    + stem down -- its own beat, so safe to narrow right at enter() (the
+ //    real pause from segment 0 already did the separating work; nothing
+ //    here needs to wait on a lead-in). "expands the diaphragm," is done by
+ //    0.525 (char ratio) -- 0.6 adds the plate+stem a beat after that,
+ //    once "pushing the diaphragm plate and attached stem downward" lands.
+ {enter(){ focus('p-upper','p-dia'); },
+  cues:[[0.6,()=>focus('p-dia','g-plate','g-stem')]],
+  tick(p){ setPress((3*Math.min(1,p*1.1)).toFixed(2)); }},
+ // 2. that motion compresses the spring against the seat, supported by the
+ //    yoke -- own beat, "spring" is this sentence's own 6th word so showing
+ //    it at enter() is in sync, not premature. Round 4 (Franz, 2026-09-30):
+ //    the seat must be its OWN introduction, not bundled with the yoke.
+ //    Round 5 correction, same day: "when it says the action compress the
+ //    spring downward against the spring seat, the spring seat is not
+ //    focused. It needs to be focused shortly before it is mentioned" --
+ //    this is the same motion-leads-the-words case as segment 4's "pushes
+ //    the spring seat upward" (the compression is happening AGAINST the
+ //    seat, an action in progress, not a static fact to confirm after the
+ //    fact), so the seat cue moved from after "spring seat," (0.65) to
+ //    just before the word "seat" starts (0.6) -- 0.5 gives it a shade of
+ //    real lead-in. "yoke" is still the sentence's very last word and is
+ //    still a static fact at that point, so it keeps its own confirm-after
+ //    cue right at the tail (0.97). Also: the spoken "compresses" needs to
+ //    actually SHOW compression continuing, not hold the plate static at
+ //    segment 1's end position -- tick() keeps pressing the plate down a
+ //    little further (3 -> 5psig) through this segment.
+ {enter(){ focus('g-plate','g-stem',SPRING); },
+  cues:[[0.5,()=>focus('g-plate','g-stem',SPRING,'sp-seat-g')],
+        [0.97,()=>focus('g-plate','g-stem',SPRING,'sp-seat-g','p-yoke')]],
+  tick(p){ setPress((3+2*Math.min(1,p*1.2)).toFixed(2)); }},
+ // -- a real "---" beat marker in the source script sits here now (Franz,
+ //    2026-09-30 round 4: "between introducing the yoke, and mentioning
+ //    'before connecting the actuator to a valve body,' should be a longer
+ //    beat"), giving BEAT_PAUSE_S (1.5s, vs. the normal 0.45s) of real
+ //    silence before segment 3 starts -- see generate_narration.py.
+ // 3. before connecting to the valve, a technician must tighten the spring
+ //    adjuster through the yoke housing. Round 4 correction: resetting to
+ //    full-lit here (as a prior round did) was wrong -- "it is not helpful
+ //    to jump to showing the entire actuator as focused again. Take the
+ //    longer beat, and just dim everything else so that it transitions to
+ //    only focusing on the spring adjuster." The long real pause above IS
+ //    the transition; focus narrows straight to the adjuster at enter(),
+ //    arriving on it quietly during the beat rather than waiting for the
+ //    word. The actual turning motion (the ADJ sweep) still waits for
+ //    "tighten" to land (0.61 by ratio; 0.7 is just past it) before moving,
+ //    from the real loosened rest position (ADJ_RESET, held since
+ //    benchReset() back in segment 0) up to the dead-zone boundary (0) --
+ //    "starting to turn it," not yet creating compression. The rest of the
+ //    tightening motion continues into segment 4, where the narration
+ //    describes its effect.
+ {enter(){ setPress(0); focus('sp-adj-g'); },
+  tick(p){ if(p<0.7){ setAdj(ADJ_RESET); return; }
+           const q=(p-0.7)/(1-0.7);
+           setAdj(Math.round(ADJ_RESET+(0-ADJ_RESET)*Math.min(1,q*1.1))); }},
+ // 4. this pushes the spring seat upward, compressing the spring between
+ //    the seat and the diaphragm plate, which rests at its upper travel
+ //    stop against the upper diaphragm casing with no air applied -- new
+ //    content Franz asked to add (2026-09-30 round 3). Round 4 correction:
+ //    the seat shows UP FRONT, right as "this pushes the spring seat
+ //    upward" begins (not after) -- "the spring seat should be focused
+ //    right before mentioning it, to show the adjuster moving the spring
+ //    seat up," since this is a continuous motion the visual should lead
+ //    into, not a static reveal to confirm after the fact. From there the
+ //    full load path builds progressively as each part is actually named:
+ //    "compressing the spring" lands at 0.29 -- 0.38 adds the spring. Round
+ //    6 correction (Franz, 2026-09-30): the plate+diaphragm cue was placed
+ //    after the whole "diaphragm plate" clause finished (0.6) and read as
+ //    late -- "it should focus exactly when saying diaphragm there." The
+ //    word "diaphragm" itself starts at 0.421 by ratio, so the cue moved
+ //    there, landing exactly on the word instead of trailing the full
+ //    clause (Franz: "the adjuster, seat, spring, plate, diaphragm, and
+ //    upper casing should be in focus" -- six parts, not the plate alone).
+ //    The final clause names the upper travel stop against the upper
+ //    casing -- 0.92 adds p-upper, completing all six. Finishes the
+ //    adjuster sweep from segment 3's dead-zone boundary up to CAL_ADJ
+ //    across this whole segment, now actually compressing the spring in
+ //    sync with the seat visibly rising.
+ {enter(){ focus('sp-adj-g','sp-seat-g'); },
+  cues:[[0.38,()=>focus('sp-adj-g','sp-seat-g',SPRING)],
+        [0.421,()=>focus('sp-adj-g','sp-seat-g',SPRING,'g-plate','p-dia')],
+        [0.92,()=>focus('sp-adj-g','sp-seat-g',SPRING,'g-plate','p-dia','p-upper')]],
+  tick(p){ setAdj(Math.round(0+(CAL_ADJ-0)*Math.min(1,p*1.05))); }},
+ // 5. that determines the pressure at which the stem begins to move --
+ //    bench set. Carries the full six-part load path over from segment 4
+ //    (no new jump), holds it, and confirms the nameplate once "bench set"
+ //    is actually said -- the words land at 0.915 by ratio, so the cue is
+ //    at 0.93, just after.
+ {enter(){ focus('sp-adj-g','sp-seat-g',SPRING,'g-plate','p-dia','p-upper'); },
+  cues:[[0.93,()=>hl('np-benchset')]]},
+ // 6. tightening raises the seat and compresses the spring upwards before
+ //    any air is applied; loosening backs it off -- unchanged text
  {enter(){ setPress(0); focus('sp-adj-g','sp-seat-g',SPRING); },
   tick(p){ let a; if(p<0.3) a=20*(p/0.3); else if(p<0.5) a=20;
            else if(p<0.8) a=20-44*((p-0.5)/0.3); else a=-24;
            setAdj(Math.round(a)); }},
- // 5. bench set defined; nameplate cited
+ // 7. bench set defined; nameplate cited -- unchanged text
  {enter(){ setAdj(0); setPress(0); focus(); },
   cues:[[0.1,()=>hl('np-benchset')],[0.35,()=>hl('np-benchset','np-travel')],
         [0.62,()=>hl('np-benchset','np-travel','np-size')],[0.9,()=>hl()]]},
- // 6. prove it on the bench: off valve, stem at top, air rigged
+ // 8. prove it on the bench: off valve, stem at top, air rigged
  {enter(){ hl(); focus(); pulse('g-stem'); },
   cues:[[0.6,()=>pulse('pressrow')]]},
- // 7. raise from zero, first movement at exactly 3
+ // 9. raise from zero, first movement at exactly 3
  {enter(){ focus('g-stem'); }, tick(p){ setPress((3.4*p).toFixed(2)); }},
- // 8. too tight / too loose diagnosis
+ // 10. too tight / too loose diagnosis
  {enter(){ seg8sw=false; setAdj(12); setPress(0); focus('sp-adj-g','sp-seat-g','g-stem'); },
   tick(p){ if(p<0.45){ setPress((6*p/0.45).toFixed(2)); }
            else if(p<0.5){ setPress(0); }
            else { if(!seg8sw){ setAdj(-12); seg8sw=true; }
                   setPress((4*(p-0.5)/0.5).toFixed(2)); } }},
- // 9. to exactly 11; over-stroke caution to the casing; mark stem end at 11
+ // 11. to exactly 11; over-stroke caution to the casing; mark stem end at 11
  {enter(){ setAdj(0); setPress(3); focus(); },
   cues:[[0.42,()=>focus('g-plate','p-lower')],[0.72,()=>focus()],
         [0.84,()=>{ showVerMark(true); pulse('g-vermark'); }]],
@@ -2300,29 +3150,29 @@ const CHOREO = [
            else if(p<0.58) v=11+7*((p-0.4)/0.18);
            else if(p<0.74) v=18-7*((p-0.58)/0.16); else v=11;
            setPress(v.toFixed(2)); }},
- // 10. lower to 3, measure mark-to-stem-end = 3/4
+ // 12. lower to 3, measure mark-to-stem-end = 3/4
  {cues:[[0.42,()=>{ showVerBracket(true); }],[0.6,()=>focus('g-stem','g-scale')]],
   tick(p){ if(p<0.4) setPress((11-8*(p/0.4)).toFixed(2)); }},
- // 11. matches -> complete
+ // 13. matches -> complete
  {enter(){ setPress(3); focus(); },
   cues:[[0.25,()=>hl('np-travel')],[0.8,()=>hl()]]},
- // 12. now the valve enters the picture
+ // 14. now the valve enters the picture
  {enter(){ hl(); showVerMark(false); PB.connected=false; PB.connShown=false;
            PB.nutsDy=34; setPress(0); setValve(true); showTravelMark(false);
            focus('g-vgrp','g-valve-sil','g-mount','g-mount-back'); }},
- // 13. push the valve stem down to the seat
+ // 15. push the valve stem down to the seat
  {enter(){ focus('g-vgrp'); pulse('g-vgrp'); }},
- // 14. mark the valve stem 3/4 below the actuator stem end
+ // 16. mark the valve stem 3/4 below the actuator stem end
  {enter(){ focus(); showTravelMark(true); pulse('g-travelmark'); }},
- // 15. actuate down to the mark
+ // 17. actuate down to the mark
  {tick(p){ setPress(Math.min(11,11.4*p).toFixed(2)); }},
- // 16. clamp the connector halves, tighten evenly
+ // 18. clamp the connector halves, tighten evenly
  {enter(){ PB.connShown=true; setValve(true); focus('g-conn','g-stem','g-vgrp'); pulse('g-conn'); },
   cues:[[0.6,()=>{ PB.connected=true; document.getElementById('valve').checked=true;
                    showTravelMark(false); }]]},
- // 17. run the locknuts up to the disk
+ // 19. run the locknuts up to the disk
  {enter(){ focus('g-vgrp','g-conn'); }, tick(p){ PB.nutsDy=34*(1-p); }},
- // 18. stroke open to closed, verify, align scale
+ // 20. stroke open to closed, verify, align scale
  {enter(){ focus(); },
   cues:[[0.35,()=>focus('g-scale','g-vgrp','g-stem')],[0.85,()=>focus()]],
   tick(p){ if(p<0.3){ setPress((11*(1-p/0.3)).toFixed(2)); PB.scaleDy=0; }
