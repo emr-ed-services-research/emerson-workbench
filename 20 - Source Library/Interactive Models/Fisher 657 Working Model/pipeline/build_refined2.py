@@ -20,6 +20,18 @@ parts_js = _re.sub(r'"upper-diaphragm-casing":\s*"[^"]*"',
 import json as _json
 _timing = _json.load(open("C:/Users/E1552882/Documents-Local/Projects/EmersonWorkbench/narration/output/657/timing.json", encoding="utf-8"))
 timing_js = _json.dumps([{k: s[k] for k in ("start","duration","text","section")} for s in _timing])
+# PO v2 narration audio (2026-10-03): inlined as a data: URI rather than a
+# separate served file -- the Artifact platform's supporting-file upload
+# only accepts a specific allowlist of content types for binary media, and
+# audio/mp4 (this file's real format, an m4a/AAC recording) isn't on it,
+# confirmed by publishing it and getting that exact rejection back. A data:
+# URI sidesteps that entirely: it's part of the page's own HTML/JS, decoded
+# by the browser's native audio engine the same way regardless of how the
+# bytes arrived, with no server-side content-type negotiation involved.
+import base64 as _base64
+po_v2_audio_b64 = _base64.b64encode(open(
+    "C:/Users/E1552882/Documents-Local/Projects/EmersonWorkbench/20 - Source Library/Interactive Models/Fisher 657 Working Model/po-v2-narration.m4a",
+    "rb").read()).decode("ascii")
 
 html = """<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -77,7 +89,25 @@ html = """<meta charset="utf-8">
      "journal page" palette, which read as a separate world instead of
      this project's own aesthetic with a sketched accent (Franz). */
   --hand:"Caveat","Segoe Script",cursive;
-  --tb-h:64px; --railw-collapsed:58px; --railw-open:330px; --animw:640px;
+  --tb-h:64px; --railw-collapsed:58px; --railw-open:330px;
+  /* Animator panel height (2026-10-02, Franz: "starting the animation pane
+     as the full page width on the bottom... having the ability to raise
+     the height of the timeline"). Replaces the old fixed --animw side-panel
+     width now that the panel docks along the bottom instead of the right --
+     user-adjustable via the drag handle (see #anResizeHandle's JS), with
+     the dragged value written back to this SAME custom property so every
+     rule reading it (the panel's own height AND .fig's height reduction
+     below) stays in lockstep automatically -- exactly the "two unrelated
+     numbers drift apart" trap the panel-width/padding-right pairing fell
+     into before (see the body.animator-open .fig comment history). */
+  --animator-h:340px;
+  /* Timeline/rows split (2026-10-03, Franz: "panel the rows to a panel on
+     the right and then the actual timeline left of it... give me a slide
+     between them"). A percentage of #anWorkArea's own width, read by
+     #anTimeline's flex-basis; #anRows takes whatever's left via flex:1 1
+     auto. Same single-source-of-truth pattern as --animator-h just above --
+     see #anSplitHandle's JS for the drag that writes it. */
+  --an-split:66.6667%;
   /* Correction (2026-09-28): the real approved template draws the whole
      composition -- figure, both instrument columns, titleblock, rail,
      corner -- inside ONE single-bordered sheet inset a consistent amount
@@ -102,6 +132,22 @@ html = """<meta charset="utf-8">
     --c-anno:#ff8a4a;
   }
 }
+/* Dark-theme-aware scrollbars (2026-10-03, Franz: "the scroll bars are too
+   bright for a dark theme"). Built from the SAME --bg/--border-strong/--sub
+   tokens every other component already uses, rather than a separate fixed
+   palette -- they automatically match whichever theme is active (including
+   the toggle) with no light/dark duplication needed, applied once here
+   instead of to each scrollable panel individually. Firefox reads
+   scrollbar-color/-width; Chrome/Edge/Safari read the ::-webkit-scrollbar*
+   pseudo-elements -- both are declared since neither alone covers every
+   browser this project's users are on. */
+*{scrollbar-width:thin;scrollbar-color:var(--border-strong) var(--bg);}
+*::-webkit-scrollbar{width:11px;height:11px;}
+*::-webkit-scrollbar-track{background:var(--bg);}
+*::-webkit-scrollbar-thumb{background-color:var(--border-strong);
+  border-radius:6px;border:2px solid var(--bg);background-clip:padding-box;}
+*::-webkit-scrollbar-thumb:hover{background-color:var(--sub);background-clip:padding-box;}
+*::-webkit-scrollbar-corner{background:var(--bg);}
 :root[data-theme="dark"]{
   --bg:#12181f; --panel:#1a222c; --border:#2c3846; --border-strong:#3a4a5c;
   --ink:#e7edf3; --sub:#9fb0c0; --muted:#7e8ea0;
@@ -479,17 +525,22 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
      against the rail, but nothing told .fig to make room for it the way
      it already does for the rail itself (the rule right above) -- so the
      panel just sat on top of wherever the model happened to be rendering.
-     Same fix, same mechanism: .fig's own padding shrinks its real content
-     box, and #asm (which reads .fig's live box on every resize) draws
-     itself into whatever's left, automatically clear of the panel.
-     Docked against --railw-COLLAPSED, not --railw-open (2026-09-30, round
-     2 -- Franz: "more real estate, like it collapsing the vertical bar
-     pane"): openAnimator() now collapses the rail instead of forcing it
-     open the way Physics does, freeing 330-58=272px for a genuinely usable
-     writing/checklist width -- see openAnimator() for why the panel needs
-     its own close control once the rail (where "Animator" lives) tucks
-     itself away. */
-  body.animator-open .fig{padding-right:calc(var(--railw-collapsed) + var(--animw));}
+     Round 2 (2026-10-02, Franz: "starting the animation pane as the full
+     page width on the bottom and then having the viewer above it"): the
+     panel moved from a right-docked column to a bottom-docked, full-width
+     strip, so the reservation moves from .fig's right padding to its own
+     HEIGHT instead. .fig already reserves calc(tb-h+sheet-inset) off its
+     OWN bottom edge via the padding below (room for the fixed titleblock);
+     shrinking the whole box by --animator-h on top of that lands the
+     content's real bottom edge exactly at the animator panel's own top
+     edge (the panel is bottom-anchored at that same calc(tb-h+sheet-inset)
+     offset, height --animator-h) -- the two edges meet with no separate
+     number to keep in sync by hand. #asm's live getBoundingClientRect()
+     reflects the new, shorter box automatically; no other function needs
+     to change. The rail no longer needs forcibly collapsing when the
+     panel opens (that was only ever about freeing HORIZONTAL room for the
+     old side panel) -- removed from openAnimator(). */
+  body.animator-open .fig{height:calc(100% - var(--animator-h));}
   .fig svg{height:100%;width:auto;max-width:100%;display:block;}
   /* Decorative single border around the whole sheet (figure + both
      instrument columns + titleblock + rail + corner) -- purely visual,
@@ -792,23 +843,81 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   #animatorRefLink.active{color:var(--good);font-weight:700;text-decoration:none;}
   body.animator-open #adjCtl>label, body.animator-open #adjCtl .instrument,
   body.animator-open #pressrow>label, body.animator-open #pressrow .instrument{visibility:hidden;}
-  /* width:var(--animw) exactly, not a separate vw-based guess -- it has to
-     match the SAME value .fig's padding-right reserves above, or the two
-     numbers drift apart again (which is exactly how this overlapped the
-     model the first time: the panel's own width and the space .fig was
-     told to leave were two unrelated numbers). */
+  /* Round 2 (2026-10-02, Franz: full-width bottom panel, viewer above).
+     Same left/right edges .fig itself uses (sheet-inset on the left,
+     railw-collapsed/open on the right -- the rail reservation, so the
+     panel never goes under it), bottom-anchored just above the fixed
+     titleblock, height driven by --animator-h -- see that variable's own
+     comment for why .fig's height reduction and this panel's height read
+     the exact same custom property instead of two numbers that can drift. */
   #animatorPanel{display:none;position:fixed;
-    top:var(--sheet-inset); right:var(--railw-collapsed);
-    bottom:calc(var(--tb-h) + var(--sheet-inset)); width:var(--animw);
-    background:var(--panel);border:1px solid var(--border);border-radius:10px;
-    box-sizing:border-box;padding:16px;overflow-y:auto;}
-  body.animator-open #animatorPanel{display:block;}
+    left:var(--sheet-inset); right:calc(var(--railw-collapsed) + var(--sheet-inset));
+    bottom:calc(var(--tb-h) + var(--sheet-inset)); height:var(--animator-h);
+    background:var(--panel);border:1px solid var(--border);border-radius:10px 10px 0 0;
+    box-sizing:border-box;flex-direction:column;overflow:hidden;
+    transition:right .3s ease;}
+  body.rail-open #animatorPanel{right:calc(var(--railw-open) + var(--sheet-inset));}
+  body.animator-open #animatorPanel{display:flex;}
+  /* Drag-to-resize (2026-10-02, Franz: "the ability to raise the height of
+     the timeline"). A thin full-width grip at the panel's own top edge,
+     outside the padded inner content so it's never confused for part of
+     the scrollable area below it. Dragging writes straight to
+     --animator-h on :root -- .fig's own height rule reads that same
+     property, so the viewer resizes in lockstep via the ResizeObserver
+     already watching .fig for the gauge/slider placement (layoutAll()),
+     with no separate call needed here. */
+  #anResizeHandle{flex:none;height:9px;cursor:ns-resize;position:relative;}
+  #anResizeHandle::after{content:'';position:absolute;left:50%;top:50%;
+    transform:translate(-50%,-50%);width:36px;height:4px;border-radius:2px;
+    background:var(--border-strong);}
+  #anResizeHandle:hover::after,#anResizeHandle.dragging::after{background:var(--accent);}
+  #animatorPanelInner{flex:1 1 auto;min-height:0;overflow-y:auto;
+    padding:4px 16px 16px;display:flex;flex-direction:column;}
   .an-head{display:flex;align-items:center;justify-content:space-between;
-    margin-bottom:14px;}
+    margin-bottom:14px;flex:none;}
   .an-head h2{font-family:var(--display);font-weight:600;font-size:1.15rem;
     margin:0;color:var(--ink);}
   .an-head p{margin:2px 0 0;font-size:12px;color:var(--sub);}
   .an-head-btns{display:flex;align-items:center;gap:8px;flex:none;}
+  /* Real input now, not a span (2026-10-02) -- see anSaveProject()'s
+     comment for why window.prompt() couldn't be trusted to fill it in. */
+  #anProjectName{font-size:12.5px;color:var(--ink);font-style:italic;
+    width:13ch;flex:none;padding:6px 8px;border:1px solid var(--border-strong);
+    border-radius:6px;background:var(--bg);font-family:var(--font-body);}
+  #anProjectName:focus{outline:none;border-color:var(--accent);font-style:normal;}
+  #anSaveProject{background:none;border:1px solid var(--border-strong);
+    color:var(--ink);border-radius:6px;padding:7px 12px;font-size:12.5px;
+    font-weight:600;cursor:pointer;flex:none;font-family:var(--font-body);
+    min-width:62px;}
+  #anSaveProject:hover{border-color:var(--ink-soft);}
+  #anSaveProject:disabled{opacity:0.7;cursor:default;color:var(--good);
+    border-color:var(--good);}
+  /* Plain in-page confirm (2026-10-02), replacing window.confirm() for the
+     same sandboxed-iframe reason as #anProjectName above -- see
+     anConfirmInline(). Covers the whole panel, not just #animatorPanelInner,
+     since it's a sibling of that element positioned absolutely within
+     #animatorPanel (which already has position:fixed set elsewhere). */
+  #anConfirmOverlay{position:absolute;inset:0;z-index:5;
+    background:rgba(0,0,0,0.55);display:flex;align-items:center;justify-content:center;}
+  #anConfirmOverlay[hidden]{display:none;}
+  .an-confirm-box{background:var(--panel);border:1px solid var(--border-strong);
+    border-radius:10px;padding:20px 24px;max-width:360px;box-shadow:0 8px 24px rgba(0,0,0,0.4);}
+  .an-confirm-box p{margin:0 0 16px;font-size:13.5px;line-height:1.5;color:var(--ink);}
+  .an-confirm-btns{display:flex;justify-content:flex-end;gap:10px;}
+  #anConfirmYes{background:var(--accent-alt);color:#fff;border:0;border-radius:6px;
+    padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--font-body);}
+  #anConfirmYes:hover{filter:brightness(1.1);}
+  #anConfirmNo{background:none;border:1px solid var(--border-strong);color:var(--ink);
+    border-radius:6px;padding:8px 16px;font-size:13px;cursor:pointer;font-family:var(--font-body);}
+  #anConfirmNo:hover{border-color:var(--ink-soft);}
+  #anLoadSelect{font-size:12.5px;padding:6px 8px;border:1px solid var(--border-strong);
+    border-radius:6px;background:var(--bg);color:var(--ink);cursor:pointer;
+    flex:none;max-width:120px;font-family:var(--font-body);}
+  #anDeleteProject{background:none;border:1px solid var(--border-strong);
+    color:var(--sub);border-radius:6px;width:30px;height:30px;font-size:13px;
+    cursor:pointer;flex:none;}
+  #anDeleteProject:hover:not(:disabled){color:var(--accent-alt);border-color:var(--ink-soft);}
+  #anDeleteProject:disabled{opacity:0.3;cursor:default;}
   #anAddRow{background:var(--accent);color:#fff;border:0;border-radius:6px;
     padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;
     flex:none;}
@@ -817,6 +926,41 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     color:var(--sub);border-radius:6px;width:32px;height:32px;font-size:18px;
     line-height:1;cursor:pointer;flex:none;}
   #anClose:hover{color:var(--ink);border-color:var(--ink-soft);}
+  /* Shares the panel's inner space with #anTimeline above as a flex
+     sibling (2026-10-02) -- its own scroll, so a long row list never
+     pushes the timeline off-screen or forces the whole panel taller. */
+  /* Rows pane (2026-10-03): the toolbar stays fixed while #anRows itself
+     scrolls beneath it -- same fixed-bar-over-scroll-area shape
+     #anTimelineBar/#anTimelineScroll already use. */
+  #anRowsPane{flex:1 1 auto;min-width:200px;min-height:0;display:flex;
+    flex-direction:column;}
+  #anRowsToolbar{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex:none;}
+  #anGroupSelectedBtn{background:none;border:1px solid var(--border-strong);
+    color:var(--ink);border-radius:5px;padding:5px 12px;font-size:12.5px;
+    cursor:pointer;flex:none;font-family:var(--font-body);}
+  #anGroupSelectedBtn:hover:not(:disabled){border-color:var(--ink-soft);}
+  #anGroupSelectedBtn:disabled{opacity:0.35;cursor:default;}
+  #anRowsToolbarHint{font-size:11px;color:var(--sub);flex:1 1 auto;min-width:0;}
+  #anRows{flex:1 1 auto;min-height:0;overflow-y:auto;}
+  .an-row-select{flex:none;margin:0;}
+  /* Row groups (2026-10-03). A visually distinct outer card so a collapsed
+     group reads as "one folded-up unit", not just a row with less content --
+     the same job .an-row's own border does for a single row. */
+  .an-group{border:1px solid var(--border-strong);border-radius:8px;
+    margin-bottom:12px;overflow:hidden;background:var(--bg);}
+  .an-group-head{display:flex;align-items:center;gap:8px;padding:9px 10px;}
+  .an-group-label{flex:1 1 auto;min-width:0;background:none;
+    border:1px solid transparent;border-radius:4px;padding:3px 6px;
+    font-size:13px;font-weight:600;color:var(--ink);font-family:var(--font-body);}
+  .an-group-label:hover{border-color:var(--border);}
+  .an-group-label:focus{outline:none;border-color:var(--accent);background:var(--panel);}
+  .an-group-count{font-size:11px;color:var(--sub);flex:none;white-space:nowrap;}
+  .an-group-ungroup{background:none;border:1px solid var(--border-strong);
+    color:var(--sub);border-radius:5px;padding:3px 10px;font-size:11px;
+    cursor:pointer;flex:none;font-family:var(--font-body);}
+  .an-group-ungroup:hover{border-color:#c0392b;color:#c0392b;}
+  .an-group-body{padding:0 10px 10px;display:flex;flex-direction:column;gap:12px;}
+  .an-group-body .an-row{margin-bottom:0;}
   /* Row management (2026-09-30, Franz: "some way to manage the rows for
      sequencing... numbering or ability to collapse each row"). Row number
      is computed from array position at render time, never stored -- it's
@@ -859,6 +1003,25 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   .an-row-actions button:hover{color:var(--ink);border-color:var(--ink-soft);}
   .an-row-checklist{flex:1 1 42%;min-width:0;display:flex;
     flex-direction:column;gap:5px;}
+  /* Collapsible parts checklist (2026-10-02, Franz: "default collapsed"
+     to stop a 10-item list eating vertical space). Same disclosure-row
+     shape as .an-row-head's own collapse button, scoped to this one
+     sub-section instead of the whole row. */
+  .an-checklist-toggle{display:flex;align-items:center;gap:6px;width:100%;
+    background:none;border:0;padding:2px 0;margin:0;cursor:pointer;
+    text-align:left;font-family:var(--font-body);}
+  /* pointer-events:none on both (2026-10-02): the click handler reads
+     e.target.dataset.action directly (matching every other button in this
+     panel, none of which have element children to worry about) -- these
+     two spans are nested INSIDE the button, so without this a click
+     landing on either one would report e.target as the span, not the
+     button, and dataset.action would come back empty. */
+  .an-checklist-caret{flex:none;font-size:10px;color:var(--sub);pointer-events:none;}
+  .an-checklist-summary{flex:1 1 auto;min-width:0;font-size:12.5px;
+    color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    pointer-events:none;}
+  .an-checklist-toggle:hover .an-checklist-summary{color:var(--ink);}
+  .an-checklist-items{display:flex;flex-direction:column;gap:5px;margin-top:3px;}
   .an-item{display:flex;align-items:center;gap:6px;font-size:12.5px;
     color:var(--ink);}
   .an-item input[type=checkbox]{flex:none;}
@@ -867,6 +1030,107 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     font-size:11px;border:1px solid var(--border);border-radius:3px;
     background:var(--bg);color:var(--ink);text-align:center;}
   .an-item input[type=number]:disabled{opacity:0.35;}
+  /* Phase 2 timeline (2026-10-01). #anTimelineScroll is the one scrolling
+     surface (horizontal, for long timelines); the ruler and track scroll
+     together since they share that one scroll container as siblings with
+     matching widths set in JS (renderTimeline()). */
+  /* flex:1 (2026-10-02, Franz: "raising the height of the timeline") --
+     the timeline is the main beneficiary of dragging #anResizeHandle
+     taller, sharing the panel's inner space with #anRows below rather than
+     staying a fixed content-driven height regardless of how much room the
+     panel actually has. */
+  /* Narration audio bar (2026-10-03). Plain bordered buttons matching
+     #anAudioImportBtn's own secondary-action weight -- this isn't the
+     primary action in the panel (#anPlayTimeline/#anSaveProject keep the
+     filled accent treatment), it's a setup step done once per session. */
+  #anAudioBar{display:flex;align-items:center;gap:10px;padding:8px 10px;
+    border:1px solid var(--border);border-radius:8px;margin-bottom:10px;
+    background:var(--bg);flex:none;}
+  #anAudioImportBtn,#anAudioClearBtn{background:none;
+    border:1px solid var(--border-strong);color:var(--ink);border-radius:5px;
+    padding:5px 12px;font-size:12.5px;cursor:pointer;flex:none;
+    font-family:var(--font-body);}
+  #anAudioImportBtn:hover{border-color:var(--ink-soft);}
+  #anAudioClearBtn:hover{border-color:#c0392b;color:#c0392b;}
+  #anAudioStatus{font-size:11.5px;color:var(--sub);flex:1 1 auto;min-width:0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #anMarkBtn{background:none;border:1px solid var(--border-strong);
+    color:var(--ink);border-radius:5px;padding:5px 12px;font-size:12.5px;
+    cursor:pointer;flex:none;font-family:var(--font-body);}
+  #anMarkBtn:hover{border-color:var(--ink-soft);}
+  /* Work area (2026-10-03): timeline left, rows right, a draggable split
+     between them -- replaces the old stacked (timeline-above-rows) layout.
+     align-items:stretch (the flex default) is what makes both panes share
+     #anWorkArea's full height; min-height:0 on each is still needed so
+     their own internal scroll areas can compute a real size instead of
+     growing to fit content, the same reason #anTimelineScroll already
+     needed it in the old vertical layout. */
+  #anWorkArea{flex:1 1 auto;min-height:0;display:flex;flex-direction:row;}
+  #anSplitHandle{flex:none;width:9px;cursor:col-resize;position:relative;}
+  #anSplitHandle::after{content:'';position:absolute;top:0;bottom:0;left:50%;
+    width:1px;background:var(--border-strong);}
+  #anSplitHandle:hover::after,#anSplitHandle.dragging::after{background:var(--accent);}
+  #anTimeline{border:1px solid var(--border);border-radius:8px;
+    overflow:hidden;flex:0 0 var(--an-split);min-width:220px;min-height:0;
+    display:flex;flex-direction:column;}
+  #anTimelineBar{display:flex;align-items:center;gap:10px;padding:8px 10px;
+    border-bottom:1px solid var(--border);background:var(--bg);flex:none;}
+  #anPlayTimeline{background:var(--accent);color:#fff;border:0;
+    border-radius:5px;padding:5px 12px;font-size:12.5px;font-weight:600;
+    cursor:pointer;flex:none;font-family:var(--font-body);}
+  #anPlayTimeline:hover{filter:brightness(1.1);}
+  #anPlayTimeline.playing{background:var(--accent-alt);}
+  #anUndo,#anRedo{background:none;border:1px solid var(--border-strong);
+    color:var(--ink);border-radius:5px;width:28px;height:26px;font-size:15px;
+    line-height:1;cursor:pointer;flex:none;}
+  #anUndo:hover:not(:disabled),#anRedo:hover:not(:disabled){border-color:var(--ink-soft);}
+  #anUndo:disabled,#anRedo:disabled{opacity:0.3;cursor:default;}
+  #anPlayheadTime{font-family:ui-monospace,monospace;font-size:12px;
+    color:var(--ink);flex:none;min-width:4ch;}
+  #anTimelineHint{font-size:11px;color:var(--sub);flex:1 1 auto;
+    min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #anTimelineScroll{overflow-x:auto;overflow-y:auto;position:relative;
+    flex:1 1 auto;min-height:0;}
+  #anTimelineRuler{height:20px;position:relative;border-bottom:1px solid
+    var(--border);background:var(--bg);}
+  .an-tl-tick{position:absolute;top:0;bottom:0;border-left:1px solid
+    var(--border);font-size:10px;color:var(--sub);padding-left:3px;
+    white-space:nowrap;}
+  /* Waveform track (2026-10-03) -- sits between the ruler and the row
+     lanes, same horizontal scale, so a peak lines up directly under
+     whichever block covers that instant. */
+  #anWaveformTrack{height:40px;position:relative;border-bottom:1px solid
+    var(--border);background:var(--bg);}
+  #anWaveformCanvas{display:block;height:100%;}
+  #anTimelineTrack{position:relative;padding:4px 0;}
+  /* Mark flash (2026-10-03): a brief highlight on whichever block just had
+     an edge snapped to the playhead via Mark/M, so the edit is visible even
+     though it happened by ear rather than by watching a drag. */
+  @keyframes anMarkFlash{from{box-shadow:0 0 0 2px var(--accent-alt);}to{box-shadow:none;}}
+  .an-mark-flash{animation:anMarkFlash 0.5s ease-out;}
+  .an-tl-lane{position:relative;height:34px;margin-bottom:4px;}
+  .an-tl-block{position:absolute;top:2px;bottom:2px;min-width:18px;
+    background:var(--panel);border:1px solid var(--accent);border-radius:5px;
+    box-sizing:border-box;display:flex;align-items:center;overflow:hidden;
+    cursor:grab;user-select:none;}
+  .an-tl-block:active{cursor:grabbing;}
+  .an-tl-block.an-tl-empty{border-style:dashed;border-color:var(--border-strong);}
+  .an-tl-label{flex:1 1 auto;min-width:0;padding:0 8px;font-size:11.5px;
+    color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    pointer-events:none;}
+  .an-tl-handle{position:absolute;top:0;bottom:0;width:8px;cursor:ew-resize;
+    flex:none;}
+  .an-tl-handle-l{left:0;} .an-tl-handle-r{right:0;}
+  .an-tl-handle:hover{background:rgba(255,255,255,0.15);}
+  /* #anPlayhead's own left (set in JS, in setPlayheadTime()) is the exact
+     time position -- the element itself is a wider, centered hit target
+     (2026-10-01, Franz: "drag the play indicator left and right") so it's
+     actually grabbable, with the real thin visible line drawn via ::after
+     at its center rather than being the draggable box itself. */
+  #anPlayhead{position:absolute;top:0;bottom:0;width:11px;margin-left:-5px;
+    z-index:3;cursor:ew-resize;}
+  #anPlayhead::after{content:'';position:absolute;top:0;bottom:0;left:5px;
+    width:1px;background:var(--accent-alt);pointer-events:none;}
   /* Inert lesson note + leader stubs (Stage 1): present so Stage 3 has
      somewhere to wire real lesson narration/leader-lines into, but fully
      dormant -- the [hidden] attribute keeps them out of the render tree
@@ -946,7 +1210,7 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     <rect class="vfast" x="1289.5" y="245" width="67" height="42" rx="3"/>
     <rect class="vfast" x="128" y="245" width="67" height="42" rx="3"/>
     <rect class="vfast" x="916.5" y="446" width="65.5" height="27" rx="3"/>
-    <rect class="vfast" x="536" y="446" width="65.5" height="27" rx="3"/>
+    <rect class="vfast" x="498" y="446" width="65.5" height="27" rx="3"/>
   </g>
   <path id="p-yoke" class="cast"/>
   <path id="p-lower" class="cast"/>
@@ -1213,11 +1477,37 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 <!-- Animator (2026-09-30, Phase 1): rows built entirely in JS
      (renderAnimRows()) from ANIM_ROWS, persisted to localStorage so a
      draft survives a reload -- this is a fiddle-and-see workspace, not
-     the real save/edit/trash/publish pipeline that's a later phase. -->
+     the real save/edit/trash/publish pipeline that's a later phase.
+     Round 2 (2026-10-02, Franz: full-width bottom panel, viewer above,
+     resizable height): #anResizeHandle sits directly inside the panel,
+     outside the padded/scrollable #animatorPanelInner wrapper, so it's a
+     fixed-position grip at the panel's own top edge regardless of how the
+     content inside scrolls. -->
 <div id="animatorPanel">
+  <div id="anResizeHandle" title="Drag to resize the Animator"></div>
+  <div id="animatorPanelInner">
   <div class="an-head">
     <div><h2>Animator</h2><p>One row per highlight state. Check a part, give it an order number if it should join later in sequence.</p></div>
     <div class="an-head-btns">
+      <!-- Save/load (2026-10-01, Franz: "a way to save, load, and publish
+           as lesson too" -- publish deferred, this is just save/load).
+           Named projects in their own localStorage key, separate from the
+           continuously-autosaved "current" draft (657-animator-rows, Phase
+           1's key, unchanged) -- so a reload never loses work in progress
+           even if nothing's been explicitly saved under a name yet, and
+           named saves are deliberate checkpoints you choose to create and
+           return to, not every autosave tick.
+           Round 2 (2026-10-02, Franz: "I click the save button and nothing
+           happens"): a real text input, not a span filled in from a
+           window.prompt() -- prompt()/confirm() are silently blocked
+           inside the sandboxed iframe a published Artifact actually runs
+           in, which is exactly why Save looked like it did nothing. See
+           anSaveProject()'s own comment for the rest of the fix
+           (anConfirmInline() replacing confirm() for Load/Delete below). -->
+      <input type="text" id="anProjectName" title="Project name" placeholder="Untitled">
+      <button type="button" id="anSaveProject">Save</button>
+      <select id="anLoadSelect" title="Load a saved project"><option value="">Load&hellip;</option></select>
+      <button type="button" id="anDeleteProject" title="Delete the selected saved project">&#128465;</button>
       <button type="button" id="anAddRow">+ Add row</button>
       <!-- openAnimator() collapses the rail for more room (2026-09-30,
            Franz), but "Animator" -- the only way in via the rail -- is
@@ -1226,7 +1516,109 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
       <button type="button" id="anClose" title="Close Animator" aria-label="Close Animator">&times;</button>
     </div>
   </div>
-  <div id="anRows"></div>
+  <!-- Phase 2 timeline (2026-10-01, Franz: "a simple streamlined timeline
+       like [Camtasia]... freeform with the ability to splice"). Each row
+       gets its own lane; a block's position/width is its real t0/t1 in
+       seconds, dragged directly rather than described in words -- the
+       whole point is replacing the round-trip of "tell Claude what's
+       wrong with the timing, wait for a rebuild" with direct manipulation.
+       Double-click a block to splice it into two at that point. Once the
+       timing is right, Franz records his own narration to match it --
+       audio becomes the thing that conforms to the timeline, not the
+       thing that generates it (see the playTimeline()/applyRowAtTime()
+       comment for how this replaces TTS-segment-fraction timing). -->
+  <!-- Narration audio (2026-10-03, Franz: "how do I record my voice... how
+       will I match it to when the objects come in?"). Recording can't
+       happen inside the published Artifact itself -- its sandboxed
+       iframe's `allow` attribute has no "microphone" entry (confirmed
+       directly against the real published iframe, not assumed), so
+       getUserMedia is refused by Permissions Policy before any prompt
+       even appears, the same class of silent block that hit prompt()/
+       confirm() earlier. So recording happens in whatever tool Franz
+       already has -- phone, Windows Voice Recorder, Audacity -- and the
+       result is imported here as a plain file, which needs no special
+       permission. See anSetCurrentAudio() for storage/decoding and
+       anMarkToPlayhead() for the ear-matching workflow this enables. -->
+  <div id="anAudioBar">
+    <input type="file" id="anAudioFile" accept="audio/*" hidden>
+    <button type="button" id="anAudioImportBtn">Import narration audio&hellip;</button>
+    <button type="button" id="anAudioClearBtn" hidden title="Remove the imported audio">Remove audio</button>
+    <span id="anAudioStatus"></span>
+  </div>
+  <!-- Work area (2026-10-03, Franz: "panel the rows to a panel on the
+       right and then the actual timeline left of it... give me a slide
+       between them"). Timeline and rows used to stack vertically; now they
+       sit side by side with #anSplitHandle's drag writing --an-split (see
+       that variable's own comment up top). -->
+  <div id="anWorkArea">
+  <div id="anTimeline">
+    <div id="anTimelineBar">
+      <button type="button" id="anPlayTimeline">&#9654; Play timeline</button>
+      <!-- Undo/redo (2026-10-01, Franz) -- a single linear history of
+           ANIM_ROWS snapshots, not per-keystroke (see anPushHistory() and
+           its call sites below for exactly when a snapshot is taken). -->
+      <button type="button" id="anUndo" title="Undo (Ctrl+Z)" disabled>&#8630;</button>
+      <button type="button" id="anRedo" title="Redo (Ctrl+Shift+Z)" disabled>&#8631;</button>
+      <!-- Mark (2026-10-03): snap whichever block edge sits closest to the
+           playhead to the playhead's exact position -- see
+           anMarkToPlayhead(). The point of the whole audio-import feature:
+           play/scrub the real recording and tap this (or "M") the instant
+           you hear a part named, instead of eyeballing a drag against a
+           waveform. -->
+      <button type="button" id="anMarkBtn" title="Snap the nearest block edge to the playhead (M)">Mark</button>
+      <span id="anPlayheadTime">0.0s</span>
+      <span id="anTimelineHint">Drag a block to move/resize it, drag the playhead to scrub, double-click to splice, press M to snap the nearest edge to the playhead.</span>
+    </div>
+    <div id="anTimelineScroll">
+      <!-- #anPlayhead is a sibling of the three regenerated panes, not a
+           child of any -- renderTimeline() rewrites their innerHTML on
+           every edit, which would otherwise wipe out the playhead on every
+           keystroke. It spans all three via top:0;bottom:0 in CSS. Wider
+           than its visible line (2026-10-01, Franz: "drag the play
+           indicator left and right") -- see #anPlayhead's CSS for why the
+           hit box and the visible line aren't the same width. -->
+      <div id="anPlayhead"></div>
+      <div id="anTimelineRuler"></div>
+      <!-- Waveform (2026-10-03): one pixel column per ANIM_PX_PER_SEC,
+           the same scale the ruler/track already use, so a block edge
+           dragged to sit under a waveform peak IS the recording at that
+           instant -- no separate zoom/scale to keep in sync. -->
+      <div id="anWaveformTrack"><canvas id="anWaveformCanvas"></canvas></div>
+      <div id="anTimelineTrack"></div>
+    </div>
+  </div>
+  <div id="anSplitHandle" title="Drag to resize the timeline/rows split"></div>
+  <!-- Row grouping (2026-10-03, Franz: "group a series of rows into a
+       group, so that I can collapse them together and then have space to
+       work on the next segment"). Check a run of adjacent rows, click
+       Group -- see anGroupSelected()/renderGroupBlock() for how a group's
+       member rows collapse away as one unit instead of each row needing
+       its own individual collapse. -->
+  <div id="anRowsPane">
+    <div id="anRowsToolbar">
+      <button type="button" id="anGroupSelectedBtn" disabled>Group selected</button>
+      <span id="anRowsToolbarHint">Check two or more adjacent rows to group them.</span>
+    </div>
+    <div id="anRows"></div>
+  </div>
+  </div>
+  </div>
+  <!-- Plain in-page confirm, replacing window.confirm() (2026-10-02,
+       Franz: "I click the save button and nothing happens" -- confirm()
+       is blocked the same way prompt() is inside a published Artifact's
+       sandboxed iframe; see anConfirmInline()). A sibling of
+       #animatorPanelInner, not nested inside it, so it can cover the
+       WHOLE panel via position:absolute regardless of the inner
+       content's own scroll position. -->
+  <div id="anConfirmOverlay" hidden>
+    <div class="an-confirm-box">
+      <p id="anConfirmMsg"></p>
+      <div class="an-confirm-btns">
+        <button type="button" id="anConfirmYes">Yes</button>
+        <button type="button" id="anConfirmNo">Cancel</button>
+      </div>
+    </div>
+  </div>
 </div>
 <!-- Mobile-only sandbox controls. Positioned in JS (layoutRail) from the
      drawing's own real empty-canvas rectangles -- verified with
@@ -1964,6 +2356,15 @@ function focus(...ids){
   FOCUSABLE.forEach(f=>{ const el=document.getElementById(f); if(!el) return;
     el.style.opacity = flat.length===0 ? '' : (flat.includes(f) ? '' : '0.25');
   });
+  // The casing + yoke-top bolts (g-fasteners) aren't a part anyone narrates
+  // by name -- they only read as meaningful when BOTH casings they join are
+  // shown, so they track that pair instead of being named in any individual
+  // focus() call (Franz, 2026-10-01: "the fasteners are never unfocused...
+  // they should only be focused when both the upper and lower casings are
+  // in focus too"). Full-lit (empty call) counts as both being in focus.
+  const fastEl = document.getElementById('g-fasteners');
+  if(fastEl) fastEl.style.opacity =
+    (flat.length===0 || (flat.includes('p-upper') && flat.includes('p-lower'))) ? '' : '0.25';
 }
 window.showVerMark = function(on){
   document.getElementById('g-vermark').style.display = on ? '' : 'none';
@@ -2283,7 +2684,7 @@ function placeAnchor(id, x, y, pxOffset){
 function layoutDesktopControls(){
   if (window.innerWidth <= 700) return;
   const svgRect = document.getElementById('asm').getBoundingClientRect();
-  const inset = 28;   // breathing room from the true viewport edge
+  const inset = 28;   // breathing room from the canvas edge
   // Stage 1 (2026-09-28): the index rail eats real width from the right
   // margin when open (58px collapsed vs 330px open) -- subtracting it here
   // is what keeps the pressure gauge clear of it instead of being covered
@@ -2301,8 +2702,31 @@ function layoutDesktopControls(){
   const railW = parseFloat(document.body.classList.contains('rail-open')
     ? rootCS.getPropertyValue('--railw-open')
     : rootCS.getPropertyValue('--railw-collapsed'));
-  const leftW = Math.max(0, svgRect.left - inset*2);
-  const rightW = Math.max(0, window.innerWidth - railW - inset*2 - svgRect.right);
+  // Round 7 (2026-10-01, Franz: "the space on the outside of the gauges is
+  // less wide than the space between them and the actuator... the spring
+  // adjuster is farther away than the pressure gauge... the actuator is
+  // also not actually in the center of the canvas it is in"). Root cause,
+  // confirmed by direct measurement: the right edge of "canvas" already
+  // excluded the rail's reserved strip (window.innerWidth - railW), but the
+  // left edge used the raw viewport edge (0) -- it never excluded its own
+  // matching reserved strip, the --sheet-inset margin the bordered sheet
+  // sits inside of (#sheetBorder). That inconsistency is also why the
+  // actuator itself (centered by #sheetBorder's own CSS panel against
+  // [sheet-inset, 1478]-equivalent bounds) didn't look centered against
+  // naive left/right viewport edges -- both the actuator's centering and
+  // the gauges' margins needed the SAME canvas definition, symmetric on
+  // both sides, not raw-edge on the left and reserved-strip-excluded on
+  // the right.
+  const sheetInset = parseFloat(rootCS.getPropertyValue('--sheet-inset'));
+  const canvasLeft = sheetInset, canvasRight = window.innerWidth - railW;
+  // inset*2 (not inset) is deliberate: cx below is canvasLeft + inset +
+  // leftW/2, which algebraically simplifies to the exact midpoint of
+  // (canvasLeft, svgRect.left) only when leftW subtracts inset TWICE here --
+  // inset is pure breathing-room styling, not a real deduction from the
+  // centered position, and must cancel out completely rather than biasing
+  // the result toward one side (same reasoning mirrored on the right).
+  const leftW = Math.max(0, svgRect.left - canvasLeft - inset*2);
+  const rightW = Math.max(0, canvasRight - svgRect.right - inset*2);
   const marginH = svgRect.height * 0.85;   // leave headroom top/bottom of the drawing's own height
   const adjEl = document.getElementById('adjCtl'), pressEl = document.getElementById('pressrow');
   const adjScale = Math.min(1, leftW/adjEl.offsetWidth, marginH/adjEl.offsetHeight);
@@ -2313,7 +2737,7 @@ function layoutDesktopControls(){
   // matches the same height for a clean, symmetric, drafting-sheet-style
   // composition, since it has no equivalent single part to align to.
   const cy = svgToScreen(0, 1227).y;
-  placeAt('adjCtl', inset + leftW/2, cy, sharedScale);
+  placeAt('adjCtl', canvasLeft + inset + leftW/2, cy, sharedScale);
   placeAt('pressrow', svgRect.right + inset + rightW/2, cy, sharedScale);
   // Correction (2026-09-29): placeAt centers each .ctl's whole box at the
   // same cy, but adjCtl and pressrow aren't the same total height (pressrow
@@ -2571,17 +2995,380 @@ const ANIM_PARTS = [
   {label:'Travel scale', ids:['g-scale']},
 ];
 function partIdsForLabel(label){ const p = ANIM_PARTS.find(x=>x.label===label); return p ? p.ids : []; }
-function newAnimRow(){ return {id:'r'+Math.random().toString(36).slice(2,9), text:'', items:{}}; }
+const ANIM_DEFAULT_DUR = 4;   // seconds, a new row's starting span on the timeline
+const ANIM_MIN_DUR = 0.5;     // seconds, a block can never be dragged/spliced shorter than this
+function newAnimRow(t0){
+  t0 = t0!=null ? t0 : Math.max(0, ...ANIM_ROWS.map(r=>r.t1||0), 0);
+  // checklistCollapsed defaults true (2026-10-02, Franz: "make the list of
+  // model objects collapsable... default collapsed") -- a 10-item checklist
+  // per row ate real vertical space in the now-shorter bottom panel; most
+  // of the time a row's already-set checklist just needs a glance, not the
+  // full interactive list.
+  return {id:'r'+Math.random().toString(36).slice(2,9), text:'', items:{}, t0, t1:t0+ANIM_DEFAULT_DUR,
+    checklistCollapsed:true};
+}
 // localStorage only, deliberately (2026-09-30): this is the "fiddle and
 // see it work" phase, not the real save/edit/trash/publish pipeline --
 // just enough persistence that a draft survives a reload while iterating.
 function loadAnimRows(){
-  try{ const s = localStorage.getItem('657-animator-rows'); if (s){ const r = JSON.parse(s); if (r.length) return r; } }
+  try{
+    const s = localStorage.getItem('657-animator-rows');
+    if (s){
+      const r = JSON.parse(s);
+      if (r.length){
+        // Migration (Phase 2, 2026-10-01): rows saved before the timeline
+        // existed have no t0/t1 -- backfill them end-to-end in whatever
+        // order they were already in, rather than losing a Phase-1 draft.
+        // Same migration idea extended (2026-10-02) for checklistCollapsed
+        // on rows saved before that field existed -- defaults collapsed
+        // like a fresh row, per Franz's own "default collapsed" ask,
+        // rather than leaving old rows stuck expanded forever.
+        let cursor = 0;
+        r.forEach(row=>{ if (row.t0==null || row.t1==null){ row.t0=cursor; row.t1=cursor+ANIM_DEFAULT_DUR; }
+          cursor = Math.max(cursor, row.t1);
+          if (row.checklistCollapsed==null) row.checklistCollapsed = true; });
+        return r;
+      }
+    }
+  }
   catch(e){}
-  return [newAnimRow()];
+  return [newAnimRow(0)];
 }
 function saveAnimRows(){ try{ localStorage.setItem('657-animator-rows', JSON.stringify(ANIM_ROWS)); }catch(e){} }
 let ANIM_ROWS = loadAnimRows();
+// Row groups (2026-10-03, Franz: "group a series of rows... so I can
+// collapse them together and have space to work on the next segment").
+// A group is metadata ONLY (label + collapsed flag), keyed by id; which
+// rows belong to it lives on each row's own `groupId` field, not here --
+// membership is read back by walking ANIM_ROWS and finding each MAXIMAL
+// run of consecutive rows sharing the same groupId (see renderAnimRows()).
+// That keeps "a group" exactly as meaningful as "the rows are adjacent",
+// with no separate ordered membership list that could drift from the
+// rows' own array order. One accepted edge case: reordering a row (the
+// existing moveup/movedown buttons) out from the middle of its group
+// splits that group's visual block in two, still sharing the same label --
+// not defended against, same spirit as anComputeLanes()'s own accepted
+// lane-packing instability.
+function loadAnimGroups(){
+  try{ return JSON.parse(localStorage.getItem('657-animator-groups') || '{}'); }
+  catch(e){ return {}; }
+}
+function saveAnimGroups(){ try{ localStorage.setItem('657-animator-groups', JSON.stringify(ANIM_GROUPS)); }catch(e){} }
+let ANIM_GROUPS = loadAnimGroups();
+// Row selection for grouping -- transient UI state, never persisted (not
+// part of the saved document). Ids are filtered against the CURRENT
+// ANIM_ROWS wherever used, so a stale id left over from a deleted row is
+// simply ignored rather than needing explicit cleanup at every edit site.
+let anSelectedRowIds = new Set();
+function anSelectedContiguousIndices(){
+  const idxs = ANIM_ROWS.map((r,i)=> anSelectedRowIds.has(r.id) ? i : -1).filter(i=>i>=0);
+  if (idxs.length < 2) return null;
+  for (let i=1;i<idxs.length;i++) if (idxs[i] !== idxs[i-1]+1) return null;   // must be a contiguous run, no gaps
+  return idxs;
+}
+function anUpdateGroupButton(){
+  const btn = document.getElementById('anGroupSelectedBtn');
+  const idxs = anSelectedContiguousIndices();
+  btn.disabled = !idxs;
+  btn.textContent = idxs ? `Group ${idxs.length} rows` : 'Group selected';
+}
+function anGroupSelected(){
+  const idxs = anSelectedContiguousIndices();
+  if (!idxs) return;
+  anPushHistory();
+  const gid = 'g'+Math.random().toString(36).slice(2,9);
+  ANIM_GROUPS[gid] = {label:'Group '+(Object.keys(ANIM_GROUPS).length+1), collapsed:false};
+  idxs.forEach(i=>{ ANIM_ROWS[i].groupId = gid; });
+  anSelectedRowIds.clear();
+  saveAnimRows(); saveAnimGroups(); renderAnimator();
+}
+function anUngroup(gid){
+  anPushHistory();
+  ANIM_ROWS.forEach(r=>{ if (r.groupId===gid) delete r.groupId; });
+  delete ANIM_GROUPS[gid];
+  saveAnimRows(); saveAnimGroups(); renderAnimator();
+}
+// Collapsing/expanding a group is view-only, like a single row's own
+// collapse button -- deliberately left out of undo history, same
+// reasoning as the 'collapse'/'toggleChecklist' row actions below.
+function anToggleGroupCollapse(gid){
+  if (ANIM_GROUPS[gid]) ANIM_GROUPS[gid].collapsed = !ANIM_GROUPS[gid].collapsed;
+  saveAnimGroups(); renderAnimator();
+}
+// Named save/load (2026-10-01, Franz: "a way to save, load, and publish as
+// lesson too" -- publish deferred, this is just save/load). Projects live
+// in their own localStorage key as {name: rows[]}, entirely separate from
+// the Phase-1 autosave key above -- that one keeps protecting whatever's
+// currently in the workspace from a reload even if it was never explicitly
+// saved under a name; named saves are deliberate checkpoints.
+let anCurrentProject = null;   // name of the loaded/last-saved project, or null for an untitled draft
+function anLoadProjectsMap(){
+  try{ return JSON.parse(localStorage.getItem('657-animator-projects') || '{}'); }
+  catch(e){ return {}; }
+}
+function anSaveProjectsMap(map){ try{ localStorage.setItem('657-animator-projects', JSON.stringify(map)); }catch(e){} }
+function anRenderProjectName(){
+  document.getElementById('anProjectName').value = anCurrentProject || '';
+}
+function anRenderProjectList(){
+  const map = anLoadProjectsMap();
+  const sel = document.getElementById('anLoadSelect');
+  const names = Object.keys(map).sort();
+  sel.innerHTML = '<option value="">Load&hellip;</option>' +
+    names.map(n=>`<option value="${escapeHtml(n)}"${n===anCurrentProject?' selected':''}>${escapeHtml(n)}</option>`).join('');
+  if (!anCurrentProject) sel.value = '';
+  document.getElementById('anDeleteProject').disabled = !names.length;
+}
+// Narration audio (2026-10-03, Franz: "how do I record my voice... how
+// will I match it to when the objects come in?"). Recording can't happen
+// inside the published Artifact itself: its sandboxed iframe's `allow`
+// attribute has no "microphone" entry (checked directly against the real
+// published iframe -- `allow="translator; language-detector; fullscreen;
+// clipboard-write; gamepad; xr-spatial-tracking"` -- before building any
+// of this), so getUserMedia would be refused by Permissions Policy before
+// any prompt even appeared, the same silent-block shape that hit prompt()/
+// confirm() in the round-2 fix below. So recording happens in whatever
+// tool Franz already has and the result is imported here as a plain file,
+// which needs no special permission at all -- just a user-initiated file
+// picker, same as any <input type=file>.
+//
+// Stored in IndexedDB, not localStorage: a multi-minute recording can run
+// several MB, past what's realistic for a synchronous string-based store.
+// Split the same way ANIM_ROWS already is -- a 'draft' key that's always
+// the current workspace's audio (mirroring 657-animator-rows), and a
+// 'project:<name>' key per named save (mirroring 657-animator-projects) --
+// so loading/saving/deleting a project carries its audio along exactly the
+// way it already carries ANIM_ROWS.
+const AN_AUDIO_DB = '657-animator-audio', AN_AUDIO_STORE = 'blobs';
+function anAudioDB(){
+  return new Promise((resolve,reject)=>{
+    const req = indexedDB.open(AN_AUDIO_DB, 1);
+    req.onupgradeneeded = ()=>{ req.result.createObjectStore(AN_AUDIO_STORE); };
+    req.onsuccess = ()=>resolve(req.result);
+    req.onerror = ()=>reject(req.error);
+  });
+}
+async function anAudioGet(key){
+  try{
+    const db = await anAudioDB();
+    return await new Promise((resolve,reject)=>{
+      const req = db.transaction(AN_AUDIO_STORE,'readonly').objectStore(AN_AUDIO_STORE).get(key);
+      req.onsuccess = ()=>resolve(req.result||null);
+      req.onerror = ()=>reject(req.error);
+    });
+  }catch(e){ return null; }
+}
+async function anAudioSet(key, blob){
+  try{
+    const db = await anAudioDB();
+    await new Promise((resolve,reject)=>{
+      const tx = db.transaction(AN_AUDIO_STORE,'readwrite');
+      tx.objectStore(AN_AUDIO_STORE).put(blob, key);
+      tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error);
+    });
+  }catch(e){}
+}
+async function anAudioDelete(key){
+  try{
+    const db = await anAudioDB();
+    await new Promise((resolve,reject)=>{
+      const tx = db.transaction(AN_AUDIO_STORE,'readwrite');
+      tx.objectStore(AN_AUDIO_STORE).delete(key);
+      tx.oncomplete = resolve; tx.onerror = ()=>reject(tx.error);
+    });
+  }catch(e){}
+}
+let anAudioBlob = null, anAudioBuffer = null, anAudioEl = null, anAudioUrl = null, anAudioPeaks = null, anAudioName = '';
+function anAudioDuration(){ return anAudioBuffer ? anAudioBuffer.duration : 0; }
+// The recording is assumed to start at t=0 of the lesson -- one continuous
+// take covering the whole timeline, per Franz's own "record my own
+// narration and match things up exactly" framing, not a per-row clip with
+// its own offset to track.
+async function anSetCurrentAudio(blob, name, persist){
+  if (anAudioEl){ anAudioEl.pause(); anAudioEl = null; }
+  if (anAudioUrl){ URL.revokeObjectURL(anAudioUrl); anAudioUrl = null; }
+  anAudioBlob = blob; anAudioBuffer = null; anAudioPeaks = null; anAudioName = name || '';
+  if (persist){ if (blob) await anAudioSet('draft', blob); else await anAudioDelete('draft'); }
+  if (!blob){ anRenderAudioBar(); renderAnimator(); return; }
+  anAudioUrl = URL.createObjectURL(blob);
+  anAudioEl = new Audio(anAudioUrl);
+  anAudioEl.preload = 'auto';
+  try{
+    const buf = await blob.arrayBuffer();
+    const ctx = new (window.AudioContext||window.webkitAudioContext)();
+    anAudioBuffer = await ctx.decodeAudioData(buf);
+    ctx.close();
+    anAudioPeaks = anComputePeaks(anAudioBuffer);
+  }catch(e){
+    anAudioBuffer = null; anAudioPeaks = null;
+    document.getElementById('anAudioStatus').textContent = 'Could not decode this audio file.';
+  }
+  anRenderAudioBar();
+  renderAnimator();   // the timeline's total duration may have grown to fit the audio -- rebuild ruler/track/waveform widths together
+}
+// One peak (max abs sample, both channels averaged) per PIXEL COLUMN at the
+// timeline's fixed ANIM_PX_PER_SEC scale, computed once per import/load --
+// anRenderWaveform() only ever draws this array, never re-walks raw PCM.
+function anComputePeaks(buffer){
+  const ch0 = buffer.getChannelData(0);
+  const ch1 = buffer.numberOfChannels>1 ? buffer.getChannelData(1) : null;
+  const totalPx = Math.max(1, Math.ceil(buffer.duration * ANIM_PX_PER_SEC));
+  const samplesPerPx = buffer.sampleRate / ANIM_PX_PER_SEC;
+  const peaks = new Float32Array(totalPx);
+  for (let px=0; px<totalPx; px++){
+    const start = Math.floor(px*samplesPerPx), end = Math.min(ch0.length, Math.floor((px+1)*samplesPerPx));
+    let peak = 0;
+    for (let i=start;i<end;i++){
+      const v = ch1 ? (Math.abs(ch0[i])+Math.abs(ch1[i]))/2 : Math.abs(ch0[i]);
+      if (v>peak) peak = v;
+    }
+    peaks[px] = peak;
+  }
+  return peaks;
+}
+function anRenderWaveform(){
+  const wrap = document.getElementById('anWaveformTrack');
+  const canvas = document.getElementById('anWaveformCanvas');
+  if (!anAudioPeaks || !anAudioPeaks.length){ canvas.width = 0; canvas.height = 0; canvas.style.width = '0px'; return; }
+  const dpr = window.devicePixelRatio || 1;
+  const widthCss = anAudioPeaks.length;   // one px per column, already 1:1 with ANIM_PX_PER_SEC
+  const heightCss = wrap.clientHeight || 40;
+  canvas.width = Math.max(1, Math.round(widthCss*dpr));
+  canvas.height = Math.max(1, Math.round(heightCss*dpr));
+  canvas.style.width = widthCss+'px';
+  const g = canvas.getContext('2d');
+  g.setTransform(dpr,0,0,dpr,0,0);
+  g.clearRect(0,0,widthCss,heightCss);
+  const mid = heightCss/2;
+  g.fillStyle = (getComputedStyle(document.documentElement).getPropertyValue('--accent')||'#888').trim() || '#888';
+  for (let x=0;x<widthCss;x++){
+    const h = Math.max(1, anAudioPeaks[x]*mid);
+    g.fillRect(x, mid-h, 1, h*2);
+  }
+}
+function anRenderAudioBar(){
+  document.getElementById('anAudioClearBtn').hidden = !anAudioBlob;
+  const status = document.getElementById('anAudioStatus');
+  status.textContent = anAudioBlob ? `${anAudioName || 'Imported audio'} (${anAudioDuration().toFixed(1)}s)` : '';
+}
+document.getElementById('anAudioImportBtn').addEventListener('click', ()=>
+  document.getElementById('anAudioFile').click());
+document.getElementById('anAudioFile').addEventListener('change', async e=>{
+  const file = e.target.files[0]; if (!file) return;
+  await anSetCurrentAudio(file, file.name, true);
+  e.target.value = '';   // allow re-importing a file with the same name later
+});
+document.getElementById('anAudioClearBtn').addEventListener('click', async ()=>{
+  const ok = await anConfirmInline('Remove the imported narration audio from this workspace?');
+  if (!ok) return;
+  await anSetCurrentAudio(null, '', true);
+});
+// Restore whatever audio was last in the workspace -- same "survive a
+// reload" guarantee ANIM_ROWS already gets from 657-animator-rows, just via
+// IndexedDB since a Blob can't go through JSON/localStorage.
+(async function anRestoreAudioOnLoad(){
+  try{
+    const blob = await anAudioGet('draft');
+    if (blob) await anSetCurrentAudio(blob, 'Imported audio', false);
+  }catch(e){}
+})();
+// Round 2 (2026-10-02, Franz: "I click the save button and nothing
+// happens"). Root cause: window.prompt() and window.confirm() are
+// silently blocked inside the sandboxed iframe a published Artifact
+// actually runs in (confirmed by the symptom -- a blocked prompt()
+// returns null immediately, which the old code correctly read as "user
+// cancelled," so Save looked like it did nothing with no error anywhere).
+// My own local test server isn't sandboxed the same way, which is exactly
+// why this passed every test I ran before publishing. Fixed by never
+// calling a native dialog from this panel again: the project name is now
+// a real, always-visible text input (#anProjectName) instead of a
+// prompt(), and anConfirmInline() below replaces confirm() with a plain
+// in-page overlay -- both work the same regardless of iframe sandboxing,
+// since neither depends on a browser-chrome dialog at all.
+function anSaveProject(){
+  const input = document.getElementById('anProjectName');
+  const name = input.value.trim();
+  if (!name){ input.focus(); return; }   // nothing typed -- focus the field instead of silently doing nothing
+  const map = anLoadProjectsMap();
+  map[name] = {rows: ANIM_ROWS, groups: ANIM_GROUPS};
+  anSaveProjectsMap(map);
+  anCurrentProject = name;
+  if (anAudioBlob) anAudioSet('project:'+name, anAudioBlob); else anAudioDelete('project:'+name);
+  anRenderProjectName(); anRenderProjectList();
+  // Visible confirmation (2026-10-02): a silent success looks IDENTICAL to
+  // the original bug (click, nothing visibly happens) -- this is the fix
+  // for that symptom as much as for the prompt() itself.
+  const btn = document.getElementById('anSaveProject');
+  const prevText = btn.textContent;
+  btn.textContent = 'Saved ✓'; btn.disabled = true;
+  setTimeout(()=>{ btn.textContent = prevText; btn.disabled = false; }, 1100);
+}
+// Plain in-page confirmation, used in place of window.confirm() (see the
+// round-2 comment above for why). Returns a Promise<boolean> so call sites
+// read exactly like the old `if (!confirm(...)) return;` shape with an
+// `await` in front instead.
+function anConfirmInline(message){
+  return new Promise(resolve=>{
+    document.getElementById('anConfirmMsg').textContent = message;
+    document.getElementById('anConfirmOverlay').hidden = false;
+    anConfirmResolve = resolve;
+  });
+}
+let anConfirmResolve = null;
+document.getElementById('anConfirmYes').addEventListener('click', ()=>{
+  document.getElementById('anConfirmOverlay').hidden = true;
+  const resolve = anConfirmResolve; anConfirmResolve = null;
+  if (resolve) resolve(true);
+});
+document.getElementById('anConfirmNo').addEventListener('click', ()=>{
+  document.getElementById('anConfirmOverlay').hidden = true;
+  const resolve = anConfirmResolve; anConfirmResolve = null;
+  if (resolve) resolve(false);
+});
+async function anLoadProject(name){
+  if (!name) return;
+  const map = anLoadProjectsMap();
+  if (!map[name]) return;
+  const ok = await anConfirmInline(`Load "${name}"? Your current unsaved changes here will be replaced.`);
+  if (!ok) {
+    anRenderProjectList();   // reset the <select> back to the actually-loaded project, since choosing an option already moved it
+    return;
+  }
+  // Migration (2026-10-03): projects saved before grouping existed are a
+  // bare rows array; newer saves are {rows, groups}. Array.isArray tells
+  // the two apart with no version field needed.
+  const saved = JSON.parse(JSON.stringify(map[name]));
+  ANIM_ROWS = Array.isArray(saved) ? saved : saved.rows;
+  ANIM_GROUPS = Array.isArray(saved) ? {} : (saved.groups || {});
+  anCurrentProject = name;
+  anSelectedRowIds.clear();   // a different document now -- a stale selection from the last one would just be confusing
+  anUndoStack = []; anRedoStack = [];   // a different document now -- carrying over undo history across projects would just be confusing
+  // Carry the project's own audio along with its rows -- persist:true makes
+  // it the new 'draft' too, same as saveAnimRows() below does for ANIM_ROWS.
+  // A project saved before audio import existed, or saved with no audio,
+  // correctly clears whatever audio was in the workspace (projBlob is null).
+  const projBlob = await anAudioGet('project:'+name);
+  await anSetCurrentAudio(projBlob, projBlob ? (name+' narration') : '', true);
+  saveAnimRows(); saveAnimGroups(); renderAnimator(); anRenderProjectName(); anRenderProjectList(); updateUndoRedoButtons();
+  setPlayheadTime(0);
+}
+async function anDeleteProject(){
+  const sel = document.getElementById('anLoadSelect');
+  const name = sel.value;
+  if (!name) return;
+  const ok = await anConfirmInline(`Delete the saved project "${name}"? This can't be undone.`);
+  if (!ok) return;
+  const map = anLoadProjectsMap();
+  delete map[name];
+  anSaveProjectsMap(map);
+  await anAudioDelete('project:'+name);
+  if (anCurrentProject === name) anCurrentProject = null;   // the rows stay in the workspace, just no longer tied to that name
+  anRenderProjectName(); anRenderProjectList();
+}
+document.getElementById('anSaveProject').addEventListener('click', anSaveProject);
+document.getElementById('anProjectName').addEventListener('keydown', e=>{ if (e.key==='Enter') anSaveProject(); });
+document.getElementById('anLoadSelect').addEventListener('change', e=>anLoadProject(e.target.value));
+document.getElementById('anDeleteProject').addEventListener('click', anDeleteProject);
 function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 // Row number is computed from array position at render time, never stored
 // (2026-09-30, Franz: "numbering or ability to collapse each row") -- it's
@@ -2589,12 +3376,52 @@ function escapeHtml(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'
 // sync by hand. Collapsed rows show a one-line preview instead of the full
 // textarea/checklist, so a long list of rows stays scannable.
 function renderAnimRows(){
-  document.getElementById('anRows').innerHTML = ANIM_ROWS.map((row,idx) => {
+  const html = [];
+  let i = 0;
+  while (i < ANIM_ROWS.length){
+    const gid = ANIM_ROWS[i].groupId;
+    if (gid && ANIM_GROUPS[gid]){
+      let j = i;
+      while (j < ANIM_ROWS.length && ANIM_ROWS[j].groupId === gid) j++;   // the maximal run sharing this exact group id
+      html.push(renderGroupBlock(gid, ANIM_GROUPS[gid], i, j));
+      i = j;
+    } else {
+      html.push(renderOneRow(ANIM_ROWS[i], i));
+      i++;
+    }
+  }
+  document.getElementById('anRows').innerHTML = html.join('');
+  anUpdateGroupButton();
+}
+// A group block's header (collapse caret, editable name, row-range/count,
+// Ungroup) plus -- only while expanded -- its member rows' own normal
+// markup, unchanged from renderOneRow(). Collapsing it is what gives back
+// the vertical space Franz asked for: the member rows aren't just visually
+// hidden, they're not rendered at all while collapsed.
+function renderGroupBlock(gid, group, startIdx, endIdx){
+  const collapsed = !!group.collapsed;
+  const count = endIdx - startIdx;
+  const rangeLabel = count>1 ? `Rows ${startIdx+1}&ndash;${endIdx}` : `Row ${startIdx+1}`;
+  let body = '';
+  if (!collapsed) for (let k=startIdx;k<endIdx;k++) body += renderOneRow(ANIM_ROWS[k], k);
+  return `
+    <div class="an-group" data-group="${gid}">
+      <div class="an-group-head">
+        <button type="button" class="an-collapse" data-group-action="collapse" data-group="${gid}" title="${collapsed?'Expand':'Collapse'} group">${collapsed?'&#9656;':'&#9662;'}</button>
+        <input type="text" class="an-group-label" data-group-field="label" data-group="${gid}" value="${escapeHtml(group.label)}" placeholder="Group name">
+        <span class="an-group-count">${rangeLabel} &middot; ${count} row${count>1?'s':''}</span>
+        <button type="button" class="an-group-ungroup" data-group-action="ungroup" data-group="${gid}" title="Ungroup these rows">Ungroup</button>
+      </div>
+      ${body ? `<div class="an-group-body">${body}</div>` : ''}
+    </div>`;
+}
+function renderOneRow(row, idx){
     const collapsed = !!row.collapsed;
     const preview = escapeHtml((row.text||'').trim().slice(0,70));
     return `
     <div class="an-row" data-row="${row.id}">
       <div class="an-row-head">
+        <input type="checkbox" class="an-row-select" data-row="${row.id}" title="Select for grouping"${anSelectedRowIds.has(row.id)?' checked':''}>
         <button type="button" class="an-collapse" data-action="collapse" title="${collapsed?'Expand':'Collapse'} row">${collapsed?'&#9656;':'&#9662;'}</button>
         <span class="an-row-num">Row ${idx+1}</span>
         ${collapsed ? `<span class="an-row-preview">${preview || '<em>(no text yet)</em>'}</span>` : ''}
@@ -2614,64 +3441,538 @@ function renderAnimRows(){
           </div>
         </div>
         <div class="an-row-checklist">
-          ${ANIM_PARTS.map((p,i) => { const ord = row.items[p.label]; const uid = `an-${row.id}-${i}`;
-            // Fixing a real bug Franz caught (2026-09-30): "I can only
-            // checkbox a couple of things, the rest don't work." Both
-            // inputs were nested inside ONE <label>, which browsers handle
-            // inconsistently -- a click on the number input could
-            // re-trigger the label's own implicit activation of the
-            // checkbox, so only some items behaved depending on exactly
-            // where a click landed. Checkbox and number input are siblings
-            // now, each its own control; the label only wraps the text and
-            // points at the checkbox by id, so it can't reach the number
-            // input at all.
-            return `<div class="an-item">
-              <input type="checkbox" id="${uid}" data-field="check" data-label="${p.label}" ${ord!=null?'checked':''}>
-              <label for="${uid}">${p.label}</label>
-              <input type="number" min="1" max="9" data-field="order" data-label="${p.label}"
-                value="${ord!=null?ord:''}" placeholder="#" ${ord!=null?'':'disabled'}>
-            </div>`; }).join('')}
+          ${(()=>{
+            // Collapsible parts list (2026-10-02, Franz: "make the list of
+            // model objects collapsable... default collapsed") -- same
+            // disclosure-button shape as the row-level collapse above, just
+            // scoped to this one sub-section. Collapsed state shows a
+            // one-line, order-sorted summary of what's actually checked
+            // (truncated by CSS, not JS, so it degrades gracefully at any
+            // panel width) instead of all 10 checkbox rows, which is what
+            // was eating the vertical space in the first place.
+            const chCollapsed = !!row.checklistCollapsed;
+            const checked = Object.entries(row.items).sort((a,b)=>a[1]-b[1]).map(([label])=>label);
+            const summary = checked.length ? `Parts (${checked.length}): ${escapeHtml(checked.join(', '))}` : 'Parts (none selected)';
+            const toggle = `<button type="button" class="an-checklist-toggle" data-action="toggleChecklist"
+                title="${chCollapsed?'Expand':'Collapse'} parts list">
+              <span class="an-checklist-caret">${chCollapsed?'&#9656;':'&#9662;'}</span>
+              <span class="an-checklist-summary">${summary}</span>
+            </button>`;
+            if (chCollapsed) return toggle;
+            return toggle + `<div class="an-checklist-items">` + ANIM_PARTS.map((p,i) => { const ord = row.items[p.label]; const uid = `an-${row.id}-${i}`;
+              // Fixing a real bug Franz caught (2026-09-30): "I can only
+              // checkbox a couple of things, the rest don't work." Both
+              // inputs were nested inside ONE <label>, which browsers handle
+              // inconsistently -- a click on the number input could
+              // re-trigger the label's own implicit activation of the
+              // checkbox, so only some items behaved depending on exactly
+              // where a click landed. Checkbox and number input are siblings
+              // now, each its own control; the label only wraps the text and
+              // points at the checkbox by id, so it can't reach the number
+              // input at all.
+              return `<div class="an-item">
+                <input type="checkbox" id="${uid}" data-field="check" data-label="${p.label}" ${ord!=null?'checked':''}>
+                <label for="${uid}">${p.label}</label>
+                <input type="number" min="1" max="9" data-field="order" data-label="${p.label}"
+                  value="${ord!=null?ord:''}" placeholder="#" ${ord!=null?'':'disabled'}>
+              </div>`; }).join('') + `</div>`;
+          })()}
         </div>
       </div>`}
-    </div>`; }).join('');
+    </div>`;
 }
 function animRowById(id){ return ANIM_ROWS.find(r=>r.id===id); }
+const ANIM_PX_PER_SEC = 40;
+function anTotalDuration(){ return Math.max(20, anAudioDuration(), ...ANIM_ROWS.map(r=>r.t1||0)) + 6; }
+// Lane packing (2026-10-02, Franz: "if the different rows don't overlap,
+// then they are displayed on the same timeline row"). Standard greedy
+// interval-scheduling: process rows earliest-start-first, drop each into
+// the first lane whose last occupant already ended by this row's own
+// start, opening a new lane only when none of the existing ones are free
+// yet. Recomputed fresh on every render (including mid-drag) rather than
+// stored on the rows -- it's a pure function of everyone's current t0/t1,
+// so there's no separate "lane number" that could ever drift out of sync
+// with reality the way a stored value could. The one real tradeoff: since
+// it's recomputed from scratch each time, dragging one row past another's
+// boundary can occasionally shuffle a THIRD row's lane too (classic greedy-
+// packing instability) -- acceptable for now, revisit only if that actually
+// reads as confusing in practice rather than pre-solving a problem no one's
+// hit yet.
+function anComputeLanes(){
+  const order = ANIM_ROWS.map((r,i)=>i).sort((a,b)=>
+    (ANIM_ROWS[a].t0 - ANIM_ROWS[b].t0) || (a - b));
+  const laneEnds = [];
+  const laneOf = new Array(ANIM_ROWS.length);
+  for (const i of order){
+    const row = ANIM_ROWS[i];
+    let lane = laneEnds.findIndex(end => end <= row.t0);
+    if (lane === -1){ lane = laneEnds.length; laneEnds.push(row.t1); }
+    else { laneEnds[lane] = row.t1; }
+    laneOf[i] = lane;
+  }
+  return laneOf;
+}
+function renderTimeline(){
+  const total = anTotalDuration();
+  const widthPx = total * ANIM_PX_PER_SEC;
+  const ruler = document.getElementById('anTimelineRuler');
+  const track = document.getElementById('anTimelineTrack');
+  const waveWrap = document.getElementById('anWaveformTrack');
+  ruler.style.width = track.style.width = waveWrap.style.width = widthPx + 'px';
+  let ticks = '';
+  for (let s = 0; s <= total; s += 5) ticks += `<div class="an-tl-tick" style="left:${s*ANIM_PX_PER_SEC}px">${s}s</div>`;
+  ruler.innerHTML = ticks;
+  const laneOf = anComputeLanes();
+  const numLanes = Math.max(1, ...laneOf.map(l=>l+1));
+  const laneBlocks = Array.from({length:numLanes}, ()=>[]);
+  ANIM_ROWS.forEach((row, idx) => {
+    const left = row.t0 * ANIM_PX_PER_SEC;
+    const width = Math.max(ANIM_MIN_DUR*ANIM_PX_PER_SEC, (row.t1-row.t0) * ANIM_PX_PER_SEC);
+    const label = escapeHtml((row.text||'').trim().slice(0,40));
+    laneBlocks[laneOf[idx]].push(
+      `<div class="an-tl-block${label?'':' an-tl-empty'}" data-row="${row.id}" style="left:${left}px;width:${width}px">
+        <div class="an-tl-handle an-tl-handle-l" data-drag="left" data-row="${row.id}"></div>
+        <span class="an-tl-label">${idx+1}. ${label || '(no text yet)'}</span>
+        <div class="an-tl-handle an-tl-handle-r" data-drag="right" data-row="${row.id}"></div>
+      </div>`);
+  });
+  track.innerHTML = laneBlocks.map(blocks => `<div class="an-tl-lane">${blocks.join('')}</div>`).join('');
+  anRenderWaveform();
+}
+function setPlayheadTime(t){
+  anPlayheadT = t;
+  document.getElementById('anPlayhead').style.left = (t*ANIM_PX_PER_SEC) + 'px';
+  document.getElementById('anPlayheadTime').textContent = t.toFixed(1) + 's';
+}
+let anPlayheadT = 0;
+// Undo/redo (2026-10-01, Franz). One linear history of whole-ANIM_ROWS
+// snapshots -- simple to get right, and the array is small enough that
+// stringifying it on every undoable action is free. Granularity is the
+// real design question: every call site below pushes a snapshot at the
+// START of a "unit of change" a person thinks of as one action (one drag
+// gesture, one splice, one checkbox toggle, one row add/delete/reorder),
+// never per-pixel-of-drag or per-keystroke -- see each call site's own
+// comment for why that point was chosen.
+let anUndoStack = [], anRedoStack = [];
+const ANIM_HISTORY_LIMIT = 50;
+// Snapshot covers groups too (2026-10-03) -- grouping/ungrouping go through
+// anPushHistory() exactly like any other structural edit (delete, reorder),
+// so they need to be undoable the same way.
+function anSnapshot(){ return JSON.stringify({rows:ANIM_ROWS, groups:ANIM_GROUPS}); }
+function anPushHistory(){
+  const snap = anSnapshot();
+  if (anUndoStack.length && anUndoStack[anUndoStack.length-1] === snap) return; // no-op edit (e.g. refocusing a textarea without typing) shouldn't burn an undo step
+  anUndoStack.push(snap);
+  if (anUndoStack.length > ANIM_HISTORY_LIMIT) anUndoStack.shift();
+  anRedoStack = [];
+  updateUndoRedoButtons();
+}
+function updateUndoRedoButtons(){
+  document.getElementById('anUndo').disabled = !anUndoStack.length;
+  document.getElementById('anRedo').disabled = !anRedoStack.length;
+}
+function anUndo(){
+  if (!anUndoStack.length) return;
+  anRedoStack.push(anSnapshot());
+  const snap = JSON.parse(anUndoStack.pop());
+  ANIM_ROWS = snap.rows; ANIM_GROUPS = snap.groups;
+  saveAnimRows(); saveAnimGroups(); renderAnimator(); updateUndoRedoButtons();
+}
+function anRedo(){
+  if (!anRedoStack.length) return;
+  anUndoStack.push(anSnapshot());
+  const snap = JSON.parse(anRedoStack.pop());
+  ANIM_ROWS = snap.rows; ANIM_GROUPS = snap.groups;
+  saveAnimRows(); saveAnimGroups(); renderAnimator(); updateUndoRedoButtons();
+}
+document.getElementById('anUndo').addEventListener('click', anUndo);
+document.getElementById('anRedo').addEventListener('click', anRedo);
+// Ctrl/Cmd+Z and Ctrl/Cmd+Shift+Z, but only while the Animator is open and
+// focus isn't inside a textarea/number input -- typing in either already
+// has its own native undo, and hijacking Ctrl+Z there would fight it
+// instead of complementing it.
+document.addEventListener('keydown', e=>{
+  if (!document.body.classList.contains('animator-open')) return;
+  if (!(e.ctrlKey || e.metaKey) || e.key.toLowerCase() !== 'z') return;
+  const tag = document.activeElement && document.activeElement.tagName;
+  if (tag === 'TEXTAREA' || tag === 'INPUT') return;
+  e.preventDefault();
+  e.shiftKey ? anRedo() : anUndo();
+});
+// Spacebar play/pause (2026-10-02, Franz: "hitting spacebar... so that it
+// will start playing from that point") -- the same toggle as clicking
+// #anPlayTimeline, from wherever the playhead currently sits (playTimeline()
+// already starts from anPlayheadT, unchanged). Guarded against BUTTON/
+// SELECT too, not just TEXTAREA/INPUT like the undo shortcut above --
+// spacebar already activates a focused button/select natively, and
+// preventDefault()'ing that out from under it (needed here regardless, to
+// stop the page itself from scrolling on space) would silently swap
+// "activate the focused control" for "toggle playback" instead, which is
+// surprising if e.g. the Save button happens to have focus.
+document.addEventListener('keydown', e=>{
+  if (!document.body.classList.contains('animator-open')) return;
+  if (e.code !== 'Space' && e.key !== ' ') return;
+  const tag = document.activeElement && document.activeElement.tagName;
+  if (['TEXTAREA','INPUT','BUTTON','SELECT'].includes(tag)) return;
+  e.preventDefault();
+  anPlaying ? stopTimeline() : playTimeline();
+});
+// Drag-to-move / drag-edge-to-resize, delegated on the track so re-renders
+// (which replace the blocks) never need handlers rebound. One pointer
+// capture per gesture; "move" vs "resize" is decided by what was pressed
+// (a handle vs the block body), matching the dead-simple hit-test pattern
+// bindHSlider already uses elsewhere in this file rather than inventing a
+// separate drag library.
+(function(){
+  const track = document.getElementById('anTimelineTrack');
+  let mode = null, row = null, startX = 0, startT0 = 0, startT1 = 0;
+  track.addEventListener('pointerdown', e=>{
+    const handle = e.target.closest('.an-tl-handle');
+    const block = e.target.closest('.an-tl-block');
+    if (!block) return;
+    row = animRowById((handle||block).dataset.row);
+    if (!row) return;
+    anPushHistory();   // once per gesture, before the first mutation -- not per pointermove
+    mode = handle ? handle.dataset.drag : 'move';
+    startX = e.clientX; startT0 = row.t0; startT1 = row.t1;
+    // Same try/catch bindHSlider/bindVRod already use elsewhere in this
+    // file: an untrusted/synthetic pointerId with no browser-tracked
+    // active pointer throws NotFoundError here, which would otherwise
+    // abort the handler before mode/row are usable.
+    try{ e.target.setPointerCapture(e.pointerId); }catch(err){}
+    e.preventDefault();
+  });
+  track.addEventListener('pointermove', e=>{
+    if (!row) return;
+    const dt = (e.clientX - startX) / ANIM_PX_PER_SEC;
+    if (mode==='move'){
+      const dur = startT1 - startT0;
+      row.t0 = Math.max(0, startT0 + dt);
+      row.t1 = row.t0 + dur;
+    } else if (mode==='left'){
+      row.t0 = Math.min(startT1 - ANIM_MIN_DUR, Math.max(0, startT0 + dt));
+    } else if (mode==='right'){
+      row.t1 = Math.max(startT0 + ANIM_MIN_DUR, startT1 + dt);
+    }
+    renderTimeline();
+  });
+  function endDrag(){ if (!row) return; row=null; mode=null; saveAnimRows(); }
+  track.addEventListener('pointerup', endDrag);
+  track.addEventListener('pointercancel', endDrag);
+  // Splice (Franz, 2026-10-01: "freeform with the ability to splice") --
+  // double-click a point inside a block to cut it into two independent
+  // blocks there, each keeping a copy of the text and checklist so neither
+  // starts blank; Franz edits each half down by hand afterward rather than
+  // this guessing where a sentence should break.
+  track.addEventListener('dblclick', e=>{
+    const block = e.target.closest('.an-tl-block'); if (!block) return;
+    const r = animRowById(block.dataset.row); if (!r) return;
+    const rect = block.getBoundingClientRect();
+    const splitT = r.t0 + (e.clientX - rect.left) / ANIM_PX_PER_SEC;
+    if (splitT <= r.t0 + ANIM_MIN_DUR || splitT >= r.t1 - ANIM_MIN_DUR) return;
+    anPushHistory();
+    const second = {id:'r'+Math.random().toString(36).slice(2,9), text:r.text,
+      items:JSON.parse(JSON.stringify(r.items)), t0:splitT, t1:r.t1};
+    r.t1 = splitT;
+    ANIM_ROWS.splice(ANIM_ROWS.indexOf(r)+1, 0, second);
+    saveAnimRows(); renderAnimator();
+  });
+  // Scrub (2026-10-01, Franz: "drag the play indicator left and right on a
+  // click and hold"): pointerdown on either the ruler or the playhead line
+  // itself starts a drag that tracks the pointer continuously, not just a
+  // single jump-on-click -- the same gesture either way, since both
+  // listeners share this one scrubAt()/start()/move() set. Not undoable
+  // (scrubbing moves the playhead, not any row's data), so no
+  // anPushHistory() here.
+  function scrubAt(clientX){
+    const rect = document.getElementById('anTimelineRuler').getBoundingClientRect();
+    const t = Math.max(0, (clientX - rect.left) / ANIM_PX_PER_SEC);
+    setPlayheadTime(t);
+    if (anAudioEl) anAudioEl.currentTime = anAudioDuration() ? Math.min(t, anAudioDuration()) : t;
+    applyRowAtTime(activeRowAtTime(t), t);
+  }
+  let scrubbing = false;
+  function scrubStart(e){
+    if (anPlaying) stopTimeline();
+    scrubbing = true;
+    scrubAt(e.clientX);
+    try{ e.target.setPointerCapture(e.pointerId); }catch(err){}
+    e.preventDefault();
+  }
+  function scrubMove(e){ if (scrubbing) scrubAt(e.clientX); }
+  function scrubEnd(){ scrubbing = false; }
+  const ruler = document.getElementById('anTimelineRuler');
+  const playhead = document.getElementById('anPlayhead');
+  [ruler, playhead].forEach(el=>{
+    el.addEventListener('pointerdown', scrubStart);
+    el.addEventListener('pointermove', scrubMove);
+    el.addEventListener('pointerup', scrubEnd);
+    el.addEventListener('pointercancel', scrubEnd);
+  });
+})();
+// Mark-to-playhead (2026-10-03, Franz: "how will I be able to match up the
+// voice to when the objects come in?"). Finds whichever single row EDGE (a
+// t0 or a t1, across every row) sits closest in time to the current
+// playhead and snaps exactly that edge there, clamped the same way a
+// manual handle-drag already is -- so listening to the real recording and
+// tapping this the instant a part is named produces exactly the kind of
+// edit a mouse drag would, just driven by ear instead of eye.
+function anNearestEdge(t){
+  let best = null;
+  ANIM_ROWS.forEach(row=>{
+    [['t0',row.t0],['t1',row.t1]].forEach(([which,val])=>{
+      const dist = Math.abs(val - t);
+      if (!best || dist < best.dist) best = {row, which, dist};
+    });
+  });
+  return best;
+}
+function anMarkToPlayhead(){
+  const edge = anNearestEdge(anPlayheadT);
+  if (!edge) return;
+  anPushHistory();
+  if (edge.which === 't0') edge.row.t0 = Math.max(0, Math.min(edge.row.t1 - ANIM_MIN_DUR, anPlayheadT));
+  else edge.row.t1 = Math.max(edge.row.t0 + ANIM_MIN_DUR, anPlayheadT);
+  saveAnimRows(); renderAnimator();
+  const block = document.querySelector(`.an-tl-block[data-row="${edge.row.id}"]`);
+  if (block){ block.classList.add('an-mark-flash'); setTimeout(()=>block.classList.remove('an-mark-flash'), 500); }
+}
+document.getElementById('anMarkBtn').addEventListener('click', anMarkToPlayhead);
+document.addEventListener('keydown', e=>{
+  if (!document.body.classList.contains('animator-open')) return;
+  if (e.key.toLowerCase() !== 'm' || e.ctrlKey || e.metaKey || e.altKey) return;
+  const tag = document.activeElement && document.activeElement.tagName;
+  if (['TEXTAREA','INPUT','BUTTON','SELECT'].includes(tag)) return;
+  e.preventDefault();
+  anMarkToPlayhead();
+});
+function renderAnimator(){ renderAnimRows(); renderTimeline(); }
+// Panel height drag (2026-10-02, Franz: "the ability to raise the height
+// of the timeline"). Writes straight to --animator-h on :root; .fig's own
+// height rule reads that same property, and the ResizeObserver already
+// watching .fig (declared further down, unchanged) picks up the resulting
+// box-size change and re-runs layoutAll()/update() on its own -- no extra
+// call needed here just because the drag is happening. Persisted so the
+// chosen height survives a reload, the same way Phase 1's row drafts do.
+(function(){
+  const ANIM_H_MIN = 160, ANIM_H_MAX_FRAC = 0.8;
+  try{
+    const saved = localStorage.getItem('657-animator-height');
+    if (saved) document.documentElement.style.setProperty('--animator-h', saved);
+  }catch(e){}
+  const handle = document.getElementById('anResizeHandle');
+  let dragging = false, startY = 0, startH = 0;
+  handle.addEventListener('pointerdown', e=>{
+    dragging = true; startY = e.clientY;
+    startH = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--animator-h')) || 340;
+    handle.classList.add('dragging');
+    try{ handle.setPointerCapture(e.pointerId); }catch(err){}
+    e.preventDefault();
+  });
+  handle.addEventListener('pointermove', e=>{
+    if (!dragging) return;
+    // The handle sits at the panel's TOP edge and the panel is anchored to
+    // the BOTTOM of the viewport, so dragging up (smaller clientY, negative
+    // delta) must INCREASE the height -- hence startY-e.clientY, not the
+    // other way around.
+    const dy = startY - e.clientY;
+    const h = Math.min(window.innerHeight*ANIM_H_MAX_FRAC, Math.max(ANIM_H_MIN, startH + dy));
+    document.documentElement.style.setProperty('--animator-h', h+'px');
+  });
+  function endDrag(){
+    if (!dragging) return;
+    dragging = false;
+    handle.classList.remove('dragging');
+    try{ localStorage.setItem('657-animator-height',
+      getComputedStyle(document.documentElement).getPropertyValue('--animator-h')); }catch(e){}
+  }
+  handle.addEventListener('pointerup', endDrag);
+  handle.addEventListener('pointercancel', endDrag);
+})();
+// Timeline/rows horizontal split (2026-10-03, Franz: "panel the rows to a
+// panel on the right and then the actual timeline left of it... give me a
+// slide between them"). Same pattern as the height-resize IIFE just above:
+// writes straight to --an-split (a percentage of #anWorkArea's own width)
+// on :root, persisted so the chosen split survives a reload. Nothing
+// downstream needs an explicit re-render on drag -- the timeline's own
+// content width (set in renderTimeline(), independent of the pane's
+// visible width) is unaffected; narrowing the pane just means more of
+// #anTimelineScroll's existing horizontal scroll, which is the point.
+(function(){
+  const SPLIT_MIN_PCT = 20, SPLIT_MAX_PCT = 80;
+  try{
+    const saved = localStorage.getItem('657-animator-split');
+    if (saved) document.documentElement.style.setProperty('--an-split', saved);
+  }catch(e){}
+  const handle = document.getElementById('anSplitHandle');
+  const area = document.getElementById('anWorkArea');
+  let dragging = false;
+  handle.addEventListener('pointerdown', e=>{
+    dragging = true;
+    handle.classList.add('dragging');
+    try{ handle.setPointerCapture(e.pointerId); }catch(err){}
+    e.preventDefault();
+  });
+  handle.addEventListener('pointermove', e=>{
+    if (!dragging) return;
+    const rect = area.getBoundingClientRect();
+    const pct = Math.min(SPLIT_MAX_PCT, Math.max(SPLIT_MIN_PCT, ((e.clientX - rect.left) / rect.width) * 100));
+    document.documentElement.style.setProperty('--an-split', pct+'%');
+  });
+  function endDrag(){
+    if (!dragging) return;
+    dragging = false;
+    handle.classList.remove('dragging');
+    try{ localStorage.setItem('657-animator-split',
+      getComputedStyle(document.documentElement).getPropertyValue('--an-split')); }catch(e){}
+  }
+  handle.addEventListener('pointerup', endDrag);
+  handle.addEventListener('pointercancel', endDrag);
+})();
+// Playback (Phase 2): a local performance.now() clock, no audio involved --
+// this is the authoring surface for SETTING the timing; audio comes later,
+// recorded by Franz to already-correct cues, rather than the other way
+// around. On overlap (two rows both covering the playhead), the row with
+// the latest t0 wins -- simple, predictable, and matches "the thing that
+// started most recently is what's on screen now."
+let anPlaying = false, anRafId = null, anClockStart = 0, anClockStartT = 0;
+function activeRowAtTime(t){
+  return ANIM_ROWS.filter(r=>t>=r.t0 && t<r.t1).sort((a,b)=>b.t0-a.t0)[0] || null;
+}
+function applyRowAtTime(row, t){
+  if (!row){ focus(); return; }
+  const groups = {};
+  Object.entries(row.items).forEach(([label,ord])=>{ (groups[ord] = groups[ord]||[]).push(label); });
+  const orders = Object.keys(groups).map(Number).sort((a,b)=>a-b);
+  if (!orders.length){ focus(); return; }
+  // Steps distributed evenly across the row's REAL span (its t0/t1 on the
+  // timeline), replacing playAnimRowSequence()'s placeholder 1.2s/step now
+  // that real timing exists -- exactly the evolution that function's own
+  // comment anticipated.
+  const span = Math.max(ANIM_MIN_DUR, row.t1 - row.t0);
+  const progress = Math.min(1, Math.max(0, (t - row.t0) / span));
+  const stepIdx = Math.min(orders.length-1, Math.floor(progress * orders.length));
+  let revealed = [];
+  for (let i=0;i<=stepIdx;i++) revealed = revealed.concat(groups[orders[i]]);
+  focus(revealed.flatMap(partIdsForLabel));
+}
+// Audio-driven clock (2026-10-03): when narration audio is loaded, the
+// REAL clock is anAudioEl.currentTime, not performance.now() -- the audio
+// is what Franz is listening to, so the highlight timing has to track
+// exactly what's playing, not a separately-ticking rAF clock that could
+// drift against it. anClockStart/anClockStartT stay continuously resynced
+// to the audio's position on every tick (not just set once at play time)
+// so that if the recording ends partway through a longer timeline, the
+// wall-clock fallback picks up exactly where the audio left off instead of
+// jumping to a stale performance.now()-based prediction.
+function tickTimeline(now){
+  if (!anPlaying) return;
+  let t;
+  if (anAudioEl && !anAudioEl.paused){
+    t = anAudioEl.currentTime;
+    anClockStart = now; anClockStartT = t;
+  } else {
+    t = anClockStartT + (now - anClockStart)/1000;
+  }
+  setPlayheadTime(t);
+  applyRowAtTime(activeRowAtTime(t), t);
+  const maxT = Math.max(0, anAudioDuration(), ...ANIM_ROWS.map(r=>r.t1||0));
+  if (t > maxT + 0.5){ stopTimeline(); setPlayheadTime(0); return; }
+  anRafId = requestAnimationFrame(tickTimeline);
+}
+function playTimeline(){
+  anPlaying = true; anClockStart = performance.now(); anClockStartT = anPlayheadT;
+  if (anAudioEl){ anAudioEl.currentTime = anPlayheadT; anAudioEl.play().catch(()=>{}); }
+  document.getElementById('anPlayTimeline').textContent = '■ Stop';
+  document.getElementById('anPlayTimeline').classList.add('playing');
+  anRafId = requestAnimationFrame(tickTimeline);
+}
+function stopTimeline(){
+  anPlaying = false;
+  if (anRafId) cancelAnimationFrame(anRafId);
+  if (anAudioEl) anAudioEl.pause();
+  document.getElementById('anPlayTimeline').textContent = '▶ Play timeline';
+  document.getElementById('anPlayTimeline').classList.remove('playing');
+}
+document.getElementById('anPlayTimeline').addEventListener('click', ()=>
+  anPlaying ? stopTimeline() : playTimeline());
+// One history snapshot per focus session on a text/order field, not per
+// keystroke (2026-10-01) -- 'focusin' bubbles, so this is one delegated
+// listener rather than binding to every textarea/number-input individually
+// across re-renders.
+document.getElementById('anRows').addEventListener('focusin', e=>{
+  if (e.target.dataset.field==='text' || e.target.dataset.field==='order') anPushHistory();
+});
 document.getElementById('anRows').addEventListener('input', e=>{
+  // Group name field -- not inside .an-row (it's a sibling at the group
+  // level), so this has to be checked before the .an-row lookup below,
+  // same as the select checkbox in the other two listeners.
+  if (e.target.classList.contains('an-group-label')){
+    const group = ANIM_GROUPS[e.target.dataset.group];
+    if (group){ group.label = e.target.value; saveAnimGroups(); }
+    return;   // no renderAnimator() here either -- same reason as row text below, it would blow away the input's own focus/cursor mid-keystroke
+  }
   const rowEl = e.target.closest('.an-row'); if (!rowEl) return;
   const row = animRowById(rowEl.dataset.row); if (!row) return;
-  if (e.target.dataset.field==='text'){ row.text = e.target.value; saveAnimRows(); }
+  if (e.target.dataset.field==='text'){ row.text = e.target.value; saveAnimRows();
+    renderTimeline(); /* label preview only -- never renderAnimRows() here, it would blow away the textarea's own focus/cursor mid-keystroke */ }
   else if (e.target.dataset.field==='order'){
     const v = +e.target.value; if (v>0) row.items[e.target.dataset.label] = v;
     saveAnimRows();
   }
 });
 document.getElementById('anRows').addEventListener('change', e=>{
+  // Row-select checkbox (2026-10-03, Franz: "group a series of rows"): pure
+  // transient UI state, not part of the saved document -- see
+  // anSelectedRowIds' own comment up top.
+  if (e.target.classList.contains('an-row-select')){
+    const id = e.target.dataset.row;
+    if (e.target.checked) anSelectedRowIds.add(id); else anSelectedRowIds.delete(id);
+    anUpdateGroupButton();
+    return;
+  }
   const rowEl = e.target.closest('.an-row'); if (!rowEl) return;
   const row = animRowById(rowEl.dataset.row); if (!row) return;
   if (e.target.dataset.field==='check'){
+    anPushHistory();
     const label = e.target.dataset.label;
     if (e.target.checked){ if (row.items[label]==null) row.items[label] = Object.keys(row.items).length+1; }
     else delete row.items[label];
-    saveAnimRows(); renderAnimRows();
+    saveAnimRows(); renderAnimator();
   }
 });
 document.getElementById('anRows').addEventListener('click', e=>{
+  // Group-level actions (collapse/ungroup) -- also not inside .an-row.
+  const groupAction = e.target.dataset.groupAction;
+  if (groupAction){
+    const gid = e.target.dataset.group;
+    if (groupAction==='collapse') anToggleGroupCollapse(gid);
+    else if (groupAction==='ungroup') anUngroup(gid);
+    return;
+  }
   const rowEl = e.target.closest('.an-row'); if (!rowEl) return;
   const row = animRowById(rowEl.dataset.row); if (!row) return;
   const action = e.target.dataset.action; if (!action) return;
   if (action==='preview'){ previewAnimRow(row); return; }
   if (action==='play'){ playAnimRowSequence(row); return; }
   const idx = ANIM_ROWS.indexOf(row);
+  // collapse/toggleChecklist are both view-only (not row content) and
+  // deliberately left out of undo history -- toggling either isn't an
+  // "edit" Franz would want reverted.
+  if (action==='collapse'){ row.collapsed = !row.collapsed; saveAnimRows(); renderAnimator(); return; }
+  if (action==='toggleChecklist'){ row.checklistCollapsed = !row.checklistCollapsed; saveAnimRows(); renderAnimator(); return; }
+  anPushHistory();
   if (action==='delete') ANIM_ROWS = ANIM_ROWS.filter(r=>r.id!==row.id);
-  else if (action==='collapse') row.collapsed = !row.collapsed;
   else if (action==='moveup' && idx>0) [ANIM_ROWS[idx-1],ANIM_ROWS[idx]] = [ANIM_ROWS[idx],ANIM_ROWS[idx-1]];
   else if (action==='movedown' && idx<ANIM_ROWS.length-1) [ANIM_ROWS[idx],ANIM_ROWS[idx+1]] = [ANIM_ROWS[idx+1],ANIM_ROWS[idx]];
-  else return;
-  saveAnimRows(); renderAnimRows();
+  else { anUndoStack.pop(); updateUndoRedoButtons(); return; }   // unrecognized action: undo the speculative push, nothing happened
+  saveAnimRows(); renderAnimator();
 });
 document.getElementById('anAddRow').addEventListener('click', ()=>{
-  ANIM_ROWS.push(newAnimRow()); saveAnimRows(); renderAnimRows();
+  anPushHistory();
+  ANIM_ROWS.push(newAnimRow()); saveAnimRows(); renderAnimator();
 });
+document.getElementById('anGroupSelectedBtn').addEventListener('click', anGroupSelected);
 function previewAnimRow(row){ focus(Object.keys(row.items).flatMap(partIdsForLabel)); }
 // Steps through the row's order groups on a fixed delay -- purely so Franz
 // can SEE a sequence work before any real timing exists; once per-row
@@ -2689,19 +3990,20 @@ function playAnimRowSequence(row){
 }
 function openAnimator(){
   if (document.body.classList.contains('physics-open')) closePhysicsSheet();
-  // Collapse the rail instead of forcing it open, unlike Physics (2026-09-
-  // 30, Franz: "more real estate, like it collapsing the vertical bar
-  // pane") -- frees 330-58=272px for genuinely usable writing/checklist
-  // width (see --animw and the .fig padding-right rule above). "Animator"
-  // lives in that same rail, so #anClose (wired below) is the real way
-  // back out now, not just a convenience next to it.
-  closeIndexRail();
+  // No longer force-collapses the rail (2026-10-02): that was only ever
+  // about freeing HORIZONTAL room for the old right-docked panel. Now that
+  // the panel docks along the bottom (full width, same right edge .fig
+  // itself respects), the rail can stay however the user left it -- #anClose
+  // (wired below) is still the direct way out regardless.
   document.body.classList.add('animator-open');
   const link = document.getElementById('animatorRefLink');
   link.textContent = 'Close Animator'; link.classList.add('active');
-  renderAnimRows();
+  renderAnimator();
+  anRenderProjectName(); anRenderProjectList();
+  setPlayheadTime(0);
 }
 function closeAnimator(){
+  if (anPlaying) stopTimeline();   // don't leave the rAF loop running once the panel's gone
   document.body.classList.remove('animator-open');
   const link = document.getElementById('animatorRefLink');
   link.textContent = 'Animator'; link.classList.remove('active');
@@ -2758,6 +4060,20 @@ layoutAll();
 // first-paint safety net already used for update() below -- a second pass
 // one frame later catches it.
 requestAnimationFrame(layoutAll);
+// Round 2 of the same class of bug (2026-10-01, Franz: the desktop gauges
+// sit closer to the edge than to the actuator -- "the space on the outside
+// of the gauges is less wide than the space between them and the
+// actuator"). The one-rAF safety net above only catches staleness that
+// resolves within a single frame; a webfont swap (Barlow/Barlow Condensed,
+// loaded via Google Fonts with font-display:swap above) can take far
+// longer than that and reflows #adjCtl/#pressrow's own measured width
+// AFTER the rAF pass has already run and nothing re-triggers layoutAll()
+// for it (the ResizeObserver above only watches .fig, which doesn't change
+// size when a label's font swaps) -- so a scale/width computed from the
+// pre-swap fallback-font measurement can persist uncorrected. Re-running
+// once the real fonts are actually ready closes that gap the same way the
+// rAF pass closes the one-frame gap.
+if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutAll);
 // nameplate: collapsed by default, tab toggles the card out to the right.
 // The tab is the <g id="npTab"> drawn into #asm -- a real SVG element, not
 // an HTML button, so Enter/Space are wired up manually to match native
@@ -2775,7 +4091,36 @@ requestAnimationFrame(layoutAll);
   });
 })();
 // ================= scripted SOP playback =================
-const TIMING = __TIMINGJSON__;
+const TIMING_RAW = __TIMINGJSON__;
+// Principle of Operation v2 (2026-10-03, Franz: "take this PO v2 that I
+// created in the animator and... replace the principle of operation
+// lesson"). Replaces the original TTS-generated intro (TIMING_RAW's first
+// 6 segments) with Franz's own authored project from the Animator: his own
+// recorded voice, word-level narration timing he set himself by ear against
+// the real recording (see PO_V2_ROWS -- t0/t1/parts are his own authored
+// values, pulled directly from the saved project, not re-derived or
+// rounded beyond snapping out sub-pixel drag noise). The TTS pipeline still
+// generates the remaining segments (now reindexed, see SECTIONS below) for
+// the other 3 lessons, unchanged.
+const PO_V2_ROWS = [
+  {text:"The 657 is a direct acting pneumatic actuator. ", t0:0, t1:6.21, parts:[]},
+  {text:"Loading pressure applied to the upper diaphragm casing ", t0:6.21, t1:10.34, parts:['p-upper']},
+  {text:"acts on the diaphragm, converting that pressure into a downward force that displaces the ", t0:10.34, t1:15.66, parts:['p-upper','p-dia']},
+  {text:"diaphragm plate and the attached ", t0:15.66, t1:17.95, parts:['p-upper','p-dia','g-plate']},
+  {text:"actuator stem. As the plate assembly moves downward, it compresses the internal ", t0:17.95, t1:23.01, parts:['p-upper','g-plate','p-dia','g-stem']},
+  {text:"spring against the ", t0:23.01, t1:24.57, parts:['p-upper','p-dia','g-plate','g-stem',SPRING]},
+  {text:"spring seat, which is supported by the ", t0:24.57, t1:27.07, parts:['p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem']},
+  {text:"actuator yoke. ", t0:27.07, t1:28.83, parts:['p-yoke','p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem']},
+  {text:"When air is vented from the diaphragm chamber, the spring decompresses, pushing the diaphragm plate assembly to its upper travel stop against the upper diaphragm casing. ", t0:28.83, t1:39.81, parts:['p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem','p-yoke']},
+];
+const TIMING = [
+  ...PO_V2_ROWS.map(r=>({start:r.t0, duration:r.t1-r.t0, text:r.text, section:'Principle of Operation'})),
+  ...TIMING_RAW.slice(6),
+];
+// Inlined as a data: URI, not a served file -- see this constant's own
+// comment in build_refined2.py for why (the Artifact platform doesn't
+// serve audio/mp4 as a supporting file).
+const PO_V2_AUDIO_DATA_URI = "data:audio/mp4;base64,__POV2AUDIOB64__";
 const audio = document.getElementById('pb-audio');
 const capEl = document.getElementById('cap');
 let playing=false, curSeg=-1, seg8sw=false, firedCues=[];
@@ -2817,14 +4162,24 @@ let playing=false, curSeg=-1, seg8sw=false, firedCues=[];
 // untouched text, just shifted 2 segments later than the prior round
 // because "Principle of Operation" picked up 2 extra real segments from
 // the new paragraph breaks.
+// Indices shifted +3 throughout (2026-10-03): PO v2 grew the first section
+// from 6 TIMING entries to 9, so everything after it moves down by 3 --
+// values otherwise unchanged from before PO v2.
 const SECTIONS = [
-  {name:'Principle of Operation', startIdx:0, endIdx:5},
-  {name:'Set the Spring Adjuster', startIdx:6, endIdx:7},
-  {name:'Verify Bench Set to Rated Travel', startIdx:8, endIdx:13},
-  {name:'Set Valve Travel', startIdx:14, endIdx:20},
+  {name:'Principle of Operation', startIdx:0, endIdx:8, audioSrc:PO_V2_AUDIO_DATA_URI},
+  {name:'Set the Spring Adjuster', startIdx:9, endIdx:10},
+  {name:'Verify Bench Set to Rated Travel', startIdx:11, endIdx:16},
+  {name:'Set Valve Travel', startIdx:17, endIdx:23},
 ];
-let activeSection = -1;   // which SECTIONS entry is currently playing, -1 = none/mobile's full playback
-let playEndTime = null;   // section-bounded playback stops here; null = play to the end (mobile's button)
+// Two different recordings now share this engine (2026-10-03): Franz's own
+// PO v2 voice recording for the first section, the original TTS narration
+// for the rest. audioSrc on a SECTIONS entry names which; anything without
+// one (i.e. every section except Principle of Operation) uses this default,
+// so the other 3 lessons needed zero changes beyond their index shift.
+const DEFAULT_AUDIO_SRC = '657-narration.wav';
+function sectionAudioSrc(sec){ return sec.audioSrc || DEFAULT_AUDIO_SRC; }
+let activeSection = -1;   // which SECTIONS entry is currently playing; -1 = none, or "play everything" (mobile's single button); -2 = "Play all lessons" row
+let curSectionIdx = -1;   // which SECTIONS entry's audio/TIMING range is actually loaded right now -- distinct from activeSection, which can be -1/-2 while chaining through several real sections in turn
 // 0.1-step rounding: the original native <input type=range step="0.1">
 // snapped to a clean decimal grid for free; the custom drag slider lost
 // that (continuous float), which is exactly why landing precisely on 3.0
@@ -3042,107 +4397,34 @@ function benchReset(){
 // just naturally shifted later in this array by the 2 extra segments
 // "Principle of Operation" now carries versus the original pre-physics
 // baseline (3 paragraphs, but one of them splits into 2 segments -> 4).
-const CHOREO = [
- // 0. intro, its own beat (own paragraph -> own segment -> a REAL pause on
- //    both sides, from PAUSE_S). Fully lit the whole time, nothing moves --
- //    this is the pause itself, not a lead-in to rush past. (Franz,
- //    2026-09-30 round 3: a fraction-based cue can only rearrange WHEN
- //    things happen inside one already-spoken segment, it can't invent
- //    real silence -- "the overall animation is exactly the same length...
- //    I need you to have beats." So the beat is now a real paragraph break
- //    with a real audio gap before segment 1 starts, not a held fraction
- //    inside a combined segment.)
- {enter(){ benchReset(); focus(); }},
- // 1. air enters the upper casing, expands the diaphragm, pushes the plate
- //    + stem down -- its own beat, so safe to narrow right at enter() (the
- //    real pause from segment 0 already did the separating work; nothing
- //    here needs to wait on a lead-in). "expands the diaphragm," is done by
- //    0.525 (char ratio) -- 0.6 adds the plate+stem a beat after that,
- //    once "pushing the diaphragm plate and attached stem downward" lands.
- {enter(){ focus('p-upper','p-dia'); },
-  cues:[[0.6,()=>focus('p-dia','g-plate','g-stem')]],
-  tick(p){ setPress((3*Math.min(1,p*1.1)).toFixed(2)); }},
- // 2. that motion compresses the spring against the seat, supported by the
- //    yoke -- own beat, "spring" is this sentence's own 6th word so showing
- //    it at enter() is in sync, not premature. Round 4 (Franz, 2026-09-30):
- //    the seat must be its OWN introduction, not bundled with the yoke.
- //    Round 5 correction, same day: "when it says the action compress the
- //    spring downward against the spring seat, the spring seat is not
- //    focused. It needs to be focused shortly before it is mentioned" --
- //    this is the same motion-leads-the-words case as segment 4's "pushes
- //    the spring seat upward" (the compression is happening AGAINST the
- //    seat, an action in progress, not a static fact to confirm after the
- //    fact), so the seat cue moved from after "spring seat," (0.65) to
- //    just before the word "seat" starts (0.6) -- 0.5 gives it a shade of
- //    real lead-in. "yoke" is still the sentence's very last word and is
- //    still a static fact at that point, so it keeps its own confirm-after
- //    cue right at the tail (0.97). Also: the spoken "compresses" needs to
- //    actually SHOW compression continuing, not hold the plate static at
- //    segment 1's end position -- tick() keeps pressing the plate down a
- //    little further (3 -> 5psig) through this segment.
- {enter(){ focus('g-plate','g-stem',SPRING); },
-  cues:[[0.5,()=>focus('g-plate','g-stem',SPRING,'sp-seat-g')],
-        [0.97,()=>focus('g-plate','g-stem',SPRING,'sp-seat-g','p-yoke')]],
-  tick(p){ setPress((3+2*Math.min(1,p*1.2)).toFixed(2)); }},
- // -- a real "---" beat marker in the source script sits here now (Franz,
- //    2026-09-30 round 4: "between introducing the yoke, and mentioning
- //    'before connecting the actuator to a valve body,' should be a longer
- //    beat"), giving BEAT_PAUSE_S (1.5s, vs. the normal 0.45s) of real
- //    silence before segment 3 starts -- see generate_narration.py.
- // 3. before connecting to the valve, a technician must tighten the spring
- //    adjuster through the yoke housing. Round 4 correction: resetting to
- //    full-lit here (as a prior round did) was wrong -- "it is not helpful
- //    to jump to showing the entire actuator as focused again. Take the
- //    longer beat, and just dim everything else so that it transitions to
- //    only focusing on the spring adjuster." The long real pause above IS
- //    the transition; focus narrows straight to the adjuster at enter(),
- //    arriving on it quietly during the beat rather than waiting for the
- //    word. The actual turning motion (the ADJ sweep) still waits for
- //    "tighten" to land (0.61 by ratio; 0.7 is just past it) before moving,
- //    from the real loosened rest position (ADJ_RESET, held since
- //    benchReset() back in segment 0) up to the dead-zone boundary (0) --
- //    "starting to turn it," not yet creating compression. The rest of the
- //    tightening motion continues into segment 4, where the narration
- //    describes its effect.
- {enter(){ setPress(0); focus('sp-adj-g'); },
-  tick(p){ if(p<0.7){ setAdj(ADJ_RESET); return; }
-           const q=(p-0.7)/(1-0.7);
-           setAdj(Math.round(ADJ_RESET+(0-ADJ_RESET)*Math.min(1,q*1.1))); }},
- // 4. this pushes the spring seat upward, compressing the spring between
- //    the seat and the diaphragm plate, which rests at its upper travel
- //    stop against the upper diaphragm casing with no air applied -- new
- //    content Franz asked to add (2026-09-30 round 3). Round 4 correction:
- //    the seat shows UP FRONT, right as "this pushes the spring seat
- //    upward" begins (not after) -- "the spring seat should be focused
- //    right before mentioning it, to show the adjuster moving the spring
- //    seat up," since this is a continuous motion the visual should lead
- //    into, not a static reveal to confirm after the fact. From there the
- //    full load path builds progressively as each part is actually named:
- //    "compressing the spring" lands at 0.29 -- 0.38 adds the spring. Round
- //    6 correction (Franz, 2026-09-30): the plate+diaphragm cue was placed
- //    after the whole "diaphragm plate" clause finished (0.6) and read as
- //    late -- "it should focus exactly when saying diaphragm there." The
- //    word "diaphragm" itself starts at 0.421 by ratio, so the cue moved
- //    there, landing exactly on the word instead of trailing the full
- //    clause (Franz: "the adjuster, seat, spring, plate, diaphragm, and
- //    upper casing should be in focus" -- six parts, not the plate alone).
- //    The final clause names the upper travel stop against the upper
- //    casing -- 0.92 adds p-upper, completing all six. Finishes the
- //    adjuster sweep from segment 3's dead-zone boundary up to CAL_ADJ
- //    across this whole segment, now actually compressing the spring in
- //    sync with the seat visibly rising.
- {enter(){ focus('sp-adj-g','sp-seat-g'); },
-  cues:[[0.38,()=>focus('sp-adj-g','sp-seat-g',SPRING)],
-        [0.421,()=>focus('sp-adj-g','sp-seat-g',SPRING,'g-plate','p-dia')],
-        [0.92,()=>focus('sp-adj-g','sp-seat-g',SPRING,'g-plate','p-dia','p-upper')]],
-  tick(p){ setAdj(Math.round(0+(CAL_ADJ-0)*Math.min(1,p*1.05))); }},
- // 5. that determines the pressure at which the stem begins to move --
- //    bench set. Carries the full six-part load path over from segment 4
- //    (no new jump), holds it, and confirms the nameplate once "bench set"
- //    is actually said -- the words land at 0.915 by ratio, so the cue is
- //    at 0.93, just after.
- {enter(){ focus('sp-adj-g','sp-seat-g',SPRING,'g-plate','p-dia','p-upper'); },
-  cues:[[0.93,()=>hl('np-benchset')]]},
+// Choreography for PO_V2_ROWS (2026-10-03). Part reveals are Franz's own
+// authored checklist from the Animator project, taken directly from the
+// saved data -- each row's parts are already the full set that should be
+// lit by that point (the Animator's own progressive-build authoring, not
+// re-derived). Pressure ramps (tick()) are Claude's proposal: this script
+// deliberately never states numbers (Franz's own earlier call, round 3
+// below), so these are illustrative values chosen to drive smooth, real
+// motion through the same update()/setPress() physics every other lesson
+// uses -- apply pressure -> stem travels down -> vent -> stem returns --
+// reviewed and approved by Franz before publishing, not read off the words.
+const CHOREO_PO_V2 = [
+ {enter(){ benchReset(); focus(); }},                                                      // 0. "The 657 is a direct acting pneumatic actuator." -- full-lit, nothing moving yet
+ {enter(){ focus('p-upper'); }, tick(p){ setPress((3*p).toFixed(2)); }},                    // 1. "Loading pressure applied to the upper diaphragm casing"
+ {enter(){ focus('p-upper','p-dia'); }, tick(p){ setPress((3+3*p).toFixed(2)); }},          // 2. "acts on the diaphragm... displaces the"
+ {enter(){ focus('p-upper','p-dia','g-plate'); }, tick(p){ setPress((6+p).toFixed(2)); }},  // 3. "diaphragm plate and the attached"
+ {enter(){ focus('p-upper','g-plate','p-dia','g-stem'); }, tick(p){ setPress((7+2*p).toFixed(2)); }},             // 4. "actuator stem... compresses the internal"
+ {enter(){ focus('p-upper','p-dia','g-plate','g-stem',SPRING); }, tick(p){ setPress((9+0.5*p).toFixed(2)); }},    // 5. "spring against the"
+ {enter(){ focus('p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem'); }, tick(p){ setPress((9.5+0.5*p).toFixed(2)); }},  // 6. "spring seat, which is supported by the"
+ {enter(){ focus('p-yoke','p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem'); }},     // 7. "actuator yoke." -- holds at 10psig
+ {enter(){ focus('p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem','p-yoke'); }, tick(p){ setPress((10-10*p).toFixed(2)); }},  // 8. "When air is vented... upper travel stop" -- vents back to 0
+];
+// Choreography for TIMING_RAW.slice(6) onward (2026-10-03): the other 3
+// lessons, entirely unchanged from before PO v2 -- only their ARRAY
+// POSITION moved (was CHOREO[6..20], now CHOREO_REST[0..14], reassembled
+// below into one CHOREO array). Comment numbering below is left as
+// originally written (relative to the old indices) since it's about each
+// entry's own reasoning, not its position in this array.
+const CHOREO_REST = [
  // 6. tightening raises the seat and compresses the spring upwards before
  //    any air is applied; loosening backs it off -- unchanged text
  {enter(){ setPress(0); focus('sp-adj-g','sp-seat-g',SPRING); },
@@ -3201,17 +4483,50 @@ const CHOREO = [
            else if(p<0.5){ setPress(0); PB.scaleDy=36*((p-0.3)/0.2); }
            else { PB.scaleDy=36; setPress((Math.min(12,12*(p-0.5)/0.5)).toFixed(2)); } }},
 ];
+const CHOREO = [...CHOREO_PO_V2, ...CHOREO_REST];
+// Loads whichever audio file a SECTIONS entry needs and seeks/plays it --
+// the one place that knows how to start any section's audio, used by
+// playSection(), playAllSections(), mobile's single button, AND pbFrame()
+// itself when chaining past a section boundary into a DIFFERENT audio file
+// (2026-10-03, added for PO v2's own separate recording). Skips reassigning
+// .src when the needed file is already loaded, so chaining between the 3
+// sections that all share the original narration file never reloads it.
+function loadSectionAudio(sectionIdx, seekTo, onReady){
+  const sec = SECTIONS[sectionIdx];
+  const src = sectionAudioSrc(sec);
+  curSectionIdx = sectionIdx;
+  if (audio.getAttribute('data-cur-src') !== src){
+    audio.setAttribute('data-cur-src', src);
+    audio.src = src;
+  }
+  audio.currentTime = seekTo;
+  audio.play().then(onReady).catch(e=>{ playing=false; activeSection=-1; curSectionIdx=-1;
+    updateTopicButtons();
+    document.getElementById('pb-status').textContent=' audio failed to load'; });
+}
 function pbFrame(){
   if(!playing) return;
   const t = audio.currentTime;
-  // Round 12: section-bounded playback (the topic list) stops here instead
-  // of running into whatever comes next -- each topic reads as its own
-  // self-contained item, not a scrub position within one long recording.
-  // playEndTime stays null for mobile's single button, which still plays
-  // straight through like it always has.
-  if(playEndTime !== null && t >= playEndTime){ pbStop(); return; }
-  let i = TIMING.length-1;
-  while(i>0 && TIMING[i].start > t) i--;
+  const sec = SECTIONS[curSectionIdx];
+  const secEndT = TIMING[sec.endIdx].start + TIMING[sec.endIdx].duration;
+  if (t >= secEndT){
+    // "Play everything" (mobile's single button, or "Play all lessons")
+    // chains into the next section instead of stopping -- the only place
+    // that needs to know two different audio files might be involved,
+    // since loadSectionAudio() swaps src for us if the next section needs
+    // a different one (2026-10-03, PO v2's own separate recording).
+    const playingEverything = (activeSection === -1 || activeSection === -2);
+    if (playingEverything && curSectionIdx < SECTIONS.length-1){
+      curSeg = -1;
+      loadSectionAudio(curSectionIdx+1, TIMING[SECTIONS[curSectionIdx+1].startIdx].start,
+        ()=>requestAnimationFrame(pbFrame));
+      return;
+    }
+    pbStop();
+    return;
+  }
+  let i = sec.startIdx;
+  while(i<sec.endIdx && TIMING[i+1].start <= t) i++;
   if(i !== curSeg){ curSeg=i; capEl.textContent = TIMING[i].text;
     firedCues = []; if(CHOREO[i] && CHOREO[i].enter) CHOREO[i].enter(); }
   const p = Math.min(1, (t-TIMING[i].start)/TIMING[i].duration);
@@ -3224,7 +4539,7 @@ function pbFrame(){
 }
 function pbStop(){
   playing=false; audio.pause();
-  activeSection = -1; playEndTime = null;
+  activeSection = -1; curSectionIdx = -1;
   document.getElementById('pb-play').classList.remove('playing');
   document.getElementById('pb-play').innerHTML='&#9654; Play the SOP';
   document.getElementById('pb-status').textContent='';
@@ -3251,18 +4566,21 @@ function updateTopicButtons(){
   // activeSection===-2, which never matches a real section index).
   document.getElementById('playAllRow').classList.toggle('playing', playing && activeSection === -2);
 }
-// Mobile's own single button: plays straight through start to finish,
-// exactly as it always has (playEndTime stays null).
+// Mobile's own single button: plays straight through start to finish --
+// now via the same section-chaining loadSectionAudio()/pbFrame() every
+// other entry point uses (2026-10-03), since "straight through" has to
+// cross from PO v2's own recording into the original narration file
+// partway through; activeSection stays -1 (distinct from -2's "Play all
+// lessons" row) purely so each button's own CSS/label state stays correct.
 document.getElementById('pb-play').addEventListener('click', ()=>{
   if(playing){ pbStop(); return; }
-  playing=true; curSeg=-1; activeSection=-1; playEndTime=null;
-  audio.currentTime=0;
-  audio.play().then(()=>{
+  benchReset();
+  playing=true; curSeg=-1; activeSection=-1;
+  loadSectionAudio(0, TIMING[SECTIONS[0].startIdx].start, ()=>{
     document.getElementById('pb-play').classList.add('playing');
     document.getElementById('pb-play').innerHTML='&#9632; Stop';
     requestAnimationFrame(pbFrame);
-  }).catch(e=>{ playing=false;
-    document.getElementById('pb-status').textContent=' audio failed to load';});
+  });
 });
 // Desktop's table of contents: each topic plays just its own section, from
 // a clean reset (benchReset), and stops at that section's own end rather
@@ -3270,17 +4588,10 @@ document.getElementById('pb-play').addEventListener('click', ()=>{
 // topic again stops it, matching a normal play/stop toggle.
 function playSection(idx){
   if(playing && activeSection === idx){ pbStop(); return; }
-  const sec = SECTIONS[idx];
   benchReset();
   playing=true; curSeg=-1; activeSection=idx;
-  playEndTime = TIMING[sec.endIdx].start + TIMING[sec.endIdx].duration;
-  audio.currentTime = TIMING[sec.startIdx].start;
   updateTopicButtons();
-  audio.play().then(()=>{
-    requestAnimationFrame(pbFrame);
-  }).catch(e=>{ playing=false; activeSection=-1;
-    updateTopicButtons();
-    document.getElementById('pb-status').textContent=' audio failed to load'; });
+  loadSectionAudio(idx, TIMING[SECTIONS[idx].startIdx].start, ()=>requestAnimationFrame(pbFrame));
 }
 // Correction (2026-09-28): "Play all lessons" row (approved template,
 // final-panel-open.png) -- plays straight through all 4 SECTIONS in order
@@ -3291,15 +4602,8 @@ function playAllSections(){
   if(playing && activeSection === -2){ pbStop(); return; }
   benchReset();
   playing=true; curSeg=-1; activeSection=-2;
-  const last = SECTIONS[SECTIONS.length-1];
-  playEndTime = TIMING[last.endIdx].start + TIMING[last.endIdx].duration;
-  audio.currentTime = TIMING[SECTIONS[0].startIdx].start;
   updateTopicButtons();
-  audio.play().then(()=>{
-    requestAnimationFrame(pbFrame);
-  }).catch(e=>{ playing=false; activeSection=-1;
-    updateTopicButtons();
-    document.getElementById('pb-status').textContent=' audio failed to load'; });
+  loadSectionAudio(0, TIMING[SECTIONS[0].startIdx].start, ()=>requestAnimationFrame(pbFrame));
 }
 document.getElementById('playAllRow').addEventListener('click', playAllSections);
 // Franz's final wording for the 3 topics (2026-09-27, round 12 follow-up) --
@@ -3416,5 +4720,6 @@ window.addEventListener('resize', update);
 """
 html = html.replace("__PARTSJS__", parts_js)
 html = html.replace("__TIMINGJSON__", timing_js)
+html = html.replace("__POV2AUDIOB64__", po_v2_audio_b64)
 open("../657-refined.html", "w", encoding="utf-8").write(html)
 print("written", len(html))
