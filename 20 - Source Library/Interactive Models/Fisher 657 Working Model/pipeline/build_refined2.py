@@ -30,6 +30,20 @@ import base64 as _base64
 po_v2_audio_b64 = _base64.b64encode(open(
     "C:/Users/E1552882/Documents-Local/Projects/EmersonWorkbench/20 - Source Library/Interactive Models/Fisher 657 Working Model/po-v2-narration.m4a",
     "rb").read()).decode("ascii")
+# Set the Spring Adjuster narration audio (2026-10-04): same inlining
+# reasoning as PO v2's above.
+spring_adj_audio_b64 = _base64.b64encode(open(
+    "C:/Users/E1552882/Documents-Local/Projects/EmersonWorkbench/20 - Source Library/Interactive Models/Fisher 657 Working Model/spring-adjuster-narration.m4a",
+    "rb").read()).decode("ascii")
+# Verifying Bench Set to Rated Travel narration audio: same inlining
+# reasoning as PO v2's above.
+verify_bench_set_audio_b64 = _base64.b64encode(open(
+    "C:/Users/E1552882/Documents-Local/Projects/EmersonWorkbench/20 - Source Library/Interactive Models/Fisher 657 Working Model/verify-bench-set-narration.m4a",
+    "rb").read()).decode("ascii")
+# Set Travel narration audio: same inlining reasoning as PO v2's above.
+set_travel_audio_b64 = _base64.b64encode(open(
+    "C:/Users/E1552882/Documents-Local/Projects/EmersonWorkbench/20 - Source Library/Interactive Models/Fisher 657 Working Model/set-travel-narration.m4a",
+    "rb").read()).decode("ascii")
 
 html = """<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -272,6 +286,22 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
    #indexRail is above: a bare block-level list shouldn't show up outside
    its own media query. */
 #mobileLessons{display:none;}
+#mPlayAllBtn{display:none;}
+/* Play All (2026-10-05): "a prominent 'Play all lessons' row" per the
+   approved template this rail panel/mobile list are otherwise already
+   built from -- an accent-colored top-level action, not just another
+   numbered lesson, so it reads as a distinct control sitting above the
+   list rather than lesson "0". Unscoped (not inside either media query)
+   so the same look applies to both #playAllBtn (desktop) and #mPlayAllBtn
+   (mobile) -- their own display:none/flex rules, already scoped per
+   viewport, are what actually controls which one shows. */
+.play-all-btn{border:1px solid var(--accent);border-radius:6px;
+  color:var(--accent);font-weight:700;}
+.play-all-btn:hover{background:var(--ring);}
+.play-all-btn .num{border-color:var(--accent);color:var(--accent);
+  font-size:.7rem;}
+.play-all-btn.playing{color:var(--good);border-color:var(--good);}
+.play-all-btn.playing .num{color:var(--good);border-color:var(--good);}
 /* ===== Desktop-only gauge + slider controls (approved 2026-09-27, slider
    unified 2026-09-29): both the diaphragm-pressure gauge and the spring-
    adjustor dial are pure displays, each driven by an identical .hslide
@@ -369,7 +399,8 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
 .msliders{flex:1 1 auto;min-height:0;display:flex;gap:16px;justify-content:center;}
 .mvslide{flex:0 0 auto;height:100%;display:flex;flex-direction:column;align-items:center;gap:6px;}
 .mreadout{flex:0 0 auto;font-family:ui-monospace,monospace;font-weight:700;font-size:14px;
-  color:var(--accent);white-space:nowrap;transition:color 0.2s ease;}
+  color:var(--accent);white-space:nowrap;transition:color 0.2s ease;
+  max-width:100%;overflow:hidden;text-overflow:ellipsis;}
 .mreadout.inwin{color:var(--good);}
 .mtrackwrap{position:relative;flex:1 1 auto;min-height:0;width:44px;display:flex;
   justify-content:center;touch-action:none;cursor:grab;}
@@ -440,6 +471,8 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
      below the Play/Practice row, reachable by the same scroll-past-the-
      actuator gesture the nameplate/valve controls already use -- nothing
      about the actuator-first landing itself changes. */
+  #mPlayAllBtn{display:flex;margin-bottom:8px;border:1px solid var(--border);
+    border-radius:8px;}
   #mobileLessons{display:block;list-style:none;margin:0 0 10px;padding:0;
     border:1px solid var(--border);border-radius:8px;overflow:hidden;}
   .mobile-lesson-row{display:flex;align-items:center;gap:10px;width:100%;
@@ -672,6 +705,7 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
     margin:0;color:var(--ink);}
   .rp-close{border:1px solid var(--border-strong);background:transparent;
     border-radius:3px;padding:2px 9px;cursor:pointer;font-size:.85rem;color:var(--ink);}
+  #playAllBtn{margin-bottom:12px;}
   .rp-list{list-style:none;margin:0;padding:0;overflow-y:auto;}
   .sop-topic{display:flex;align-items:center;gap:10px;width:100%;
     text-align:left;background:none;border:none;border-bottom:1px solid var(--border);
@@ -1187,6 +1221,23 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
   <g id="g-stem">
     <rect class="sp-stem" x="704" y="205" width="77" height="1320" rx="4"/>
     <g id="g-stem-threads"></g>
+    <!-- Verifying Bench Set to Rated Travel: a mark scribed onto the stem
+         itself (a child of g-stem, not a separate fixed overlay) so it
+         inherits the SAME live translate(0,stroke) transform the stem gets
+         in update() -- Franz's correction (the first build's mark floated
+         at a fixed position, "in midair," and never moved): "the first mark
+         needs to... be on the stem up against the spring adjuster... then
+         when the stem drops down, that mark is going to move with the
+         stem." y=1385.5 is that exact bottom-of-adjuster edge (see
+         STEM_MARK_Y below) at the moment the mark is made, with the
+         adjuster calibrated to CAL_ADJ and the stem still at its upper
+         travel stop (zero stroke) -- local and absolute coordinates
+         coincide at that instant, so this is drawn flush against the real
+         adjuster edge, not invented. -->
+    <g id="g-stem-mark" style="display:none">
+      <line class="anno" x1="660" y1="1385.5" x2="825" y2="1385.5"/>
+      <text class="anno-lbl" x="835" y="1390">mark</text>
+    </g>
   </g>
   <g id="g-vgrp" style="display:none">
     <!-- all dims measured from the painted masks (see README) -->
@@ -1261,6 +1312,23 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
       <line class="anno" x1="640" y1="1659" x2="632" y2="1665" stroke-width="2"/>
       <text class="anno-lbl" x="556" y="1604">3/4"</text>
     </g>
+  </g>
+  <!-- Verifying Bench Set to Rated Travel: unlike g-vermark/g-verbracket
+       above (a fixed pre-drawn span), this bracket has one fixed end and
+       one end that genuinely tracks the stem's live position, because the
+       real procedure it depicts has one fixed reference (the spring
+       adjuster's bottom edge, which never moves since the adjuster isn't
+       touched in this lesson) and one moving one (the mark scribed on the
+       stem, which travels down with it). y1 is set once from STEM_MARK_Y;
+       y2 and the label are updated every frame by updateStemMarkBracket()
+       while the lesson's pressure ramp runs. -->
+  <g id="g-stemmark-bracket" style="display:none">
+    <line id="smb-vline" class="anno" x1="600" y1="1385.5" x2="600" y2="1385.5" stroke-dasharray="6 5" stroke-width="2"/>
+    <line class="anno" x1="592" y1="1391.5" x2="600" y2="1385.5" stroke-width="2"/>
+    <line class="anno" x1="608" y1="1391.5" x2="600" y2="1385.5" stroke-width="2"/>
+    <line id="smb-cap-bot-l" class="anno" x1="592" y1="1379.5" x2="600" y2="1385.5" stroke-width="2"/>
+    <line id="smb-cap-bot-r" class="anno" x1="608" y1="1379.5" x2="600" y2="1385.5" stroke-width="2"/>
+    <text id="smb-lbl" class="anno-lbl" x="540" y="1385.5">0.00"</text>
   </g>
   <g id="sp-adj-g">
     <!-- parametric adjuster: rod + wrench flats; dims measured from the
@@ -1628,7 +1696,7 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
   <div class="mlrow"><b>SIZE</b><span>30</span></div>
   <div class="mlrow"><b>BENCH SET</b><span>3&ndash;11 PSI</span></div>
   <div class="mlrow"><b>TRAVEL</b><span>3/4 IN</span></div>
-  <div class="mlrow"><b>RANGE</b><span>0&ndash;18 PSI</span></div>
+  <div class="mlrow"><b>RANGE</b><span>3&ndash;15 PSI</span></div>
 </div>
 <div id="cap"></div>
 </div>
@@ -1680,9 +1748,6 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
            removed (Franz: inaccurate, would confuse people). -->
       <div class="dial-benchset" id="adjBenchSet"></div>
     </div>
-    <!-- kept for Practice mode / mobile, which show their own distance-in-psi
-         readout -- unrelated to the turns readout above. -->
-    <span class="readout" id="adjout" style="display:none"></span>
   </div>
   <div class="ctl" id="pressrow">
     <label>Diaphragm pressure</label>
@@ -1735,6 +1800,9 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
      by scrolling past the actuator exactly the way the nameplate/valve
      controls already are -- the actuator-first landing Franz wants kept
      is untouched; this only adds a way to actually reach a lesson from it. -->
+<button type="button" id="mPlayAllBtn" class="play-all-btn mobile-lesson-row" data-label="Play All Lessons">
+  <span class="num">&#9654;</span><span class="label">Play All Lessons</span><span class="dur" id="mPlayAllDur"></span>
+</button>
 <ul id="mobileLessons" aria-label="Lessons"></ul>
 <p id="valveRow"><label><input type="checkbox" id="valve"> Stem connector installed &mdash; valve coupled below the yoke</label></p>
 </div>
@@ -1752,6 +1820,9 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
   <div id="railNums" class="rail-nums"></div>
   <div id="railPanel" class="rail-panel" aria-hidden="true">
     <div class="rail-panel-head"><h2>Lessons</h2><button id="railClose" class="rp-close">Close</button></div>
+    <button type="button" id="playAllBtn" class="play-all-btn sop-topic" data-label="Play All Lessons">
+      <span class="num">&#9654;</span><span class="label">Play All Lessons</span><span class="dur" id="playAllDur"></span>
+    </button>
     <ol id="railList" class="rp-list"></ol>
     <hr class="rail-divider">
     <div class="rail-refs-head">References</div>
@@ -1816,7 +1887,7 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
     <text class="np-val" x="682" y="184">PSI</text></g>
   <g id="np-range"><text class="np-lbl" x="394" y="224">OPER RANGE</text>
     <rect class="np-box" x="401" y="205" width="287" height="25"/>
-    <text class="np-val" x="544" y="224">0-18</text></g>
+    <text class="np-val" x="544" y="224">3-15</text></g>
   </svg>
 </div>
 <script>
@@ -2318,6 +2389,44 @@ window.showVerBracket = function(on){
 window.showTravelMark = function(on){
   document.getElementById('g-travelmark').style.display = on ? '' : 'none';
 };
+// Verifying Bench Set to Rated Travel: the bottom-of-adjuster edge the mark
+// is scribed flush against, in the main assembly's absolute coordinates.
+// 1386 is the wrench flats' own local bottom edge (sp-adj-g's rect at
+// x=672.5 y=1338 w=140 h=48); -0.5 is sp-adj-g's own adjOffset evaluated at
+// CAL_ADJ=16.8 (seatOffset(CAL_ADJ)=18 exactly, FULL_INSERTION_OFFSET=17.5,
+// so adjOffset=17.5-18=-0.5) -- computed by hand from this file's own
+// preloadTurns()/adjOffset formulas, not eyeballed. Valid for this one
+// lesson specifically because ADJ is pinned to CAL_ADJ for its entire
+// runtime (see CHOREO_VERIFY_BENCH_SET row 0) and never moves again, so the
+// adjuster's bottom edge stays at this exact fixed point throughout.
+const STEM_MARK_Y = 1385.5;
+function stemMarkStroke(){
+  // Off-valve stroke only (this lesson never attaches the valve) -- same
+  // Hooke's-law formula update() uses for the unconnected case, evaluated
+  // directly from PRESS/ADJ rather than reading the one-frame-stale
+  // lastStroke global, since this needs to agree with whatever tick() just
+  // set PRESS to on the SAME frame.
+  const preload = preloadForce(ADJ);
+  const limIn = STOP / PX_PER_IN;
+  return Math.min(limIn, Math.max(0, (PRESS*DIA_AREA - preload) / SPRING_RATE)) * PX_PER_IN;
+}
+function updateStemMarkBracket(){
+  const y2 = STEM_MARK_Y + stemMarkStroke();
+  document.getElementById('smb-vline').setAttribute('y2', y2);
+  document.getElementById('smb-cap-bot-l').setAttribute('y1', y2-6);
+  document.getElementById('smb-cap-bot-l').setAttribute('y2', y2);
+  document.getElementById('smb-cap-bot-r').setAttribute('y1', y2-6);
+  document.getElementById('smb-cap-bot-r').setAttribute('y2', y2);
+  const lbl = document.getElementById('smb-lbl');
+  lbl.setAttribute('y', (STEM_MARK_Y + y2) / 2 + 4);
+  lbl.textContent = ((y2 - STEM_MARK_Y) / PX_PER_IN).toFixed(2) + '"';
+}
+window.showStemMark = function(on){
+  document.getElementById('g-stem-mark').style.display = on ? '' : 'none';
+};
+window.showStemMarkBracket = function(on){
+  document.getElementById('g-stemmark-bracket').style.display = on ? '' : 'none';
+};
 // Packing is a fixed single PTFE V-ring (the lowest-friction, most common
 // baseline) rather than a user-facing choice -- the selector was pure
 // friction-modeling detail that added noise without teaching anything about
@@ -2443,11 +2552,6 @@ function update(){
   adjThreads(adj*2);
   // fixed-format, single-line readouts -- never wrap, so the sliders
   // above them never shift position regardless of value or state.
-  // Shows the actual crack pressure (P0) directly now -- the old "+/-
-  // psi shift from a nominal center" framing doesn't make sense against a
-  // dead-zone+calibration curve; an absolute cracking pressure is the
-  // honest number now, feeding mobile/Practice mode's own readout slots.
-  document.getElementById('adjout').textContent = `${P0.toFixed(1)} psig crack`;
   // Turns-of-compression readout (2026-09-29, Franz): "they don't think in
   // decimal inches or pounds of force while cranking a wrench -- they count
   // physical rotations." Counts from ZERO at the end of the dead zone (bolt
@@ -2509,7 +2613,14 @@ function thumbY(v, vMin, vMax, trackH){
 function updateMobileRails(adj, P, P0, inWindow){
   const adjTrack = document.querySelector('#mAdjHit .mtrack');
   if (!adjTrack) return;   // not on mobile / rails not in DOM state yet
-  document.getElementById('mAdjOut').textContent = document.getElementById('adjout').textContent;
+  // Turns, not crack pressure (Franz, correcting this session's own first
+  // pass): mAdjOut used to mirror a "X.X psig crack" string, which on the
+  // narrow mobile rail collided with the TIGHTEN/LOOSEN label beneath it.
+  // Same preloadTurns() physics the desktop Turns readout (preloadOut)
+  // already uses, not the old turns readout Franz had removed from
+  // adjBenchSet for being inaccurate -- that one predates the real
+  // thread-pitch-based physics this formula is built on.
+  document.getElementById('mAdjOut').textContent = `${preloadTurns(adj).toFixed(1)} Turns`;
   const hA = adjTrack.clientHeight;
   const pA = thumbY(adj, -24, 24, hA), pCenter = thumbY(0, -24, 24, hA);
   document.getElementById('mAdjThumb').style.top = pA + 'px';
@@ -4046,14 +4157,102 @@ const PO_V2_ROWS = [
   {text:"actuator yoke. ", t0:27.07, t1:28.83, parts:['p-yoke','p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem']},
   {text:"When air is vented from the diaphragm chamber, the spring decompresses, pushing the diaphragm plate assembly to its upper travel stop against the upper diaphragm casing. ", t0:28.83, t1:39.81, parts:['p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem','p-yoke']},
 ];
-const TIMING = PO_V2_ROWS.map(r=>({start:r.t0, duration:r.t1-r.t0, text:r.text, section:'Principle of Operation'}));
+// Set the Spring Adjuster (2026-10-04, Franz: recorded narration + a single
+// row containing the full text -- "take that simple information and make
+// an animation of the same quality as Principle of Operation"). t0/t1 below
+// come from a real word-level forced-alignment transcript of the actual
+// recording (Whisper, medium.en model), not estimated -- same "measure it
+// directly" standard as everything else timing-sensitive in this project.
+// The pressure numbers at each demo point (1.78 and 4.0 psig) and the final
+// calibration point (16.8 adj / 3.0 psig) are computed from this model's
+// own preloadForce()/preloadTurns() physics at the exact adjuster
+// turns-counts Franz narrates (2 and ~4.5 turns -- 4.5 turns lands almost
+// exactly on adj=24, full tighten, which is why his "4 psig" is an exact
+// match rather than a rounding), not invented to match the spoken "2 psig"/
+// "4 psig" -- see the comment above CHOREO_SPRING_ADJ for the derivation.
+const SPRING_ADJ_ROWS = [
+  {text:"Calibrating the actuator is performed by setting initial spring compression with the spring adjuster. ", t0:1.88, t1:7.54, parts:[]},
+  {text:"With no supply pressure applied, the stem rests at its upper travel stop. ", t0:8.28, t1:12.38, parts:['g-stem']},
+  {text:"As the adjuster threads upward, it travels freely through the yoke housing until it reaches the spring seat. ", t0:13.06, t1:19.20, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g']},
+  {text:"Contact at the seat marks the start of preload. ", t0:20.20, t1:22.96, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g']},
+  {text:"Continued travel from that point compresses the spring directly, and that compression is what sets the pressure at which the stem will begin to move. ", t0:22.96, t1:32.64, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"Turning the adjuster in roughly two turns, ", t0:33.92, t1:36.34, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"we raise pressure to see where the stem responds. ", t0:36.84, t1:39.26, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"It begins to move at 2 psig. ", t0:40.12, t1:42.28, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"Turn it further to roughly four and a half turns, ", t0:43.30, t1:46.36, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"and that starting point rises to 4 psig. ", t0:46.66, t1:50.10, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"Each position sets a different preload and a different pressure at which the stem responds. ", t0:50.98, t1:56.26, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"The actuator nameplate identifies the bench set range for this specific unit. ", t0:57.56, t1:61.80, parts:[]},
+  {text:"For this 657 size 30, ", t0:62.66, t1:64.82, parts:[]},
+  {text:"the nameplate specifies a bench set of 3 to 11 psig, ", t0:65.22, t1:69.56, parts:[]},
+  {text:"an operating range of 3 to 15 psig, ", t0:70.26, t1:73.86, parts:[]},
+  {text:"and a rated travel of three quarters of an inch. ", t0:74.40, t1:77.28, parts:[]},
+  {text:"With the actuator at zero supply pressure, the spring adjuster is turned in ", t0:78.12, t1:83.14, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"until the stem just begins to lift at 3 psig, ", t0:83.14, t1:86.92, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"setting the lower bench set value for this unit. ", t0:87.62, t1:90.32, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+];
+// Verifying Bench Set to Rated Travel narration rows: Franz's own exact
+// spoken text (not generated), timed against the real Whisper word-level
+// transcript of his recording -- same sourcing discipline as the two
+// lessons above.
+const VERIFY_BENCH_SET_ROWS = [
+  {text:"The bench set for this unit spans 3 to 11 psig, ", t0:1.44, t1:5.70, parts:[]},
+  {text:"an 8 psig range, ", t0:6.34, t1:8.12, parts:['g-stem','sp-adj-g']},
+  {text:"across which the stem travels its full rated 3 quarters of an inch. ", t0:8.48, t1:13.06, parts:['g-stem','sp-adj-g']},
+  {text:"At 3 psig, the stem begins that travel. ", t0:14.24, t1:17.24, parts:['g-stem','sp-adj-g']},
+  {text:"At 11 psig, it completes it. ", t0:17.90, t1:20.60, parts:['g-stem','sp-adj-g']},
+  {text:"With the spring adjuster set so the stem just begins to move at 3 psig, ", t0:21.96, t1:26.76, parts:['g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate']},
+  {text:"mark the stem at its upper travel stop. ", t0:27.20, t1:29.82, parts:['g-stem','sp-adj-g']},
+  {text:"Raise supply pressure to 11 psig, the top of the bench set, ", t0:30.60, t1:35.50, parts:['g-stem','sp-adj-g']},
+  {text:"and the stem moves to its lower travel stop. ", t0:35.86, t1:38.62, parts:['g-stem','sp-adj-g']},
+  {text:"Measuring the distance between the two marks ", t0:39.80, t1:41.92, parts:['g-stem','sp-adj-g']},
+  {text:"verifies not only the actuator's rated travel, but that the correct spring is installed. ", t0:41.92, t1:47.80, parts:['g-stem','sp-adj-g']},
+];
+// Set Travel narration rows: Franz's own exact spoken text (not generated),
+// timed against the real Whisper word-level transcript of his recording --
+// same sourcing discipline as the three lessons above. ("Set this gap" in
+// the transcript vs "Set the gap" in Franz's written script is a Whisper
+// mishearing on a fast "the" -- the written script is kept as the text of
+// record, per this project's standing convention; timestamps are unaffected.)
+const SET_TRAVEL_ROWS = [
+  {text:"With the actuator properly calibrated on the bench, ", t0:1.70, t1:4.84, parts:['g-stem','sp-adj-g']},
+  {text:"it can now be secured to the valve body. ", t0:5.30, t1:7.24, parts:['g-valve-sil','g-mount']},
+  {text:"With the valve plug seated at its lower travel stop ", t0:8.20, t1:10.94, parts:['g-vgrp']},
+  {text:"and the actuator stem at its upper travel stop, ", t0:10.94, t1:14.32, parts:['g-stem']},
+  {text:"drop the actuator stem down three quarters of an inch, the full rated travel, ", t0:14.92, t1:19.76, parts:['g-stem','g-vgrp']},
+  {text:"before coupling it to the valve stem. ", t0:20.34, t1:22.16, parts:['g-stem','g-vgrp']},
+  {text:"Set the gap by precise measurement of distance, accurate to within a sixteenth of an inch, ", t0:23.56, t1:29.32, parts:['g-stem','g-vgrp']},
+  {text:"not by applying bench-set pressure to the actuator. ", t0:29.74, t1:32.58, parts:['g-stem','g-vgrp']},
+  {text:"A pressure gauge can be out of calibration, so driving to a pressure reading at this step can still produce the wrong travel. ", t0:33.32, t1:40.66, parts:['g-stem','g-vgrp']},
+  {text:"Once the gap is set, couple the stem connector to the valve stem, with full thread engagement on both sides. ", t0:42.04, t1:48.86, parts:['g-stem','g-conn','g-vgrp']},
+  {text:"Below the stem connector, thread the lock nuts up the valve stem to secure the indicator disc in place. ", t0:49.76, t1:56.48, parts:['g-vgrp','g-stem']},
+  {text:"Then, align the indicator scale to the disc. ", t0:57.36, t1:60.20, parts:['g-scale','g-vgrp']},
+  {text:"With everything coupled and aligned, run the actuator through its full operating range to confirm travel. ", t0:61.14, t1:67.30, parts:[]},
+];
+const TIMING = [
+  ...PO_V2_ROWS.map(r=>({start:r.t0, duration:r.t1-r.t0, text:r.text, section:'Principle of Operation'})),
+  ...SPRING_ADJ_ROWS.map(r=>({start:r.t0, duration:r.t1-r.t0, text:r.text, section:'Set Spring Adjuster'})),
+  ...VERIFY_BENCH_SET_ROWS.map(r=>({start:r.t0, duration:r.t1-r.t0, text:r.text, section:'Verify Bench Set to Rated Travel'})),
+  ...SET_TRAVEL_ROWS.map(r=>({start:r.t0, duration:r.t1-r.t0, text:r.text, section:'Set Travel'})),
+];
 // Inlined as a data: URI, not a served file -- see this constant's own
 // comment in build_refined2.py for why (the Artifact platform doesn't
 // serve audio/mp4 as a supporting file).
 const PO_V2_AUDIO_DATA_URI = "data:audio/mp4;base64,__POV2AUDIOB64__";
+const SPRING_ADJ_AUDIO_DATA_URI = "data:audio/mp4;base64,__SPRINGADJAUDIOB64__";
+const VERIFY_BENCH_SET_AUDIO_DATA_URI = "data:audio/mp4;base64,__VERIFYBENCHSETAUDIOB64__";
+const SET_TRAVEL_AUDIO_DATA_URI = "data:audio/mp4;base64,__SETTRAVELAUDIOB64__";
 const audio = document.getElementById('pb-audio');
 const capEl = document.getElementById('cap');
 let playing=false, curSeg=-1, firedCues=[];
+// Play All (2026-10-05, Franz: back by request -- the legacy chain-them-
+// together machinery this replaced was removed earlier for being stale
+// scripted content on a shared recording; these 4 lessons are each real,
+// independent recordings, and chaining them is just "play section N+1 when
+// N's audio naturally ends," not a return to that old shared-timeline
+// system). True only while an actual Play All run is in progress -- a
+// single lesson played directly (its own row/dot clicked) never sets it.
+let playAllMode=false;
 // SECTIONS stays an array, not a single lesson object, so the next
 // Animator-authored lesson (2026-10-03: this one, PO v2, replaced the old
 // scripted "Principle of Operation"; the other 3 legacy lessons were
@@ -4067,6 +4266,9 @@ let playing=false, curSeg=-1, firedCues=[];
 // recording anyway, that concept doesn't apply.
 const SECTIONS = [
   {name:'Principle of Operation', startIdx:0, endIdx:8, audioSrc:PO_V2_AUDIO_DATA_URI},
+  {name:'Set Spring Adjuster', startIdx:9, endIdx:27, audioSrc:SPRING_ADJ_AUDIO_DATA_URI},
+  {name:'Verify Bench Set to Rated Travel', startIdx:28, endIdx:38, audioSrc:VERIFY_BENCH_SET_AUDIO_DATA_URI},
+  {name:'Set Travel', startIdx:39, endIdx:51, audioSrc:SET_TRAVEL_AUDIO_DATA_URI},
 ];
 let activeSection = -1;   // which SECTIONS entry is currently playing, or -1 if none
 // 0.1-step rounding: the original native <input type=range step="0.1">
@@ -4198,7 +4400,9 @@ function pulse(id){ const el=document.getElementById(id);
 function benchReset(){
   document.getElementById('valve').checked=false;
   PB.connected=false; PB.connShown=false; PB.nutsDy=0; PB.scaleDy=0;
-  setValve(false); showTravelMark(false); showVerMark(false); setAdj(ADJ_RESET); setPress(0); hl(); focus();
+  setValve(false); showTravelMark(false); showVerMark(false);
+  showStemMark(false); showStemMarkBracket(false);
+  setAdj(ADJ_RESET); setPress(0); hl(); focus();
 }
 // Re-choreographed 2026-09-30, twice in one day: first for the physics
 // version (add force/spring-rate/preload numbers), then reverted the same
@@ -4231,7 +4435,230 @@ const CHOREO_PO_V2 = [
  {enter(){ focus('p-yoke','p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem'); }},     // 7. "actuator yoke." -- holds at 10psig
  {enter(){ focus('p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem','p-yoke'); }, tick(p){ setPress((10-10*p).toFixed(2)); }},  // 8. "When air is vented... upper travel stop" -- vents back to 0
 ];
-const CHOREO = CHOREO_PO_V2;
+// Choreography for SPRING_ADJ_ROWS (2026-10-04). Part reveals are the same
+// progressive-build pattern as CHOREO_PO_V2 above. ADJ/PRESS targets are
+// NOT invented -- they're this model's own preloadForce()/preloadTurns()
+// physics evaluated at the exact turns-counts Franz narrates:
+//   2 turns      -> adj= 7.98  -> P0=1.775 psig  ("roughly two turns... 2 psig")
+//   ~4.5 turns   -> adj=24.00  -> P0=4.000 psig  (adj=24 is this unit's full-tighten
+//                                 stop, itself equal to 4.506 turns -- Franz's "roughly
+//                                 four and a half turns" lands almost exactly there,
+//                                 which is why "4 psig" comes out exact, not rounded)
+//   calibration  -> adj=16.80  -> P0=3.000 psig  (CAL_ADJ, this model's own 85%
+//                                 fleet-calibration point -- "begins to lift at 3 psig"
+//                                 is this point exactly)
+// Computed once by hand against this file's own DIA_AREA/SPRING_RATE/THREAD_PITCH_IN
+// constants (see preloadTurns()/preloadForce() above), not re-derived at runtime --
+// same reasoning CAL_ADJ itself already uses one line up.
+const CHOREO_SPRING_ADJ = [
+ {enter(){ setAdj(-24); setPress(0); focus(); }},                                                      // 0. "Calibrating the actuator... with the spring adjuster." -- full-lit, nothing moving yet
+ {enter(){ focus('g-stem'); }},                                                                        // 1. "With no supply pressure applied, the stem rests at its upper travel stop."
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g'); }, tick(p){ setAdj((-24+19.2*p).toFixed(2)); }},  // 2. "As the adjuster threads upward... until it reaches the spring seat." -- dead zone, no force yet
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g'); }},                                        // 3. "Contact at the seat marks the start of preload." -- holds at the dead-zone boundary
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); }, tick(p){ setAdj((-4.8+4.8*p).toFixed(2)); }},  // 4. "Continued travel... compresses the spring directly..."
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); }, tick(p){ setAdj((7.98*p).toFixed(2)); }},      // 5. "Turning the adjuster in roughly two turns,"
+ // Rows 6-7 (2026-10-04, Franz: "we never see it actually move... sweep the
+ // pressure gauge up and then back down and then maybe back up again, to
+ // show the stem is actually moving off of its upper travel stop" --
+ // round 2, after seeing the first up/down/up pass: "when it comes back
+ // down, I want it to go up again so it shows it lift one more time"). At
+ // EXACTLY the cracking pressure (1.775psig here) travel is still zero --
+ // Hooke's law only produces motion once P exceeds P0, so holding right at
+ // the threshold never actually showed the stem lift. Five phases: up past
+ // threshold (first lift, ~35px -- see the comment above CHOREO_SPRING_ADJ
+ // for how that target was sized), down past it (stem returns), up to land
+ // exactly on 1.775 psig, up again for a second, smaller lift confirming
+ // it, then back down to settle exactly on 1.775 -- the real number is
+ // where every phase of the sweep ends up, demonstrated twice, not stated
+ // once.
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); }, tick(p){ setPress((3.8*p).toFixed(2)); }},     // 6. "we raise pressure to see where the stem responds." -- up past threshold, stem lifts
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); },
+  tick(p){ if(p<0.25) setPress((3.8-3*(p/0.25)).toFixed(2));
+           else if(p<0.45) setPress((0.8+0.98*((p-0.25)/0.2)).toFixed(2));
+           else if(p<0.65) setPress((1.78+1.02*((p-0.45)/0.2)).toFixed(2));
+           else setPress((2.8-1.02*((p-0.65)/0.35)).toFixed(2)); }},                                    // 7. "It begins to move at 2 psig." -- down past threshold, up to 1.775, lift again, settle exactly on 1.775
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); },
+  tick(p){ setPress((1.78*(1-p)).toFixed(2)); setAdj((7.98+16.02*p).toFixed(2)); }},                    // 8. "Turn it further to roughly four and a half turns," -- vent to retest, turn on
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); },
+  tick(p){ if(p<0.25) setPress((6*(p/0.25)).toFixed(2));
+           else if(p<0.45) setPress((6-3.5*((p-0.25)/0.2)).toFixed(2));
+           else if(p<0.65) setPress((2.5+1.5*((p-0.45)/0.2)).toFixed(2));
+           else if(p<0.8) setPress((4+1*((p-0.65)/0.15)).toFixed(2));
+           else setPress((5-1*((p-0.8)/0.2)).toFixed(2)); }},                                           // 9. "and that starting point rises to 4 psig." -- same 5-phase sweep, lifts twice, settles exactly on 4.0
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); },
+  tick(p){ setPress((4*(1-p)).toFixed(2)); setAdj((24-48*p).toFixed(2)); }},                            // 10. "Each position sets a different preload..." -- clean reset before the nameplate section
+ {enter(){ hl(); focus(); }},                                                                           // 11. "The actuator nameplate identifies the bench set range..."
+ {enter(){ hl('np-size'); }},                                                                           // 12. "For this 657 size 30,"
+ {enter(){ hl('np-size','np-benchset'); }},                                                             // 13. "the nameplate specifies a bench set of 3 to 11 psig,"
+ {enter(){ hl('np-size','np-benchset','np-range'); }},                                                  // 14. "an operating range of 3 to 15 psig,"
+ {enter(){ hl('np-size','np-benchset','np-range','np-travel'); }},                                      // 15. "and a rated travel of three quarters of an inch."
+ {enter(){ hl(); setPress(0); focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); },
+  tick(p){ setAdj((-24+40.8*p).toFixed(2)); }},                                                         // 16. "With the actuator at zero supply pressure, the spring adjuster is turned in" -- the real calibration, from a clean reset to CAL_ADJ
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); },
+  tick(p){ if(p<0.25) setPress((5*(p/0.25)).toFixed(2));
+           else if(p<0.45) setPress((5-3.5*((p-0.25)/0.2)).toFixed(2));
+           else if(p<0.65) setPress((1.5+1.5*((p-0.45)/0.2)).toFixed(2));
+           else if(p<0.8) setPress((3+1*((p-0.65)/0.15)).toFixed(2));
+           else setPress((4-1*((p-0.8)/0.2)).toFixed(2)); }},                                           // 17. "until the stem just begins to lift at 3 psig," -- same 5-phase sweep, lifts twice, settles exactly on 3.0 (the real calibrated bench-set value)
+ {enter(){ hl('np-benchset'); }},                                                                       // 18. "setting the lower bench set value for this unit." -- closes the loop back to the nameplate spec
+];
+// Choreography for VERIFY_BENCH_SET_ROWS. "This unit" is narrated as
+// already bench-set (row 0 sets ADJ straight to CAL_ADJ, not ADJ_RESET --
+// the lesson opens mid-procedure, picking up exactly where "Set the Spring
+// Adjuster" leaves off), so PRESS is the only thing that moves throughout.
+// Row 3's sweep is the one real threshold-crossing moment ("the stem
+// BEGINS that travel" at 3psig) and gets the same double-lift pulse
+// treatment Franz required twice for the spring-adjuster lesson's
+// threshold beats: at exactly the crack pressure P0=3.000psig (CAL_ADJ's
+// own physics, computed the same way as that lesson's comment above)
+// travel is still zero, so holding there never shows the stem move --
+// overshoot up, settle back down, rise to land on 3 once, lift again for a
+// second, smaller rise, then settle exactly on 3. Row 4's "completes it"
+// at 11psig and row 7's "raise... to 11" are plain ramps, not sweeps --
+// both are a deliberate single endpoint move, not a "begins to move"
+// threshold being demonstrated. At PRESS=11 with ADJ=CAL_ADJ, travel comes
+// out to ~0.751in, matching the nameplate's 3/4in rated travel almost
+// exactly (same off-valve LIM_IN headroom this model already has well
+// above that, so nothing clamps early).
+//
+// Rows 6-9 were rebuilt after Franz's correction on the first pass: the
+// mark had been drawn with g-vermark, a fixed pre-existing SVG overlay that
+// never moves -- it landed "in midair," unconnected to the stem it was
+// supposed to mark, and g-verbracket's span was a pre-drawn constant, not a
+// real measurement. Franz's own description of the actual bench technique:
+// "the first mark needs to be on the stem up against the spring adjuster...
+// then when the stem drops down, that mark is going to move with the
+// stem... we measure from that mark up to the [fixed point on the] spring
+// adjuster." The real fix is g-stem-mark (a NEW element that is a literal
+// CHILD of g-stem, so it inherits the stem's own live transform and
+// genuinely travels with it) plus g-stemmark-bracket (whose fixed end sits
+// at the adjuster's own bottom edge -- STEM_MARK_Y, see that constant's own
+// comment -- and whose other end is recomputed every frame by
+// updateStemMarkBracket() from the stem's actual live stroke). The gap
+// starts at exactly 0.00" (the mark is scribed flush against the adjuster)
+// and grows to the real ~0.75" as the stem strokes down -- an honest live
+// measurement, not a static label. This also drops g-scale from every
+// row's focus() -- Franz: "we can't actually use the indicator scale as
+// our measuring tool here... there's no way to accurately mark that and
+// connect it off of the stem" -- the indicator scale is a different,
+// unrelated measurement system, not part of this hand-verification
+// procedure.
+const CHOREO_VERIFY_BENCH_SET = [
+ {enter(){ setAdj(CAL_ADJ); setPress(0); hl('np-benchset'); focus('g-stem','sp-adj-g'); }},             // 0. "The bench set for this unit spans 3 to 11 psig," -- already-calibrated unit, holds at 0
+ {enter(){ hl('np-benchset'); focus('g-stem','sp-adj-g'); }},                                           // 1. "an 8 psig range,"
+ {enter(){ hl('np-travel'); focus('g-stem','sp-adj-g'); }, tick(p){ setPress((11*p).toFixed(2)); }},    // 2. "across which the stem travels its full rated 3 quarters of an inch." -- preview the full stroke, 0 to 11
+ {enter(){ focus('g-stem','sp-adj-g'); },
+  tick(p){ if(p<0.15) setPress((11*(1-p/0.15)).toFixed(2));
+           else if(p<0.35) setPress((5*((p-0.15)/0.2)).toFixed(2));
+           else if(p<0.5) setPress((5-5*((p-0.35)/0.15)).toFixed(2));
+           else if(p<0.65) setPress((3*((p-0.5)/0.15)).toFixed(2));
+           else if(p<0.85) setPress((3+1*((p-0.65)/0.2)).toFixed(2));
+           else setPress((4-1*((p-0.85)/0.15)).toFixed(2)); }},                                        // 3. "At 3 psig, the stem begins that travel." -- back to 0 from the preview, double-lift sweep, settles exactly on 3.0
+ {enter(){ focus('g-stem','sp-adj-g'); }, tick(p){ setPress((3+8*p).toFixed(2)); }},                    // 4. "At 11 psig, it completes it." -- plain ramp, endpoint not a threshold
+ {enter(){ focus('g-stem','sp-adj-g','p-yoke','sp-seat-g',SPRING,'g-plate'); },
+  tick(p){ setPress((11-8*p).toFixed(2)); }},                                                          // 5. "With the spring adjuster set so the stem just begins to move at 3 psig," -- ramp back down to the calibrated crack point
+ {enter(){ focus('g-stem','sp-adj-g'); },
+  cues:[[0.3, ()=>{ showStemMark(true); showStemMarkBracket(true); updateStemMarkBracket(); pulse('g-stem-mark'); }]]},  // 6. "mark the stem at its upper travel stop." -- holds at 3 (zero stroke): mark is scribed flush against the adjuster's bottom edge, gap reads 0.00"
+ {enter(){ focus('g-stem','sp-adj-g'); }, tick(p){ setPress((3+8*p).toFixed(2)); updateStemMarkBracket(); }},  // 7. "Raise supply pressure to 11 psig, the top of the bench set," -- plain ramp, bracket grows live as the mark travels down with the stem
+ {enter(){ focus('g-stem','sp-adj-g'); updateStemMarkBracket(); },
+  cues:[[0.15, ()=>pulse('g-stem-mark')]]},                                                             // 8. "and the stem moves to its lower travel stop." -- holds at 11, arrival pulse on the (now-displaced) mark
+ {enter(){ focus('g-stem','sp-adj-g'); },
+  cues:[[0.1, ()=>pulse('g-stemmark-bracket')]]},                                                       // 9. "Measuring the distance between the two marks" -- draws attention to the now-settled ~0.75" reading
+ {enter(){ hl('np-travel','np-benchset'); focus('g-stem','sp-adj-g'); }},                                // 10. "verifies not only the actuator's rated travel, but that the correct spring is installed." -- closing beat, holds at 11
+];
+// Choreography for SET_TRAVEL_ROWS, the final lesson: couple the
+// already-calibrated actuator to the valve body. ADJ stays pinned at
+// CAL_ADJ for the whole lesson (never touched, same as the prior lesson).
+// Rows 0-5 are the pre-coupling gap-setting step: g-vgrp (the valve stem +
+// disc + nuts) is revealed via setValve(true) but PB.connected stays false,
+// which keeps it fixed at update()'s own hardcoded translate(0,140) --
+// "the valve plug seated at its lower travel stop" -- entirely independent
+// of the actuator's own stroke, exactly matching the narration's sequence
+// (the valve side does not move during this phase; only the actuator stem
+// does). Row 4 ramps PRESS 0->11, driving the SAME Hooke's-law stroke
+// physics used throughout this model to ~140.19px (~0.751in, see the
+// Verifying Bench Set lesson's own comment for why that's correct, not
+// 140.19 vs 140 "rounding error") -- g-travelmark is the pre-existing
+// fixed-position annotation built for exactly this technique (its own
+// comment already read "mark the valve stem exactly 3/4in below the
+// actuator stem's bottom... travel is set off this measurement, not off
+// the bench-set pressure," word for word the narration here). Unlike the
+// stem mark in the prior lesson, a FIXED position is correct for this one:
+// both of g-travelmark's reference points (STEM_BOT, the actuator's own
+// at-rest bottom edge, and the valve stem's seated-but-uncoupled position)
+// are stationary for the entire window this mark is shown, so there is no
+// moving part for it to fail to track.
+//
+// Rows 6-8 are Franz's explicit warning against the natural-seeming
+// shortcut ("just set pressure to 11") -- no new visual, PRESS holds
+// exactly where it landed, because the narration's whole point is that
+// the gap is set by the measurement already shown, not by this reading.
+//
+// Rows 9-11 perform the actual coupling: row 9 flips PB.connected (so
+// g-vgrp starts tracking the actuator's own stroke instead of its fixed
+// 140 offset -- seamless, since stroke is already ~140.19, almost exactly
+// where g-vgrp already was) and reveals g-conn (the stem connector clamp);
+// rows 10-11 animate PB.nutsDy and PB.scaleDy from their row-1 starting
+// offsets to their real aligned values for the "thread the lock nuts up" /
+// "align the indicator scale" beats. nutsDy's aligned value is genuinely 0
+// -- the vdisk/vnut rects are already drawn snug (a 2px gap: vdisk bottom
+// 1575, first vnut top 1577). scaleDy is NOT 0, though -- that was a second
+// bug Franz caught after the sequencing fix above: "the bottom of the disc
+// at fully open... should be at the real notch between the two colors...
+// the bottom of travel should be the bottom notch." Checked directly
+// against this model's own geometry (STEM_BOT=1525, TRAVEL=140, and the
+// vdisk rect's own y=1561/height=14): the scale's two-tone boundary (where
+// its header ends and the graduations begin) sits at local y=STEM_BOT=1525;
+// the disc's bottom edge at zero travel sits at local y=1575 -- a fixed
+// 50px gap baked into the artwork's own numbers, not fixable by leaving
+// scaleDy at the plate's native drawn position (0). SCALE_ALIGNED_SCALEDY
+// (=50) is that gap, solved once from these constants, and checked both
+// ways: at full rated travel (stroke=140) the disc bottom (1575+140=1715)
+// lands exactly on the scale's own 10th/bottom tick (1525+140+50=1715) too.
+// Both start misaligned (50/20, with 20 well below the real 50 target) from
+// the moment the valve first appears in row 1, animating to their correct
+// values only during rows 10-11 -- not 0 at the start per Franz's first
+// correction (viewers should see the gap, then watch it close).
+//
+// Row 12 is the payoff: now genuinely coupled (document.getElementById
+// ('valve').checked=true, matching exactly what the real checkbox's own
+// change handler sets), retract fully then sweep PRESS 0->15 -- the
+// nameplate's own 3-15psig operating range from the Set the Spring
+// Adjuster lesson -- which drives update()'s coupled-case hard stop at
+// LIM=TRAVEL(140px) for real: the stem+valve assembly rides up together,
+// reaches rated travel partway through the sweep, and holds there while
+// PRESS keeps climbing to 15, visibly demonstrating "travel doesn't
+// increase past rated once the plug is seated" with no invented behavior.
+// The scale plate's two-tone boundary (header/graduations) sits at local
+// y=STEM_BOT (1525); the disc's bottom edge at zero travel sits at local
+// y=1575 (vdisk y=1561 + height=14). 1575-1525=50 is the real, geometry-
+// derived scaleDy that makes the disc's bottom edge land exactly on the
+// scale's zero reference at zero travel -- and, independently, exactly on
+// its bottom/10th tick at full rated travel (1575+140 vs 1525+140+50, both
+// 1715). See this lesson's own CHOREO comment for the full derivation.
+const SCALE_ALIGNED_SCALEDY = 50;
+const CHOREO_SET_TRAVEL = [
+ {enter(){ setAdj(CAL_ADJ); setPress(0); hl('np-benchset'); focus(); }},                                 // 0. "With the actuator properly calibrated on the bench," -- opens on the whole actuator, not narrowed to stem/adjuster (Franz: this line is reestablishing the actuator as a unit before it gets secured to the valve, not citing a spec detail the way the prior lesson's opening line did)
+ {enter(){ setValve(true); PB.nutsDy=50; PB.scaleDy=20; update(); focus(); }},                           // 1. "it can now be secured to the valve body." -- reveal the valve, still full-lit (Franz: narrowing focus the instant the valve appeared read as an abrupt, unmotivated transition right after the deliberately full-lit opening -- the valve's own appearance is the visual event here, nothing yet narrates a specific part to narrow onto). Also: the disc/nuts/scale must appear MISALIGNED from the moment they're first shown (nothing has been assembled yet) and animate INTO alignment later (rows 10-11), not the reverse -- the first pass set these to their aligned rest value (0, PB's own default) here and only misaligned them later at row 9's coupling cue, which read backwards: viewers watched an already-correct scale go crooked, then get fixed.
+ {enter(){ hl(); focus('g-vgrp'); }},                                                                   // 2. "With the valve plug seated at its lower travel stop" -- first real narrowing, justified by the narration naming this specific part; g-vgrp fixed at its own uncoupled offset
+ {enter(){ focus('g-stem'); }},                                                                         // 3. "and the actuator stem at its upper travel stop," -- holds at 0
+ {enter(){ focus('g-stem','g-vgrp'); showTravelMark(true); }, tick(p){ setPress((11*p).toFixed(2)); }}, // 4. "drop the actuator stem down three quarters of an inch, the full rated travel," -- ramp to the mark
+ {enter(){ focus('g-stem','g-vgrp'); }},                                                                // 5. "before coupling it to the valve stem." -- holds at the mark, uncoupled
+ {enter(){ focus('g-stem','g-vgrp'); },
+  cues:[[0.2, ()=>pulse('g-travelmark')]]},                                                             // 6. "Set the gap by precise measurement of distance, accurate to within a sixteenth of an inch," -- draws attention to the measurement, not the gauge
+ {enter(){ focus('g-stem','g-vgrp'); }},                                                                // 7. "not by applying bench-set pressure to the actuator." -- holds, no gauge-driven motion
+ {enter(){ focus('g-stem','g-vgrp'); }},                                                                // 8. "A pressure gauge can be out of calibration..." -- holds, purely cautionary narration
+ {enter(){ focus('g-stem','g-conn','g-vgrp'); },
+  cues:[[0.2, ()=>{ showTravelMark(false); document.getElementById('valve').checked=true;
+    PB.connected=true; PB.connShown=true; setValve(true); update(); }]]},                                // 9. "Once the gap is set, couple the stem connector..." -- measurement done, coupling begins, connector revealed (nutsDy/scaleDy are already at their misaligned starting values from row 1, untouched here)
+ {enter(){ focus('g-vgrp','g-stem'); }, tick(p){ PB.nutsDy = 50*(1-p); update(); }},                     // 10. "Below the stem connector, thread the lock nuts up..." -- nuts thread up snug against the disc
+ {enter(){ focus('g-scale','g-vgrp'); }, tick(p){ PB.scaleDy = 20 + (SCALE_ALIGNED_SCALEDY-20)*p; update(); }},  // 11. "Then, align the indicator scale to the disc." -- scale plate slides from its misaligned start up to the real geometry-derived aligned value, not to 0
+
+ {enter(){ focus(); },
+  tick(p){ if(p<0.4) setPress((11*(1-p/0.4)).toFixed(2));
+           else setPress((15*(p-0.4)/0.6).toFixed(2)); }},                                              // 12. "run the actuator through its full operating range to confirm travel." -- full retract, then sweep through the real 3-15psig operating range, coupled hard stop at rated travel does the rest
+];
+const CHOREO = [...CHOREO_PO_V2, ...CHOREO_SPRING_ADJ, ...CHOREO_VERIFY_BENCH_SET, ...CHOREO_SET_TRAVEL];
 function pbFrame(){
   if(!playing) return;
   const t = audio.currentTime;
@@ -4252,9 +4679,22 @@ function pbFrame(){
 }
 function pbStop(){
   playing=false; audio.pause();
+  const finishedIdx = activeSection;
   activeSection = -1;
   document.getElementById('pb-status').textContent='';
   capEl.textContent='';
+  // Play All: if this section ended naturally (not a manual stop -- see
+  // playAllToggle/playSection, which both clear playAllMode before calling
+  // pbStop() for an actual stop) and it wasn't the last one, go straight
+  // into the next section instead of resetting to idle. playSection()
+  // itself handles the reset/reload/play() sequence -- same code path a
+  // manual click to a different lesson already uses, just invoked
+  // programmatically here.
+  if(playAllMode && finishedIdx>=0 && finishedIdx < SECTIONS.length-1){
+    playSection(finishedIdx+1, true);
+    return;
+  }
+  playAllMode = false;
   updateTopicButtons();
   setPress(0); focus(); hl(); update();
 }
@@ -4279,17 +4719,34 @@ function updateTopicButtons(){
     btn.classList.toggle('playing', isActive);
     btn.querySelector('.label').textContent = isActive ? 'Stop' : btn.dataset.label;
   });
+  // Play All buttons (desktop + mobile): active specifically on playAllMode,
+  // not just "something is playing" -- a single lesson played directly
+  // shouldn't make this button look like a run is in progress.
+  document.querySelectorAll('.play-all-btn').forEach(btn=>{
+    btn.classList.toggle('playing', playAllMode);
+    btn.querySelector('.label').textContent = playAllMode ? 'Stop' : btn.dataset.label;
+  });
 }
 // Each lesson row (desktop rail, mobile list) plays just its own section,
 // from a clean reset (benchReset), and stops at that section's own end --
 // clicking the currently-playing row again stops it, matching a normal
 // play/stop toggle. The old "Play the SOP" / "Practice the SOP" / "Play
-// all lessons" machinery that used to chain multiple sections together
-// (2026-10-03, Franz: "I don't think we need the sop. That is stale") is
-// gone -- every lesson is now independent, its own recording, played on
-// its own.
-function playSection(idx){
-  if(playing && activeSection === idx){ pbStop(); return; }
+// all lessons" machinery that used to chain multiple sections together on
+// ONE shared recording (2026-10-03, Franz: "I don't think we need the sop.
+// That is stale") stayed gone -- these 4 lessons are each still fully
+// independent, their own real recording. Play All (2026-10-05, Franz)
+// is not that system's return: it's a thin wrapper that calls this same
+// function for section N+1 when section N's audio naturally ends (see
+// pbStop's playAllMode branch), not a second playback engine.
+// `continuingAll` is true ONLY for that programmatic chain-forward call --
+// never passed by a row/dot's own click handler -- so a direct click
+// always cancels any Play All run in progress and always honors the
+// normal toggle-to-stop behavior on the row already playing.
+function playSection(idx, continuingAll){
+  if(!continuingAll){
+    playAllMode = false;
+    if(playing && activeSection === idx){ pbStop(); return; }
+  }
   const sec = SECTIONS[idx];
   benchReset();
   playing=true; curSeg=-1; activeSection=idx;
@@ -4299,9 +4756,20 @@ function playSection(idx){
     audio.src = sec.audioSrc;
   }
   audio.currentTime = TIMING[sec.startIdx].start;
-  audio.play().then(()=>requestAnimationFrame(pbFrame)).catch(e=>{ playing=false; activeSection=-1;
+  audio.play().then(()=>requestAnimationFrame(pbFrame)).catch(e=>{ playing=false; activeSection=-1; playAllMode=false;
     updateTopicButtons();
     document.getElementById('pb-status').textContent=' audio failed to load'; });
+}
+// Starts/stops a Play All run. Stopping mid-run (playAllMode already true)
+// is a plain full stop, not a skip-to-next -- clears the flag before
+// calling pbStop() so its chain-forward branch doesn't fire. Starting
+// always begins at section 0 via the continuingAll path (not a plain
+// playSection(0) call), so it restarts cleanly even if section 0 happened
+// to already be the one playing manually.
+function playAllToggle(){
+  if(playAllMode){ playAllMode=false; pbStop(); return; }
+  playAllMode = true;
+  playSection(0, true);
 }
 // Franz's final wording for the 3 topics (2026-09-27, round 12 follow-up) --
 // more procedural than TIMING's own descriptive `section` titles ("How the
@@ -4364,6 +4832,14 @@ function fmtDur(sec){
     mli.appendChild(mbtn);
     mobileList.appendChild(mli);
   });
+  // Play All (2026-10-05): total duration from the same real TIMING/
+  // SECTIONS data every per-lesson duration already comes from, not a
+  // separate invented number.
+  const totalDur = SECTIONS.reduce((sum,sec)=>sum+sectionDuration(sec), 0);
+  document.getElementById('playAllDur').textContent = fmtDur(totalDur);
+  document.getElementById('mPlayAllDur').textContent = fmtDur(totalDur);
+  document.getElementById('playAllBtn').addEventListener('click', playAllToggle);
+  document.getElementById('mPlayAllBtn').addEventListener('click', playAllToggle);
 })();
 audio.addEventListener('ended', pbStop);
 // test hook: ?pbtest=N applies segments 1..N without audio
@@ -4429,5 +4905,8 @@ window.addEventListener('resize', update);
 """
 html = html.replace("__PARTSJS__", parts_js)
 html = html.replace("__POV2AUDIOB64__", po_v2_audio_b64)
+html = html.replace("__SPRINGADJAUDIOB64__", spring_adj_audio_b64)
+html = html.replace("__VERIFYBENCHSETAUDIOB64__", verify_bench_set_audio_b64)
+html = html.replace("__SETTRAVELAUDIOB64__", set_travel_audio_b64)
 open("../657-refined.html", "w", encoding="utf-8").write(html)
 print("written", len(html))
