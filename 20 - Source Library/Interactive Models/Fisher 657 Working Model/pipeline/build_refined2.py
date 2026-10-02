@@ -302,6 +302,19 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
   font-size:.7rem;}
 .play-all-btn.playing{color:var(--good);border-color:var(--good);}
 .play-all-btn.playing .num{color:var(--good);border-color:var(--good);}
+/* Frozen controls (2026-10-05, Franz: "when a lesson is running, the
+   controls should be frozen to interaction... otherwise there might be
+   issues with [what] information the lesson is showing"). setControlsFrozen()
+   toggles this class alongside the real functional guards already added to
+   bindHSlider/bindVRod/bindMobileVSlider and the valve checkbox's own
+   `disabled` -- this is the visual half (dimmed, not-allowed cursor), not
+   the only thing stopping interaction, so JS and CSS can't disagree even
+   if one half is ever touched without the other. Covers every slider hit
+   area on both desktop (.hslide) and mobile (.mtrackwrap), plus the valve
+   checkbox row -- anything a lesson's own choreography might set that a
+   drag could fight. */
+body.lesson-playing .hslide, body.lesson-playing .mtrackwrap,
+body.lesson-playing #valveRow{opacity:0.45;pointer-events:none;cursor:not-allowed;}
 /* ===== Desktop-only gauge + slider controls (approved 2026-09-27, slider
    unified 2026-09-29): both the diaphragm-pressure gauge and the spring-
    adjustor dial are pure displays, each driven by an identical .hslide
@@ -475,12 +488,21 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
     border-radius:8px;}
   #mobileLessons{display:block;list-style:none;margin:0 0 10px;padding:0;
     border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-  .mobile-lesson-row{display:flex;align-items:center;gap:10px;width:100%;
+  /* Row + stop pair (2026-10-05): same reasoning as the desktop rail's own
+     li/.row-wrap rule -- a <button> can't nest another <button>. */
+  #mobileLessons li, .row-wrap{display:flex;align-items:stretch;}
+  .mobile-lesson-row{display:flex;align-items:center;gap:10px;flex:1;min-width:0;
     box-sizing:border-box;text-align:left;background:var(--panel);border:none;
     border-bottom:1px solid var(--border);padding:12px 14px;cursor:pointer;
     font-size:15px;font-weight:600;color:var(--ink);font-family:inherit;
     min-height:44px;}
   #mobileLessons li:last-child .mobile-lesson-row{border-bottom:none;}
+  /* Touch target bump (44px+, matching this list's own established
+     guidance) -- the desktop rail's .row-stop stays the smaller 30px
+     mouse-sized version. Matches the Play All row too, since #mPlayAllBtn
+     carries .mobile-lesson-row alongside .play-all-btn. */
+  .mobile-lesson-row ~ .row-stop{width:44px;height:44px;
+    margin:0;border-radius:0;border-width:0 0 0 1px;align-self:stretch;}
   .mobile-lesson-row.playing{color:var(--good);}
   .mobile-lesson-row .num{flex:0 0 auto;width:24px;height:24px;box-sizing:border-box;
     border:1.5px solid var(--border-strong);border-radius:50%;display:flex;
@@ -684,6 +706,16 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
      hides together when the panel opens; only the panel's own header
      Close button is the close affordance, matching the reference exactly. */
   body.rail-open .rail-toggle{display:none;}
+  /* Rail label (2026-10-05, Franz: the collapsed strip is a bare hamburger
+     over bare numbers, with nothing saying what they are -- "it is not
+     completely obvious that the lessons are in the sandwich menu or that
+     the 1,2,3,4 are lessons"). Adds height, not width, so the collapsed
+     rail stays exactly as narrow as it is now -- a vertical nav-rail label
+     is a standard pattern for exactly this. */
+  .rail-label{flex:none;writing-mode:vertical-rl;font-size:.68rem;
+    font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);user-select:none;}
+  body.rail-open .rail-label{display:none;}
   .rail-nums{flex:1;min-height:0;width:100%;display:flex;flex-direction:column;
     align-items:center;gap:9px;overflow-y:auto;}
   body.rail-open .rail-nums{display:none;}
@@ -705,14 +737,20 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
     margin:0;color:var(--ink);}
   .rp-close{border:1px solid var(--border-strong);background:transparent;
     border-radius:3px;padding:2px 9px;cursor:pointer;font-size:.85rem;color:var(--ink);}
-  #playAllBtn{margin-bottom:12px;}
   .rp-list{list-style:none;margin:0;padding:0;overflow-y:auto;}
-  .sop-topic{display:flex;align-items:center;gap:10px;width:100%;
+  /* Row + stop button (2026-10-05): each lesson row is now a flex PAIR,
+     not a single button -- a <button> can't nest another <button>, so the
+     row (play/pause) and its X (stop) are laid out side by side as
+     siblings inside the <li>/.row-wrap instead. .sop-topic/.mobile-lesson-
+     row go from width:100% to flex:1 so the stop button still fits. */
+  .rp-list li, .row-wrap{display:flex;align-items:stretch;gap:4px;}
+  #railList li:last-child .sop-topic{border-bottom:none;}
+  .row-wrap{margin-bottom:12px;}
+  .sop-topic{display:flex;align-items:center;gap:10px;flex:1;min-width:0;
     text-align:left;background:none;border:none;border-bottom:1px solid var(--border);
     padding:9px 6px;cursor:pointer;font-size:15px;font-weight:600;color:var(--ink);
     font-family:inherit;border-radius:4px;}
   .sop-topic:hover{background:var(--ring);}
-  .sop-topic:last-child{border-bottom:none;}
   /* Circled number badge (2026-09-29): matches the reference template's own
      opened-panel row numbering (a thin-outlined circle around the digit),
      not the plain "1." text this had before -- Franz caught the mismatch
@@ -731,11 +769,26 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
   .sop-topic .dur{margin-left:auto;flex:0 0 auto;color:var(--sub);
     font-size:.82rem;font-weight:400;font-variant-numeric:tabular-nums;}
   .rail-divider{border:0;border-top:1px solid var(--border);margin:18px 0 10px;}
+  /* Stop (X) buttons (2026-10-05): hidden[hidden] unless its own row is the
+     active one (see updateTopicButtons) -- a quiet square icon button, not
+     styled to compete with the row's own play/pause state. */
+  .row-stop{flex:0 0 auto;align-self:center;width:30px;height:30px;
+    border:1px solid var(--border-strong);border-radius:4px;background:none;
+    color:var(--sub);cursor:pointer;font-size:.85rem;line-height:1;
+    display:grid;place-items:center;}
+  .row-stop:hover{color:#c0392b;border-color:#c0392b;}
+  .row-stop[hidden]{display:none;}
   .rail-refs-head{font-size:.75rem;font-weight:700;letter-spacing:.06em;
     text-transform:uppercase;color:var(--muted);margin:0 0 8px;}
   .rail-ref-link{display:block;background:none;border:0;padding:6px 0;
     text-align:left;cursor:pointer;font-size:.92rem;color:var(--accent);
     text-decoration:underline;font-family:inherit;}
+  /* Same bug class as #anConfirmOverlay earlier this session: the native
+     [hidden] attribute and this class's own display:block are equal
+     specificity, so without this, whichever is declared first loses --
+     hiding Objectives/Parts/Procedure for external review (2026-10-05)
+     silently did nothing without this override. */
+  .rail-ref-link[hidden]{display:none;}
   .rail-ref-link:hover{color:var(--accent-alt);}
   /* Physics reference sheet (2026-09-30, rebuilt again -- Franz: "nuke it
      all... use our actual models... synthesize the handwritten parts into
@@ -1800,9 +1853,12 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
      by scrolling past the actuator exactly the way the nameplate/valve
      controls already are -- the actuator-first landing Franz wants kept
      is untouched; this only adds a way to actually reach a lesson from it. -->
-<button type="button" id="mPlayAllBtn" class="play-all-btn mobile-lesson-row" data-label="Play All Lessons">
-  <span class="num">&#9654;</span><span class="label">Play All Lessons</span><span class="dur" id="mPlayAllDur"></span>
-</button>
+<div class="row-wrap">
+  <button type="button" id="mPlayAllBtn" class="play-all-btn mobile-lesson-row" data-label="Play All Lessons">
+    <span class="num">&#9654;</span><span class="label">Play All Lessons</span><span class="dur" id="mPlayAllDur"></span>
+  </button>
+  <button type="button" id="mPlayAllStop" class="row-stop" aria-label="Stop" hidden>&#10005;</button>
+</div>
 <ul id="mobileLessons" aria-label="Lessons"></ul>
 <p id="valveRow"><label><input type="checkbox" id="valve"> Stem connector installed &mdash; valve coupled below the yoke</label></p>
 </div>
@@ -1817,18 +1873,27 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
   <button id="railToggle" class="rail-toggle" aria-expanded="false" aria-controls="railPanel" aria-label="Open lesson list" title="Lessons">
     <svg viewBox="0 0 18 18" width="16" height="16" aria-hidden="true"><path d="M3 4.5h12M3 9h12M3 13.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
   </button>
+  <div class="rail-label" aria-hidden="true">Lessons</div>
   <div id="railNums" class="rail-nums"></div>
   <div id="railPanel" class="rail-panel" aria-hidden="true">
     <div class="rail-panel-head"><h2>Lessons</h2><button id="railClose" class="rp-close">Close</button></div>
-    <button type="button" id="playAllBtn" class="play-all-btn sop-topic" data-label="Play All Lessons">
-      <span class="num">&#9654;</span><span class="label">Play All Lessons</span><span class="dur" id="playAllDur"></span>
-    </button>
+    <div class="row-wrap">
+      <button type="button" id="playAllBtn" class="play-all-btn sop-topic" data-label="Play All Lessons">
+        <span class="num">&#9654;</span><span class="label">Play All Lessons</span><span class="dur" id="playAllDur"></span>
+      </button>
+      <button type="button" id="playAllStop" class="row-stop" aria-label="Stop" hidden>&#10005;</button>
+    </div>
     <ol id="railList" class="rp-list"></ol>
     <hr class="rail-divider">
     <div class="rail-refs-head">References</div>
-    <button type="button" class="rail-ref-link">Objectives</button>
-    <button type="button" class="rail-ref-link">Parts</button>
-    <button type="button" class="rail-ref-link">Procedure</button>
+    <!-- Objectives/Parts/Procedure (2026-10-05): hidden, not removed --
+         Franz is prepping this artifact for outside review and these three
+         are still inert stubs (no id, no JS wiring -- see the comment on
+         the Animator link below), unlike Physics. Restore by dropping the
+         hidden attribute once Stage 3 actually wires them up. -->
+    <button type="button" class="rail-ref-link" hidden>Objectives</button>
+    <button type="button" class="rail-ref-link" hidden>Parts</button>
+    <button type="button" class="rail-ref-link" hidden>Procedure</button>
     <button type="button" class="rail-ref-link" id="physicsRefLink">Physics</button>
     <!-- Animator (2026-09-30, Phase 1, Franz): its own TOOLS group, not
          another reference link -- it's a workspace, not static reference
@@ -2646,13 +2711,18 @@ function bindMobileVSlider(hitId, vMin, vMax, setFn){
   const hit = document.getElementById(hitId);
   let dragging=false;
   function move(e){
-    if(!dragging) return;
+    // Frozen during a lesson (2026-10-05, Franz) -- dragging mid-lesson
+    // would fight the choreography's own setPress()/setAdj() calls and
+    // show the wrong thing for whatever the narration is saying. `playing`
+    // check here too, not just on pointerdown, so a drag already in
+    // progress stops dead the instant a lesson starts (e.g. via Play All).
+    if(!dragging || playing) return;
     const rect = hit.getBoundingClientRect();
     const t = Math.min(1, Math.max(0, (e.clientY-rect.top)/rect.height));
     setFn(vMax - t*(vMax-vMin));
     update();
   }
-  hit.addEventListener('pointerdown', e=>{ dragging=true; hit.setPointerCapture(e.pointerId); move(e); });
+  hit.addEventListener('pointerdown', e=>{ if(playing) return; dragging=true; hit.setPointerCapture(e.pointerId); move(e); });
   hit.addEventListener('pointermove', move);
   hit.addEventListener('pointerup', ()=> dragging=false);
   hit.addEventListener('pointercancel', ()=> dragging=false);
@@ -2778,7 +2848,21 @@ function layoutDesktopControls(){
   const adjEl = document.getElementById('adjCtl'), pressEl = document.getElementById('pressrow');
   const adjScale = Math.min(1, leftW/adjEl.offsetWidth, marginH/adjEl.offsetHeight);
   const pressScale = Math.min(1, rightW/pressEl.offsetWidth, marginH/pressEl.offsetHeight);
-  const sharedScale = Math.min(adjScale, pressScale);
+  // Floor (2026-10-05, Franz: on a narrowed browser window -- well above the
+  // 700px mobile breakpoint, e.g. a half-width monitor -- these "scale to
+  // whatever margin is left" controls shrink toward 0 and can become
+  // genuinely illegible or invisible, a real problem for an external
+  // reviewer whose window size this page has no control over). leftW/rightW
+  // are the ONLY things that shrink as the window narrows -- adjEl/pressEl's
+  // own offsetWidth/offsetHeight are the controls' fixed natural CSS size,
+  // unaffected by viewport width -- so a floor on the resulting fraction is
+  // a real, constant minimum pixel size, not a guess. Below this floor the
+  // controls stay legible by overlapping their margin (and, at extreme
+  // widths, the drawing itself) rather than continuing to shrink to nothing
+  // -- a readable control slightly crowding its neighbor beats an invisible
+  // one every time.
+  const MIN_CONTROL_SCALE = 0.6;
+  const sharedScale = Math.max(MIN_CONTROL_SCALE, Math.min(adjScale, pressScale));
   // Vertically, still centered on the real adjuster part (sp-adj-g,
   // y1068-1386, center ~1227) -- that part of round 6 still holds. Pressure
   // matches the same height for a clean, symmetric, drafting-sheet-style
@@ -4253,6 +4337,10 @@ let playing=false, curSeg=-1, firedCues=[];
 // system). True only while an actual Play All run is in progress -- a
 // single lesson played directly (its own row/dot clicked) never sets it.
 let playAllMode=false;
+// true while the currently-loaded lesson (if any) is paused rather than
+// actively advancing -- see pbPauseToggle(). Only meaningful when
+// playing is true; pbStop() always clears both together.
+let paused=false;
 // SECTIONS stays an array, not a single lesson object, so the next
 // Animator-authored lesson (2026-10-03: this one, PO v2, replaced the old
 // scripted "Principle of Operation"; the other 3 legacy lessons were
@@ -4317,7 +4405,9 @@ function bindHSlider(hitId, vMin, vMax, step, setFn, getFn){
   const hit = document.getElementById(hitId);
   let dragging=false;
   function move(e){
-    if(!dragging) return;
+    // Frozen during a lesson (2026-10-05, Franz) -- see bindMobileVSlider's
+    // own comment on this same guard for why.
+    if(!dragging || playing) return;
     const rect = hit.getBoundingClientRect();
     const t = Math.min(1, Math.max(0, (e.clientX-rect.left)/rect.width));
     setFn(vMin + t*(vMax-vMin));
@@ -4325,6 +4415,7 @@ function bindHSlider(hitId, vMin, vMax, step, setFn, getFn){
   }
   function endDrag(e){ dragging=false; try{ hit.releasePointerCapture(e.pointerId); }catch(err){} }
   hit.addEventListener('pointerdown', e=>{
+    if(playing) return;
     // Without this, the browser's own default mousedown handling (focusing
     // a tabindex element, starting a text-selection drag) races with our
     // imperative hit.focus() + setPointerCapture() below -- on a focusable
@@ -4350,6 +4441,7 @@ function bindHSlider(hitId, vMin, vMax, step, setFn, getFn){
   // keyboard: coarse drag can be imprecise at small step sizes; arrow keys
   // nudge to an exact value without ever hinting what that value should be
   hit.addEventListener('keydown', e=>{
+    if(playing) return;
     const big = e.shiftKey ? step*10 : step;
     if(e.key==='ArrowRight' || e.key==='ArrowUp'){ setFn(getFn()+big); update(); e.preventDefault(); }
     else if(e.key==='ArrowLeft' || e.key==='ArrowDown'){ setFn(getFn()-big); update(); e.preventDefault(); }
@@ -4359,7 +4451,7 @@ function bindVRod(hitId, vMin, vMax, step, setFn){
   const hit = document.getElementById(hitId);
   let dragging=false;
   function move(e){
-    if(!dragging) return;
+    if(!dragging || playing) return;
     const rect = hit.getBoundingClientRect();
     // top of the track = max value (up = tighten), inverted from a plain
     // top-down percentage
@@ -4369,6 +4461,7 @@ function bindVRod(hitId, vMin, vMax, step, setFn){
   }
   function endDrag(e){ dragging=false; try{ hit.releasePointerCapture(e.pointerId); }catch(err){} }
   hit.addEventListener('pointerdown', e=>{
+    if(playing) return;
     e.preventDefault();
     dragging=true; hit.setPointerCapture(e.pointerId); hit.focus(); move(e);
   });
@@ -4377,6 +4470,7 @@ function bindVRod(hitId, vMin, vMax, step, setFn){
   hit.addEventListener('pointercancel', endDrag);
   hit.addEventListener('lostpointercapture', ()=> dragging=false);
   hit.addEventListener('keydown', e=>{
+    if(playing) return;
     const big = e.shiftKey ? step*10 : step;
     if(e.key==='ArrowUp'){ setFn(ADJ+big); update(); e.preventDefault(); }
     else if(e.key==='ArrowDown'){ setFn(ADJ-big); update(); e.preventDefault(); }
@@ -4660,7 +4754,7 @@ const CHOREO_SET_TRAVEL = [
 ];
 const CHOREO = [...CHOREO_PO_V2, ...CHOREO_SPRING_ADJ, ...CHOREO_VERIFY_BENCH_SET, ...CHOREO_SET_TRAVEL];
 function pbFrame(){
-  if(!playing) return;
+  if(!playing || paused) return;
   const t = audio.currentTime;
   const sec = SECTIONS[activeSection];
   const secEndT = TIMING[sec.endIdx].start + TIMING[sec.endIdx].duration;
@@ -4678,13 +4772,13 @@ function pbFrame(){
   requestAnimationFrame(pbFrame);
 }
 function pbStop(){
-  playing=false; audio.pause();
+  playing=false; paused=false; audio.pause();
   const finishedIdx = activeSection;
   activeSection = -1;
   document.getElementById('pb-status').textContent='';
   capEl.textContent='';
   // Play All: if this section ended naturally (not a manual stop -- see
-  // playAllToggle/playSection, which both clear playAllMode before calling
+  // stopPlayback/playSection, which both clear playAllMode before calling
   // pbStop() for an actual stop) and it wasn't the last one, go straight
   // into the next section instead of resetting to idle. playSection()
   // itself handles the reset/reload/play() sequence -- same code path a
@@ -4695,81 +4789,179 @@ function pbStop(){
     return;
   }
   playAllMode = false;
+  setControlsFrozen(false);
   updateTopicButtons();
   setPress(0); focus(); hl(); update();
 }
+// Label shown on an active row/button in place of its normal name -- the
+// row itself is now the pause/resume control (2026-10-05, see rowAction),
+// not a stop toggle, so it reads "Pause" while running and "Resume" while
+// paused instead of the old unconditional "Stop".
+function pauseLabel(){ return paused ? 'Resume' : 'Pause'; }
 function updateTopicButtons(){
   document.querySelectorAll('.sop-topic').forEach(btn=>{
     const isActive = playing && +btn.dataset.section === activeSection;
     btn.classList.toggle('playing', isActive);
-    btn.querySelector('.label').textContent = isActive ? 'Stop' : btn.dataset.label;
+    btn.classList.toggle('paused', isActive && paused);
+    btn.querySelector('.label').textContent = isActive ? pauseLabel() : btn.dataset.label;
+  });
+  // Each row's own "X" stop button (2026-10-05): a sibling of the row's
+  // main button, not nested inside it (a button can't contain another) --
+  // shown only on the one row that's actually active, same idx match the
+  // row itself uses.
+  document.querySelectorAll('.row-stop[data-section]').forEach(btn=>{
+    btn.hidden = !(playing && +btn.dataset.section === activeSection);
   });
   // Stage 1 (2026-09-28): the collapsed rail strip's numbered circles are a
-  // separate, simpler set of elements (no room for a "Stop" text swap) --
-  // painted alongside the row list above, from the same playing/
+  // separate, simpler set of elements (no room for a "Pause"/"Resume" text
+  // swap) -- painted alongside the row list above, from the same playing/
   // activeSection state, rather than folded into the .sop-topic loop.
+  // Clicking the active dot now pauses/resumes (see rowAction) rather than
+  // stopping -- stopping from the collapsed strip means opening the panel
+  // for its X button, a deliberate tradeoff: there's no room in a 32px
+  // circle for a second control without widening the rail, which Franz
+  // asked not to do for the lesson-discoverability label added earlier.
+  // The circle's own digit swaps for a pause/play glyph while active so
+  // the dot still communicates its own state at a glance.
   document.querySelectorAll('.num-btn').forEach(btn=>{
     const isActive = playing && +btn.dataset.section === activeSection;
     btn.classList.toggle('playing', isActive);
+    btn.classList.toggle('paused', isActive && paused);
+    btn.querySelector('span').textContent = isActive ? (paused ? '▶' : '❙❙') : (+btn.dataset.section+1);
   });
   // Mobile's own lesson list (2026-10-03) -- same playing/activeSection
-  // state, same "Stop" label swap as the desktop rail rows above.
+  // state, same Pause/Resume label swap and X stop button as the desktop
+  // rail rows above.
   document.querySelectorAll('.mobile-lesson-row').forEach(btn=>{
     const isActive = playing && +btn.dataset.section === activeSection;
     btn.classList.toggle('playing', isActive);
-    btn.querySelector('.label').textContent = isActive ? 'Stop' : btn.dataset.label;
+    btn.classList.toggle('paused', isActive && paused);
+    btn.querySelector('.label').textContent = isActive ? pauseLabel() : btn.dataset.label;
   });
   // Play All buttons (desktop + mobile): active specifically on playAllMode,
   // not just "something is playing" -- a single lesson played directly
   // shouldn't make this button look like a run is in progress.
   document.querySelectorAll('.play-all-btn').forEach(btn=>{
     btn.classList.toggle('playing', playAllMode);
-    btn.querySelector('.label').textContent = playAllMode ? 'Stop' : btn.dataset.label;
+    btn.classList.toggle('paused', playAllMode && paused);
+    btn.querySelector('.label').textContent = playAllMode ? pauseLabel() : btn.dataset.label;
   });
+  document.querySelectorAll('.row-stop:not([data-section])').forEach(btn=>{ btn.hidden = !playAllMode; });
 }
 // Each lesson row (desktop rail, mobile list) plays just its own section,
-// from a clean reset (benchReset), and stops at that section's own end --
-// clicking the currently-playing row again stops it, matching a normal
-// play/stop toggle. The old "Play the SOP" / "Practice the SOP" / "Play
-// all lessons" machinery that used to chain multiple sections together on
-// ONE shared recording (2026-10-03, Franz: "I don't think we need the sop.
-// That is stale") stayed gone -- these 4 lessons are each still fully
-// independent, their own real recording. Play All (2026-10-05, Franz)
-// is not that system's return: it's a thin wrapper that calls this same
-// function for section N+1 when section N's audio naturally ends (see
-// pbStop's playAllMode branch), not a second playback engine.
-// `continuingAll` is true ONLY for that programmatic chain-forward call --
-// never passed by a row/dot's own click handler -- so a direct click
-// always cancels any Play All run in progress and always honors the
-// normal toggle-to-stop behavior on the row already playing.
+// from a clean reset (benchReset), and stops at that section's own end.
+// The old "Play the SOP" / "Practice the SOP" / "Play all lessons"
+// machinery that used to chain multiple sections together on ONE shared
+// recording (2026-10-03, Franz: "I don't think we need the sop. That is
+// stale") stayed gone -- these 4 lessons are each still fully independent,
+// their own real recording. Play All (2026-10-05, Franz) is not that
+// system's return: it's a thin wrapper that calls this same function for
+// section N+1 when section N's audio naturally ends (see pbStop's
+// playAllMode branch), not a second playback engine.
+// `continuingAll` is true ONLY for that programmatic chain-forward call
+// (and playAllToggle's own fresh-start call) -- never passed by a row/
+// dot's own click handler, which goes through rowAction() instead: a
+// direct click on an INACTIVE row always cancels any Play All run in
+// progress and starts that lesson fresh. Clicking the row that's already
+// active no longer stops it here (2026-10-05, Franz: "there is a way to
+// stop them, but not a way to pause them" -- stop used to be this
+// function's own toggle, now it's rowAction()/stopPlayback() dispatching
+// to pbPauseToggle()/pbStop() instead, so this function's only job is
+// "start playing section idx from the top," unconditionally.
 function playSection(idx, continuingAll){
-  if(!continuingAll){
-    playAllMode = false;
-    if(playing && activeSection === idx){ pbStop(); return; }
-  }
+  if(!continuingAll) playAllMode = false;
   const sec = SECTIONS[idx];
   benchReset();
-  playing=true; curSeg=-1; activeSection=idx;
+  playing=true; paused=false; curSeg=-1; activeSection=idx;
+  setControlsFrozen(true);
   updateTopicButtons();
   if (audio.getAttribute('data-cur-src') !== sec.audioSrc){
     audio.setAttribute('data-cur-src', sec.audioSrc);
     audio.src = sec.audioSrc;
   }
   audio.currentTime = TIMING[sec.startIdx].start;
-  audio.play().then(()=>requestAnimationFrame(pbFrame)).catch(e=>{ playing=false; activeSection=-1; playAllMode=false;
+  audio.play().then(()=>requestAnimationFrame(pbFrame)).catch(e=>{
+    // Bug fix (2026-10-05, found while testing Play All's own pause): calling
+    // audio.pause() while THIS play() promise is still pending (e.g. pausing
+    // a lesson within the first instant of starting it) rejects it with a
+    // normal, expected AbortError -- "interrupted by a call to pause()." That
+    // isn't a real playback failure; without this check it fell into the
+    // same branch as one and stomped the pause that was already correctly in
+    // progress (playing/paused/playAllMode all got reset here, after
+    // pbPauseToggle() had already set them for the pause), 10-30% of the way
+    // into Play All testing. Genuine failures (e.g. NotAllowedError) still
+    // reset normally.
+    if (e.name === 'AbortError') return;
+    playing=false; activeSection=-1; playAllMode=false;
+    setControlsFrozen(false);
     updateTopicButtons();
     document.getElementById('pb-status').textContent=' audio failed to load'; });
 }
-// Starts/stops a Play All run. Stopping mid-run (playAllMode already true)
-// is a plain full stop, not a skip-to-next -- clears the flag before
-// calling pbStop() so its chain-forward branch doesn't fire. Starting
-// always begins at section 0 via the continuingAll path (not a plain
+// Starts a Play All run, or pauses/resumes one already in progress (2026-
+// 10-05: stop used to be this button's only other state -- Franz: "there
+// is a way to stop them, but not a way to pause them. I would prefer a
+// pause option and an x to stop it" -- so this now mirrors a single
+// lesson row's own play/pause split, see rowAction below). Starting always
+// begins at section 0 via the continuingAll path (not a plain
 // playSection(0) call), so it restarts cleanly even if section 0 happened
-// to already be the one playing manually.
+// to already be the one playing manually. Stopping (the X button) is
+// stopPlayback(), bound separately below.
 function playAllToggle(){
-  if(playAllMode){ playAllMode=false; pbStop(); return; }
+  if(playAllMode){ pbPauseToggle(); return; }
   playAllMode = true;
   playSection(0, true);
+}
+// Shared dispatcher for every lesson row/dot's own click (2026-10-05):
+// clicking an inactive lesson starts it; clicking the ALREADY-active one
+// now pauses/resumes it instead of stopping it (Franz's correction above)
+// -- stopping is the row's separate X button (or, for the collapsed rail
+// dots, only reachable by opening the panel; see the num-btn comment).
+function rowAction(idx){
+  if(playing && activeSection===idx) pbPauseToggle();
+  else playSection(idx);
+}
+// Shared "X" stop handler for every row/Play-All stop button: always a
+// real full stop, never a skip-to-next, regardless of whether playback
+// got here via Play All or a single lesson -- clearing playAllMode first
+// is what keeps pbStop()'s chain-forward branch from firing.
+function stopPlayback(){
+  playAllMode = false;
+  pbStop();
+}
+// Pauses or resumes whatever is currently loaded (playing or paused) --
+// a no-op if nothing is active. Pausing stops the rAF loop and the real
+// audio without resetting any state (PRESS/ADJ/focus/hl/activeSection all
+// stay exactly as last rendered, unlike pbStop()), so resuming picks up
+// visually right where it left off.
+function pbPauseToggle(){
+  if(!playing) return;
+  paused = !paused;
+  if(paused){ audio.pause(); }
+  else {
+    // Mirrors playSection()'s own AbortError handling: if resuming fails
+    // for a real reason (not just a rapid pause/resume race), fall back to
+    // the paused state instead of leaving `paused` optimistically false
+    // while the audio is actually still sitting there paused -- a silent
+    // desync between what the row says and what's really playing.
+    audio.play().then(()=>requestAnimationFrame(pbFrame)).catch(e=>{
+      if (e.name === 'AbortError') return;
+      paused = true;
+      updateTopicButtons();
+    });
+  }
+  updateTopicButtons();
+}
+// Controls that could fight a lesson's own choreography if touched while
+// one is loaded (2026-10-05, Franz: "the controls should be frozen to
+// interaction [while a lesson is running]... otherwise there might be
+// issues with what information the lesson is showing"). Stays frozen
+// through a pause, not just active playback -- the whole point is the
+// lesson's own state shouldn't be disturbed while it's the thing on
+// screen, paused or not. Only a real stop (stopPlayback/pbStop) unfreezes.
+function setControlsFrozen(frozen){
+  document.body.classList.toggle('lesson-playing', frozen);
+  const valveEl = document.getElementById('valve');
+  if(valveEl) valveEl.disabled = frozen;
 }
 // Franz's final wording for the 3 topics (2026-09-27, round 12 follow-up) --
 // more procedural than TIMING's own descriptive `section` titles ("How the
@@ -4803,9 +4995,21 @@ function fmtDur(sec){
     btn.dataset.label = sec.name;
     btn.innerHTML = `<span class="num">${idx+1}</span><span class="label">${sec.name}</span>` +
       `<span class="dur">${fmtDur(dur)}</span>`;
-    btn.addEventListener('click', ()=>playSection(idx));
+    btn.addEventListener('click', ()=>rowAction(idx));
+    // Stop (2026-10-05): a SIBLING of the row button, not nested inside it
+    // -- a <button> can't contain another <button>, so the row and its X
+    // live side by side in a flex <li> instead (see .row-wrap/li CSS).
+    const stopBtn = document.createElement('button');
+    stopBtn.className = 'row-stop';
+    stopBtn.type = 'button';
+    stopBtn.dataset.section = idx;
+    stopBtn.setAttribute('aria-label', `Stop ${sec.name}`);
+    stopBtn.hidden = true;
+    stopBtn.innerHTML = '&#10005;';
+    stopBtn.addEventListener('click', stopPlayback);
     const li = document.createElement('li');
     li.appendChild(btn);
+    li.appendChild(stopBtn);
     list.appendChild(li);
 
     const dot = document.createElement('button');
@@ -4815,11 +5019,11 @@ function fmtDur(sec){
     dot.title = sec.name;
     dot.setAttribute('aria-label', `Play lesson ${idx+1}: ${sec.name}`);
     dot.innerHTML = `<span>${idx+1}</span>`;
-    dot.addEventListener('click', ()=>playSection(idx));
+    dot.addEventListener('click', ()=>rowAction(idx));
     nums.appendChild(dot);
 
     // Mobile's own lesson list (2026-10-03) -- same SECTIONS data, same
-    // playSection(idx) call, just a third, touch-sized rendering of it.
+    // rowAction(idx) dispatch, just a third, touch-sized rendering of it.
     const mbtn = document.createElement('button');
     mbtn.className = 'mobile-lesson-row';
     mbtn.type = 'button';
@@ -4827,9 +5031,18 @@ function fmtDur(sec){
     mbtn.dataset.label = sec.name;
     mbtn.innerHTML = `<span class="num">${idx+1}</span><span class="label">${sec.name}</span>` +
       `<span class="dur">${fmtDur(dur)}</span>`;
-    mbtn.addEventListener('click', ()=>playSection(idx));
+    mbtn.addEventListener('click', ()=>rowAction(idx));
+    const mStopBtn = document.createElement('button');
+    mStopBtn.className = 'row-stop';
+    mStopBtn.type = 'button';
+    mStopBtn.dataset.section = idx;
+    mStopBtn.setAttribute('aria-label', `Stop ${sec.name}`);
+    mStopBtn.hidden = true;
+    mStopBtn.innerHTML = '&#10005;';
+    mStopBtn.addEventListener('click', stopPlayback);
     const mli = document.createElement('li');
     mli.appendChild(mbtn);
+    mli.appendChild(mStopBtn);
     mobileList.appendChild(mli);
   });
   // Play All (2026-10-05): total duration from the same real TIMING/
@@ -4840,6 +5053,8 @@ function fmtDur(sec){
   document.getElementById('mPlayAllDur').textContent = fmtDur(totalDur);
   document.getElementById('playAllBtn').addEventListener('click', playAllToggle);
   document.getElementById('mPlayAllBtn').addEventListener('click', playAllToggle);
+  document.getElementById('playAllStop').addEventListener('click', stopPlayback);
+  document.getElementById('mPlayAllStop').addEventListener('click', stopPlayback);
 })();
 audio.addEventListener('ended', pbStop);
 // test hook: ?pbtest=N applies segments 1..N without audio
