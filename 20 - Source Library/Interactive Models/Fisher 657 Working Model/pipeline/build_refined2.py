@@ -18,8 +18,6 @@ parts_js = _re.sub(r'"upper-diaphragm-casing":\s*"[^"]*"',
     '"upper-diaphragm-casing": "' + _shell["upper-diaphragm-casing"].replace("\\", "") + '"',
     parts_js)
 import json as _json
-_timing = _json.load(open("C:/Users/E1552882/Documents-Local/Projects/EmersonWorkbench/narration/output/657/timing.json", encoding="utf-8"))
-timing_js = _json.dumps([{k: s[k] for k in ("start","duration","text","section")} for s in _timing])
 # PO v2 narration audio (2026-10-03): inlined as a data: URI rather than a
 # separate served file -- the Artifact platform's supporting-file upload
 # only accepts a specific allowlist of content types for binary media, and
@@ -228,11 +226,18 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
 .vfast{fill:var(--c-vnut);stroke:var(--c-hw-line);stroke-width:2;}
 .anno{stroke:var(--c-anno);stroke-width:3;fill:none;}
 .anno-lbl{font-family:system-ui;font-size:22px;font-weight:600;fill:var(--c-anno);}
-#cap{min-height:44px;padding:8px 12px;margin-top:6px;border-top:1px solid var(--border);
+/* Captions off for now (2026-10-03, Franz: "I don't think we need any CC
+   text right now... if it was to be CC text, it'd be at the bottom of the
+   page. But I don't think we need it right now at all"). The mobile
+   top-pinned version (.playing-caption, since removed) was what caused
+   "the text is overlaying over the image at times when it wraps too far"
+   -- when it comes back, it belongs at the BOTTOM of the page, not pinned
+   over the actuator. pbFrame() still sets capEl.textContent every segment
+   (harmless on a hidden element), so turning this back on later is just
+   removing this one display:none plus adding bottom positioning -- no JS
+   changes needed. */
+#cap{display:none;min-height:44px;padding:8px 12px;margin-top:6px;border-top:1px solid var(--border);
   font-size:15px;line-height:1.45;color:var(--ink);font-style:italic;}
-#pb-play{font-size:14px;padding:6px 14px;border:1px solid var(--accent);background:var(--accent);
-  color:#fff;border-radius:6px;cursor:pointer;}
-#pb-play.playing{background:var(--accent-alt);border-color:var(--accent-alt);}
 #nameplate g.np-hl .np-box{fill:var(--highlight);}
 #nameplate g.np-hl .np-lbl{fill:var(--highlight);}
 #ctrlbar{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;}
@@ -252,32 +257,6 @@ p,label{font-size:13.5px;line-height:1.55;color:var(--sub);}
 @keyframes readoutPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.15);}}
 .readout-pulse{animation:readoutPulse 0.35s ease;display:inline-block;}
 #statusline{font-size:12px;color:var(--muted);line-height:1.4;}
-.legend{font-size:11.5px;color:var(--sub);line-height:1.3;font-variant-numeric:tabular-nums;}
-#pv-play{font-size:14px;padding:6px 14px;border:1px solid var(--c-yoke);background:var(--c-yoke);
-  color:#fff;border-radius:6px;cursor:pointer;margin-left:8px;}
-#practiceView{display:none;}
-.stepbadge{font-size:11px;font-weight:700;letter-spacing:0.4px;text-transform:uppercase;
-  color:var(--accent);}
-.pv-head{display:flex;align-items:center;justify-content:space-between;}
-#pv-exit{font-size:11px;color:var(--muted);text-decoration:underline;background:none;border:none;
-  padding:0;cursor:pointer;}
-.instr{margin:0;font-size:14px;line-height:1.4;color:var(--ink);font-weight:600;min-height:2.8em;}
-.controlsrow{display:flex;gap:10px;justify-content:center;}
-.ctl2{flex:0 1 180px;display:flex;flex-direction:column;align-items:center;gap:4px;}
-.readout-big{font-family:ui-monospace,monospace;font-size:24px;font-weight:700;
-  color:var(--accent);font-variant-numeric:tabular-nums;transition:color 0.2s ease;}
-.readout-big.inwin{color:var(--good);}
-.btnrow{display:flex;gap:6px;width:100%;}
-.ctllabel{font-size:11.5px;color:var(--sub);font-weight:600;}
-#pv-next{font-size:15px;font-weight:700;padding:11px;border:none;border-radius:9px;width:100%;
-  background:var(--border);color:var(--muted);cursor:not-allowed;transition:background 0.2s,color 0.2s;}
-#pv-next.ready{background:var(--good);color:#fff;cursor:pointer;}
-body.practicing #ctrlbar,
-body.practicing #valveRow,
-body.practicing .np-tab-svg,
-body.practicing #npCard,
-body.practicing #indexRail{display:none;}
-body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 /* Desktop-only title block (round 11) -- without this, a bare div defaults
    to display:block and would show up inside #ctrlbar's MOBILE flex row too,
    mixed in with the Play/Practice buttons mobile still needs there.
@@ -289,20 +268,10 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
    -- hidden by default so a bare block-level nav doesn't show up in
    mobile's flow; the desktop media query turns it on. */
 #indexRail{display:none;}
-.pb-word{margin-left:4px;}
-.stepper{position:relative;height:34px;display:flex;align-items:stretch;gap:6px;}
-.stepper .stepbtn{flex:0 0 40px;border:none;border-radius:8px;background:var(--c-yoke);color:#fff;
-  font-size:19px;line-height:1;font-weight:600;cursor:pointer;display:flex;align-items:center;
-  justify-content:center;-webkit-user-select:none;user-select:none;touch-action:manipulation;
-  box-shadow:0 1px 0 rgba(0,0,0,0.15);}
-.stepper .stepbtn:active{filter:brightness(0.88);}
-.stepper .stepmid{position:relative;flex:1 1 auto;display:flex;align-items:center;min-width:0;}
-.stepper .track{position:relative;width:100%;height:8px;border-radius:4px;background:var(--track);
-  box-shadow:inset 0 1px 3px var(--track-shadow);overflow:hidden;}
-.stepper .fill{position:absolute;left:0;top:0;bottom:0;background:var(--c-yoke);border-radius:4px 0 0 4px;}
-.stepper .band{position:absolute;top:0;bottom:0;background:var(--good);opacity:0.55;
-  transition:left 0.2s ease, width 0.2s ease;}
-.stepper .centertick{position:absolute;top:-2px;bottom:-2px;width:2px;background:var(--c-cast-line);opacity:0.35;}
+/* Mobile lesson list (2026-10-03) -- hidden by default for the same reason
+   #indexRail is above: a bare block-level list shouldn't show up outside
+   its own media query. */
+#mobileLessons{display:none;}
 /* ===== Desktop-only gauge + slider controls (approved 2026-09-27, slider
    unified 2026-09-29): both the diaphragm-pressure gauge and the spring-
    adjustor dial are pure displays, each driven by an identical .hslide
@@ -386,7 +355,15 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
    own real empty-canvas geometry (verified with check_safe_zones.py), not
    guessed. Desktop keeps the .panel reference layout untouched -- these are
    display:none until the mobile media query turns them on. ===== */
-.fig{position:relative;}
+/* overflow:hidden (2026-10-03, Franz: the actuator illustration bleeding
+   straight through the buttons/lesson list/nameplate on his phone) -- a
+   hard, unconditional clamp so the SVG can never visually overflow its own
+   box into whatever comes after it in the page, regardless of which
+   media-query branch (mobile vs desktop) actually ends up active or why a
+   height calculation might come out wrong in some embedding context this
+   wasn't tested against. Safe either way: when .fig is sized correctly
+   already, this clips nothing. */
+.fig{position:relative;overflow:hidden;}
 #railLeft, #railRight, #mobileLegend{display:none;}
 .mrail{position:absolute;display:flex;flex-direction:column;overflow:hidden;}
 .msliders{flex:1 1 auto;min-height:0;display:flex;gap:16px;justify-content:center;}
@@ -445,9 +422,6 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   .panel{max-width:none;}
   #ctrlbar{display:flex;gap:8px;margin-bottom:8px;}
   #ctrlbar .ctl, #statusline, #npLegend, #pb-status{display:none;}
-  #pb-play, #pv-play{flex:1 1 0;font-size:13px;padding:9px 6px;}
-  .stepper{height:38px;}
-  .stepper .stepbtn{flex-basis:44px;font-size:21px;}
   #railLeft, #railRight{display:flex;}
   #mobileLegend{display:flex;}
   /* desktop-only nameplate tab, now drawn into the svg itself -- mobile
@@ -459,16 +433,28 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
      above -- matches this file's existing pattern of an explicit mobile
      kill switch for every desktop-only addition. */
   #indexRail, .note, .leader{display:none;}
-  body.practicing{overflow:hidden;}
-  body.practicing .pagehead{display:none;}
-  body.practicing #railLeft, body.practicing #railRight,
-  body.practicing #mobileLegend{display:none;}
-  body.practicing .row{height:100dvh;height:100vh;flex-direction:column;flex-wrap:nowrap;
-    gap:6px;padding-top:8px;}
-  body.practicing .fig{flex:1 1 auto;min-height:0;padding:6px;}
-  body.practicing .fig svg{height:100%;width:100%;}
-  body.practicing .panel{flex:0 0 auto;max-width:none;}
-  body.practicing #cap{display:none;}
+  /* Mobile lesson list (2026-10-03, Franz: "clean everything up enough so
+     I can watch that lesson"). Touch-sized rows (44px+ tap target, per
+     accepted mobile guidance) rather than the desktop rail's denser rows --
+     this is tapped with a thumb, not clicked with a mouse. Lives right
+     below the Play/Practice row, reachable by the same scroll-past-the-
+     actuator gesture the nameplate/valve controls already use -- nothing
+     about the actuator-first landing itself changes. */
+  #mobileLessons{display:block;list-style:none;margin:0 0 10px;padding:0;
+    border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+  .mobile-lesson-row{display:flex;align-items:center;gap:10px;width:100%;
+    box-sizing:border-box;text-align:left;background:var(--panel);border:none;
+    border-bottom:1px solid var(--border);padding:12px 14px;cursor:pointer;
+    font-size:15px;font-weight:600;color:var(--ink);font-family:inherit;
+    min-height:44px;}
+  #mobileLessons li:last-child .mobile-lesson-row{border-bottom:none;}
+  .mobile-lesson-row.playing{color:var(--good);}
+  .mobile-lesson-row .num{flex:0 0 auto;width:24px;height:24px;box-sizing:border-box;
+    border:1.5px solid var(--border-strong);border-radius:50%;display:flex;
+    align-items:center;justify-content:center;font-size:12px;font-weight:700;}
+  .mobile-lesson-row.playing .num{color:var(--good);border-color:var(--good);}
+  .mobile-lesson-row .dur{margin-left:auto;flex:0 0 auto;color:var(--sub);
+    font-size:.82rem;font-weight:400;font-variant-numeric:tabular-nums;}
 }
 /* ===== Desktop: single full-bleed background, no card, no side panel
    (approved 2026-09-27). The actuator fills the screen exactly like the
@@ -623,26 +609,23 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   #cap{position:fixed;left:50%;bottom:60px;transform:translateX(-50%);max-width:560px;
     text-align:center;border:none;padding:0 12px;min-height:0;margin:0;
     background:none;pointer-events:none;}
-  /* #valveRow, #pv-play stay DOM children of #ctrlbar/#panel (mobile needs
-     them there, unchanged) but are laid out into the top-right bar on
-     desktop by layoutTopBar() (JS), which sets position/top/left directly
-     -- no position or offsets set here, just the visual sizing that
-     JS-driven placement doesn't touch. #pb-play is desktop-hidden in favor
-     of the index rail below (mobile keeps the single button, unchanged). */
+  /* #valveRow stays a DOM child of #ctrlbar/#panel (mobile needs it there,
+     unchanged) but is laid out into the top-right bar on desktop by
+     layoutTopBar() (JS), which sets position/top/left directly -- no
+     position or offsets set here, just the visual sizing that JS-driven
+     placement doesn't touch. */
   #valveRow{display:flex;align-items:center;margin:0;z-index:9;font-size:12.5px;
     background:var(--panel);padding:6px 10px;border-radius:6px;
     border:1px solid var(--border);}
-  #pv-play{z-index:9;}
-  #pb-play{display:none;}
-  /* Correction (2026-09-28): Franz -- "Practice the SOP and stem connector
-     stuff is in the way." Neither appears anywhere in the real approved
-     template (final-panel-open.png reference). Hidden on desktop only;
-     mobile keeps both exactly as they are. The underlying valve-coupling
-     mechanism (setValve(), the #valve checkbox's own change handler, PB
-     state) stays fully intact -- only the manual desktop toggle is hidden.
-     layoutTopBar() still runs harmlessly over these (a display:none
-     element's offsetWidth is 0), left as-is rather than special-cased. */
-  #pv-play, #valveRow{display:none;}
+  /* Correction (2026-09-28): Franz -- "the stem connector stuff is in the
+     way." Doesn't appear anywhere in the real approved template
+     (final-panel-open.png reference). Hidden on desktop only; mobile keeps
+     it exactly as it is. The underlying valve-coupling mechanism
+     (setValve(), the #valve checkbox's own change handler, PB state) stays
+     fully intact -- only the manual desktop toggle is hidden. layoutTopBar()
+     still runs harmlessly over this (a display:none element's offsetWidth
+     is 0), left as-is rather than special-cased. */
+  #valveRow{display:none;}
   /* Index rail (Stage 1, 2026-09-28): replaces the round-12 left-margin
      #sopTopics list. Right edge of the sheet, collapsed to a numbered-dot
      strip by default, opens to a full lesson-name list; widening it is
@@ -713,16 +696,6 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
      the list. Durations are computed from TIMING/SECTIONS, not invented. */
   .sop-topic .dur{margin-left:auto;flex:0 0 auto;color:var(--sub);
     font-size:.82rem;font-weight:400;font-variant-numeric:tabular-nums;}
-  .rail-playall{display:flex;align-items:center;gap:10px;width:100%;
-    border:1px solid var(--border-strong);background:transparent;border-radius:6px;
-    padding:10px 12px;cursor:pointer;font-weight:700;font-size:.95rem;color:var(--ink);
-    margin:0 0 14px;font-family:inherit;}
-  .rail-playall:hover{background:var(--ring);}
-  .rail-playall.playing{color:var(--good);border-color:var(--good);}
-  .rail-playall .playicon{flex:none;color:var(--accent);}
-  .rail-playall.playing .playicon{color:var(--good);}
-  .rail-playall .dur{margin-left:auto;font-weight:400;color:var(--sub);
-    font-variant-numeric:tabular-nums;}
   .rail-divider{border:0;border-top:1px solid var(--border);margin:18px 0 10px;}
   .rail-refs-head{font-size:.75rem;font-weight:700;letter-spacing:.06em;
     text-transform:uppercase;color:var(--muted);margin:0 0 8px;}
@@ -1167,10 +1140,6 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   #npCard.open{max-width:420px;opacity:1;}
   #npCard svg{display:block;width:380px;max-width:80vw;
     filter:drop-shadow(0 6px 16px rgba(0,0,0,0.28));}
-  body.practicing #practiceView{position:fixed;left:50%;bottom:24px;
-    transform:translateX(-50%);background:var(--panel);border:1px solid var(--border);
-    border-radius:12px;padding:16px 22px;box-shadow:0 8px 30px rgba(0,0,0,0.2);
-    width:min(92vw,540px);z-index:6;margin:0;}
 }
 #asm > g, #asm > path{transition:opacity 0.4s ease;}
 .pulse{animation:pbpulse 1.1s ease-in-out 3;}
@@ -1665,14 +1634,6 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
 </div>
 <div class="panel">
 <div id="ctrlbar">
-  <!-- "Play the SOP" as one button is desktop-hidden (mobile keeps it,
-       unchanged) in favor of the index rail (#indexRail, below the SVG in
-       DOM order but positioned by CSS, not JS) -- Franz (2026-09-27, round
-       12): "not the first one I would list... a list like 1. Principle of
-       Operation, 2. Bench Set, 3. Setting Travel". Content still comes from
-       SECTIONS, unchanged, just rendered into the rail's markup now. -->
-  <button id="pb-play" title="Play the SOP">&#9654;<span class="pb-word"> Play the SOP</span></button>
-  <button id="pv-play" title="Practice the SOP">Practice the SOP</button>
   <div class="ctl" id="adjCtl">
     <label>Spring adjuster</label>
     <div class="instrument">
@@ -1747,13 +1708,13 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   </div>
   <div id="statusline"></div>
   <span class="readout" id="pb-status"></span>
-  <audio id="pb-audio" src="657-narration.wav" preload="auto"></audio>
+  <audio id="pb-audio" preload="auto"></audio>
   <!-- Title block (Franz, 2026-09-27, round 11): the page is being redrawn
        as a technical drafting template -- a large drawing area plus a real
-       title block, not a web widget with buttons bolted on. pb-play/pv-play
-       above are repositioned into the top bar by layoutTopBar() (JS, desktop
-       only) rather than moved in the DOM, so mobile's existing layout (which
-       still expects them as #ctrlbar's own flex children) is untouched. -->
+       title block, not a web widget with buttons bolted on. #valveRow above
+       is repositioned into the top bar by layoutTopBar() (JS, desktop only)
+       rather than moved in the DOM, so mobile's existing layout (which
+       still expects it as #ctrlbar's own flex child) is untouched. -->
   <div id="titleblock">
     <div class="tb-brand">EMERSON</div>
     <div class="tb-title">
@@ -1763,33 +1724,18 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
     <div class="tb-provenance">Geometry traced from the Fisher 657 Instruction Manual (IOM)</div>
   </div>
 </div>
-<div id="practiceView">
-  <div class="pv-head">
-    <span class="stepbadge" id="pv-badge">Step 1</span>
-    <button id="pv-exit">Exit practice</button>
-  </div>
-  <p class="instr" id="pv-instr"></p>
-  <div class="controlsrow">
-    <div class="ctl2" id="pv-ctlAdj">
-      <div class="readout-big" id="pv-adjout"></div>
-      <div class="btnrow">
-        <button type="button" class="stepbtn" id="pv-adjMinus" aria-label="Loosen adjuster">&minus;</button>
-        <button type="button" class="stepbtn" id="pv-adjPlus" aria-label="Tighten adjuster">&plus;</button>
-      </div>
-      <div class="ctllabel">Loosen &nbsp;/&nbsp; Tighten</div>
-    </div>
-    <div class="ctl2" id="pv-ctlPress">
-      <div class="readout-big" id="pv-pressout"></div>
-      <div class="btnrow">
-        <button type="button" class="stepbtn" id="pv-pressMinus" aria-label="Decrease pressure">&minus;</button>
-        <button type="button" class="stepbtn" id="pv-pressPlus" aria-label="Increase pressure">&plus;</button>
-      </div>
-      <div class="ctllabel">Diaphragm pressure</div>
-    </div>
-  </div>
-  <div class="legend">SIZE 30 &middot; BENCH SET 3&ndash;11 PSI &middot; TRAVEL 3/4 IN &middot; RANGE 0&ndash;18 PSI</div>
-  <button id="pv-next" disabled>Next</button>
-</div>
+<!-- Mobile lesson list (2026-10-03, Franz: "I can't view the new lesson
+     while I'm on my phone... clean everything up enough so I can watch
+     that lesson"). Desktop's per-lesson picker is the index rail, which is
+     deliberately hidden on mobile entirely (#indexRail{display:none}) --
+     mobile had no equivalent at all. Populated by the same SECTIONS loop
+     that already builds the desktop rail (buildTopicList(), below),
+     calling the same playSection(idx) -- no separate playback logic, just
+     a second, mobile-sized rendering of it. Lives below #ctrlbar, reachable
+     by scrolling past the actuator exactly the way the nameplate/valve
+     controls already are -- the actuator-first landing Franz wants kept
+     is untouched; this only adds a way to actually reach a lesson from it. -->
+<ul id="mobileLessons" aria-label="Lessons"></ul>
 <p id="valveRow"><label><input type="checkbox" id="valve"> Stem connector installed &mdash; valve coupled below the yoke</label></p>
 </div>
 </div>
@@ -1806,10 +1752,6 @@ body.practicing #practiceView{display:flex;flex-direction:column;gap:10px;}
   <div id="railNums" class="rail-nums"></div>
   <div id="railPanel" class="rail-panel" aria-hidden="true">
     <div class="rail-panel-head"><h2>Lessons</h2><button id="railClose" class="rp-close">Close</button></div>
-    <button type="button" id="playAllRow" class="rail-playall">
-      <svg class="playicon" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true"><path d="M3 1l8 5-8 5z" fill="currentColor"/></svg>
-      Play all lessons<span class="dur" id="playAllDur"></span>
-    </button>
     <ol id="railList" class="rp-list"></ol>
     <hr class="rail-divider">
     <div class="rail-refs-head">References</div>
@@ -2397,7 +2339,7 @@ function setValve(on){
 }
 let strokeState = 0;   // remembered position: packing friction is hysteretic
 let ADJ = ADJ_RESET, PRESS = 0;   // stepper-button state: no native range input backs these any more
-let lastStroke = 0;   // exposed for Practice-mode step gates (read-only outside update())
+let lastStroke = 0;   // the current real stroke position, exposed outside update()
 function update(){
   const adj=ADJ;   // seat offset, px (+ = tighter)
   const P=PRESS;   // psig, 0-18
@@ -2554,12 +2496,6 @@ function update(){
        : seated ? ' · PLUG SEATED - valve closed'
        : (stroke>TRAVEL ? ' (past rated)' : ''))
     + (coupled && held ? ' · stem HELD by packing friction' : '');
-  // mirror into Practice mode's own readouts -- same numbers, no duplicate physics
-  const pvA = document.getElementById('pv-adjout');
-  if (pvA) pvA.textContent = document.getElementById('adjout').textContent;
-  const pvP = document.getElementById('pv-pressout');
-  if (pvP) { pvP.textContent = pressoutEl.textContent; pvP.classList.toggle('inwin', inWindow); }
-  pvCheckGate();
   updateMobileRails(adj, P, P0, inWindow);
   updateDesktopGauge(adj, P, P0, inWindow);
 }
@@ -2771,17 +2707,17 @@ function layoutDesktopControls(){
   const figCenterX = (svgRect.left + svgRect.right) / 2;
   document.querySelector('.tb-title').style.left = (figCenterX - tbRect.left) + 'px';
 }
-// Play/Practice/valve-coupled stay DOM children of #ctrlbar/#panel (mobile
-// needs them there, unchanged) but are laid out into the top-right bar on
-// desktop here -- anchored to the true viewport edge (Stage 1, 2026-09-28:
-// no longer to #theme-toggle's position, since that moved to the bottom
-// corner) using each element's own measured width, so it stays correct
-// regardless of button label length or localization.
+// #valveRow stays a DOM child of #ctrlbar/#panel (mobile needs it there,
+// unchanged) but is laid out into the top-right bar on desktop here --
+// anchored to the true viewport edge (Stage 1, 2026-09-28: no longer to
+// #theme-toggle's position, since that moved to the bottom corner) using
+// its own measured width, so it stays correct regardless of label length
+// or localization.
 function layoutTopBar(){
   if (window.innerWidth <= 700) return;
   const gap = 14;
   let cursor = window.innerWidth - 28;
-  for (const id of ['valveRow', 'pv-play']){
+  for (const id of ['valveRow']){
     const el = document.getElementById(id);
     if (!el) continue;
     const w = el.offsetWidth;
@@ -4091,17 +4027,14 @@ if (document.fonts && document.fonts.ready) document.fonts.ready.then(layoutAll)
   });
 })();
 // ================= scripted SOP playback =================
-const TIMING_RAW = __TIMINGJSON__;
 // Principle of Operation v2 (2026-10-03, Franz: "take this PO v2 that I
 // created in the animator and... replace the principle of operation
-// lesson"). Replaces the original TTS-generated intro (TIMING_RAW's first
-// 6 segments) with Franz's own authored project from the Animator: his own
-// recorded voice, word-level narration timing he set himself by ear against
-// the real recording (see PO_V2_ROWS -- t0/t1/parts are his own authored
-// values, pulled directly from the saved project, not re-derived or
-// rounded beyond snapping out sub-pixel drag noise). The TTS pipeline still
-// generates the remaining segments (now reindexed, see SECTIONS below) for
-// the other 3 lessons, unchanged.
+// lesson"; later the same day: "I don't think we need the sop. That is
+// stale" -- the original TTS-scripted "Play the SOP"/"Practice the SOP"
+// system and its other 3 lessons are gone entirely, not just superseded.
+// PO v2 is now the only lesson). t0/t1/parts below are Franz's own authored
+// values from the Animator project, pulled directly from the saved data,
+// not re-derived or rounded beyond snapping out sub-pixel drag noise.
 const PO_V2_ROWS = [
   {text:"The 657 is a direct acting pneumatic actuator. ", t0:0, t1:6.21, parts:[]},
   {text:"Loading pressure applied to the upper diaphragm casing ", t0:6.21, t1:10.34, parts:['p-upper']},
@@ -4113,73 +4046,29 @@ const PO_V2_ROWS = [
   {text:"actuator yoke. ", t0:27.07, t1:28.83, parts:['p-yoke','p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem']},
   {text:"When air is vented from the diaphragm chamber, the spring decompresses, pushing the diaphragm plate assembly to its upper travel stop against the upper diaphragm casing. ", t0:28.83, t1:39.81, parts:['p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem','p-yoke']},
 ];
-const TIMING = [
-  ...PO_V2_ROWS.map(r=>({start:r.t0, duration:r.t1-r.t0, text:r.text, section:'Principle of Operation'})),
-  ...TIMING_RAW.slice(6),
-];
+const TIMING = PO_V2_ROWS.map(r=>({start:r.t0, duration:r.t1-r.t0, text:r.text, section:'Principle of Operation'}));
 // Inlined as a data: URI, not a served file -- see this constant's own
 // comment in build_refined2.py for why (the Artifact platform doesn't
 // serve audio/mp4 as a supporting file).
 const PO_V2_AUDIO_DATA_URI = "data:audio/mp4;base64,__POV2AUDIOB64__";
 const audio = document.getElementById('pb-audio');
 const capEl = document.getElementById('cap');
-let playing=false, curSeg=-1, seg8sw=false, firedCues=[];
-// Desktop's table of contents (round 12). TIMING's own `section` field only
-// splits the narrated segments into 3 groups ("How the Actuator Works" /
-// "Spring Verification" / "Installing the Stem Connector"), but Franz wants
-// the first group split further -- "Principle of Operation comes first, but
-// is separate" from "Set the Spring Adjuster". That distinction doesn't
-// exist in the narration data, so these 4 topics are explicit rather than
-// derived.
-// Re-indexed 2026-09-30 (Franz: "add all the physics for the diaphragm
-// pressure and the spring adjuster" was reverted the same day (2026-09-30,
-// Franz: "I made a mistake saying to include the physics") -- the physics
-// numbers (46in^2, 490lbf/in, 138/506lbf, 12 TPI, 3.38 turns) are GONE from
-// "Principle of Operation", replaced with Franz's own plainer dictated
-// script (no numbers at all: intro, air pushes the plate/stem down, spring
-// compresses against the seat/yoke, then tightening the adjuster before
-// connecting to the valve sets preload and establishes bench set).
-// Restructured again 2026-09-30, round 3 (Franz: "the overall animation is
-// exactly the same length... there wasn't much spacing inserted... I need
-// you to have beats"). A fraction-based cue can only rearrange WHEN the
-// visuals react within a segment's own fixed, already-spoken-length audio
-// -- it can't manufacture real silence. A real "beat" (his word, "like in
-// a play") requires an actual pause in the audio, which only exists at
-// paragraph/segment boundaries (PAUSE_S). So "How the Actuator Works" was
-// split into more, shorter paragraphs -- one idea per beat -- instead of
-// relying on in-segment timing tricks, and the content itself grew too
-// (added, at Franz's request: tightening the adjuster pushes the spring
-// seat up, compressing the spring between the seat and the diaphragm
-// plate, which rests at its upper travel stop against the upper
-// diaphragm casing with no air applied). Indices below are taken from the
-// REAL regenerated narration/output/657/timing.json (21 segments).
-// "Principle of Operation" is now 6 real segments (0-5): intro / air
-// pushes the plate+stem down / spring compresses against the seat+yoke /
-// tighten the adjuster / that pushes the seat up against the plate at its
-// upper stop / bench set established. "Set the Spring Adjuster" is
-// unchanged text, still 2 segments (6-7). Spring Verification (8-13, 6
-// segments) and Installing the Stem Connector (14-20, 7 segments) are
-// untouched text, just shifted 2 segments later than the prior round
-// because "Principle of Operation" picked up 2 extra real segments from
-// the new paragraph breaks.
-// Indices shifted +3 throughout (2026-10-03): PO v2 grew the first section
-// from 6 TIMING entries to 9, so everything after it moves down by 3 --
-// values otherwise unchanged from before PO v2.
+let playing=false, curSeg=-1, firedCues=[];
+// SECTIONS stays an array, not a single lesson object, so the next
+// Animator-authored lesson (2026-10-03: this one, PO v2, replaced the old
+// scripted "Principle of Operation"; the other 3 legacy lessons were
+// removed outright rather than carried along stale) just appends another
+// entry here with its own audioSrc -- playSection(idx) already handles any
+// number of independent, self-contained lessons, each with its own
+// recording. What's gone is the old chain-them-all-together machinery
+// ("Play the SOP" / "Practice the SOP" / "Play all lessons"), which only
+// existed to stitch multiple lessons sharing ONE recording into a single
+// continuous playthrough -- with each lesson now its own separate
+// recording anyway, that concept doesn't apply.
 const SECTIONS = [
   {name:'Principle of Operation', startIdx:0, endIdx:8, audioSrc:PO_V2_AUDIO_DATA_URI},
-  {name:'Set the Spring Adjuster', startIdx:9, endIdx:10},
-  {name:'Verify Bench Set to Rated Travel', startIdx:11, endIdx:16},
-  {name:'Set Valve Travel', startIdx:17, endIdx:23},
 ];
-// Two different recordings now share this engine (2026-10-03): Franz's own
-// PO v2 voice recording for the first section, the original TTS narration
-// for the rest. audioSrc on a SECTIONS entry names which; anything without
-// one (i.e. every section except Principle of Operation) uses this default,
-// so the other 3 lessons needed zero changes beyond their index shift.
-const DEFAULT_AUDIO_SRC = '657-narration.wav';
-function sectionAudioSrc(sec){ return sec.audioSrc || DEFAULT_AUDIO_SRC; }
-let activeSection = -1;   // which SECTIONS entry is currently playing; -1 = none, or "play everything" (mobile's single button); -2 = "Play all lessons" row
-let curSectionIdx = -1;   // which SECTIONS entry's audio/TIMING range is actually loaded right now -- distinct from activeSection, which can be -1/-2 while chaining through several real sections in turn
+let activeSection = -1;   // which SECTIONS entry is currently playing, or -1 if none
 // 0.1-step rounding: the original native <input type=range step="0.1">
 // snapped to a clean decimal grid for free; the custom drag slider lost
 // that (continuous float), which is exactly why landing precisely on 3.0
@@ -4216,22 +4105,6 @@ function setAdj(v){
   v = Math.min(24, Math.max(-24, +v));
   ADJ = Math.abs(v-CAL_ADJ) <= ADJ_SNAP_TOL ? CAL_ADJ : v;
 }
-function bindStepper(id, fn){
-  // tap = one step; hold = auto-repeat, like a real button
-  const btn = document.getElementById(id);
-  let delay=null, repeat=null;
-  function go(){ fn(); update(); }
-  function start(e){ e.preventDefault(); go();
-    delay = setTimeout(()=>{ repeat = setInterval(go, 90); }, 350); }
-  function stop(){ clearTimeout(delay); clearInterval(repeat); delay=null; repeat=null; }
-  btn.addEventListener('pointerdown', start);
-  btn.addEventListener('pointerup', stop);
-  btn.addEventListener('pointerleave', stop);
-  btn.addEventListener('pointercancel', stop);
-}
-// desktop bench-set controls are now drag sliders (bindHSlider/bindVRod,
-// bound below, once they're declared) -- the button-stepper pattern stays
-// for Practice mode's own controls only.
 // getFn added 2026-09-29 when this became a two-caller function (adjustor
 // slider added alongside pressure's): the keyboard handler used to hardcode
 // PRESS directly, which was invisible with only one caller but would have
@@ -4316,66 +4189,6 @@ bindHSlider('pressHit', 0, 18, 0.1, setPress, ()=>PRESS);
 // again; nothing else calls it now that the mobile adjuster uses its own
 // separate bindMobileVSlider.
 bindHSlider('adjHit2', -24, 24, 0.1, setAdj, ()=>ADJ);
-bindStepper('pv-adjMinus', ()=>setAdj(ADJ-1));
-bindStepper('pv-adjPlus', ()=>setAdj(ADJ+1));
-bindStepper('pv-pressMinus', ()=>setPress(PRESS-0.2));
-bindStepper('pv-pressPlus', ()=>setPress(PRESS+0.2));
-
-// ================= Practice mode: step-by-step, gated Next =================
-// Bench-set section only (off the valve) -- coupling-to-the-valve steps are a
-// separate, not-yet-approved second section (wording still pending review).
-const PV_STEPS = [
-  { crop:[0,850,1480,600], showAdj:true, showPress:true,
-    instr:"First movement is starting too late. Loosen the adjuster, then raise pressure again until it first moves — aim for exactly 3 psig.",
-    enter(){ setAdj(12); setPress(0); },
-    gate(){ return ADJ===0 && PRESS>0 && lastStroke>0; } },
-  { crop:[0,1380,1480,400], showAdj:false, showPress:true,
-    instr:"Raise pressure to 11 psig. Confirm the stem reaches full rated travel — the top mark on the scale, 3/4 inch.",
-    enter(){ setPress(3); },
-    gate(){ return PRESS>=10.8 && lastStroke>=TRAVEL-5; } },
-  { crop:[0,1380,1480,400], showAdj:false, showPress:true,
-    instr:"Lower pressure back to exactly 3 psig. Confirm the stem returns to zero travel — the scale should read 0.",
-    enter(){ setPress(11); },
-    gate(){ return Math.abs(PRESS-3)<=0.15 && lastStroke<=5; } },
-  { crop:[0,150,1480,1650], showAdj:false, showPress:false,
-    instr:"Bench set confirmed: first movement at 3 psig, full stroke at 11, travel 3/4 inch. This actuator is calibrated to a 3–11 bench set.",
-    enter(){}, gate(){ return true; } },
-];
-let pvIdx = 0;
-function pvEnter(i){
-  pvIdx = i;
-  const st = PV_STEPS[i];
-  document.getElementById('pv-badge').textContent = `Step ${i+1} of ${PV_STEPS.length}`;
-  document.getElementById('pv-instr').textContent = st.instr;
-  document.getElementById('asm').setAttribute('viewBox', st.crop.join(' '));
-  document.getElementById('pv-ctlAdj').style.display = st.showAdj ? '' : 'none';
-  document.getElementById('pv-ctlPress').style.display = st.showPress ? '' : 'none';
-  st.enter();
-  update();
-}
-function pvCheckGate(){
-  if (!document.body.classList.contains('practicing')) return;
-  const ready = PV_STEPS[pvIdx].gate();
-  const btn = document.getElementById('pv-next');
-  btn.disabled = !ready;
-  btn.classList.toggle('ready', ready);
-  btn.textContent = ready ? 'Next →' : 'Next';
-}
-document.getElementById('pv-play').addEventListener('click', ()=>{
-  document.body.classList.add('practicing');
-  pvEnter(0);
-});
-document.getElementById('pv-exit').addEventListener('click', ()=>{
-  document.body.classList.remove('practicing');
-  document.getElementById('asm').setAttribute('viewBox', '0 0 1480 2250');
-  setAdj(ADJ_RESET); setPress(0); update();
-});
-document.getElementById('pv-next').addEventListener('click', ()=>{
-  if (document.getElementById('pv-next').disabled) return;
-  const next = pvIdx + 1;
-  if (next >= PV_STEPS.length) document.getElementById('pv-exit').click();
-  else pvEnter(next);
-});
 function hl(...ids){
   for (const g of document.querySelectorAll('#nameplate g')) g.classList.remove('np-hl');
   ids.forEach(id=>document.getElementById(id).classList.add('np-hl'));
@@ -4418,116 +4231,16 @@ const CHOREO_PO_V2 = [
  {enter(){ focus('p-yoke','p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem'); }},     // 7. "actuator yoke." -- holds at 10psig
  {enter(){ focus('p-upper','g-plate','p-dia',SPRING,'sp-seat-g','g-stem','p-yoke'); }, tick(p){ setPress((10-10*p).toFixed(2)); }},  // 8. "When air is vented... upper travel stop" -- vents back to 0
 ];
-// Choreography for TIMING_RAW.slice(6) onward (2026-10-03): the other 3
-// lessons, entirely unchanged from before PO v2 -- only their ARRAY
-// POSITION moved (was CHOREO[6..20], now CHOREO_REST[0..14], reassembled
-// below into one CHOREO array). Comment numbering below is left as
-// originally written (relative to the old indices) since it's about each
-// entry's own reasoning, not its position in this array.
-const CHOREO_REST = [
- // 6. tightening raises the seat and compresses the spring upwards before
- //    any air is applied; loosening backs it off -- unchanged text
- {enter(){ setPress(0); focus('sp-adj-g','sp-seat-g',SPRING); },
-  tick(p){ let a; if(p<0.3) a=20*(p/0.3); else if(p<0.5) a=20;
-           else if(p<0.8) a=20-44*((p-0.5)/0.3); else a=-24;
-           setAdj(Math.round(a)); }},
- // 7. bench set defined; nameplate cited -- unchanged text
- {enter(){ setAdj(0); setPress(0); focus(); },
-  cues:[[0.1,()=>hl('np-benchset')],[0.35,()=>hl('np-benchset','np-travel')],
-        [0.62,()=>hl('np-benchset','np-travel','np-size')],[0.9,()=>hl()]]},
- // 8. prove it on the bench: off valve, stem at top, air rigged
- {enter(){ hl(); focus(); pulse('g-stem'); },
-  cues:[[0.6,()=>pulse('pressrow')]]},
- // 9. raise from zero, first movement at exactly 3
- {enter(){ focus('g-stem'); }, tick(p){ setPress((3.4*p).toFixed(2)); }},
- // 10. too tight / too loose diagnosis
- {enter(){ seg8sw=false; setAdj(12); setPress(0); focus('sp-adj-g','sp-seat-g','g-stem'); },
-  tick(p){ if(p<0.45){ setPress((6*p/0.45).toFixed(2)); }
-           else if(p<0.5){ setPress(0); }
-           else { if(!seg8sw){ setAdj(-12); seg8sw=true; }
-                  setPress((4*(p-0.5)/0.5).toFixed(2)); } }},
- // 11. to exactly 11; over-stroke caution to the casing; mark stem end at 11
- {enter(){ setAdj(0); setPress(3); focus(); },
-  cues:[[0.42,()=>focus('g-plate','p-lower')],[0.72,()=>focus()],
-        [0.84,()=>{ showVerMark(true); pulse('g-vermark'); }]],
-  tick(p){ let v; if(p<0.28) v=3+8*(p/0.28); else if(p<0.4) v=11;
-           else if(p<0.58) v=11+7*((p-0.4)/0.18);
-           else if(p<0.74) v=18-7*((p-0.58)/0.16); else v=11;
-           setPress(v.toFixed(2)); }},
- // 12. lower to 3, measure mark-to-stem-end = 3/4
- {cues:[[0.42,()=>{ showVerBracket(true); }],[0.6,()=>focus('g-stem','g-scale')]],
-  tick(p){ if(p<0.4) setPress((11-8*(p/0.4)).toFixed(2)); }},
- // 13. matches -> complete
- {enter(){ setPress(3); focus(); },
-  cues:[[0.25,()=>hl('np-travel')],[0.8,()=>hl()]]},
- // 14. now the valve enters the picture
- {enter(){ hl(); showVerMark(false); PB.connected=false; PB.connShown=false;
-           PB.nutsDy=34; setPress(0); setValve(true); showTravelMark(false);
-           focus('g-vgrp','g-valve-sil','g-mount','g-mount-back'); }},
- // 15. push the valve stem down to the seat
- {enter(){ focus('g-vgrp'); pulse('g-vgrp'); }},
- // 16. mark the valve stem 3/4 below the actuator stem end
- {enter(){ focus(); showTravelMark(true); pulse('g-travelmark'); }},
- // 17. actuate down to the mark
- {tick(p){ setPress(Math.min(11,11.4*p).toFixed(2)); }},
- // 18. clamp the connector halves, tighten evenly
- {enter(){ PB.connShown=true; setValve(true); focus('g-conn','g-stem','g-vgrp'); pulse('g-conn'); },
-  cues:[[0.6,()=>{ PB.connected=true; document.getElementById('valve').checked=true;
-                   showTravelMark(false); }]]},
- // 19. run the locknuts up to the disk
- {enter(){ focus('g-vgrp','g-conn'); }, tick(p){ PB.nutsDy=34*(1-p); }},
- // 20. stroke open to closed, verify, align scale
- {enter(){ focus(); },
-  cues:[[0.35,()=>focus('g-scale','g-vgrp','g-stem')],[0.85,()=>focus()]],
-  tick(p){ if(p<0.3){ setPress((11*(1-p/0.3)).toFixed(2)); PB.scaleDy=0; }
-           else if(p<0.5){ setPress(0); PB.scaleDy=36*((p-0.3)/0.2); }
-           else { PB.scaleDy=36; setPress((Math.min(12,12*(p-0.5)/0.5)).toFixed(2)); } }},
-];
-const CHOREO = [...CHOREO_PO_V2, ...CHOREO_REST];
-// Loads whichever audio file a SECTIONS entry needs and seeks/plays it --
-// the one place that knows how to start any section's audio, used by
-// playSection(), playAllSections(), mobile's single button, AND pbFrame()
-// itself when chaining past a section boundary into a DIFFERENT audio file
-// (2026-10-03, added for PO v2's own separate recording). Skips reassigning
-// .src when the needed file is already loaded, so chaining between the 3
-// sections that all share the original narration file never reloads it.
-function loadSectionAudio(sectionIdx, seekTo, onReady){
-  const sec = SECTIONS[sectionIdx];
-  const src = sectionAudioSrc(sec);
-  curSectionIdx = sectionIdx;
-  if (audio.getAttribute('data-cur-src') !== src){
-    audio.setAttribute('data-cur-src', src);
-    audio.src = src;
-  }
-  audio.currentTime = seekTo;
-  audio.play().then(onReady).catch(e=>{ playing=false; activeSection=-1; curSectionIdx=-1;
-    updateTopicButtons();
-    document.getElementById('pb-status').textContent=' audio failed to load'; });
-}
+const CHOREO = CHOREO_PO_V2;
 function pbFrame(){
   if(!playing) return;
   const t = audio.currentTime;
-  const sec = SECTIONS[curSectionIdx];
+  const sec = SECTIONS[activeSection];
   const secEndT = TIMING[sec.endIdx].start + TIMING[sec.endIdx].duration;
-  if (t >= secEndT){
-    // "Play everything" (mobile's single button, or "Play all lessons")
-    // chains into the next section instead of stopping -- the only place
-    // that needs to know two different audio files might be involved,
-    // since loadSectionAudio() swaps src for us if the next section needs
-    // a different one (2026-10-03, PO v2's own separate recording).
-    const playingEverything = (activeSection === -1 || activeSection === -2);
-    if (playingEverything && curSectionIdx < SECTIONS.length-1){
-      curSeg = -1;
-      loadSectionAudio(curSectionIdx+1, TIMING[SECTIONS[curSectionIdx+1].startIdx].start,
-        ()=>requestAnimationFrame(pbFrame));
-      return;
-    }
-    pbStop();
-    return;
-  }
+  if (t >= secEndT){ pbStop(); return; }
   let i = sec.startIdx;
   while(i<sec.endIdx && TIMING[i+1].start <= t) i++;
-  if(i !== curSeg){ curSeg=i; capEl.textContent = TIMING[i].text;
+  if(i !== curSeg){ curSeg=i; capEl.textContent = TIMING[i].text;   // captions are off (see #cap's own CSS comment) -- harmless to keep setting on a hidden element
     firedCues = []; if(CHOREO[i] && CHOREO[i].enter) CHOREO[i].enter(); }
   const p = Math.min(1, (t-TIMING[i].start)/TIMING[i].duration);
   if(CHOREO[i] && CHOREO[i].cues){
@@ -4539,9 +4252,7 @@ function pbFrame(){
 }
 function pbStop(){
   playing=false; audio.pause();
-  activeSection = -1; curSectionIdx = -1;
-  document.getElementById('pb-play').classList.remove('playing');
-  document.getElementById('pb-play').innerHTML='&#9654; Play the SOP';
+  activeSection = -1;
   document.getElementById('pb-status').textContent='';
   capEl.textContent='';
   updateTopicButtons();
@@ -4561,51 +4272,37 @@ function updateTopicButtons(){
     const isActive = playing && +btn.dataset.section === activeSection;
     btn.classList.toggle('playing', isActive);
   });
-  // Correction (2026-09-28): the "Play all lessons" row gets its own
-  // playing-state toggle, separate from the per-lesson rows above (it uses
-  // activeSection===-2, which never matches a real section index).
-  document.getElementById('playAllRow').classList.toggle('playing', playing && activeSection === -2);
-}
-// Mobile's own single button: plays straight through start to finish --
-// now via the same section-chaining loadSectionAudio()/pbFrame() every
-// other entry point uses (2026-10-03), since "straight through" has to
-// cross from PO v2's own recording into the original narration file
-// partway through; activeSection stays -1 (distinct from -2's "Play all
-// lessons" row) purely so each button's own CSS/label state stays correct.
-document.getElementById('pb-play').addEventListener('click', ()=>{
-  if(playing){ pbStop(); return; }
-  benchReset();
-  playing=true; curSeg=-1; activeSection=-1;
-  loadSectionAudio(0, TIMING[SECTIONS[0].startIdx].start, ()=>{
-    document.getElementById('pb-play').classList.add('playing');
-    document.getElementById('pb-play').innerHTML='&#9632; Stop';
-    requestAnimationFrame(pbFrame);
+  // Mobile's own lesson list (2026-10-03) -- same playing/activeSection
+  // state, same "Stop" label swap as the desktop rail rows above.
+  document.querySelectorAll('.mobile-lesson-row').forEach(btn=>{
+    const isActive = playing && +btn.dataset.section === activeSection;
+    btn.classList.toggle('playing', isActive);
+    btn.querySelector('.label').textContent = isActive ? 'Stop' : btn.dataset.label;
   });
-});
-// Desktop's table of contents: each topic plays just its own section, from
-// a clean reset (benchReset), and stops at that section's own end rather
-// than continuing into the next topic -- clicking the currently-playing
-// topic again stops it, matching a normal play/stop toggle.
+}
+// Each lesson row (desktop rail, mobile list) plays just its own section,
+// from a clean reset (benchReset), and stops at that section's own end --
+// clicking the currently-playing row again stops it, matching a normal
+// play/stop toggle. The old "Play the SOP" / "Practice the SOP" / "Play
+// all lessons" machinery that used to chain multiple sections together
+// (2026-10-03, Franz: "I don't think we need the sop. That is stale") is
+// gone -- every lesson is now independent, its own recording, played on
+// its own.
 function playSection(idx){
   if(playing && activeSection === idx){ pbStop(); return; }
+  const sec = SECTIONS[idx];
   benchReset();
   playing=true; curSeg=-1; activeSection=idx;
   updateTopicButtons();
-  loadSectionAudio(idx, TIMING[SECTIONS[idx].startIdx].start, ()=>requestAnimationFrame(pbFrame));
+  if (audio.getAttribute('data-cur-src') !== sec.audioSrc){
+    audio.setAttribute('data-cur-src', sec.audioSrc);
+    audio.src = sec.audioSrc;
+  }
+  audio.currentTime = TIMING[sec.startIdx].start;
+  audio.play().then(()=>requestAnimationFrame(pbFrame)).catch(e=>{ playing=false; activeSection=-1;
+    updateTopicButtons();
+    document.getElementById('pb-status').textContent=' audio failed to load'; });
 }
-// Correction (2026-09-28): "Play all lessons" row (approved template,
-// final-panel-open.png) -- plays straight through all 4 SECTIONS in order
-// from a clean reset, same toggle-to-stop convention as playSection(). Uses
-// activeSection=-2 (distinct from -1='none' and any real 0..3 index) so no
-// individual lesson row/dot lights up while all of them are playing.
-function playAllSections(){
-  if(playing && activeSection === -2){ pbStop(); return; }
-  benchReset();
-  playing=true; curSeg=-1; activeSection=-2;
-  updateTopicButtons();
-  loadSectionAudio(0, TIMING[SECTIONS[0].startIdx].start, ()=>requestAnimationFrame(pbFrame));
-}
-document.getElementById('playAllRow').addEventListener('click', playAllSections);
 // Franz's final wording for the 3 topics (2026-09-27, round 12 follow-up) --
 // more procedural than TIMING's own descriptive `section` titles ("How the
 // Actuator Works" etc.), which still drive the actual start/end boundaries
@@ -4628,10 +4325,9 @@ function fmtDur(sec){
   // source of content, two renderings of it.
   const list = document.getElementById('railList');
   const nums = document.getElementById('railNums');
-  let total = 0;
+  const mobileList = document.getElementById('mobileLessons');
   SECTIONS.forEach((sec,idx)=>{
     const dur = sectionDuration(sec);
-    total += dur;
     const btn = document.createElement('button');
     btn.className = 'sop-topic';
     btn.type = 'button';
@@ -4653,8 +4349,21 @@ function fmtDur(sec){
     dot.innerHTML = `<span>${idx+1}</span>`;
     dot.addEventListener('click', ()=>playSection(idx));
     nums.appendChild(dot);
+
+    // Mobile's own lesson list (2026-10-03) -- same SECTIONS data, same
+    // playSection(idx) call, just a third, touch-sized rendering of it.
+    const mbtn = document.createElement('button');
+    mbtn.className = 'mobile-lesson-row';
+    mbtn.type = 'button';
+    mbtn.dataset.section = idx;
+    mbtn.dataset.label = sec.name;
+    mbtn.innerHTML = `<span class="num">${idx+1}</span><span class="label">${sec.name}</span>` +
+      `<span class="dur">${fmtDur(dur)}</span>`;
+    mbtn.addEventListener('click', ()=>playSection(idx));
+    const mli = document.createElement('li');
+    mli.appendChild(mbtn);
+    mobileList.appendChild(mli);
   });
-  document.getElementById('playAllDur').textContent = fmtDur(total);
 })();
 audio.addEventListener('ended', pbStop);
 // test hook: ?pbtest=N applies segments 1..N without audio
@@ -4719,7 +4428,6 @@ window.addEventListener('resize', update);
 </script>
 """
 html = html.replace("__PARTSJS__", parts_js)
-html = html.replace("__TIMINGJSON__", timing_js)
 html = html.replace("__POV2AUDIOB64__", po_v2_audio_b64)
 open("../657-refined.html", "w", encoding="utf-8").write(html)
 print("written", len(html))
