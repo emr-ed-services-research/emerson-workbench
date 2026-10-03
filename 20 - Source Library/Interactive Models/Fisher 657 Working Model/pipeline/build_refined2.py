@@ -47,7 +47,7 @@ set_travel_audio_b64 = _base64.b64encode(open(
 
 html = """<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Fisher 657 Working Model</title>
+<title>Fisher 657 Calibration and Setup</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@500;600&family=Caveat:wght@400;600;700&display=swap" rel="stylesheet">
@@ -1244,7 +1244,7 @@ body.lesson-playing #valveRow{opacity:0.45;pointer-events:none;cursor:not-allowe
 </script>
 <div id="sheetBorder"></div>
 <div class="pagehead">
-<h1>Fisher 657 Working Model</h1>
+<h1>Fisher 657 Calibration and Setup</h1>
 <button id="theme-toggle" title="Toggle light/dark mode" aria-label="Toggle light/dark mode">
   <span id="theme-glyph" aria-hidden="true">&#9680;</span><span class="theme-label"></span>
 </button>
@@ -1837,7 +1837,7 @@ body.lesson-playing #valveRow{opacity:0.45;pointer-events:none;cursor:not-allowe
     <div class="tb-brand">EMERSON</div>
     <div class="tb-title">
       <div class="tb-title-main">Fisher 657 Diaphragm Actuator</div>
-      <div class="tb-title-sub">Working Model &mdash; Interactive Schematic</div>
+      <div class="tb-title-sub">Calibration and Setup</div>
     </div>
     <div class="tb-provenance">Geometry traced from the Fisher 657 Instruction Manual (IOM)</div>
   </div>
