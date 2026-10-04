@@ -1330,7 +1330,24 @@ body.lesson-playing #valveRow{opacity:0.45;pointer-events:none;cursor:not-allowe
     </g>
   </g>
   <g id="g-conn" style="display:none">
+    <!-- Stem connector (2026-10-05, Franz): the IOM (Figure 6, instruction
+         manual D100306X012 p.24) describes key 26 as "an assembly of two
+         stem connector halves, cap screws, and a spacer" -- the real part
+         is two halves clamped around both stems by cap screws, not a solid
+         block. Figure 6's own front/section view only draws ONE hex bolt
+         head (the near one, on the left) because that view is a half-
+         section cut through the other side -- Franz confirmed the real
+         part has two, symmetric: "it only shows the left bolt head...
+         There is a right bolt head too that should be symmetrical to the
+         left side." This model draws a plain front elevation (no section
+         cut), so both heads are visible on the connector's near face;
+         they're what reads as "bolted to its other half" since the far
+         half sits directly behind this one in this view, not beside it.
+         Centers are symmetric about CXA (742.5): 742.5-684=58.5,
+         801-742.5=58.5. -->
     <rect class="vconn" x="664.5" y="1415" width="156" height="147" rx="4"/>
+    <polygon class="vfast" points="698.0,1474.0 691.0,1486.1 677.0,1486.1 670.0,1474.0 677.0,1461.9 691.0,1461.9"/>
+    <polygon class="vfast" points="815.0,1474.0 808.0,1486.1 794.0,1486.1 787.0,1474.0 794.0,1461.9 808.0,1461.9"/>
   </g>
   <g id="g-valve-sil" style="display:none">
     <!-- non-cutaway valve silhouette: bonnet flange under the yoke legs,
@@ -4899,25 +4916,35 @@ const CHOREO_VERIFY_BENCH_SET = [
 // Rebuilt (2026-10-03) for the revised script, which introduces a real
 // technique change: the old script only said "measure the distance,"
 // narrated and shown as one fixed abstract overlay (g-travelmark). The new
-// script splits this into "mark the valve stem" (row 4) and "lower the
-// actuator stem to the mark" (row 5) as two distinct actions, and now
-// explicitly names the valve stem as the thing being marked -- so the mark
-// needed to visually read as scribed ONTO that part, not floating in the
-// gap between the two assemblies. g-valvestem-mark (see its own comment,
-// near g-vgrp's markup) is a literal CHILD of g-vgrp, the mirror image of
-// the Verifying Bench Set lesson's g-stem-mark/g-stem pairing with the
-// fixed/moving roles reversed: there the mark rides the MOVING part and a
-// bracket's fixed end anchors elsewhere; here the mark sits on the
-// STATIONARY part (g-vgrp doesn't move pre-coupling) and
-// g-stembracket-vt's TOP end is what's recomputed live, by
-// updateValveTravelBracket(), from the actuator stem's actual falling
-// position -- reusing stemMarkStroke() unmodified, since it's just the
-// shared off-valve Hooke's-law formula and this lesson also pins
-// ADJ=CAL_ADJ. Row 5's ramp to PRESS=11 drives that same stroke physics to
-// ~140.19px (~0.751in, see the Verifying Bench Set lesson's own comment for
-// why that's correct, not a "rounding error"), closing the bracket's gap
-// from the full 0.75in down to 0.00" exactly as the stem reaches the mark
-// -- an honest live measurement, not a static label.
+// script splits this into "measure down... the full rated travel" (row 3),
+// "mark the valve stem" (row 4), and "lower the actuator stem to the mark"
+// (row 5) as three distinct actions, and now explicitly names the valve
+// stem as the thing being marked -- so the mark needed to visually read as
+// scribed ONTO that part, not floating in the gap between the two
+// assemblies. g-valvestem-mark (see its own comment, near g-vgrp's
+// markup) is a literal CHILD of g-vgrp, the mirror image of the Verifying
+// Bench Set lesson's g-stem-mark/g-stem pairing with the fixed/moving
+// roles reversed: there the mark rides the MOVING part and a bracket's
+// fixed end anchors elsewhere; here the mark sits on the STATIONARY part
+// (g-vgrp doesn't move pre-coupling) and g-stembracket-vt's TOP end is
+// what's recomputed live, by updateValveTravelBracket(), from the
+// actuator stem's actual falling position -- reusing stemMarkStroke()
+// unmodified, since it's just the shared off-valve Hooke's-law formula
+// and this lesson also pins ADJ=CAL_ADJ.
+//
+// Revised again (2026-10-04, Franz: showing the mark appear and then the
+// bracket shrink "seems vague... I think that it should show measuring
+// down too, to make the mark"). Row 3 now reveals the bracket FIRST, while
+// stroke is still 0 -- updateValveTravelBracket() at PRESS=0 already
+// computes the correct full 0.75in span, so this is the real measurement
+// being taken (from the actuator stem's bottom down to where the mark is
+// about to go), not a different visual. Row 4 then scribes the mark at
+// the bracket's own lower end. Row 5's ramp to PRESS=11 drives that same
+// stroke physics to ~140.19px (~0.751in, see the Verifying Bench Set
+// lesson's own comment for why that's correct, not a "rounding error"),
+// closing the SAME bracket's gap from 0.75in down to 0.00" exactly as the
+// stem reaches the mark -- one continuous live measurement across all
+// three rows, not a static label that appears only at the end.
 //
 // Row 7 ("minimum thread engagement... should match its diameter") is
 // narration-only, with no dedicated visual of its own -- it holds on the
@@ -4959,19 +4986,36 @@ const CHOREO_VERIFY_BENCH_SET = [
 // reaches rated travel partway through the sweep, and holds there while
 // PRESS keeps climbing to 15, visibly demonstrating "travel doesn't
 // increase past rated once the plug is seated" with no invented behavior.
-// Rows 11-13 are new closing beats (tolerance spec, then the two-sentence
-// explanation of why bench-set can no longer be verified once coupled) --
-// no new motion, they hold at PRESS=15 where row 10's sweep left off.
+// Row 11 ("total travel should be precise...") is a whole-system
+// confirmation of what row 10 just ran -- it stays full-lit like row 10
+// itself, rather than narrowing onto the stem/valve alone (Franz, 2026-
+// 10-04: narrowing here "seemed a little off... why fade out the
+// indicator scale or the rest of the actuator and valve for that
+// comment?").
+//
+// Rows 12-13 (also revised 2026-10-04) demonstrate, not just narrate, why
+// the bench-set range can't be re-verified once coupled: Franz wanted to
+// "see how initial movement begins after 3 now, instead of at 3 like it
+// did when uncoupled." Row 12 fully vents/retracts (15->0); row 13 is the
+// same double-lift-pulse sweep used for every other "begins to move"
+// threshold in this model, but settling at 3.5psig instead of the
+// uncoupled lessons' 3.0 -- not a chosen number, the real one: coupled,
+// update()'s own dn formula subtracts PACKING_FRICTION (0.5) from P before
+// comparing to preload, so the real crack pressure becomes P0+Ff = 3.5.
+// This is the live, honest version of "more pressure will be required...
+// through packing friction" rather than a number stated in narration with
+// nothing on screen to back it up.
 const SCALE_ALIGNED_SCALEDY = 50;
 const CHOREO_SET_TRAVEL = [
  {enter(){ setAdj(CAL_ADJ); setPress(0); setValve(true); PB.nutsDy=50; PB.scaleDy=20; update(); focus(); }},  // 0. "With the actuator properly calibrated on the bench, it can now be secured to its valve body." -- opens full-lit, reveals the valve still full-lit (Franz: narrowing focus the instant the valve appeared read as an abrupt, unmotivated transition -- the valve's own appearance is the visual event here, nothing yet narrates a specific part to narrow onto). The disc/nuts/scale must appear MISALIGNED from the moment they're first shown and animate INTO alignment later (rows 8-9), not the reverse.
  {enter(){ hl(); focus('g-vgrp'); }},                                                                   // 1. "For a push down to close valve body, fully seat the valve plug at its lower travel stop " -- first real narrowing, justified by the narration naming this specific part; g-vgrp fixed at its own uncoupled offset
  {enter(){ focus('g-stem'); }},                                                                         // 2. "and fully vent the diaphragm chamber so the actuator stem is at its upper travel stop." -- holds at 0
- {enter(){ focus('g-stem','g-vgrp'); }},                                                                // 3. "From the bottom of the actuator stem, measure down three quarters of an inch, the full rated travel," -- holds; the measurement itself has no dedicated visual, the mark is the next beat
- {enter(){ focus('g-stem','g-vgrp'); },
-  cues:[[0.3, ()=>{ showValvestemMark(true); pulse('g-valvestem-mark'); }]]},                            // 4. "and mark the valve stem," -- the mark is scribed, flush with the actuator stem's bottom at this instant (stroke=0)
  {enter(){ focus('g-stem','g-vgrp'); showValveTravelBracket(true); updateValveTravelBracket(); },
-  tick(p){ setPress((11*p).toFixed(2)); updateValveTravelBracket(); }},                                 // 5. "then lower the actuator stem to the mark." -- ramp to the mark, bracket gap closes live from 0.75" to 0.00"
+  cues:[[0.3, ()=>pulse('g-stembracket-vt')]]},                                                         // 3. "From the bottom of the actuator stem, measure down three quarters of an inch, the full rated travel," -- reveals the measurement itself: the bracket, static at its full 0.75" (stroke is still 0, nothing has moved yet), spanning from the actuator stem's bottom down to where the mark is about to go
+ {enter(){ focus('g-stem','g-vgrp'); },
+  cues:[[0.3, ()=>{ showValvestemMark(true); pulse('g-valvestem-mark'); }]]},                            // 4. "and mark the valve stem," -- the mark is scribed at the bracket's own lower end, flush with the actuator stem's bottom at this instant (stroke=0)
+ {enter(){ focus('g-stem','g-vgrp'); updateValveTravelBracket(); },
+  tick(p){ setPress((11*p).toFixed(2)); updateValveTravelBracket(); }},                                 // 5. "then lower the actuator stem to the mark." -- ramp to the mark, bracket gap closes live from 0.75" to 0.00" (already shown since row 3, not revealed here)
  {enter(){ focus('g-stem','g-conn','g-vgrp'); },
   cues:[[0.2, ()=>{ showValvestemMark(false); showValveTravelBracket(false);
     document.getElementById('valve').checked=true;
@@ -4982,9 +5026,14 @@ const CHOREO_SET_TRAVEL = [
  {enter(){ focus(); },
   tick(p){ if(p<0.4) setPress((11*(1-p/0.4)).toFixed(2));
            else setPress((15*(p-0.4)/0.6).toFixed(2)); }},                                              // 10. "With everything coupled and aligned, run the actuator through its full operating range to confirm travel." -- full retract, then sweep through the real 3-15psig operating range, coupled hard stop at rated travel does the rest
- {enter(){ focus('g-stem','g-vgrp'); }},                                                                // 11. "Total travel should be precise, with a tolerance of less than one sixteenth of an inch." -- holds at 15
- {enter(){ focus('g-stem','g-vgrp'); }},                                                                // 12. "Since the actuator stem is now connected to the valve stem, the bench set range can no longer be verified," -- holds at 15
- {enter(){ focus('g-vgrp'); }},                                                                         // 13. "since more pressure will be required to stroke the valve stem and plug through packing friction, process pressure, and other potential valve forces." -- closing beat, holds at 15
+ {enter(){ focus(); }},                                                                                  // 11. "Total travel should be precise, with a tolerance of less than one sixteenth of an inch." -- a whole-system confirmation (what row 10 just ran), not a specific part's narration, so stays full-lit like row 10 rather than narrowing onto the stem/valve alone (Franz: narrowing here "seemed a little off... why fade out the indicator scale or the rest of the actuator and valve for that comment?")
+ {enter(){ focus('g-stem','g-vgrp'); }, tick(p){ setPress((15*(1-p)).toFixed(2)); }},                   // 12. "Since the actuator stem is now connected to the valve stem, the bench set range can no longer be verified," -- fully vent/retract, setting up row 13's demonstration
+ {enter(){ focus('g-stem','g-vgrp'); },
+  tick(p){ if(p<0.25) setPress((6*(p/0.25)).toFixed(2));
+           else if(p<0.45) setPress((6-6*((p-0.25)/0.2)).toFixed(2));
+           else if(p<0.65) setPress((3.5*((p-0.45)/0.2)).toFixed(2));
+           else if(p<0.8) setPress((3.5+1*((p-0.65)/0.15)).toFixed(2));
+           else setPress((4.5-1*((p-0.8)/0.2)).toFixed(2)); }},                                         // 13. "since more pressure will be required to stroke the valve stem and plug through packing friction, process pressure, and other potential valve forces." -- double-lift sweep settling at 3.5psig, not 3.0: coupled, PACKING_FRICTION(0.5) adds directly to the crack pressure in update()'s own dn formula, so the real coupled threshold is P0+Ff=3.5 -- Franz: "it should show how initial movement begins after 3 now, instead of at 3 like it did when uncoupled."
 ];
 const CHOREO = [...CHOREO_PO_V2, ...CHOREO_SPRING_ADJ, ...CHOREO_VERIFY_BENCH_SET, ...CHOREO_SET_TRAVEL];
 function pbFrame(){
