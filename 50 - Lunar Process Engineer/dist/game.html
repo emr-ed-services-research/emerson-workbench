@@ -1,0 +1,3065 @@
+<title>Lunar Process Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<style>
+/* ============================================================
+   LUNAR PROCESS ENGINEER - shared shell.
+   Every level loads this. Nothing here is level-specific, and a level
+   must not restate any of it; if a level needs a new shell element it
+   gets added here so every level gets it at once.
+   ============================================================ */
+:root{
+  --bg:#060b06; --panel:#0c140d; --border:#1f3d22; --bgpanel:#081009;
+  --phosphor:#39ff6a; --amber:#ffb627; --water:#36e0ff;
+  --metal:#8a94a0; --metal-dk:#2c343c; --metal-lt:#c3ccd6;
+  --ink:#d8ffe0; --warn:#ff5050;
+  /* the scenery palette - shared so two levels cannot drift apart */
+  --m-shadow:#0a0e10; --m-dark:#171d20; --m-mid:#232c31;
+  --m-light:#39434a; --m-hi:#4a565d; --rust:#6b4524; --lamp:#ffd9a0;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;}
+body{background:var(--bg);color:var(--ink);font-family:'VT323',monospace;font-size:21px;
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 1px,
+                   transparent 1px,transparent 3px);
+  overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.wrap{width:min(96vw,1000px);}
+
+.topbar{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid var(--border);padding-bottom:5px;margin-bottom:8px;}
+.topbar .t1{color:var(--phosphor);letter-spacing:.05em;font-size:19px;}
+.topbar .t2{color:var(--metal);font-size:15px;}
+
+canvas.rig{display:block;margin:0 auto;height:auto;image-rendering:pixelated;
+  /* 332px of chrome below the canvas: topbar, the 196px guide, and the
+     status bar the controls moved into (~36px). Keep in step with them. */
+  width:min(100%, calc((100vh - 332px) * 2.25));
+  border:2px solid var(--metal-dk);background:#000;cursor:pointer;}
+canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+
+/* One instruction at a time. Fixed height so changing text never shifts
+   the page - a standing requirement, not a preference. */
+.guide{margin-top:10px;border:1px solid var(--border);background:var(--bgpanel);
+  padding:12px 18px;height:196px;overflow:hidden;position:relative;}
+/* Reserves its line so an empty task never lets the lesson slide up. The
+   buttons left the box, so there is nothing left to dodge horizontally. */
+.guide .task{color:var(--phosphor);font-size:29px;line-height:1.3;
+  min-height:38px;}
+.guide .lesson{color:#d2dae0;font-size:23px;line-height:1.45;margin-top:9px;}
+.guide .lesson b{color:#fff;}
+.guide .lesson .who{color:var(--amber);}      /* the comms voice */
+.guide .beat-hint{color:var(--amber);animation:blink 1.1s steps(1) infinite;}
+/* Options the coach puts to the player. Sits in the guide strip, because a
+   decision about the work IS the instruction at that moment. */
+.guide .choice{display:flex;gap:10px;margin-top:13px;flex-wrap:wrap;}
+.guide .choice button{background:transparent;border:1px solid var(--border);
+  color:var(--metal-lt);font-family:'VT323',monospace;font-size:20px;
+  letter-spacing:.06em;padding:5px 18px;cursor:pointer;text-align:left;}
+.guide .choice button:hover:not(:disabled){color:var(--phosphor);border-color:var(--phosphor);}
+.guide .choice button:disabled{color:var(--metal-dk);border-color:var(--metal-dk);cursor:default;}
+.guide .choice button:focus-visible{outline:2px solid var(--amber);outline-offset:1px;}
+.guide .choice .no{color:var(--metal-dk);font-size:15px;}
+.guide .count{color:var(--metal);font-size:17px;letter-spacing:.08em;}
+
+/* ---- level opening ----
+   Every level opens the way level one does: a call over the intercom, a
+   beat of place, then the title card. Lifted verbatim from level one so
+   the two cannot drift. A level supplies the words, never the markup. */
+.beat{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;opacity:0;pointer-events:none;
+  transition:opacity .5s ease;background:var(--bg);z-index:5;}
+.beat.show{opacity:1;pointer-events:auto;}
+.alert-box{border:2px solid var(--phosphor);background:var(--bgpanel);padding:26px 38px;
+  max-width:660px;text-align:center;box-shadow:0 0 26px rgba(57,255,106,.18);}
+.alert-tag{color:var(--phosphor);font-size:15px;letter-spacing:.16em;margin-bottom:10px;}
+.alert-text{font-size:28px;line-height:1.45;}
+.immersion{max-width:640px;font-size:23px;line-height:1.62;color:#c4ccd4;padding:0 28px;}
+.immersion .accent{color:var(--phosphor);}
+.tech-eyebrow{color:var(--metal);font-size:15px;letter-spacing:.22em;}
+.tech-title{font-size:44px;color:var(--phosphor);letter-spacing:.04em;
+  text-shadow:0 0 10px rgba(57,255,106,.38);}
+.tech-sub{color:var(--amber);font-size:17px;letter-spacing:.1em;}
+.hint{color:var(--metal);font-size:15px;letter-spacing:.07em;}
+.wrap.pending{display:none;}
+
+/* ---- game chrome: boot, title, level select ----
+   These belong to the GAME, not to any level. They used to live inside
+   level one, which is why level zero had no boot at all. */
+#dosLayer{position:fixed;inset:0;background:#000;z-index:20;display:flex;
+  align-items:flex-start;justify-content:flex-start;padding:26px 30px;}
+#dosLayer.gone{display:none;}
+#dosText{color:#b9b9b9;font-size:24px;line-height:1.32;white-space:pre-wrap;}
+.cursor{display:inline-block;width:11px;height:19px;background:#b9b9b9;
+  vertical-align:-3px;animation:blink 1.05s steps(1) infinite;}
+@keyframes blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+#titleLayer{position:fixed;inset:0;background:#000;z-index:19;display:none;
+  align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+#titleLayer.show{display:flex;}
+/* The jam strip floats rather than joining the column: appending it used to
+   push the art upward, which moved the lamp out from under the cursor that
+   had just opened it, so a second click could never close it. */
+#jamHost{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);}
+#titleCv{image-rendering:pixelated;width:min(96vw,1000px);height:auto;}
+#selectLayer{position:fixed;inset:0;background:var(--bg);z-index:19;display:none;
+  align-items:center;justify-content:center;flex-direction:column;gap:14px;
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 1px,
+                   transparent 1px,transparent 3px);}
+#selectLayer.show{display:flex;}
+.sel-title{font-size:38px;color:var(--phosphor);letter-spacing:.06em;
+  text-shadow:0 0 10px rgba(57,255,106,.34);margin-bottom:4px;}
+#selHint{margin-top:10px;}
+#titleHint{animation:blink 1.4s steps(1) infinite;}
+#menu{display:flex;flex-direction:column;gap:7px;margin-top:4px;}
+/* The debrief card offers the same kind of choice the select screen does,
+   so it is the same control, not a second thing that looks nearly alike. */
+#menu button,.dmenu button{background:transparent;border:1px solid var(--border);color:var(--metal-lt);
+  font-family:'VT323',monospace;font-size:22px;letter-spacing:.08em;padding:6px 26px;
+  cursor:pointer;text-align:left;min-width:420px;}
+#menu button:hover:not(:disabled),.dmenu button:hover{color:var(--phosphor);border-color:var(--phosphor);}
+#menu button:disabled{color:var(--metal-dk);border-color:var(--metal-dk);cursor:default;}
+#menu button:focus-visible,.dmenu button:focus-visible{outline:2px solid var(--amber);outline-offset:1px;}
+#menu .no,.dmenu .no{color:var(--metal-dk);font-size:16px;}
+.dmenu{display:flex;flex-direction:column;gap:7px;margin-top:10px;}
+
+/* Status bar under the guide, outside it: step count far left, controls far
+   right. Nothing here overlaps the instruction text, because it is no longer
+   sharing a box with it. */
+.ctl{display:flex;justify-content:space-between;align-items:center;
+  gap:8px;margin-top:8px;}
+.ctl-btns{display:flex;gap:8px;align-items:center;}
+.ctl button{background:transparent;border:1px solid var(--border);color:var(--metal);
+  font-family:'VT323',monospace;font-size:17px;letter-spacing:.06em;padding:3px 11px;cursor:pointer;}
+.ctl button:hover{color:var(--phosphor);border-color:var(--phosphor);}
+.ctl button:focus-visible{outline:2px solid var(--amber);outline-offset:1px;}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;}}
+
+#pad{margin-top:10px;border:1px solid var(--border);background:var(--bgpanel);
+  width:min(96vw,1000px);box-sizing:border-box;
+  height:58px;display:flex;align-items:center;justify-content:center;
+  gap:9px;padding:0 16px;flex:0 0 auto;}
+.kc{cursor:pointer;user-select:none;}
+#pad .grp{display:flex;align-items:center;gap:5px;}
+#pad .tag{color:var(--metal);font-size:15px;letter-spacing:.08em;margin-right:3px;}
+.kc{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:28px;height:36px;line-height:1;
+  border:1px solid var(--metal-dk);color:var(--metal-lt);font-size:17px;background:#000;
+  transition:background .07s linear,color .07s linear,border-color .07s linear;}
+.kc i{font-style:normal;font-size:12px;color:var(--amber);margin-top:1px;}
+.kc.lit{background:var(--phosphor);color:#06120a;border-color:var(--phosphor);}
+.kc.lit i{color:#06120a;}
+/* A key the LOOPER is playing is lit differently from one your finger is on,
+   so you can see your own part against the recorded one. */
+.kc.loop{background:#16321f;color:var(--phosphor);border-color:var(--phosphor);}
+.kc.loop i{color:var(--phosphor);}
+.kc.armed{border-color:var(--amber);color:var(--amber);animation:recblink .38s steps(1) infinite;}
+.kc.armed i{color:var(--amber);}
+.kc.recording{background:#b8434a;color:#fff;border-color:#e8838a;}
+.kc.recording i{color:#fff;}
+@keyframes recblink{0%,49%{opacity:1}50%,100%{opacity:.3}}
+#pad .sep{color:var(--border);margin:0 3px;}
+
+</style>
+<script>window.LPE_GAME=true;</script>
+<script>
+/* ============================================================
+   LUNAR PROCESS ENGINEER \u2014 shared engine.
+
+   The point of this file is that a level cannot disagree with another
+   level about how the world behaves. Water, scenery, sound, the shell
+   and the comms voice all live here once. A level supplies geometry and
+   a script; it does not reimplement physics or re-draw a wall.
+
+   If two levels ever look or behave differently in a way nobody chose,
+   the fix belongs in here, not in the level.
+   ============================================================ */
+window.LPE = (function(){
+'use strict';
+let LPE_CURRENT=null;   // the level currently mounted, for stepping by hand
+
+/* Where the player is in the run of assignments. A finished level has to
+   hand them somewhere, and it cannot work that out on its own - it does not
+   know what comes after it, or that a menu exists. The shell tracks it. */
+let LPE_NAV={levels:[], idx:-1, opt:null};
+
+/* ---------------- palette ---------------- */
+const P = {
+  shadow:'#0a0e10', dark:'#171d20', mid:'#232c31', light:'#39434a',
+  hi:'#4a565d', rust:'#6b4524', lamp:'#ffd9a0', water:'#36e0ff',
+  stencil:'#c8d2d6', stencilDim:'#6f7980', hand:'#8fb3c9', amber:'#d9a441',
+  pipeDark:'#05121a', body:'#4a545e', rim:'#8a94a0',
+};
+
+/* ---------------- retro drawing kit ----------------
+   Ordered dithering, not smooth gradients: the era's own answer to a
+   limited palette, and what makes these screens read as drawn. */
+const BAYER=[[0,8,2,10],[12,4,14,6],[3,11,1,9],[15,7,13,5]];
+function dither(g,x,y,w,h,col,amt){
+  g.fillStyle=col;
+  for(let j=0;j<h;j++) for(let i=0;i<w;i++)
+    if(BAYER[j&3][i&3]/16 < amt) g.fillRect(x+i,y+j,1,1);
+}
+function rr(g,x,y,w,h,r){
+  g.beginPath(); g.moveTo(x+r,y);
+  g.arcTo(x+w,y,x+w,y+h,r); g.arcTo(x+w,y+h,x,y+h,r);
+  g.arcTo(x,y+h,x,y,r); g.arcTo(x,y,x+w,y,r); g.closePath();
+}
+
+/* Scenery pieces. Levels compose these; they never hand-draw a wall. */
+const art = {
+  dither, rr,
+  wall(g,W,H){
+    g.fillStyle=P.dark; g.fillRect(0,0,W,H);
+    for(let py=0;py<H;py+=118) for(let px=-20;px<W;px+=162){
+      g.fillStyle=((px/162+py/118)|0)%2?'#242d33':'#1f272c';
+      g.fillRect(px,py,160,116);
+      g.fillStyle='#141b1f'; g.fillRect(px+160,py,2,116); g.fillRect(px,py+116,162,2);
+      g.fillStyle='#3a454c';
+      [[6,6],[153,6],[6,109],[153,109]].forEach(([a,b])=>g.fillRect(px+a,py+b,2,2));
+    }
+  },
+  rib(g,x,H){
+    g.fillStyle='#10161a'; g.fillRect(x,0,38,H);
+    g.fillStyle=P.mid; g.fillRect(x+4,0,30,H);
+    g.fillStyle=P.light; for(let y=14;y<H;y+=34) g.fillRect(x+16,y,5,5);
+  },
+  ceiling(g,W){
+    g.fillStyle='#10161a'; g.fillRect(0,0,W,40);
+    g.fillStyle='#1d262b'; g.fillRect(0,30,W,10);
+    for(let x=40;x<W;x+=96){ g.fillStyle=P.mid; g.fillRect(x,4,8,26); }
+  },
+  /* A run that continues past the frame. `lag` wraps it, with a torn
+     section showing the metal under \u2014 the base is old and handled. */
+  overhead(g,W,y,r,lag){
+    g.fillStyle='#2a333a'; g.fillRect(0,y-r,W,2*r);
+    g.fillStyle=P.light; g.fillRect(0,y-r,W,3);
+    g.fillStyle='#161d21'; g.fillRect(0,y+r-3,W,3);
+    if(lag){
+      g.fillStyle='#4a4a44'; g.fillRect(0,y-r-3,W,2*r+6);
+      g.fillStyle='#55554d'; for(let x=0;x<W;x+=13) g.fillRect(x,y-r-3,2,2*r+6);
+      g.fillStyle='#2a333a'; g.fillRect(596,y-r,118,2*r);
+      g.fillStyle=P.light; g.fillRect(596,y-r,118,3);
+      dither(g,596,y-r,118,2*r,P.rust,0.35);
+    }
+    for(let x=70;x<W;x+=150){
+      g.fillStyle=P.light; g.fillRect(x,y-r-7,9,2*r+14);
+      dither(g,x,y+r+6,9,22,P.rust,0.5);
+    }
+  },
+  floor(g,W,y){
+    g.fillStyle='#10161a'; g.fillRect(0,y,W,400-y);
+    g.fillStyle='#1c242a'; g.fillRect(0,y+4,W,400-y-4);
+    for(let x=0;x<W;x+=26){ g.fillStyle='#141b1f'; g.fillRect(x,y+4,2,400-y-4); }
+    g.fillStyle=P.mid; g.fillRect(0,y,W,3);
+    dither(g,0,y,W,16,P.shadow,0.4);
+  },
+  stencil(g,x,y,text,size,col){
+    g.fillStyle=col||P.stencilDim; g.font=(size||20)+"px 'VT323',monospace";
+    g.textAlign='left'; g.fillText(text,x,y);
+  },
+  handNote(g,x,y,text){        // whoever worked here last left this
+    g.save(); g.translate(x,y); g.rotate(-0.035);
+    g.fillStyle=P.hand; g.font="20px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(text,0,0); g.restore();
+  },
+  arrow(g,x,y,text){
+    g.fillStyle=P.amber; g.font="22px 'VT323',monospace"; g.textAlign='right';
+    g.fillText(text,x,y);
+    g.beginPath(); g.moveTo(x-86,y+8); g.lineTo(x-46,y+8); g.lineTo(x-46,y+3);
+    g.lineTo(x-28,y+11); g.lineTo(x-46,y+19); g.lineTo(x-46,y+14);
+    g.lineTo(x-86,y+14); g.closePath(); g.fill();
+  },
+  placard(g,x,y){
+    g.fillStyle='#c8a33a'; g.beginPath();
+    g.moveTo(x,y); g.lineTo(x+18,y+32); g.lineTo(x-18,y+32); g.closePath(); g.fill();
+    g.fillStyle=P.dark; g.font="19px 'VT323',monospace"; g.textAlign='center';
+    g.fillText('!',x,y+29);
+  },
+  toolbox(g,x,y){
+    g.fillStyle='#5a3b21'; rr(g,x,y,74,40,3); g.fill();
+    g.fillStyle='#6d4828'; g.fillRect(x+4,y+4,66,9);
+    g.fillStyle=P.mid; g.fillRect(x+28,y-6,18,7);
+    dither(g,x,y+26,74,14,P.shadow,0.45);
+  },
+  clipboard(g,x,y){
+    g.fillStyle=P.light; g.fillRect(x+16,y-8,2,10);
+    g.fillStyle='#6f6a58'; g.fillRect(x,y,34,44);
+    g.fillStyle='#8d8775'; g.fillRect(x+3,y+4,28,36);
+    g.fillStyle='#5c5747'; for(let i=0;i<5;i++) g.fillRect(x+6,y+10+i*6,22,1);
+  },
+  /* Bake the vignette into the scenery instead of laying it over the finished
+     frame. Drawn last it fell across the pipes, gauges, beds and labels and
+     read as texture smeared over the machinery; baked in, it darkens the room
+     and leaves everything built on top of it clean. */
+  /* A readout never sits straight on the wall. VT323 strokes are one pixel
+     wide, and panel seams, rivets and vignette dither showing through them
+     read as grime on the number rather than as a lit instrument.
+     The plate has to be OPAQUE to stop that - the first version was 86%
+     and the remaining 14% of wall was enough to keep the gpm figures
+     looking textured. Rimmed, so it reads as a plate and not a smudge. */
+  plate(g,x,y,w,h){
+    g.fillStyle='#070c0a'; g.fillRect(x,y,w,h);
+    g.strokeStyle='#2b3a33'; g.lineWidth=1; g.strokeRect(x+0.5,y+0.5,w-1,h-1);
+  },
+  /* Plate plus number, because the two always travel together. `lit` is the
+     difference between an instrument reading something and one sitting dark. */
+  readout(g,o){
+    const pad=o.pad||4, w=o.w||86, h=o.h||21;
+    art.plate(g,o.x-pad,o.y-pad,w,h);
+    g.fillStyle=o.lit?(o.on||'#39ff6a'):(o.off||'#6f7980');
+    g.font=(o.size||18)+"px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(o.text,o.x,o.y+(o.size||18)-3);
+    if(o.lit && o.glow!==false){           // a lit readout throws a little light
+      g.save(); g.globalAlpha=0.28; g.shadowColor=o.on||'#39ff6a'; g.shadowBlur=7;
+      g.fillText(o.text,o.x,o.y+(o.size||18)-3); g.restore();
+    }
+  },
+  vignetteOnto(g,W,H){ g.drawImage(art.vignette(W,H),0,0); },
+  /* A dithered vignette, built once. Gives the screen depth without a
+     smooth gradient anywhere. */
+  vignette(W,H){
+    const c=document.createElement('canvas'); c.width=W; c.height=H;
+    const v=c.getContext('2d');
+    /* Deliberately gentle. A first pass started the falloff at 0.46 and
+       ran to 0.92 density, which put ~30% black over the middle of the
+       screen and turned the whole scene to mush. It should darken the
+       corners and leave the subject alone. */
+    for(let j=0;j<H;j++) for(let i=0;i<W;i++){
+      const dx=(i-W/2)/(W/2), dy=(j-H*0.55)/(H/2);
+      const d=Math.min(1,Math.max(0,(Math.sqrt(dx*dx+dy*dy)-0.64)/0.88));
+      if(BAYER[j&3][i&3]/16 < d*0.58){ v.fillStyle='#05080a'; v.fillRect(i,j,1,1); }
+    }
+    return c;
+  },
+  /* A tiny toggle on the habitat's airlock, in the title's 320x200 frame.
+     Deliberately small - it should read as a switch if you look at it and as
+     nothing much if you do not. Five pixels across: a recessed well, and a
+     lever that sits at the bottom when off and throws to the top, lighting,
+     when on. The whole point is the throw, which a lamp cannot do. */
+  toggleSwitch(g,x,y,on){
+    g.fillStyle='#0b1013'; g.fillRect(x-2,y-5,5,10);         // well
+    g.fillStyle='#39434a'; g.fillRect(x-2,y-5,5,1);          // lit lip
+    g.fillStyle='#1d2429'; g.fillRect(x-2,y+4,5,1);
+    const ly = on ? y-4 : y+1;                               // the throw
+    g.fillStyle = on?'#39ff6a':'#6b767f';
+    g.fillRect(x-1,ly,3,3);
+    if(on){ g.fillStyle='#9bffbe'; g.fillRect(x-1,ly,3,1); } // catches the light
+  },
+  lampHousing(g,x,y){
+    g.fillStyle='#2b343a'; rr(g,x-26,y-12,52,16,3); g.fill();
+    g.fillStyle=P.light; g.fillRect(x-4,y-22,8,10);
+    g.fillStyle=P.lamp; g.fillRect(x-20,y+3,40,4);
+  },
+};
+
+/* ---------------- WATER ----------------
+   One implementation, shared by every level, because the two rules below
+   were learned the hard way and must never be re-litigated per level:
+
+     1. A pipe does not empty. Water that has arrived stays; what changes
+        is whether it is MOVING. Standing water draws dim and still.
+     2. Each segment owns its own particles. Particles never traverse the
+        whole network, which is what used to strand them at a boundary
+        where velocity changed.
+
+   A segment has `flow` (0..1, how fast) and `fill` (0..1, how far water
+   has advanced into it \u2014 1 for any line that is already wet). */
+/* A segment runs from (ax,ay) to (bx,by) in any direction, so a trunk can
+   drop vertically past its tees while branches run horizontally off it.
+   Particles travel along the segment's own axis as a fraction `t` of its
+   length, and `lane` is their offset across the bore. Keeping position
+   axis-relative is what lets one implementation serve both. */
+function Line(opt){
+  this.r=opt.r;
+  this.segs=opt.segments.map(s=>{
+    /* An arc segment carries water round an elbow. Without it the flow cuts
+       the corner in a straight line and runs out through the inside wall of
+       a radiused bend. `lane` becomes a radial offset, so the stream stays
+       inside the bore all the way round. */
+    if(s.arc){
+      const {cx,cy,R,a0,a1}=s.arc;
+      const len=Math.abs(a1-a0)*R;
+      const n=Math.max(5,Math.round(len*(s.density===undefined?0.11:s.density)));
+      const parts=[];
+      for(let i=0;i<n;i++) parts.push({t:Math.random(),lane:Math.random()*2-1});
+      return {kind:'arc',cx,cy,R,a0,a1,len,r:s.r||opt.r,
+              flow:s.flow||0, fill:s.fill===undefined?1:s.fill,
+              speed:s.speed===undefined?1:s.speed, parts};
+    }
+    const ax=s.ax, ay=s.ay, bx=s.bx, by=s.by;
+    const len=Math.hypot(bx-ax,by-ay);
+    const ux=(bx-ax)/len, uy=(by-ay)/len;        // along the pipe
+    const nx=-uy, ny=ux;                         // across it
+    const n=Math.max(6,Math.round(len*(s.density===undefined?0.11:s.density)));
+    const parts=[];
+    for(let i=0;i<n;i++) parts.push({t:Math.random(),lane:Math.random()*2-1});
+    return {ax,ay,bx,by,len,ux,uy,nx,ny,r:s.r||opt.r,
+            flow:s.flow||0, fill:s.fill===undefined?1:s.fill,
+            speed:s.speed===undefined?1:s.speed, parts};
+  });
+}
+/* The stream does not move as a block. It drags on the wall, so the middle
+   runs fastest and the water against the bore is nearly stationary - the
+   Prandtl 1/7-power turbulent profile, whose peak is 60/49 of the mean and
+   which integrates back to exactly the mean over the bore. Particles were
+   all advancing at one speed, which is the one thing a cutaway view exists
+   to show is false.
+
+   Taken from the reference rig verbatim - that rig exists precisely to settle
+   how water should look, so this is not re-derived here. Prandtl 1/7-power
+   turbulent: fastest at the centreline, no-slip at the wall, normalised by
+   0.817 (the law's own mean-to-peak ratio) so the average speed is still the
+   commanded flow. The 0.98 clamp is deliberate - it keeps wall-hugging water
+   creeping instead of frozen. Centre runs 1.22x, wall 0.70x.
+   Poiseuille is here too for when a level needs the laminar contrast: a
+   sharper parabola with the centre at exactly 2x the average. */
+function profileAt(lane){
+  const r=Math.min(0.98,Math.abs(lane));
+  return Math.pow(1-r,1/7)/0.817;
+}
+function laminarAt(lane){
+  const r=Math.min(1,Math.abs(lane));
+  return 2*(1-r*r);
+}
+const PROFILE_PEAK=1/0.817;
+Line.prototype.seg=function(i){ return this.segs[i]; };
+Line.prototype.set=function(i,v){ Object.assign(this.segs[i],v); };
+Line.prototype.update=function(dt){
+  this.segs.forEach(s=>{
+    if(s.flow<=0.03) return;                     // still water does not translate
+    const v=(46+s.flow*250)*s.speed/s.len;
+    s.parts.forEach(p=>{
+      let m=(s.regime==="laminar"?laminarAt:profileAt)(p.lane);
+      /* Round a bend the inside is the shorter path, so at the same speed a
+         particle there gets further round for the same distance travelled -
+         and a free vortex makes it genuinely quicker besides. */
+      if(s.kind==='arc') m*=s.R/(s.R+p.lane*s.r*0.86);
+      p.t+=v*m*dt;
+      if(p.t>1){ p.t-=1; p.lane=(Math.random()*2-1)*0.95; }
+    });
+  });
+};
+Line.prototype.draw=function(g){
+  this.segs.forEach(s=>{
+    const moving=s.flow>0.03;
+    s.parts.forEach(p=>{
+      if(p.t>s.fill) return;                     // past the wetted front is still air
+      const f=(s.regime==="laminar"?laminarAt:profileAt)(p.lane)/PROFILE_PEAK;
+      let x,y,ux,uy;
+      if(s.kind==='arc'){
+        const a=s.a0+(s.a1-s.a0)*p.t;
+        const rad=s.R+p.lane*s.r*0.86;           // lane runs across the bend
+        x=s.cx+Math.cos(a)*rad; y=s.cy+Math.sin(a)*rad;
+        const dir=s.a1>s.a0?1:-1;                // tangent, so streaks follow the curve
+        ux=-Math.sin(a)*dir; uy=Math.cos(a)*dir;
+      }else{
+        const d=p.t*s.len, off=p.lane*s.r*0.86;
+        x=s.ax+s.ux*d+s.nx*off; y=s.ay+s.uy*d+s.ny*off;
+        ux=s.ux; uy=s.uy;
+      }
+      if(moving){
+        const tail=16*f*s.flow;
+        g.strokeStyle='rgba(54,224,255,'+(0.34+0.46*f*s.flow).toFixed(2)+')';
+        g.lineWidth=1.5; g.beginPath();
+        g.moveTo(x-ux*tail,y-uy*tail); g.lineTo(x,y); g.stroke();
+      }else{
+        g.fillStyle='rgba(54,224,255,0.38)'; g.fillRect(x,y,2,3);
+      }
+    });
+  });
+};
+/* ---------------- PIPE NETWORK ----------------
+   Draw the WHOLE network at once, never one pipe at a time. Three passes:
+
+     1. every run's outer rectangle (bore + wall) in wall colour
+     2. the highlight along each run
+     3. every run's BORE, last
+
+   Because every bore is painted after every wall, a wall can never end up
+   lying across another run's opening. Drawing pipes individually, a riser's
+   side wall ran straight down over each branch's mouth and every tee looked
+   blocked - that is not a bug to chase per level, it is a consequence of
+   drawing them one at a time, so the engine stops levels doing that.
+
+   A run is {ax,ay,bx,by,r}; only horizontal and vertical runs are used. */
+const WALL=5;
+
+/* ---------------- PIPING: runs and fittings ----------------
+   Pipe is described the way it is actually built - continuous runs with
+   fittings at the joints - rather than as a pile of rectangles:
+
+     lines:    [{pts:[[x,y],...], r}]   a run; every corner becomes an elbow
+     tees:     [{x,y,r,branch}]         a branch taken off a run
+     reducers: [{x0,x1,y,r1,r2}]        a change of bore
+     fittings: [{x,y,r,kind}]           unions, caps and the like
+
+   Corners are stroked with a round join, so a 90 gets a real radius on the
+   outside instead of a mitred box. Everything is drawn in three passes -
+   all bodies, then collars, then every BORE last - so no fitting can ever
+   paint over another's opening. That ordering is what keeps tees clear, and
+   it is the engine's job rather than each level's.                        */
+function piping(spec){
+  const lines=spec.lines||[], tees=spec.tees||[],
+        reducers=spec.reducers||[], fittings=spec.fittings||[];
+  /* Corners are filleted with arcTo, which bends the CENTRELINE - so the
+     inner and outer walls come out as concentric arcs, the way a real elbow
+     is made. A round line-join only pads the outside and leaves a sharp
+     inside corner, which is a mitred fitting and the wrong shape for flow.
+     The radius follows the long-radius convention: centreline R = 1.5 x the
+     bore diameter, i.e. 3 x the bore radius. */
+  const bendOf=r=>3*r;
+  const stroke=(g,pad,col)=>{
+    g.strokeStyle=col; g.lineCap='butt'; g.lineJoin='round';
+    lines.forEach(L=>{
+      g.lineWidth=2*(L.r+pad);
+      const R=bendOf(L.r);
+      g.beginPath();
+      g.moveTo(L.pts[0][0],L.pts[0][1]);
+      for(let i=1;i<L.pts.length-1;i++)
+        g.arcTo(L.pts[i][0],L.pts[i][1],L.pts[i+1][0],L.pts[i+1][1],R);
+      const e=L.pts[L.pts.length-1];
+      g.lineTo(e[0],e[1]);
+      g.stroke();
+    });
+  };
+  const TAPER=16;
+  const taper=(g,rd,pad,col)=>{            // taper in, throat, taper out
+    const {x0,x1,y,r1,r2}=rd, a=x0+TAPER, b=x1-TAPER;
+    g.fillStyle=col;
+    g.beginPath();
+    g.moveTo(x0,y-r1-pad); g.lineTo(a,y-r2-pad); g.lineTo(b,y-r2-pad); g.lineTo(x1,y-r1-pad);
+    g.lineTo(x1,y+r1+pad); g.lineTo(b,y+r2+pad); g.lineTo(a,y+r2+pad); g.lineTo(x0,y+r1+pad);
+    g.closePath(); g.fill();
+  };
+  return {
+    draw(g){
+      // --- bodies
+      stroke(g,WALL,P.body);
+      reducers.forEach(rd=>taper(g,rd,WALL,P.body));
+      /* A real tee is a forged body, not two pipes butted together: the metal
+         is thicker at the junction, each of the three ends has a socket hub
+         the pipe lands in, and the crotch where the branch leaves the run is
+         radiused rather than square. The reinforcement and hubs go in with
+         the bodies; the crotch fillets go on after the bores, below. */
+      tees.forEach(t=>{
+        const REINF=3, stub=t.r+WALL+REINF+16;
+        g.fillStyle=P.body;
+        g.fillRect(t.x-t.r-WALL-REINF, t.y-t.branch-WALL-REINF,
+                   2*(t.r+WALL+REINF), 2*(t.branch+WALL+REINF));
+        g.fillRect(t.x, t.y-t.branch-WALL-REINF, stub, 2*(t.branch+WALL+REINF));
+        g.fillStyle=P.rim;                                  // socket hubs, three ends
+        g.fillRect(t.x-t.r-WALL-REINF-2, t.y-t.branch-WALL-REINF-3, 3, 2*(t.branch+WALL+REINF)+6);
+        g.fillRect(t.x+stub-3, t.y-t.branch-WALL-REINF-3, 3, 2*(t.branch+WALL+REINF)+6);
+      });
+      g.fillStyle=P.rim;
+      reducers.forEach(rd=>{ g.fillRect(rd.x0-2,rd.y-rd.r1-WALL-2,3,2*(rd.r1+WALL)+4);
+                             g.fillRect(rd.x1-1,rd.y-rd.r2-WALL-2,3,2*(rd.r2+WALL)+4); });
+      fittings.forEach(f=>{ g.fillRect(f.x-3,f.y-f.r-WALL-3,3,2*(f.r+WALL)+6);
+                            g.fillRect(f.x+f.r,f.y-f.r-WALL-3,3,2*(f.r+WALL)+6); });
+      // --- highlight along the top of each run
+      g.save(); g.globalAlpha=0.5; stroke(g,WALL-2,P.light); g.restore();
+      // --- BORES: nothing may close an opening after this
+      stroke(g,0,P.pipeDark);
+      reducers.forEach(rd=>taper(g,rd,0,P.pipeDark));
+      /* --- crotch fillets, the one thing that goes on top of a bore.
+         Where a branch leaves the run the metal is radiused, never a sharp
+         internal corner - a square crotch is a stress riser and is not how a
+         tee is made. Adding it back after the bores keeps it exact. */
+      g.fillStyle=P.body;
+      /* Each fillet is a QUARTER round. The sweep flags were inverted, which
+         took the long way round the circle - 270 degrees instead of 90 - so
+         instead of a small radius in the crotch each tee got a three-quarter
+         blob laid over it. */
+      tees.forEach(t=>{
+        const CR=Math.max(3,t.branch*0.6), cx=t.x+t.r;
+        [-1,1].forEach(sy=>{
+          const cy=t.y+sy*t.branch;
+          g.beginPath();
+          g.moveTo(cx,cy);
+          g.lineTo(cx+CR,cy);
+          if(sy<0) g.arc(cx+CR,cy-CR,CR, Math.PI/2, Math.PI, false);
+          else     g.arc(cx+CR,cy+CR,CR,-Math.PI/2,-Math.PI, true);
+          g.closePath(); g.fill();
+        });
+      });
+    },
+  };
+}
+
+function pipes(runs){
+  const box=(s,pad)=>{
+    const x0=Math.min(s.ax,s.bx), x1=Math.max(s.ax,s.bx);
+    const y0=Math.min(s.ay,s.by), y1=Math.max(s.ay,s.by);
+    return (s.ay===s.by)
+      ? {x:x0-pad, y:y0-s.r-pad, w:(x1-x0)+2*pad, h:2*s.r+2*pad}   // horizontal
+      : {x:x0-s.r-pad, y:y0-pad, w:2*s.r+2*pad, h:(y1-y0)+2*pad};  // vertical
+  };
+  return {
+    draw(g){
+      g.fillStyle=P.body;
+      runs.forEach(s=>{ const b=box(s,WALL); g.fillRect(b.x,b.y,b.w,b.h); });
+      g.fillStyle=P.light;                                    // lit top / left edge
+      runs.forEach(s=>{ const b=box(s,WALL);
+        if(s.ay===s.by) g.fillRect(b.x,b.y,b.w,3); else g.fillRect(b.x,b.y,3,b.h); });
+      g.fillStyle=P.pipeDark;                                 // bores last, always
+      runs.forEach(s=>{ const b=box(s,0); g.fillRect(b.x,b.y,b.w,b.h); });
+    },
+    bores(g){ g.fillStyle=P.pipeDark;
+      runs.forEach(s=>{ const b=box(s,0); g.fillRect(b.x,b.y,b.w,b.h); }); },
+  };
+}
+/* The pipe the water runs in, drawn to the one shared convention. */
+function pipeRun(g,x0,x1,y,r){
+  g.fillStyle=P.light; g.fillRect(x0,y-r-6,x1-x0,6);
+  g.fillStyle=P.mid;   g.fillRect(x0,y+r,x1-x0,6);
+  g.fillStyle=P.pipeDark; g.fillRect(x0,y-r,x1-x0,2*r);
+}
+function penetration(g,x,y,r){
+  g.fillStyle=P.body; g.fillRect(x,y-r-11,12,2*r+22);
+  g.strokeStyle=P.rim; g.lineWidth=1; g.strokeRect(x,y-r-11,12,2*r+22);
+}
+
+/* ---------------- hand wheel + gauge ----------------
+   Shared so a valve is the same object in every level. */
+/* One spoke is marked, so the wheel's rotation is actually readable. Four
+   identical spokes turned through whole revolutions look the same at shut and
+   at open, which made the position impossible to judge. */
+/* A wheel sweeps 270 degrees from shut to open, never a whole turn. Two
+   reasons: a full revolution puts shut and open on the same orientation, so
+   the wheel looks like it ran past its stops; and a rotation derived from the
+   clamped position cannot over-travel the way an accumulated angle can. */
+const WHEEL_SWEEP=1.5*Math.PI;
+function handWheel(g,x,y,R,turn,lit){
+  // the stops, drawn in the valve's own frame so they do not turn with it
+  g.strokeStyle='#5c666e'; g.lineWidth=3;
+  [0,WHEEL_SWEEP].forEach(a=>{
+    g.beginPath();
+    g.moveTo(x+Math.cos(a)*(R+4),y+Math.sin(a)*(R+4));
+    g.lineTo(x+Math.cos(a)*(R+9),y+Math.sin(a)*(R+9)); g.stroke();
+  });
+  g.save(); g.translate(x,y); g.rotate(turn);
+  g.strokeStyle=lit?'#ffb627':'#aeb7c2'; g.lineWidth=5;
+  g.beginPath(); g.arc(0,0,R,0,6.284); g.stroke();
+  g.lineWidth=4;
+  for(let i=0;i<4;i++){ const a=i*Math.PI/2;
+    g.strokeStyle=i?(lit?'#ffb627':'#aeb7c2'):'#ff5050';      // index spoke
+    g.beginPath(); g.moveTo(0,0); g.lineTo(Math.cos(a)*R,Math.sin(a)*R); g.stroke(); }
+  g.fillStyle=P.light; g.beginPath(); g.arc(0,0,6,0,6.284); g.fill();
+  g.restore();
+}
+/* `open` (0..1) draws the gate actually moving across the bore. Without it a
+   valve gives the player nothing to read: the wheel turns and the bore looks
+   identical whether it is shut or wide open. */
+/* A valve is drawn in two passes so the water can run THROUGH it:
+     valveShell  - casting, with the bore carved back out of it
+     ... water ...
+     valveTrim   - gate, stem and wheel, on top of the water
+   Drawn as one solid block it closed the pipe visually, and a wide-open
+   valve still read as a restriction because the flow vanished behind it. */
+function valveShell(g,x,y,r){
+  g.fillStyle=P.body; rr(g,x-31,y-r-11,62,2*r+22,4); g.fill();
+  g.strokeStyle=P.rim; g.lineWidth=1; g.stroke();
+  g.fillStyle=P.pipeDark; g.fillRect(x-31,y-r,62,2*r);     // the bore runs through
+  dither(g,x-31,y+r+4,62,8,P.rust,0.3);
+}
+function valveTrim(g,x,y,r,wheelY,turn,R,lit,open){
+  if(open!==undefined){
+    const gateBot=y-r+(2*r)*(1-open);
+    if(gateBot>y-r+0.5){
+      g.fillStyle = open<0.02 ? '#b8434a' : '#7d8894';      // red when fully shut
+      g.fillRect(x-5,y-r,10,gateBot-(y-r));
+      g.strokeStyle='#aeb7c2'; g.lineWidth=1;
+      g.strokeRect(x-5,y-r,10,gateBot-(y-r));
+    }
+  }
+  g.strokeStyle='#6d7680'; g.lineWidth=5;
+  g.beginPath(); g.moveTo(x,y-r-11); g.lineTo(x,wheelY); g.stroke();
+  handWheel(g,x,wheelY,R,turn,lit);
+}
+function valveBody(g,x,y,r,wheelY,turn,R,lit,open){      // both passes at once
+  valveShell(g,x,y,r); valveTrim(g,x,y,r,wheelY,turn,R,lit,open);
+}
+function gauge(g,x,y,R,psi,max){
+  g.fillStyle='#0c1012'; g.beginPath(); g.arc(x,y,R,0,6.284); g.fill();
+  g.strokeStyle=P.rim; g.lineWidth=3; g.stroke();
+  g.strokeStyle=P.light; g.lineWidth=2;
+  for(let i=0;i<=10;i++){ const a=Math.PI*0.75+Math.PI*1.5*i/10;
+    g.beginPath();
+    g.moveTo(x+Math.cos(a)*(R-8),y+Math.sin(a)*(R-8));
+    g.lineTo(x+Math.cos(a)*(R-3),y+Math.sin(a)*(R-3)); g.stroke(); }
+  const a=Math.PI*0.75+Math.PI*1.5*Math.min(1,psi/(max||50));
+  g.strokeStyle='#ffb627'; g.lineWidth=3;
+  g.beginPath(); g.moveTo(x,y); g.lineTo(x+Math.cos(a)*(R-10),y+Math.sin(a)*(R-10)); g.stroke();
+  /* The reading gets a plate like every other readout. Set bare, it landed
+     on whatever the gauge happened to be mounted over - on the manifold
+     that is the main run itself - and read as dirt on the pipe. */
+  const s=psi.toFixed(0)+' psig';
+  g.font="15px 'VT323',monospace";
+  const w=Math.ceil(g.measureText(s).width)+14;
+  art.plate(g,x-w/2,y+R+3,w,19);
+  g.fillStyle=psi>1?'#ffd47a':P.rim; g.textAlign='center';
+  g.fillText(s,x,y+R+17);
+}
+
+/* ---------------- sound ---------------- */
+const audio={
+  ctx:null,on:true,ready:false,noise:null,flowGain:null,humGain:null,
+  init(){
+    if(this.ready) return;
+    try{
+      this.ctx=new (window.AudioContext||window.webkitAudioContext)({latencyHint:'interactive'});
+      const n=this.ctx.sampleRate*2,b=this.ctx.createBuffer(1,n,this.ctx.sampleRate),d=b.getChannelData(0);
+      for(let i=0;i<n;i++) d[i]=Math.random()*2-1;
+      this.noise=b; this.ready=true; this._hum();
+    }catch(_){}
+  },
+  resume(){ if(this.ctx&&this.ctx.state==='suspended') this.ctx.resume(); },
+  _hum(){                                   // the base is never silent
+    const c=this.ctx, s=c.createBufferSource(); s.buffer=this.noise; s.loop=true;
+    const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=180;
+    const g=c.createGain(); g.gain.value=0.045;
+    s.connect(lp); lp.connect(g); g.connect(c.destination); s.start();
+    this.humGain=g;
+  },
+  burst(freq,Q,peak,dur,type){
+    if(!this.ready||!this.on) return;
+    const c=this.ctx,t=c.currentTime;
+    const s=c.createBufferSource(); s.buffer=this.noise; s.loop=true;
+    const f=c.createBiquadFilter(); f.type=type||'bandpass'; f.frequency.value=freq; f.Q.value=Q;
+    const g=c.createGain();
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(peak,t+0.012);
+    g.gain.setValueAtTime(peak,t+Math.max(0.02,dur-0.1));
+    g.gain.linearRampToValueAtTime(0.0001,t+dur);
+    s.connect(f); f.connect(g); g.connect(c.destination); s.start(t); s.stop(t+dur+0.05);
+  },
+  scrape(d){ this.burst(1150,0.8,0.13,d||0.95); },
+  tick(){ this.burst(2600,2,0.085,0.04); },
+  drip(){ this.burst(1500,6,0.06,0.07); },
+  /* A toggle being thrown: the sharp plastic snap of the lever, then the
+     softer thunk of the mechanism seating. */
+  clack(up){
+    if(!this.ready||!this.on) return;
+    const c=this.ctx,t=c.currentTime;
+    this.burst(up?3200:2400,3,0.16,0.035,'bandpass');
+    const o=c.createOscillator(), g=c.createGain();
+    o.type='square'; o.frequency.setValueAtTime(up?240:170,t);
+    o.frequency.exponentialRampToValueAtTime(up?90:60,t+0.05);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.16,t+0.003);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+0.13);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+0.16);
+  },
+  /* Something coming alive: two voices a fifth apart sweeping up together
+     into a short shimmer. Signals the panel is live, not just visible. */
+  powerUp(){
+    if(!this.ready||!this.on) return;
+    const c=this.ctx,t=c.currentTime;
+    [[220,0.10],[330,0.07]].forEach(([f,v],i)=>{
+      const o=c.createOscillator(), g=c.createGain();
+      o.type=i?'triangle':'sawtooth';
+      o.frequency.setValueAtTime(f*0.5,t);
+      o.frequency.exponentialRampToValueAtTime(f*2,t+0.26);
+      const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.Q.value=4;
+      lp.frequency.setValueAtTime(400,t);
+      lp.frequency.exponentialRampToValueAtTime(4200,t+0.26);
+      g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(v,t+0.04);
+      g.gain.setValueAtTime(v,t+0.22);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.52);
+      o.connect(lp); lp.connect(g); g.connect(c.destination);
+      o.start(t); o.stop(t+0.56);
+    });
+    this.burst(5200,1.2,0.05,0.30,'highpass');            // air on top
+  },
+  clunk(){
+    if(!this.ready||!this.on) return;
+    const c=this.ctx,t=c.currentTime,o=c.createOscillator(),g=c.createGain();
+    o.type='sine'; o.frequency.setValueAtTime(190,t);
+    o.frequency.exponentialRampToValueAtTime(56,t+0.06);
+    g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.5,t+0.002);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+0.34);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+0.38);
+    this.burst(1800,0.6,0.2,0.05,'highpass');
+  },
+  startFlow(){
+    if(!this.ready||this.flowGain) return;
+    const c=this.ctx, s=c.createBufferSource(); s.buffer=this.noise; s.loop=true;
+    const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=760;
+    const g=c.createGain(); g.gain.value=0;
+    s.connect(lp); lp.connect(g); g.connect(c.destination); s.start();
+    this.flowGain=g;
+  },
+  flow(level){ if(this.flowGain) this.flowGain.gain.value=this.on?0.08*level:0; },
+  toggle(){
+    this.on=!this.on;
+    if(this.humGain) this.humGain.gain.value=this.on?0.045:0;
+    if(this.flowGain&&!this.on) this.flowGain.gain.value=0;
+    return this.on;
+  },
+};
+
+/* ---------------- shell ----------------
+   Builds the topbar, canvas and guide so no level writes that markup. */
+/* ---------------- level opening ----------------
+   The three-beat opening level one established: a call over the intercom,
+   a beat of place, then the title card, each advanced by click or ENTER.
+   A level passes words; it never writes this markup, so no level can
+   open differently by accident.
+
+     {kind:'comms', tag:'...', text:'...'}
+     {kind:'place', text:'...'}
+     {kind:'title', eyebrow:'...', title:'...', sub:'...'}            */
+function intro(beats,onDone){
+  if(!beats||!beats.length){ onDone(); return null; }
+  const els=beats.map((b,i)=>{
+    const d=document.createElement('div'); d.className='beat';
+    const hint='<div class="hint">'+(i<beats.length-1?'click or press ENTER &rarr;':'begin &rarr;')+'</div>';
+    if(b.kind==='comms')
+      d.innerHTML='<div class="alert-box"><div class="alert-tag">'+b.tag+
+        '</div><div class="alert-text">'+b.text+'</div></div>'+hint;
+    else if(b.kind==='title')
+      d.innerHTML='<div class="tech-eyebrow">'+(b.eyebrow||'')+'</div>'+
+        '<div class="tech-title">'+(b.title||'')+'</div>'+
+        '<div class="tech-sub">'+(b.sub||'')+'</div>'+hint;
+    else
+      d.innerHTML='<div class="immersion">'+b.text+'</div>'+hint;
+    document.body.appendChild(d);
+    return d;
+  });
+  let n=0;
+  els[0].classList.add('show');
+  function next(){
+    els[n].classList.remove('show');
+    const done=++n>=els.length;
+    if(done){ els.forEach(e=>e.remove()); cleanup(); onDone(); }
+    else els[n].classList.add('show');
+  }
+  const key=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); next(); } };
+  function cleanup(){ window.removeEventListener('keydown',key);
+    els.forEach(e=>e.removeEventListener('click',next)); }
+  els.forEach(e=>e.addEventListener('click',next));
+  window.addEventListener('keydown',key);
+  return {next};
+}
+
+/* Attach helper: these layers can be constructed before <body> exists
+   (a level page puts its script in the head), so every one of them waits. */
+function whenReady(fn){
+  if(document.body) fn();
+  else document.addEventListener('DOMContentLoaded',fn);
+}
+
+/* Fullscreen needs a user gesture, and the click at the DOS prompt is the
+   first one the game ever gets - so that is where it is asked for. Inside an
+   embed the request can simply be refused; treated as a nicety, and the
+   FULL SCREEN button in every level's control strip can ask again later. */
+function goFullscreen(){
+  const d=document.documentElement;
+  const req=d.requestFullscreen||d.webkitRequestFullscreen||d.msRequestFullscreen;
+  if(!req) return;
+  try{ const r=req.call(d); if(r&&r.catch) r.catch(()=>{}); }catch(_){}
+}
+
+/* ---------------- game chrome ----------------
+   Boot and title belong to the GAME, once, not to whichever level happens
+   to be first. Level one carried them, which is why level zero opened cold. */
+const BOOT_LINES=[
+  {t:'C:\\> ', typed:'cd GAMES\\LUNARPROC', pause:420},
+  {t:'\nC:\\GAMES\\LUNARPROC> ', typed:'LUNAR.EXE', pause:520},
+  {t:'\n\nLunar Process Engineer  v1.0\n', pause:260},
+  {t:'(c) 199- Educational Systems Group\n\n', pause:300},
+  {t:'Detecting hardware...\n', pause:340},
+  {t:'  VGA 256-colour ............ OK\n', pause:200},
+  {t:'  Sound device .............. OK\n', pause:200},
+  {t:'  Pointing device ........... OK\n', pause:260},
+  {t:'\nLoading HYDRAULICS.OVL ...\n', pause:520},
+  {t:'Loading SECTION4B.DAT ...\n', pause:460},
+  {t:'\nReady.\n', pause:500},
+];
+function boot(onDone){ whenReady(()=>_boot(onDone)); }
+function _boot(onDone){
+  const L=document.createElement('div'); L.id='dosLayer';
+  L.innerHTML='<div id="dosText"></div>';
+  document.body.appendChild(L);
+  const out=L.querySelector('#dosText');
+  let buf='', live=true;        // BOOT_LINES[0] writes the prompt itself
+  const show=()=>out.innerHTML=buf.replace(/&/g,'&amp;').replace(/</g,'&lt;')+
+    '<span class="cursor"></span>';
+  show();
+  function line(i){
+    if(!live) return;
+    if(i>=BOOT_LINES.length){ setTimeout(finish,420); return; }
+    const l=BOOT_LINES[i]; buf+=l.t; show();
+    if(!l.typed){ setTimeout(()=>line(i+1),l.pause); return; }
+    let k=0;
+    (function key(){
+      if(!live) return;
+      if(k<l.typed.length){ buf+=l.typed[k++]; show();
+        audio.burst(1200+Math.random()*300,4,0.03,0.02);
+        setTimeout(key,42+Math.random()*38); }
+      else setTimeout(()=>line(i+1),l.pause);
+    })();
+  }
+  function finish(){
+    if(!live) return; live=false;
+    window.removeEventListener('keydown',go);
+    L.remove(); onDone();
+  }
+  /* Impatient players skip the whole thing; the chain must not resurrect it. */
+  function skip(){ buf=BOOT_LINES.map(l=>l.t+(l.typed||'')).join(''); show(); finish(); }
+
+  /* Three phases, as level one had them: the prompt SITS AND WAITS, your
+     click starts it typing, a second click skips to the end.
+
+     Dropping the waiting phase broke more than the feel of it. That first
+     click is the user gesture every browser requires before an AudioContext
+     will leave 'suspended' - without it the title screen came up silent,
+     because the context had never been allowed to start. */
+  let phase='waiting';
+  buf='C:\\> '; show();
+  function go(){
+    if(phase==='waiting'){
+      phase='typing';
+      audio.init(); audio.resume();      // the gesture that unlocks sound
+      goFullscreen();                    // ...and the only one fullscreen accepts
+      buf=''; line(0);
+    } else if(phase==='typing'){
+      phase='done'; skip();
+    }
+  }
+  window.addEventListener('keydown',go);
+  L.addEventListener('click',go);
+}
+/* Title plus level select. `draw` paints a 320x200 VGA frame; `levels` is
+   [{label, sub, play}] where a missing `play` renders the row disabled. */
+function title(opt){ whenReady(()=>_title(opt)); }
+function _title(opt){
+  const L=document.createElement('div'); L.id='titleLayer';
+  L.innerHTML='<canvas id="titleCv" width="320" height="200"></canvas>'+
+              '<div class="hint" id="titleHint">PRESS ENTER TO START</div>';
+  document.body.appendChild(L);
+  /* Shown synchronously. This used to wait on requestAnimationFrame, which
+     never fires in a backgrounded tab \u2014 the layer then stayed display:none,
+     the canvas had no layout box, and every click hit-test divided by a
+     zero width. There is no transition on this layer to wait for. */
+  L.classList.add('show');
+  const cv=L.querySelector('#titleCv'), tg=cv.getContext('2d');
+  let swOn=false;
+  const paint=()=>{ opt.draw(tg); if(opt.toggle) art.toggleSwitch(tg,opt.toggle.x,opt.toggle.y,swOn); };
+  paint();
+
+  /* The title is only a title. START takes you to a separate screen that
+     lists the assignments, which is the shape this era's games used and
+     keeps the art uncluttered. */
+  const hint=L.querySelector('#titleHint');
+  let gone=false;
+  function start(){
+    if(gone) return; gone=true;
+    if(opt.secret && opt.secret.close) opt.secret.close();   // the jam strip goes with the title
+    L.remove();
+    _select(opt);
+  }
+
+  /* An easter egg, per the handoff: the habitat's status lamp is a real
+     click target. Everything else on the art advances to the menu. */
+  cv.addEventListener('click',e=>{
+    audio.init(); audio.resume();
+    const r=cv.getBoundingClientRect();
+    const x=(e.clientX-r.left)*(320/r.width), y=(e.clientY-r.top)*(200/r.height);
+    if(opt.toggle && Math.abs(x-opt.toggle.x)<4.5 && Math.abs(y-opt.toggle.y)<7){
+      swOn=!swOn; paint();
+      audio.clack(swOn);
+      if(swOn) setTimeout(()=>audio.powerUp(),90);   // snap first, then it comes alive
+      opt.toggle.set(swOn,L);
+      return;
+    }
+    start();
+  });
+  L.addEventListener('click',e=>{ if(e.target===L||e.target===hint){ audio.init(); audio.resume(); start(); } });
+  window.addEventListener('keydown',function k(e){
+    if(!document.getElementById('titleLayer')){ window.removeEventListener('keydown',k); return; }
+    if(e.key==='Enter'||e.key===' '){ audio.init(); audio.resume(); start(); }
+  });
+  /* Music on the title.
+     Two things used to stop this. The audio context was only created by the
+     boot's SKIP handlers, so a player who simply watched the boot through
+     arrived with no context at all and startMusic() bailed. And even with a
+     context, browsers keep it suspended until a real user gesture, so the
+     first attempt can silently produce nothing. Hence: open the context
+     here, try now, and try again on the first gesture of any kind.
+     Starting twice is harmless - startMusic() returns early if already running. */
+  audio.init(); audio.resume();
+  const begin=()=>{ audio.resume(); if(opt.onEnter) opt.onEnter(); };
+  begin();
+  if(!audio.ctx || audio.ctx.state!=='running'){
+    const retry=()=>{ begin();
+      document.removeEventListener('pointerdown',retry);
+      document.removeEventListener('keydown',retry); };
+    document.addEventListener('pointerdown',retry);
+    document.addEventListener('keydown',retry);
+  }
+}
+
+/* ---------------- assignment select ----------------
+   Its own screen, reached from START. The music keeps running across it and
+   only stops when a level actually begins. */
+function _select(opt){
+  const L=document.createElement('div'); L.id='selectLayer';
+  L.innerHTML='<div class="tech-eyebrow">LUNAR PROCESS ENGINEER</div>'+
+              '<div class="sel-title">SELECT ASSIGNMENT</div>'+
+              '<div id="menu"></div>'+
+              '<div class="hint" id="selHint">ESC for the title</div>';
+  document.body.appendChild(L);
+  L.classList.add('show');
+  const m=L.querySelector('#menu');
+  opt.levels.forEach((lv,i)=>{
+    const run=lv.start||lv.play;          // a level registers `start`
+    const b=document.createElement('button');
+    b.innerHTML=lv.label+(lv.sub?'  <span class="no">'+lv.sub+'</span>':'');
+    b.disabled=!run;
+    b.onclick=()=>{ audio.init(); audio.resume();
+      window.removeEventListener('keydown',key);
+      if(opt.onLeave) opt.onLeave();      // music stops as the level starts
+      L.remove(); launch(opt,i); };
+    m.appendChild(b);
+  });
+  function key(e){
+    if(e.key==='Escape'){ window.removeEventListener('keydown',key); L.remove(); _title(opt); }
+  }
+  window.addEventListener('keydown',key);
+  const first=m.querySelector('button:not([disabled])');
+  if(first) setTimeout(()=>first.focus(),60);
+}
+
+/* Launching is the one place that knows which assignment is running, so it
+   is the one place that can answer "what comes after this". Levels are
+   started through here and nowhere else. */
+function launch(opt,i){
+  const lv=opt.levels[i], run=lv&&(lv.start||lv.play);
+  if(!run) return;
+  LPE_NAV={levels:opt.levels, idx:i, opt};
+  run();
+}
+
+function mount(o){
+  const root=document.createElement('div'); root.className='wrap';
+  root.innerHTML=
+    '<div class="topbar"><div class="t1"></div><div class="t2"></div></div>'+
+    '<canvas class="rig" width="'+(o.w||900)+'" height="'+(o.h||400)+'" tabindex="0"></canvas>'+
+    /* The controls used to be absolutely positioned INSIDE the guide box.
+       The task line reserved 310px of padding to dodge them; the lesson line
+       reserved nothing, so every long coaching paragraph ran underneath the
+       buttons. Reserving padding on the lesson too would only have moved the
+       collision. They are not instruction, so they are not in the box. */
+    '<div class="guide"><div class="task"></div><div class="lesson"></div></div>'+
+    '<div class="ctl"><span class="count"></span><span class="ctl-btns">'+
+      '<button data-a="sound">SOUND: ON</button>'+
+      '<button data-a="fs">FULL SCREEN</button>'+
+      '<button data-a="reset">RESET</button>'+
+    '</span></div>';
+  /* The canvas and listeners work while detached, so only the attach is
+     deferred. Levels can therefore mount from anywhere in the document
+     without caring whether <body> exists yet. */
+  if(o.intro && o.intro.length) root.classList.add('pending');
+  if(document.body) document.body.appendChild(root);
+  else document.addEventListener('DOMContentLoaded',()=>document.body.appendChild(root));
+  const q=s=>root.querySelector(s);
+
+  /* When a gesture began. A hand wheel drag runs for many frames, so a
+     lesson triggered BY that drag opens while the finger is still down -
+     and the click that ends the drag then bubbles up and dismisses the
+     lesson nobody has read yet. Holding the text was never the fix on its
+     own; the text was being thrown away by the same gesture that earned it.
+     A hold started mid-gesture ignores exactly one click: the one that
+     completes the gesture already in progress when it opened. */
+  let lastDownAt=0;
+  root.addEventListener('pointerdown',()=>{ lastDownAt=performance.now(); },true);
+  q('.t1').textContent=o.t1||''; q('.t2').textContent=o.t2||'';
+  const cv=q('canvas.rig');
+
+  const S={
+    canvas:cv, ctx:cv.getContext('2d'), w:o.w||900, h:o.h||400,
+    say(task,lesson){ q('.task').innerHTML=task||''; q('.lesson').innerHTML=lesson||''; },
+    count(t){ q('.count').textContent=t||''; },
+    /* A beat holds what just happened on screen until the player says go.
+       Levels used to flash the lesson and replace it on a 1.5s timer, which
+       is nowhere near long enough to read a paragraph - and the length of
+       the wait is a property of the TEMPLATE, not something each level
+       should be inventing a number for. Returns true while it is holding,
+       so a level's step check can stand down rather than racing it. */
+    beat(lesson,then){
+      if(S._holding) return;
+      S._holding=true;
+      q('.task').innerHTML='<span class="beat-hint">continue &rarr;</span>';
+      q('.lesson').innerHTML=lesson||'';
+      const openedAt=performance.now();
+      const go=e=>{
+        if(e.type==='keydown' && e.key!=='Enter' && e.key!==' ') return;
+        /* The click that finishes the drag which opened this lesson is not
+           the player asking to move on - they have not read a word yet. */
+        if(e.type==='click' && lastDownAt<openedAt) return;
+        e.preventDefault();
+        drop();
+        S._holding=false; if(then) then();
+      };
+      function drop(){ window.removeEventListener('keydown',go);
+                       root.removeEventListener('click',go); S._holdDrop=null; }
+      S._holdDrop=drop;
+      window.addEventListener('keydown',go);
+      root.addEventListener('click',go);
+    },
+    get holding(){ return !!S._holding; },
+    get done(){ return !!S._done; },
+    /* A fork the player is asked to make out loud, in the coach's voice.
+       Same hold as `beat` - the rig keeps running underneath, nothing
+       advances until they answer - but with named options instead of a
+       continue. The choice itself is the teaching: which one they pick is
+       allowed to be wrong, and the coach is allowed to say so. */
+    ask(o2){
+      if(S._holding) return;
+      S._holding=true;
+      q('.task').innerHTML='<span class="beat-hint">your call &rarr;</span>';
+      q('.lesson').innerHTML=(o2.lesson||'')+'<div class="choice"></div>';
+      const box=q('.choice');
+      o2.options.forEach(opt=>{
+        const b=document.createElement('button');
+        b.innerHTML=opt.label+(opt.note?'  <span class="no">'+opt.note+'</span>':'');
+        /* stopPropagation matters: the option sits INSIDE the level root, and
+           whatever `pick` opens next - almost always a beat - binds its own
+           dismiss handler on that same root. Let this click carry on
+           bubbling and it dismisses the reply before the player can read a
+           word of it. The coach's answer came back blank every time. */
+        b.onclick=ev=>{ ev.stopPropagation();
+          box.querySelectorAll('button').forEach(x=>x.disabled=true);
+          S._holding=false; audio.clack&&audio.clack(); opt.pick(); };
+        box.appendChild(b);
+      });
+      const first=box.querySelector('button');
+      if(first) setTimeout(()=>first.focus(),60);
+    },
+    /* The end of an assignment. Both levels used to just stop - set the
+       counter to DONE and sit there - so the only way out of a finished
+       level was reloading the page and walking the boot sequence again.
+       There was no route from level zero to level one either; this was
+       never a gap that appeared when a third level turned up.
+       Where you go next is a property of the TEMPLATE. A level says it is
+       over and what the coach signs off with; it does not decide what
+       follows it, and it does not know a menu exists. */
+    finish(f){
+      if(S._done) return; S._done=true;
+      f=f||{};
+      S.say('', f.lesson||'');
+      S.count('DONE');
+      const nx=LPE_NAV.levels[LPE_NAV.idx+1],
+            nxRun=nx&&(nx.start||nx.play),
+            back=LPE_NAV.opt;
+      const d=document.createElement('div'); d.className='beat';
+      d.innerHTML='<div class="tech-eyebrow">ASSIGNMENT COMPLETE</div>'+
+        '<div class="tech-title">'+(o.t1||'')+'</div>'+
+        (f.line?'<div class="immersion">'+f.line+'</div>':'')+
+        '<div class="dmenu"></div>';
+      const dm=d.querySelector('.dmenu');
+      const add=(html,fn)=>{ const b=document.createElement('button');
+        b.innerHTML=html; b.onclick=fn; dm.appendChild(b); return b; };
+      const leave=go=>()=>{ cleanup(); d.remove(); S.destroy(); go(); };
+      if(nxRun) add('NEXT ASSIGNMENT  <span class="no">'+nx.label+'</span>',
+                    leave(()=>launch(back,LPE_NAV.idx+1)));
+      if(back) add('SELECT ASSIGNMENT', leave(()=>_select(back)));
+      /* Players poke at a rig they have just solved, and taking it away the
+         instant the last step passes is the wrong reward. The card steps
+         aside; the level is still underneath it, still running. */
+      add('STAY ON THE RIG', ()=>{ cleanup(); d.remove(); });
+      function key(e){ if(e.key==='Escape'){ cleanup(); d.remove(); } }
+      function cleanup(){ window.removeEventListener('keydown',key); }
+      window.addEventListener('keydown',key);
+      document.body.appendChild(d);
+      d.classList.add('show');   // synchronous: a backgrounded tab runs no rAF
+      const first=dm.querySelector('button');
+      if(first) setTimeout(()=>first.focus(),60);
+    },
+    pt(e){ const r=cv.getBoundingClientRect();
+      return {x:(e.clientX-r.left)*(S.w/r.width), y:(e.clientY-r.top)*(S.h/r.height)}; },
+  };
+
+  q('[data-a="sound"]').onclick=e=>{ e.target.textContent='SOUND: '+(audio.toggle()?'ON':'OFF'); };
+  /* Reset puts the assignment back to un-finished, and cancels whatever the
+     strip was waiting on. Without the cancel, resetting mid-lesson left
+     `_holding` stuck true - so the level could never speak again - and left
+     the old handler bound, so a later click would fire a step transition
+     belonging to a run that no longer exists. */
+  q('[data-a="reset"]').onclick=()=>{
+    if(S._holdDrop) S._holdDrop();
+    S._holding=false; S._done=false;
+    if(o.onReset) o.onReset();
+  };
+  const fsOn=()=>!!(document.fullscreenElement||document.webkitFullscreenElement);
+  const fsBtn=q('[data-a="fs"]');
+  fsBtn.onclick=()=>{
+    const d=document.documentElement;
+    const fn=fsOn()?(document.exitFullscreen||document.webkitExitFullscreen)
+                   :(d.requestFullscreen||d.webkitRequestFullscreen);
+    if(!fn) return;
+    try{ const r=fn.call(fsOn()?document:d); if(r&&r.catch) r.catch(()=>{}); }catch(_){}
+  };
+  const sync=()=>{ fsBtn.style.display=document.fullscreenEnabled!==false?'':'none';
+                   fsBtn.textContent=fsOn()?'EXIT FULL SCREEN':'FULL SCREEN'; };
+  document.addEventListener('fullscreenchange',sync);
+  document.addEventListener('webkitfullscreenchange',sync);
+  sync();
+
+  /* One clock for everything, so a level never starts its own loop.
+     `pump` advances a single frame by hand. requestAnimationFrame does not
+     fire in a backgrounded tab, so without this the simulation cannot be
+     stepped or inspected outside a visible window. */
+  let last=0, t=0, live=true;
+  S.pump=function(dt){ t+=dt; if(o.step) o.step(dt); if(o.draw) o.draw(S.ctx,dt,t); };
+  function frame(ts){
+    if(!live) return;                      // a torn-down level stops simulating
+    const dt=last?Math.min(0.05,(ts-last)/1000):0; last=ts;
+    S.pump(dt);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+  LPE_CURRENT=S;
+
+  /* Until levels could follow one another, nothing ever had to come down,
+     so nothing ever did: the clock ran forever and the fullscreen listeners
+     stayed bound. Mounting a second level on top of that would have left the
+     first one simulating and drawing into a canvas no longer in the document. */
+  S.destroy=function(){
+    if(!live) return; live=false;
+    document.removeEventListener('fullscreenchange',sync);
+    document.removeEventListener('webkitfullscreenchange',sync);
+    audio.flow(0);                         // the level's flow hum goes with it
+    root.remove();
+    if(LPE_CURRENT===S) LPE_CURRENT=null;
+  };
+
+  const start=()=>{ root.classList.remove('pending'); if(o.onStart) o.onStart(); };
+  if(o.intro && o.intro.length){
+    const run=()=>intro(o.intro,start);
+    if(document.body) run(); else document.addEventListener('DOMContentLoaded',run);
+  }
+  return S;
+}
+
+return {palette:P, art, Line, pipeRun, penetration, valveBody, handWheel, gauge,
+        piping, pipes, valveShell, valveTrim, WHEEL_SWEEP, audio, intro, mount, boot, title,
+        get current(){ return LPE_CURRENT; }};
+})();
+
+</script>
+<script>
+/* Title art, lifted verbatim from level one so the game keeps the
+   screen Franz already approved. Takes a context rather than looking up
+   a canvas by id, which is the only change made to it. */
+function LPE_TITLE(g){
+
+  
+  g.fillStyle='#05060c'; g.fillRect(0,0,320,200);
+  // starfield
+  for(let i=0;i<110;i++){
+    const x=(i*73)%320, y=(i*131)%120;
+    const b=[ '#2a3350','#4a5878','#8a97b8','#d6dcf0' ][i%4];
+    g.fillStyle=b; g.fillRect(x,y,1,1);
+  }
+  // --- Earth: a full blue marble, not a crescent. From the lunar surface Earth
+  //     hangs big and mostly lit; a crescent read as a moon, which is backwards.
+  const ex=270, ey=44, er=17;
+  g.save(); g.beginPath(); g.arc(ex,ey,er,0,Math.PI*2); g.clip();
+  g.fillStyle='#1b4f8c'; g.fillRect(ex-er,ey-er,er*2,er*2);          // ocean
+  g.fillStyle='#2a6fb0';                                              // shallow seas
+  g.fillRect(ex-er,ey-6,er*2,5); g.fillRect(ex-er,ey+7,er*2,4);
+  g.fillStyle='#3f7f4a';                                              // land
+  g.fillRect(ex-12,ey-11,9,7); g.fillRect(ex-6,ey-5,7,9);
+  g.fillRect(ex+3,ey-9,8,5);   g.fillRect(ex+5,ey+3,6,8);
+  g.fillStyle='#5a9a5e'; g.fillRect(ex-10,ey-9,4,3); g.fillRect(ex+5,ey+5,3,3);
+  // Clouds as scattered irregular patches. Drawing them as full-width bands put
+  // long straight white stripes across the disc, which read as lines, not weather.
+  g.fillStyle='#dfe8f2';
+  [[-13,-11,5,2],[3,-10,4,2],[-14,-4,4,2],[7,-3,5,2],[-5,8,5,2],[-10,12,4,2]
+  ].forEach(([ox,oy,w,h])=>g.fillRect(ex+ox,ey+oy,w,h));
+  g.fillStyle='#f2f6fb';
+  [[-10,-10],[8,3]].forEach(([ox,oy])=>g.fillRect(ex+ox,ey+oy,2,2));
+  g.fillStyle='rgba(5,6,12,0.42)';                                    // terminator
+  g.beginPath(); g.arc(ex+er-3,ey+3,er,0,Math.PI*2); g.fill();
+  g.restore();
+  g.strokeStyle='#5f86b8'; g.lineWidth=1;
+  g.beginPath(); g.arc(ex,ey,er,0,Math.PI*2); g.stroke();
+
+  // --- lunar surface: layered regolith with lit crater rims and cast shadow
+  g.fillStyle='#43434b'; g.fillRect(0,132,320,68);
+  g.fillStyle='#4e4e57'; g.fillRect(0,132,320,26);
+  g.fillStyle='#39393f'; g.fillRect(0,176,320,24);
+  g.fillStyle='#5c5c66';                                              // horizon lip
+  for(let x=0;x<320;x+=2){
+    const h=132+Math.round(Math.sin(x*0.07)*2.2+Math.sin(x*0.23)*1.4);
+    g.fillRect(x,h,2,2);
+  }
+  [[42,154,14],[124,172,10],[236,160,16],[292,184,9],[168,190,12]].forEach(([x,y,r])=>{
+    g.fillStyle='#34343a';                                            // crater floor
+    g.beginPath(); g.ellipse(x,y,r,r*0.40,0,0,Math.PI*2); g.fill();
+    g.strokeStyle='#6a6a75'; g.lineWidth=1;                           // lit rim, sun left
+    g.beginPath(); g.ellipse(x,y,r,r*0.40,0,Math.PI*0.86,Math.PI*1.94); g.stroke();
+    g.strokeStyle='#2b2b31';                                          // shadowed rim
+    g.beginPath(); g.ellipse(x,y,r,r*0.40,0,Math.PI*1.94,Math.PI*0.86); g.stroke();
+  });
+  g.fillStyle='#55555e';                                              // scattered rock
+  [[88,166],[200,150],[262,196],[20,188],[148,160]].forEach(([x,y])=>g.fillRect(x,y,2,2));
+
+  // --- habitat: ribbed dome with a lit window band and an airlock
+  const dx=66, dy=133, dr=31;
+  g.fillStyle='#243039'; g.beginPath(); g.arc(dx,dy,dr,Math.PI,0); g.fill();
+  g.fillStyle='#2c3b46'; g.beginPath(); g.arc(dx,dy,dr-6,Math.PI,0); g.fill();
+  g.fillStyle='#b9872f';                                              // warm interior band
+  g.save(); g.beginPath(); g.rect(dx-dr,dy-16,dr*2,8); g.clip();
+  g.beginPath(); g.arc(dx,dy,dr-9,Math.PI,0); g.fill();
+  g.restore();
+  g.strokeStyle='#54707f'; g.lineWidth=1;                             // structural ribs
+  for(let k=0;k<=4;k++){
+    const a=Math.PI+k*(Math.PI/4);
+    g.beginPath(); g.moveTo(dx,dy); g.lineTo(dx+Math.cos(a)*dr,dy+Math.sin(a)*dr); g.stroke();
+  }
+  g.beginPath(); g.arc(dx,dy,dr,Math.PI,0); g.stroke();
+  g.beginPath(); g.arc(dx,dy,dr-11,Math.PI,0); g.stroke();
+  g.fillStyle='#1b242b'; g.fillRect(dx+dr-6,dy-11,13,11);             // airlock
+  g.strokeStyle='#54707f'; g.strokeRect(dx+dr-6,dy-11,13,11);
+  g.fillStyle='#39ff6a'; g.fillRect(dx+dr+1,dy-8,2,2);                // status lamp
+  g.strokeStyle='#54707f';                                            // mast, centred on the dome
+  g.beginPath(); g.moveTo(dx,dy-dr); g.lineTo(dx,dy-dr-9); g.stroke();
+  g.fillStyle='#ff5050'; g.fillRect(dx-1,dy-dr-12,3,3);               // beacon
+  g.fillStyle='#2b3740'; g.fillRect(dx-dr-3,dy,dr*2+6,4);             // foundation skirt
+  // Surface isolation valve \u2014 the hero object. A bare wheel floating on a stem
+  // read as an unexplained sculpture, so it now sits on an actual valve body in
+  // an actual pipe run, teed off the line that feeds the dome.
+  const cx=238, cy=140, R=26;
+  const pipeY=cy+32, pr=6;
+  // The run crosses the whole frame: a transfer line passing through the site
+  // with an isolation valve on it. Stopping it mid-frame left two bare ends
+  // that read as a floating bar, and a regolith berm over them looked like a slab.
+  g.fillStyle='#3d5468';
+  g.fillRect(0,pipeY-pr,320,pr*2);
+  g.fillStyle='#4e6a82'; g.fillRect(0,pipeY-pr,320,2);                // lit top of pipe
+  g.fillStyle='#32475a';                                              // pipe supports
+  [40,110,300].forEach(x=>g.fillRect(x,pipeY+pr,7,8));
+  g.fillStyle='#2b3d4c';                                              // flanges either side
+  g.fillRect(cx-30,pipeY-pr-3,5,pr*2+6); g.fillRect(cx+25,pipeY-pr-3,5,pr*2+6);
+  g.fillStyle='#46606f';                                              // valve body
+  g.fillRect(cx-24,pipeY-pr-6,48,pr*2+12);
+  g.fillStyle='#55738a'; g.fillRect(cx-24,pipeY-pr-6,48,3);
+  g.strokeStyle='#2b3d4c'; g.lineWidth=1; g.strokeRect(cx-24,pipeY-pr-6,48,pr*2+12);
+  g.fillStyle='#39414a'; g.fillRect(cx-9,cy+R-2,18,pipeY-pr-6-(cy+R-2)); // bonnet
+  g.fillStyle='#5f7f99'; g.fillRect(cx-2,cy+6,4,cy+R-2-(cy+6));          // rising stem
+  g.strokeStyle='#8fb6d8'; g.lineWidth=4;                                // hand wheel
+  g.beginPath(); g.arc(cx,cy,R,0,Math.PI*2); g.stroke();
+  g.lineWidth=3;
+  for(let k=0;k<6;k++){ const a=k*Math.PI/3;
+    g.beginPath(); g.moveTo(cx,cy); g.lineTo(cx+Math.cos(a)*R,cy+Math.sin(a)*R); g.stroke(); }
+  g.fillStyle='#3a5a74'; g.beginPath(); g.arc(cx,cy,6,0,Math.PI*2); g.fill();
+  // title
+  g.textAlign='center';
+  g.fillStyle='#0d2a16'; g.font='bold 25px monospace';
+  g.fillText('LUNAR PROCESS',160,66);
+  g.fillStyle='#39ff6a'; g.fillText('LUNAR PROCESS',160,65);
+  g.fillStyle='#0d2a16'; g.font='bold 19px monospace';
+  g.fillText('ENGINEER',160,88);
+  g.fillStyle='#39ff6a'; g.fillText('ENGINEER',160,87);
+  /* "Chapter" language is dropped, and the title no longer names one
+     level now that a menu sits beneath it. */
+  g.fillStyle='#ffb627'; g.font='9px monospace';
+  g.fillText('EDUCATIONAL SYSTEMS GROUP',160,104);
+
+}
+
+</script>
+<script>
+/* ============================================================
+   MUSIC + THE JAM INSTRUMENT
+   Both lifted from level one's title screen so the tune and the pad are
+   the ones already approved. The pad is an easter egg: it is reached by
+   clicking the habitat's status lamp on the title, not shown outright.
+   ============================================================ */
+window.LPE_JAM=(function(){
+'use strict';
+const A=LPE.audio;
+const JAM={armed:false, host:null};
+const PAD_HTML="<div id=\"pad\">\r <span class=\"tag\">JAM</span>\r <div class=\"grp\"><span class=\"tag\">LEAD</span>\r <span class=\"kc\" data-k=\"7\">7<i>A</i></span><span class=\"kc\" data-k=\"8\">8<i>C</i></span><span class=\"kc\" data-k=\"9\">9<i>E</i></span></div>\r <span class=\"sep\">|</span>\r <div class=\"grp\"><span class=\"tag\">BASS</span>\r <span class=\"kc\" data-k=\"6\">6<i>C</i></span><span class=\"kc\" data-k=\"5\">5<i>A</i></span><span class=\"kc\" data-k=\"4\">4<i>G</i></span><span class=\"kc\" data-k=\"1\">1<i>F</i></span></div>\r <span class=\"sep\">|</span>\r <div class=\"grp\"><span class=\"tag\">KICK</span><span class=\"kc\" data-k=\"0\">0</span></div>\r <div class=\"grp\"><span class=\"tag\">SNARE</span><span class=\"kc\" data-k=\"dot\">.</span></div>\r <span class=\"sep\">|</span>\r <div class=\"grp\"><span class=\"tag\">LOOP</span>\r <span class=\"kc\" data-k=\"rec\">+<i>REC</i></span><span class=\"kc\" data-k=\"clr\">&minus;<i>CLR</i></span></div>";
+
+const BASS=[110,0,0,0, 87.31,0,0,0, 130.81,0,0,0, 98.00,0,0,0];
+const ARP =[220,261.63,329.63,261.63, 174.61,220,261.63,220,
+            261.63,329.63,392.00,329.63, 196.00,246.94,293.66,246.94];
+const MUS={timer:null,step:0,gain:null};
+
+function musNote(freq,dur,vol,type){
+  if(!A.ready||!A.on||!freq) return;
+  const c=A.ctx,o=c.createOscillator(),g=c.createGain();
+  o.type=type; o.frequency.value=freq;
+  g.gain.setValueAtTime(0.0001,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(vol,c.currentTime+0.02);
+  g.gain.exponentialRampToValueAtTime(0.0001,c.currentTime+dur);
+  o.connect(g); g.connect(MUS.gain||A.ctx.destination); o.start(); o.stop(c.currentTime+dur+0.03);
+}
+function startMusic(){
+  if(!A.ready||MUS.timer) return;
+  MUS.gain=A.ctx.createGain(); MUS.gain.gain.value=0.5; MUS.gain.connect(A.ctx.destination);
+  MUS.step=0;
+  MUS.timer=setInterval(()=>{
+    const s=MUS.step%16;
+    if(s===0) loopBoundary();      // the music owns the grid the looper rides on
+    musNote(BASS[s],0.85,0.10,'triangle');
+    musNote(ARP[s],0.42,0.045,'square');
+    MUS.step++;
+  },380);
+  LOOP.origin=A.ctx.currentTime;
+  if(!LOOP.timer) LOOP.timer=setInterval(loopTick,15);
+}
+function stopMusic(){
+  if(!MUS.timer) return;
+  clearInterval(MUS.timer); MUS.timer=null;
+  if(LOOP.timer){ clearInterval(LOOP.timer); LOOP.timer=null; }
+  loopReleaseAll();
+  if(MUS.gain){ const c=A.ctx; MUS.gain.gain.setTargetAtTime(0,c.currentTime,0.35); }
+}
+
+/* ============================================================
+   PLAYABLE NUMPAD INSTRUMENT
+   The loop stays simple on purpose so there is room to play over it.
+   Everything here is pitched to sit inside A minor (Am F C G), so any
+   combination lands in key \u2014 the lead notes are the tonic triad up high,
+   which stay consonant across all four chords of the loop.
+   ============================================================ */
+/* Percussion is one-shot; lead and bass are held voices that sustain until
+   the key comes up. Attacks are short LINEAR ramps from true zero \u2014 the old
+   exponential ramps started at 0.0001 and spend most of their rise inaudibly
+   quiet, which is what made the instrument feel laggy to play. */
+/* 808-style drums, synthesised rather than sampled.
+   The perceived-lateness fix is the CLICK: an onset is located by its high
+   frequency content, and a pure sine sweeping down from 150Hz has none, so the
+   ear registers it late no matter how fast the gain envelope is. A couple of
+   milliseconds of high-passed noise on top puts the transient where the key
+   press was. Both voices attack in ~1ms from true zero. */
+function kick(){
+  if(!A.ready||!A.on) return;
+  const c=A.ctx,t=c.currentTime;
+  // body: fast pitch drop into a long sine tail
+  const o=c.createOscillator(), g=c.createGain();
+  o.type='sine';
+  o.frequency.setValueAtTime(132,t);
+  o.frequency.exponentialRampToValueAtTime(46,t+0.045);
+  g.gain.setValueAtTime(0,t);
+  g.gain.linearRampToValueAtTime(0.50,t+0.0015);
+  g.gain.exponentialRampToValueAtTime(0.0001,t+0.78);
+  o.connect(g); g.connect(A.ctx.destination); o.start(t); o.stop(t+0.82);
+  // click transient
+  const cl=c.createBufferSource(); cl.buffer=A.noise; cl.loop=true;
+  const hp=c.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=2400;
+  const cg=c.createGain();
+  cg.gain.setValueAtTime(0.20,t);
+  cg.gain.exponentialRampToValueAtTime(0.0001,t+0.016);
+  cl.connect(hp); hp.connect(cg); cg.connect(A.ctx.destination);
+  cl.start(t); cl.stop(t+0.03);
+}
+function snare(){
+  if(!A.ready||!A.on) return;
+  const c=A.ctx,t=c.currentTime;
+  // bright noise \u2014 the snares
+  const n=c.createBufferSource(); n.buffer=A.noise; n.loop=true; n.playbackRate.value=1.9;
+  const hp=c.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=1800;
+  const ng=c.createGain();
+  ng.gain.setValueAtTime(0,t);
+  ng.gain.linearRampToValueAtTime(0.26,t+0.001);
+  ng.gain.exponentialRampToValueAtTime(0.0001,t+0.15);
+  n.connect(hp); hp.connect(ng); ng.connect(A.ctx.destination); n.start(t); n.stop(t+0.19);
+  // two tuned shells, the 808 snare's characteristic body
+  [[182,0.11],[331,0.07]].forEach(([f,v])=>{
+    const o=c.createOscillator(), g=c.createGain();
+    o.type='triangle'; o.frequency.setValueAtTime(f,t);
+    g.gain.setValueAtTime(0,t);
+    g.gain.linearRampToValueAtTime(v,t+0.001);
+    g.gain.exponentialRampToValueAtTime(0.0001,t+0.095);
+    o.connect(g); g.connect(A.ctx.destination); o.start(t); o.stop(t+0.11);
+  });
+}
+// Warble is a bandpass swept by an LFO (the vowel-ish, vocoder-leaning part)
+// plus slow vibrato on two detuned saws. Runs until released.
+function startLead(f){
+  const c=A.ctx,t=c.currentTime,nodes=[];
+  const out=c.createGain();
+  out.gain.setValueAtTime(0,t);
+  out.gain.linearRampToValueAtTime(0.085,t+0.006);
+  out.connect(A.ctx.destination);
+  const bp=c.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=f*2.6; bp.Q.value=5;
+  bp.connect(out);
+  const lfo=c.createOscillator(), lg=c.createGain();
+  lfo.frequency.value=6.2; lg.gain.value=f*1.7;
+  lfo.connect(lg); lg.connect(bp.frequency); lfo.start(t); nodes.push(lfo);
+  [-6,6].forEach(cents=>{
+    const o=c.createOscillator();
+    o.type='sawtooth'; o.frequency.value=f*Math.pow(2,cents/1200);
+    const vib=c.createOscillator(), vg=c.createGain();
+    vib.frequency.value=5.4; vg.gain.value=f*0.014;
+    vib.connect(vg); vg.connect(o.frequency); vib.start(t); nodes.push(vib);
+    o.connect(bp); o.start(t); nodes.push(o);
+  });
+  return {out,nodes};
+}
+/* Same voice as the lead, an octave-plus down: detuned saws through an
+   LFO-swept bandpass. The bandpass strips the fundamental, which is fine for a
+   lead but guts a bass, so a clean sine at the fundamental runs alongside it
+   for weight. Both land on `out`, so one release fades the whole voice.
+
+   Both numbers below were measured, not guessed, by rendering the voice in an
+   OfflineAudioContext and comparing RMS against the lead:
+     - sub at 0.30 leaves the saws carrying 65% of the voice's energy, so the
+       warble stays the thing you hear. At 0.45 the sine took over (49%) and it
+       stopped sounding like the lead at all.
+     - peak 0.065 puts the bass ~1dB under the lead. Two earlier settings
+       bracket it: the original square-wave version measured +8.8dB OVER the
+       lead and swamped everything, and 0.045 then landed 4.4dB under, which
+       was too shy \u2014 low frequencies read quieter than mids at equal RMS, so
+       near-parity on the meter is about right in the ear. */
+function startBass(f){
+  /* A trombone with some air in it.
+     The first version was one static sawtooth and it sat dead next to the
+     lead, which is two detuned saws with a swept filter and vibrato. What
+     was missing was movement and bite:
+       - two saws 7 cents apart, so the partials beat against each other
+       - a breath transient: the air column starting, not a clean switch-on
+       - the filter opens to ~2.6 kHz, not f*9 (785 Hz at F2 - all body, no
+         presence), so the harmonics that carry energy actually get through
+       - three formants, not two: 520 body, 1150 nasal, 2300 bite
+       - a slow gain shimmer, because a blown note is never perfectly steady
+     Attack is 45ms - quick enough to have edge, slow enough to be blown.
+     Levelled by measurement: the brighter voice came out +2 to +3 dB over
+     the lead, so this sits it a touch ABOVE instead - the old one was a
+     shade under and that is part of why it read as having no energy. */
+  const c=A.ctx, t=c.currentTime, nodes=[];
+  const out=c.createGain();
+  out.gain.setValueAtTime(0,t);
+  out.gain.linearRampToValueAtTime(0.023,t+0.045);
+  out.gain.linearRampToValueAtTime(0.0185,t+0.30);
+  out.connect(A.ctx.destination);
+
+  const lp=c.createBiquadFilter(); lp.type='lowpass'; lp.Q.value=2.1;
+  lp.frequency.setValueAtTime(Math.max(180,f*1.5),t);
+  lp.frequency.linearRampToValueAtTime(2600,t+0.07);     // the blow
+  lp.frequency.linearRampToValueAtTime(1500,t+0.55);     // and it backs off
+  const f1=c.createBiquadFilter(); f1.type='peaking'; f1.frequency.value=520;  f1.Q.value=1.2; f1.gain.value=11;
+  const f2=c.createBiquadFilter(); f2.type='peaking'; f2.frequency.value=1150; f2.Q.value=1.5; f2.gain.value=7;
+  const f3=c.createBiquadFilter(); f3.type='peaking'; f3.frequency.value=2300; f3.Q.value=1.8; f3.gain.value=5;
+  lp.connect(f1); f1.connect(f2); f2.connect(f3); f3.connect(out);
+
+  const oscs=[];
+  [-7,7].forEach(cents=>{                                 // two, so they beat
+    const o=c.createOscillator(); o.type='sawtooth';
+    o.frequency.value=f*Math.pow(2,cents/1200);
+    o.connect(lp); o.start(t); nodes.push(o); oscs.push({o,cents});
+  });
+
+  const vib=c.createOscillator(), vg=c.createGain();      // arrives late
+  vib.frequency.value=5.4;
+  vg.gain.setValueAtTime(0,t); vg.gain.setValueAtTime(0,t+0.26);
+  vg.gain.linearRampToValueAtTime(f*0.006,t+0.65);
+  vib.connect(vg); vib.start(t); nodes.push(vib);
+
+  const shim=c.createOscillator(), sg=c.createGain();     // never perfectly steady
+  shim.frequency.value=4.3; sg.gain.value=0.0012;
+  shim.connect(sg); sg.connect(out.gain); shim.start(t); nodes.push(shim);
+
+  if(A.noise){                                            // breath on the attack
+    const n=c.createBufferSource(); n.buffer=A.noise; n.loop=true;
+    const bp=c.createBiquadFilter(); bp.type='bandpass'; bp.frequency.value=1700; bp.Q.value=0.9;
+    const ng=c.createGain();
+    ng.gain.setValueAtTime(0,t);
+    ng.gain.linearRampToValueAtTime(0.010,t+0.03);
+    ng.gain.exponentialRampToValueAtTime(0.0012,t+0.34);  // settles to a trace
+    n.connect(bp); bp.connect(ng); ng.connect(out);
+    n.start(t); nodes.push(n);
+  }
+  return {out,nodes,oscs,lp,vg,f};
+}
+function releaseVoice(v){
+  if(!v||!A.ready) return;
+  const c=A.ctx, r=c.currentTime;
+  try{
+    const now=v.out.gain.value;
+    v.out.gain.cancelScheduledValues(r);
+    v.out.gain.setValueAtTime(now,r);
+    v.out.gain.linearRampToValueAtTime(0,r+0.09);
+  }catch(_){}
+  v.nodes.forEach(n=>{ try{ n.stop(r+0.12); }catch(_){} });
+}
+
+/* The loop is Am - F - C - G, so the bass gives exactly those four roots:
+   F1 G1 A1 C2. An earlier mapping used A C E G, which had no F at all \u2014 the
+   moment the loop reached the F chord there was nothing to land on.
+   Laid out so pitch falls as you move left, and falls again dropping to the
+   row below, which makes a descending run 6-5-4-1 (C A G F) a natural motion. */
+const PAD={
+  '7':{t:'lead',f:440,   n:'A'},   // A4  \
+  '8':{t:'lead',f:523.25,n:'C'},   // C5   > A-minor triad, sits over all 4 chords
+  '9':{t:'lead',f:659.25,n:'E'},   // E5  /
+  '1':{t:'bass',f:87.31, n:'F'},   // F2  lowest
+  '4':{t:'bass',f:98.00, n:'G'},   // G2
+  '5':{t:'bass',f:110.0, n:'A'},   // A2
+  '6':{t:'bass',f:130.81,n:'C'},   // C3
+  '0':{t:'kick'},        '.':{t:'snare'},
+};
+
+const voices={};
+function capOf(k){ return document.querySelector('.kc[data-k="'+(k==='.'?'dot':k)+'"]'); }
+function padKeyFrom(e){
+  if(e.code && e.code.startsWith('Numpad')){
+    const tail=e.code.slice(6);
+    if(tail==='Decimal') return '.';
+    if(/^\d$/.test(tail)) return tail;
+  }
+  return /^[0-9.]$/.test(e.key) ? e.key : null;
+}
+function padDown(k){
+  const hit=PAD[k]; if(!hit) return false;
+  const el=capOf(k);
+  if(hit.t==='kick'||hit.t==='snare'){
+    (hit.t==='kick'?kick:snare)();
+    recEv(k,true);
+    if(el){ el.classList.add('lit'); setTimeout(()=>el.classList.remove('lit'),110); }
+    return true;
+  }
+  if(voices[k] || TROMB_LIVE.has(k)) return true;   // already being held
+  if(A.ready&&A.on){
+    if(hit.t==='bass') TROMB_LIVE.down(k,hit.f);      // one slide, one note
+    else voices[k]=startLead(hit.f);
+  }
+  recEv(k,true);
+  if(el) el.classList.add('lit');
+  return true;
+}
+function padUp(k){
+  const hit=PAD[k];
+  if(hit && hit.t==='bass'){ TROMB_LIVE.up(k); recEv(k,false); }
+  else if(voices[k]){ releaseVoice(voices[k]); delete voices[k]; recEv(k,false); }
+  const el=capOf(k); if(el) el.classList.remove('lit');
+}
+function releaseAllPad(){
+  TROMB_LIVE.allUp();
+  Object.keys(voices).forEach(padUp);
+  document.querySelectorAll('.kc.lit').forEach(e=>e.classList.remove('lit'));
+}
+
+/* ============================================================
+   LOOPER
+   One loop is exactly one pass of the chord progression (16 steps), so a
+   recorded part can never drift out of phase with the backing loop no matter
+   how sloppily it was played in. Recording therefore does not begin the
+   instant you hit REC \u2014 it arms, and starts on the next downbeat. That is the
+   whole trick: you get a free count-in, and the loop seams line up by
+   construction rather than by you being precise.
+
+   Loop playback keeps its OWN voice registry. Sharing `voices` with the live
+   keys would mean a recorded note and your finger on the same key fighting
+   over one slot, and whichever released first would cut the other off.
+   ============================================================ */
+const CYCLE_SEC = 16 * 0.380;
+const LOOP = {
+  state:'empty',   // empty -> armed -> rec -> play
+  ev:[],           // committed events: {t seconds into cycle, k, down}
+  pend:[],         // events captured during the current recording pass
+  origin:0,        // ctx time the current cycle began
+  cursor:0,        // index into ev of the next event due
+  voices:{},
+  timer:null
+};
+function loopDown(k){
+  const hit=PAD[k]; if(!hit) return;
+  if(hit.t==='kick'||hit.t==='snare'){
+    (hit.t==='kick'?kick:snare)();
+    const el=capOf(k);
+    if(el){ el.classList.add('loop'); setTimeout(()=>el.classList.remove('loop'),110); }
+    return;
+  }
+  if(LOOP.voices[k] || TROMB_LOOP.has(k)) return;
+  if(A.ready&&A.on){
+    if(hit.t==='bass') TROMB_LOOP.down(k,hit.f);
+    else LOOP.voices[k]=startLead(hit.f);
+  }
+  const el=capOf(k); if(el) el.classList.add('loop');
+}
+function loopUp(k){
+  const hit=PAD[k];
+  if(hit && hit.t==='bass') TROMB_LOOP.up(k);
+  else if(LOOP.voices[k]){ releaseVoice(LOOP.voices[k]); delete LOOP.voices[k]; }
+  const el=capOf(k); if(el) el.classList.remove('loop');
+}
+function loopReleaseAll(){
+  TROMB_LOOP.allUp();
+  Object.keys(LOOP.voices).forEach(loopUp);
+  document.querySelectorAll('.kc.loop').forEach(e=>e.classList.remove('loop'));
+}
+
+/* Called by the music clock on every downbeat \u2014 the music owns the grid, so
+   the looper cannot drift away from it. */
+function commitTake(){
+  if(!LOOP.pend.length) return;
+  LOOP.ev=LOOP.ev.concat(LOOP.pend).sort((a,b)=>a.t-b.t);
+  LOOP.pend=[];
+}
+function loopBoundary(){
+  if(LOOP.state==='armed'){ LOOP.state='rec'; LOOP.pend=[]; }
+  else if(LOOP.state==='rec'){
+    commitTake();
+    LOOP.state=LOOP.ev.length?'play':'empty';
+  }
+  LOOP.origin=A.ready?A.ctx.currentTime:0;
+  LOOP.cursor=0;
+  loopReleaseAll();      // also cleans up any note still held across the seam
+  updateLoopUI();
+}
+function loopTick(){
+  if(!A.ready||!A.on) return;
+  if(LOOP.state!=='play'&&LOOP.state!=='rec') return;
+  const pos=A.ctx.currentTime-LOOP.origin;
+  while(LOOP.cursor<LOOP.ev.length && LOOP.ev[LOOP.cursor].t<=pos){
+    const e=LOOP.ev[LOOP.cursor++];
+    if(e.down) loopDown(e.k); else loopUp(e.k);
+  }
+}
+/* Capture a live key press into the take. A note still held when the cycle
+   ends simply has no matching release \u2014 loopBoundary clears it, which is the
+   musically sensible outcome anyway. */
+function recEv(k,down){
+  if(LOOP.state!=='rec'||!A.ready) return;
+  const t=A.ctx.currentTime-LOOP.origin;
+  if(t>=0 && t<CYCLE_SEC) LOOP.pend.push({t,k,down});
+}
+function loopRec(){
+  if(!A.ready) return;
+  if(LOOP.state==='empty'||LOOP.state==='play'){
+    // An overdub arms exactly like the first take. Dropping straight into 'rec'
+    // here looks right but isn't: the take would open mid-bar and then close at
+    // the very next downbeat, so the pass is over before you can play into it.
+    LOOP.state='armed';
+  } else if(LOOP.state==='armed'){
+    LOOP.state=LOOP.ev.length?'play':'empty';      // tapped twice: stand down
+  } else if(LOOP.state==='rec'){
+    commitTake();                                  // bail early, but keep the take
+    LOOP.state=LOOP.ev.length?'play':'empty';
+  }
+  updateLoopUI();
+}
+function loopClear(){
+  LOOP.ev=[]; LOOP.pend=[]; LOOP.cursor=0; LOOP.state='empty';
+  loopReleaseAll(); updateLoopUI();
+}
+function updateLoopUI(){
+  const rec=document.querySelector('.kc[data-k="rec"]');
+  if(rec){
+    rec.classList.toggle('armed',   LOOP.state==='armed');
+    rec.classList.toggle('recording',LOOP.state==='rec');
+    rec.classList.toggle('lit',     LOOP.state==='play');
+  }
+  const h=document.getElementById('loopHint');
+  if(h) h.textContent =
+    LOOP.state==='armed' ? 'ARMED \u2014 recording starts on the next downbeat' :
+    LOOP.state==='rec'   ? 'RECORDING \u2014 play; it captures one pass of the progression' :
+    LOOP.state==='play'  ? 'LOOPING '+LOOP.ev.length+' notes \u2014 + to overdub \u00b7 \u2212 to erase' :
+    '+ to record a 4-bar loop (starts on the downbeat) \u00b7 + again to overdub \u00b7 \u2212 to erase';
+}
+function loopKeyFrom(e){
+  if(e.code==='NumpadAdd'||e.key==='+') return 'rec';
+  if(e.code==='NumpadSubtract'||e.key==='-') return 'clr';
+  return null;
+}
+// used by the clickable keycaps: press, then let go shortly after
+function padFire(k){
+  if(!padDown(k)) return false;
+  if(PAD[k] && (PAD[k].t==='lead'||PAD[k].t==='bass')) setTimeout(()=>padUp(k),280);
+  return true;
+}
+
+
+/* ---------- THE SLIDE ----------
+   A trombone has one slide, so it plays one note and GLIDES between them.
+   Giving every key its own voice made it a brass-ish organ; this makes it an
+   instrument. Hold a bass key and press another and the pitch slides rather
+   than retriggering - release the second and it slides back to the one still
+   held. The glide is a touch longer for a wider interval, because a longer
+   throw of the slide takes longer.                                         */
+function Tromb(){
+  let v=null, held=[];
+  const glideTo=(f,from)=>{
+    const c=A.ctx, t=c.currentTime;
+    const jump=Math.abs(Math.log2(f/from));            // in octaves
+    const gl=Math.min(0.26, 0.07+jump*0.30);
+    v.oscs.forEach(({o,cents})=>{
+      const target=f*Math.pow(2,cents/1200);
+      o.frequency.cancelScheduledValues(t);
+      o.frequency.setValueAtTime(o.frequency.value,t);
+      o.frequency.exponentialRampToValueAtTime(target,t+gl);
+    });
+    v.lp.frequency.cancelScheduledValues(t);           // the horn re-blows a little
+    v.lp.frequency.setValueAtTime(v.lp.frequency.value,t);
+    v.lp.frequency.linearRampToValueAtTime(2200,t+gl*0.6);
+    v.lp.frequency.linearRampToValueAtTime(1500,t+gl+0.35);
+    v.f=f;
+  };
+  return {
+    down(k,f){
+      held=held.filter(h=>h.k!==k); held.push({k,f});
+      if(v) glideTo(f, v.f); else v=startBass(f);
+    },
+    up(k){
+      held=held.filter(h=>h.k!==k);
+      if(!v) return;
+      if(held.length) glideTo(held[held.length-1].f, v.f);
+      else { releaseVoice(v); v=null; }
+    },
+    allUp(){ held=[]; if(v){ releaseVoice(v); v=null; } },
+    has(k){ return held.some(h=>h.k===k); },
+    get sounding(){ return !!v; },
+    get pitch(){ return v ? v.oscs[0].o.frequency.value : 0; },   // read the slide
+  };
+}
+const TROMB_LIVE=Tromb(), TROMB_LOOP=Tromb();
+
+/* A bench tap. Script-scope consts are invisible to an injected test context,
+   so audio behaviour could only ever be asserted by ear - which is how the
+   bass got shipped 8.8 dB hot once already. This lets the slide, the levels
+   and the voice count be measured from outside. */
+window.JAM_BENCH={ A, TROMB_LIVE, TROMB_LOOP, startBass, startLead, releaseVoice,
+                   get liveVoices(){ return Object.keys(voices); } };
+
+/* ---- wiring ---- */
+/* The lamp is a toggle: click it again and the strip goes away. */
+function reveal(host){
+  if(JAM.host){
+    JAM.armed=false; releaseAllPad();
+    JAM.host.remove(); JAM.host=null;
+    return;
+  }
+  JAM.host=document.createElement('div'); JAM.host.id='jamHost';
+  JAM.host.innerHTML=PAD_HTML+
+    '<div class="hint" id="loopHint" style="margin-top:4px"></div>';
+  host.appendChild(JAM.host);
+  JAM.host.addEventListener('click',e=>{
+    e.stopPropagation();
+    const cap=e.target.closest('.kc'); if(!cap) return;
+    const d=cap.dataset.k;
+    if(d==='rec') return loopRec();
+    if(d==='clr') return loopClear();
+    padFire(d==='dot'?'.':d);
+  });
+  JAM.armed=true;
+  updateLoopUI();
+}
+window.addEventListener('keydown',e=>{
+  if(!JAM.armed) return;
+  const k=padKeyFrom(e);
+  if(k){ e.preventDefault(); if(!e.repeat) padDown(k); return; }
+  const lk=loopKeyFrom(e);
+  if(lk){ e.preventDefault(); if(!e.repeat){ lk==='rec'?loopRec():loopClear(); } }
+});
+window.addEventListener('keyup',e=>{
+  if(!JAM.armed) return;
+  const k=padKeyFrom(e); if(k){ e.preventDefault(); padUp(k); }
+});
+window.addEventListener('blur',()=>{ if(JAM.armed) releaseAllPad(); });
+
+function closePad(){ if(JAM.host){ JAM.armed=false; releaseAllPad();
+  JAM.host.remove(); JAM.host=null; } }
+return {reveal, closePad, startMusic, stopMusic, releaseAllPad,
+        teardown(){ JAM.armed=false; releaseAllPad(); stopMusic();
+                    if(JAM.host){ JAM.host.remove(); JAM.host=null; } }};
+})();
+
+</script>
+<!-- Levels register themselves; add a file here and it appears on the menu. -->
+<script>
+
+'use strict';
+/* ============================================================
+   LEVEL ZERO \u2014 the interaction grammar, nothing else.
+   A panel reveals. A wheel controls. A gauge responds.
+
+   Everything this file does is geometry, scenery composition and
+   script. Water, scenery pieces, the valve, the gauge, sound and the
+   shell all come from engine.js \u2014 this level cannot disagree with
+   another level about how any of them behave.
+   ============================================================ */
+function startLevel0(){
+const A=LPE.art, P=LPE.palette, W=900, H=400;
+
+const PANEL={x:232,y:142,w:452,h:190};
+const PIPE_Y=262, R=11;
+const VALVE_X=338, WHEEL_R=26, WHEEL_Y=PIPE_Y-R-10-26;
+const GAUGE={x:584,y:196,r:33};
+const LAMP={x:458,y:96};
+/* The Thermal Reservoir header is 60 psig everywhere on the base. This read
+   42 while the Garden manifold in level one sits at 60 off the same source,
+   which cannot both be true. */
+const P_SUPPLY=60, TURNS=2;
+
+const S={phase:'closed',slide:0,turn:0,open:0,press:0,drag:false,lastAng:0,
+         flick:1,dripT:0,dripY:-1};
+
+/* The line: full and still upstream of the shut valve, air beyond it.
+   Both facts are the engine's rules, not this level's invention. */
+const line=new LPE.Line({r:R,segments:[
+  // live off the reservoir
+  {ax:PANEL.x-6, ay:PIPE_Y, bx:VALVE_X,            by:PIPE_Y, flow:0, fill:1},
+  // dead leg to the lab
+  {ax:VALVE_X,   ay:PIPE_Y, bx:PANEL.x+PANEL.w+6,  by:PIPE_Y, flow:0, fill:0},
+]});
+
+/* ---------------- scenery, composed once ---------------- */
+let BG,dust=[];
+for(let i=0;i<34;i++) dust.push({x:LAMP.x-90+Math.random()*180,y:LAMP.y+Math.random()*230,
+  s:4+Math.random()*9,p:Math.random()*6.3});
+function buildScene(){
+  BG=document.createElement('canvas'); BG.width=W; BG.height=H;
+  const g=BG.getContext('2d');
+  A.wall(g,W,H); A.rib(g,0,H); A.rib(g,862,H); A.ceiling(g,W);
+  A.overhead(g,W,62,8,false);
+  A.overhead(g,W,92,9,true);
+  A.floor(g,W,352);
+  A.vignetteOnto(g,W,H);   // room first, then signage and props on top
+  A.stencil(g,52,132,'SECTION 4-B',20,'#8b949b');
+  A.stencil(g,52,152,'HAND-OPERATED \u2014 NO REMOTE',15);
+  A.arrow(g,846,300,'BIO LAB 1');
+  A.placard(g,724,116);
+  A.lampHousing(g,LAMP.x,LAMP.y);
+  A.toolbox(g,96,312);
+  A.clipboard(g,790,158);
+  A.dither(g,0,0,170,120,P.shadow,0.26);
+  A.dither(g,W-170,0,170,120,P.shadow,0.26);
+
+  // the recess the panel covers
+  g.fillStyle='#0c1114'; g.fillRect(PANEL.x-12,PANEL.y-12,PANEL.w+24,PANEL.h+24);
+  g.fillStyle=P.light; g.fillRect(PANEL.x-12,PANEL.y-12,PANEL.w+24,4);
+  g.fillStyle=P.mid;   g.fillRect(PANEL.x-12,PANEL.y+PANEL.h+8,PANEL.w+24,4);
+  g.fillStyle='#2b353b';
+  for(let x=PANEL.x-4;x<PANEL.x+PANEL.w+8;x+=38){
+    g.fillRect(x,PANEL.y-9,3,3); g.fillRect(x,PANEL.y+PANEL.h+11,3,3); }
+  g.fillStyle='#161d21';
+  g.fillRect(PANEL.x-12,PANEL.y-6,PANEL.w+24,5);
+  g.fillRect(PANEL.x-12,PANEL.y+PANEL.h+1,PANEL.w+24,5);
+  g.fillStyle='#070a0c'; g.fillRect(PANEL.x,PANEL.y,PANEL.w,PANEL.h);
+  A.dither(g,PANEL.x,PANEL.y,PANEL.w,40,'#000000',0.5);
+
+}
+
+/* ---------------- script ---------------- */
+/* The picture carries the state. These lines are a person talking, not a
+   caption describing what is already on screen. */
+function lines(){
+  switch(S.phase){
+    case 'closed': return ['Open the panel.',
+      '<span class="who">COMMS:</span> Access panel, right in front of you. Slide it across. '+
+      'Nothing automated down this end, it is all turned by hand.'];
+    case 'opening': return ['Open the panel.',
+      '<span class="who">COMMS:</span> Put your back into it.'];
+    case 'open': return ['Turn the wheel.',
+      '<span class="who">COMMS:</span> Couple of full turns. Watch the gauge &mdash; it is on the '+
+      'lab side of the valve, so it tells you what they are actually getting.'];
+    case 'turning': return ['Keep turning.',
+      '<b>'+S.press.toFixed(0)+' psig</b> at the lab.'];
+    default: return ['That is water into Bio Lab One.',
+      '<span class="who">COMMS:</span> Good. Find the panel, work the valve, read the gauge &mdash; '+
+      'that is the job down this end, and the engineer you are standing in for did it for six years. '+
+      'Play your cards right, you might make a decent one yourself.'];
+  }
+}
+function say(){ const [t,l]=lines(); SH.say(t,l); }
+
+/* ---------------- simulation ---------------- */
+function step(dt){
+  if(S.phase==='opening'){
+    S.slide=Math.min(1,S.slide+dt/0.95);
+    if(S.slide>=1){ S.phase='open'; LPE.audio.clunk(); say(); }
+  }
+  const up=line.segs[0], down=line.segs[1];
+  if(S.phase==='turning'||S.phase==='flowing'){
+    const f=S.open>0.04?S.open:0;
+    up.flow  += (f-up.flow)*Math.min(1,dt/0.5);
+    down.flow = up.flow;
+    if(f>0) down.fill=Math.min(1,down.fill+dt*f*0.75);
+    // the lab-side gauge only reads once water has actually reached it
+    const target=P_SUPPLY*S.open*Math.min(1,down.fill/0.85);
+    S.press+=(target-S.press)*Math.min(1,dt/0.3);
+    LPE.audio.flow(up.flow);
+    if(S.phase==='turning' && down.fill>=1 && S.press>14){
+      S.phase='flowing'; say();
+      /* Level zero had no completion state whatsoever - water ran and that
+         was simply the end of it, with no way through to level one. */
+      SH.finish({ lesson:lines()[1],
+        line:'<span class="accent">Bio Lab One has water.</span> That is one valve, '+
+             'by hand, on the oldest run on the base. Everything after this is the '+
+             'same job with more of it happening at once.' });
+    }
+  }
+  line.update(dt);
+}
+
+/* ---------------- frame ---------------- */
+function draw(g,dt,t){
+  g.drawImage(BG,0,0);
+
+  /* The lamp is on the wall face, so its light falls on the wall \u2014 it
+     cannot reach into the chase behind the panel. Clipping the recess out
+     of the cone (and out of the dust) keeps that true whether the cover is
+     open or shut. */
+  S.flick += ((Math.random()<0.012?0.55:1)-S.flick)*Math.min(1,dt/0.05);
+  g.save();
+  g.beginPath();
+  g.rect(0,0,W,H);
+  g.rect(PANEL.x-12,PANEL.y-12,PANEL.w+24,PANEL.h+24);
+  g.clip('evenodd');
+  g.globalAlpha=0.15*S.flick; g.fillStyle=P.lamp;
+  g.beginPath(); g.moveTo(LAMP.x-22,LAMP.y+6); g.lineTo(LAMP.x+22,LAMP.y+6);
+  g.lineTo(LAMP.x+190,352); g.lineTo(LAMP.x-190,352); g.closePath(); g.fill();
+  g.globalAlpha=1; g.fillStyle='rgba(255,217,160,0.33)';
+  dust.forEach(d=>{ d.y+=d.s*dt; if(d.y>340){ d.y=LAMP.y+10; d.x=LAMP.x-90+Math.random()*180; }
+    g.fillRect(d.x+Math.sin(t*0.6+d.p)*7,d.y,1,1); });
+  g.restore();
+
+  S.dripT+=dt;
+  if(S.dripY<0 && S.dripT>3.4){ S.dripY=104; S.dripT=0; }
+  if(S.dripY>=0){
+    S.dripY+=170*dt; g.fillStyle=P.water; g.fillRect(220,S.dripY,2,4);
+    if(S.dripY>348){ S.dripY=-1; LPE.audio.drip(); }
+  }
+
+  g.save(); g.beginPath(); g.rect(PANEL.x,PANEL.y,PANEL.w,PANEL.h); g.clip();
+  LPE.pipeRun(g,PANEL.x,PANEL.x+PANEL.w,PIPE_Y,R);
+  LPE.penetration(g,PANEL.x+4,PIPE_Y,R);
+  LPE.penetration(g,PANEL.x+PANEL.w-16,PIPE_Y,R);
+  LPE.valveShell(g,VALVE_X,PIPE_Y,R);
+  line.draw(g);
+  LPE.valveTrim(g,VALVE_X,PIPE_Y,R,WHEEL_Y,S.open*LPE.WHEEL_SWEEP,WHEEL_R,S.phase==='open',S.open);
+  g.strokeStyle=P.light; g.lineWidth=4;
+  g.beginPath(); g.moveTo(GAUGE.x,PIPE_Y-R-6); g.lineTo(GAUGE.x,GAUGE.y+GAUGE.r); g.stroke();
+  LPE.gauge(g,GAUGE.x,GAUGE.y,GAUGE.r,S.press,80);
+  g.restore();
+
+  if(S.slide<1){
+    const sx=PANEL.x+S.slide*(PANEL.w+20);
+    g.fillStyle='#2e3338'; g.fillRect(sx,PANEL.y,PANEL.w,PANEL.h);
+    g.fillStyle='#3b4147'; g.fillRect(sx,PANEL.y,PANEL.w,3);
+    g.fillStyle='#1d2225'; g.fillRect(sx,PANEL.y+PANEL.h-3,PANEL.w,3);
+    g.strokeStyle='#454c52'; g.lineWidth=2; g.strokeRect(sx+4,PANEL.y+4,PANEL.w-8,PANEL.h-8);
+    A.dither(g,sx+30,PANEL.y+22,84,15,P.rust,0.3);
+    A.dither(g,sx+PANEL.w-170,PANEL.y+PANEL.h-50,110,13,P.rust,0.26);
+    A.dither(g,sx,PANEL.y+PANEL.h-26,PANEL.w,26,P.shadow,0.35);
+    A.stencil(g,sx+30,PANEL.y+74,'BIO LAB ONE SUPPLY',25,P.stencil);
+    A.stencil(g,sx+30,PANEL.y+98,'THERMAL RESERVOIR \u2014 LINE 1',16);
+    A.handNote(g,sx+32,PANEL.y+144,'wheel sticks. keep turning.  \u2014 R.O.');
+    g.fillStyle='#565d64'; A.rr(g,sx+PANEL.w-54,PANEL.y+PANEL.h/2-28,20,56,6); g.fill();
+    g.strokeStyle='#848d96'; g.lineWidth=2; g.stroke();
+  }
+
+}
+
+/* ---------------- mount ---------------- */
+buildScene();
+const SH=LPE.mount({
+  t1:'BIO LAB ONE \u2014 SUPPLY PANEL',
+  t2:'Thermal Reservoir feed \u00b7 Section 4-B \u00b7 manual',
+  w:W,h:H,step,draw,
+  /* The opening is the engine's three-beat template, same as level one. */
+  intro:[
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+     text:'&ldquo;Bio Lab One has got no water.<br>Get down to Section 4-B and open their supply, would you?&rdquo;'},
+    {kind:'place',
+     text:'Four-B is the oldest run on the base. No actuators, no remote, no screens &mdash; '+
+          'just lines on brackets and wheels you turn yourself.<br><br>'+
+          'Everything down here came off the <span class="accent">Thermal Reservoir</span>, '+
+          'and everything down here has been worked on by someone before you.'},
+    {kind:'title', eyebrow:'SECTION 4-B \u00b7 MANUAL SERVICES',
+     title:'BIO LAB ONE SUPPLY', sub:'THERMAL RESERVOIR \u00b7 LINE 1'},
+  ],
+  onReset(){
+    Object.assign(S,{phase:'closed',slide:0,turn:0,open:0,press:0,drag:false});
+    line.set(0,{flow:0,fill:1}); line.set(1,{flow:0,fill:0});
+    LPE.audio.flow(0); say();
+  },
+});
+
+const cv=SH.canvas;
+cv.addEventListener('pointerdown',e=>{
+  LPE.audio.init(); LPE.audio.resume();
+  const p=SH.pt(e);
+  if(S.phase==='closed'){ S.phase='opening'; LPE.audio.scrape(); say(); return; }
+  if(S.phase!=='opening' && Math.hypot(p.x-VALVE_X,p.y-WHEEL_Y)<WHEEL_R+18){
+    S.drag=true; S.lastAng=Math.atan2(p.y-WHEEL_Y,p.x-VALVE_X);
+    cv.setPointerCapture(e.pointerId); LPE.audio.startFlow();
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(!S.drag) return;
+  const p=SH.pt(e), a=Math.atan2(p.y-WHEEL_Y,p.x-VALVE_X);
+  let d=a-S.lastAng;
+  while(d>Math.PI) d-=6.2832; while(d<-Math.PI) d+=6.2832;
+  S.lastAng=a;
+  const before=S.open;
+  S.open=Math.max(0,Math.min(1,S.open+d/(TURNS*6.2832)));   // the wheel follows this, so it cannot over-travel
+  if(S.open>0 && S.phase==='open') S.phase='turning';
+  if(Math.floor(S.open*16)!==Math.floor(before*16)) LPE.audio.tick();
+  say();
+});
+['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>{S.drag=false;}));
+cv.addEventListener('keydown',e=>{
+  if(S.phase==='closed'&&(e.key==='Enter'||e.key===' ')){
+    e.preventDefault(); LPE.audio.init(); S.phase='opening'; LPE.audio.scrape(); say(); return; }
+  if(e.key==='ArrowRight'||e.key==='ArrowUp'){
+    e.preventDefault(); LPE.audio.init(); LPE.audio.startFlow();
+    S.open=Math.min(1,S.open+0.4/(TURNS*6.2832));
+    if(S.phase==='open') S.phase='turning';
+    LPE.audio.tick(); say(); }
+});
+say();
+}
+
+/* Registered so the game shell can launch it; still runs on its own if
+   this file is opened directly, which is how a single level is iterated. */
+(window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
+  label:"LEVEL 0 \u2014 BIO LAB ONE SUPPLY",
+  sub:"Section 4-B  \u00b7  manual",
+  start:startLevel0,
+});
+if(!window.LPE_GAME) startLevel0();
+
+</script>
+<script>
+
+'use strict';
+/* ============================================================
+   LEVEL ONE - THE GARDEN, BIO-GROW BAY 3
+
+   A PORT, not a rewrite. The handoff locks this level's working parts, so
+   every constant, the network solve, the air-fill model and all six steps
+   are carried over unchanged from the original build. What changed is only
+   what it sits on: the engine's shell, water model, valves and gauges
+   instead of its own private copies.
+
+   If this plays differently from the original, that is a bug in the port.
+   ============================================================ */
+function startLevel1(){
+const A=LPE.art, P=LPE.palette, W=900, H=400;
+
+/* ---------- geometry (verbatim) ---------- */
+const MAIN_Y=86, TRUNK_X=320, POD_X=812;
+const BR_Y=[170,256,342];
+const R_MAIN=11, R_BR=10;
+const RED_X0=600, RED_X1=680, RED_R=4.6;      // the spliced-in reducer on bay 3
+const VALVE_X=410, WHEEL_R=18, STEM=24;
+const BR_LEN=POD_X-TRUNK_X;
+const wheelMainX=170;
+const wheels=[
+  {key:'main',x:wheelMainX,y:MAIN_Y,  label:'MAIN SUPPLY'},
+  {key:'b0',  x:VALVE_X,y:BR_Y[0],label:'BED 1'},
+  {key:'b1',  x:VALVE_X,y:BR_Y[1],label:'BED 2'},
+  {key:'b2',  x:VALVE_X,y:BR_Y[2],label:'BED 3'},
+];
+
+/* ---------- physics (verbatim) ---------- */
+const P_SUP=60, SG=1.0;
+const CV_MAIN_MAX=7, CV_BR_MAX=4, CV_REDUCER=2.2;
+const valves={main:0,b0:0,b1:0,b2:0};
+const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));
+/* Manifold pressure is STATE, not recomputed each frame. Water is
+   incompressible: shut the main with every bed shut and that volume is
+   trapped - it holds whatever pressure it had, because nothing can leave. */
+let pManHeld=0;
+const P_TAU=0.22;
+function solve(){
+  const cvMain=CV_MAIN_MAX*valves.main;
+  const cv=[CV_BR_MAX*valves.b0, CV_BR_MAX*valves.b1, 0];
+  const raw2=CV_BR_MAX*valves.b2;
+  cv[2]= raw2>0 ? seriesCv(raw2,CV_REDUCER) : 0;   // bed 3 runs through the reducer
+  const cvSum=cv[0]+cv[1]+cv[2];
+  let pTarget;
+  if(cvMain<=0){
+    pTarget=(cvSum<=0) ? pManHeld : 0;             // isolated and full = trapped
+  } else if(cvSum<=0){
+    pTarget=P_SUP;                                 // dead-headed against the header
+  } else {
+    pTarget=P_SUP*(cvMain*cvMain)/(cvMain*cvMain+cvSum*cvSum);
+  }
+  const pMan=pManHeld;                             // flows follow pressure that is
+  const root=Math.sqrt(Math.max(0,pMan)/SG);       // actually there, not the target
+  const q=cv.map(c=>c*root);
+  return {cvMain,cv,cvSum,pMan,pTarget,q,qTot:q[0]+q[1]+q[2]};
+}
+
+/* ---------- air fill (verbatim) ----------
+   New pipe is full of air at room pressure. Water stands to each closed
+   valve and has to push the air out of the emitters before it reaches root. */
+const FILL_START=(VALVE_X-TRUNK_X)/BR_LEN;
+const fill=[FILL_START,FILL_START,FILL_START];
+const FILL_RATE=12;
+const venting=i=>fill[i]>FILL_START+0.001 && fill[i]<1;
+
+/* ---------- water on the engine's model ----------
+   The trunk is split at every tee: flow is constant BETWEEN tees and changes
+   AT them, and each piece owns its particles so none can strand at a
+   velocity boundary. That is the original's own fix, now the engine's rule. */
+/* Split at the main valve. The header side is fed from the Thermal Reservoir
+   and is ALWAYS full and standing - it was previously one segment with the
+   manifold side, so before the valve opened there was nothing visibly sitting
+   against the seat. */
+/* The run the engine draws, expressed for the water too: straight to the
+   first elbow, round it, down the riser, round the second, out to bed 3.
+   BEND is the same long-radius value the piping uses (3 x bore radius). */
+const BEND=3*R_MAIN;
+const E1={x:TRUNK_X,y:MAIN_Y}, E2={x:TRUNK_X,y:BR_Y[2]};
+const main=new LPE.Line({r:R_MAIN,segments:[
+  {ax:30,ay:MAIN_Y,bx:wheelMainX,by:MAIN_Y,fill:1},            // reservoir header
+  {ax:wheelMainX,ay:MAIN_Y,bx:E1.x-BEND,by:MAIN_Y,fill:1},     // into the manifold
+  {arc:{cx:E1.x-BEND,cy:E1.y+BEND,R:BEND,a0:-Math.PI/2,a1:0},fill:1},   // elbow down
+]});
+const trunk=new LPE.Line({r:R_MAIN,segments:[
+  {ax:TRUNK_X,ay:E1.y+BEND,bx:TRUNK_X,by:BR_Y[0],fill:1},      // carries all three
+  {ax:TRUNK_X,ay:BR_Y[0],bx:TRUNK_X,by:BR_Y[1],fill:1},        // bed 1 has tapped off
+  {ax:TRUNK_X,ay:BR_Y[1],bx:TRUNK_X,by:E2.y-BEND,fill:1},      // only bed 3 left
+  {arc:{cx:E2.x+BEND,cy:E2.y-BEND,R:BEND,a0:Math.PI,a1:Math.PI/2},fill:1}, // elbow out
+]});
+/* The bay as it is actually built: a run from the header that turns down
+   into the riser, three branches teed off it, and the reducer somebody
+   spliced into bay 3. Corners become real elbows; the engine draws every
+   bore last so no fitting can close another one off. */
+const NET=LPE.piping({
+  lines:[
+    /* One continuous run: header, down the riser, out to bed 3. Both
+       corners are elbows. The riser TERMINATES at bed 3 - it is not a tee
+       there - and drawing it as one stopped the butt-capped riser leaving
+       bed 3 hanging off its end. */
+    {pts:[[30,MAIN_Y],[TRUNK_X,MAIN_Y],[TRUNK_X,BR_Y[2]],[RED_X0,BR_Y[2]]], r:R_MAIN},
+    {pts:[[RED_X1,BR_Y[2]],[POD_X,BR_Y[2]]], r:R_MAIN},  // past it, same bore in as out
+    {pts:[[TRUNK_X,BR_Y[0]],[POD_X,BR_Y[0]]], r:R_BR},
+    {pts:[[TRUNK_X,BR_Y[1]],[POD_X,BR_Y[1]]], r:R_BR},
+  ],
+  // only beds 1 and 2 are taken off the riser as branches
+  tees:[{x:TRUNK_X,y:BR_Y[0],r:R_MAIN,branch:R_BR},
+        {x:TRUNK_X,y:BR_Y[1],r:R_MAIN,branch:R_BR}],
+  // one fitting: taper in, throat, taper out
+  reducers:[{x0:RED_X0,x1:RED_X1,y:BR_Y[2],r1:R_MAIN,r2:RED_R}],
+  fittings:[{x:wheelMainX-54,y:MAIN_Y,r:R_MAIN,kind:"union"}],
+});
+/* Bay 3 runs full bore up to the reducer, squeezes through its throat, and
+   opens out again - three segments, so the water narrows only where the
+   fitting narrows it instead of the whole branch being drawn thin. */
+/* Water turns into a branch, it does not appear already running sideways.
+   Each tee gets a short bend off the riser (a tee turn is tight - nothing
+   like the long-radius elbows on the main run), and bed 3 picks up from
+   the elbow the riser already ends in. */
+const TEE_R=R_BR*1.6;
+const BR_SEGS=BR_Y.map((y,i)=> i!==2
+  ? [{arc:{cx:TRUNK_X+TEE_R,cy:y-TEE_R,R:TEE_R,a0:Math.PI,a1:Math.PI/2},r:R_BR},
+     {ax:TRUNK_X+TEE_R,ay:y,bx:POD_X,by:y,r:R_BR}]
+  : [{ax:TRUNK_X+BEND,ay:y,bx:RED_X0,by:y,r:R_BR},
+     {ax:RED_X0,ay:y,bx:RED_X1,by:y,r:RED_R,speed:2.2},   // sprints through
+     {ax:RED_X1,ay:y,bx:POD_X,by:y,r:R_BR}]);
+const branches=BR_Y.map((y,i)=>new LPE.Line({r:R_BR,
+  segments:BR_SEGS[i].map(s=>({...s,fill:0}))}));
+const BR_TOTAL=branches.map(b=>b.segs.reduce((t,s)=>t+s.len,0));
+
+/* Particle speed is scaled against what this bay can really carry, measured
+   from the solver rather than guessed. The old divisors (22 on the riser, 11
+   on a branch) clamped: with all three beds open the riser top segment
+   carries 44 gpm and the next 26, and both pinned to full and drew the same,
+   hiding the very thing the riser is there to show. */
+const FLOW_REF=(()=>{
+  const keep={...valves}, keepP=pManHeld;
+  const settle=v=>{ Object.assign(valves,v); let S=solve(); pManHeld=S.pTarget; return solve(); };
+  const all=settle({main:1,b0:1,b1:1,b2:1}).qTot;
+  const one=settle({main:1,b0:1,b1:0,b2:0}).q[0];
+  Object.assign(valves,keep); pManHeld=keepP;
+  return {riser:all, branch:one};
+})();
+
+/* ---------- the six steps (verbatim) ---------- */
+const STEPS=[
+  { keys:['main'], watch:-1,
+    task:'Open the MAIN SUPPLY valve. Drag the hand wheel.',
+    ok:()=>valves.main>=0.9,
+    lesson:'60 psig at the manifold &mdash; and <b>nothing is moving</b>. The line is full and under pressure with every bed still shut. Pressure is stored energy; flow is that energy being spent. They are not the same thing.' },
+  { keys:['b0'], watch:0,
+    task:'Open BED 1.',
+    ok:()=>valves.b0>=0.9,
+    lesson:'Flow starts the instant the valve gives that pressure somewhere to go &mdash; the valve did not create anything, it opened a path. And watch what left first: that run was new pipe, <b>full of air</b>, and the air had to vent out the emitters before water ever reached the roots. New pipe is full of air at room pressure, not empty and not under vacuum.' },
+  { keys:['b1'], watch:1,
+    task:'Open BED 2. Keep an eye on Bed 1\u2019s number.',
+    ok:()=>valves.b1>=0.9,
+    lesson:'Bed 1 <b>dropped</b> when Bed 2 opened, and nobody touched Bed 1. One supply, two demands &mdash; what divides at the tee is all there ever was.' },
+  { keys:['b2'], watch:2,
+    task:'Open BED 3.',
+    ok:()=>valves.b2>=0.9,
+    lesson:'Bed 3 is on the old run with a <b>reducer</b> in it. Same valve, same manifold pressure, noticeably less flow &mdash; and watch the particles sprint through that throat. Squeeze the bore and velocity goes up while pressure goes down. The restriction is in the pipe, not the valve.' },
+  { keys:['b0'], watch:2,
+    task:'Now throttle BED 1 back to about a quarter open \u2014 and watch Bed 3.',
+    ok:()=>valves.b0<=0.35,
+    lesson:'Bed 3 came up and nobody touched Bed 3. Add resistance to one branch and manifold pressure rises for every other branch. In a shared system <b>there is no local change</b>.' },
+  { keys:['b0','b1','b2'], watch:-1,
+    task:'Last job: balance the bay. Three identical beds should drink about the same \u2014 get all three within a gallon of each other.',
+    ok:()=>{ const S=solve(); const mn=Math.min(...S.q), mx=Math.max(...S.q);
+             return mn>=8 && (mx-mn)<=1.2; },
+    lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch &mdash; Bed 3 can never pass more than its reducer allows, so the other two had to come back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling, which is the real argument for pulling that reducer: it is not costing one bed, it is capping all three.' },
+];
+let step=0, done=false;
+const isLive=k=>!done && STEPS[step].keys.indexOf(k)>=0;
+
+/* ---------- scenery ---------- */
+let BG;
+function buildScene(){
+  BG=document.createElement('canvas'); BG.width=W; BG.height=H;
+  const g=BG.getContext('2d');
+  A.wall(g,W,H); A.rib(g,0,H); A.rib(g,862,H);
+  A.vignetteOnto(g,W,H);   // room first, then signage on top of it
+  A.stencil(g,52,H-26,'BIO-GROW BAY 3',18,'#8b949b');
+  A.stencil(g,52,H-10,'IRRIGATION MANIFOLD',14);
+}
+
+/* ---------- drawing ---------- */
+function branchHalfH(i,x){                       // the reducer narrows bay 3's bore
+  if(i!==2) return R_BR;
+  if(x<RED_X0) return R_BR;
+  if(x<RED_X0+16) return R_BR+(RED_R-R_BR)*((x-RED_X0)/16);
+  if(x<RED_X1-16) return RED_R;
+  if(x<RED_X1) return RED_R+(R_BR-RED_R)*((x-(RED_X1-16))/16);
+  return R_BR;
+}
+function pipeH(g,x0,x1,y,r){
+  g.fillStyle=P.light; g.fillRect(x0,y-r-5,x1-x0,5);
+  g.fillStyle=P.mid;   g.fillRect(x0,y+r,x1-x0,5);
+  g.fillStyle=P.pipeDark; g.fillRect(x0,y-r,x1-x0,2*r);
+}
+function pipeV(g,x,y0,y1,r){
+  g.fillStyle=P.light; g.fillRect(x-r-5,y0,5,y1-y0);
+  g.fillStyle=P.mid;   g.fillRect(x+r,y0,5,y1-y0);
+  g.fillStyle=P.pipeDark; g.fillRect(x-r,y0,2*r,y1-y0);
+}
+function draw(g,dt,t){
+  const S=solve();
+  g.drawImage(BG,0,0);
+
+  // ---- pipe work ----
+  /* The whole network in one call, so no wall can land across a bore. */
+  NET.draw(g);
+  g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign="center";
+  g.fillText("REDUCER",(RED_X0+RED_X1)/2,BR_Y[2]-R_BR-14);
+  wheels.forEach(w=>LPE.valveShell(g,w.x,w.y,w.key==='main'?R_MAIN:R_BR));
+  main.draw(g); trunk.draw(g);
+  branches.forEach(b=>b.draw(g));
+
+  /* The beds are growing trays, not labels. Drawn as real objects whether
+     or not they are running - an unlit rectangle the colour of the wall read
+     as nothing being there at all. */
+  BR_Y.forEach((y,i)=>{
+    const q=S.q[i], wet=q>0.4, bx=POD_X, bw=62, bh=40;
+    g.fillStyle='#2a333a'; g.fillRect(bx,y-bh/2,bw,bh);          // tray
+    g.fillStyle='#1a2a1c'; g.fillRect(bx+3,y-bh/2+3,bw-6,bh-6);  // growing media
+    for(let k=0;k<5;k++){                                        // seedlings
+      const sx=bx+10+k*10, h=wet?9:5;
+      g.fillStyle=wet?'#39ff6a':'#4a5a44';
+      g.fillRect(sx,y-h,2,h);
+      g.fillRect(sx-2,y-h,6,2);
+    }
+    if(wet){                                                     // water in the tray
+      const lv=Math.min(1,q/12);
+      g.fillStyle='rgba(54,224,255,0.30)';
+      g.fillRect(bx+3,y+bh/2-3-8*lv,bw-6,8*lv);
+    }
+    g.strokeStyle=wet?P.water:'#4a545e'; g.lineWidth=2;
+    g.strokeRect(bx,y-bh/2,bw,bh);
+    /* Readout plates come from the engine now, opaque. The level does not
+       get to invent how a number is set on a wall. */
+    const plate=(px,py,pw,ph)=>A.plate(g,px,py,pw,ph);
+    plate(bx-4,y-bh/2-20,62,17);
+    g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign='left';
+    g.fillText('BED '+(i+1),bx,y-bh/2-7);
+    /* The flow reading belongs ON the line it describes, in the clear run
+       before the tray. Under the tray it was unreadable for two reasons at
+       once: the plate ran from x=808 to the canvas edge at 900, straight
+       over the right-hand rib, and each one finished exactly where the next
+       bed's label plate started. There is 90px of empty pipe here and
+       nothing else competing for it. */
+    A.readout(g,{x:714,y:y-39,w:94,h:26,size:20,text:q.toFixed(1)+' gpm',lit:wet});
+    if(venting(i)){
+      /* Below the line: the flow reading now holds the space above it. */
+      plate(bx-104,y+18,96,17);
+      g.fillStyle=P.amber; g.font="13px 'VT323',monospace"; g.textAlign='right';
+      g.fillText('VENTING AIR',bx-10,y+31);
+    }
+  });
+
+  // ---- valves ----
+  wheels.forEach(w=>{
+    const v=valves[w.key], r=w.key==='main'?R_MAIN:R_BR;
+    LPE.valveTrim(g,w.x,w.y,r,w.y-r-10-STEM,v*LPE.WHEEL_SWEEP,WHEEL_R,isLive(w.key),v);
+    /* Beside the valve on its own plate. There is only 86px between branches,
+       so both above the wheel and below the body land on a neighbour. */
+    // the main sits under the manifold gauge, so its plate goes to the left
+    const lx=(w.key==='main')?w.x-128:w.x+38, ly=w.y-34;   // above the bore, never on it
+    A.plate(g,lx-4,ly-17,92,34);
+    g.fillStyle=isLive(w.key)?P.amber:P.rim;
+    g.font="13px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(w.label,lx,ly-4);
+    g.fillStyle=v>0.02?'#39ff6a':'#b8434a';
+    g.font="17px 'VT323',monospace";
+    g.fillText(v<=0.02?'SHUT':Math.round(v*100)+'% OPEN',lx,ly+13);
+  });
+
+  /* Gauge teed off above the header. Sitting it on the line at x=222 put it
+     through the main valve body and hid the pipe behind it. */
+  const GX=258, GY=36, GR=25;
+  g.strokeStyle=P.light; g.lineWidth=4;
+  g.beginPath(); g.moveTo(GX,MAIN_Y-R_MAIN-5); g.lineTo(GX,GY+GR); g.stroke();
+  LPE.gauge(g,GX,GY,GR,S.pMan,80);
+  g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign='left';
+  g.fillText('MANIFOLD',GX+GR+8,GY+4);
+
+}
+
+/* ---------- simulation ---------- */
+function stepSim(dt){
+  const S=solve();
+  pManHeld += (S.pTarget-pManHeld)*Math.min(1,dt/P_TAU);
+  for(let i=0;i<3;i++){
+    if(S.q[i]>0) fill[i]=Math.min(1,fill[i]+S.q[i]*FILL_RATE*dt/BR_LEN);
+    const f=Math.min(1,S.q[i]/FLOW_REF.branch);
+    // one wetted front walking along the branch, across however many pieces
+    // the engine knows each piece's true length, arcs included
+    let walked=fill[i]*BR_TOTAL[i], off=0;
+    branches[i].segs.forEach((s,n)=>{
+      branches[i].set(n,{flow:f, fill:Math.max(0,Math.min(1,(walked-off)/s.len))});
+      off+=s.len;
+    });
+  }
+  // trunk pieces carry only what is still downstream of them
+  // four pieces now: the elbow out to bed 3 is one of them, and it was
+  // being left at zero flow, so nothing moved round the bottom 90
+  const dn=[S.q[0]+S.q[1]+S.q[2], S.q[1]+S.q[2], S.q[2], S.q[2]];
+  dn.forEach((q,i)=>trunk.set(i,{flow:Math.min(1,q/FLOW_REF.riser)}));
+  /* The header carries the SAME stream as the manifold side - one series
+     path, so whatever leaves the beds came through here first. It was pinned
+     to zero, which left the supply standing still while water poured out of
+     the bay. Always full is right; always still is not - that is only true
+     while the main is shut, and the flow value handles that on its own. */
+  const mainFlow=Math.min(1,S.qTot/FLOW_REF.riser);
+  [0,1,2].forEach(n=>main.set(n,{flow:mainFlow}));
+  main.update(dt); trunk.update(dt); branches.forEach(b=>b.update(dt));
+  LPE.audio.flow(Math.min(1,S.qTot/FLOW_REF.riser));
+
+  /* The lesson is held on screen until the player continues - the engine
+     owns that wait, so no level picks its own timer. A 1.5s flash was far
+     too short to read a paragraph. */
+  if(!done && !SH.holding && STEPS[step].ok()){
+    const last=step>=STEPS.length-1;
+    SH.beat(STEPS[step].lesson, ()=>{
+      if(last){ done=true;
+        /* The engine takes it from here: it keeps the closing lesson on the
+           strip, and offers the way out that used to not exist. */
+        SH.finish({ lesson:STEPS[STEPS.length-1].lesson,
+          line:'<span class="accent">Bay 3 is commissioned.</span> Three beds balanced, '+
+               'and a reducer in line 3 that is now holding the whole bay back.' }); }
+      else { step++; say(); }
+    });
+    SH.count(last?'DONE':(step+2)+' / '+STEPS.length);
+  }
+}
+function say(){
+  if(done) return;
+  SH.say(STEPS[step].task,'');
+  SH.count((step+1)+' / '+STEPS.length);
+}
+
+/* ---------- input: drag a hand wheel ---------- */
+let drag=null,lastAng=0;
+function onDown(e){
+  LPE.audio.init(); LPE.audio.resume(); LPE.audio.startFlow();
+  const p=SH.pt(e);
+  for(const w of wheels){
+    const r=w.key==='main'?R_MAIN:R_BR, wy=w.y-r-10-STEM;
+    if(Math.hypot(p.x-w.x,p.y-wy)<WHEEL_R+16 && isLive(w.key)){
+      drag=w; lastAng=Math.atan2(p.y-wy,p.x-w.x);
+      SH.canvas.setPointerCapture(e.pointerId); return;
+    }
+  }
+}
+function onMove(e){
+  if(!drag) return;
+  const p=SH.pt(e), r=drag.key==='main'?R_MAIN:R_BR, wy=drag.y-r-10-STEM;
+  const a=Math.atan2(p.y-wy,p.x-drag.x);
+  let d=a-lastAng;
+  while(d>Math.PI) d-=6.2832; while(d<-Math.PI) d+=6.2832;
+  lastAng=a;
+  const before=valves[drag.key];
+  valves[drag.key]=Math.max(0,Math.min(1,before+d/(2*Math.PI)));
+  if(Math.floor(valves[drag.key]*12)!==Math.floor(before*12)) LPE.audio.tick();
+}
+
+/* ---------- mount ---------- */
+buildScene();
+const SH=LPE.mount({
+  t1:'IRRIGATION MANIFOLD \u2014 CUTAWAY',
+  t2:'The Garden \u00b7 Bio-Grow Bay 3',
+  w:W,h:H,step:stepSim,draw,
+  intro:[
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+     text:'&ldquo;Beds are plumbed and ready down in Bay 3.<br>Can you bring the water supply online for us?&rdquo;'},
+    {kind:'place',
+     text:'The lift opens on humid air and the hum of circulation fans. Three new '+
+          'growing beds sit dry at the end of the row, media packed, lines run, waiting on water.'+
+          '<br><br>Everything in this bay comes up the line from the '+
+          '<span class="accent">Thermal Reservoir</span> &mdash; some of it mined out of the ice, '+
+          'some of it condensate pulled back out of this very air. None of it is cheap, and all of '+
+          'it is counted. Nothing down here gets opened carelessly.'},
+    {kind:'title', eyebrow:'SECTOR 3 \u00b7 LIFE SUPPORT',
+     title:'BIO-GROW BAY 3', sub:'IRRIGATION MANIFOLD \u00b7 COMMISSIONING'},
+  ],
+  onStart:say,
+  onReset(){
+    valves.main=valves.b0=valves.b1=valves.b2=0;
+    pManHeld=0; step=0; done=false;
+    for(let i=0;i<3;i++){ fill[i]=FILL_START; branches[i].set(0,{flow:0,fill:FILL_START}); }
+    LPE.audio.flow(0); say();
+  },
+});
+SH.canvas.addEventListener('pointerdown',onDown);
+SH.canvas.addEventListener('pointermove',onMove);
+['pointerup','pointercancel'].forEach(k=>SH.canvas.addEventListener(k,()=>{drag=null;}));
+say();
+}
+
+(window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
+  label:'LEVEL 1 \u2014 BIO-GROW BAY 3',
+  sub:'The Garden  \u00b7  commissioning',
+  start:startLevel1,
+});
+if(!window.LPE_GAME) startLevel1();
+
+</script>
+<script>
+
+'use strict';
+/* ============================================================
+   LEVEL TWO - BAY 3, LINE 3: THE REDUCER COMES OUT
+
+   The same rig as level one, deliberately. Level one ends by naming the
+   problem out loud - "the real argument for pulling that reducer: it is
+   not costing one bed, it is capping all three" - and this is going back
+   to do it. Re-balancing a bay the player has already balanced once is
+   reinforcement, not repetition.
+
+   The lesson is NOT the reducer. It is the order of operations: measure
+   first and you can prove what your repair bought; measure after only and
+   you are taking your own word for it. The player is asked to choose, both
+   choices genuinely work, and the coach reacts to which one they picked.
+
+   The payoff falls out of the real physics rather than being staged. With
+   the reducer in, balancing means throttling the two healthy beds down to
+   meet the crippled one: 11.51 gpm each. With three identical branches the
+   manifold splits evenly on its own at full open: 15.61 gpm each, +36%,
+   and no throttling at all. The reducer was not costing bed 3 - it was
+   costing every adjustment made elsewhere to work around it.
+   ============================================================ */
+function startLevel2(){
+const A=LPE.art, P=LPE.palette, W=900, H=400;
+
+/* ---------- geometry (level one's, unchanged) ---------- */
+const MAIN_Y=86, TRUNK_X=320, POD_X=812;
+const BR_Y=[170,256,342];
+const R_MAIN=11, R_BR=10;
+const RED_X0=600, RED_X1=680, RED_R=4.6;
+const VALVE_X=410, WHEEL_R=18, STEM=24;
+const BR_LEN=POD_X-TRUNK_X;
+const wheelMainX=170;
+const wheels=[
+  {key:'main',x:wheelMainX,y:MAIN_Y,  label:'MAIN SUPPLY'},
+  {key:'b0',  x:VALVE_X,y:BR_Y[0],label:'BED 1'},
+  {key:'b1',  x:VALVE_X,y:BR_Y[1],label:'BED 2'},
+  {key:'b2',  x:VALVE_X,y:BR_Y[2],label:'BED 3'},
+];
+
+/* ---------- physics (level one's, plus the fitting being removable) ----------
+   Verified against level one state-for-state by diffphys.js: with
+   reducerIn true this solve is identical to level one's across all 27
+   valve combinations. The ONLY new thing is that the series term can go. */
+const P_SUP=60, SG=1.0;
+const CV_MAIN_MAX=7, CV_BR_MAX=4, CV_REDUCER=2.2;
+const valves={main:1,b0:1,b1:1,b2:1};
+let reducerIn=true;
+const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));
+let pManHeld=0;
+const P_TAU=0.22;
+function solve(){
+  const cvMain=CV_MAIN_MAX*valves.main;
+  const cv=[CV_BR_MAX*valves.b0, CV_BR_MAX*valves.b1, 0];
+  const raw2=CV_BR_MAX*valves.b2;
+  cv[2]= raw2>0 ? (reducerIn?seriesCv(raw2,CV_REDUCER):raw2) : 0;
+  const cvSum=cv[0]+cv[1]+cv[2];
+  let pTarget;
+  if(cvMain<=0){
+    pTarget=(cvSum<=0) ? pManHeld : 0;
+  } else if(cvSum<=0){
+    pTarget=P_SUP;
+  } else {
+    pTarget=P_SUP*(cvMain*cvMain)/(cvMain*cvMain+cvSum*cvSum);
+  }
+  const pMan=pManHeld;
+  const root=Math.sqrt(Math.max(0,pMan)/SG);
+  const q=cv.map(c=>c*root);
+  return {cvMain,cv,cvSum,pMan,pTarget,q,qTot:q[0]+q[1]+q[2]};
+}
+
+/* ---------- air fill ----------
+   The bay has been running since level one, so the lines are wet and the
+   air is long gone. It comes back for line 3 only, and only once: cutting
+   a spool out opens that branch to the bay and it fills with air again.
+   Level one taught that; this is it arriving as a consequence. */
+const FILL_START=(VALVE_X-TRUNK_X)/BR_LEN;
+const fill=[1,1,1];
+const FILL_RATE=12;
+const venting=i=>fill[i]>FILL_START+0.001 && fill[i]<1;
+
+/* ---------- water ---------- */
+const BEND=3*R_MAIN;
+const E1={x:TRUNK_X,y:MAIN_Y}, E2={x:TRUNK_X,y:BR_Y[2]};
+const main=new LPE.Line({r:R_MAIN,segments:[
+  {ax:30,ay:MAIN_Y,bx:wheelMainX,by:MAIN_Y,fill:1},
+  {ax:wheelMainX,ay:MAIN_Y,bx:E1.x-BEND,by:MAIN_Y,fill:1},
+  {arc:{cx:E1.x-BEND,cy:E1.y+BEND,R:BEND,a0:-Math.PI/2,a1:0},fill:1},
+]});
+const trunk=new LPE.Line({r:R_MAIN,segments:[
+  {ax:TRUNK_X,ay:E1.y+BEND,bx:TRUNK_X,by:BR_Y[0],fill:1},
+  {ax:TRUNK_X,ay:BR_Y[0],bx:TRUNK_X,by:BR_Y[1],fill:1},
+  {ax:TRUNK_X,ay:BR_Y[1],bx:TRUNK_X,by:E2.y-BEND,fill:1},
+  {arc:{cx:E2.x+BEND,cy:E2.y-BEND,R:BEND,a0:Math.PI,a1:Math.PI/2},fill:1},
+]});
+
+/* The network is rebuilt when the fitting changes, because the drawn pipe
+   and the water's path are the same description of the same hardware. A
+   level that let those two drift would show a reducer that was not there. */
+let NET, branches, BR_SEGS, BR_TOTAL;
+const TEE_R=R_BR*1.6;
+function buildNet(){
+  NET=LPE.piping({
+    lines:[
+      {pts:[[30,MAIN_Y],[TRUNK_X,MAIN_Y],[TRUNK_X,BR_Y[2]],
+            [reducerIn?RED_X0:POD_X,BR_Y[2]]], r:R_MAIN},
+    ].concat(reducerIn?[{pts:[[RED_X1,BR_Y[2]],[POD_X,BR_Y[2]]], r:R_MAIN}]:[])
+     .concat([
+      {pts:[[TRUNK_X,BR_Y[0]],[POD_X,BR_Y[0]]], r:R_BR},
+      {pts:[[TRUNK_X,BR_Y[1]],[POD_X,BR_Y[1]]], r:R_BR},
+    ]),
+    tees:[{x:TRUNK_X,y:BR_Y[0],r:R_MAIN,branch:R_BR},
+          {x:TRUNK_X,y:BR_Y[1],r:R_MAIN,branch:R_BR}],
+    reducers: reducerIn?[{x0:RED_X0,x1:RED_X1,y:BR_Y[2],r1:R_MAIN,r2:RED_R}]:[],
+    /* The union on the header, and - once the swap is done - the coupling
+       that replaces the reducer. A coupling is a collar pair: same bore
+       either side, which is the entire point of it. */
+    fittings:[{x:wheelMainX-54,y:MAIN_Y,r:R_MAIN,kind:'union'}]
+      .concat(reducerIn?[]:[{x:(RED_X0+RED_X1)/2,y:BR_Y[2],r:R_BR,kind:'coupling'}]),
+  });
+  BR_SEGS=BR_Y.map((y,i)=> i!==2
+    ? [{arc:{cx:TRUNK_X+TEE_R,cy:y-TEE_R,R:TEE_R,a0:Math.PI,a1:Math.PI/2},r:R_BR},
+       {ax:TRUNK_X+TEE_R,ay:y,bx:POD_X,by:y,r:R_BR}]
+    : reducerIn
+      ? [{ax:TRUNK_X+BEND,ay:y,bx:RED_X0,by:y,r:R_BR},
+         {ax:RED_X0,ay:y,bx:RED_X1,by:y,r:RED_R,speed:2.2},
+         {ax:RED_X1,ay:y,bx:POD_X,by:y,r:R_BR}]
+      : [{ax:TRUNK_X+BEND,ay:y,bx:POD_X,by:y,r:R_BR}]);   // one clear bore
+  const keep=branches;
+  branches=BR_Y.map((y,i)=>new LPE.Line({r:R_BR,
+    segments:BR_SEGS[i].map(s=>({...s,fill:(keep?fill[i]:1)}))}));
+  BR_TOTAL=branches.map(b=>b.segs.reduce((t,s)=>t+s.len,0));
+}
+buildNet();
+
+const FLOW_REF=(()=>{
+  const keep={...valves}, keepP=pManHeld, keepR=reducerIn;
+  reducerIn=false;                       // reference the bay at its best
+  const settle=v=>{ Object.assign(valves,v); let S=solve(); pManHeld=S.pTarget; return solve(); };
+  const all=settle({main:1,b0:1,b1:1,b2:1}).qTot;
+  const one=settle({main:1,b0:1,b1:0,b2:0}).q[0];
+  Object.assign(valves,keep); pManHeld=keepP; reducerIn=keepR;
+  return {riser:all, branch:one};
+})();
+
+/* ---------- the baseline the player is asked to take ---------- */
+let baseline=null;                        // {per, tot} once measured, else null
+let result=null;                          // and the same, after the repair
+
+/* A step may only latch once the manifold has actually settled.
+   Without this the bay reads as balanced DURING the pressure transient:
+   every branch is scaled by the same sqrt(pMan), so while the pressure is
+   still climbing all three numbers are low but nearly equal, and a
+   spread-plus-floor test passes at a moment that is not a steady state.
+   That is how the first run of this level recorded a baseline of 8.8 gpm
+   for a bay that settles at 11.5. A measurement taken before the rig stops
+   moving is not a measurement. */
+const settled=()=>Math.abs(solve().pTarget-pManHeld)<0.12;
+
+/* What the bay is ON ITS WAY TO, not where the needle happens to be this
+   frame. Recorded figures are read from here: within the settle tolerance
+   the live value still drifts enough to print 15.7 for a bay that runs at
+   15.61, and the whole level turns on two numbers being comparable. */
+function steady(){
+  const S=solve(), root=Math.sqrt(Math.max(0,S.pTarget)/SG);
+  const q=S.cv.map(c=>c*root);
+  return {q, per:(q[0]+q[1]+q[2])/3, tot:q[0]+q[1]+q[2]};
+}
+
+/* Balanced means even AND as high as the weakest branch allows - not merely
+   even. Throttling all three down to match would also be "within a gallon",
+   and would quietly understate the baseline, which flatters the repair that
+   comes next. Bed 3 tops out at 11.51 through the reducer, so the window
+   sits just under it. */
+const balanced=()=>{ if(!settled()) return false;
+                     const S=solve(), mn=Math.min(...S.q), mx=Math.max(...S.q);
+                     return mn>=10.5 && (mx-mn)<=1.0; };
+const allWide=()=>settled()&&valves.main>=0.9&&valves.b0>=0.9&&
+                  valves.b1>=0.9&&valves.b2>=0.9;
+
+/* ---------- the two routes through the job ---------- */
+const ISOLATE={ keys:['b2'], watch:2,
+  task:'Isolate line 3 \u2014 shut BED 3 right off.',
+  ok:()=>valves.b2<=0.02,
+  lesson:'You do not cut into a live line. And look what isolating it did to everyone '+
+         'else: shut one demand and manifold pressure climbs for every branch left open. '+
+         'Same rule as commissioning, now with a spanner in your hand.' };
+const PULL={ keys:[], watch:2, click:true,
+  task:'Now take the reducer out. Click the fitting.',
+  ok:()=>!reducerIn,
+  lesson:'Coupler and a new spool, same bore as the rest of the branch. '+
+         'And line 3 is <b>full of air</b> again \u2014 you just had it open to the bay. '+
+         'That will have to vent before water reaches the roots.' };
+
+const THOROUGH=[
+  { keys:['b0','b1','b2'], watch:-1,
+    task:'Balance the bay first \u2014 all three even, and as high as Bed 3 will let them go.',
+    ok:balanced,
+    lesson:()=>'<b>'+baseline.per.toFixed(1)+' gpm a bed, '+baseline.tot.toFixed(1)+
+      ' for the bay.</b> That is your baseline, and it is the whole reason for doing this '+
+      'in this order. Whatever happens next, you can now say exactly what it was worth.' },
+  ISOLATE,
+  PULL,
+  { keys:['b2','b0','b1','main'], watch:-1,
+    task:'Open BED 3 back up and bring the whole bay wide open.',
+    ok:allWide,
+    lesson:()=>'<b>'+result.per.toFixed(1)+' gpm a bed</b>, against '+baseline.per.toFixed(1)+
+      ' before \u2014 and notice what you did <b>not</b> have to do. You never throttled anything. '+
+      'Three identical branches split the manifold evenly all by themselves. '+
+      'That reducer was never costing you Bed 3; it was costing you every adjustment you '+
+      'made everywhere else to work around it.' },
+];
+
+const SHORTCUT=[
+  ISOLATE,
+  PULL,
+  { keys:['b2','b0','b1','main'], watch:-1,
+    task:'Open BED 3 back up and bring the whole bay wide open.',
+    ok:allWide,
+    lesson:()=>'<b>'+result.per.toFixed(1)+' gpm a bed</b>, and the bay balances itself '+
+      'now that the three branches match. It is a good repair.<br><br>'+
+      '<span class="who">COMMS:</span> Is it better than it was? Almost certainly. '+
+      '<b>How much</b> better? Neither of us can say, because nobody wrote down what it was '+
+      'doing before we touched it. A repair you cannot measure is a repair you cannot defend.' },
+];
+
+let STEPS=null, step=0, done=false, route='';
+const isLive=k=>!done && STEPS && STEPS[step].keys.indexOf(k)>=0;
+const canPull=()=>!done && STEPS && !!STEPS[step].click && reducerIn && valves.b2<=0.02;
+
+/* ---------- scenery ---------- */
+let BG;
+function buildScene(){
+  BG=document.createElement('canvas'); BG.width=W; BG.height=H;
+  const g=BG.getContext('2d');
+  A.wall(g,W,H); A.rib(g,0,H); A.rib(g,862,H);
+  A.vignetteOnto(g,W,H);
+  A.stencil(g,52,H-26,'BIO-GROW BAY 3',18,'#8b949b');
+  A.stencil(g,52,H-10,'IRRIGATION MANIFOLD',14);
+}
+
+/* ---------- drawing ---------- */
+function draw(g,dt,t){
+  const S=solve();
+  g.drawImage(BG,0,0);
+  NET.draw(g);
+
+  /* The fitting labels itself, and says so louder while it is the thing
+     being asked for - a click target the player cannot find is not a
+     puzzle, it is a dead end. */
+  const RX=(RED_X0+RED_X1)/2;
+  if(reducerIn){
+    const hot=canPull();
+    g.fillStyle=hot?P.amber:P.rim; g.font="13px 'VT323',monospace"; g.textAlign='center';
+    g.fillText('REDUCER',RX,BR_Y[2]-R_BR-14);
+    if(hot){
+      const pulse=0.45+0.35*Math.sin(t*5);
+      g.save(); g.globalAlpha=pulse; g.strokeStyle=P.amber; g.lineWidth=2;
+      g.strokeRect(RED_X0-8,BR_Y[2]-R_MAIN-10,RED_X1-RED_X0+16,2*(R_MAIN+10));
+      g.restore();
+      g.fillStyle=P.amber; g.font="12px 'VT323',monospace";
+      g.fillText('CLICK TO REMOVE',RX,BR_Y[2]+R_MAIN+22);
+    }
+  } else {
+    g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign='center';
+    g.fillText('COUPLING',RX,BR_Y[2]-R_BR-14);
+  }
+
+  wheels.forEach(w=>LPE.valveShell(g,w.x,w.y,w.key==='main'?R_MAIN:R_BR));
+  main.draw(g); trunk.draw(g);
+  branches.forEach(b=>b.draw(g));
+
+  BR_Y.forEach((y,i)=>{
+    const q=S.q[i], wet=q>0.4, bx=POD_X, bw=62, bh=40;
+    g.fillStyle='#2a333a'; g.fillRect(bx,y-bh/2,bw,bh);
+    g.fillStyle='#1a2a1c'; g.fillRect(bx+3,y-bh/2+3,bw-6,bh-6);
+    for(let k=0;k<5;k++){
+      const sx=bx+10+k*10, h=wet?9:5;
+      g.fillStyle=wet?'#39ff6a':'#4a5a44';
+      g.fillRect(sx,y-h,2,h); g.fillRect(sx-2,y-h,6,2);
+    }
+    if(wet){
+      const lv=Math.min(1,q/12);
+      g.fillStyle='rgba(54,224,255,0.30)';
+      g.fillRect(bx+3,y+bh/2-3-8*lv,bw-6,8*lv);
+    }
+    g.strokeStyle=wet?P.water:'#4a545e'; g.lineWidth=2;
+    g.strokeRect(bx,y-bh/2,bw,bh);
+    A.plate(g,bx-4,y-bh/2-20,62,17);
+    g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign='left';
+    g.fillText('BED '+(i+1),bx,y-bh/2-7);
+    A.readout(g,{x:714,y:y-39,w:94,h:26,size:20,text:q.toFixed(1)+' gpm',lit:wet});
+    if(venting(i)){
+      A.plate(g,bx-104,y+18,96,17);
+      g.fillStyle=P.amber; g.font="13px 'VT323',monospace"; g.textAlign='right';
+      g.fillText('VENTING AIR',bx-10,y+31);
+    }
+  });
+
+  wheels.forEach(w=>{
+    const v=valves[w.key], r=w.key==='main'?R_MAIN:R_BR;
+    LPE.valveTrim(g,w.x,w.y,r,w.y-r-10-STEM,v*LPE.WHEEL_SWEEP,WHEEL_R,isLive(w.key),v);
+    const lx=(w.key==='main')?w.x-128:w.x+38, ly=w.y-34;
+    A.plate(g,lx-4,ly-17,92,34);
+    g.fillStyle=isLive(w.key)?P.amber:P.rim;
+    g.font="13px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(w.label,lx,ly-4);
+    g.fillStyle=v>0.02?'#39ff6a':'#b8434a';
+    g.font="17px 'VT323',monospace";
+    g.fillText(v<=0.02?'SHUT':Math.round(v*100)+'% OPEN',lx,ly+13);
+  });
+
+  const GX=258, GY=36, GR=25;
+  g.strokeStyle=P.light; g.lineWidth=4;
+  g.beginPath(); g.moveTo(GX,MAIN_Y-R_MAIN-5); g.lineTo(GX,GY+GR); g.stroke();
+  LPE.gauge(g,GX,GY,GR,S.pMan,80);
+  g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign='left';
+  g.fillText('MANIFOLD',GX+GR+8,GY+4);
+
+  /* The baseline, once taken, stays on the wall. It is the thing the whole
+     level is about; it should not live only in a lesson the player scrolled
+     past four steps ago. */
+  if(baseline){
+    /* On clear wall to the right of the gauge. At x=36 it was drawn straight
+       over the MAIN SUPPLY hand wheel and over its own label plate - every
+       candidate position was checked against the fixed furniture rather
+       than eyeballed from a screenshot. */
+    A.plate(g,380,22,186,42);
+    g.fillStyle=P.rim; g.font="12px 'VT323',monospace"; g.textAlign='left';
+    g.fillText('BASELINE \u00b7 REDUCER IN',388,38);
+    g.fillStyle='#8fb9ff'; g.font="17px 'VT323',monospace";
+    g.fillText(baseline.per.toFixed(1)+' gpm/bed   '+baseline.tot.toFixed(1)+' total',388,56);
+  }
+}
+
+/* ---------- simulation ---------- */
+function stepSim(dt){
+  const S=solve();
+  pManHeld += (S.pTarget-pManHeld)*Math.min(1,dt/P_TAU);
+  for(let i=0;i<3;i++){
+    if(S.q[i]>0) fill[i]=Math.min(1,fill[i]+S.q[i]*FILL_RATE*dt/BR_LEN);
+    const f=Math.min(1,S.q[i]/FLOW_REF.branch);
+    let walked=fill[i]*BR_TOTAL[i], off=0;
+    branches[i].segs.forEach((s,n)=>{
+      branches[i].set(n,{flow:f, fill:Math.max(0,Math.min(1,(walked-off)/s.len))});
+      off+=s.len;
+    });
+  }
+  const dn=[S.q[0]+S.q[1]+S.q[2], S.q[1]+S.q[2], S.q[2], S.q[2]];
+  dn.forEach((q,i)=>trunk.set(i,{flow:Math.min(1,q/FLOW_REF.riser)}));
+  const mainFlow=Math.min(1,S.qTot/FLOW_REF.riser);
+  [0,1,2].forEach(n=>main.set(n,{flow:mainFlow}));
+  main.update(dt); trunk.update(dt); branches.forEach(b=>b.update(dt));
+  LPE.audio.flow(Math.min(1,S.qTot/FLOW_REF.riser));
+
+  if(!STEPS || done || SH.holding) return;
+  if(STEPS[step].ok()){
+    /* The baseline is captured the instant it is earned, before the next
+       step can move the valves and make the number a lie. */
+    if(route==='thorough' && step===0 && !baseline){
+      baseline=steady();
+    }
+    /* The closing figure is captured once, here, and every later mention
+       reads that one number. Re-reading the solver for the lesson and
+       again for the debrief printed 15.7 and 15.6 for the same bay. */
+    if(step>=STEPS.length-1 && !result){
+      result=steady();
+    }
+    const last=step>=STEPS.length-1;
+    const L=STEPS[step].lesson, text=(typeof L==='function')?L():L;
+    SH.beat(text, ()=>{
+      if(last){ done=true; SH.finish(ending(text)); }
+      else { step++; say(); }
+    });
+    SH.count(last?'DONE':(step+2)+' / '+STEPS.length);
+  }
+}
+function ending(text){
+  const q=result.per;
+  return route==='thorough'
+    ? { lesson:text,
+        line:'<span class="accent">Line 3 is a line again.</span> '+baseline.per.toFixed(1)+
+             ' to '+q.toFixed(1)+' gpm a bed, and you can prove it \u2014 because you '+
+             'measured the bay before you changed it.' }
+    : { lesson:text,
+        line:'<span class="accent">Line 3 is a line again.</span> The repair is sound. '+
+             'The number it bought is gone, though, and the only place it ever existed was '+
+             'in the bay you did not stop to read.' };
+}
+function say(){
+  if(done||!STEPS) return;
+  SH.say(STEPS[step].task,'');
+  SH.count((step+1)+' / '+STEPS.length);
+}
+
+/* ---------- the fork ---------- */
+function askRoute(){
+  SH.ask({
+    lesson:'<span class="who">COMMS:</span> Before you start \u2014 your call on the order. '+
+           'We can balance the bay the way it stands and write the numbers down, then pull '+
+           'the reducer. Or we can just pull it now and balance once, afterwards.',
+    options:[
+      { label:'BALANCE FIRST, THEN PULL IT', note:'the long way',
+        pick:()=>{ route='thorough'; STEPS=THOROUGH; step=0;
+          SH.beat('<span class="who">COMMS:</span> Good. That is the right instinct \u2014 '+
+            'you take the measurement while the fault is still in the line, because afterwards '+
+            'there is nothing left to measure. Costs you one extra balance, and plenty of '+
+            'people would not bother. <b>If we are spending a shift on this, we are going '+
+            'to be able to say what it bought.</b>',
+            say); } },
+      { label:'PULL IT NOW, BALANCE AFTER', note:'the quick way',
+        pick:()=>{ route='shortcut'; STEPS=SHORTCUT; step=0;
+          SH.beat('<span class="who">COMMS:</span> \u2026Alright. It will work, and the bay '+
+            'will be better off than it is now. I would have spent the five minutes first, '+
+            'myself. <b>Your rig, your call.</b> Let us get it out.',
+            say); } },
+    ],
+  });
+}
+
+/* ---------- input ---------- */
+let drag=null,lastAng=0;
+function onDown(e){
+  LPE.audio.init(); LPE.audio.resume(); LPE.audio.startFlow();
+  const p=SH.pt(e);
+  if(canPull() && p.x>RED_X0-12 && p.x<RED_X1+12 &&
+     Math.abs(p.y-BR_Y[2])<R_MAIN+12){
+    reducerIn=false;
+    fill[2]=FILL_START;                 // the branch is open to the bay: air back in
+    buildNet();
+    LPE.audio.clunk(); LPE.audio.scrape();
+    return;
+  }
+  for(const w of wheels){
+    const r=w.key==='main'?R_MAIN:R_BR, wy=w.y-r-10-STEM;
+    if(Math.hypot(p.x-w.x,p.y-wy)<WHEEL_R+16 && isLive(w.key)){
+      drag=w; lastAng=Math.atan2(p.y-wy,p.x-w.x);
+      SH.canvas.setPointerCapture(e.pointerId); return;
+    }
+  }
+}
+function onMove(e){
+  if(!drag) return;
+  const p=SH.pt(e), r=drag.key==='main'?R_MAIN:R_BR, wy=drag.y-r-10-STEM;
+  const a=Math.atan2(p.y-wy,p.x-drag.x);
+  let d=a-lastAng;
+  while(d>Math.PI) d-=6.2832; while(d<-Math.PI) d+=6.2832;
+  lastAng=a;
+  const before=valves[drag.key];
+  valves[drag.key]=Math.max(0,Math.min(1,before+d/(2*Math.PI)));
+  if(Math.floor(valves[drag.key]*12)!==Math.floor(before*12)) LPE.audio.tick();
+}
+
+/* ---------- mount ---------- */
+buildScene();
+pManHeld=solve().pTarget;        // the bay is already running when you walk in
+const SH=LPE.mount({
+  t1:'BIO-GROW BAY 3 \u2014 LINE 3 REPAIR',
+  t2:'The Garden \u00b7 Bio-Grow Bay 3 \u00b7 line 3 repair',
+  w:W,h:H,step:stepSim,draw,
+  intro:[
+    /* The repair is not a coincidence that arrives on its own. The coach
+       PUTS it on the ticket, in front of the player, and owns the cost of
+       doing so - that is where the time goes, not into one extra balance. */
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+     text:'&ldquo;Bay 3 is on your round this shift.<br>'+
+          'And I am adding one to your ticket while you are down there \u2014<br>'+
+          'that reducer in line 3. It comes out today.&rdquo;'},
+    {kind:'place',
+     text:'Bay 3 is green now. The beds you brought online are growing, the fans are '+
+          'running, and line 3 is still drinking less than the other two.'+
+          '<br><br>Nobody can tell you why the reducer is there. It is not on any drawing. '+
+          'Someone fitted it, years ago, for a reason that left with them \u2014 and the '+
+          'bay has been working around it ever since.'+
+          '<br><br>Nothing is broken. Nobody was ever going to schedule this. It is going '+
+          'on the order because <span class="accent">there is slack in the shift</span> '+
+          'to put it right, and because a bay that works around a fault is still a bay '+
+          'with a fault in it. There is a coupling and a length of new spool on the cart.'},
+    {kind:'title', eyebrow:'SECTOR 3 \u00b7 LIFE SUPPORT',
+     title:'LINE 3 \u2014 REDUCER REMOVAL', sub:'BIO-GROW BAY 3 \u00b7 CORRECTIVE WORK'},
+  ],
+  onStart:askRoute,
+  onReset(){
+    Object.assign(valves,{main:1,b0:1,b1:1,b2:1});
+    reducerIn=true; baseline=null; result=null; STEPS=null; step=0; done=false; route='';
+    fill[0]=fill[1]=fill[2]=1;
+    buildNet();
+    pManHeld=solve().pTarget;
+    LPE.audio.flow(0);
+    askRoute();
+  },
+});
+SH.canvas.addEventListener('pointerdown',onDown);
+SH.canvas.addEventListener('pointermove',onMove);
+['pointerup','pointercancel'].forEach(k=>SH.canvas.addEventListener(k,()=>{drag=null;}));
+}
+
+(window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
+  label:'LEVEL 2 \u2014 LINE 3 REPAIR',
+  sub:'Bio-Grow Bay 3  \u00b7  corrective',
+  start:startLevel2,
+});
+if(!window.LPE_GAME) startLevel2();
+
+</script>
+<script>
+'use strict';
+/* ============================================================
+   THE GAME.
+   Boot and title are game chrome, so they live here once rather than
+   inside whichever level happens to be first. Levels are modules the
+   menu launches.
+   ============================================================ */
+LPE.boot(()=>LPE.title({
+  draw: LPE_TITLE,
+  onEnter: ()=>LPE_JAM.startMusic(),
+  onLeave: ()=>LPE_JAM.teardown(),
+  /* On the habitat airlock, where the status lamp used to be. Small on
+     purpose - you have to notice it. Throwing it brings up the instrument
+     panel; throwing it back puts it away. */
+  toggle: {x:98, y:127, set:(on,layer)=>on?LPE_JAM.reveal(layer):LPE_JAM.closePad()},
+  levels: (window.LPE_LEVELS||[]).concat([
+  ]),
+}));
+</script>

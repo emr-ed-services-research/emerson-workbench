@@ -1,0 +1,413 @@
+<title>Bio-Grow Bay 3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<link rel="stylesheet" href="engine.css">
+<script src="engine.js"></script>
+<script>
+'use strict';
+/* ============================================================
+   LEVEL ONE - THE GARDEN, BIO-GROW BAY 3
+
+   A PORT, not a rewrite. The handoff locks this level's working parts, so
+   every constant, the network solve, the air-fill model and all six steps
+   are carried over unchanged from the original build. What changed is only
+   what it sits on: the engine's shell, water model, valves and gauges
+   instead of its own private copies.
+
+   If this plays differently from the original, that is a bug in the port.
+   ============================================================ */
+function startLevel1(){
+const A=LPE.art, P=LPE.palette, W=900, H=400;
+
+/* ---------- geometry (verbatim) ---------- */
+const MAIN_Y=86, TRUNK_X=320, POD_X=812;
+const BR_Y=[170,256,342];
+const R_MAIN=11, R_BR=10;
+const RED_X0=600, RED_X1=680, RED_R=4.6;      // the spliced-in reducer on bay 3
+const VALVE_X=410, WHEEL_R=18, STEM=24;
+const BR_LEN=POD_X-TRUNK_X;
+const wheelMainX=170;
+const wheels=[
+  {key:'main',x:wheelMainX,y:MAIN_Y,  label:'MAIN SUPPLY'},
+  {key:'b0',  x:VALVE_X,y:BR_Y[0],label:'BED 1'},
+  {key:'b1',  x:VALVE_X,y:BR_Y[1],label:'BED 2'},
+  {key:'b2',  x:VALVE_X,y:BR_Y[2],label:'BED 3'},
+];
+
+/* ---------- physics (verbatim) ---------- */
+const P_SUP=60, SG=1.0;
+const CV_MAIN_MAX=7, CV_BR_MAX=4, CV_REDUCER=2.2;
+const valves={main:0,b0:0,b1:0,b2:0};
+const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));
+/* Manifold pressure is STATE, not recomputed each frame. Water is
+   incompressible: shut the main with every bed shut and that volume is
+   trapped - it holds whatever pressure it had, because nothing can leave. */
+let pManHeld=0;
+const P_TAU=0.22;
+function solve(){
+  const cvMain=CV_MAIN_MAX*valves.main;
+  const cv=[CV_BR_MAX*valves.b0, CV_BR_MAX*valves.b1, 0];
+  const raw2=CV_BR_MAX*valves.b2;
+  cv[2]= raw2>0 ? seriesCv(raw2,CV_REDUCER) : 0;   // bed 3 runs through the reducer
+  const cvSum=cv[0]+cv[1]+cv[2];
+  let pTarget;
+  if(cvMain<=0){
+    pTarget=(cvSum<=0) ? pManHeld : 0;             // isolated and full = trapped
+  } else if(cvSum<=0){
+    pTarget=P_SUP;                                 // dead-headed against the header
+  } else {
+    pTarget=P_SUP*(cvMain*cvMain)/(cvMain*cvMain+cvSum*cvSum);
+  }
+  const pMan=pManHeld;                             // flows follow pressure that is
+  const root=Math.sqrt(Math.max(0,pMan)/SG);       // actually there, not the target
+  const q=cv.map(c=>c*root);
+  return {cvMain,cv,cvSum,pMan,pTarget,q,qTot:q[0]+q[1]+q[2]};
+}
+
+/* ---------- air fill (verbatim) ----------
+   New pipe is full of air at room pressure. Water stands to each closed
+   valve and has to push the air out of the emitters before it reaches root. */
+const FILL_START=(VALVE_X-TRUNK_X)/BR_LEN;
+const fill=[FILL_START,FILL_START,FILL_START];
+const FILL_RATE=12;
+const venting=i=>fill[i]>FILL_START+0.001 && fill[i]<1;
+
+/* ---------- water on the engine's model ----------
+   The trunk is split at every tee: flow is constant BETWEEN tees and changes
+   AT them, and each piece owns its particles so none can strand at a
+   velocity boundary. That is the original's own fix, now the engine's rule. */
+/* Split at the main valve. The header side is fed from the Thermal Reservoir
+   and is ALWAYS full and standing - it was previously one segment with the
+   manifold side, so before the valve opened there was nothing visibly sitting
+   against the seat. */
+/* The run the engine draws, expressed for the water too: straight to the
+   first elbow, round it, down the riser, round the second, out to bed 3.
+   BEND is the same long-radius value the piping uses (3 x bore radius). */
+const BEND=3*R_MAIN;
+const E1={x:TRUNK_X,y:MAIN_Y}, E2={x:TRUNK_X,y:BR_Y[2]};
+const main=new LPE.Line({r:R_MAIN,segments:[
+  {ax:30,ay:MAIN_Y,bx:wheelMainX,by:MAIN_Y,fill:1},            // reservoir header
+  {ax:wheelMainX,ay:MAIN_Y,bx:E1.x-BEND,by:MAIN_Y,fill:1},     // into the manifold
+  {arc:{cx:E1.x-BEND,cy:E1.y+BEND,R:BEND,a0:-Math.PI/2,a1:0},fill:1},   // elbow down
+]});
+const trunk=new LPE.Line({r:R_MAIN,segments:[
+  {ax:TRUNK_X,ay:E1.y+BEND,bx:TRUNK_X,by:BR_Y[0],fill:1},      // carries all three
+  {ax:TRUNK_X,ay:BR_Y[0],bx:TRUNK_X,by:BR_Y[1],fill:1},        // bed 1 has tapped off
+  {ax:TRUNK_X,ay:BR_Y[1],bx:TRUNK_X,by:E2.y-BEND,fill:1},      // only bed 3 left
+  {arc:{cx:E2.x+BEND,cy:E2.y-BEND,R:BEND,a0:Math.PI,a1:Math.PI/2},fill:1}, // elbow out
+]});
+/* The bay as it is actually built: a run from the header that turns down
+   into the riser, three branches teed off it, and the reducer somebody
+   spliced into bay 3. Corners become real elbows; the engine draws every
+   bore last so no fitting can close another one off. */
+const NET=LPE.piping({
+  lines:[
+    /* One continuous run: header, down the riser, out to bed 3. Both
+       corners are elbows. The riser TERMINATES at bed 3 - it is not a tee
+       there - and drawing it as one stopped the butt-capped riser leaving
+       bed 3 hanging off its end. */
+    {pts:[[30,MAIN_Y],[TRUNK_X,MAIN_Y],[TRUNK_X,BR_Y[2]],[RED_X0,BR_Y[2]]], r:R_MAIN},
+    {pts:[[RED_X1,BR_Y[2]],[POD_X,BR_Y[2]]], r:R_MAIN},  // past it, same bore in as out
+    {pts:[[TRUNK_X,BR_Y[0]],[POD_X,BR_Y[0]]], r:R_BR},
+    {pts:[[TRUNK_X,BR_Y[1]],[POD_X,BR_Y[1]]], r:R_BR},
+  ],
+  // only beds 1 and 2 are taken off the riser as branches
+  tees:[{x:TRUNK_X,y:BR_Y[0],r:R_MAIN,branch:R_BR},
+        {x:TRUNK_X,y:BR_Y[1],r:R_MAIN,branch:R_BR}],
+  // one fitting: taper in, throat, taper out
+  reducers:[{x0:RED_X0,x1:RED_X1,y:BR_Y[2],r1:R_MAIN,r2:RED_R}],
+  fittings:[{x:wheelMainX-54,y:MAIN_Y,r:R_MAIN,kind:"union"}],
+});
+/* Bay 3 runs full bore up to the reducer, squeezes through its throat, and
+   opens out again - three segments, so the water narrows only where the
+   fitting narrows it instead of the whole branch being drawn thin. */
+/* Water turns into a branch, it does not appear already running sideways.
+   Each tee gets a short bend off the riser (a tee turn is tight - nothing
+   like the long-radius elbows on the main run), and bed 3 picks up from
+   the elbow the riser already ends in. */
+const TEE_R=R_BR*1.6;
+const BR_SEGS=BR_Y.map((y,i)=> i!==2
+  ? [{arc:{cx:TRUNK_X+TEE_R,cy:y-TEE_R,R:TEE_R,a0:Math.PI,a1:Math.PI/2},r:R_BR},
+     {ax:TRUNK_X+TEE_R,ay:y,bx:POD_X,by:y,r:R_BR}]
+  : [{ax:TRUNK_X+BEND,ay:y,bx:RED_X0,by:y,r:R_BR},
+     {ax:RED_X0,ay:y,bx:RED_X1,by:y,r:RED_R,speed:2.2},   // sprints through
+     {ax:RED_X1,ay:y,bx:POD_X,by:y,r:R_BR}]);
+const branches=BR_Y.map((y,i)=>new LPE.Line({r:R_BR,
+  segments:BR_SEGS[i].map(s=>({...s,fill:0}))}));
+const BR_TOTAL=branches.map(b=>b.segs.reduce((t,s)=>t+s.len,0));
+
+/* Particle speed is scaled against what this bay can really carry, measured
+   from the solver rather than guessed. The old divisors (22 on the riser, 11
+   on a branch) clamped: with all three beds open the riser top segment
+   carries 44 gpm and the next 26, and both pinned to full and drew the same,
+   hiding the very thing the riser is there to show. */
+const FLOW_REF=(()=>{
+  const keep={...valves}, keepP=pManHeld;
+  const settle=v=>{ Object.assign(valves,v); let S=solve(); pManHeld=S.pTarget; return solve(); };
+  const all=settle({main:1,b0:1,b1:1,b2:1}).qTot;
+  const one=settle({main:1,b0:1,b1:0,b2:0}).q[0];
+  Object.assign(valves,keep); pManHeld=keepP;
+  return {riser:all, branch:one};
+})();
+
+/* ---------- the six steps (verbatim) ---------- */
+const STEPS=[
+  { keys:['main'], watch:-1,
+    task:'Open the MAIN SUPPLY valve. Drag the hand wheel.',
+    ok:()=>valves.main>=0.9,
+    lesson:'60 psig at the manifold &mdash; and <b>nothing is moving</b>. The line is full and under pressure with every bed still shut. Pressure is stored energy; flow is that energy being spent. They are not the same thing.' },
+  { keys:['b0'], watch:0,
+    task:'Open BED 1.',
+    ok:()=>valves.b0>=0.9,
+    lesson:'Flow starts the instant the valve gives that pressure somewhere to go &mdash; the valve did not create anything, it opened a path. And watch what left first: that run was new pipe, <b>full of air</b>, and the air had to vent out the emitters before water ever reached the roots. New pipe is full of air at room pressure, not empty and not under vacuum.' },
+  { keys:['b1'], watch:1,
+    task:'Open BED 2. Keep an eye on Bed 1\u2019s number.',
+    ok:()=>valves.b1>=0.9,
+    lesson:'Bed 1 <b>dropped</b> when Bed 2 opened, and nobody touched Bed 1. One supply, two demands &mdash; what divides at the tee is all there ever was.' },
+  { keys:['b2'], watch:2,
+    task:'Open BED 3.',
+    ok:()=>valves.b2>=0.9,
+    lesson:'Bed 3 is on the old run with a <b>reducer</b> in it. Same valve, same manifold pressure, noticeably less flow &mdash; and watch the particles sprint through that throat. Squeeze the bore and velocity goes up while pressure goes down. The restriction is in the pipe, not the valve.' },
+  { keys:['b0'], watch:2,
+    task:'Now throttle BED 1 back to about a quarter open \u2014 and watch Bed 3.',
+    ok:()=>valves.b0<=0.35,
+    lesson:'Bed 3 came up and nobody touched Bed 3. Add resistance to one branch and manifold pressure rises for every other branch. In a shared system <b>there is no local change</b>.' },
+  { keys:['b0','b1','b2'], watch:-1,
+    task:'Last job: balance the bay. Three identical beds should drink about the same \u2014 get all three within a gallon of each other.',
+    ok:()=>{ const S=solve(); const mn=Math.min(...S.q), mx=Math.max(...S.q);
+             return mn>=8 && (mx-mn)<=1.2; },
+    lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch &mdash; Bed 3 can never pass more than its reducer allows, so the other two had to come back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling, which is the real argument for pulling that reducer: it is not costing one bed, it is capping all three.' },
+];
+let step=0, done=false;
+const isLive=k=>!done && STEPS[step].keys.indexOf(k)>=0;
+
+/* ---------- scenery ---------- */
+let BG;
+function buildScene(){
+  BG=document.createElement('canvas'); BG.width=W; BG.height=H;
+  const g=BG.getContext('2d');
+  A.wall(g,W,H); A.rib(g,0,H); A.rib(g,862,H);
+  A.vignetteOnto(g,W,H);   // room first, then signage on top of it
+  A.stencil(g,52,H-26,'BIO-GROW BAY 3',18,'#8b949b');
+  A.stencil(g,52,H-10,'IRRIGATION MANIFOLD',14);
+}
+
+/* ---------- drawing ---------- */
+function branchHalfH(i,x){                       // the reducer narrows bay 3's bore
+  if(i!==2) return R_BR;
+  if(x<RED_X0) return R_BR;
+  if(x<RED_X0+16) return R_BR+(RED_R-R_BR)*((x-RED_X0)/16);
+  if(x<RED_X1-16) return RED_R;
+  if(x<RED_X1) return RED_R+(R_BR-RED_R)*((x-(RED_X1-16))/16);
+  return R_BR;
+}
+function pipeH(g,x0,x1,y,r){
+  g.fillStyle=P.light; g.fillRect(x0,y-r-5,x1-x0,5);
+  g.fillStyle=P.mid;   g.fillRect(x0,y+r,x1-x0,5);
+  g.fillStyle=P.pipeDark; g.fillRect(x0,y-r,x1-x0,2*r);
+}
+function pipeV(g,x,y0,y1,r){
+  g.fillStyle=P.light; g.fillRect(x-r-5,y0,5,y1-y0);
+  g.fillStyle=P.mid;   g.fillRect(x+r,y0,5,y1-y0);
+  g.fillStyle=P.pipeDark; g.fillRect(x-r,y0,2*r,y1-y0);
+}
+function draw(g,dt,t){
+  const S=solve();
+  g.drawImage(BG,0,0);
+
+  // ---- pipe work ----
+  /* The whole network in one call, so no wall can land across a bore. */
+  NET.draw(g);
+  g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign="center";
+  g.fillText("REDUCER",(RED_X0+RED_X1)/2,BR_Y[2]-R_BR-14);
+  wheels.forEach(w=>LPE.valveShell(g,w.x,w.y,w.key==='main'?R_MAIN:R_BR));
+  main.draw(g); trunk.draw(g);
+  branches.forEach(b=>b.draw(g));
+
+  /* The beds are growing trays, not labels. Drawn as real objects whether
+     or not they are running - an unlit rectangle the colour of the wall read
+     as nothing being there at all. */
+  BR_Y.forEach((y,i)=>{
+    const q=S.q[i], wet=q>0.4, bx=POD_X, bw=62, bh=40;
+    g.fillStyle='#2a333a'; g.fillRect(bx,y-bh/2,bw,bh);          // tray
+    g.fillStyle='#1a2a1c'; g.fillRect(bx+3,y-bh/2+3,bw-6,bh-6);  // growing media
+    for(let k=0;k<5;k++){                                        // seedlings
+      const sx=bx+10+k*10, h=wet?9:5;
+      g.fillStyle=wet?'#39ff6a':'#4a5a44';
+      g.fillRect(sx,y-h,2,h);
+      g.fillRect(sx-2,y-h,6,2);
+    }
+    if(wet){                                                     // water in the tray
+      const lv=Math.min(1,q/12);
+      g.fillStyle='rgba(54,224,255,0.30)';
+      g.fillRect(bx+3,y+bh/2-3-8*lv,bw-6,8*lv);
+    }
+    g.strokeStyle=wet?P.water:'#4a545e'; g.lineWidth=2;
+    g.strokeRect(bx,y-bh/2,bw,bh);
+    /* Readout plates come from the engine now, opaque. The level does not
+       get to invent how a number is set on a wall. */
+    const plate=(px,py,pw,ph)=>A.plate(g,px,py,pw,ph);
+    plate(bx-4,y-bh/2-20,62,17);
+    g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign='left';
+    g.fillText('BED '+(i+1),bx,y-bh/2-7);
+    /* The flow reading belongs ON the line it describes, in the clear run
+       before the tray. Under the tray it was unreadable for two reasons at
+       once: the plate ran from x=808 to the canvas edge at 900, straight
+       over the right-hand rib, and each one finished exactly where the next
+       bed's label plate started. There is 90px of empty pipe here and
+       nothing else competing for it. */
+    A.readout(g,{x:714,y:y-39,w:94,h:26,size:20,text:q.toFixed(1)+' gpm',lit:wet});
+    if(venting(i)){
+      /* Below the line: the flow reading now holds the space above it. */
+      plate(bx-104,y+18,96,17);
+      g.fillStyle=P.amber; g.font="13px 'VT323',monospace"; g.textAlign='right';
+      g.fillText('VENTING AIR',bx-10,y+31);
+    }
+  });
+
+  // ---- valves ----
+  wheels.forEach(w=>{
+    const v=valves[w.key], r=w.key==='main'?R_MAIN:R_BR;
+    LPE.valveTrim(g,w.x,w.y,r,w.y-r-10-STEM,v*LPE.WHEEL_SWEEP,WHEEL_R,isLive(w.key),v);
+    /* Beside the valve on its own plate. There is only 86px between branches,
+       so both above the wheel and below the body land on a neighbour. */
+    // the main sits under the manifold gauge, so its plate goes to the left
+    const lx=(w.key==='main')?w.x-128:w.x+38, ly=w.y-34;   // above the bore, never on it
+    A.plate(g,lx-4,ly-17,92,34);
+    g.fillStyle=isLive(w.key)?P.amber:P.rim;
+    g.font="13px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(w.label,lx,ly-4);
+    g.fillStyle=v>0.02?'#39ff6a':'#b8434a';
+    g.font="17px 'VT323',monospace";
+    g.fillText(v<=0.02?'SHUT':Math.round(v*100)+'% OPEN',lx,ly+13);
+  });
+
+  /* Gauge teed off above the header. Sitting it on the line at x=222 put it
+     through the main valve body and hid the pipe behind it. */
+  const GX=258, GY=36, GR=25;
+  g.strokeStyle=P.light; g.lineWidth=4;
+  g.beginPath(); g.moveTo(GX,MAIN_Y-R_MAIN-5); g.lineTo(GX,GY+GR); g.stroke();
+  LPE.gauge(g,GX,GY,GR,S.pMan,80);
+  g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign='left';
+  g.fillText('MANIFOLD',GX+GR+8,GY+4);
+
+}
+
+/* ---------- simulation ---------- */
+function stepSim(dt){
+  const S=solve();
+  pManHeld += (S.pTarget-pManHeld)*Math.min(1,dt/P_TAU);
+  for(let i=0;i<3;i++){
+    if(S.q[i]>0) fill[i]=Math.min(1,fill[i]+S.q[i]*FILL_RATE*dt/BR_LEN);
+    const f=Math.min(1,S.q[i]/FLOW_REF.branch);
+    // one wetted front walking along the branch, across however many pieces
+    // the engine knows each piece's true length, arcs included
+    let walked=fill[i]*BR_TOTAL[i], off=0;
+    branches[i].segs.forEach((s,n)=>{
+      branches[i].set(n,{flow:f, fill:Math.max(0,Math.min(1,(walked-off)/s.len))});
+      off+=s.len;
+    });
+  }
+  // trunk pieces carry only what is still downstream of them
+  // four pieces now: the elbow out to bed 3 is one of them, and it was
+  // being left at zero flow, so nothing moved round the bottom 90
+  const dn=[S.q[0]+S.q[1]+S.q[2], S.q[1]+S.q[2], S.q[2], S.q[2]];
+  dn.forEach((q,i)=>trunk.set(i,{flow:Math.min(1,q/FLOW_REF.riser)}));
+  /* The header carries the SAME stream as the manifold side - one series
+     path, so whatever leaves the beds came through here first. It was pinned
+     to zero, which left the supply standing still while water poured out of
+     the bay. Always full is right; always still is not - that is only true
+     while the main is shut, and the flow value handles that on its own. */
+  const mainFlow=Math.min(1,S.qTot/FLOW_REF.riser);
+  [0,1,2].forEach(n=>main.set(n,{flow:mainFlow}));
+  main.update(dt); trunk.update(dt); branches.forEach(b=>b.update(dt));
+  LPE.audio.flow(Math.min(1,S.qTot/FLOW_REF.riser));
+
+  /* The lesson is held on screen until the player continues - the engine
+     owns that wait, so no level picks its own timer. A 1.5s flash was far
+     too short to read a paragraph. */
+  if(!done && !SH.holding && STEPS[step].ok()){
+    const last=step>=STEPS.length-1;
+    SH.beat(STEPS[step].lesson, ()=>{
+      if(last){ done=true;
+        /* The engine takes it from here: it keeps the closing lesson on the
+           strip, and offers the way out that used to not exist. */
+        SH.finish({ lesson:STEPS[STEPS.length-1].lesson,
+          line:'<span class="accent">Bay 3 is commissioned.</span> Three beds balanced, '+
+               'and a reducer in line 3 that is now holding the whole bay back.' }); }
+      else { step++; say(); }
+    });
+    SH.count(last?'DONE':(step+2)+' / '+STEPS.length);
+  }
+}
+function say(){
+  if(done) return;
+  SH.say(STEPS[step].task,'');
+  SH.count((step+1)+' / '+STEPS.length);
+}
+
+/* ---------- input: drag a hand wheel ---------- */
+let drag=null,lastAng=0;
+function onDown(e){
+  LPE.audio.init(); LPE.audio.resume(); LPE.audio.startFlow();
+  const p=SH.pt(e);
+  for(const w of wheels){
+    const r=w.key==='main'?R_MAIN:R_BR, wy=w.y-r-10-STEM;
+    if(Math.hypot(p.x-w.x,p.y-wy)<WHEEL_R+16 && isLive(w.key)){
+      drag=w; lastAng=Math.atan2(p.y-wy,p.x-w.x);
+      SH.canvas.setPointerCapture(e.pointerId); return;
+    }
+  }
+}
+function onMove(e){
+  if(!drag) return;
+  const p=SH.pt(e), r=drag.key==='main'?R_MAIN:R_BR, wy=drag.y-r-10-STEM;
+  const a=Math.atan2(p.y-wy,p.x-drag.x);
+  let d=a-lastAng;
+  while(d>Math.PI) d-=6.2832; while(d<-Math.PI) d+=6.2832;
+  lastAng=a;
+  const before=valves[drag.key];
+  valves[drag.key]=Math.max(0,Math.min(1,before+d/(2*Math.PI)));
+  if(Math.floor(valves[drag.key]*12)!==Math.floor(before*12)) LPE.audio.tick();
+}
+
+/* ---------- mount ---------- */
+buildScene();
+const SH=LPE.mount({
+  t1:'IRRIGATION MANIFOLD \u2014 CUTAWAY',
+  t2:'The Garden \u00b7 Bio-Grow Bay 3',
+  w:W,h:H,step:stepSim,draw,
+  intro:[
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+     text:'&ldquo;Beds are plumbed and ready down in Bay 3.<br>Can you bring the water supply online for us?&rdquo;'},
+    {kind:'place',
+     text:'The lift opens on humid air and the hum of circulation fans. Three new '+
+          'growing beds sit dry at the end of the row, media packed, lines run, waiting on water.'+
+          '<br><br>Everything in this bay comes up the line from the '+
+          '<span class="accent">Thermal Reservoir</span> &mdash; some of it mined out of the ice, '+
+          'some of it condensate pulled back out of this very air. None of it is cheap, and all of '+
+          'it is counted. Nothing down here gets opened carelessly.'},
+    {kind:'title', eyebrow:'SECTOR 3 \u00b7 LIFE SUPPORT',
+     title:'BIO-GROW BAY 3', sub:'IRRIGATION MANIFOLD \u00b7 COMMISSIONING'},
+  ],
+  onStart:say,
+  onReset(){
+    valves.main=valves.b0=valves.b1=valves.b2=0;
+    pManHeld=0; step=0; done=false;
+    for(let i=0;i<3;i++){ fill[i]=FILL_START; branches[i].set(0,{flow:0,fill:FILL_START}); }
+    LPE.audio.flow(0); say();
+  },
+});
+SH.canvas.addEventListener('pointerdown',onDown);
+SH.canvas.addEventListener('pointermove',onMove);
+['pointerup','pointercancel'].forEach(k=>SH.canvas.addEventListener(k,()=>{drag=null;}));
+say();
+}
+
+(window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
+  label:'LEVEL 1 \u2014 BIO-GROW BAY 3',
+  sub:'The Garden  \u00b7  commissioning',
+  start:startLevel1,
+});
+if(!window.LPE_GAME) startLevel1();
+</script>

@@ -1,0 +1,156 @@
+/* ============================================================
+   LUNAR PROCESS ENGINEER - shared shell.
+   Every level loads this. Nothing here is level-specific, and a level
+   must not restate any of it; if a level needs a new shell element it
+   gets added here so every level gets it at once.
+   ============================================================ */
+:root{
+  --bg:#060b06; --panel:#0c140d; --border:#1f3d22; --bgpanel:#081009;
+  --phosphor:#39ff6a; --amber:#ffb627; --water:#36e0ff;
+  --metal:#8a94a0; --metal-dk:#2c343c; --metal-lt:#c3ccd6;
+  --ink:#d8ffe0; --warn:#ff5050;
+  /* the scenery palette - shared so two levels cannot drift apart */
+  --m-shadow:#0a0e10; --m-dark:#171d20; --m-mid:#232c31;
+  --m-light:#39434a; --m-hi:#4a565d; --rust:#6b4524; --lamp:#ffd9a0;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;height:100%;}
+body{background:var(--bg);color:var(--ink);font-family:'VT323',monospace;font-size:21px;
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 1px,
+                   transparent 1px,transparent 3px);
+  overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.wrap{width:min(96vw,1000px);}
+
+.topbar{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:1px solid var(--border);padding-bottom:5px;margin-bottom:8px;}
+.topbar .t1{color:var(--phosphor);letter-spacing:.05em;font-size:19px;}
+.topbar .t2{color:var(--metal);font-size:15px;}
+
+canvas.rig{display:block;margin:0 auto;height:auto;image-rendering:pixelated;
+  /* 332px of chrome below the canvas: topbar, the 196px guide, and the
+     status bar the controls moved into (~36px). Keep in step with them. */
+  width:min(100%, calc((100vh - 332px) * 2.25));
+  border:2px solid var(--metal-dk);background:#000;cursor:pointer;}
+canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
+
+/* One instruction at a time. Fixed height so changing text never shifts
+   the page - a standing requirement, not a preference. */
+.guide{margin-top:10px;border:1px solid var(--border);background:var(--bgpanel);
+  padding:12px 18px;height:196px;overflow:hidden;position:relative;}
+/* Reserves its line so an empty task never lets the lesson slide up. The
+   buttons left the box, so there is nothing left to dodge horizontally. */
+.guide .task{color:var(--phosphor);font-size:29px;line-height:1.3;
+  min-height:38px;}
+.guide .lesson{color:#d2dae0;font-size:23px;line-height:1.45;margin-top:9px;}
+.guide .lesson b{color:#fff;}
+.guide .lesson .who{color:var(--amber);}      /* the comms voice */
+.guide .beat-hint{color:var(--amber);animation:blink 1.1s steps(1) infinite;}
+/* Options the coach puts to the player. Sits in the guide strip, because a
+   decision about the work IS the instruction at that moment. */
+.guide .choice{display:flex;gap:10px;margin-top:13px;flex-wrap:wrap;}
+.guide .choice button{background:transparent;border:1px solid var(--border);
+  color:var(--metal-lt);font-family:'VT323',monospace;font-size:20px;
+  letter-spacing:.06em;padding:5px 18px;cursor:pointer;text-align:left;}
+.guide .choice button:hover:not(:disabled){color:var(--phosphor);border-color:var(--phosphor);}
+.guide .choice button:disabled{color:var(--metal-dk);border-color:var(--metal-dk);cursor:default;}
+.guide .choice button:focus-visible{outline:2px solid var(--amber);outline-offset:1px;}
+.guide .choice .no{color:var(--metal-dk);font-size:15px;}
+.guide .count{color:var(--metal);font-size:17px;letter-spacing:.08em;}
+
+/* ---- level opening ----
+   Every level opens the way level one does: a call over the intercom, a
+   beat of place, then the title card. Lifted verbatim from level one so
+   the two cannot drift. A level supplies the words, never the markup. */
+.beat{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  flex-direction:column;gap:16px;opacity:0;pointer-events:none;
+  transition:opacity .5s ease;background:var(--bg);z-index:5;}
+.beat.show{opacity:1;pointer-events:auto;}
+.alert-box{border:2px solid var(--phosphor);background:var(--bgpanel);padding:26px 38px;
+  max-width:660px;text-align:center;box-shadow:0 0 26px rgba(57,255,106,.18);}
+.alert-tag{color:var(--phosphor);font-size:15px;letter-spacing:.16em;margin-bottom:10px;}
+.alert-text{font-size:28px;line-height:1.45;}
+.immersion{max-width:640px;font-size:23px;line-height:1.62;color:#c4ccd4;padding:0 28px;}
+.immersion .accent{color:var(--phosphor);}
+.tech-eyebrow{color:var(--metal);font-size:15px;letter-spacing:.22em;}
+.tech-title{font-size:44px;color:var(--phosphor);letter-spacing:.04em;
+  text-shadow:0 0 10px rgba(57,255,106,.38);}
+.tech-sub{color:var(--amber);font-size:17px;letter-spacing:.1em;}
+.hint{color:var(--metal);font-size:15px;letter-spacing:.07em;}
+.wrap.pending{display:none;}
+
+/* ---- game chrome: boot, title, level select ----
+   These belong to the GAME, not to any level. They used to live inside
+   level one, which is why level zero had no boot at all. */
+#dosLayer{position:fixed;inset:0;background:#000;z-index:20;display:flex;
+  align-items:flex-start;justify-content:flex-start;padding:26px 30px;}
+#dosLayer.gone{display:none;}
+#dosText{color:#b9b9b9;font-size:24px;line-height:1.32;white-space:pre-wrap;}
+.cursor{display:inline-block;width:11px;height:19px;background:#b9b9b9;
+  vertical-align:-3px;animation:blink 1.05s steps(1) infinite;}
+@keyframes blink{0%,50%{opacity:1}50.01%,100%{opacity:0}}
+#titleLayer{position:fixed;inset:0;background:#000;z-index:19;display:none;
+  align-items:center;justify-content:center;flex-direction:column;gap:12px;}
+#titleLayer.show{display:flex;}
+/* The jam strip floats rather than joining the column: appending it used to
+   push the art upward, which moved the lamp out from under the cursor that
+   had just opened it, so a second click could never close it. */
+#jamHost{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);}
+#titleCv{image-rendering:pixelated;width:min(96vw,1000px);height:auto;}
+#selectLayer{position:fixed;inset:0;background:var(--bg);z-index:19;display:none;
+  align-items:center;justify-content:center;flex-direction:column;gap:14px;
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 1px,
+                   transparent 1px,transparent 3px);}
+#selectLayer.show{display:flex;}
+.sel-title{font-size:38px;color:var(--phosphor);letter-spacing:.06em;
+  text-shadow:0 0 10px rgba(57,255,106,.34);margin-bottom:4px;}
+#selHint{margin-top:10px;}
+#titleHint{animation:blink 1.4s steps(1) infinite;}
+#menu{display:flex;flex-direction:column;gap:7px;margin-top:4px;}
+/* The debrief card offers the same kind of choice the select screen does,
+   so it is the same control, not a second thing that looks nearly alike. */
+#menu button,.dmenu button{background:transparent;border:1px solid var(--border);color:var(--metal-lt);
+  font-family:'VT323',monospace;font-size:22px;letter-spacing:.08em;padding:6px 26px;
+  cursor:pointer;text-align:left;min-width:420px;}
+#menu button:hover:not(:disabled),.dmenu button:hover{color:var(--phosphor);border-color:var(--phosphor);}
+#menu button:disabled{color:var(--metal-dk);border-color:var(--metal-dk);cursor:default;}
+#menu button:focus-visible,.dmenu button:focus-visible{outline:2px solid var(--amber);outline-offset:1px;}
+#menu .no,.dmenu .no{color:var(--metal-dk);font-size:16px;}
+.dmenu{display:flex;flex-direction:column;gap:7px;margin-top:10px;}
+
+/* Status bar under the guide, outside it: step count far left, controls far
+   right. Nothing here overlaps the instruction text, because it is no longer
+   sharing a box with it. */
+.ctl{display:flex;justify-content:space-between;align-items:center;
+  gap:8px;margin-top:8px;}
+.ctl-btns{display:flex;gap:8px;align-items:center;}
+.ctl button{background:transparent;border:1px solid var(--border);color:var(--metal);
+  font-family:'VT323',monospace;font-size:17px;letter-spacing:.06em;padding:3px 11px;cursor:pointer;}
+.ctl button:hover{color:var(--phosphor);border-color:var(--phosphor);}
+.ctl button:focus-visible{outline:2px solid var(--amber);outline-offset:1px;}
+
+@media(prefers-reduced-motion:reduce){*{animation:none!important;}}
+
+#pad{margin-top:10px;border:1px solid var(--border);background:var(--bgpanel);
+  width:min(96vw,1000px);box-sizing:border-box;
+  height:58px;display:flex;align-items:center;justify-content:center;
+  gap:9px;padding:0 16px;flex:0 0 auto;}
+.kc{cursor:pointer;user-select:none;}
+#pad .grp{display:flex;align-items:center;gap:5px;}
+#pad .tag{color:var(--metal);font-size:15px;letter-spacing:.08em;margin-right:3px;}
+.kc{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;
+  min-width:28px;height:36px;line-height:1;
+  border:1px solid var(--metal-dk);color:var(--metal-lt);font-size:17px;background:#000;
+  transition:background .07s linear,color .07s linear,border-color .07s linear;}
+.kc i{font-style:normal;font-size:12px;color:var(--amber);margin-top:1px;}
+.kc.lit{background:var(--phosphor);color:#06120a;border-color:var(--phosphor);}
+.kc.lit i{color:#06120a;}
+/* A key the LOOPER is playing is lit differently from one your finger is on,
+   so you can see your own part against the recorded one. */
+.kc.loop{background:#16321f;color:var(--phosphor);border-color:var(--phosphor);}
+.kc.loop i{color:var(--phosphor);}
+.kc.armed{border-color:var(--amber);color:var(--amber);animation:recblink .38s steps(1) infinite;}
+.kc.armed i{color:var(--amber);}
+.kc.recording{background:#b8434a;color:#fff;border-color:#e8838a;}
+.kc.recording i{color:#fff;}
+@keyframes recblink{0%,49%{opacity:1}50%,100%{opacity:.3}}
+#pad .sep{color:var(--border);margin:0 3px;}

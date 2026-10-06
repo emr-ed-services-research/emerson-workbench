@@ -1,0 +1,32 @@
+<title>Lunar Process Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<link rel="stylesheet" href="engine.css">
+<script>window.LPE_GAME=true;</script>
+<script src="engine.js"></script>
+<script src="title-art.js"></script>
+<script src="jam.js"></script>
+<!-- Levels register themselves; add a file here and it appears on the menu. -->
+<script src="level0.html.js"></script>
+<script src="level1.html.js"></script>
+<script src="level2.html.js"></script>
+<script>
+'use strict';
+/* ============================================================
+   THE GAME.
+   Boot and title are game chrome, so they live here once rather than
+   inside whichever level happens to be first. Levels are modules the
+   menu launches.
+   ============================================================ */
+LPE.boot(()=>LPE.title({
+  draw: LPE_TITLE,
+  onEnter: ()=>LPE_JAM.startMusic(),
+  onLeave: ()=>LPE_JAM.teardown(),
+  /* On the habitat airlock, where the status lamp used to be. Small on
+     purpose - you have to notice it. Throwing it brings up the instrument
+     panel; throwing it back puts it away. */
+  toggle: {x:98, y:127, set:(on,layer)=>on?LPE_JAM.reveal(layer):LPE_JAM.closePad()},
+  levels: (window.LPE_LEVELS||[]).concat([
+  ]),
+}));
+</script>

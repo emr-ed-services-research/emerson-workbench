@@ -1,0 +1,258 @@
+<title>Bio Lab One Supply Panel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<link rel="stylesheet" href="engine.css">
+<script src="engine.js"></script>
+<script>
+'use strict';
+/* ============================================================
+   LEVEL ZERO \u2014 the interaction grammar, nothing else.
+   A panel reveals. A wheel controls. A gauge responds.
+
+   Everything this file does is geometry, scenery composition and
+   script. Water, scenery pieces, the valve, the gauge, sound and the
+   shell all come from engine.js \u2014 this level cannot disagree with
+   another level about how any of them behave.
+   ============================================================ */
+function startLevel0(){
+const A=LPE.art, P=LPE.palette, W=900, H=400;
+
+const PANEL={x:232,y:142,w:452,h:190};
+const PIPE_Y=262, R=11;
+const VALVE_X=338, WHEEL_R=26, WHEEL_Y=PIPE_Y-R-10-26;
+const GAUGE={x:584,y:196,r:33};
+const LAMP={x:458,y:96};
+/* The Thermal Reservoir header is 60 psig everywhere on the base. This read
+   42 while the Garden manifold in level one sits at 60 off the same source,
+   which cannot both be true. */
+const P_SUPPLY=60, TURNS=2;
+
+const S={phase:'closed',slide:0,turn:0,open:0,press:0,drag:false,lastAng:0,
+         flick:1,dripT:0,dripY:-1};
+
+/* The line: full and still upstream of the shut valve, air beyond it.
+   Both facts are the engine's rules, not this level's invention. */
+const line=new LPE.Line({r:R,segments:[
+  // live off the reservoir
+  {ax:PANEL.x-6, ay:PIPE_Y, bx:VALVE_X,            by:PIPE_Y, flow:0, fill:1},
+  // dead leg to the lab
+  {ax:VALVE_X,   ay:PIPE_Y, bx:PANEL.x+PANEL.w+6,  by:PIPE_Y, flow:0, fill:0},
+]});
+
+/* ---------------- scenery, composed once ---------------- */
+let BG,dust=[];
+for(let i=0;i<34;i++) dust.push({x:LAMP.x-90+Math.random()*180,y:LAMP.y+Math.random()*230,
+  s:4+Math.random()*9,p:Math.random()*6.3});
+function buildScene(){
+  BG=document.createElement('canvas'); BG.width=W; BG.height=H;
+  const g=BG.getContext('2d');
+  A.wall(g,W,H); A.rib(g,0,H); A.rib(g,862,H); A.ceiling(g,W);
+  A.overhead(g,W,62,8,false);
+  A.overhead(g,W,92,9,true);
+  A.floor(g,W,352);
+  A.vignetteOnto(g,W,H);   // room first, then signage and props on top
+  A.stencil(g,52,132,'SECTION 4-B',20,'#8b949b');
+  A.stencil(g,52,152,'HAND-OPERATED \u2014 NO REMOTE',15);
+  A.arrow(g,846,300,'BIO LAB 1');
+  A.placard(g,724,116);
+  A.lampHousing(g,LAMP.x,LAMP.y);
+  A.toolbox(g,96,312);
+  A.clipboard(g,790,158);
+  A.dither(g,0,0,170,120,P.shadow,0.26);
+  A.dither(g,W-170,0,170,120,P.shadow,0.26);
+
+  // the recess the panel covers
+  g.fillStyle='#0c1114'; g.fillRect(PANEL.x-12,PANEL.y-12,PANEL.w+24,PANEL.h+24);
+  g.fillStyle=P.light; g.fillRect(PANEL.x-12,PANEL.y-12,PANEL.w+24,4);
+  g.fillStyle=P.mid;   g.fillRect(PANEL.x-12,PANEL.y+PANEL.h+8,PANEL.w+24,4);
+  g.fillStyle='#2b353b';
+  for(let x=PANEL.x-4;x<PANEL.x+PANEL.w+8;x+=38){
+    g.fillRect(x,PANEL.y-9,3,3); g.fillRect(x,PANEL.y+PANEL.h+11,3,3); }
+  g.fillStyle='#161d21';
+  g.fillRect(PANEL.x-12,PANEL.y-6,PANEL.w+24,5);
+  g.fillRect(PANEL.x-12,PANEL.y+PANEL.h+1,PANEL.w+24,5);
+  g.fillStyle='#070a0c'; g.fillRect(PANEL.x,PANEL.y,PANEL.w,PANEL.h);
+  A.dither(g,PANEL.x,PANEL.y,PANEL.w,40,'#000000',0.5);
+
+}
+
+/* ---------------- script ---------------- */
+/* The picture carries the state. These lines are a person talking, not a
+   caption describing what is already on screen. */
+function lines(){
+  switch(S.phase){
+    case 'closed': return ['Open the panel.',
+      '<span class="who">COMMS:</span> Access panel, right in front of you. Slide it across. '+
+      'Nothing automated down this end, it is all turned by hand.'];
+    case 'opening': return ['Open the panel.',
+      '<span class="who">COMMS:</span> Put your back into it.'];
+    case 'open': return ['Turn the wheel.',
+      '<span class="who">COMMS:</span> Couple of full turns. Watch the gauge &mdash; it is on the '+
+      'lab side of the valve, so it tells you what they are actually getting.'];
+    case 'turning': return ['Keep turning.',
+      '<b>'+S.press.toFixed(0)+' psig</b> at the lab.'];
+    default: return ['That is water into Bio Lab One.',
+      '<span class="who">COMMS:</span> Good. Find the panel, work the valve, read the gauge &mdash; '+
+      'that is the job down this end, and the engineer you are standing in for did it for six years. '+
+      'Play your cards right, you might make a decent one yourself.'];
+  }
+}
+function say(){ const [t,l]=lines(); SH.say(t,l); }
+
+/* ---------------- simulation ---------------- */
+function step(dt){
+  if(S.phase==='opening'){
+    S.slide=Math.min(1,S.slide+dt/0.95);
+    if(S.slide>=1){ S.phase='open'; LPE.audio.clunk(); say(); }
+  }
+  const up=line.segs[0], down=line.segs[1];
+  if(S.phase==='turning'||S.phase==='flowing'){
+    const f=S.open>0.04?S.open:0;
+    up.flow  += (f-up.flow)*Math.min(1,dt/0.5);
+    down.flow = up.flow;
+    if(f>0) down.fill=Math.min(1,down.fill+dt*f*0.75);
+    // the lab-side gauge only reads once water has actually reached it
+    const target=P_SUPPLY*S.open*Math.min(1,down.fill/0.85);
+    S.press+=(target-S.press)*Math.min(1,dt/0.3);
+    LPE.audio.flow(up.flow);
+    if(S.phase==='turning' && down.fill>=1 && S.press>14){
+      S.phase='flowing'; say();
+      /* Level zero had no completion state whatsoever - water ran and that
+         was simply the end of it, with no way through to level one. */
+      SH.finish({ lesson:lines()[1],
+        line:'<span class="accent">Bio Lab One has water.</span> That is one valve, '+
+             'by hand, on the oldest run on the base. Everything after this is the '+
+             'same job with more of it happening at once.' });
+    }
+  }
+  line.update(dt);
+}
+
+/* ---------------- frame ---------------- */
+function draw(g,dt,t){
+  g.drawImage(BG,0,0);
+
+  /* The lamp is on the wall face, so its light falls on the wall \u2014 it
+     cannot reach into the chase behind the panel. Clipping the recess out
+     of the cone (and out of the dust) keeps that true whether the cover is
+     open or shut. */
+  S.flick += ((Math.random()<0.012?0.55:1)-S.flick)*Math.min(1,dt/0.05);
+  g.save();
+  g.beginPath();
+  g.rect(0,0,W,H);
+  g.rect(PANEL.x-12,PANEL.y-12,PANEL.w+24,PANEL.h+24);
+  g.clip('evenodd');
+  g.globalAlpha=0.15*S.flick; g.fillStyle=P.lamp;
+  g.beginPath(); g.moveTo(LAMP.x-22,LAMP.y+6); g.lineTo(LAMP.x+22,LAMP.y+6);
+  g.lineTo(LAMP.x+190,352); g.lineTo(LAMP.x-190,352); g.closePath(); g.fill();
+  g.globalAlpha=1; g.fillStyle='rgba(255,217,160,0.33)';
+  dust.forEach(d=>{ d.y+=d.s*dt; if(d.y>340){ d.y=LAMP.y+10; d.x=LAMP.x-90+Math.random()*180; }
+    g.fillRect(d.x+Math.sin(t*0.6+d.p)*7,d.y,1,1); });
+  g.restore();
+
+  S.dripT+=dt;
+  if(S.dripY<0 && S.dripT>3.4){ S.dripY=104; S.dripT=0; }
+  if(S.dripY>=0){
+    S.dripY+=170*dt; g.fillStyle=P.water; g.fillRect(220,S.dripY,2,4);
+    if(S.dripY>348){ S.dripY=-1; LPE.audio.drip(); }
+  }
+
+  g.save(); g.beginPath(); g.rect(PANEL.x,PANEL.y,PANEL.w,PANEL.h); g.clip();
+  LPE.pipeRun(g,PANEL.x,PANEL.x+PANEL.w,PIPE_Y,R);
+  LPE.penetration(g,PANEL.x+4,PIPE_Y,R);
+  LPE.penetration(g,PANEL.x+PANEL.w-16,PIPE_Y,R);
+  LPE.valveShell(g,VALVE_X,PIPE_Y,R);
+  line.draw(g);
+  LPE.valveTrim(g,VALVE_X,PIPE_Y,R,WHEEL_Y,S.open*LPE.WHEEL_SWEEP,WHEEL_R,S.phase==='open',S.open);
+  g.strokeStyle=P.light; g.lineWidth=4;
+  g.beginPath(); g.moveTo(GAUGE.x,PIPE_Y-R-6); g.lineTo(GAUGE.x,GAUGE.y+GAUGE.r); g.stroke();
+  LPE.gauge(g,GAUGE.x,GAUGE.y,GAUGE.r,S.press,80);
+  g.restore();
+
+  if(S.slide<1){
+    const sx=PANEL.x+S.slide*(PANEL.w+20);
+    g.fillStyle='#2e3338'; g.fillRect(sx,PANEL.y,PANEL.w,PANEL.h);
+    g.fillStyle='#3b4147'; g.fillRect(sx,PANEL.y,PANEL.w,3);
+    g.fillStyle='#1d2225'; g.fillRect(sx,PANEL.y+PANEL.h-3,PANEL.w,3);
+    g.strokeStyle='#454c52'; g.lineWidth=2; g.strokeRect(sx+4,PANEL.y+4,PANEL.w-8,PANEL.h-8);
+    A.dither(g,sx+30,PANEL.y+22,84,15,P.rust,0.3);
+    A.dither(g,sx+PANEL.w-170,PANEL.y+PANEL.h-50,110,13,P.rust,0.26);
+    A.dither(g,sx,PANEL.y+PANEL.h-26,PANEL.w,26,P.shadow,0.35);
+    A.stencil(g,sx+30,PANEL.y+74,'BIO LAB ONE SUPPLY',25,P.stencil);
+    A.stencil(g,sx+30,PANEL.y+98,'THERMAL RESERVOIR \u2014 LINE 1',16);
+    A.handNote(g,sx+32,PANEL.y+144,'wheel sticks. keep turning.  \u2014 R.O.');
+    g.fillStyle='#565d64'; A.rr(g,sx+PANEL.w-54,PANEL.y+PANEL.h/2-28,20,56,6); g.fill();
+    g.strokeStyle='#848d96'; g.lineWidth=2; g.stroke();
+  }
+
+}
+
+/* ---------------- mount ---------------- */
+buildScene();
+const SH=LPE.mount({
+  t1:'BIO LAB ONE \u2014 SUPPLY PANEL',
+  t2:'Thermal Reservoir feed \u00b7 Section 4-B \u00b7 manual',
+  w:W,h:H,step,draw,
+  /* The opening is the engine's three-beat template, same as level one. */
+  intro:[
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+     text:'&ldquo;Bio Lab One has got no water.<br>Get down to Section 4-B and open their supply, would you?&rdquo;'},
+    {kind:'place',
+     text:'Four-B is the oldest run on the base. No actuators, no remote, no screens &mdash; '+
+          'just lines on brackets and wheels you turn yourself.<br><br>'+
+          'Everything down here came off the <span class="accent">Thermal Reservoir</span>, '+
+          'and everything down here has been worked on by someone before you.'},
+    {kind:'title', eyebrow:'SECTION 4-B \u00b7 MANUAL SERVICES',
+     title:'BIO LAB ONE SUPPLY', sub:'THERMAL RESERVOIR \u00b7 LINE 1'},
+  ],
+  onReset(){
+    Object.assign(S,{phase:'closed',slide:0,turn:0,open:0,press:0,drag:false});
+    line.set(0,{flow:0,fill:1}); line.set(1,{flow:0,fill:0});
+    LPE.audio.flow(0); say();
+  },
+});
+
+const cv=SH.canvas;
+cv.addEventListener('pointerdown',e=>{
+  LPE.audio.init(); LPE.audio.resume();
+  const p=SH.pt(e);
+  if(S.phase==='closed'){ S.phase='opening'; LPE.audio.scrape(); say(); return; }
+  if(S.phase!=='opening' && Math.hypot(p.x-VALVE_X,p.y-WHEEL_Y)<WHEEL_R+18){
+    S.drag=true; S.lastAng=Math.atan2(p.y-WHEEL_Y,p.x-VALVE_X);
+    cv.setPointerCapture(e.pointerId); LPE.audio.startFlow();
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(!S.drag) return;
+  const p=SH.pt(e), a=Math.atan2(p.y-WHEEL_Y,p.x-VALVE_X);
+  let d=a-S.lastAng;
+  while(d>Math.PI) d-=6.2832; while(d<-Math.PI) d+=6.2832;
+  S.lastAng=a;
+  const before=S.open;
+  S.open=Math.max(0,Math.min(1,S.open+d/(TURNS*6.2832)));   // the wheel follows this, so it cannot over-travel
+  if(S.open>0 && S.phase==='open') S.phase='turning';
+  if(Math.floor(S.open*16)!==Math.floor(before*16)) LPE.audio.tick();
+  say();
+});
+['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>{S.drag=false;}));
+cv.addEventListener('keydown',e=>{
+  if(S.phase==='closed'&&(e.key==='Enter'||e.key===' ')){
+    e.preventDefault(); LPE.audio.init(); S.phase='opening'; LPE.audio.scrape(); say(); return; }
+  if(e.key==='ArrowRight'||e.key==='ArrowUp'){
+    e.preventDefault(); LPE.audio.init(); LPE.audio.startFlow();
+    S.open=Math.min(1,S.open+0.4/(TURNS*6.2832));
+    if(S.phase==='open') S.phase='turning';
+    LPE.audio.tick(); say(); }
+});
+say();
+}
+
+/* Registered so the game shell can launch it; still runs on its own if
+   this file is opened directly, which is how a single level is iterated. */
+(window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
+  label:"LEVEL 0 \u2014 BIO LAB ONE SUPPLY",
+  sub:"Section 4-B  \u00b7  manual",
+  start:startLevel0,
+});
+if(!window.LPE_GAME) startLevel0();
+</script>
