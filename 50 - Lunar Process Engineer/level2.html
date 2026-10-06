@@ -33,7 +33,7 @@ const A=LPE.art, P=LPE.palette, W=900, H=400;
 const MAIN_Y=86, TRUNK_X=320, POD_X=812;
 const BR_Y=[170,256,342];
 const R_MAIN=11, R_BR=10;
-const RED_X0=600, RED_X1=680, RED_R=4.6;
+const RED_X0=600, RED_X1=680, RED_R=2.2;
 const VALVE_X=410, WHEEL_R=18, STEM=24;
 const BR_LEN=POD_X-TRUNK_X;
 const wheelMainX=170;
@@ -49,7 +49,16 @@ const wheels=[
    reducerIn true this solve is identical to level one's across all 27
    valve combinations. The ONLY new thing is that the series term can go. */
 const P_SUP=60, SG=1.0;
-const CV_MAIN_MAX=7, CV_BR_MAX=4, CV_REDUCER=2.2;
+/* DERIVED, not chosen - run `node sizing.js` to regenerate and see the
+   working. Application: 3 NFT beds at 2.0 gpm each (an NFT channel runs
+   1-2 L/min; a bed carries ~6), manifold at 15.2 psig because
+   micro-irrigation headers run 10-25 psi, not mains pressure. Lines from
+   ASME B36.10M Sch 40 by velocity band: NPS 3/8 branches at 3.35 ft/s,
+   NPS 1/2 main at 6.34 ft/s. Then Cv = q/sqrt(dP).
+   The first pass had Cv 7 / 4 / 2.2, picked because they balanced nicely,
+   and the bay delivered 46.8 gpm - 2,800 gal/hour through three grow beds
+   on a colony whose own narration says the water is counted. */
+const CV_MAIN_MAX=0.896, CV_BR_MAX=0.513, CV_REDUCER=0.296;
 const valves={main:1,b0:1,b1:1,b2:1};
 let reducerIn=true;
 const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));
@@ -82,7 +91,14 @@ function solve(){
    Level one taught that; this is it arriving as a consequence. */
 const FILL_START=(VALVE_X-TRUNK_X)/BR_LEN;
 const fill=[1,1,1];
-const FILL_RATE=12;
+/* Air purge rate, set from the duration it has to produce rather than
+   left as a bare number. purge = (1 - FILL_START) * BR_LEN / (q * FILL_RATE).
+   At the real flows (about 2 gpm a branch) 50 gives ~4 s: long enough to
+   read the caption and watch the front move, short enough not to stall.
+   This is a constant that only means anything in combination with the flow
+   scale - when the Cv values were derived down 8x, the old 12 silently
+   became a 15 s purge, and a hand-tuned 5 became 40 s. */
+const FILL_RATE=50;
 const venting=i=>fill[i]>FILL_START+0.001 && fill[i]<1;
 
 /* ---------- water ---------- */
@@ -129,7 +145,7 @@ function buildNet(){
        {ax:TRUNK_X+TEE_R,ay:y,bx:POD_X,by:y,r:R_BR}]
     : reducerIn
       ? [{ax:TRUNK_X+BEND,ay:y,bx:RED_X0,by:y,r:R_BR},
-         {ax:RED_X0,ay:y,bx:RED_X1,by:y,r:RED_R,speed:2.2},
+         {ax:RED_X0,ay:y,bx:RED_X1,by:y,r:RED_R,speed:6},
          {ax:RED_X1,ay:y,bx:POD_X,by:y,r:R_BR}]
       : [{ax:TRUNK_X+BEND,ay:y,bx:POD_X,by:y,r:R_BR}]);   // one clear bore
   const keep=branches;
@@ -180,7 +196,7 @@ function steady(){
    sits just under it. */
 const balanced=()=>{ if(!settled()) return false;
                      const S=solve(), mn=Math.min(...S.q), mx=Math.max(...S.q);
-                     return mn>=10.5 && (mx-mn)<=1.0; };
+                     return mn>=1.31 && (mx-mn)<=0.125; };
 const allWide=()=>settled()&&valves.main>=0.9&&valves.b0>=0.9&&
                   valves.b1>=0.9&&valves.b2>=0.9;
 
@@ -277,7 +293,7 @@ function draw(g,dt,t){
   branches.forEach(b=>b.draw(g));
 
   BR_Y.forEach((y,i)=>{
-    const q=S.q[i], wet=q>0.4, bx=POD_X, bw=62, bh=40;
+    const q=S.q[i], wet=q>0.05, bx=POD_X, bw=62, bh=40;
     g.fillStyle='#2a333a'; g.fillRect(bx,y-bh/2,bw,bh);
     g.fillStyle='#1a2a1c'; g.fillRect(bx+3,y-bh/2+3,bw-6,bh-6);
     for(let k=0;k<5;k++){
@@ -286,7 +302,7 @@ function draw(g,dt,t){
       g.fillRect(sx,y-h,2,h); g.fillRect(sx-2,y-h,6,2);
     }
     if(wet){
-      const lv=Math.min(1,q/12);
+      const lv=Math.min(1,q/1.5);
       g.fillStyle='rgba(54,224,255,0.30)';
       g.fillRect(bx+3,y+bh/2-3-8*lv,bw-6,8*lv);
     }
@@ -297,9 +313,23 @@ function draw(g,dt,t){
     g.fillText('BED '+(i+1),bx,y-bh/2-7);
     A.readout(g,{x:714,y:y-39,w:94,h:26,size:20,text:q.toFixed(1)+' gpm',lit:wet});
     if(venting(i)){
-      A.plate(g,bx-104,y+18,96,17);
-      g.fillStyle=P.amber; g.font="13px 'VT323',monospace"; g.textAlign='right';
-      g.fillText('VENTING AIR',bx-10,y+31);
+      /* A small static caption at the far right lost every time, because the
+         player is looking at the hand wheel. It pulses, it says what is
+         actually happening, and the escaping air is drawn at the bed end
+         where it is leaving. */
+      const pulse=0.55+0.45*Math.sin(t*9);
+      A.plate(g,bx-150,y+18,142,19);
+      g.save(); g.globalAlpha=pulse;
+      g.fillStyle=P.amber; g.font="14px 'VT323',monospace"; g.textAlign='right';
+      g.fillText('>> VENTING AIR',bx-14,y+32);
+      g.restore();
+      for(let k=0;k<7;k++){                       // air spitting out at the bed
+        const ph=(t*2.2+k*0.37)%1;
+        g.globalAlpha=(1-ph)*0.75*pulse;
+        g.fillStyle='#cfe6ff';
+        g.fillRect(bx-2+ph*22, y-5+Math.sin(t*7+k*1.9)*6, 3, 2);
+      }
+      g.globalAlpha=1;
     }
   });
 
@@ -358,6 +388,10 @@ function stepSim(dt){
   [0,1,2].forEach(n=>main.set(n,{flow:mainFlow}));
   main.update(dt); trunk.update(dt); branches.forEach(b=>b.update(dt));
   LPE.audio.flow(Math.min(1,S.qTot/FLOW_REF.riser));
+  /* The throat is noisy while it is in, and the bay goes quiet when it comes
+     out. That silence is half the payoff - the player hears the repair. */
+  LPE.audio.rush(reducerIn ? Math.min(1,S.q[2]/1.5) : 0);
+  LPE.audio.vent(venting(2) ? Math.min(1,0.35+S.q[2]/4) : 0);
 
   if(!STEPS || done || SH.holding) return;
   if(STEPS[step].ok()){

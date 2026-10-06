@@ -23,7 +23,7 @@ const A=LPE.art, P=LPE.palette, W=900, H=400;
 const MAIN_Y=86, TRUNK_X=320, POD_X=812;
 const BR_Y=[170,256,342];
 const R_MAIN=11, R_BR=10;
-const RED_X0=600, RED_X1=680, RED_R=4.6;      // the spliced-in reducer on bay 3
+const RED_X0=600, RED_X1=680, RED_R=2.2;      // the spliced-in reducer on bay 3
 const VALVE_X=410, WHEEL_R=18, STEM=24;
 const BR_LEN=POD_X-TRUNK_X;
 const wheelMainX=170;
@@ -36,7 +36,16 @@ const wheels=[
 
 /* ---------- physics (verbatim) ---------- */
 const P_SUP=60, SG=1.0;
-const CV_MAIN_MAX=7, CV_BR_MAX=4, CV_REDUCER=2.2;
+/* DERIVED, not chosen - run `node sizing.js` to regenerate and see the
+   working. Application: 3 NFT beds at 2.0 gpm each (an NFT channel runs
+   1-2 L/min; a bed carries ~6), manifold at 15.2 psig because
+   micro-irrigation headers run 10-25 psi, not mains pressure. Lines from
+   ASME B36.10M Sch 40 by velocity band: NPS 3/8 branches at 3.35 ft/s,
+   NPS 1/2 main at 6.34 ft/s. Then Cv = q/sqrt(dP).
+   The first pass had Cv 7 / 4 / 2.2, picked because they balanced nicely,
+   and the bay delivered 46.8 gpm - 2,800 gal/hour through three grow beds
+   on a colony whose own narration says the water is counted. */
+const CV_MAIN_MAX=0.896, CV_BR_MAX=0.513, CV_REDUCER=0.296;
 const valves={main:0,b0:0,b1:0,b2:0};
 const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));
 /* Manifold pressure is STATE, not recomputed each frame. Water is
@@ -69,7 +78,14 @@ function solve(){
    valve and has to push the air out of the emitters before it reaches root. */
 const FILL_START=(VALVE_X-TRUNK_X)/BR_LEN;
 const fill=[FILL_START,FILL_START,FILL_START];
-const FILL_RATE=12;
+/* Air purge rate, set from the duration it has to produce rather than
+   left as a bare number. purge = (1 - FILL_START) * BR_LEN / (q * FILL_RATE).
+   At the real flows (about 2 gpm a branch) 50 gives ~4 s: long enough to
+   read the caption and watch the front move, short enough not to stall.
+   This is a constant that only means anything in combination with the flow
+   scale - when the Cv values were derived down 8x, the old 12 silently
+   became a 15 s purge, and a hand-tuned 5 became 40 s. */
+const FILL_RATE=50;
 const venting=i=>fill[i]>FILL_START+0.001 && fill[i]<1;
 
 /* ---------- water on the engine's model ----------
@@ -130,7 +146,7 @@ const BR_SEGS=BR_Y.map((y,i)=> i!==2
   ? [{arc:{cx:TRUNK_X+TEE_R,cy:y-TEE_R,R:TEE_R,a0:Math.PI,a1:Math.PI/2},r:R_BR},
      {ax:TRUNK_X+TEE_R,ay:y,bx:POD_X,by:y,r:R_BR}]
   : [{ax:TRUNK_X+BEND,ay:y,bx:RED_X0,by:y,r:R_BR},
-     {ax:RED_X0,ay:y,bx:RED_X1,by:y,r:RED_R,speed:2.2},   // sprints through
+     {ax:RED_X0,ay:y,bx:RED_X1,by:y,r:RED_R,speed:6},   // sprints through
      {ax:RED_X1,ay:y,bx:POD_X,by:y,r:R_BR}]);
 const branches=BR_Y.map((y,i)=>new LPE.Line({r:R_BR,
   segments:BR_SEGS[i].map(s=>({...s,fill:0}))}));
@@ -173,9 +189,9 @@ const STEPS=[
     ok:()=>valves.b0<=0.35,
     lesson:'Bed 3 came up and nobody touched Bed 3. Add resistance to one branch and manifold pressure rises for every other branch. In a shared system <b>there is no local change</b>.' },
   { keys:['b0','b1','b2'], watch:-1,
-    task:'Last job: balance the bay. Three identical beds should drink about the same \u2014 get all three within a gallon of each other.',
+    task:'Last job: balance the bay. Three identical beds should drink about the same \u2014 get all three within a tenth of a gallon of each other.',
     ok:()=>{ const S=solve(); const mn=Math.min(...S.q), mx=Math.max(...S.q);
-             return mn>=8 && (mx-mn)<=1.2; },
+             return mn>=1.0 && (mx-mn)<=0.15; },
     lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch &mdash; Bed 3 can never pass more than its reducer allows, so the other two had to come back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling, which is the real argument for pulling that reducer: it is not costing one bed, it is capping all three.' },
 ];
 let step=0, done=false;
@@ -228,7 +244,7 @@ function draw(g,dt,t){
      or not they are running - an unlit rectangle the colour of the wall read
      as nothing being there at all. */
   BR_Y.forEach((y,i)=>{
-    const q=S.q[i], wet=q>0.4, bx=POD_X, bw=62, bh=40;
+    const q=S.q[i], wet=q>0.05, bx=POD_X, bw=62, bh=40;
     g.fillStyle='#2a333a'; g.fillRect(bx,y-bh/2,bw,bh);          // tray
     g.fillStyle='#1a2a1c'; g.fillRect(bx+3,y-bh/2+3,bw-6,bh-6);  // growing media
     for(let k=0;k<5;k++){                                        // seedlings
@@ -238,7 +254,7 @@ function draw(g,dt,t){
       g.fillRect(sx-2,y-h,6,2);
     }
     if(wet){                                                     // water in the tray
-      const lv=Math.min(1,q/12);
+      const lv=Math.min(1,q/1.5);
       g.fillStyle='rgba(54,224,255,0.30)';
       g.fillRect(bx+3,y+bh/2-3-8*lv,bw-6,8*lv);
     }

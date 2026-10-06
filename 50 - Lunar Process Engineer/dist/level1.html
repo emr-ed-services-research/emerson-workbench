@@ -48,7 +48,16 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
 .guide .lesson{color:#d2dae0;font-size:23px;line-height:1.45;margin-top:9px;}
 .guide .lesson b{color:#fff;}
 .guide .lesson .who{color:var(--amber);}      /* the comms voice */
-.guide .beat-hint{color:var(--amber);animation:blink 1.1s steps(1) infinite;}
+.guide .beat-hint{display:inline-block;border:1px solid var(--amber);color:var(--amber);
+  font-family:'VT323',monospace;font-size:21px;letter-spacing:.09em;padding:3px 20px;
+  cursor:pointer;animation:hintpulse 1.9s ease-in-out infinite;}
+.guide .beat-hint:hover{background:rgba(255,182,39,.14);}
+/* It was bare amber text on a hard steps(1) blink, which reads as a warning
+   lamp or a terminal cursor - something the screen is doing AT you, not a
+   control. Bordered, in the same language as every other button here, with
+   a soft pulse instead of an on/off flash, so it reads as "press this". */
+@keyframes hintpulse{0%,100%{opacity:1}50%{opacity:.6}}
+@media (prefers-reduced-motion:reduce){ .guide .beat-hint{animation:none;} }
 /* Options the coach puts to the player. Sits in the guide strip, because a
    decision about the work IS the instruction at that moment. */
 .guide .choice{display:flex;gap:10px;margin-top:13px;flex-wrap:wrap;}
@@ -702,7 +711,7 @@ function gauge(g,x,y,R,psi,max){
 
 /* ---------------- sound ---------------- */
 const audio={
-  ctx:null,on:true,ready:false,noise:null,flowGain:null,humGain:null,
+  ctx:null,on:true,ready:false,noise:null,flowGain:null,humGain:null,ventGain:null,ventFilter:null,rushGain:null,rushFilter:null,
   init(){
     if(this.ready) return;
     try{
@@ -787,6 +796,61 @@ const audio={
     this.flowGain=g;
   },
   flow(level){ if(this.flowGain) this.flowGain.gain.value=this.on?0.08*level:0; },
+  /* Air leaving a line that is filling. Water hum is lowpassed to a dull
+     rumble; escaping air is the opposite - thin, bright, and it hisses.
+     There was no vent sound at all before this, so "the air venting" was
+     only ever a caption on the wall. Built like startFlow so it is one
+     voice held open and ridden by level, not a burst per frame. */
+  startVent(){
+    if(!this.ready||this.ventGain) return;
+    const c=this.ctx, s=c.createBufferSource(); s.buffer=this.noise; s.loop=true;
+    const hp=c.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=2100;
+    const bp=c.createBiquadFilter(); bp.type='bandpass';
+    bp.frequency.value=3600; bp.Q.value=0.7;
+    const g=c.createGain(); g.gain.value=0;
+    s.connect(hp); hp.connect(bp); bp.connect(g); g.connect(c.destination); s.start();
+    this.ventGain=g; this.ventFilter=bp;
+  },
+  /* A restriction passing liquid is NOT quiet. The throat here runs about
+     4.7x branch velocity, and the shear layer and reattachment downstream
+     of it make real broadband noise. Checked before building it: with the
+     bed discharging to an open tray, dP never reaches FL^2(P1-FF*Pv) at any
+     operating point, so this is turbulent rush and NOT cavitation - no
+     gravel, no collapse. Cavitation is a different sound for a later level,
+     and faking it here would teach the wrong tell.
+     Sits between flow (lowpassed 760 rumble) and vent (2kHz+ hiss). */
+  startRush(){
+    if(!this.ready||this.rushGain) return;
+    const c=this.ctx, s=c.createBufferSource(); s.buffer=this.noise; s.loop=true;
+    const bp=c.createBiquadFilter(); bp.type='bandpass';
+    bp.frequency.value=1500; bp.Q.value=0.55;
+    const g=c.createGain(); g.gain.value=0;
+    s.connect(bp); bp.connect(g); g.connect(c.destination); s.start();
+    this.rushGain=g; this.rushFilter=bp;
+  },
+  rush(level){
+    if(!this.rushGain){ if(level>0) this.startRush(); if(!this.rushGain) return; }
+    const t=this.ctx.currentTime;
+    /* 0.022, not the 0.055 this started at. Measured against the flow hum
+       offline: at the level it actually runs in game (0.76) the old value
+       sat 0.9 dB UNDER full bay flow - the restriction was as loud as all
+       the water in the level. Now about -9 dB, which reads as a character
+       in the background rather than the subject. */
+    this.rushGain.gain.setTargetAtTime(this.on?0.022*level:0, t, 0.06);
+    this.rushFilter.frequency.setTargetAtTime(1100+900*level, t, 0.1);
+  },
+  vent(level){
+    if(!this.ventGain){ if(level>0) this.startVent(); if(!this.ventGain) return; }
+    const t=this.ctx.currentTime;
+    /* 0.020. The old 0.05 peaked 3.8 dB OVER full flow. This sits about
+       -4 dB under it, which still cuts through easily because the hiss is
+       3-5 kHz and the water hum is lowpassed at 760 Hz - spectral
+       separation does the work that loudness was being asked to do. */
+    this.ventGain.gain.setTargetAtTime(this.on?0.020*level:0, t, 0.04);
+    /* The pitch climbs as the last of the air is squeezed out - the sound a
+       bleed valve actually makes just before it spits water. */
+    this.ventFilter.frequency.setTargetAtTime(2600+2600*level, t, 0.08);
+  },
   toggle(){
     this.on=!this.on;
     if(this.humGain) this.humGain.gain.value=this.on?0.045:0;
@@ -1266,7 +1330,7 @@ const A=LPE.art, P=LPE.palette, W=900, H=400;
 const MAIN_Y=86, TRUNK_X=320, POD_X=812;
 const BR_Y=[170,256,342];
 const R_MAIN=11, R_BR=10;
-const RED_X0=600, RED_X1=680, RED_R=4.6;      // the spliced-in reducer on bay 3
+const RED_X0=600, RED_X1=680, RED_R=2.2;      // the spliced-in reducer on bay 3
 const VALVE_X=410, WHEEL_R=18, STEM=24;
 const BR_LEN=POD_X-TRUNK_X;
 const wheelMainX=170;
@@ -1279,7 +1343,16 @@ const wheels=[
 
 /* ---------- physics (verbatim) ---------- */
 const P_SUP=60, SG=1.0;
-const CV_MAIN_MAX=7, CV_BR_MAX=4, CV_REDUCER=2.2;
+/* DERIVED, not chosen - run `node sizing.js` to regenerate and see the
+   working. Application: 3 NFT beds at 2.0 gpm each (an NFT channel runs
+   1-2 L/min; a bed carries ~6), manifold at 15.2 psig because
+   micro-irrigation headers run 10-25 psi, not mains pressure. Lines from
+   ASME B36.10M Sch 40 by velocity band: NPS 3/8 branches at 3.35 ft/s,
+   NPS 1/2 main at 6.34 ft/s. Then Cv = q/sqrt(dP).
+   The first pass had Cv 7 / 4 / 2.2, picked because they balanced nicely,
+   and the bay delivered 46.8 gpm - 2,800 gal/hour through three grow beds
+   on a colony whose own narration says the water is counted. */
+const CV_MAIN_MAX=0.896, CV_BR_MAX=0.513, CV_REDUCER=0.296;
 const valves={main:0,b0:0,b1:0,b2:0};
 const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));
 /* Manifold pressure is STATE, not recomputed each frame. Water is
@@ -1312,7 +1385,14 @@ function solve(){
    valve and has to push the air out of the emitters before it reaches root. */
 const FILL_START=(VALVE_X-TRUNK_X)/BR_LEN;
 const fill=[FILL_START,FILL_START,FILL_START];
-const FILL_RATE=12;
+/* Air purge rate, set from the duration it has to produce rather than
+   left as a bare number. purge = (1 - FILL_START) * BR_LEN / (q * FILL_RATE).
+   At the real flows (about 2 gpm a branch) 50 gives ~4 s: long enough to
+   read the caption and watch the front move, short enough not to stall.
+   This is a constant that only means anything in combination with the flow
+   scale - when the Cv values were derived down 8x, the old 12 silently
+   became a 15 s purge, and a hand-tuned 5 became 40 s. */
+const FILL_RATE=50;
 const venting=i=>fill[i]>FILL_START+0.001 && fill[i]<1;
 
 /* ---------- water on the engine's model ----------
@@ -1373,7 +1453,7 @@ const BR_SEGS=BR_Y.map((y,i)=> i!==2
   ? [{arc:{cx:TRUNK_X+TEE_R,cy:y-TEE_R,R:TEE_R,a0:Math.PI,a1:Math.PI/2},r:R_BR},
      {ax:TRUNK_X+TEE_R,ay:y,bx:POD_X,by:y,r:R_BR}]
   : [{ax:TRUNK_X+BEND,ay:y,bx:RED_X0,by:y,r:R_BR},
-     {ax:RED_X0,ay:y,bx:RED_X1,by:y,r:RED_R,speed:2.2},   // sprints through
+     {ax:RED_X0,ay:y,bx:RED_X1,by:y,r:RED_R,speed:6},   // sprints through
      {ax:RED_X1,ay:y,bx:POD_X,by:y,r:R_BR}]);
 const branches=BR_Y.map((y,i)=>new LPE.Line({r:R_BR,
   segments:BR_SEGS[i].map(s=>({...s,fill:0}))}));
@@ -1416,9 +1496,9 @@ const STEPS=[
     ok:()=>valves.b0<=0.35,
     lesson:'Bed 3 came up and nobody touched Bed 3. Add resistance to one branch and manifold pressure rises for every other branch. In a shared system <b>there is no local change</b>.' },
   { keys:['b0','b1','b2'], watch:-1,
-    task:'Last job: balance the bay. Three identical beds should drink about the same \u2014 get all three within a gallon of each other.',
+    task:'Last job: balance the bay. Three identical beds should drink about the same \u2014 get all three within a tenth of a gallon of each other.',
     ok:()=>{ const S=solve(); const mn=Math.min(...S.q), mx=Math.max(...S.q);
-             return mn>=8 && (mx-mn)<=1.2; },
+             return mn>=1.0 && (mx-mn)<=0.15; },
     lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch &mdash; Bed 3 can never pass more than its reducer allows, so the other two had to come back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling, which is the real argument for pulling that reducer: it is not costing one bed, it is capping all three.' },
 ];
 let step=0, done=false;
@@ -1471,7 +1551,7 @@ function draw(g,dt,t){
      or not they are running - an unlit rectangle the colour of the wall read
      as nothing being there at all. */
   BR_Y.forEach((y,i)=>{
-    const q=S.q[i], wet=q>0.4, bx=POD_X, bw=62, bh=40;
+    const q=S.q[i], wet=q>0.05, bx=POD_X, bw=62, bh=40;
     g.fillStyle='#2a333a'; g.fillRect(bx,y-bh/2,bw,bh);          // tray
     g.fillStyle='#1a2a1c'; g.fillRect(bx+3,y-bh/2+3,bw-6,bh-6);  // growing media
     for(let k=0;k<5;k++){                                        // seedlings
@@ -1481,7 +1561,7 @@ function draw(g,dt,t){
       g.fillRect(sx-2,y-h,6,2);
     }
     if(wet){                                                     // water in the tray
-      const lv=Math.min(1,q/12);
+      const lv=Math.min(1,q/1.5);
       g.fillStyle='rgba(54,224,255,0.30)';
       g.fillRect(bx+3,y+bh/2-3-8*lv,bw-6,8*lv);
     }

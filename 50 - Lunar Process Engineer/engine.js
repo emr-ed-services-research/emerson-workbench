@@ -539,7 +539,7 @@ function gauge(g,x,y,R,psi,max){
 
 /* ---------------- sound ---------------- */
 const audio={
-  ctx:null,on:true,ready:false,noise:null,flowGain:null,humGain:null,
+  ctx:null,on:true,ready:false,noise:null,flowGain:null,humGain:null,ventGain:null,ventFilter:null,rushGain:null,rushFilter:null,
   init(){
     if(this.ready) return;
     try{
@@ -624,6 +624,61 @@ const audio={
     this.flowGain=g;
   },
   flow(level){ if(this.flowGain) this.flowGain.gain.value=this.on?0.08*level:0; },
+  /* Air leaving a line that is filling. Water hum is lowpassed to a dull
+     rumble; escaping air is the opposite - thin, bright, and it hisses.
+     There was no vent sound at all before this, so "the air venting" was
+     only ever a caption on the wall. Built like startFlow so it is one
+     voice held open and ridden by level, not a burst per frame. */
+  startVent(){
+    if(!this.ready||this.ventGain) return;
+    const c=this.ctx, s=c.createBufferSource(); s.buffer=this.noise; s.loop=true;
+    const hp=c.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=2100;
+    const bp=c.createBiquadFilter(); bp.type='bandpass';
+    bp.frequency.value=3600; bp.Q.value=0.7;
+    const g=c.createGain(); g.gain.value=0;
+    s.connect(hp); hp.connect(bp); bp.connect(g); g.connect(c.destination); s.start();
+    this.ventGain=g; this.ventFilter=bp;
+  },
+  /* A restriction passing liquid is NOT quiet. The throat here runs about
+     4.7x branch velocity, and the shear layer and reattachment downstream
+     of it make real broadband noise. Checked before building it: with the
+     bed discharging to an open tray, dP never reaches FL^2(P1-FF*Pv) at any
+     operating point, so this is turbulent rush and NOT cavitation - no
+     gravel, no collapse. Cavitation is a different sound for a later level,
+     and faking it here would teach the wrong tell.
+     Sits between flow (lowpassed 760 rumble) and vent (2kHz+ hiss). */
+  startRush(){
+    if(!this.ready||this.rushGain) return;
+    const c=this.ctx, s=c.createBufferSource(); s.buffer=this.noise; s.loop=true;
+    const bp=c.createBiquadFilter(); bp.type='bandpass';
+    bp.frequency.value=1500; bp.Q.value=0.55;
+    const g=c.createGain(); g.gain.value=0;
+    s.connect(bp); bp.connect(g); g.connect(c.destination); s.start();
+    this.rushGain=g; this.rushFilter=bp;
+  },
+  rush(level){
+    if(!this.rushGain){ if(level>0) this.startRush(); if(!this.rushGain) return; }
+    const t=this.ctx.currentTime;
+    /* 0.022, not the 0.055 this started at. Measured against the flow hum
+       offline: at the level it actually runs in game (0.76) the old value
+       sat 0.9 dB UNDER full bay flow - the restriction was as loud as all
+       the water in the level. Now about -9 dB, which reads as a character
+       in the background rather than the subject. */
+    this.rushGain.gain.setTargetAtTime(this.on?0.022*level:0, t, 0.06);
+    this.rushFilter.frequency.setTargetAtTime(1100+900*level, t, 0.1);
+  },
+  vent(level){
+    if(!this.ventGain){ if(level>0) this.startVent(); if(!this.ventGain) return; }
+    const t=this.ctx.currentTime;
+    /* 0.020. The old 0.05 peaked 3.8 dB OVER full flow. This sits about
+       -4 dB under it, which still cuts through easily because the hiss is
+       3-5 kHz and the water hum is lowpassed at 760 Hz - spectral
+       separation does the work that loudness was being asked to do. */
+    this.ventGain.gain.setTargetAtTime(this.on?0.020*level:0, t, 0.04);
+    /* The pitch climbs as the last of the air is squeezed out - the sound a
+       bleed valve actually makes just before it spits water. */
+    this.ventFilter.frequency.setTargetAtTime(2600+2600*level, t, 0.08);
+  },
   toggle(){
     this.on=!this.on;
     if(this.humGain) this.humGain.gain.value=this.on?0.045:0;

@@ -48,7 +48,16 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
 .guide .lesson{color:#d2dae0;font-size:23px;line-height:1.45;margin-top:9px;}
 .guide .lesson b{color:#fff;}
 .guide .lesson .who{color:var(--amber);}      /* the comms voice */
-.guide .beat-hint{color:var(--amber);animation:blink 1.1s steps(1) infinite;}
+.guide .beat-hint{display:inline-block;border:1px solid var(--amber);color:var(--amber);
+  font-family:'VT323',monospace;font-size:21px;letter-spacing:.09em;padding:3px 20px;
+  cursor:pointer;animation:hintpulse 1.9s ease-in-out infinite;}
+.guide .beat-hint:hover{background:rgba(255,182,39,.14);}
+/* It was bare amber text on a hard steps(1) blink, which reads as a warning
+   lamp or a terminal cursor - something the screen is doing AT you, not a
+   control. Bordered, in the same language as every other button here, with
+   a soft pulse instead of an on/off flash, so it reads as "press this". */
+@keyframes hintpulse{0%,100%{opacity:1}50%{opacity:.6}}
+@media (prefers-reduced-motion:reduce){ .guide .beat-hint{animation:none;} }
 /* Options the coach puts to the player. Sits in the guide strip, because a
    decision about the work IS the instruction at that moment. */
 .guide .choice{display:flex;gap:10px;margin-top:13px;flex-wrap:wrap;}
@@ -702,7 +711,7 @@ function gauge(g,x,y,R,psi,max){
 
 /* ---------------- sound ---------------- */
 const audio={
-  ctx:null,on:true,ready:false,noise:null,flowGain:null,humGain:null,
+  ctx:null,on:true,ready:false,noise:null,flowGain:null,humGain:null,ventGain:null,ventFilter:null,rushGain:null,rushFilter:null,
   init(){
     if(this.ready) return;
     try{
@@ -787,6 +796,61 @@ const audio={
     this.flowGain=g;
   },
   flow(level){ if(this.flowGain) this.flowGain.gain.value=this.on?0.08*level:0; },
+  /* Air leaving a line that is filling. Water hum is lowpassed to a dull
+     rumble; escaping air is the opposite - thin, bright, and it hisses.
+     There was no vent sound at all before this, so "the air venting" was
+     only ever a caption on the wall. Built like startFlow so it is one
+     voice held open and ridden by level, not a burst per frame. */
+  startVent(){
+    if(!this.ready||this.ventGain) return;
+    const c=this.ctx, s=c.createBufferSource(); s.buffer=this.noise; s.loop=true;
+    const hp=c.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=2100;
+    const bp=c.createBiquadFilter(); bp.type='bandpass';
+    bp.frequency.value=3600; bp.Q.value=0.7;
+    const g=c.createGain(); g.gain.value=0;
+    s.connect(hp); hp.connect(bp); bp.connect(g); g.connect(c.destination); s.start();
+    this.ventGain=g; this.ventFilter=bp;
+  },
+  /* A restriction passing liquid is NOT quiet. The throat here runs about
+     4.7x branch velocity, and the shear layer and reattachment downstream
+     of it make real broadband noise. Checked before building it: with the
+     bed discharging to an open tray, dP never reaches FL^2(P1-FF*Pv) at any
+     operating point, so this is turbulent rush and NOT cavitation - no
+     gravel, no collapse. Cavitation is a different sound for a later level,
+     and faking it here would teach the wrong tell.
+     Sits between flow (lowpassed 760 rumble) and vent (2kHz+ hiss). */
+  startRush(){
+    if(!this.ready||this.rushGain) return;
+    const c=this.ctx, s=c.createBufferSource(); s.buffer=this.noise; s.loop=true;
+    const bp=c.createBiquadFilter(); bp.type='bandpass';
+    bp.frequency.value=1500; bp.Q.value=0.55;
+    const g=c.createGain(); g.gain.value=0;
+    s.connect(bp); bp.connect(g); g.connect(c.destination); s.start();
+    this.rushGain=g; this.rushFilter=bp;
+  },
+  rush(level){
+    if(!this.rushGain){ if(level>0) this.startRush(); if(!this.rushGain) return; }
+    const t=this.ctx.currentTime;
+    /* 0.022, not the 0.055 this started at. Measured against the flow hum
+       offline: at the level it actually runs in game (0.76) the old value
+       sat 0.9 dB UNDER full bay flow - the restriction was as loud as all
+       the water in the level. Now about -9 dB, which reads as a character
+       in the background rather than the subject. */
+    this.rushGain.gain.setTargetAtTime(this.on?0.022*level:0, t, 0.06);
+    this.rushFilter.frequency.setTargetAtTime(1100+900*level, t, 0.1);
+  },
+  vent(level){
+    if(!this.ventGain){ if(level>0) this.startVent(); if(!this.ventGain) return; }
+    const t=this.ctx.currentTime;
+    /* 0.020. The old 0.05 peaked 3.8 dB OVER full flow. This sits about
+       -4 dB under it, which still cuts through easily because the hiss is
+       3-5 kHz and the water hum is lowpassed at 760 Hz - spectral
+       separation does the work that loudness was being asked to do. */
+    this.ventGain.gain.setTargetAtTime(this.on?0.020*level:0, t, 0.04);
+    /* The pitch climbs as the last of the air is squeezed out - the sound a
+       bleed valve actually makes just before it spits water. */
+    this.ventFilter.frequency.setTargetAtTime(2600+2600*level, t, 0.08);
+  },
   toggle(){
     this.on=!this.on;
     if(this.humGain) this.humGain.gain.value=this.on?0.045:0;
@@ -1271,7 +1335,7 @@ const LAMP={x:458,y:96};
 const P_SUPPLY=60, TURNS=2;
 
 const S={phase:'closed',slide:0,turn:0,open:0,press:0,drag:false,lastAng:0,
-         flick:1,dripT:0,dripY:-1};
+         flick:1,dripT:0,dripY:-1,closing:false};
 
 /* The line: full and still upstream of the shut valve, air beyond it.
    Both facts are the engine's rules, not this level's invention. */
@@ -1340,7 +1404,43 @@ function lines(){
       'Play your cards right, you might make a decent one yourself.'];
   }
 }
-function say(){ const [t,l]=lines(); SH.say(t,l); }
+/* The strip belongs to whatever is holding it. say() runs on every drag
+   move, so without this the closing comms were overwritten the moment the
+   player nudged the wheel again - and nothing speaks once the level is
+   over, or the sign-off would be wiped by a stray turn. */
+function say(){ if(SH.holding||SH.done||S.closing) return;
+                const [t,l]=lines(); SH.say(t,l); }
+
+/* ---------------- the wind-down ----------------
+   Water arriving used to go straight to the debrief card, which landed on
+   top of the closing line before any of it could be read. The level has
+   something to say first, and the player says when to move on. */
+const CLOSING=[
+  '<span class="who">COMMS:</span> There it is. And look at what that gauge did &mdash; '+
+  'it sat at nothing while the line behind the valve was already full and already '+
+  'under pressure. <b>Pressure is not flow.</b> The wheel did not make water. It gave '+
+  'what was already standing there somewhere to go.',
+
+  '<span class="who">COMMS:</span> Nothing down this end is automated. No actuators, '+
+  'no remote, no screens. Every run in Four-B gets opened by somebody standing exactly '+
+  'where you are standing, reading a gauge with their own eyes.<br><br>'+
+  'The engineer you are standing in for walked this round for six years.',
+
+  '<span class="who">COMMS:</span> Bio Lab One has water. They will not think about '+
+  'you again until it stops &mdash; that is the job, and it is a good one.<br><br>'+
+  'Play your cards right, you might make a decent one yourself.',
+];
+function closeOut(i){
+  if(i>=CLOSING.length){
+    S.closing=false;
+    SH.finish({ lesson:CLOSING[CLOSING.length-1],
+      line:'<span class="accent">Bio Lab One has water.</span> That is one valve, '+
+           'by hand, on the oldest run on the base. Everything after this is the '+
+           'same job with more of it happening at once.' });
+    return;
+  }
+  SH.beat(CLOSING[i], ()=>closeOut(i+1));
+}
 
 /* ---------------- simulation ---------------- */
 function step(dt){
@@ -1359,13 +1459,7 @@ function step(dt){
     S.press+=(target-S.press)*Math.min(1,dt/0.3);
     LPE.audio.flow(up.flow);
     if(S.phase==='turning' && down.fill>=1 && S.press>14){
-      S.phase='flowing'; say();
-      /* Level zero had no completion state whatsoever - water ran and that
-         was simply the end of it, with no way through to level one. */
-      SH.finish({ lesson:lines()[1],
-        line:'<span class="accent">Bio Lab One has water.</span> That is one valve, '+
-             'by hand, on the oldest run on the base. Everything after this is the '+
-             'same job with more of it happening at once.' });
+      S.phase='flowing'; S.closing=true; closeOut(0);
     }
   }
   line.update(dt);
@@ -1451,7 +1545,7 @@ const SH=LPE.mount({
   onReset(){
     Object.assign(S,{phase:'closed',slide:0,turn:0,open:0,press:0,drag:false});
     line.set(0,{flow:0,fill:1}); line.set(1,{flow:0,fill:0});
-    LPE.audio.flow(0); say();
+    S.closing=false; LPE.audio.flow(0); say();
   },
 });
 
