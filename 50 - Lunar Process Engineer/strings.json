@@ -7,52 +7,62 @@
  {
   "level": "level0",
   "key": "task",
-  "v": "Open the loop. Push the FLOW lever across."
+  "v": "Open the loop: push FLOW into the OPEN band."
  },
  {
   "level": "level0",
   "key": "lesson",
-  "v": "At rest the markers still move &mdash; that is heat, not flow. Open the valve and they <b>travel</b>. A line that is full is not the same as a line that is working."
+  "v": "With the valve shut the markers moved but stayed where they were. That motion is temperature. Now they are travelling along the pipe, and that is <b>flow</b>. A pipe that is full and a pipe that is flowing are two different states."
  },
  {
   "level": "level0",
   "key": "task",
-  "v": "Now look at the shape they make across the bore."
+  "v": "Compare the markers at the wall with the markers down the middle."
  },
  {
   "level": "level0",
   "key": "lesson",
-  "v": "<b>Friction between the fluid and the pipe surface</b> holds the edge almost still, and the further from that surface the less it reaches. That spread of speed is the <b>velocity profile</b> &mdash; the yellow line is its shape."
+  "v": "They are not moving at the same speed. <b>Friction between the fluid and the pipe surface</b> holds the fluid at the wall almost stationary; further from the wall less of that drag reaches it. The yellow curve is that spread of speed across the bore: the <b>velocity profile</b>."
  },
  {
   "level": "level0",
   "key": "task",
-  "v": "Bring the FLOW down into the marked band."
+  "v": "Close FLOW down into the TRICKLE band."
  },
  {
   "level": "level0",
   "key": "lesson",
-  "v": "Slow enough and it stops churning: it slides in layers, fastest down the middle, and the profile pulls out into a long point. That is <b>laminar</b> flow &mdash; <b>REYNOLDS</b> under about 2,300."
+  "v": "At this speed the fluid travels in parallel layers that do not mix, and the profile becomes a long parabola with the centre at about twice the average speed. This is <b>laminar</b> flow. REYNOLDS, the number that identifies it, is now below 2,300."
  },
  {
   "level": "level0",
   "key": "task",
-  "v": "Leave the valve alone. Heat it instead — push TEMPERATURE up."
+  "v": "Leave FLOW alone. Push TEMPERATURE into the HOT band."
  },
  {
   "level": "level0",
   "key": "lesson",
-  "v": "You never touched the valve. Warming it <b>thinned</b> it, so the same speed now tumbles. Past about 4,000 it is <b>turbulent</b>: mixing right across the bore, and the profile goes blunt."
+  "v": "The valve has not moved, so the fluid is travelling at the same speed. Heating water lowers its <b>viscosity</b>. Reynolds is velocity x bore / viscosity, so lower viscosity means higher Reynolds. Above 4,000 the layers break up and mix: <b>turbulent</b> flow, and the profile goes blunt."
  },
  {
   "level": "level0",
   "key": "task",
-  "v": "Last one. Put LIQUID PROPANE in the loop."
+  "v": "Switch the loop to LIQUID PROPANE."
  },
  {
   "level": "level0",
   "key": "lesson",
-  "v": "Same valve, same pressure, and <b>more</b> of it flows &mdash; propane is half the density of water. That is <b>specific gravity</b>. It is also five times less viscous, so Reynolds jumps as well. Dense and sluggish are not the same thing."
+  "v": "Nothing else changed and DELIVERED went up. Flow through a fixed restriction is q = Cv x sqrt(dP / SG). Propane has a <b>specific gravity</b> of 0.501 &mdash; half of water &mdash; so more of it passes for the same pressure drop. Its viscosity is five times lower too, which is why REYNOLDS jumped."
+ },
+ {
+  "level": "level0",
+  "key": "task",
+  "v": "Now use it. Deliver 0.50 gpm and keep the flow laminar."
+ },
+ {
+  "level": "level0",
+  "key": "lesson",
+  "v": "That is the chain, used. Propane could not do it at any temperature &mdash; too little viscosity, so Reynolds is always high. Water could not either until you cooled it, because cold water is <b>more</b> viscous. Fluid, temperature and valve position together decide what a line does."
  },
  {
   "level": "level0",

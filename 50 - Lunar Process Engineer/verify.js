@@ -272,6 +272,50 @@ for (const f of ['level1.html', 'level2.html']) {
 }
 
 /* ------------------------------------------------------------
+   5d. THE APPLIED STEP IS SOLVABLE, AND ONLY THE RIGHT WAY
+
+   The last bench step asks for 0.50 gpm, laminar, with no band drawn on
+   any lever. It is the only step that asks the player to work a setting
+   out rather than follow one, so it has to be reachable - and it has to
+   NOT be reachable by shoving the flow lever about, or it teaches nothing.
+   ------------------------------------------------------------ */
+{
+  const FL = require('./fluids.js');
+  const BORE = 0.493, AREA = 0.00133, CV = 0.5, DP = 20;
+  const flow = (lever, f) => CV * lever * Math.sqrt(DP / f.sg);
+  const vel = q => q / 448.831 / AREA;
+  const re = (lever, f, t) => lever <= 0.001 ? 0 : FL.reynolds(vel(flow(lever, f)), BORE, f, t);
+  const solves = (f, t) => {
+    for (let lev = 0.005; lev <= 1; lev += 0.005) {
+      const q = flow(lev, f);
+      if (q >= 0.50 && FL.regime(re(lev, f, t)) === 'laminar') return true;
+    }
+    return false;
+  };
+  const W = FL.FLUIDS.water, P = FL.FLUIDS.propane, C = FL.FLUIDS.co2;
+  check('applied step is solvable at all', solves(W, 0), 'water at 0 C');
+  check('applied step needs COOLING, not just the flow lever',
+    !solves(W, 20) && !solves(W, 10), 'impossible at 10 C and 20 C');
+  check('applied step cannot be solved with propane or CO2',
+    !solves(P, 20) && !solves(C, 20), 'viscosity too low for laminar at that rate');
+  // and the window it opens must be wide enough to actually hit
+  let lo = null, hi = null;
+  for (let lev = 0.005; lev <= 1; lev += 0.005) {
+    const q = flow(lev, W);
+    if (q >= 0.50 && FL.regime(re(lev, W, 0)) === 'laminar') { if (lo === null) lo = lev; hi = lev; }
+  }
+  check('applied step has a hittable lever window', lo !== null && hi - lo >= 0.03,
+    lo === null ? 'NONE' : 'lever ' + lo.toFixed(2) + '-' + hi.toFixed(2));
+  {
+    const lv = fs.readFileSync('level0.html', 'utf8');
+    const applied = lv.indexOf("ctl:['flow','temp','fluid']");
+    const hasTarget = applied >= 0 && lv.slice(applied, applied + 200).includes('target:');
+    check('the applied step draws no target', applied >= 0 && !hasTarget,
+      applied < 0 ? 'step not found' : 'player works it out');
+  }
+}
+
+/* ------------------------------------------------------------
    6. BUILD INTEGRITY
    ------------------------------------------------------------ */
 for (const f of ['level0.html', 'level1.html', 'level2.html', 'engine.js', 'jam.js', 'title-art.js']) {

@@ -1852,6 +1852,17 @@ function draw(g,dt,t){
     A.handNote(g,sx+32,PANEL.y+144,'wheel sticks. keep turning.  \u2014 R.O.');
     g.fillStyle='#565d64'; A.rr(g,sx+PANEL.w-54,PANEL.y+PANEL.h/2-28,20,56,6); g.fill();
     g.strokeStyle='#848d96'; g.lineWidth=2; g.stroke();
+    /* The handle is the thing to pull, and 'Open the panel' in front of a
+       flat grey rectangle does not say which part. It pulses until used. */
+    if(S.phase==='closed'){
+      const pulse=0.45+0.4*Math.sin(t*5);
+      g.save(); g.globalAlpha=pulse;
+      g.strokeStyle=P.amber; g.lineWidth=2;
+      A.rr(g,sx+PANEL.w-58,PANEL.y+PANEL.h/2-32,28,64,8); g.stroke();
+      g.fillStyle=P.amber; g.font="12px 'VT323',monospace"; g.textAlign='right';
+      g.fillText('SLIDE',sx+PANEL.w-64,PANEL.y+PANEL.h/2+4);
+      g.textAlign='left'; g.restore();
+    }
   }
 
 }
@@ -2007,41 +2018,64 @@ function stepBench(dt){
   }
 }
 
-/* ---- the crash course ---- */
+/* ---- the crash course ----
+   Instruction, not chat. Each step names what the player did, what changed,
+   the quantity that changed it, and the term for it. The last step is the
+   only one with no target drawn on a lever, because it is the one where the
+   player has to work out the setting themselves. */
 const COURSE=[
   { ctl:['flow'], target:{on:'flow',lo:0.55,hi:1,label:'OPEN'},
-    task:'Open the loop. Push the FLOW lever across.',
+    task:'Open the loop: push FLOW into the OPEN band.',
     ok:()=>B.flow>=0.55,
-    lesson:'At rest the markers still move &mdash; that is heat, not flow. Open the '+
-      'valve and they <b>travel</b>. A line that is full is not the same as a line '+
-      'that is working.' },
-  { ctl:['flow'], watch:2.6,
-    task:'Now look at the shape they make across the bore.',
+    lesson:'With the valve shut the markers moved but stayed where they were. That '+
+      'motion is temperature. Now they are travelling along the pipe, and that is '+
+      '<b>flow</b>. A pipe that is full and a pipe that is flowing are two different '+
+      'states.' },
+
+  { ctl:['flow'], watch:2.6, target:{on:'flow',lo:0.55,hi:1,label:'OPEN'},
+    task:'Compare the markers at the wall with the markers down the middle.',
     ok:()=>B.flow>=0.55,
-    lesson:'<b>Friction between the fluid and the pipe surface</b> holds the edge '+
-      'almost still, and the further from that surface the less it reaches. That '+
-      'spread of speed is the <b>velocity profile</b> &mdash; the yellow line is its shape.' },
-  { ctl:['flow'], target:{on:'flow',lo:TRICKLE[0],hi:TRICKLE[1],label:'TRICKLE'},
-    task:'Bring the FLOW down into the marked band.',
-    /* !B.drag: the step completes when the lever is LET GO in the band,
-       not the instant it sweeps across it on the way somewhere else. */
+    lesson:'They are not moving at the same speed. <b>Friction between the fluid and '+
+      'the pipe surface</b> holds the fluid at the wall almost stationary; further '+
+      'from the wall less of that drag reaches it. The yellow curve is that spread of '+
+      'speed across the bore: the <b>velocity profile</b>.' },
+
+  { ctl:['flow'], target:{on:'flow',lo:0.12,hi:0.16,label:'TRICKLE'},
+    task:'Close FLOW down into the TRICKLE band.',
     ok:()=>!B.drag && B.flow>=TRICKLE[0] && B.flow<=TRICKLE[1] && bench().regime==='laminar',
-    lesson:'Slow enough and it stops churning: it slides in layers, fastest down the '+
-      'middle, and the profile pulls out into a long point. That is <b>laminar</b> '+
-      'flow &mdash; <b>REYNOLDS</b> under about 2,300.' },
-  { ctl:['temp'], target:{on:'temp',lo:HOT[0]/80,hi:HOT[1]/80,label:'HOT'},
-    task:'Leave the valve alone. Heat it instead \u2014 push TEMPERATURE up.',
+    lesson:'At this speed the fluid travels in parallel layers that do not mix, and '+
+      'the profile becomes a long parabola with the centre at about twice the average '+
+      'speed. This is <b>laminar</b> flow. REYNOLDS, the number that identifies it, is '+
+      'now below 2,300.' },
+
+  { ctl:['temp'], target:{on:'temp',lo:0.875,hi:1,label:'HOT'},
+    task:'Leave FLOW alone. Push TEMPERATURE into the HOT band.',
     ok:()=>bench().regime==='turbulent',
-    lesson:'You never touched the valve. Warming it <b>thinned</b> it, so the same '+
-      'speed now tumbles. Past about 4,000 it is <b>turbulent</b>: mixing right '+
-      'across the bore, and the profile goes blunt.' },
+    lesson:'The valve has not moved, so the fluid is travelling at the same speed. '+
+      'Heating water lowers its <b>viscosity</b>. Reynolds is velocity x bore / '+
+      'viscosity, so lower viscosity means higher Reynolds. Above 4,000 the layers '+
+      'break up and mix: <b>turbulent</b> flow, and the profile goes blunt.' },
+
   { ctl:['fluid'],
-    task:'Last one. Put LIQUID PROPANE in the loop.',
+    task:'Switch the loop to LIQUID PROPANE.',
     ok:()=>B.fluid==='propane',
-    lesson:'Same valve, same pressure, and <b>more</b> of it flows &mdash; propane is '+
-      'half the density of water. That is <b>specific gravity</b>. It is also five '+
-      'times less viscous, so Reynolds jumps as well. Dense and sluggish are not the '+
-      'same thing.' },
+    lesson:'Nothing else changed and DELIVERED went up. Flow through a fixed '+
+      'restriction is q = Cv x sqrt(dP / SG). Propane has a <b>specific gravity</b> of '+
+      '0.501 &mdash; half of water &mdash; so more of it passes for the same pressure '+
+      'drop. Its viscosity is five times lower too, which is why REYNOLDS jumped.' },
+
+  /* Apply it. No band is drawn for this one: the point is that the player
+     works out the setting from what the last four steps taught. It cannot be
+     brute-forced on the flow lever alone - 0.50 gpm is turbulent for water at
+     every temperature above about 7 C, and for propane at every temperature
+     there is. The only route is: water, cold, then open up. */
+  { ctl:['flow','temp','fluid'],
+    task:'Now use it. Deliver 0.50 gpm and keep the flow laminar.',
+    ok:()=>{ const r=bench(); return !B.drag && r.q>=0.50 && r.regime==='laminar'; },
+    lesson:'That is the chain, used. Propane could not do it at any temperature &mdash; '+
+      'too little viscosity, so Reynolds is always high. Water could not either until '+
+      'you cooled it, because cold water is <b>more</b> viscous. Fluid, temperature and '+
+      'valve position together decide what a line does.' },
 ];
 let c1=0, done1=false;
 function sayCourse(){ if(done1) return; SH.say(COURSE[c1].task,''); SH.count((c1+1)+' / '+COURSE.length); }
@@ -2052,8 +2086,8 @@ function toAct2(){
   LPE.audio.flow(0);
   SH.beat('<span class="who">COMMS:</span> That is the loop. Everything you just '+
     'watched happens in every pipe on this base whether anyone is looking at it or '+
-    'not.<span class="gap"></span>Now go and do it for real. Bio Lab One still has '+
-    'no water.', ()=>{ buildScene(); say(); });
+    'not.<span class="gap"></span>Now the job. Bio Lab One, line 1, down the far '+
+    'end of Four-B &mdash; the access panel with the hand wheel behind it.', ()=>{ buildScene(); say(); });
 }
 
 /* ---- bench input ---- */
@@ -2105,7 +2139,7 @@ const SH=LPE.mount({
   /* The opening is the engine's three-beat template, same as level one. */
   intro:[
     {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
-     text:'&ldquo;First shift. Before you touch anything that matters &mdash;<br>there is a training loop in Four-B. Humour me.<br>Then Bio Lab One needs its water.&rdquo;'},
+     text:'&ldquo;Bio Lab One has no water.<br>Section 4-B, line 1 &mdash; it needs opening by hand.<br>You are new, so run the training loop on your way past.&rdquo;'},
     {kind:'place',
      text:'Four-B is the oldest run on the base. No actuators, no remote, no screens '+
           '&mdash; just lines on brackets and wheels you turn yourself.<br><br>'+
