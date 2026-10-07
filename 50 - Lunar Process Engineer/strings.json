@@ -6,8 +6,58 @@
  },
  {
   "level": "level0",
+  "key": "task",
+  "v": "Open the loop. Push the FLOW lever across."
+ },
+ {
+  "level": "level0",
+  "key": "lesson",
+  "v": "At rest the markers still move &mdash; that is heat, not flow. Open the valve and they <b>travel</b>. A line that is full is not the same as a line that is working."
+ },
+ {
+  "level": "level0",
+  "key": "task",
+  "v": "Now look at the shape they make across the bore."
+ },
+ {
+  "level": "level0",
+  "key": "lesson",
+  "v": "<b>Friction between the fluid and the pipe surface</b> holds the edge almost still, and the further from that surface the less it reaches. That spread of speed is the <b>velocity profile</b> &mdash; the yellow line is its shape."
+ },
+ {
+  "level": "level0",
+  "key": "task",
+  "v": "Bring the FLOW right down to a trickle."
+ },
+ {
+  "level": "level0",
+  "key": "lesson",
+  "v": "Slow enough and it stops churning: it slides in layers, fastest down the middle, and the profile pulls out into a long point. That is <b>laminar</b> flow &mdash; <b>REYNOLDS</b> under about 2,300."
+ },
+ {
+  "level": "level0",
+  "key": "task",
+  "v": "Leave the valve alone. Heat it instead — push TEMPERATURE up."
+ },
+ {
+  "level": "level0",
+  "key": "lesson",
+  "v": "You never touched the valve. Warming it <b>thinned</b> it, so the same speed now tumbles. Past about 4,000 it is <b>turbulent</b>: mixing right across the bore, and the profile goes blunt."
+ },
+ {
+  "level": "level0",
+  "key": "task",
+  "v": "Last one. Put LIQUID PROPANE in the loop."
+ },
+ {
+  "level": "level0",
+  "key": "lesson",
+  "v": "Same valve, same pressure, and <b>more</b> of it flows &mdash; propane is half the density of water. That is <b>specific gravity</b>. It is also five times less viscous, so Reynolds jumps as well. Dense and sluggish are not the same thing."
+ },
+ {
+  "level": "level0",
   "key": "closing",
-  "v": "<span class=\"who\">COMMS:</span> Watch the two markers. <b>Friction between the water and the pipe surface</b> holds the water at the wall almost still. The further from that surface, the less the friction reaches it, so the middle moves fastest. That spread of speed across the bore is the <b>velocity profile</b>."
+  "v": "<span class=\"who\">COMMS:</span> And there it is in a real line &mdash; centre running away from the wall, exactly like the loop. You will see it in every pipe on this base now that you know to look for it."
  },
  {
   "level": "level0",

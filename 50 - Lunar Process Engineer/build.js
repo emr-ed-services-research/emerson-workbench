@@ -13,7 +13,8 @@ fs.mkdirSync('dist',{recursive:true});
 for(const f of ['level0.html','level1.html','level2.html']){
   let h=read(f)
     .replace('<link rel="stylesheet" href="engine.css">','<style>\n'+css+'\n</style>')
-    .replace('<script src="engine.js"></script>','<script>\n'+js+'\n</script>');
+    .replace('<script src="engine.js"></script>','<script>\n'+js+'\n</script>')
+    .replace('<script src="fluids.js"></script>','<script>' + String.fromCharCode(10) + read('fluids.js') + String.fromCharCode(10) + '</script>');
   fs.writeFileSync('dist/'+f,h,'utf8');
   console.log('built dist/'+f+'  ('+(h.length/1024).toFixed(1)+' kB)');
 }
@@ -22,6 +23,7 @@ for(const f of ['level0.html','level1.html','level2.html']){
 let g=read('game.html')
   .replace('<link rel="stylesheet" href="engine.css">','<style>\n'+css+'\n</style>')
   .replace('<script src="engine.js"></script>','<script>\n'+js+'\n</script>')
+    .replace('<script src="fluids.js"></script>','<script>' + String.fromCharCode(10) + read('fluids.js') + String.fromCharCode(10) + '</script>')
   .replace('<script src="title-art.js"></script>','<script>\n'+read('title-art.js')+'\n</script>')
   .replace('<script src="jam.js"></script>','<script>\n'+read('jam.js')+'\n</script>')
   .replace('<script src="level0.html.js"></script>','<script>\n'+scriptOf('level0.html')+'\n</script>')

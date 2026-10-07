@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
 <link rel="stylesheet" href="engine.css">
 <script src="engine.js"></script>
+<script src="fluids.js"></script>
 <script>
 'use strict';
 /* ============================================================
@@ -114,10 +115,12 @@ const CLOSING=[
      cutaway view exists for. Two tracers race while this is held: the
      centreline one and the one against the bore, both carried by the same
      profile the water uses. */
-  '<span class="who">COMMS:</span> Watch the two markers. <b>Friction between the '+
-  'water and the pipe surface</b> holds the water at the wall almost still. The '+
-  'further from that surface, the less the friction reaches it, so the middle moves '+
-  'fastest. That spread of speed across the bore is the <b>velocity profile</b>.',
+  /* The trainer taught this properly. Here it is only recognition - the
+     same shape, in a line that matters. Re-teaching it would be the
+     lesson arriving twice and landing neither time. */
+  '<span class="who">COMMS:</span> And there it is in a real line &mdash; centre '+
+  'running away from the wall, exactly like the loop. You will see it in every pipe '+
+  'on this base now that you know to look for it.',
 
   '<span class="who">COMMS:</span> There it is. And look at what that gauge did &mdash; '+
   'it sat at nothing while the line behind the valve was already full and already '+
@@ -243,24 +246,245 @@ function draw(g,dt,t){
 
 }
 
+
+/* ============================================================
+   ACT 1 - THE TRAINING LOOP
+
+   Every new engineer is run through this before touching a live line, and
+   that is the honest reason a crash course gets to dial temperature and
+   swap the working fluid: you would do neither to the supply feeding a lab
+   that has no water. Real facilities have test loops. This is ours.
+
+   Act 2 - walking over and opening Bio Lab One's actual valve - is
+   unchanged below, and still ends the level.
+   ============================================================ */
+let act=1;
+const FL=LPE_FLUIDS;
+const BORE_IN=0.493, BORE_AREA=0.00133;       // NPS 3/8 Sch 40, B36.10M
+const BENCH_CV=0.5, BENCH_DP=20;              // a needle valve and a bench pump
+
+const B={ flow:0, temp:20, fluid:'water', watch:0, drag:null };
+const CUT=new LPE.Cutaway({x:48,y:92,w:640,h:112});
+
+const FLUID_KEYS=['water','co2','propane'];
+const FBTN=FLUID_KEYS.map((k,i)=>({k,x:706,y:96+i*38,w:174,h:32}));
+const SLIDERS={
+  flow:{x:48,  y:338, w:372, label:'FLOW',        get:()=>B.flow,
+        set:v=>{B.flow=v;}, fmt:()=>Math.round(B.flow*100)+'%'},
+  temp:{x:470, y:338, w:372, label:'TEMPERATURE', get:()=>B.temp/80,
+        set:v=>{B.temp=Math.round(v*80);},        fmt:()=>B.temp+' \u00b0C'},
+};
+
+function fluidNow(){ return FL.FLUIDS[B.fluid]; }
+/* Temperature is a free variable for water only. CO2 and propane are
+   liquid because they are held under pressure near saturation - heating
+   them does not make them hotter, it boils them. */
+function tempLocked(){ return B.fluid!=='water'; }
+function bench(){
+  const f=fluidNow();
+  const q=FL.flow(BENCH_CV*B.flow, BENCH_DP, f);
+  const v=q/448.831/BORE_AREA;
+  const t=tempLocked()?20:B.temp;
+  const re=B.flow>0.001?FL.reynolds(v,BORE_IN,f,t):0;
+  return {f,q,v,re,regime:FL.regime(re)};
+}
+
+let BG_BENCH;
+function buildBench(){
+  BG_BENCH=document.createElement('canvas'); BG_BENCH.width=W; BG_BENCH.height=H;
+  const g=BG_BENCH.getContext('2d');
+  A.wall(g,W,H); A.rib(g,0,H);
+  A.vignetteOnto(g,W,H);
+  A.stencil(g,52,H-26,'SECTION 4-B \u00b7 TRAINING LOOP',18,'#8b949b');
+  A.stencil(g,52,H-10,'NOT CONNECTED TO SERVICE',14);
+}
+
+function slider(g,sl,live){
+  const v=Math.max(0,Math.min(1,sl.get())), kx=sl.x+v*sl.w;
+  g.fillStyle='#10171a'; g.fillRect(sl.x,sl.y-3,sl.w,6);
+  g.fillStyle=live?P.amber:'#39464f'; g.fillRect(sl.x,sl.y-3,v*sl.w,6);
+  g.fillStyle=live?'#ffd24a':'#5d6a73';
+  g.fillRect(kx-5,sl.y-13,10,26);
+  g.strokeStyle='rgba(0,0,0,0.6)'; g.lineWidth=1; g.strokeRect(kx-5,sl.y-13,10,26);
+  A.plate(g,sl.x,sl.y-46,152,20);
+  g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign='left';
+  g.fillText(sl.label,sl.x+6,sl.y-31);
+  g.fillStyle=live?'#39ff6a':'#6f7980'; g.font="17px 'VT323',monospace"; g.textAlign='right';
+  g.fillText(sl.fmt(),sl.x+sl.w,sl.y-31);
+  g.textAlign='left';
+}
+
+function liveCtl(which){
+  if(done1||!COURSE[c1]) return true;
+  return (COURSE[c1].ctl||[]).indexOf(which)>=0;
+}
+
+function drawBench(g,dt,t){
+  const r=bench();
+  g.drawImage(BG_BENCH,0,0);
+
+  CUT.set({flow:Math.min(1,r.v/5.5), regime:r.regime,
+           temp:0.12+0.88*((tempLocked()?20:B.temp)/80)});
+  CUT.draw(g);
+
+  FBTN.forEach(b=>{
+    const on=b.k===B.fluid, f=FL.FLUIDS[b.k], live=liveCtl('fluid');
+    A.plate(g,b.x,b.y,b.w,b.h);
+    g.strokeStyle=on?P.amber:(live?'#4d6157':'#2b3a33'); g.lineWidth=on?2:1;
+    g.strokeRect(b.x+0.5,b.y+0.5,b.w-1,b.h-1);
+    g.fillStyle=on?P.amber:(live?P.rim:'#4a545e'); g.font="14px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(f.name,b.x+9,b.y+15);
+    g.fillStyle=on?'#8fb9ff':'#5d6a73'; g.font="12px 'VT323',monospace";
+    g.fillText('SG '+f.sg.toFixed(3),b.x+9,b.y+27);
+  });
+
+  const cells=[
+    ['VELOCITY',  r.v.toFixed(2)+' ft/s',  '#39ff6a'],
+    ['REYNOLDS',  r.re>0?Math.round(r.re).toLocaleString('en-US'):'-', '#39ff6a'],
+    ['REGIME',    r.regime.toUpperCase(),
+                  r.regime==='laminar'?'#8fb9ff':(r.regime==='turbulent'?'#ffd24a':'#d2dae0')],
+    ['DELIVERED', r.q.toFixed(2)+' gpm',  '#39ff6a'],
+  ];
+  cells.forEach((c,i)=>{
+    const x=48+i*210;
+    A.plate(g,x,226,196,40);
+    g.fillStyle=P.rim; g.font="12px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(c[0],x+8,241);
+    g.fillStyle=B.flow>0.001?c[2]:'#5d6a73'; g.font="20px 'VT323',monospace";
+    g.fillText(c[1],x+8,261);
+  });
+
+  slider(g,SLIDERS.flow, liveCtl('flow'));
+  slider(g,SLIDERS.temp, liveCtl('temp') && !tempLocked());
+  if(tempLocked()){
+    A.plate(g,SLIDERS.temp.x,SLIDERS.temp.y+14,372,19);
+    g.fillStyle=P.amber; g.font="12px 'VT323',monospace"; g.textAlign='left';
+    g.fillText('HELD NEAR SATURATION \u2014 '+fluidNow().note,SLIDERS.temp.x+6,SLIDERS.temp.y+28);
+  }
+}
+
+function stepBench(dt){
+  const r=bench();
+  CUT.update(dt);
+  if(r.v>0.25) B.watch+=dt;
+  LPE.audio.flow(Math.min(1,r.v/6));
+  if(!done1 && !SH.holding && COURSE[c1].ok()){
+    const last=c1>=COURSE.length-1;
+    const need=COURSE[c1].watch;
+    SH.beat(COURSE[c1].lesson, ()=>{
+      if(last){ done1=true; toAct2(); } else { c1++; B.watch=0; sayCourse(); }
+    }, need? (()=>B.watch>=need) : null);
+    SH.count(last?'\u2014':(c1+2)+' / '+COURSE.length);
+  }
+}
+
+/* ---- the crash course ---- */
+const COURSE=[
+  { ctl:['flow'],
+    task:'Open the loop. Push the FLOW lever across.',
+    ok:()=>B.flow>=0.55,
+    lesson:'At rest the markers still move &mdash; that is heat, not flow. Open the '+
+      'valve and they <b>travel</b>. A line that is full is not the same as a line '+
+      'that is working.' },
+  { ctl:['flow'], watch:2.6,
+    task:'Now look at the shape they make across the bore.',
+    ok:()=>B.flow>=0.55,
+    lesson:'<b>Friction between the fluid and the pipe surface</b> holds the edge '+
+      'almost still, and the further from that surface the less it reaches. That '+
+      'spread of speed is the <b>velocity profile</b> &mdash; the yellow line is its shape.' },
+  { ctl:['flow'],
+    task:'Bring the FLOW right down to a trickle.',
+    ok:()=>B.flow<=0.2 && bench().regime==='laminar',
+    lesson:'Slow enough and it stops churning: it slides in layers, fastest down the '+
+      'middle, and the profile pulls out into a long point. That is <b>laminar</b> '+
+      'flow &mdash; <b>REYNOLDS</b> under about 2,300.' },
+  { ctl:['temp'],
+    task:'Leave the valve alone. Heat it instead \u2014 push TEMPERATURE up.',
+    ok:()=>bench().regime==='turbulent',
+    lesson:'You never touched the valve. Warming it <b>thinned</b> it, so the same '+
+      'speed now tumbles. Past about 4,000 it is <b>turbulent</b>: mixing right '+
+      'across the bore, and the profile goes blunt.' },
+  { ctl:['fluid'],
+    task:'Last one. Put LIQUID PROPANE in the loop.',
+    ok:()=>B.fluid==='propane',
+    lesson:'Same valve, same pressure, and <b>more</b> of it flows &mdash; propane is '+
+      'half the density of water. That is <b>specific gravity</b>. It is also five '+
+      'times less viscous, so Reynolds jumps as well. Dense and sluggish are not the '+
+      'same thing.' },
+];
+let c1=0, done1=false;
+function sayCourse(){ if(done1) return; SH.say(COURSE[c1].task,''); SH.count((c1+1)+' / '+COURSE.length); }
+
+function toAct2(){
+  SH.title('BIO LAB ONE \u2014 SUPPLY PANEL','Thermal Reservoir feed \u00b7 Section 4-B \u00b7 manual');
+  act=2;
+  LPE.audio.flow(0);
+  SH.beat('<span class="who">COMMS:</span> That is the loop. Everything you just '+
+    'watched happens in every pipe on this base whether anyone is looking at it or '+
+    'not.<span class="gap"></span>Now go and do it for real. Bio Lab One still has '+
+    'no water.', ()=>{ buildScene(); say(); });
+}
+
+/* ---- bench input ---- */
+function benchDown(p){
+  for(const key of ['flow','temp']){
+    const sl=SLIDERS[key];
+    if(!liveCtl(key)) continue;
+    if(key==='temp' && tempLocked()) continue;
+    if(p.x>=sl.x-10 && p.x<=sl.x+sl.w+10 && Math.abs(p.y-sl.y)<20){
+      B.drag=key; sl.set(Math.max(0,Math.min(1,(p.x-sl.x)/sl.w)));
+      LPE.audio.tick(); return true;
+    }
+  }
+  if(liveCtl('fluid')) for(const b of FBTN){
+    if(p.x>=b.x && p.x<=b.x+b.w && p.y>=b.y && p.y<=b.y+b.h){
+      if(B.fluid!==b.k){ B.fluid=b.k; LPE.audio.clack(); }
+      return true;
+    }
+  }
+  return false;
+}
+function benchMove(p){
+  if(!B.drag) return;
+  const sl=SLIDERS[B.drag];
+  const before=sl.get();
+  sl.set(Math.max(0,Math.min(1,(p.x-sl.x)/sl.w)));
+  if(Math.floor(before*14)!==Math.floor(sl.get()*14)) LPE.audio.tick();
+}
+
 /* ---------------- mount ---------------- */
-buildScene();
+buildBench();
 const SH=LPE.mount({
   t1:'BIO LAB ONE \u2014 SUPPLY PANEL',
   t2:'Thermal Reservoir feed \u00b7 Section 4-B \u00b7 manual',
-  w:W,h:H,step,draw,
+  w:W,h:H,
+  step:dt=>act===1?stepBench(dt):step(dt),
+  draw:(g,dt,t)=>act===1?drawBench(g,dt,t):draw(g,dt,t),
   /* The opening is the engine's three-beat template, same as level one. */
   intro:[
     {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
-     text:'&ldquo;Bio Lab One has got no water.<br>Get down to Section 4-B and open their supply, would you?&rdquo;'},
+     text:'&ldquo;First shift. Before you touch anything that matters &mdash;<br>there is a training loop in Four-B. Humour me.<br>Then Bio Lab One needs its water.&rdquo;'},
     {kind:'place',
-     text:'Four-B is the oldest run on the base. No actuators, no remote, no screens &mdash; '+
-          'just lines on brackets and wheels you turn yourself.<br><br>'+
-          'Everything down here came off the <span class="accent">Thermal Reservoir</span>, '+
-          'and everything down here has been worked on by someone before you.'},
+     text:'Four-B is the oldest run on the base. No actuators, no remote, no screens '+
+          '&mdash; just lines on brackets and wheels you turn yourself.<br><br>'+
+          'Against the far wall is the training loop: a short length of pipe, cut away '+
+          'down one side, with a pump behind it and dials on the front. It is not '+
+          'plumbed into anything. That is the point of it.'},
     {kind:'title', eyebrow:'SECTION 4-B \u00b7 MANUAL SERVICES',
-     title:'BIO LAB ONE SUPPLY', sub:'THERMAL RESERVOIR \u00b7 LINE 1'},
+     title:'TRAINING LOOP', sub:'BEFORE YOU TOUCH A LIVE LINE'},
   ],
+  /* The convention goes first. Everything after it - temperature as
+     agitation most of all - is a claim about what the marks represent,
+     and the player is owed that before any of it is shown. */
+  onStart:()=>{
+    SH.title('SECTION 4-B \u2014 TRAINING LOOP','not connected to service');
+    SH.beat(
+    '<span class="who">COMMS:</span> One thing before we start. Those marks in the '+
+    'pipe are <b>not molecules</b> &mdash; you could not see a molecule through a wall '+
+    'of steel. They are markers. Spaced so you can count them, and moving in true '+
+    'proportion but far slower than the real thing, because real water tells the eye '+
+    'nothing.', sayCourse);
+  },
   onReset(){
     Object.assign(S,{phase:'closed',slide:0,turn:0,open:0,press:0,drag:false});
     line.set(0,{flow:0,fill:1}); line.set(1,{flow:0,fill:0});
@@ -272,6 +496,7 @@ const cv=SH.canvas;
 cv.addEventListener('pointerdown',e=>{
   LPE.audio.init(); LPE.audio.resume();
   const p=SH.pt(e);
+  if(act===1){ benchDown(p); return; }
   if(S.phase==='closed'){ S.phase='opening'; LPE.audio.scrape(); say(); return; }
   if(S.phase!=='opening' && Math.hypot(p.x-VALVE_X,p.y-WHEEL_Y)<WHEEL_R+18){
     S.drag=true; S.lastAng=Math.atan2(p.y-WHEEL_Y,p.x-VALVE_X);
@@ -279,6 +504,7 @@ cv.addEventListener('pointerdown',e=>{
   }
 });
 cv.addEventListener('pointermove',e=>{
+  if(act===1){ benchMove(SH.pt(e)); return; }
   if(!S.drag) return;
   const p=SH.pt(e), a=Math.atan2(p.y-WHEEL_Y,p.x-VALVE_X);
   let d=a-S.lastAng;
@@ -290,7 +516,7 @@ cv.addEventListener('pointermove',e=>{
   if(Math.floor(S.open*16)!==Math.floor(before*16)) LPE.audio.tick();
   say();
 });
-['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>{S.drag=false;}));
+['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>{S.drag=false; B.drag=null;}));
 cv.addEventListener('keydown',e=>{
   if(S.phase==='closed'&&(e.key==='Enter'||e.key===' ')){
     e.preventDefault(); LPE.audio.init(); S.phase='opening'; LPE.audio.scrape(); say(); return; }
@@ -300,7 +526,7 @@ cv.addEventListener('keydown',e=>{
     if(S.phase==='open') S.phase='turning';
     LPE.audio.tick(); say(); }
 });
-say();
+/* act 2 speaks for itself when toAct2 hands over */
 }
 
 /* Registered so the game shell can launch it; still runs on its own if

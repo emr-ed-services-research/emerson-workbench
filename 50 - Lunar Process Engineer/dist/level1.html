@@ -1322,6 +1322,8 @@ function mount(o){
     canvas:cv, ctx:_ctx, w:o.w||900, h:o.h||400, res:RES,
     say(task,lesson){ q('.task').innerHTML=task||''; q('.lesson').innerHTML=lesson||''; },
     count(t){ q('.count').textContent=t||''; },
+    /* A level with more than one scene needs the bar to follow it. */
+    title(t1,t2){ q('.t1').textContent=t1||''; if(t2!==undefined) q('.t2').textContent=t2; },
     /* A beat holds what just happened on screen until the player says go.
        Levels used to flash the lesson and replace it on a 1.5s timer, which
        is nowhere near long enough to read a paragraph - and the length of
