@@ -10,7 +10,7 @@ const scriptOf=f=>{                       // the inline <script> body of a level
 fs.mkdirSync('dist',{recursive:true});
 
 // individual level pages, for iterating on one level
-for(const f of ['level0.html','level1.html','level2.html']){
+for(const f of ['level0.html','level1.html','level2.html','trainer.html']){
   let h=read(f)
     .replace('<link rel="stylesheet" href="engine.css">','<style>\n'+css+'\n</style>')
     .replace('<script src="engine.js"></script>','<script>\n'+js+'\n</script>')

@@ -1,0 +1,464 @@
+<title>Training Loop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<link rel="stylesheet" href="engine.css">
+<script src="engine.js"></script>
+<script src="fluids.js"></script>
+<script>
+'use strict';
+/* ============================================================
+   THE TRAINING LOOP \u2014 a device, not a level.
+
+   It is the bench on R.O.'s desk, and it runs BEFORE a level to teach
+   what that level is about to need. One or two concepts a visit, titled
+   on screen before the demonstration starts, because a learner performs
+   better knowing what they are looking for before they look.
+
+   Levels declare what they need:   teach:['markers','velocity-profile']
+   and the shell runs those segments first.
+
+   It is one desk, always the same desk. Different apparatus clamped to it
+   each time, the same mug ring, the same poster going soft at the corner.
+   Familiarity is the point - this is your bench.
+   ============================================================ */
+(function(){
+const A=LPE.art, P=LPE.palette, W=900, H=400;
+const FL=LPE_FLUIDS;
+
+/* ---- the apparatus: just the primary piping, clamped to the desk ---- */
+const LAY={
+  /* The glass is a CUTAWAY of the run, not a different pipe bolted to it,
+     so the run enters and leaves the frame at the same bore. An 18px pipe
+     either side of a 92px window read as two unrelated objects. */
+  glass : {x:206,y:148,w:470,h:88},
+  meter : {x:648,y:262,w:222,h:84},
+  flowS : {box:{x:196,y:262,w:128,h:22}, track:{x:334,y:273,w:188}},
+  tempS : {box:{x:196,y:300,w:150,h:22}, track:{x:356,y:311,w:166}},
+  bottle: {x:40, y:262, w:34, h:62, pitch:44},
+  lamp  : {x:742,y:30,r:30},
+  mug   : {x:556,y:338},
+  book  : {x:196,y:338,w:150,h:50},
+  rule  : {x:630,y:376,w:230},
+};
+
+const B={ flow:0, temp:20, fluid:'water', watch:0, drag:null };
+const CUT=new LPE.Cutaway({x:LAY.glass.x,y:LAY.glass.y,w:LAY.glass.w,h:LAY.glass.h});
+const FKEYS=['water','co2','propane'];
+const BOTTLE=FKEYS.map((k,i)=>({k,x:LAY.bottle.x+i*LAY.bottle.pitch,y:LAY.bottle.y,
+                                w:LAY.bottle.w,h:LAY.bottle.h}));
+const BHIT=6;
+
+const BORE_IN=0.493, BORE_AREA=0.00133;        // NPS 3/8 Sch 40, B36.10M
+const BENCH_CV=0.25, BENCH_DP=20;              // a needle valve and a bench pump
+const TRICKLE=[0.23,0.30], HOT=[72,80];
+
+const SLID={
+  flow:{...LAY.flowS, label:'FLOW', key:'flow', get:()=>B.flow,
+        set:v=>{B.flow=v;}, fmt:()=>Math.round(B.flow*100)+'%'},
+  temp:{...LAY.tempS, label:'TEMPERATURE', key:'temp', get:()=>B.temp/80,
+        set:v=>{B.temp=Math.round(v*80);}, fmt:()=>B.temp+' \u00b0C'},
+};
+
+function fluidNow(){ return FL.FLUIDS[B.fluid]; }
+function tempLocked(){ return B.fluid!=='water'; }
+function rig(){
+  const f=fluidNow();
+  const q=FL.flow(BENCH_CV*B.flow, BENCH_DP, f);
+  const v=q/448.831/BORE_AREA;
+  const t=tempLocked()?20:B.temp;
+  const re=B.flow>0.001?FL.reynolds(v,BORE_IN,f,t):0;
+  return {f,q,v,re,t,regime:B.flow<=0.001?'still':FL.regime(re)};
+}
+
+/* ---- the desk ---- */
+let BG;
+function buildDesk(){
+  BG=document.createElement('canvas'); BG.width=W; BG.height=H;
+  const g=BG.getContext('2d');
+
+  // wall behind the bench, warmer than the service corridors
+  g.fillStyle='#17161a'; g.fillRect(0,0,W,H);
+  for(let py=0;py<150;py+=52) for(let px=-10;px<W;px+=86){
+    g.fillStyle=((px/86+py/52)|0)%2?'#1d1b20':'#1a181d';
+    g.fillRect(px,py,84,50);
+  }
+  // the desk itself: warm laminate, a lip, and the shadow under it
+  g.fillStyle='#3a2f22'; g.fillRect(0,150,W,H-150);
+  A.dither(g,0,150,W,H-150,'#54432f',0.18);
+  g.fillStyle='#6b5536'; g.fillRect(0,150,W,5);
+  g.fillStyle='#241c13'; g.fillRect(0,155,W,3);
+  A.dither(g,0,336,W,H-336,'#1a140d',0.5);              // front edge falls away
+
+  // poster, pinned, soft at one corner
+  const PO={x:48,y:22,w:120,h:104};
+  g.fillStyle='#2a2320'; g.fillRect(PO.x,PO.y,PO.w,PO.h);
+  g.fillStyle='#8a4a1e'; g.fillRect(PO.x+6,PO.y+6,PO.w-12,34);
+  A.dither(g,PO.x+6,PO.y+6,PO.w-12,34,'#d9a441',0.35);
+  A.stencil(g,PO.x+12,PO.y+26,'CIRCUIT',14,'#f0d7a8');
+  A.stencil(g,PO.x+12,PO.y+38,'EDGE',14,'#f0d7a8');
+  for(let ly=PO.y+50;ly<PO.y+PO.h-8;ly+=9){
+    g.fillStyle='#4a3f38'; g.fillRect(PO.x+10,ly,PO.w-28,2);
+  }
+  g.fillStyle='#17161a'; g.beginPath();                   // curled corner
+  g.moveTo(PO.x+PO.w,PO.y+PO.h); g.lineTo(PO.x+PO.w-18,PO.y+PO.h);
+  g.lineTo(PO.x+PO.w,PO.y+PO.h-18); g.closePath(); g.fill();
+  g.fillStyle='#6d7a84'; g.beginPath(); g.arc(PO.x+PO.w/2,PO.y+5,2.5,0,6.284); g.fill();
+
+  // a second pinned thing: a schedule chart, curling
+  g.fillStyle='#2e2a26'; g.fillRect(188,30,96,78);
+  A.stencil(g,194,44,'SCH 40',11,'#8b7f6a');
+  for(let ly=52;ly<102;ly+=8){ g.fillStyle='#4a4238'; g.fillRect(194,ly,84,1); }
+
+  // desk lamp: arm from the right, head over the apparatus
+  const L=LAY.lamp;
+  g.strokeStyle='#4a4038'; g.lineWidth=6;
+  g.beginPath(); g.moveTo(866,150); g.lineTo(856,70); g.lineTo(L.x+14,L.y+6); g.stroke();
+  g.fillStyle='#5a4a38'; g.beginPath();
+  g.moveTo(L.x-22,L.y+16); g.lineTo(L.x+22,L.y+16); g.lineTo(L.x+13,L.y-10);
+  g.lineTo(L.x-13,L.y-10); g.closePath(); g.fill();
+  g.fillStyle='#ffd9a0'; g.fillRect(L.x-20,L.y+14,40,4);
+
+  /* the pool of light the cutaway is already shaded by - it should come
+     from somewhere on screen, not from nowhere */
+  for(let i=0;i<7;i++){
+    const t=i/7, yy=L.y+18+t*220, half=34+t*300;
+    A.dither(g,L.x-half,yy,half*2,34,'#ffd9a0',0.055*(1-t*0.75));
+  }
+
+  // props: the bench belongs to someone
+  // mug, with the ring it has left behind
+  g.strokeStyle='#5c4a30'; g.lineWidth=2;
+  g.beginPath(); g.arc(LAY.mug.x+19,LAY.mug.y+20,20,0,6.284); g.stroke();
+  g.fillStyle='#8f3f2a'; A.rr(g,LAY.mug.x,LAY.mug.y,38,38,3); g.fill();
+  g.fillStyle='#6d2f1f'; g.fillRect(LAY.mug.x,LAY.mug.y,38,5);
+  g.strokeStyle='#8f3f2a'; g.lineWidth=4;
+  g.beginPath(); g.arc(LAY.mug.x+42,LAY.mug.y+18,9,-1.1,1.1); g.stroke();
+  A.stencil(g,LAY.mug.x+4,LAY.mug.y+24,'NUKEM',9,'#f0d7a8');
+
+  // steel rule along the desk edge
+  g.fillStyle='#8a94a0'; g.fillRect(LAY.rule.x,LAY.rule.y,LAY.rule.w,9);
+  g.fillStyle='#5d6a73';
+  for(let rx=LAY.rule.x+4;rx<LAY.rule.x+LAY.rule.w-4;rx+=10) g.fillRect(rx,LAY.rule.y,1,(rx-LAY.rule.x-4)%50===0?9:5);
+
+  // a row of fittings someone was comparing
+  [0,1,2].forEach(i=>{
+    const fx=424+i*40, fy=352;
+    g.fillStyle='#4a565d'; g.fillRect(fx,fy,26,18);
+    g.fillStyle='#39444b'; g.fillRect(fx+5,fy-4,16,26);
+    g.fillStyle='#2b343a'; g.fillRect(fx+9,fy+4,8,10);
+  });
+
+  // notebook, open, in the same hand as the note on the supply panel
+  g.fillStyle='#d8cdb4'; A.rr(g,LAY.book.x,LAY.book.y,LAY.book.w,LAY.book.h,2); g.fill();
+  g.fillStyle='#bfb295'; g.fillRect(LAY.book.x+74,LAY.book.y,2,LAY.book.h);
+    g.fillStyle='#4a3b2a'; g.font="13px 'VT323',monospace"; g.textAlign='left';
+  g.fillText('cold water',LAY.book.x+9,LAY.book.y+18);
+  g.fillText('first.',LAY.book.x+9,LAY.book.y+32);
+  g.fillText('watch the',LAY.book.x+84,LAY.book.y+18);
+  g.fillText('middle  R.O.',LAY.book.x+84,LAY.book.y+32);
+  
+
+  A.vignetteOnto(g,W,H);
+}
+
+/* ---- the apparatus, clamped to the desk ---- */
+function drawRig(g,r){
+  const G=LAY.glass;
+  // two clamps holding the run to the bench
+  [G.x-4,G.x+G.w-26].forEach(cx=>{
+    g.fillStyle='#39444b'; g.fillRect(cx,G.y+G.h+22,30,54);
+    g.fillStyle='#5d6a73'; g.fillRect(cx,G.y+G.h+22,30,3);
+    g.fillStyle='#8a94a0'; g.beginPath(); g.arc(cx+15,G.y+G.h+44,3,0,6.284); g.fill();
+  });
+  /* The run itself is SOLID pipe - only the glass is cut open. Drawing it
+     with the bore showing gave a huge empty black band either side of the
+     window, as if the cutaway were a different pipe. Same shading language
+     as the glass outer skin, so it reads as one continuous run. */
+  const run=(x0,x1)=>{
+    const cy=G.y+G.h/2, hr=G.h/2+10;
+    g.fillStyle='#2b343a'; g.fillRect(x0,cy-hr,x1-x0,hr*2);
+    for(let i=0;i<10;i++){
+      const t=i/10, yy=cy-hr+t*hr*2;
+      const k=1-Math.abs(t-0.32)*1.9;
+      g.fillStyle='rgba(140,156,168,'+(Math.max(0,k)*0.20).toFixed(3)+')';
+      g.fillRect(x0,yy,x1-x0,hr*2/10+1);
+    }
+    g.fillStyle='#5d6a73'; g.fillRect(x0,cy-hr,x1-x0,2);
+    g.fillStyle='#141a1e'; g.fillRect(x0,cy+hr-2,x1-x0,2);
+  };
+  run(0,G.x-6); run(G.x+G.w+6,W);
+  CUT.draw(g);
+}
+
+/* ---- the meter block ---- */
+function drawMeters(g,r){
+  const M=LAY.meter;
+  g.fillStyle='#232a2f'; A.rr(g,M.x,M.y,M.w,M.h,4); g.fill();
+  g.strokeStyle='#4a565d'; g.lineWidth=2; g.stroke();
+  const rows=[
+    ['VELOCITY', r.v.toFixed(2)+' ft/s', '#39ff6a'],
+    ['REYNOLDS', r.re>0?Math.round(r.re).toLocaleString('en-US'):'\u2014', '#39ff6a'],
+    ['REGIME',   r.regime.toUpperCase(),
+                 r.regime==='laminar'?'#8fb9ff':(r.regime==='turbulent'?'#ffd24a':'#8b949b')],
+    ['FLOW',     r.q.toFixed(2)+' gpm', '#39ff6a'],
+  ];
+  rows.forEach((c,i)=>{
+    const y=M.y+10+i*21;
+    g.fillStyle=P.rim; g.font="11px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(c[0],M.x+10,y+10);
+    g.fillStyle=B.flow>0.001?c[2]:'#5d6a73'; g.font="16px 'VT323',monospace"; g.textAlign='right';
+    g.fillText(c[1],M.x+M.w-10,y+10);
+  });
+  g.textAlign='left';
+}
+
+/* ---- sample bottles instead of buttons: it is a desk ---- */
+function drawBottles(g){
+  const live=liveCtl('fluid');
+  BOTTLE.forEach(b=>{
+    const on=b.k===B.fluid, f=FL.FLUIDS[b.k];
+    const tint=b.k==='water'?'rgba(54,224,255,':(b.k==='co2'?'rgba(200,214,224,':'rgba(255,210,74,');
+    g.fillStyle='#1b2227'; A.rr(g,b.x,b.y+10,b.w,b.h-10,3); g.fill();
+    g.fillStyle=tint+(on?'0.55':'0.26')+')';
+    g.fillRect(b.x+4,b.y+10+18,b.w-8,b.h-32);
+    g.fillStyle='#4a565d'; g.fillRect(b.x+10,b.y,b.w-20,12);   // neck
+    g.fillStyle=on?P.amber:'#6d7a84'; g.fillRect(b.x+7,b.y-4,b.w-14,6);
+    g.strokeStyle=on?P.amber:(live?'#5d6a73':'#39444b'); g.lineWidth=on?2:1;
+    A.rr(g,b.x,b.y+10,b.w,b.h-10,3); g.stroke();
+    g.fillStyle=on?P.amber:(live?P.rim:'#4a545e');
+    g.font="9px 'VT323',monospace"; g.textAlign='center';
+    g.fillText(f.name.replace('LIQUID ',''),b.x+b.w/2,b.y+b.h+11);
+    g.fillStyle=on?'#8fb9ff':'#5d6a73';
+    g.fillText(f.sg.toFixed(2),b.x+b.w/2,b.y+b.h+21);
+  });
+  g.textAlign='left';
+}
+
+function slider(g,sl,live){
+  const v=Math.max(0,Math.min(1,sl.get())), tr=sl.track, kx=tr.x+v*tr.w, ky=tr.y;
+  A.plate(g,sl.box.x,sl.box.y,sl.box.w,sl.box.h);
+  g.fillStyle=live?P.rim:'#4a545e'; g.font="12px 'VT323',monospace"; g.textAlign='left';
+  g.fillText(sl.label,sl.box.x+6,sl.box.y+15);
+  g.fillStyle=live?'#39ff6a':'#5d6a73'; g.font="15px 'VT323',monospace"; g.textAlign='right';
+  g.fillText(sl.fmt(),sl.box.x+sl.box.w-6,sl.box.y+15);
+  g.textAlign='left';
+
+  const tg=(!done&&STEPS[si]&&STEPS[si].target);
+  if(tg && ((tg.on==='flow')===(sl.key==='flow'))){
+    const a=tr.x+tg.lo*tr.w, b=tr.x+tg.hi*tr.w;
+    g.fillStyle='rgba(255,210,74,0.20)'; g.fillRect(a,ky-11,b-a,22);
+    g.strokeStyle='#ffd24a'; g.lineWidth=1; g.strokeRect(a+0.5,ky-11.5,b-a-1,22);
+    g.fillStyle='#ffd24a'; g.font="10px 'VT323',monospace"; g.textAlign='center';
+    g.fillText(tg.label,(a+b)/2,ky-15); g.textAlign='left';
+  }
+  g.fillStyle='#0b1116'; g.fillRect(tr.x,ky-3,tr.w,6);
+  g.fillStyle=live?P.amber:'#39464f'; g.fillRect(tr.x,ky-3,v*tr.w,6);
+  g.fillStyle=live?'#ffd24a':'#5d6a73'; g.fillRect(kx-4,ky-10,8,20);
+  g.strokeStyle='rgba(0,0,0,0.6)'; g.lineWidth=1; g.strokeRect(kx-4,ky-10,8,20);
+}
+
+/* ============================================================
+   SEGMENTS \u2014 one concept each, named before it is demonstrated
+   ============================================================ */
+const SEG={
+  'markers':{
+    concept:'HOW THE FLUID IS DRAWN',
+    sub:'a convention, before anything else',
+    controls:[],
+    steps:[{ ctl:[], task:'Read it, then carry on.', ok:()=>true, auto:true,
+      lesson:'Those marks are <b>not molecules</b> &mdash; you could not see one '+
+        'through a wall of steel. They are markers. Spaced so you can count them, '+
+        'moving in true proportion to each other but far slower than the real thing, '+
+        'because real water tells the eye nothing.' }],
+  },
+  'flow-vs-still':{
+    concept:'PRESSURE IS NOT FLOW',
+    sub:'a line can be full and doing nothing',
+    controls:['flow'],
+    steps:[
+      { ctl:['flow'], target:{on:'flow',lo:0.65,hi:1,label:'OPEN'},
+        task:'Open the valve: push FLOW into the marked band.',
+        ok:()=>B.flow>=0.65,
+        lesson:'Shut, the markers moved without going anywhere &mdash; that is '+
+          'temperature. Open, they travel. <b>Flow</b> is net movement along the '+
+          'line. A pipe that is full and a pipe that is flowing are two different '+
+          'states.' },
+    ],
+  },
+  'velocity-profile':{
+    concept:'VELOCITY PROFILE',
+    sub:'why the middle of a pipe runs faster than the edge',
+    controls:['flow'],
+    steps:[
+      { ctl:['flow'], target:{on:'flow',lo:0.65,hi:1,label:'OPEN'}, watch:2.6,
+        task:'Open it up, then compare the markers at the wall with the ones down the middle.',
+        ok:()=>B.flow>=0.65,
+        lesson:'<b>Friction between the fluid and the pipe surface</b> holds the '+
+          'fluid at the wall almost stationary. Further from the wall less of that '+
+          'drag reaches it, so the middle moves fastest. The yellow curve is that '+
+          'spread of speed across the bore: the <b>velocity profile</b>.' },
+    ],
+  },
+  'reynolds':{
+    concept:'LAMINAR AND TURBULENT',
+    sub:'Reynolds number, and what decides which',
+    controls:['flow','temp'],
+    steps:[
+      { ctl:['flow'], target:{on:'flow',lo:TRICKLE[0],hi:TRICKLE[1],label:'TRICKLE'},
+        task:'Close FLOW down into the marked band.',
+        ok:()=>!B.drag && B.flow>=TRICKLE[0] && B.flow<=TRICKLE[1] && rig().regime==='laminar',
+        lesson:'Slowed down, the fluid travels in parallel layers that do not mix, '+
+          'and the profile pulls out into a long point. That is <b>laminar</b> flow. '+
+          'Watch the markers: they have almost stopped jittering sideways.' },
+      { ctl:['temp'], target:{on:'temp',lo:HOT[0]/80,hi:HOT[1]/80,label:'HOT'},
+        task:'Leave FLOW alone. Push TEMPERATURE into the marked band.',
+        ok:()=>rig().regime==='turbulent',
+        lesson:'The valve has not moved, so the fluid travels at the same speed. '+
+          'Heating water lowers its <b>viscosity</b>. Reynolds is velocity x bore / '+
+          'viscosity, so lower viscosity means higher Reynolds. Past 4,000 the layers '+
+          'break up and mix right across the bore: <b>turbulent</b>.' },
+    ],
+  },
+  'specific-gravity':{
+    concept:'SPECIFIC GRAVITY',
+    sub:'density decides how much flows; viscosity decides how it looks',
+    controls:['flow','temp','fluid'],
+    steps:[
+      { ctl:['fluid'],
+        task:'Put the propane bottle on the loop.',
+        ok:()=>B.fluid==='propane',
+        lesson:'Same valve, same pressure, and <b>more</b> of it flows. Flow through '+
+          'a fixed restriction is q = Cv x sqrt(dP / SG), and propane is half the '+
+          'density of water. It is also five times less viscous, so REYNOLDS jumped '+
+          'as well. Dense and sluggish are not the same thing.' },
+      { ctl:['flow','temp','fluid'],
+        task:'Now use it. Deliver 0.50 gpm, and keep the flow laminar.',
+        ok:()=>{ const r=rig(); return !B.drag && r.q>=0.50 && r.regime==='laminar'; },
+        lesson:'Propane could not do it at any temperature &mdash; too little '+
+          'viscosity, so Reynolds is always high. Water could not either until you '+
+          'cooled it, because cold water is <b>more</b> viscous. Fluid, temperature '+
+          'and valve position together decide what a line does.' },
+    ],
+  },
+};
+
+/* ---- running a visit ---- */
+let QUEUE=[], seg=null, STEPS=[], si=0, done=false, SH=null, onDone=null;
+
+function liveCtl(which){
+  if(done||!STEPS[si]) return true;
+  return (STEPS[si].ctl||[]).indexOf(which)>=0;
+}
+function magnet(key,v){
+  if(done||!STEPS[si]) return v;
+  const tg=STEPS[si].target;
+  if(!tg || (tg.on==='flow')!==(key==='flow')) return v;
+  if(v>tg.lo-0.035 && v<tg.lo) return tg.lo;
+  if(v<tg.hi+0.035 && v>tg.hi) return tg.hi;
+  return v;
+}
+
+function draw(g,dt,t){
+  const r=rig();
+  g.drawImage(BG,0,0);
+  CUT.set({ flow:Math.min(1,r.v/3.0), regime:r.regime,
+            tempF:r.t*9/5+32, sg:r.f.sg, gas:false });
+  drawRig(g,r); drawMeters(g,r); drawBottles(g);
+  slider(g,SLID.flow, liveCtl('flow'));
+  slider(g,SLID.temp, liveCtl('temp') && !tempLocked());
+  if(tempLocked()){
+    g.fillStyle=P.amber; g.font="10px 'VT323',monospace";
+    g.fillText('HELD NEAR SATURATION',SLID.temp.box.x+6,SLID.temp.box.y-5);
+  }
+  // the concept, named, where it cannot be missed
+  if(seg){
+    A.plate(g,LAY.glass.x,LAY.glass.y-56,LAY.glass.w,34);
+    g.fillStyle=P.amber; g.font="17px 'VT323',monospace"; g.textAlign='left';
+    g.fillText('CONCEPT: '+seg.concept,LAY.glass.x+10,LAY.glass.y-40);
+    g.fillStyle='#8b949b'; g.font="12px 'VT323',monospace";
+    g.fillText(seg.sub,LAY.glass.x+10,LAY.glass.y-27);
+  }
+}
+function step(dt){
+  const r=rig();
+  CUT.update(dt);
+  if(r.v>0.25) B.watch+=dt;
+  LPE.audio.flow(Math.min(1,r.v/4));
+  if(done||!STEPS[si]||SH.holding) return;
+  if(STEPS[si].ok()){
+    const last=si>=STEPS.length-1;
+    const need=STEPS[si].watch;
+    SH.beat(STEPS[si].lesson, ()=>{
+      if(last) nextSegment(); else { si++; B.watch=0; say(); }
+    }, need? (()=>B.watch>=need) : null);
+    SH.count(last?'\u2014':(si+2)+' / '+STEPS.length);
+  }
+}
+function say(){ if(done||!STEPS[si]) return;
+  SH.say(STEPS[si].task,''); SH.count((si+1)+' / '+STEPS.length); }
+
+function nextSegment(){
+  if(!QUEUE.length){ done=true; SH.destroy(); onDone&&onDone(); return; }
+  const id=QUEUE.shift();
+  seg=SEG[id]; STEPS=seg.steps; si=0; B.watch=0;
+  SH.title('R.O.\u2019S BENCH \u2014 TRAINING LOOP', seg.concept.toLowerCase());
+  if(STEPS[0].auto){
+    SH.beat(STEPS[0].lesson, ()=>{ si=0; nextStepsOrSegment(); });
+  } else say();
+}
+function nextStepsOrSegment(){
+  if(STEPS.length<=1) nextSegment(); else { si=1; say(); }
+}
+
+/* ---- input ---- */
+function down(p){
+  for(const key of ['flow','temp']){
+    const sl=SLID[key], tr=sl.track;
+    if(!liveCtl(key)) continue;
+    if(key==='temp' && tempLocked()) continue;
+    if(p.x>=tr.x-12 && p.x<=tr.x+tr.w+12 && Math.abs(p.y-tr.y)<18){
+      B.drag=key; sl.set(magnet(key,Math.max(0,Math.min(1,(p.x-tr.x)/tr.w))));
+      LPE.audio.tick(); return;
+    }
+  }
+  if(liveCtl('fluid')) for(const b of BOTTLE){
+    if(p.x>=b.x-BHIT && p.x<b.x+b.w+BHIT && p.y>=b.y-BHIT && p.y<b.y+b.h+22){
+      if(B.fluid!==b.k){ B.fluid=b.k; LPE.audio.clack(); }
+      return;
+    }
+  }
+}
+function move(p){
+  if(!B.drag) return;
+  const sl=SLID[B.drag], tr=sl.track, before=sl.get();
+  sl.set(magnet(B.drag,Math.max(0,Math.min(1,(p.x-tr.x)/tr.w))));
+  if(Math.floor(before*14)!==Math.floor(sl.get()*14)) LPE.audio.tick();
+}
+
+/* ---- entry point ---- */
+LPE.trainer=function(ids,after){
+  QUEUE=ids.slice(); onDone=after; done=false;
+  Object.assign(B,{flow:0,temp:20,fluid:'water',watch:0,drag:null});
+  buildDesk();
+  SH=LPE.mount({
+    t1:'R.O.\u2019S BENCH \u2014 TRAINING LOOP', t2:'', w:W,h:H, step, draw,
+    intro:[
+      {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+       text:'&ldquo;Before you go down there.<br>R.O. keeps a bench for this. Use it.&rdquo;'},
+    ],
+    onStart:nextSegment,
+    onReset(){ Object.assign(B,{flow:0,temp:20,fluid:'water',watch:0,drag:null});
+               si=0; say(); },
+  });
+  SH.canvas.addEventListener('pointerdown',e=>{
+    LPE.audio.init(); LPE.audio.resume(); LPE.audio.startFlow(); down(SH.pt(e)); });
+  SH.canvas.addEventListener('pointermove',e=>move(SH.pt(e)));
+  ['pointerup','pointercancel'].forEach(k=>
+    SH.canvas.addEventListener(k,()=>{B.drag=null;}));
+  return SH;
+};
+LPE.TRAINER_SEGMENTS=SEG;
+/* standalone: run every segment, for working on the bench itself */
+if(!window.LPE_GAME) LPE.boot(()=>LPE.trainer(Object.keys(SEG),()=>{}));
+})();
+</script>
