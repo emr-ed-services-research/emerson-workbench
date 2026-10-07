@@ -109,6 +109,16 @@ function say(){ if(SH.holding||SH.done||S.closing) return;
    top of the closing line before any of it could be read. The level has
    something to say first, and the player says when to move on. */
 const CLOSING=[
+  /* The velocity profile has been drawn in every pipe of every level since
+     the beginning and no level has ever pointed at it. It is the detail a
+     cutaway view exists for. Two tracers race while this is held: the
+     centreline one and the one against the bore, both carried by the same
+     profile the water uses. */
+  '<span class="who">COMMS:</span> Watch those two markers &mdash; same pipe, same '+
+  'instant, and the middle one is walking away from the one against the wall. Water '+
+  'does not slide along as a block: it drags on the bore, so the middle runs '+
+  '<b>fastest</b> and the wall is nearly still.',
+
   '<span class="who">COMMS:</span> There it is. And look at what that gauge did &mdash; '+
   'it sat at nothing while the line behind the valve was already full and already '+
   'under pressure. <b>Pressure is not flow.</b> The wheel did not make water. It gave '+
@@ -124,8 +134,10 @@ const CLOSING=[
   'Play your cards right, you might make a decent one yourself.',
 ];
 function closeOut(i){
+  line.race(1, i===0);              // downstream run, during the velocity beat only
   if(i>=CLOSING.length){
     S.closing=false;
+    line.race(1,false);
     SH.finish({ lesson:CLOSING[CLOSING.length-1],
       line:'<span class="accent">Bio Lab One has water.</span> That is one valve, '+
            'by hand, on the oldest run on the base. Everything after this is the '+
@@ -238,7 +250,7 @@ const SH=LPE.mount({
   onReset(){
     Object.assign(S,{phase:'closed',slide:0,turn:0,open:0,press:0,drag:false});
     line.set(0,{flow:0,fill:1}); line.set(1,{flow:0,fill:0});
-    S.closing=false; LPE.audio.flow(0); say();
+    S.closing=false; line.race(1,false); LPE.audio.flow(0); say();
   },
 });
 

@@ -273,7 +273,27 @@ Line.prototype.update=function(dt){
       p.t+=v*m*dt;
       if(p.t>1){ p.t-=1; p.lane=(Math.random()*2-1)*0.95; }
     });
+    /* Tracers. Two marked particles at different radii, advanced by the
+       SAME line above - not animated separately to illustrate a point. The
+       centreline one pulls away from the one against the wall because the
+       profile says it must, so what the player watches is the model, not a
+       diagram of it. They restart together, so the race can be watched for
+       as long as it takes to believe. */
+    if(s.race) s.race.forEach(p=>{
+      const m=(s.regime==="laminar"?laminarAt:profileAt)(p.lane);
+      p.t+=v*m*dt;
+      if(p.t>1) s.race.forEach(q=>{ q.t=0; });
+    });
   });
+};
+/* Mark a segment for the velocity-profile race: one tracer on the
+   centreline, one hard against the bore. 0.92 rather than 1.0 because the
+   profile clamps at 0.98 and a tracer pinned exactly to the wall would
+   never move at all - no-slip is the point, but a frozen dot reads as a
+   bug rather than as physics. */
+Line.prototype.race=function(i,on){
+  this.segs[i].race = on ? [{lane:0.00,mark:'centre'},{lane:0.92,mark:'wall'}]
+                               .map(p=>({...p,t:0})) : null;
 };
 Line.prototype.draw=function(g){
   this.segs.forEach(s=>{
@@ -301,6 +321,16 @@ Line.prototype.draw=function(g){
       }else{
         g.fillStyle='rgba(54,224,255,0.38)'; g.fillRect(x,y,2,3);
       }
+    });
+    if(s.race && s.flow>0.03) s.race.forEach(p=>{
+      const d=p.t*s.len, off=p.lane*s.r*0.86;
+      const x=s.ax+s.ux*d+s.nx*off, y=s.ay+s.uy*d+s.ny*off;
+      const col = p.mark==='centre' ? '#ffd24a' : '#ff7a6b';
+      g.strokeStyle=col; g.lineWidth=1; g.globalAlpha=0.30;   // the ground covered
+      g.beginPath(); g.moveTo(s.ax+s.nx*off,s.ay+s.ny*off); g.lineTo(x,y); g.stroke();
+      g.globalAlpha=1;
+      g.fillStyle=col; g.beginPath(); g.arc(x,y,3.1,0,6.284); g.fill();
+      g.strokeStyle='rgba(0,0,0,0.65)'; g.lineWidth=1; g.stroke();
     });
   });
 };
