@@ -1094,7 +1094,11 @@ function mount(o){
       /* Players poke at a rig they have just solved, and taking it away the
          instant the last step passes is the wrong reward. The card steps
          aside; the level is still underneath it, still running. */
-      add('STAY ON THE RIG', ()=>{ cleanup(); d.remove(); });
+      add('STAY ON THE RIG', ()=>{ cleanup(); d.remove();
+        /* Say so. The rig unlocking is a real change of state and the
+           player has no other way to find out it happened. */
+        q('.task').innerHTML='<span class="free">The rig is yours &mdash; '+
+          'every valve is unlocked.</span>'; });
       function key(e){ if(e.key==='Escape'){ cleanup(); d.remove(); } }
       function cleanup(){ window.removeEventListener('keydown',key); }
       window.addEventListener('keydown',key);

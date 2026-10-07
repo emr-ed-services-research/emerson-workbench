@@ -260,7 +260,12 @@ const SHORTCUT=[
 ];
 
 let STEPS=null, step=0, done=false, route='';
-const isLive=k=>!done && STEPS && STEPS[step].keys.indexOf(k)>=0;
+/* Once the assignment is over the rig is unlocked: every wheel turns, and
+   every wheel lights, because every one of them is now a control you may
+   use. While the level is running this still points at exactly the valve
+   the current step is about. Before this, `done` locked the lot - finishing
+   a level left the player holding a rig they could not touch. */
+const isLive=k=> done ? true : (!!STEPS && STEPS[step].keys.indexOf(k)>=0);
 const canPull=()=>!done && STEPS && !!STEPS[step].click && reducerIn && valves.b2<=0.02;
 
 /* ---------- scenery ---------- */

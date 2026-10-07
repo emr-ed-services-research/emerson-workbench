@@ -205,7 +205,12 @@ const STEPS=[
     lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch: Bed 3 can never pass more than its reducer allows, so the other two came back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling \u2014 that reducer is not costing one bed, it is capping all three.' },
 ];
 let step=0, done=false;
-const isLive=k=>!done && STEPS[step].keys.indexOf(k)>=0;
+/* Once the assignment is over the rig is unlocked: every wheel turns, and
+   every wheel lights, because every one of them is now a control you may
+   use. While the level is running this still points at exactly the valve
+   the current step is about. Before this, `done` locked the lot - finishing
+   a level left the player holding a rig they could not touch. */
+const isLive=k=> done ? true : STEPS[step].keys.indexOf(k)>=0;
 
 /* ---------- scenery ---------- */
 let BG;

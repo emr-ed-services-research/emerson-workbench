@@ -66,6 +66,7 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
    box that clips rather than scrolls. This is the beat without the line. */
 .guide .lesson .gap{display:block;height:11px;}
 .guide .lesson .who{color:var(--amber);}      /* the comms voice */
+.guide .free{color:var(--metal-lt);font-size:24px;letter-spacing:.04em;}
 .guide .beat-hint{display:inline-block;border:1px solid var(--amber);color:var(--amber);
   font-family:'VT323',monospace;font-size:21px;letter-spacing:.09em;padding:3px 20px;
   cursor:pointer;animation:hintpulse 1.9s ease-in-out infinite;}
@@ -1285,7 +1286,11 @@ function mount(o){
       /* Players poke at a rig they have just solved, and taking it away the
          instant the last step passes is the wrong reward. The card steps
          aside; the level is still underneath it, still running. */
-      add('STAY ON THE RIG', ()=>{ cleanup(); d.remove(); });
+      add('STAY ON THE RIG', ()=>{ cleanup(); d.remove();
+        /* Say so. The rig unlocking is a real change of state and the
+           player has no other way to find out it happened. */
+        q('.task').innerHTML='<span class="free">The rig is yours &mdash; '+
+          'every valve is unlocked.</span>'; });
       function key(e){ if(e.key==='Escape'){ cleanup(); d.remove(); } }
       function cleanup(){ window.removeEventListener('keydown',key); }
       window.addEventListener('keydown',key);
@@ -2478,7 +2483,12 @@ const STEPS=[
     lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch: Bed 3 can never pass more than its reducer allows, so the other two came back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling \u2014 that reducer is not costing one bed, it is capping all three.' },
 ];
 let step=0, done=false;
-const isLive=k=>!done && STEPS[step].keys.indexOf(k)>=0;
+/* Once the assignment is over the rig is unlocked: every wheel turns, and
+   every wheel lights, because every one of them is now a control you may
+   use. While the level is running this still points at exactly the valve
+   the current step is about. Before this, `done` locked the lot - finishing
+   a level left the player holding a rig they could not touch. */
+const isLive=k=> done ? true : STEPS[step].keys.indexOf(k)>=0;
 
 /* ---------- scenery ---------- */
 let BG;
@@ -2972,7 +2982,12 @@ const SHORTCUT=[
 ];
 
 let STEPS=null, step=0, done=false, route='';
-const isLive=k=>!done && STEPS && STEPS[step].keys.indexOf(k)>=0;
+/* Once the assignment is over the rig is unlocked: every wheel turns, and
+   every wheel lights, because every one of them is now a control you may
+   use. While the level is running this still points at exactly the valve
+   the current step is about. Before this, `done` locked the lot - finishing
+   a level left the player holding a rig they could not touch. */
+const isLive=k=> done ? true : (!!STEPS && STEPS[step].keys.indexOf(k)>=0);
 const canPull=()=>!done && STEPS && !!STEPS[step].click && reducerIn && valves.b2<=0.02;
 
 /* ---------- scenery ---------- */
