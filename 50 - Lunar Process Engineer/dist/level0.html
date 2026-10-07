@@ -71,6 +71,10 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   font-family:'VT323',monospace;font-size:21px;letter-spacing:.09em;padding:3px 20px;
   cursor:pointer;animation:hintpulse 1.9s ease-in-out infinite;}
 .guide .beat-hint:hover{background:rgba(255,182,39,.14);}
+/* Still presenting: the control is visibly not yet a control. */
+.guide .beat-hint.waiting{color:var(--metal);border-color:var(--metal-dk);
+  cursor:default;animation:none;}
+.guide .beat-hint.waiting:hover{background:transparent;}
 /* It was bare amber text on a hard steps(1) blink, which reads as a warning
    lamp or a terminal cursor - something the screen is doing AT you, not a
    control. Bordered, in the same language as every other button here, with
@@ -522,6 +526,11 @@ Line.prototype.draw=function(g){
       g.globalAlpha=1;
       g.fillStyle=col; g.beginPath(); g.arc(x,y,3.1,0,6.284); g.fill();
       g.strokeStyle='rgba(0,0,0,0.65)'; g.lineWidth=1; g.stroke();
+      /* Say which is which. Two coloured dots are a puzzle; two labelled
+         ones are an observation the player can make at a glance. */
+      g.font="11px 'VT323',monospace"; g.textAlign='center';
+      g.fillStyle=col;
+      g.fillText(p.mark==='centre'?'CENTRE':'WALL', x, y+(p.mark==='centre'?-7:15));
     });
   });
 };
@@ -1234,13 +1243,33 @@ function mount(o){
        the wait is a property of the TEMPLATE, not something each level
        should be inventing a number for. Returns true while it is holding,
        so a level's step check can stand down rather than racing it. */
-    beat(lesson,then){
+    /* `until` is for a lesson that has to DEMONSTRATE something before the
+       player can sensibly move on. The velocity race needs a few seconds
+       for the two tracers to separate; a click in the first instant skipped
+       the entire point of the beat with nothing having happened yet. While
+       the predicate is unmet the control reads WATCH and does not accept a
+       click - not forced waiting so much as the lesson still presenting. */
+    beat(lesson,then,until){
       if(S._holding) return;
       S._holding=true;
-      q('.task').innerHTML='<span class="beat-hint">continue &rarr;</span>';
+      const hint=()=>'<span class="beat-hint'+(until&&!until()?' waiting':'')+'">'+
+        (until&&!until()?'watch':'continue &rarr;')+'</span>';
+      q('.task').innerHTML=hint();
       q('.lesson').innerHTML=lesson||'';
       const openedAt=performance.now();
+      /* Polled from the frame loop, not a timer. What the predicate is
+         waiting on is something happening in the SIMULATION, and the
+         simulation only advances when a frame runs - so a wall-clock timer
+         both fires when nothing has moved and, in a background tab where
+         timers are throttled to a second or more, fails to fire when it
+         has. Tying it to pump() makes the two agree by construction. */
+      S._holdUntil = until ? ()=>{
+        if(!until()) return;
+        S._holdUntil=null;
+        q('.task').innerHTML=hint();
+      } : null;
       const go=e=>{
+        if(until && !until()) return;            // nothing to continue from yet
         if(e.type==='keydown' && e.key!=='Enter' && e.key!==' ') return;
         /* The click that finishes the drag which opened this lesson is not
            the player asking to move on - they have not read a word yet. */
@@ -1250,7 +1279,8 @@ function mount(o){
         S._holding=false; if(then) then();
       };
       function drop(){ window.removeEventListener('keydown',go);
-                       root.removeEventListener('click',go); S._holdDrop=null; }
+                       root.removeEventListener('click',go); S._holdDrop=null;
+                       S._holdUntil=null; }
       S._holdDrop=drop;
       window.addEventListener('keydown',go);
       root.addEventListener('click',go);
@@ -1363,7 +1393,10 @@ function mount(o){
      fire in a backgrounded tab, so without this the simulation cannot be
      stepped or inspected outside a visible window. */
   let last=0, t=0, live=true;
-  S.pump=function(dt){ t+=dt; if(o.step) o.step(dt); if(o.draw) o.draw(S.ctx,dt,t); };
+  S.pump=function(dt){
+    t+=dt; if(o.step) o.step(dt); if(o.draw) o.draw(S.ctx,dt,t);
+    if(S._holdUntil) S._holdUntil();     // a lesson waiting on the rig to show something
+  };
   function frame(ts){
     if(!live) return;                      // a torn-down level stops simulating
     const dt=last?Math.min(0.05,(ts-last)/1000):0; last=ts;
@@ -1513,8 +1546,8 @@ const CLOSING=[
      profile the water uses. */
   '<span class="who">COMMS:</span> Watch the two markers. <b>Friction between the '+
   'water and the pipe surface</b> holds the water at the wall almost still. The '+
-  'further from that surface, the less the friction reaches it &mdash; so the water '+
-  'in the middle of the pipe moves fastest.',
+  'further from that surface, the less the friction reaches it, so the middle moves '+
+  'fastest. That spread of speed across the bore is the <b>velocity profile</b>.',
 
   '<span class="who">COMMS:</span> There it is. And look at what that gauge did &mdash; '+
   'it sat at nothing while the line behind the valve was already full and already '+
@@ -1530,7 +1563,17 @@ const CLOSING=[
   'about you again until it stops &mdash; that is the job.<span class="gap"></span>'+
   'Play your cards right, you might make a decent one yourself.',
 ];
+/* True once the centreline tracer has covered most of the run, which is
+   the moment the gap between the two is unmistakable. */
+/* Watched-for, in SIMULATION seconds since the markers started running.
+   Lap position does not work as a gate: flow establishes while the player
+   is still turning the wheel, so the race can finish before their hand
+   leaves it and the lesson unlocks before they have looked at anything. */
+let raceT=0;
+const RACE_WATCH=2.6;
+const raceRun=()=>raceT>=RACE_WATCH;
 function closeOut(i){
+  if(i===0) raceT=0;
   line.race(1, i===0);              // downstream run, during the velocity beat only
   if(i>=CLOSING.length){
     S.closing=false;
@@ -1541,7 +1584,10 @@ function closeOut(i){
            'same job with more of it happening at once.' });
     return;
   }
-  SH.beat(CLOSING[i], ()=>closeOut(i+1));
+  /* The velocity beat waits for the tracers to have separated. Starting it
+     the instant flow establishes and accepting a click immediately meant the
+     one thing it exists to show could be clicked past before it happened. */
+  SH.beat(CLOSING[i], ()=>closeOut(i+1), i===0 ? raceRun : null);
 }
 
 /* ---------------- simulation ---------------- */
@@ -1564,6 +1610,7 @@ function step(dt){
       S.phase='flowing'; S.closing=true; closeOut(0);
     }
   }
+  if(line.segs[1].race) raceT+=dt;   // simulation seconds the markers have run
   line.update(dt);
 }
 
@@ -1647,7 +1694,7 @@ const SH=LPE.mount({
   onReset(){
     Object.assign(S,{phase:'closed',slide:0,turn:0,open:0,press:0,drag:false});
     line.set(0,{flow:0,fill:1}); line.set(1,{flow:0,fill:0});
-    S.closing=false; line.race(1,false); LPE.audio.flow(0); say();
+    S.closing=false; raceT=0; line.race(1,false); LPE.audio.flow(0); say();
   },
 });
 

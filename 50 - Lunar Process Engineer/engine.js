@@ -331,6 +331,11 @@ Line.prototype.draw=function(g){
       g.globalAlpha=1;
       g.fillStyle=col; g.beginPath(); g.arc(x,y,3.1,0,6.284); g.fill();
       g.strokeStyle='rgba(0,0,0,0.65)'; g.lineWidth=1; g.stroke();
+      /* Say which is which. Two coloured dots are a puzzle; two labelled
+         ones are an observation the player can make at a glance. */
+      g.font="11px 'VT323',monospace"; g.textAlign='center';
+      g.fillStyle=col;
+      g.fillText(p.mark==='centre'?'CENTRE':'WALL', x, y+(p.mark==='centre'?-7:15));
     });
   });
 };
@@ -1043,13 +1048,33 @@ function mount(o){
        the wait is a property of the TEMPLATE, not something each level
        should be inventing a number for. Returns true while it is holding,
        so a level's step check can stand down rather than racing it. */
-    beat(lesson,then){
+    /* `until` is for a lesson that has to DEMONSTRATE something before the
+       player can sensibly move on. The velocity race needs a few seconds
+       for the two tracers to separate; a click in the first instant skipped
+       the entire point of the beat with nothing having happened yet. While
+       the predicate is unmet the control reads WATCH and does not accept a
+       click - not forced waiting so much as the lesson still presenting. */
+    beat(lesson,then,until){
       if(S._holding) return;
       S._holding=true;
-      q('.task').innerHTML='<span class="beat-hint">continue &rarr;</span>';
+      const hint=()=>'<span class="beat-hint'+(until&&!until()?' waiting':'')+'">'+
+        (until&&!until()?'watch':'continue &rarr;')+'</span>';
+      q('.task').innerHTML=hint();
       q('.lesson').innerHTML=lesson||'';
       const openedAt=performance.now();
+      /* Polled from the frame loop, not a timer. What the predicate is
+         waiting on is something happening in the SIMULATION, and the
+         simulation only advances when a frame runs - so a wall-clock timer
+         both fires when nothing has moved and, in a background tab where
+         timers are throttled to a second or more, fails to fire when it
+         has. Tying it to pump() makes the two agree by construction. */
+      S._holdUntil = until ? ()=>{
+        if(!until()) return;
+        S._holdUntil=null;
+        q('.task').innerHTML=hint();
+      } : null;
       const go=e=>{
+        if(until && !until()) return;            // nothing to continue from yet
         if(e.type==='keydown' && e.key!=='Enter' && e.key!==' ') return;
         /* The click that finishes the drag which opened this lesson is not
            the player asking to move on - they have not read a word yet. */
@@ -1059,7 +1084,8 @@ function mount(o){
         S._holding=false; if(then) then();
       };
       function drop(){ window.removeEventListener('keydown',go);
-                       root.removeEventListener('click',go); S._holdDrop=null; }
+                       root.removeEventListener('click',go); S._holdDrop=null;
+                       S._holdUntil=null; }
       S._holdDrop=drop;
       window.addEventListener('keydown',go);
       root.addEventListener('click',go);
@@ -1172,7 +1198,10 @@ function mount(o){
      fire in a backgrounded tab, so without this the simulation cannot be
      stepped or inspected outside a visible window. */
   let last=0, t=0, live=true;
-  S.pump=function(dt){ t+=dt; if(o.step) o.step(dt); if(o.draw) o.draw(S.ctx,dt,t); };
+  S.pump=function(dt){
+    t+=dt; if(o.step) o.step(dt); if(o.draw) o.draw(S.ctx,dt,t);
+    if(S._holdUntil) S._holdUntil();     // a lesson waiting on the rig to show something
+  };
   function frame(ts){
     if(!live) return;                      // a torn-down level stops simulating
     const dt=last?Math.min(0.05,(ts-last)/1000):0; last=ts;

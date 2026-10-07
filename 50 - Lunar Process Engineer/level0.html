@@ -116,8 +116,8 @@ const CLOSING=[
      profile the water uses. */
   '<span class="who">COMMS:</span> Watch the two markers. <b>Friction between the '+
   'water and the pipe surface</b> holds the water at the wall almost still. The '+
-  'further from that surface, the less the friction reaches it &mdash; so the water '+
-  'in the middle of the pipe moves fastest.',
+  'further from that surface, the less the friction reaches it, so the middle moves '+
+  'fastest. That spread of speed across the bore is the <b>velocity profile</b>.',
 
   '<span class="who">COMMS:</span> There it is. And look at what that gauge did &mdash; '+
   'it sat at nothing while the line behind the valve was already full and already '+
@@ -133,7 +133,17 @@ const CLOSING=[
   'about you again until it stops &mdash; that is the job.<span class="gap"></span>'+
   'Play your cards right, you might make a decent one yourself.',
 ];
+/* True once the centreline tracer has covered most of the run, which is
+   the moment the gap between the two is unmistakable. */
+/* Watched-for, in SIMULATION seconds since the markers started running.
+   Lap position does not work as a gate: flow establishes while the player
+   is still turning the wheel, so the race can finish before their hand
+   leaves it and the lesson unlocks before they have looked at anything. */
+let raceT=0;
+const RACE_WATCH=2.6;
+const raceRun=()=>raceT>=RACE_WATCH;
 function closeOut(i){
+  if(i===0) raceT=0;
   line.race(1, i===0);              // downstream run, during the velocity beat only
   if(i>=CLOSING.length){
     S.closing=false;
@@ -144,7 +154,10 @@ function closeOut(i){
            'same job with more of it happening at once.' });
     return;
   }
-  SH.beat(CLOSING[i], ()=>closeOut(i+1));
+  /* The velocity beat waits for the tracers to have separated. Starting it
+     the instant flow establishes and accepting a click immediately meant the
+     one thing it exists to show could be clicked past before it happened. */
+  SH.beat(CLOSING[i], ()=>closeOut(i+1), i===0 ? raceRun : null);
 }
 
 /* ---------------- simulation ---------------- */
@@ -167,6 +180,7 @@ function step(dt){
       S.phase='flowing'; S.closing=true; closeOut(0);
     }
   }
+  if(line.segs[1].race) raceT+=dt;   // simulation seconds the markers have run
   line.update(dt);
 }
 
@@ -250,7 +264,7 @@ const SH=LPE.mount({
   onReset(){
     Object.assign(S,{phase:'closed',slide:0,turn:0,open:0,press:0,drag:false});
     line.set(0,{flow:0,fill:1}); line.set(1,{flow:0,fill:0});
-    S.closing=false; line.race(1,false); LPE.audio.flow(0); say();
+    S.closing=false; raceT=0; line.race(1,false); LPE.audio.flow(0); say();
   },
 });
 

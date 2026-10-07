@@ -67,6 +67,10 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   font-family:'VT323',monospace;font-size:21px;letter-spacing:.09em;padding:3px 20px;
   cursor:pointer;animation:hintpulse 1.9s ease-in-out infinite;}
 .guide .beat-hint:hover{background:rgba(255,182,39,.14);}
+/* Still presenting: the control is visibly not yet a control. */
+.guide .beat-hint.waiting{color:var(--metal);border-color:var(--metal-dk);
+  cursor:default;animation:none;}
+.guide .beat-hint.waiting:hover{background:transparent;}
 /* It was bare amber text on a hard steps(1) blink, which reads as a warning
    lamp or a terminal cursor - something the screen is doing AT you, not a
    control. Bordered, in the same language as every other button here, with

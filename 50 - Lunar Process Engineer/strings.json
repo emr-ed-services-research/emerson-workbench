@@ -7,7 +7,7 @@
  {
   "level": "level0",
   "key": "closing",
-  "v": "<span class=\"who\">COMMS:</span> Watch the two markers. <b>Friction between the water and the pipe surface</b> holds the water at the wall almost still. The further from that surface, the less the friction reaches it &mdash; so the water in the middle of the pipe moves fastest."
+  "v": "<span class=\"who\">COMMS:</span> Watch the two markers. <b>Friction between the water and the pipe surface</b> holds the water at the wall almost still. The further from that surface, the less the friction reaches it, so the middle moves fastest. That spread of speed across the bore is the <b>velocity profile</b>."
  },
  {
   "level": "level0",
