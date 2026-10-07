@@ -2240,8 +2240,18 @@ const A=LPE.art, P=LPE.palette, W=900, H=400;
 /* ---------- geometry (verbatim) ---------- */
 const MAIN_Y=86, TRUNK_X=320, POD_X=812;
 const BR_Y=[170,256,342];
-const R_MAIN=11, R_BR=10;
-const RED_X0=600, RED_X1=680, RED_R=2.2;      // the spliced-in reducer on bay 3
+/* Bore radii ARE the sizing's bores, at the cutaway's own scale, so the
+   drawing cannot quietly disagree with the physics. R_BR is the anchor and
+   everything else follows from a real bore in inches - see sizing.js.
+     NPS 3/8 Sch 40   bore 0.493 in   the branches
+     NPS 1/2 Sch 40   bore 0.622 in   the main and the riser
+     restriction      throat 0.108 in  derived from the Cv it has to have
+   The main was drawn at 11 px for a long time, which is NPS 3/8 wearing a
+   half-inch label; at this scale it is 12.6. */
+const R_BR=10;                                      // the anchor
+const PX_PER_IN=R_BR/0.493;                         // ~20.3 px per inch of bore
+const R_MAIN=Math.round(0.622*PX_PER_IN*10)/10;     // 12.6
+const RED_X0=600, RED_X1=680, RED_R=Math.round(0.108*PX_PER_IN*10)/10;      // the spliced-in reducer on bay 3
 const VALVE_X=410, WHEEL_R=18, STEM=24;
 const BR_LEN=POD_X-TRUNK_X;
 const wheelMainX=170;
@@ -2427,14 +2437,6 @@ function buildScene(){
 }
 
 /* ---------- drawing ---------- */
-function branchHalfH(i,x){                       // the reducer narrows bay 3's bore
-  if(i!==2) return R_BR;
-  if(x<RED_X0) return R_BR;
-  if(x<RED_X0+16) return R_BR+(RED_R-R_BR)*((x-RED_X0)/16);
-  if(x<RED_X1-16) return RED_R;
-  if(x<RED_X1) return RED_R+(R_BR-RED_R)*((x-(RED_X1-16))/16);
-  return R_BR;
-}
 function pipeH(g,x0,x1,y,r){
   g.fillStyle=P.light; g.fillRect(x0,y-r-5,x1-x0,5);
   g.fillStyle=P.mid;   g.fillRect(x0,y+r,x1-x0,5);
@@ -2676,8 +2678,18 @@ const A=LPE.art, P=LPE.palette, W=900, H=400;
 /* ---------- geometry (level one's, unchanged) ---------- */
 const MAIN_Y=86, TRUNK_X=320, POD_X=812;
 const BR_Y=[170,256,342];
-const R_MAIN=11, R_BR=10;
-const RED_X0=600, RED_X1=680, RED_R=2.2;
+/* Bore radii ARE the sizing's bores, at the cutaway's own scale, so the
+   drawing cannot quietly disagree with the physics. R_BR is the anchor and
+   everything else follows from a real bore in inches - see sizing.js.
+     NPS 3/8 Sch 40   bore 0.493 in   the branches
+     NPS 1/2 Sch 40   bore 0.622 in   the main and the riser
+     restriction      throat 0.108 in  derived from the Cv it has to have
+   The main was drawn at 11 px for a long time, which is NPS 3/8 wearing a
+   half-inch label; at this scale it is 12.6. */
+const R_BR=10;                                      // the anchor
+const PX_PER_IN=R_BR/0.493;                         // ~20.3 px per inch of bore
+const R_MAIN=Math.round(0.622*PX_PER_IN*10)/10;     // 12.6
+const RED_X0=600, RED_X1=680, RED_R=Math.round(0.108*PX_PER_IN*10)/10;
 const VALVE_X=410, WHEEL_R=18, STEM=24;
 const BR_LEN=POD_X-TRUNK_X;
 const wheelMainX=170;
