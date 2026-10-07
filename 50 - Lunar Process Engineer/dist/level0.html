@@ -1882,16 +1882,20 @@ function draw(g,dt,t){
 let act=1;
 const FL=LPE_FLUIDS;
 const BORE_IN=0.493, BORE_AREA=0.00133;       // NPS 3/8 Sch 40, B36.10M
-const BENCH_CV=0.5, BENCH_DP=20;              // a needle valve and a bench pump
+/* 0.25, not 0.5. At 0.5 the lever's full travel was 2.24 gpm, which crammed
+   every regime change into the bottom quarter of it - the applied step had a
+   window 6.3% wide at exactly 0 C, shrinking to 2.3% by 5 C. Halving it puts
+   the interesting range in the middle of the lever where it can be found. */
+const BENCH_CV=0.25, BENCH_DP=20;              // a needle valve and a bench pump
 
 /* The window where the line is laminar cold AND turbulent hot. Outside it
    the next step is unreachable, so the lever is given a visible target and
    a magnet rather than being left as a 4% sliver to find by feel. */
-const TRICKLE=[0.12,0.16];
+const TRICKLE=[0.23,0.30];
 /* 70 C, not 50: at the bottom of the trickle band 50 C only reaches
    Re 3102, so a target that works for part of the band is a target that
    strands part of the players. The whole band is turbulent by 70. */
-const HOT=[70,80];
+const HOT=[72,80];
 const B={ flow:0, temp:20, fluid:'water', watch:0, drag:null };
 const CUT=new LPE.Cutaway({x:48,y:92,w:640,h:112});
 
@@ -2030,23 +2034,23 @@ function stepBench(dt){
    only one with no target drawn on a lever, because it is the one where the
    player has to work out the setting themselves. */
 const COURSE=[
-  { ctl:['flow'], target:{on:'flow',lo:0.55,hi:1,label:'OPEN'},
+  { ctl:['flow'], target:{on:'flow',lo:0.65,hi:1,label:'OPEN'},
     task:'Open the loop: push FLOW into the OPEN band.',
-    ok:()=>B.flow>=0.55,
+    ok:()=>B.flow>=0.65,
     lesson:'With the valve shut the markers moved but stayed where they were. That '+
       'motion is temperature. Now they are travelling along the pipe, and that is '+
       '<b>flow</b>. A pipe that is full and a pipe that is flowing are two different '+
       'states.' },
 
-  { ctl:['flow'], watch:2.6, target:{on:'flow',lo:0.55,hi:1,label:'OPEN'},
+  { ctl:['flow'], watch:2.6, target:{on:'flow',lo:0.65,hi:1,label:'OPEN'},
     task:'Compare the markers at the wall with the markers down the middle.',
-    ok:()=>B.flow>=0.55,
+    ok:()=>B.flow>=0.65,
     lesson:'They are not moving at the same speed. <b>Friction between the fluid and '+
       'the pipe surface</b> holds the fluid at the wall almost stationary; further '+
       'from the wall less of that drag reaches it. The yellow curve is that spread of '+
       'speed across the bore: the <b>velocity profile</b>.' },
 
-  { ctl:['flow'], target:{on:'flow',lo:0.12,hi:0.16,label:'TRICKLE'},
+  { ctl:['flow'], target:{on:'flow',lo:TRICKLE[0],hi:TRICKLE[1],label:'TRICKLE'},
     task:'Close FLOW down into the TRICKLE band.',
     ok:()=>!B.drag && B.flow>=TRICKLE[0] && B.flow<=TRICKLE[1] && bench().regime==='laminar',
     lesson:'At this speed the fluid travels in parallel layers that do not mix, and '+
@@ -2054,7 +2058,7 @@ const COURSE=[
       'speed. This is <b>laminar</b> flow. REYNOLDS, the number that identifies it, is '+
       'now below 2,300.' },
 
-  { ctl:['temp'], target:{on:'temp',lo:0.875,hi:1,label:'HOT'},
+  { ctl:['temp'], target:{on:'temp',lo:HOT[0]/80,hi:HOT[1]/80,label:'HOT'},
     task:'Leave FLOW alone. Push TEMPERATURE into the HOT band.',
     ok:()=>bench().regime==='turbulent',
     lesson:'The valve has not moved, so the fluid is travelling at the same speed. '+

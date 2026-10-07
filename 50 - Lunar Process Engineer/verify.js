@@ -12,6 +12,15 @@
    ============================================================ */
 const fs = require('fs');
 
+/* Read from the level rather than copied into here. verify.js having its
+   own copy of BENCH_CV is exactly the drift these checks exist to catch,
+   and it silently passed the wrong rig when the bench was rescaled. */
+function benchCv() {
+  const m = fs.readFileSync('level0.html', 'utf8').match(/const BENCH_CV=([0-9.]+)/);
+  if (!m) throw new Error('BENCH_CV not found in level0.html');
+  return +m[1];
+}
+
 let FAIL = 0;
 const results = [];
 function check(name, ok, detail) {
@@ -241,7 +250,10 @@ for (const f of ['level1.html', 'level2.html']) {
   const FL = require('./fluids.js');
   const src = fs.readFileSync('level0.html', 'utf8');
   const m = src.match(/const TRICKLE=\[([\d.]+),([\d.]+)\]/);
-  const BORE = 0.493, AREA = 0.00133, CV = 0.5, DP = 20;
+  const BORE = 0.493, AREA = 0.00133, DP = 20;
+  /* read from the level, not hardcoded - verify had its own copy of
+     BENCH_CV, which is exactly the drift these checks exist to catch */
+  const CV = benchCv();
   const vel = lever => (CV * lever * Math.sqrt(DP)) / 448.831 / AREA;
   const re = (lever, t) => lever <= 0.001 ? 0 : FL.reynolds(vel(lever), BORE, FL.FLUIDS.water, t);
   check('level 0 trickle band is declared', !!m, m ? m[1] + '-' + m[2] : 'TRICKLE not found');
@@ -281,7 +293,10 @@ for (const f of ['level1.html', 'level2.html']) {
    ------------------------------------------------------------ */
 {
   const FL = require('./fluids.js');
-  const BORE = 0.493, AREA = 0.00133, CV = 0.5, DP = 20;
+  const BORE = 0.493, AREA = 0.00133, DP = 20;
+  /* read from the level, not hardcoded - verify had its own copy of
+     BENCH_CV, which is exactly the drift these checks exist to catch */
+  const CV = benchCv();
   const flow = (lever, f) => CV * lever * Math.sqrt(DP / f.sg);
   const vel = q => q / 448.831 / AREA;
   const re = (lever, f, t) => lever <= 0.001 ? 0 : FL.reynolds(vel(flow(lever, f)), BORE, f, t);
