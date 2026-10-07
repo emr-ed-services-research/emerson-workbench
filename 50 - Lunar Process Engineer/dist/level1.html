@@ -729,7 +729,7 @@ function gauge(g,x,y,R,psi,max){
 
 /* ---------------- sound ---------------- */
 const audio={
-  ctx:null,on:true,ready:false,noise:null,flowGain:null,humGain:null,ventGain:null,ventFilter:null,rushGain:null,rushFilter:null,
+  ctx:null,on:true,ready:false,noise:null,flowGain:null,humGain:null,ventGain:null,ventFilter:null,ventFlutter:null,_venting:false,rushGain:null,rushFilter:null,
   init(){
     if(this.ready) return;
     try{
@@ -827,7 +827,18 @@ const audio={
     bp.frequency.value=3600; bp.Q.value=0.7;
     const g=c.createGain(); g.gain.value=0;
     s.connect(hp); hp.connect(bp); bp.connect(g); g.connect(c.destination); s.start();
-    this.ventGain=g; this.ventFilter=bp;
+    /* Air leaving a part-filled line SPUTTERS - slugs of water and air take
+       turns at the outlet. A steady hiss is the one thing the ear throws
+       away fastest, which is why the first version was running, measurable,
+       and still unnoticed. Two LFOs at rates that do not divide into each
+       other give an irregular flutter instead of a pulse. */
+    const a=c.createOscillator(), bq=c.createOscillator();
+    a.type='sawtooth'; a.frequency.value=7.3;
+    bq.type='triangle'; bq.frequency.value=11.7;
+    const fl=c.createGain(); fl.gain.value=0;
+    a.connect(fl); bq.connect(fl); fl.connect(g.gain);
+    a.start(); bq.start();
+    this.ventGain=g; this.ventFilter=bp; this.ventFlutter=fl;
   },
   /* A restriction passing liquid is NOT quiet. The throat here runs about
      4.7x branch velocity, and the shear layer and reattachment downstream
@@ -859,16 +870,24 @@ const audio={
   },
   vent(level){
     if(!this.ventGain){ if(level>0) this.startVent(); if(!this.ventGain) return; }
-    const t=this.ctx.currentTime;
-    /* 0.020. The old 0.05 peaked 3.8 dB OVER full flow. This sits about
-       -4 dB under it, which still cuts through easily because the hiss is
-       3-5 kHz and the water hum is lowpassed at 760 Hz - spectral
-       separation does the work that loudness was being asked to do. */
-    this.ventGain.gain.setTargetAtTime(this.on?0.020*level:0, t, 0.04);
+    const t=this.ctx.currentTime, on=this.on?1:0;
+    /* The first instant gets a spit - a line that has just been opened does
+       not fade in. */
+    if(level>0 && !this._venting){
+      this._venting=true;
+      this.ventGain.gain.cancelScheduledValues(t);
+      this.ventGain.gain.setValueAtTime(on*0.11, t);
+    } else if(level<=0){ this._venting=false; }
+    /* 0.045, not the 0.020 this was cut to. That cut was made against the
+       flow hum as though this were background texture; it is an event, and
+       it was levelled into inaudibility. */
+    this.ventGain.gain.setTargetAtTime(on*0.045*level, t, 0.05);
+    this.ventFlutter.gain.setTargetAtTime(on*0.030*level, t, 0.06);
     /* The pitch climbs as the last of the air is squeezed out - the sound a
-       bleed valve actually makes just before it spits water. */
+       bleed valve makes just before it spits water. */
     this.ventFilter.frequency.setTargetAtTime(2600+2600*level, t, 0.08);
   },
+
   toggle(){
     this.on=!this.on;
     if(this.humGain) this.humGain.gain.value=this.on?0.045:0;
@@ -1683,6 +1702,14 @@ function stepSim(dt){
   [0,1,2].forEach(n=>main.set(n,{flow:mainFlow}));
   main.update(dt); trunk.update(dt); branches.forEach(b=>b.update(dt));
   LPE.audio.flow(Math.min(1,S.qTot/FLOW_REF.riser));
+  /* The same air, the same sound. Level one shows VENTING AIR on all three
+     branches as they purge and had no sound for it at all, which is the
+     half of the lesson you are meant to hear. Loudest branch wins - they
+     are feet apart in the same bay, not separate rooms. */
+  LPE.audio.vent(Math.max(0,...[0,1,2].map(i=>
+    venting(i) ? Math.min(1,0.35+S.q[i]/4) : 0)));
+  /* Bed 3's reducer is noisy whenever it is passing water. */
+  LPE.audio.rush(Math.min(1,S.q[2]/1.5));
 
   /* The lesson is held on screen until the player continues - the engine
      owns that wait, so no level picks its own timer. A 1.5s flash was far
@@ -1759,7 +1786,7 @@ const SH=LPE.mount({
     valves.main=valves.b0=valves.b1=valves.b2=0;
     pManHeld=0; step=0; done=false;
     for(let i=0;i<3;i++){ fill[i]=FILL_START; branches[i].set(0,{flow:0,fill:FILL_START}); }
-    LPE.audio.flow(0); say();
+    LPE.audio.flow(0); LPE.audio.vent(0); LPE.audio.rush(0); say();
   },
 });
 SH.canvas.addEventListener('pointerdown',onDown);

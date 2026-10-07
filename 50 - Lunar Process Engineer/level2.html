@@ -540,7 +540,7 @@ const SH=LPE.mount({
     fill[0]=fill[1]=fill[2]=1;
     buildNet();
     pManHeld=solve().pTarget;
-    LPE.audio.flow(0);
+    LPE.audio.flow(0); LPE.audio.vent(0); LPE.audio.rush(0);
     askRoute();
   },
 });

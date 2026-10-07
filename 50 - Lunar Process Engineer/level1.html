@@ -340,6 +340,14 @@ function stepSim(dt){
   [0,1,2].forEach(n=>main.set(n,{flow:mainFlow}));
   main.update(dt); trunk.update(dt); branches.forEach(b=>b.update(dt));
   LPE.audio.flow(Math.min(1,S.qTot/FLOW_REF.riser));
+  /* The same air, the same sound. Level one shows VENTING AIR on all three
+     branches as they purge and had no sound for it at all, which is the
+     half of the lesson you are meant to hear. Loudest branch wins - they
+     are feet apart in the same bay, not separate rooms. */
+  LPE.audio.vent(Math.max(0,...[0,1,2].map(i=>
+    venting(i) ? Math.min(1,0.35+S.q[i]/4) : 0)));
+  /* Bed 3's reducer is noisy whenever it is passing water. */
+  LPE.audio.rush(Math.min(1,S.q[2]/1.5));
 
   /* The lesson is held on screen until the player continues - the engine
      owns that wait, so no level picks its own timer. A 1.5s flash was far
@@ -416,7 +424,7 @@ const SH=LPE.mount({
     valves.main=valves.b0=valves.b1=valves.b2=0;
     pManHeld=0; step=0; done=false;
     for(let i=0;i<3;i++){ fill[i]=FILL_START; branches[i].set(0,{flow:0,fill:FILL_START}); }
-    LPE.audio.flow(0); say();
+    LPE.audio.flow(0); LPE.audio.vent(0); LPE.audio.rush(0); say();
   },
 });
 SH.canvas.addEventListener('pointerdown',onDown);
