@@ -1,1 +1,4 @@
-* text=auto eol=lf
+# The whole vault is authored and built on Windows; normalising line
+# endings on commit made git announce CRLF conversion on every single
+# file, every single time. Keep what is on disk.
+* -text

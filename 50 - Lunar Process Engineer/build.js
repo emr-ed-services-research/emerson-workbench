@@ -31,3 +31,13 @@ const bad=[...new Set(g.match(/[^\x00-\x7F]/g)||[])];
 if(bad.length) console.log('  WARNING non-ASCII: '+JSON.stringify(bad));
 fs.writeFileSync('dist/game.html',g,'utf8');
 console.log('built dist/game.html  ('+(g.length/1024).toFixed(1)+' kB)');
+
+/* The checks run on every build, not when someone remembers to. They cover
+   the regressions that reached Franz before they reached a measurement:
+   clipped lesson text, invented Cv values, an air purge nobody would sit
+   through, and the two levels drifting into different rigs.
+   LPE_SKIP_VERIFY=1 only to build something deliberately broken. */
+if (!process.env.LPE_SKIP_VERIFY) {
+  try { require('./check-fit.js'); } catch (e) {}
+  try { require('./verify.js'); } catch (e) { process.exitCode = 1; }
+}
