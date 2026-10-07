@@ -286,7 +286,13 @@ const B={ flow:0, temp:20, fluid:'water', watch:0, drag:null };
 const CUT=new LPE.Cutaway({x:48,y:92,w:640,h:112});
 
 const FLUID_KEYS=['water','co2','propane'];
-const FBTN=FLUID_KEYS.map((k,i)=>({k,x:706,y:96+i*38,w:174,h:32}));
+/* 32px tall on a 40px pitch, so there is 8px of air between them, and the
+   three together span exactly the cutaway above (y 92 to 204). HIT is the
+   full 40px slot: the gaps belong to the nearer button rather than being
+   dead, so clipping an edge picks the one you were aiming at instead of
+   nothing at all. */
+const FBTN=FLUID_KEYS.map((k,i)=>({k,x:706,y:92+i*40,w:174,h:32}));
+const FHIT=4;
 const SLIDERS={
   flow:{x:48,  y:338, w:372, label:'FLOW',        get:()=>B.flow,
         set:v=>{B.flow=v;}, fmt:()=>Math.round(B.flow*100)+'%'},
@@ -492,7 +498,8 @@ function benchDown(p){
     }
   }
   if(liveCtl('fluid')) for(const b of FBTN){
-    if(p.x>=b.x && p.x<=b.x+b.w && p.y>=b.y && p.y<=b.y+b.h){
+    if(p.x>=b.x-FHIT && p.x<=b.x+b.w+FHIT &&
+       p.y>=b.y-FHIT && p.y<b.y+b.h+FHIT){   // half-open: a boundary row belongs to one button
       if(B.fluid!==b.k){ B.fluid=b.k; LPE.audio.clack(); }
       return true;
     }
