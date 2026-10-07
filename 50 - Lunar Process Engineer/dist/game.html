@@ -2499,6 +2499,10 @@ const FL=LPE_FLUIDS;
 const BORE_IN=0.493, BORE_AREA=0.00133;       // NPS 3/8 Sch 40, B36.10M
 const BENCH_CV=0.5, BENCH_DP=20;              // a needle valve and a bench pump
 
+/* The window where the line is laminar cold AND turbulent hot. Outside it
+   the next step is unreachable, so the lever is given a visible target and
+   a magnet rather than being left as a 4% sliver to find by feel. */
+const TRICKLE=[0.12,0.16];
 const B={ flow:0, temp:20, fluid:'water', watch:0, drag:null };
 const CUT=new LPE.Cutaway({x:48,y:92,w:640,h:112});
 
@@ -2522,7 +2526,9 @@ function bench(){
   const v=q/448.831/BORE_AREA;
   const t=tempLocked()?20:B.temp;
   const re=B.flow>0.001?FL.reynolds(v,BORE_IN,f,t):0;
-  return {f,q,v,re,regime:FL.regime(re)};
+  /* Re of zero is not laminar flow - it is a shut valve. Reporting it as
+     laminar let the trickle step pass with nothing moving, and then no     amount of heat could ever make a dead line turbulent. */
+  return {f,q,v,re,regime:B.flow<=0.001?'still':FL.regime(re)};
 }
 
 let BG_BENCH;
@@ -2536,6 +2542,12 @@ function buildBench(){
 }
 
 function slider(g,sl,live){
+  if(sl.label==='FLOW' && !done1 && COURSE[c1] && COURSE[c1].band){
+    const a=sl.x+TRICKLE[0]*sl.w, b=sl.x+TRICKLE[1]*sl.w;
+    g.fillStyle='rgba(255,210,74,0.22)'; g.fillRect(a,sl.y-15,b-a,30);
+    g.strokeStyle='#ffd24a'; g.lineWidth=1;
+    g.strokeRect(a+0.5,sl.y-15.5,b-a-1,30);
+  }
   const v=Math.max(0,Math.min(1,sl.get())), kx=sl.x+v*sl.w;
   g.fillStyle='#10171a'; g.fillRect(sl.x,sl.y-3,sl.w,6);
   g.fillStyle=live?P.amber:'#39464f'; g.fillRect(sl.x,sl.y-3,v*sl.w,6);
@@ -2628,9 +2640,11 @@ const COURSE=[
     lesson:'<b>Friction between the fluid and the pipe surface</b> holds the edge '+
       'almost still, and the further from that surface the less it reaches. That '+
       'spread of speed is the <b>velocity profile</b> &mdash; the yellow line is its shape.' },
-  { ctl:['flow'],
-    task:'Bring the FLOW right down to a trickle.',
-    ok:()=>B.flow<=0.2 && bench().regime==='laminar',
+  { ctl:['flow'], band:true,
+    task:'Bring the FLOW down into the marked band.',
+    /* !B.drag: the step completes when the lever is LET GO in the band,
+       not the instant it sweeps across it on the way somewhere else. */
+    ok:()=>!B.drag && B.flow>=TRICKLE[0] && B.flow<=TRICKLE[1] && bench().regime==='laminar',
     lesson:'Slow enough and it stops churning: it slides in layers, fastest down the '+
       'middle, and the profile pulls out into a long point. That is <b>laminar</b> '+
       'flow &mdash; <b>REYNOLDS</b> under about 2,300.' },
@@ -2668,7 +2682,7 @@ function benchDown(p){
     if(!liveCtl(key)) continue;
     if(key==='temp' && tempLocked()) continue;
     if(p.x>=sl.x-10 && p.x<=sl.x+sl.w+10 && Math.abs(p.y-sl.y)<20){
-      B.drag=key; sl.set(Math.max(0,Math.min(1,(p.x-sl.x)/sl.w)));
+      B.drag=key; sl.set(magnet(key,Math.max(0,Math.min(1,(p.x-sl.x)/sl.w))));
       LPE.audio.tick(); return true;
     }
   }
@@ -2680,11 +2694,20 @@ function benchDown(p){
   }
   return false;
 }
+/* Within a touch of the marked band the lever is pulled into it. The window
+   is narrow because the physics makes it narrow, not because precision is
+   the lesson. */
+function magnet(key,v){
+  if(key!=='flow'||done1||!COURSE[c1]||!COURSE[c1].band) return v;
+  if(v>TRICKLE[0]-0.035 && v<TRICKLE[0]) return TRICKLE[0];
+  if(v<TRICKLE[1]+0.035 && v>TRICKLE[1]) return TRICKLE[1];
+  return v;
+}
 function benchMove(p){
   if(!B.drag) return;
   const sl=SLIDERS[B.drag];
   const before=sl.get();
-  sl.set(Math.max(0,Math.min(1,(p.x-sl.x)/sl.w)));
+  sl.set(magnet(B.drag,Math.max(0,Math.min(1,(p.x-sl.x)/sl.w))));
   if(Math.floor(before*14)!==Math.floor(sl.get()*14)) LPE.audio.tick();
 }
 
@@ -2721,10 +2744,21 @@ const SH=LPE.mount({
     'proportion but far slower than the real thing, because real water tells the eye '+
     'nothing.', sayCourse);
   },
+  /* RESET restores the LEVEL, not the act you happen to be standing in.
+     It used to reset only the supply panel and then speak act 2 lines over
+     act 1, so resetting during the course left the trainer on screen being
+     narrated as though you were already at the valve. */
   onReset(){
+    act=1; c1=0; done1=false;
+    Object.assign(B,{flow:0,temp:20,fluid:'water',watch:0,drag:null});
+    CUT.set({flow:0,regime:'turbulent',temp:0.25});
     Object.assign(S,{phase:'closed',slide:0,turn:0,open:0,press:0,drag:false});
     line.set(0,{flow:0,fill:1}); line.set(1,{flow:0,fill:0});
-    S.closing=false; raceT=0; line.race(1,false); LPE.audio.flow(0); say();
+    S.closing=false; raceT=0; line.race(1,false);
+    LPE.audio.flow(0);
+    buildBench();
+    SH.title('SECTION 4-B \u2014 TRAINING LOOP','not connected to service');
+    sayCourse();
   },
 });
 
