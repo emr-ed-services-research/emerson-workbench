@@ -2503,6 +2503,10 @@ const BENCH_CV=0.5, BENCH_DP=20;              // a needle valve and a bench pump
    the next step is unreachable, so the lever is given a visible target and
    a magnet rather than being left as a 4% sliver to find by feel. */
 const TRICKLE=[0.12,0.16];
+/* 70 C, not 50: at the bottom of the trickle band 50 C only reaches
+   Re 3102, so a target that works for part of the band is a target that
+   strands part of the players. The whole band is turbulent by 70. */
+const HOT=[70,80];
 const B={ flow:0, temp:20, fluid:'water', watch:0, drag:null };
 const CUT=new LPE.Cutaway({x:48,y:92,w:640,h:112});
 
@@ -2542,11 +2546,14 @@ function buildBench(){
 }
 
 function slider(g,sl,live){
-  if(sl.label==='FLOW' && !done1 && COURSE[c1] && COURSE[c1].band){
-    const a=sl.x+TRICKLE[0]*sl.w, b=sl.x+TRICKLE[1]*sl.w;
-    g.fillStyle='rgba(255,210,74,0.22)'; g.fillRect(a,sl.y-15,b-a,30);
-    g.strokeStyle='#ffd24a'; g.lineWidth=1;
-    g.strokeRect(a+0.5,sl.y-15.5,b-a-1,30);
+  const tg=(!done1&&COURSE[c1]&&COURSE[c1].target);
+  if(tg && ((tg.on==='flow')===(sl.label==='FLOW'))){
+    const a=sl.x+tg.lo*sl.w, b=sl.x+tg.hi*sl.w;
+    g.fillStyle='rgba(255,210,74,0.20)'; g.fillRect(a,sl.y-15,b-a,30);
+    g.strokeStyle='#ffd24a'; g.lineWidth=1; g.strokeRect(a+0.5,sl.y-15.5,b-a-1,30);
+    g.fillStyle='#ffd24a'; g.font="11px 'VT323',monospace"; g.textAlign='center';
+    g.fillText(tg.label,(a+b)/2,sl.y-19);
+    g.textAlign='left';
   }
   const v=Math.max(0,Math.min(1,sl.get())), kx=sl.x+v*sl.w;
   g.fillStyle='#10171a'; g.fillRect(sl.x,sl.y-3,sl.w,6);
@@ -2628,7 +2635,7 @@ function stepBench(dt){
 
 /* ---- the crash course ---- */
 const COURSE=[
-  { ctl:['flow'],
+  { ctl:['flow'], target:{on:'flow',lo:0.55,hi:1,label:'OPEN'},
     task:'Open the loop. Push the FLOW lever across.',
     ok:()=>B.flow>=0.55,
     lesson:'At rest the markers still move &mdash; that is heat, not flow. Open the '+
@@ -2640,7 +2647,7 @@ const COURSE=[
     lesson:'<b>Friction between the fluid and the pipe surface</b> holds the edge '+
       'almost still, and the further from that surface the less it reaches. That '+
       'spread of speed is the <b>velocity profile</b> &mdash; the yellow line is its shape.' },
-  { ctl:['flow'], band:true,
+  { ctl:['flow'], target:{on:'flow',lo:TRICKLE[0],hi:TRICKLE[1],label:'TRICKLE'},
     task:'Bring the FLOW down into the marked band.',
     /* !B.drag: the step completes when the lever is LET GO in the band,
        not the instant it sweeps across it on the way somewhere else. */
@@ -2648,7 +2655,7 @@ const COURSE=[
     lesson:'Slow enough and it stops churning: it slides in layers, fastest down the '+
       'middle, and the profile pulls out into a long point. That is <b>laminar</b> '+
       'flow &mdash; <b>REYNOLDS</b> under about 2,300.' },
-  { ctl:['temp'],
+  { ctl:['temp'], target:{on:'temp',lo:HOT[0]/80,hi:HOT[1]/80,label:'HOT'},
     task:'Leave the valve alone. Heat it instead \u2014 push TEMPERATURE up.',
     ok:()=>bench().regime==='turbulent',
     lesson:'You never touched the valve. Warming it <b>thinned</b> it, so the same '+
@@ -2698,9 +2705,11 @@ function benchDown(p){
    is narrow because the physics makes it narrow, not because precision is
    the lesson. */
 function magnet(key,v){
-  if(key!=='flow'||done1||!COURSE[c1]||!COURSE[c1].band) return v;
-  if(v>TRICKLE[0]-0.035 && v<TRICKLE[0]) return TRICKLE[0];
-  if(v<TRICKLE[1]+0.035 && v>TRICKLE[1]) return TRICKLE[1];
+  if(done1||!COURSE[c1]) return v;
+  const tg=COURSE[c1].target;
+  if(!tg || (tg.on==='flow')!==(key==='flow')) return v;
+  if(v>tg.lo-0.035 && v<tg.lo) return tg.lo;
+  if(v<tg.hi+0.035 && v>tg.hi) return tg.hi;
   return v;
 }
 function benchMove(p){
@@ -2788,6 +2797,11 @@ cv.addEventListener('pointermove',e=>{
 });
 ['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>{S.drag=false; B.drag=null;}));
 cv.addEventListener('keydown',e=>{
+  /* Act 2 only. The canvas takes focus the moment a slider is clicked, so
+     during the crash course this handler was catching the Enter and Space
+     the player presses to continue a lesson - quietly opening the supply
+     panel behind the trainer, and then narrating act 2 over act 1. */
+  if(act!==2) return;
   if(S.phase==='closed'&&(e.key==='Enter'||e.key===' ')){
     e.preventDefault(); LPE.audio.init(); S.phase='opening'; LPE.audio.scrape(); say(); return; }
   if(e.key==='ArrowRight'||e.key==='ArrowUp'){
