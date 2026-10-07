@@ -931,10 +931,19 @@ function launch(opt,i){
 }
 
 function mount(o){
+  /* The rig draws in a fixed 900x400 coordinate space - every level's
+     geometry, every label position, pt() and the water model all assume it.
+     So the canvas is given a BIGGER BACKING STORE and the context is scaled
+     to match, rather than the coordinate space being changed. Levels keep
+     working in logical units; text and arcs are rasterised at RES times the
+     resolution, so the rig can be displayed large without going soft.
+     One more than the device pixel ratio, capped: enough to stay crisp on a
+     HiDPI panel without allocating a pointlessly huge buffer. */
+  const RES=Math.min(3, Math.max(2, Math.round(window.devicePixelRatio||1)+1));
   const root=document.createElement('div'); root.className='wrap';
   root.innerHTML=
     '<div class="topbar"><div class="t1"></div><div class="t2"></div></div>'+
-    '<canvas class="rig" width="'+(o.w||900)+'" height="'+(o.h||400)+'" tabindex="0"></canvas>'+
+    '<canvas class="rig" width="'+(o.w||900)*RES+'" height="'+(o.h||400)*RES+'" tabindex="0"></canvas>'+
     /* The controls used to be absolutely positioned INSIDE the guide box.
        The task line reserved 310px of padding to dodge them; the lesson line
        reserved nothing, so every long coaching paragraph ran underneath the
@@ -966,8 +975,17 @@ function mount(o){
   q('.t1').textContent=o.t1||''; q('.t2').textContent=o.t2||'';
   const cv=q('canvas.rig');
 
+  /* Scale once, here. Nothing in a level touches the transform. Smoothing
+     stays OFF so the hand-authored background - wall panels, rivets, the
+     Bayer vignette, all built at 1x - lands as clean blocks rather than
+     being interpolated into mush. Text and pipework, drawn straight into
+     the scaled context, get the full resolution. */
+  const _ctx=cv.getContext('2d');
+  _ctx.setTransform(RES,0,0,RES,0,0);
+  _ctx.imageSmoothingEnabled=false;
+
   const S={
-    canvas:cv, ctx:cv.getContext('2d'), w:o.w||900, h:o.h||400,
+    canvas:cv, ctx:_ctx, w:o.w||900, h:o.h||400, res:RES,
     say(task,lesson){ q('.task').innerHTML=task||''; q('.lesson').innerHTML=lesson||''; },
     count(t){ q('.count').textContent=t||''; },
     /* A beat holds what just happened on screen until the player says go.

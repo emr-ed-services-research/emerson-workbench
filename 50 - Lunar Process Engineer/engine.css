@@ -19,17 +19,27 @@ body{background:var(--bg);color:var(--ink);font-family:'VT323',monospace;font-si
   background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.25) 0,rgba(0,0,0,.25) 1px,
                    transparent 1px,transparent 3px);
   overflow:hidden;display:flex;align-items:center;justify-content:center;}
-.wrap{width:min(96vw,1000px);}
+/* The whole column is sized by ONE formula, the rig's own, so the topbar,
+   the guide and the controls always line up with the canvas edges instead
+   of drifting wider than it. 1600 instead of the old 1000: windowed it is
+   the height term that binds, but fullscreen on a 1080 panel the budget is
+   1683px wide and the 1000 cap was throwing most of it away.
+   Height works out exactly: canvas height = width/2.25 = 100vh - 332, and
+   332 is the chrome below it, so the page fills the viewport and no more. */
+.wrap{width:min(96vw, 1600px, calc((100vh - 332px) * 2.25));}
 
 .topbar{display:flex;justify-content:space-between;align-items:baseline;
   border-bottom:1px solid var(--border);padding-bottom:5px;margin-bottom:8px;}
 .topbar .t1{color:var(--phosphor);letter-spacing:.05em;font-size:19px;}
 .topbar .t2{color:var(--metal);font-size:15px;}
 
-canvas.rig{display:block;margin:0 auto;height:auto;image-rendering:pixelated;
-  /* 332px of chrome below the canvas: topbar, the 196px guide, and the
-     status bar the controls moved into (~36px). Keep in step with them. */
-  width:min(100%, calc((100vh - 332px) * 2.25));
+/* No pixelated here any more: the backing store is now 2-3x the logical
+   space, so the browser is DOWN-scaling it to fit, and nearest-neighbour
+   downscaling aliases badly. The retro character lives in VT323, the
+   palette and the dithered wall - all of which survive, because the
+   background is authored at 1x and blitted with smoothing off. */
+canvas.rig{display:block;margin:0 auto;height:auto;image-rendering:auto;
+  width:100%;   /* .wrap already carries the sizing formula */
   border:2px solid var(--metal-dk);background:#000;cursor:pointer;}
 canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
 
@@ -42,6 +52,10 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
 .guide .task{color:var(--phosphor);font-size:29px;line-height:1.3;
   min-height:38px;}
 .guide .lesson{color:#d2dae0;font-size:23px;line-height:1.45;margin-top:9px;}
+/* A line of instruction is for reading, and the rig being 1600px wide is no
+   reason for a sentence to be. At full width the coach's lines ran past 150
+   characters; this holds them near 100. The panel still spans the rig. */
+.guide .task,.guide .lesson{max-width:950px;}
 .guide .lesson b{color:#fff;}
 .guide .lesson .who{color:var(--amber);}      /* the comms voice */
 .guide .beat-hint{display:inline-block;border:1px solid var(--amber);color:var(--amber);
