@@ -57,6 +57,10 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
    characters; this holds them near 100. The panel still spans the rig. */
 .guide .task,.guide .lesson{max-width:950px;}
 .guide .lesson b{color:#fff;}
+/* A paragraph break inside a lesson. Two <br> cost a full 33px line, which
+   is exactly what pushed level zero's closing beats past the bottom of a
+   box that clips rather than scrolls. This is the beat without the line. */
+.guide .lesson .gap{display:block;height:11px;}
 .guide .lesson .who{color:var(--amber);}      /* the comms voice */
 .guide .beat-hint{display:inline-block;border:1px solid var(--amber);color:var(--amber);
   font-family:'VT323',monospace;font-size:21px;letter-spacing:.09em;padding:3px 20px;

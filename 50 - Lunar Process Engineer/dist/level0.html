@@ -61,6 +61,10 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
    characters; this holds them near 100. The panel still spans the rig. */
 .guide .task,.guide .lesson{max-width:950px;}
 .guide .lesson b{color:#fff;}
+/* A paragraph break inside a lesson. Two <br> cost a full 33px line, which
+   is exactly what pushed level zero's closing beats past the bottom of a
+   box that clips rather than scrolls. This is the beat without the line. */
+.guide .lesson .gap{display:block;height:11px;}
 .guide .lesson .who{color:var(--amber);}      /* the comms voice */
 .guide .beat-hint{display:inline-block;border:1px solid var(--amber);color:var(--amber);
   font-family:'VT323',monospace;font-size:21px;letter-spacing:.09em;padding:3px 20px;
@@ -1454,12 +1458,12 @@ const CLOSING=[
   'what was already standing there somewhere to go.',
 
   '<span class="who">COMMS:</span> Nothing down this end is automated. No actuators, '+
-  'no remote, no screens. Every run in Four-B gets opened by somebody standing exactly '+
-  'where you are standing, reading a gauge with their own eyes.<br><br>'+
-  'The engineer you are standing in for walked this round for six years.',
+  'no remote, no screens. Every run in Four-B gets opened by somebody standing where '+
+  'you are, reading a gauge with their own eyes.<span class="gap"></span>'+
+  'The engineer you stood in for today walked this round for six years.',
 
-  '<span class="who">COMMS:</span> Bio Lab One has water. They will not think about '+
-  'you again until it stops &mdash; that is the job, and it is a good one.<br><br>'+
+  '<span class="who">COMMS:</span> Bio Lab One has water. Nobody up there will think '+
+  'about you again until it stops &mdash; that is the job.<span class="gap"></span>'+
   'Play your cards right, you might make a decent one yourself.',
 ];
 function closeOut(i){

@@ -1,0 +1,127 @@
+[
+ {
+  "level": "level0",
+  "key": "line",
+  "v": "<span class=\"accent\">Bio Lab One has water.</span> That is one valve, by hand, on the oldest run on the base. Everything after this is the same job with more of it happening at once."
+ },
+ {
+  "level": "level0",
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> There it is. And look at what that gauge did &mdash; it sat at nothing while the line behind the valve was already full and already under pressure. <b>Pressure is not flow.</b> The wheel did not make water. It gave what was already standing there somewhere to go."
+ },
+ {
+  "level": "level0",
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> Nothing down this end is automated. No actuators, no remote, no screens. Every run in Four-B gets opened by somebody standing where you are, reading a gauge with their own eyes.<span class=\"gap\"></span>The engineer you stood in for today walked this round for six years."
+ },
+ {
+  "level": "level0",
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> Bio Lab One has water. Nobody up there will think about you again until it stops &mdash; that is the job.<span class=\"gap\"></span>Play your cards right, you might make a decent one yourself."
+ },
+ {
+  "level": "level1",
+  "key": "task",
+  "v": "Open the MAIN SUPPLY valve. Drag the hand wheel."
+ },
+ {
+  "level": "level1",
+  "key": "lesson",
+  "v": "60 psig at the manifold &mdash; and <b>nothing is moving</b>. In Four-B the gauge sat downstream, so it only woke up once water ran. This one sits on the manifold: the line is loaded and perfectly still, with every bed shut."
+ },
+ {
+  "level": "level1",
+  "key": "lesson",
+  "v": "The valve created nothing — it opened a path, and the pressure spent itself. And watch what left first: that run was new pipe, <b>full of air</b>, which had to vent out the emitters before water reached a single root."
+ },
+ {
+  "level": "level1",
+  "key": "task",
+  "v": "Open BED 2. Keep an eye on Bed 1’s number."
+ },
+ {
+  "level": "level1",
+  "key": "lesson",
+  "v": "Bed 1 <b>dropped</b> when Bed 2 opened, and nobody touched Bed 1. One supply, two demands &mdash; what divides at the tee is all there ever was."
+ },
+ {
+  "level": "level1",
+  "key": "lesson",
+  "v": "Bed 3 is on the old run with a <b>reducer</b> in it. Same valve, same manifold pressure, noticeably less flow &mdash; and watch the particles sprint through that throat. Squeeze the bore and velocity goes up while pressure goes down. The restriction is in the pipe, not the valve."
+ },
+ {
+  "level": "level1",
+  "key": "task",
+  "v": "Now throttle BED 1 back to about a quarter open — and watch Bed 3."
+ },
+ {
+  "level": "level1",
+  "key": "lesson",
+  "v": "Bed 3 came up and nobody touched Bed 3. Add resistance to one branch and manifold pressure rises for every other branch. In a shared system <b>there is no local change</b>."
+ },
+ {
+  "level": "level1",
+  "key": "task",
+  "v": "Last job: balance the bay. Three identical beds should drink about the same — get all three within a tenth of a gallon of each other."
+ },
+ {
+  "level": "level1",
+  "key": "lesson",
+  "v": "<b>That</b> is commissioning. You balanced down to the weakest branch: Bed 3 can never pass more than its reducer allows, so the other two came back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling — that reducer is not costing one bed, it is capping all three."
+ },
+ {
+  "level": "level1",
+  "key": "line",
+  "v": "<span class=\"accent\">Bay 3 is commissioned.</span> Three beds balanced, and a reducer in line 3 that is now holding the whole bay back."
+ },
+ {
+  "level": "level2",
+  "key": "task",
+  "v": "Isolate line 3 — shut BED 3 right off."
+ },
+ {
+  "level": "level2",
+  "key": "lesson",
+  "v": "You do not cut into a live line. And look what isolating it did to everyone else: shut one demand and manifold pressure climbs for every branch left open. Same rule as commissioning, now with a spanner in your hand."
+ },
+ {
+  "level": "level2",
+  "key": "task",
+  "v": "Now take the reducer out. Click the fitting."
+ },
+ {
+  "level": "level2",
+  "key": "lesson",
+  "v": "Coupler and a new spool, same bore as the rest of the branch. And line 3 is <b>full of air</b> again — you just had it open to the bay. That will have to vent before water reaches the roots."
+ },
+ {
+  "level": "level2",
+  "key": "task",
+  "v": "Balance the bay first — all three even, and as high as Bed 3 will let them go."
+ },
+ {
+  "level": "level2",
+  "key": "task",
+  "v": "Open BED 3 back up and bring the whole bay wide open."
+ },
+ {
+  "level": "level2",
+  "key": "task",
+  "v": "Open BED 3 back up and bring the whole bay wide open."
+ },
+ {
+  "level": "level2",
+  "key": "line",
+  "v": "<span class=\"accent\">Line 3 is a line again.</span> "
+ },
+ {
+  "level": "level2",
+  "key": "line",
+  "v": "<span class=\"accent\">Line 3 is a line again.</span> The repair is sound — but nobody wrote down what the bay was doing before you touched it, and that number only ever existed in the bay you did not stop to read.<br><br>A repair you cannot measure is a repair you cannot defend."
+ },
+ {
+  "level": "level2",
+  "key": "lesson",
+  "v": "<span class=\"who\">COMMS:</span> Before you start — your call on the order. We can balance the bay the way it stands and write the numbers down, then pull the reducer. Or we can just pull it now and balance once, afterwards."
+ }
+]

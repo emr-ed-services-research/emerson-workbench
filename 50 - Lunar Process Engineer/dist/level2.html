@@ -61,6 +61,10 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
    characters; this holds them near 100. The panel still spans the rig. */
 .guide .task,.guide .lesson{max-width:950px;}
 .guide .lesson b{color:#fff;}
+/* A paragraph break inside a lesson. Two <br> cost a full 33px line, which
+   is exactly what pushed level zero's closing beats past the bottom of a
+   box that clips rather than scrolls. This is the beat without the line. */
+.guide .lesson .gap{display:block;height:11px;}
 .guide .lesson .who{color:var(--amber);}      /* the comms voice */
 .guide .beat-hint{display:inline-block;border:1px solid var(--amber);color:var(--amber);
   font-family:'VT323',monospace;font-size:21px;letter-spacing:.09em;padding:3px 20px;
@@ -1588,11 +1592,14 @@ const SHORTCUT=[
   { keys:['b2','b0','b1','main'], watch:-1,
     task:'Open BED 3 back up and bring the whole bay wide open.',
     ok:allWide,
-    lesson:()=>'<b>'+result.per.toFixed(1)+' gpm a bed</b>, and the bay balances itself '+
-      'now that the three branches match. It is a good repair.<br><br>'+
+    /* The strip carries the measurement; the coach's verdict carries on the
+       debrief card. Together in one lesson they ran 44px past the bottom of
+       a box that clips rather than scrolls, so the point of the whole route
+       was the part the player never got to read. */
+    lesson:()=>'<b>'+result.per.toFixed(1)+' gpm a bed</b>, and the bay balances itself now '+
+      'that the three branches match. It is a good repair.<span class="gap"></span>'+
       '<span class="who">COMMS:</span> Is it better than it was? Almost certainly. '+
-      '<b>How much</b> better? Neither of us can say, because nobody wrote down what it was '+
-      'doing before we touched it. A repair you cannot measure is a repair you cannot defend.' },
+      '<b>How much</b> better? Neither of us can say.' },
 ];
 
 let STEPS=null, step=0, done=false, route='';
@@ -1772,9 +1779,10 @@ function ending(text){
              ' to '+q.toFixed(1)+' gpm a bed, and you can prove it \u2014 because you '+
              'measured the bay before you changed it.' }
     : { lesson:text,
-        line:'<span class="accent">Line 3 is a line again.</span> The repair is sound. '+
-             'The number it bought is gone, though, and the only place it ever existed was '+
-             'in the bay you did not stop to read.' };
+        line:'<span class="accent">Line 3 is a line again.</span> The repair is sound \u2014 '+
+             'but nobody wrote down what the bay was doing before you touched it, and that '+
+             'number only ever existed in the bay you did not stop to read.<br><br>'+
+             'A repair you cannot measure is a repair you cannot defend.' };
 }
 function say(){
   if(done||!STEPS) return;

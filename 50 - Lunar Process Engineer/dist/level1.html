@@ -61,6 +61,10 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
    characters; this holds them near 100. The panel still spans the rig. */
 .guide .task,.guide .lesson{max-width:950px;}
 .guide .lesson b{color:#fff;}
+/* A paragraph break inside a lesson. Two <br> cost a full 33px line, which
+   is exactly what pushed level zero's closing beats past the bottom of a
+   box that clips rather than scrolls. This is the beat without the line. */
+.guide .lesson .gap{display:block;height:11px;}
 .guide .lesson .who{color:var(--amber);}      /* the comms voice */
 .guide .beat-hint{display:inline-block;border:1px solid var(--amber);color:var(--amber);
   font-family:'VT323',monospace;font-size:21px;letter-spacing:.09em;padding:3px 20px;
@@ -1520,11 +1524,11 @@ const STEPS=[
   { keys:['main'], watch:-1,
     task:'Open the MAIN SUPPLY valve. Drag the hand wheel.',
     ok:()=>valves.main>=0.9,
-    lesson:'60 psig at the manifold &mdash; and <b>nothing is moving</b>. The line is full and under pressure with every bed still shut. Pressure is stored energy; flow is that energy being spent. They are not the same thing.' },
+    lesson:'60 psig at the manifold &mdash; and <b>nothing is moving</b>. In Four-B the gauge sat downstream, so it only woke up once water ran. This one sits on the manifold: the line is loaded and perfectly still, with every bed shut.' },
   { keys:['b0'], watch:0,
     task:'Open BED 1.',
     ok:()=>valves.b0>=0.9,
-    lesson:'Flow starts the instant the valve gives that pressure somewhere to go &mdash; the valve did not create anything, it opened a path. And watch what left first: that run was new pipe, <b>full of air</b>, and the air had to vent out the emitters before water ever reached the roots. New pipe is full of air at room pressure, not empty and not under vacuum.' },
+    lesson:'The valve created nothing \u2014 it opened a path, and the pressure spent itself. And watch what left first: that run was new pipe, <b>full of air</b>, which had to vent out the emitters before water reached a single root.' },
   { keys:['b1'], watch:1,
     task:'Open BED 2. Keep an eye on Bed 1\u2019s number.',
     ok:()=>valves.b1>=0.9,
@@ -1541,7 +1545,7 @@ const STEPS=[
     task:'Last job: balance the bay. Three identical beds should drink about the same \u2014 get all three within a tenth of a gallon of each other.',
     ok:()=>{ const S=solve(); const mn=Math.min(...S.q), mx=Math.max(...S.q);
              return mn>=1.0 && (mx-mn)<=0.15; },
-    lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch &mdash; Bed 3 can never pass more than its reducer allows, so the other two had to come back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling, which is the real argument for pulling that reducer: it is not costing one bed, it is capping all three.' },
+    lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch: Bed 3 can never pass more than its reducer allows, so the other two came back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling \u2014 that reducer is not costing one bed, it is capping all three.' },
 ];
 let step=0, done=false;
 const isLive=k=>!done && STEPS[step].keys.indexOf(k)>=0;
@@ -1736,10 +1740,13 @@ const SH=LPE.mount({
   w:W,h:H,step:stepSim,draw,
   intro:[
     {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
-     text:'&ldquo;Beds are plumbed and ready down in Bay 3.<br>Can you bring the water supply online for us?&rdquo;'},
+     text:'&ldquo;Nice work on Four-B \u2014 the lab says they have pressure.<br>While you are on shift: Bay 3\u2019s beds are plumbed and dry.<br>Can you bring them online?&rdquo;'},
     {kind:'place',
-     text:'The lift opens on humid air and the hum of circulation fans. Three new '+
-          'growing beds sit dry at the end of the row, media packed, lines run, waiting on water.'+
+     text:'Two decks up from Four-B, and a different century. The lift opens on humid '+
+          'air and the hum of circulation fans. Three new growing beds sit dry at the '+
+          'end of the row, media packed, lines run, waiting on water.'+
+          '<br><br>One valve by hand got Bio Lab One its water. There are four here, '+
+          'and they are all drinking from the same pipe.'+
           '<br><br>Everything in this bay comes up the line from the '+
           '<span class="accent">Thermal Reservoir</span> &mdash; some of it mined out of the ice, '+
           'some of it condensate pulled back out of this very air. None of it is cheap, and all of '+
