@@ -479,8 +479,11 @@ function drawBench(g,dt,t){
   const r=bench();
   g.drawImage(BG_BENCH,0,0);
 
-  CUT.set({flow:Math.min(1,r.v/5.5), regime:r.regime,
-           temp:0.12+0.88*((tempLocked()?20:B.temp)/80)});
+  /* Real conditions, not a 0..1 knob. The shared model turns these into
+     agitation, particle size and opacity the way the reference rig does. */
+  CUT.set({ flow:Math.min(1,r.v/3.0), regime:r.regime,
+            tempF:(tempLocked()?20:B.temp)*9/5+32,
+            sg:r.f.sg, gas:false });
   CUT.draw(g);
 
   FBTN.forEach(b=>{

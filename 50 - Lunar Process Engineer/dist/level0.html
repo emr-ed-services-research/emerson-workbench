@@ -453,6 +453,43 @@ function laminarAt(lane){
   return 2*(1-r*r);
 }
 const PROFILE_PEAK=1/0.817;
+/* ---------------- FLUID REPRESENTATION ----------------
+   One implementation, from the reference rig, used by every view that
+   draws fluid. The profile functions were ported verbatim when the engine
+   was first built; the agitation layer on top of them was not, because at
+   the time nothing varied - levels one and two are water, one temperature,
+   turbulent throughout, so every one of these scalings evaluated to 1.
+   The trainer is the first screen where temperature and fluid move, and
+   this is where the rest of the rig's model comes in.
+
+   Rig, in full:
+     jitter base      liquid 0.6, gas 2.2
+     temperature      1 + max(0,(T_F - 60))/80 * 6        up to about 7x
+     density          rhoSpread = 1/max(0.3, rho)         lighter spreads more
+     regime           laminar x 0.12                      laminar barely mixes
+     specific gravity scales particle size and alpha
+     cross-stream     0.6 x the along-stream jitter
+
+   The rig labels its temperature scaling "illustrative, not calibrated to
+   a measured diffusion coefficient". That is honest about being expressive
+   rather than physical, and the caveat travels with the model.
+
+   At the conditions levels one and two run at this is +/-0.48px, which is
+   why adding it does not change screens that were signed off.           */
+const FLUID_REF_F=60;
+function fluidAgitation(o){
+  const tF = o.tempF===undefined ? FLUID_REF_F : o.tempF;
+  const base = o.gas ? 2.2 : 0.6;
+  const temp = 1 + Math.max(0,(tF-FLUID_REF_F))/80*6;
+  const rho  = 1/Math.max(0.3, o.sg===undefined?1:o.sg);
+  const mix  = o.regime==='laminar' ? 0.12 : 1;
+  return base*temp*rho*mix;
+}
+/* Particle size and opacity also move with specific gravity: a lighter
+   fluid draws smaller and fainter, so switching the loop to propane looks
+   different and not merely reads different on a number. */
+function fluidSize(sg){ return 2.4*(sg===undefined?1:sg); }
+function fluidAlpha(sg){ return sg===undefined?1:Math.min(1,Math.max(0.4,0.4+(sg-1.0)*1.2)); }
 Line.prototype.seg=function(i){ return this.segs[i]; };
 Line.prototype.set=function(i,v){ Object.assign(this.segs[i],v); };
 Line.prototype.update=function(dt){
@@ -569,7 +606,8 @@ const WALL=5;
    at a believable rate shows the eye nothing.                            */
 function Cutaway(opt){
   this.x=opt.x; this.y=opt.y; this.w=opt.w; this.h=opt.h;
-  this.flow=0; this.regime='turbulent'; this.temp=0.25;
+  this.flow=0; this.regime='turbulent';
+  this.tempF=FLUID_REF_F; this.sg=1; this.gas=false;
   this.colour=opt.colour||'#36e0ff';
   this.parts=[];
   const n=opt.n||54;
@@ -582,15 +620,10 @@ Cutaway.prototype.profile=function(lane){
 Cutaway.prototype.update=function(dt){
   const f=this.flow;
   this.parts.forEach(p=>{
-    p.j+=dt*(2+this.temp*16);                       // thermal jitter runs on its own clock
     if(f>0.02){
       p.t+=dt*(0.17+0.62*f)*this.profile(p.lane);
       if(p.t>1){ p.t-=1; p.lane=(Math.random()*2-1)*0.96; }
     }
-    /* Temperature is agitation. At rest it is all the motion there is, and
-       it is why a still line is not a dead one. */
-    p.lane+=Math.sin(p.j*1.7)*dt*this.temp*0.5;
-    if(p.lane>0.97) p.lane=0.97; if(p.lane<-0.97) p.lane=-0.97;
   });
 };
 Cutaway.prototype.draw=function(g){
@@ -646,15 +679,21 @@ Cutaway.prototype.draw=function(g){
   this.parts.forEach(p=>{
     const px=x+p.t*w, py=mid+p.lane*half*0.93;
     const sp=this.profile(p.lane)/PROFILE_PEAK;
-    const jx=Math.sin(p.j)*this.temp*2.4, jy=Math.cos(p.j*1.3)*this.temp*2.4;
+    /* Agitation from the one shared model. The laminar term is the part
+       that matters most here: the rig drops it to 0.12, so laminar flow
+       visibly stops mixing - which is the whole tell this view exists to
+       show, and which a uniform jitter quietly destroys. */
+    const ag=fluidAgitation({tempF:this.tempF,sg:this.sg,gas:this.gas,regime:this.regime});
+    const jx=(Math.random()-0.5)*ag, jy=(Math.random()-0.5)*ag*0.6;
+    const al=fluidAlpha(this.sg), sz=fluidSize(this.sg);
     if(this.flow>0.02){
       const tail=6+26*sp*this.flow;
-      g.strokeStyle='rgba(54,224,255,'+(0.30+0.5*sp).toFixed(2)+')';
+      g.strokeStyle='rgba(54,224,255,'+(al*(0.30+0.5*sp)).toFixed(2)+')';
       g.lineWidth=2; g.beginPath();
       g.moveTo(px-tail+jx,py+jy); g.lineTo(px+jx,py+jy); g.stroke();
     }else{
-      g.fillStyle='rgba(54,224,255,0.72)';
-      g.fillRect(px+jx,py+jy,2.6,2.6);
+      g.fillStyle='rgba(54,224,255,'+(al*0.72).toFixed(2)+')';
+      g.fillRect(px+jx,py+jy,sz,sz);
     }
   });
   g.restore();
@@ -2156,8 +2195,11 @@ function drawBench(g,dt,t){
   const r=bench();
   g.drawImage(BG_BENCH,0,0);
 
-  CUT.set({flow:Math.min(1,r.v/5.5), regime:r.regime,
-           temp:0.12+0.88*((tempLocked()?20:B.temp)/80)});
+  /* Real conditions, not a 0..1 knob. The shared model turns these into
+     agitation, particle size and opacity the way the reference rig does. */
+  CUT.set({ flow:Math.min(1,r.v/3.0), regime:r.regime,
+            tempF:(tempLocked()?20:B.temp)*9/5+32,
+            sg:r.f.sg, gas:false });
   CUT.draw(g);
 
   FBTN.forEach(b=>{
