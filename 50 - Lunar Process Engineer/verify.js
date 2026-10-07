@@ -331,6 +331,57 @@ for (const f of ['level1.html', 'level2.html']) {
 }
 
 /* ------------------------------------------------------------
+   5e. THE TRAINING RIG IS LAID OUT, NOT STACKED
+
+   The first bench put the maker plate across the temperature readout, a
+   handwritten note over the flow lever, and buried the tank and pump
+   behind the instrument panel - scenery and controls were positioned
+   independently and never compared. Everything now comes from one LAY
+   table, and the rectangles are checked against each other here.
+   ------------------------------------------------------------ */
+{
+  const lsrc = fs.readFileSync('level0.html', 'utf8');
+  const lm = lsrc.match(/const LAY=\{[\s\S]*?\n\};/);
+  check('level 0 has one layout table', !!lm, lm ? 'LAY' : 'not found');
+  if (lm) {
+    const LAY = eval('(' + lm[0].replace(/^const LAY=/, '').replace(/;$/, '') + ')');
+    const R = [];
+    R.push({ n:'sight glass', x:LAY.glass.x-14, y:LAY.glass.y-20, w:LAY.glass.w+28, h:LAY.glass.h+40 });
+    R.push({ n:'reservoir', ...LAY.tank });
+    R.push({ n:'pump', x:LAY.pump.x-LAY.pump.r-32, y:LAY.pump.y-LAY.pump.r, w:2*LAY.pump.r+64, h:2*LAY.pump.r+30 });
+    R.push({ n:'hand note', x:LAY.note.x, y:LAY.note.y-12, w:200, h:18 });
+    [0,1,2].forEach(i => R.push({ n:'fluid '+i, x:LAY.fluid.x, y:LAY.fluid.y+i*LAY.fluid.pitch, w:LAY.fluid.w, h:LAY.fluid.h }));
+    [0,1,2,3].forEach(i => R.push({ n:'readout '+i, x:LAY.read.x+i*(LAY.read.w+LAY.read.gap), y:LAY.read.y, w:LAY.read.w, h:LAY.read.h }));
+    R.push({ n:'FLOW label', ...LAY.flowS.box });
+    R.push({ n:'TEMP label', ...LAY.tempS.box });
+    R.push({ n:'FLOW track', x:LAY.flowS.track.x, y:LAY.flowS.track.y-13, w:LAY.flowS.track.w, h:26 });
+    R.push({ n:'TEMP track', x:LAY.tempS.track.x, y:LAY.tempS.track.y-13, w:LAY.tempS.track.w, h:26 });
+    R.push({ n:'shelf lip', x:LAY.frame.x+12, y:LAY.frame.y+LAY.frame.h-68, w:LAY.frame.w-24, h:8 });
+    const hit=(a,b)=>a.x<b.x+b.w&&b.x<a.x+a.w&&a.y<b.y+b.h&&b.y<a.y+a.h;
+    const clash=[];
+    for(let i=0;i<R.length;i++) for(let j=i+1;j<R.length;j++) if(hit(R[i],R[j])) clash.push(R[i].n+' x '+R[j].n);
+    check('nothing on the rig overlaps anything else', clash.length===0, clash.join('; ') || R.length+' rectangles');
+    const F=LAY.frame, out=[];
+    R.forEach(r=>{ if(r.x<F.x+12||r.x+r.w>F.x+F.w-12||r.y<F.y+12||r.y+r.h>F.y+F.h-12) out.push(r.n); });
+    check('everything is inside the frame', out.length===0, out.join(', ') || 'within the rails');
+    check('the loop has a reservoir, a pump and a glass', !!(LAY.tank&&LAY.pump&&LAY.glass), 'all three');
+    check('the rig is plumbed, not floating', lsrc.includes('LPE.piping({'), 'pipework in the scene');
+    /* The table is only worth checking if the drawing code actually reads
+       from it. The handwritten note passed this suite while still being
+       drawn at hardcoded coordinates on top of the flow lever, because the
+       check validated a value nothing used. */
+    const usesTable = ['LAY.note.x', 'LAY.glass.x', 'LAY.tank', 'LAY.pump', 'LAY.read.y',
+                       'LAY.fluid.x', 'LAY.flowS', 'LAY.tempS', 'LAY.frame']
+      .filter(k => !lsrc.includes(k));
+    check('the drawing code reads the layout table', usesTable.length === 0,
+      usesTable.length ? 'not referenced: ' + usesTable.join(', ') : 'all keys referenced');
+    check('no hand-placed scenery left on the bench',
+      !/A\.handNote\(g,T\.x/.test(lsrc) && !/A\.plate\(g,F\.x\+F\.w-/.test(lsrc),
+      'note and plate come from LAY');
+  }
+}
+
+/* ------------------------------------------------------------
    6. BUILD INTEGRITY
    ------------------------------------------------------------ */
 for (const f of ['level0.html', 'level1.html', 'level2.html', 'engine.js', 'jam.js', 'title-art.js']) {

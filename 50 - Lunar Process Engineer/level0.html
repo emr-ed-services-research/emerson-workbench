@@ -286,22 +286,37 @@ const TRICKLE=[0.23,0.30];
    Re 3102, so a target that works for part of the band is a target that
    strands part of the players. The whole band is turbulent by 70. */
 const HOT=[72,80];
+/* ---- layout ----
+   One table, so the rig and the instruments are laid out together instead
+   of a console being drawn on top of a machine. Everything below reads its
+   position from here, and verify.js checks the rectangles do not overlap -
+   the first pass had the maker's plate across the temperature readout and
+   a handwritten note over the flow lever, because scenery and UI were
+   positioned independently and never compared. */
+const LAY={
+  frame : {x:26, y:58,  w:858, h:300},        // interior is x 38-872, y 70-346
+  glass : {x:280,y:94,  w:390, h:100},        // the sight glass into the run
+  tank  : {x:48, y:150, w:92,  h:96},
+  pump  : {x:206,y:190, r:26},
+  fluid : {x:700,y:94,  w:168, h:32, pitch:40},
+  note  : {x:44, y:104},                       // the handwritten one
+  read  : {y:250, h:36, x:44, w:196, gap:12}, // four readouts, above the shelf lip
+  flowS : {box:{x:44, y:310, w:150, h:24}, track:{x:204,y:326,w:220}},
+  tempS : {box:{x:452,y:310, w:170, h:24}, track:{x:632,y:326,w:220}},
+};
+
 const B={ flow:0, temp:20, fluid:'water', watch:0, drag:null };
-const CUT=new LPE.Cutaway({x:48,y:92,w:640,h:112});
+const CUT=new LPE.Cutaway({x:LAY.glass.x,y:LAY.glass.y,w:LAY.glass.w,h:LAY.glass.h});
 
 const FLUID_KEYS=['water','co2','propane'];
-/* 32px tall on a 40px pitch, so there is 8px of air between them, and the
-   three together span exactly the cutaway above (y 92 to 204). HIT is the
-   full 40px slot: the gaps belong to the nearer button rather than being
-   dead, so clipping an edge picks the one you were aiming at instead of
-   nothing at all. */
-const FBTN=FLUID_KEYS.map((k,i)=>({k,x:706,y:92+i*40,w:174,h:32}));
+const FBTN=FLUID_KEYS.map((k,i)=>({k,x:LAY.fluid.x,y:LAY.fluid.y+i*LAY.fluid.pitch,
+                                   w:LAY.fluid.w,h:LAY.fluid.h}));
 const FHIT=4;
 const SLIDERS={
-  flow:{x:48,  y:338, w:372, label:'FLOW',        get:()=>B.flow,
+  flow:{...LAY.flowS, label:'FLOW', key:'flow', get:()=>B.flow,
         set:v=>{B.flow=v;}, fmt:()=>Math.round(B.flow*100)+'%'},
-  temp:{x:470, y:338, w:372, label:'TEMPERATURE', get:()=>B.temp/80,
-        set:v=>{B.temp=Math.round(v*80);},        fmt:()=>B.temp+' \u00b0C'},
+  temp:{...LAY.tempS, label:'TEMPERATURE', key:'temp', get:()=>B.temp/80,
+        set:v=>{B.temp=Math.round(v*80);}, fmt:()=>B.temp+' \u00b0C'},
 };
 
 function fluidNow(){ return FL.FLUIDS[B.fluid]; }
@@ -321,37 +336,138 @@ function bench(){
 }
 
 let BG_BENCH;
+/* ---- the rig itself ----
+   It is called a training LOOP and there was no loop: a window of bore
+   floating on a tiled wall with dials laid over the seams. A loop has a
+   tank, a pump, pipework out and back, and a frame holding all of it up.
+   Everything the player touches is now bolted to that frame.
+
+   Drawn into the background once, so it is scenery rather than something
+   redrawn every frame - the rig does not move, only the fluid inside it. */
+/* ---- the rig ----
+   It is called a training LOOP and there was no loop: a window of bore
+   floating on a tiled wall. A loop has a reservoir, a pump, pipework out
+   and back, and a frame carrying all of it - and the instruments belong
+   bolted to that frame rather than laid over it.
+
+   Drawn into the background once. The rig does not move; only the fluid
+   inside it does. */
 function buildBench(){
   BG_BENCH=document.createElement('canvas'); BG_BENCH.width=W; BG_BENCH.height=H;
   const g=BG_BENCH.getContext('2d');
-  A.wall(g,W,H); A.rib(g,0,H);
+  A.wall(g,W,H); A.rib(g,0,H); A.ceiling(g,W);
+  A.overhead(g,W,46,7,false);
   A.vignetteOnto(g,W,H);
-  A.stencil(g,52,H-26,'SECTION 4-B \u00b7 TRAINING LOOP',18,'#8b949b');
-  A.stencil(g,52,H-10,'NOT CONNECTED TO SERVICE',14);
+
+  const F=LAY.frame;
+  const bar=(x,y,w,h)=>{
+    g.fillStyle='#39444b'; g.fillRect(x,y,w,h);
+    g.fillStyle='#5d6a73'; g.fillRect(x,y,w,2);
+    g.fillStyle='#232b30'; g.fillRect(x,y+h-2,w,2);
+  };
+  /* backplate first, then the frame over its edges, so the frame reads as
+     being in front of the plate rather than drawn beside it */
+  g.fillStyle='#161d22'; g.fillRect(F.x,F.y,F.w,F.h);
+  A.dither(g,F.x,F.y,F.w,F.h,'#273138',0.16);
+  g.fillStyle='#0f151a'; g.fillRect(F.x,F.y+F.h-56,F.w,56);      // console runs darker
+
+  bar(F.x,F.y,F.w,12); bar(F.x,F.y+F.h-12,F.w,12);
+  bar(F.x,F.y,12,F.h);  bar(F.x+F.w-12,F.y,12,F.h);
+  bar(F.x+12,F.y+F.h-68,F.w-24,8);                               // console shelf lip
+  g.fillStyle='#8a94a0';
+  for(let bx=F.x+6;bx<F.x+F.w;bx+=46){
+    g.beginPath(); g.arc(bx,F.y+6,2,0,6.284); g.fill();
+    g.beginPath(); g.arc(bx,F.y+F.h-6,2,0,6.284); g.fill();
+  }
+  /* chamfers - somebody designed this, it was not extruded */
+  g.fillStyle='#39444b';
+  [[F.x+12,F.y+12,1,1],[F.x+F.w-12,F.y+12,-1,1]].forEach(([cx,cy,sx,sy])=>{
+    g.beginPath(); g.moveTo(cx,cy); g.lineTo(cx+20*sx,cy); g.lineTo(cx,cy+20*sy);
+    g.closePath(); g.fill();
+  });
+
+  // ---- reservoir
+  const T=LAY.tank;
+  g.fillStyle='#2b343a'; g.fillRect(T.x,T.y,T.w,T.h);
+  g.fillStyle='#39444b'; g.fillRect(T.x,T.y,T.w,4);
+  g.fillStyle='#161d21'; g.fillRect(T.x,T.y+T.h-4,T.w,4);
+  g.fillStyle='#070e13'; g.fillRect(T.x+8,T.y+10,T.w-16,T.h-20);
+  g.fillStyle='rgba(54,224,255,0.26)'; g.fillRect(T.x+8,T.y+40,T.w-16,T.h-50);
+  g.fillStyle='rgba(54,224,255,0.60)'; g.fillRect(T.x+8,T.y+40,T.w-16,2);
+  g.strokeStyle='#5d6a73'; g.lineWidth=1; g.strokeRect(T.x+8.5,T.y+10.5,T.w-17,T.h-21);
+  for(let ly=T.y+20; ly<T.y+T.h-14; ly+=14){                      // level graduations
+    g.fillStyle='#5d6a73'; g.fillRect(T.x+T.w-16,ly,6,1);
+  }
+  A.stencil(g,T.x+2,T.y-8,'RESERVOIR',13,'#8b949b');
+
+  // ---- pump and motor
+  const Pu=LAY.pump;
+  g.fillStyle='#4a565d'; g.fillRect(Pu.x-32,Pu.y+Pu.r-4,64,12);
+  g.fillStyle='#39444b'; g.beginPath(); g.arc(Pu.x,Pu.y,Pu.r,0,6.284); g.fill();
+  g.strokeStyle='#5d6a73'; g.lineWidth=3; g.stroke();
+  g.fillStyle='#2b343a'; g.beginPath(); g.arc(Pu.x,Pu.y,Pu.r-8,0,6.284); g.fill();
+  g.fillStyle='#6d7a84';
+  for(let a=0;a<8;a++){
+    g.save(); g.translate(Pu.x,Pu.y); g.rotate(a*Math.PI/4);
+    g.fillRect(-1.5,-(Pu.r-4),3,9); g.restore();
+  }
+  g.fillStyle='#8a94a0'; g.beginPath(); g.arc(Pu.x,Pu.y,4,0,6.284); g.fill();
+  A.stencil(g,Pu.x-16,Pu.y+Pu.r+20,'PUMP',13,'#8b949b');
+
+  // ---- pipework: tank -> pump -> up -> glass -> down -> tank
+  const G=LAY.glass, midY=G.y+G.h/2;
+  LPE.piping({
+    lines:[{pts:[[T.x+T.w-10,Pu.y],[Pu.x-Pu.r-4,Pu.y]], r:7},
+           {pts:[[Pu.x+Pu.r+4,Pu.y],[G.x-26,Pu.y],[G.x-26,midY],[G.x-6,midY]], r:7},
+           {pts:[[G.x+G.w+6,midY],[G.x+G.w+30,midY],[G.x+G.w+30,Pu.y+44],
+                 [T.x+T.w-28,Pu.y+44]], r:7}],
+    fittings:[{x:G.x-26,y:midY+30,r:7,kind:'union'},
+              {x:G.x+G.w+30,y:midY+30,r:7,kind:'union'}],
+  }).draw(g);
+
+  // ---- maker's plate, in the console's own dead corner
+  const px=F.x+F.w-172, py=F.y+F.h-60;
+  A.plate(g,px,py,150,30);
+  A.stencil(g,px+7,py+13,'TRAINING LOOP 4B-1',12,'#8b949b');
+  A.stencil(g,px+7,py+25,'EMERSON \u00b7 NOT IN SERVICE',10);
+  A.dither(g,px,py,150,30,P.rust,0.10);
+
+  // ---- wear: everyone on this base has stood here
+  A.dither(g,G.x-18,F.y+F.h-60,120,40,P.rust,0.16);
+  A.dither(g,F.x+14,F.y+30,26,150,P.rust,0.12);
+  A.dither(g,T.x-6,T.y+T.h-10,T.w+12,14,P.rust,0.26);
+  A.handNote(g,LAY.note.x,LAY.note.y,'cold water first. \u2014 R.O.');
 }
 
+/* ---- console ----
+   Label and value share one plate to the left; the track sits beside it.
+   Stacking the label above the track is what put it through the readouts
+   the first two times. */
 function slider(g,sl,live){
+  const v=Math.max(0,Math.min(1,sl.get()));
+  const tr=sl.track, kx=tr.x+v*tr.w, ky=tr.y;
+
+  A.plate(g,sl.box.x,sl.box.y,sl.box.w,sl.box.h);
+  g.fillStyle=live?P.rim:'#4a545e'; g.font="13px 'VT323',monospace"; g.textAlign='left';
+  g.fillText(sl.label,sl.box.x+7,sl.box.y+16);
+  g.fillStyle=live?'#39ff6a':'#5d6a73'; g.font="16px 'VT323',monospace"; g.textAlign='right';
+  g.fillText(sl.fmt(),sl.box.x+sl.box.w-7,sl.box.y+16);
+  g.textAlign='left';
+
   const tg=(!done1&&COURSE[c1]&&COURSE[c1].target);
-  if(tg && ((tg.on==='flow')===(sl.label==='FLOW'))){
-    const a=sl.x+tg.lo*sl.w, b=sl.x+tg.hi*sl.w;
-    g.fillStyle='rgba(255,210,74,0.20)'; g.fillRect(a,sl.y-15,b-a,30);
-    g.strokeStyle='#ffd24a'; g.lineWidth=1; g.strokeRect(a+0.5,sl.y-15.5,b-a-1,30);
+  if(tg && ((tg.on==='flow')===(sl.key==='flow'))){
+    const a=tr.x+tg.lo*tr.w, b=tr.x+tg.hi*tr.w;
+    g.fillStyle='rgba(255,210,74,0.20)'; g.fillRect(a,ky-13,b-a,26);
+    g.strokeStyle='#ffd24a'; g.lineWidth=1; g.strokeRect(a+0.5,ky-13.5,b-a-1,26);
     g.fillStyle='#ffd24a'; g.font="11px 'VT323',monospace"; g.textAlign='center';
-    g.fillText(tg.label,(a+b)/2,sl.y-19);
+    g.fillText(tg.label,(a+b)/2,ky-17);
     g.textAlign='left';
   }
-  const v=Math.max(0,Math.min(1,sl.get())), kx=sl.x+v*sl.w;
-  g.fillStyle='#10171a'; g.fillRect(sl.x,sl.y-3,sl.w,6);
-  g.fillStyle=live?P.amber:'#39464f'; g.fillRect(sl.x,sl.y-3,v*sl.w,6);
-  g.fillStyle=live?'#ffd24a':'#5d6a73';
-  g.fillRect(kx-5,sl.y-13,10,26);
-  g.strokeStyle='rgba(0,0,0,0.6)'; g.lineWidth=1; g.strokeRect(kx-5,sl.y-13,10,26);
-  A.plate(g,sl.x,sl.y-46,152,20);
-  g.fillStyle=P.rim; g.font="13px 'VT323',monospace"; g.textAlign='left';
-  g.fillText(sl.label,sl.x+6,sl.y-31);
-  g.fillStyle=live?'#39ff6a':'#6f7980'; g.font="17px 'VT323',monospace"; g.textAlign='right';
-  g.fillText(sl.fmt(),sl.x+sl.w,sl.y-31);
-  g.textAlign='left';
+
+  g.fillStyle='#0b1116'; g.fillRect(tr.x,ky-3,tr.w,6);
+  g.fillStyle=live?P.amber:'#39464f'; g.fillRect(tr.x,ky-3,v*tr.w,6);
+  g.fillStyle=live?'#ffd24a':'#5d6a73'; g.fillRect(kx-5,ky-11,10,22);
+  g.strokeStyle='rgba(0,0,0,0.6)'; g.lineWidth=1; g.strokeRect(kx-5,ky-11,10,22);
 }
 
 function liveCtl(which){
@@ -380,28 +496,29 @@ function drawBench(g,dt,t){
 
   const cells=[
     ['VELOCITY',  r.v.toFixed(2)+' ft/s',  '#39ff6a'],
-    ['REYNOLDS',  r.re>0?Math.round(r.re).toLocaleString('en-US'):'-', '#39ff6a'],
+    ['REYNOLDS',  r.re>0?Math.round(r.re).toLocaleString('en-US'):'\u2014', '#39ff6a'],
     ['REGIME',    r.regime.toUpperCase(),
                   r.regime==='laminar'?'#8fb9ff':(r.regime==='turbulent'?'#ffd24a':'#d2dae0')],
     ['DELIVERED', r.q.toFixed(2)+' gpm',  '#39ff6a'],
   ];
   cells.forEach((c,i)=>{
-    const x=48+i*210;
-    A.plate(g,x,226,196,40);
+    const x=LAY.read.x+i*(LAY.read.w+LAY.read.gap);
+    A.plate(g,x,LAY.read.y,LAY.read.w,LAY.read.h);
     g.fillStyle=P.rim; g.font="12px 'VT323',monospace"; g.textAlign='left';
-    g.fillText(c[0],x+8,241);
-    g.fillStyle=B.flow>0.001?c[2]:'#5d6a73'; g.font="20px 'VT323',monospace";
-    g.fillText(c[1],x+8,261);
+    g.fillText(c[0],x+8,LAY.read.y+14);
+    g.fillStyle=B.flow>0.001?c[2]:'#5d6a73'; g.font="19px 'VT323',monospace";
+    g.fillText(c[1],x+8,LAY.read.y+32);
   });
 
   slider(g,SLIDERS.flow, liveCtl('flow'));
   slider(g,SLIDERS.temp, liveCtl('temp') && !tempLocked());
   if(tempLocked()){
-    A.plate(g,SLIDERS.temp.x,SLIDERS.temp.y+14,372,19);
-    g.fillStyle=P.amber; g.font="12px 'VT323',monospace"; g.textAlign='left';
-    g.fillText('HELD NEAR SATURATION \u2014 '+fluidNow().note,SLIDERS.temp.x+6,SLIDERS.temp.y+28);
+    const l=SLIDERS.temp.box;
+    g.fillStyle=P.amber; g.font="11px 'VT323',monospace"; g.textAlign='left';
+    g.fillText('HELD NEAR SATURATION',l.x+7,l.y-5);
   }
 }
+
 
 function stepBench(dt){
   const r=bench();
@@ -513,6 +630,7 @@ function benchDown(p){
 /* Within a touch of the marked band the lever is pulled into it. The window
    is narrow because the physics makes it narrow, not because precision is
    the lesson. */
+/* ---- bench input ---- */
 function magnet(key,v){
   if(done1||!COURSE[c1]) return v;
   const tg=COURSE[c1].target;
@@ -521,11 +639,30 @@ function magnet(key,v){
   if(v<tg.hi+0.035 && v>tg.hi) return tg.hi;
   return v;
 }
+function benchDown(p){
+  for(const key of ['flow','temp']){
+    const sl=SLIDERS[key], tr=sl.track;
+    if(!liveCtl(key)) continue;
+    if(key==='temp' && tempLocked()) continue;
+    if(p.x>=tr.x-12 && p.x<=tr.x+tr.w+12 && Math.abs(p.y-tr.y)<20){
+      B.drag=key; sl.set(magnet(key,Math.max(0,Math.min(1,(p.x-tr.x)/tr.w))));
+      LPE.audio.tick(); return true;
+    }
+  }
+  if(liveCtl('fluid')) for(const b of FBTN){
+    if(p.x>=b.x-FHIT && p.x<=b.x+b.w+FHIT &&
+       p.y>=b.y-FHIT && p.y<b.y+b.h+FHIT){   // half-open: one button owns each row
+      if(B.fluid!==b.k){ B.fluid=b.k; LPE.audio.clack(); }
+      return true;
+    }
+  }
+  return false;
+}
 function benchMove(p){
   if(!B.drag) return;
-  const sl=SLIDERS[B.drag];
+  const sl=SLIDERS[B.drag], tr=sl.track;
   const before=sl.get();
-  sl.set(magnet(B.drag,Math.max(0,Math.min(1,(p.x-sl.x)/sl.w))));
+  sl.set(magnet(B.drag,Math.max(0,Math.min(1,(p.x-tr.x)/tr.w))));
   if(Math.floor(before*14)!==Math.floor(sl.get()*14)) LPE.audio.tick();
 }
 

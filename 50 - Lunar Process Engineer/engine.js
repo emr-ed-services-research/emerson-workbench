@@ -400,10 +400,54 @@ Cutaway.prototype.update=function(dt){
 };
 Cutaway.prototype.draw=function(g){
   const {x,y,w,h}=this, mid=y+h/2, half=h/2;
+  const WALL=10, OUT=8;
+
+  /* A pipe cut lengthwise through its axis, near half removed. Three
+     surfaces, and they are not the same brightness:
+
+       the cut faces     the annulus seen edge on - machined metal, the
+                         brightest thing here, with a bright lip at the bore
+       the bore          the FAR inner half of the tube. Lit from above, its
+                         upper part faces downward and sits in shadow while
+                         its lower part faces up and catches the light, so
+                         it brightens downward and falls away again right at
+                         the bottom where it curves out of view
+       the outer skin    the outside of the pipe curving away above and
+                         below the cut, darker, with a specular band near
+                         the crown
+
+     Drawn as bands with the Bayer dither between them rather than a smooth
+     gradient, because everything else in this game is banded and a smooth
+     ramp would be the one soft thing on screen. */
+  const lerp=(a,b,t)=>Math.round(a+(b-a)*t);
+  const rgb=(c)=>[parseInt(c.slice(1,3),16),parseInt(c.slice(3,5),16),parseInt(c.slice(5,7),16)];
+  const hex=(r,gg,b)=>'#'+[r,gg,b].map(v=>v.toString(16).padStart(2,'0')).join('');
+  const mixHex=(a,b,t)=>{ const A=rgb(a),B=rgb(b); return hex(lerp(A[0],B[0],t),lerp(A[1],B[1],t),lerp(A[2],B[2],t)); };
+
+  // ---- bore: the far inner surface
+  const BANDS=18;
+  const SHADOW='#04080b', LIT='#17323f', FLOOR='#0a1c25';
+  for(let i=0;i<BANDS;i++){
+    const t0=i/BANDS, t1=(i+1)/BANDS;
+    const yy=y+t0*h, bh=Math.ceil(h/BANDS)+1;
+    /* lane -1 at the top of the bore, +1 at the bottom */
+    const lane=-1+2*((t0+t1)/2);
+    /* brightest a little below centre, falling off at the very bottom */
+    let k=Math.max(0,Math.min(1,(lane+0.85)/1.55));
+    k=Math.pow(k,0.75);
+    const fall=lane>0.62 ? (lane-0.62)/0.38 : 0;
+    const col=mixHex(mixHex(SHADOW,LIT,k), FLOOR, fall*0.8);
+    g.fillStyle=col; g.fillRect(x,yy,w,bh);
+  }
+  // soften the band seams
+  for(let i=1;i<BANDS;i++){
+    const yy=y+i*(h/BANDS);
+    dither(g,x,Math.round(yy)-1,w,2,'#0d222c',0.35);
+  }
+
+  // ---- the water, clipped to the bore
   g.save();
-  g.fillStyle='#070d10'; g.fillRect(x,y,w,h);               // the bore
   g.beginPath(); g.rect(x,y,w,h); g.clip();
-  // --- markers
   this.parts.forEach(p=>{
     const px=x+p.t*w, py=mid+p.lane*half*0.93;
     const sp=this.profile(p.lane)/PROFILE_PEAK;
@@ -419,25 +463,48 @@ Cutaway.prototype.draw=function(g){
     }
   });
   g.restore();
-  // --- the envelope, plotted from the same profile
+
+  // ---- the envelope, plotted from the same profile the markers obey
   g.save();
   g.strokeStyle='#ffd24a'; g.lineWidth=2; g.globalAlpha=this.flow>0.02?0.95:0.25;
   g.beginPath();
   for(let i=0;i<=40;i++){
     const lane=-0.98+1.96*i/40;
-    const sp=this.profile(lane)/2;                       // laminar peak is 2x, so this
-    const px=x+10+sp*(w*0.30), py=mid+lane*half*0.93;    // scales both regimes alike
+    const sp=this.profile(lane)/2;
+    const px=x+10+sp*(w*0.30), py=mid+lane*half*0.93;
     i?g.lineTo(px,py):g.moveTo(px,py);
   }
   g.stroke();
   g.globalAlpha=1; g.strokeStyle='rgba(255,210,74,0.45)'; g.lineWidth=1;
-  g.beginPath(); g.moveTo(x+10,y+2); g.lineTo(x+10,y+h-2); g.stroke();   // the zero line
+  g.beginPath(); g.moveTo(x+10,y+2); g.lineTo(x+10,y+h-2); g.stroke();
   g.restore();
-  // --- the wall, last, so nothing paints over it
-  g.fillStyle=P.mid;   g.fillRect(x,y-9,w,9);
-  g.fillStyle=P.light; g.fillRect(x,y-11,w,2);
-  g.fillStyle=P.mid;   g.fillRect(x,y+h,w,9);
-  g.fillStyle='#161d21'; g.fillRect(x,y+h+9,w,2);
+
+  // ---- cut faces: machined metal, with the bright lip at the bore
+  const cut=(yy)=>{
+    g.fillStyle='#6d7a84'; g.fillRect(x,yy,w,WALL);
+    dither(g,x,yy,w,WALL,'#8e9ca6',0.30);                 // tool marks
+  };
+  cut(y-WALL); cut(y+h);
+  g.fillStyle='#b9c6ce'; g.fillRect(x,y-2,w,2);           // lip, top
+  g.fillStyle='#9aa7b0'; g.fillRect(x,y+h,w,2);           // lip, bottom
+
+  // ---- outer skin, curving away above and below
+  g.fillStyle='#39444b'; g.fillRect(x,y-WALL-OUT,w,OUT);
+  g.fillStyle='#5d6a73'; g.fillRect(x,y-WALL-OUT,w,2);    // crown highlight
+  g.fillStyle='#2b343a'; g.fillRect(x,y+h+WALL,w,OUT);
+  g.fillStyle='#161d21'; g.fillRect(x,y+h+WALL+OUT-2,w,2);
+
+  // ---- end flanges: this is a window INTO a run, not a floating rectangle
+  const flange=(fx)=>{
+    g.fillStyle='#4a565d'; g.fillRect(fx-7,y-WALL-OUT-4,14,h+2*(WALL+OUT)+8);
+    g.fillStyle='#5d6a73'; g.fillRect(fx-7,y-WALL-OUT-4,14,2);
+    g.fillStyle='#232b30'; g.fillRect(fx-7,y+h+WALL+OUT+2,14,2);
+    g.fillStyle='#8a94a0';
+    for(let by=y-WALL-OUT+4; by<y+h+WALL+OUT; by+=22){     // bolts down the flange
+      g.beginPath(); g.arc(fx,by,2.2,0,6.284); g.fill();
+    }
+  };
+  flange(x); flange(x+w);
 };
 
 /* ---------------- PIPING: runs and fittings ----------------
