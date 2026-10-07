@@ -551,6 +551,91 @@ Line.prototype.draw=function(g){
    A run is {ax,ay,bx,by,r}; only horizontal and vertical runs are used. */
 const WALL=5;
 
+/* ---------------- CUTAWAY ----------------
+   A magnified longitudinal slice of bore. The pipe as drawn in a level is
+   22px across, and the turbulent and laminar profiles differ by only a few
+   pixels of streak length over that - so laminar versus turbulent is not
+   merely unbuilt at level scale, it is unshowable. This is the view where
+   the inside of a pipe is big enough to be looked at.
+
+   It draws two things at once, from the same function:
+     the markers  - what the fluid is doing
+     the envelope - the shape that describes it
+   The envelope is not decoration laid over the markers; it is plotted from
+   the same profile the markers are carried by, so if one is wrong both are.
+
+   Markers are NOT molecules and the level says so out loud before this
+   view is ever used. They are spaced to be counted and their speeds are
+   true in proportion but exaggerated in magnitude, because a pipe running
+   at a believable rate shows the eye nothing.                            */
+function Cutaway(opt){
+  this.x=opt.x; this.y=opt.y; this.w=opt.w; this.h=opt.h;
+  this.flow=0; this.regime='turbulent'; this.temp=0.25;
+  this.colour=opt.colour||'#36e0ff';
+  this.parts=[];
+  const n=opt.n||54;
+  for(let i=0;i<n;i++) this.parts.push({t:Math.random(),lane:(Math.random()*2-1)*0.96,j:Math.random()*6.28});
+}
+Cutaway.prototype.set=function(v){ Object.assign(this,v); };
+Cutaway.prototype.profile=function(lane){
+  return (this.regime==='laminar'?laminarAt:profileAt)(lane);
+};
+Cutaway.prototype.update=function(dt){
+  const f=this.flow;
+  this.parts.forEach(p=>{
+    p.j+=dt*(2+this.temp*16);                       // thermal jitter runs on its own clock
+    if(f>0.02){
+      p.t+=dt*(0.17+0.62*f)*this.profile(p.lane);
+      if(p.t>1){ p.t-=1; p.lane=(Math.random()*2-1)*0.96; }
+    }
+    /* Temperature is agitation. At rest it is all the motion there is, and
+       it is why a still line is not a dead one. */
+    p.lane+=Math.sin(p.j*1.7)*dt*this.temp*0.5;
+    if(p.lane>0.97) p.lane=0.97; if(p.lane<-0.97) p.lane=-0.97;
+  });
+};
+Cutaway.prototype.draw=function(g){
+  const {x,y,w,h}=this, mid=y+h/2, half=h/2;
+  g.save();
+  g.fillStyle='#070d10'; g.fillRect(x,y,w,h);               // the bore
+  g.beginPath(); g.rect(x,y,w,h); g.clip();
+  // --- markers
+  this.parts.forEach(p=>{
+    const px=x+p.t*w, py=mid+p.lane*half*0.93;
+    const sp=this.profile(p.lane)/PROFILE_PEAK;
+    const jx=Math.sin(p.j)*this.temp*2.4, jy=Math.cos(p.j*1.3)*this.temp*2.4;
+    if(this.flow>0.02){
+      const tail=6+26*sp*this.flow;
+      g.strokeStyle='rgba(54,224,255,'+(0.30+0.5*sp).toFixed(2)+')';
+      g.lineWidth=2; g.beginPath();
+      g.moveTo(px-tail+jx,py+jy); g.lineTo(px+jx,py+jy); g.stroke();
+    }else{
+      g.fillStyle='rgba(54,224,255,0.72)';
+      g.fillRect(px+jx,py+jy,2.6,2.6);
+    }
+  });
+  g.restore();
+  // --- the envelope, plotted from the same profile
+  g.save();
+  g.strokeStyle='#ffd24a'; g.lineWidth=2; g.globalAlpha=this.flow>0.02?0.95:0.25;
+  g.beginPath();
+  for(let i=0;i<=40;i++){
+    const lane=-0.98+1.96*i/40;
+    const sp=this.profile(lane)/2;                       // laminar peak is 2x, so this
+    const px=x+10+sp*(w*0.30), py=mid+lane*half*0.93;    // scales both regimes alike
+    i?g.lineTo(px,py):g.moveTo(px,py);
+  }
+  g.stroke();
+  g.globalAlpha=1; g.strokeStyle='rgba(255,210,74,0.45)'; g.lineWidth=1;
+  g.beginPath(); g.moveTo(x+10,y+2); g.lineTo(x+10,y+h-2); g.stroke();   // the zero line
+  g.restore();
+  // --- the wall, last, so nothing paints over it
+  g.fillStyle=P.mid;   g.fillRect(x,y-9,w,9);
+  g.fillStyle=P.light; g.fillRect(x,y-11,w,2);
+  g.fillStyle=P.mid;   g.fillRect(x,y+h,w,9);
+  g.fillStyle='#161d21'; g.fillRect(x,y+h+9,w,2);
+};
+
 /* ---------------- PIPING: runs and fittings ----------------
    Pipe is described the way it is actually built - continuous runs with
    fittings at the joints - rather than as a pile of rectangles:
@@ -1428,7 +1513,7 @@ function mount(o){
   return S;
 }
 
-return {palette:P, art, Line, pipeRun, penetration, valveBody, handWheel, gauge,
+return {palette:P, art, Line, Cutaway, pipeRun, penetration, valveBody, handWheel, gauge,
         piping, pipes, valveShell, valveTrim, WHEEL_SWEEP, audio, intro, mount, boot, title,
         get current(){ return LPE_CURRENT; }};
 })();
