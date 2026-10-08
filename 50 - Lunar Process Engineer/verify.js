@@ -690,6 +690,115 @@ check('fluid: both views carry fluid state', carries.length === 2,
 }
 
 /* ------------------------------------------------------------ */
+/* ------------------------------------------------------------
+   N. IS THE PIPING ACTUALLY PIPING?
+
+   Levels 3 and 4 shipped drawing their skids with LPE.pipeRun() - a
+   three-rectangle bar with no wall, no elbow, no tee and no flange -
+   while levels 1 and 2 used LPE.piping(), the renderer the game had
+   already standardised on. Nothing in the build noticed, because
+   "it parses" and "it renders something" were all anyone checked.
+
+   The faults that hid behind that: runs starting at x=0 and being
+   clipped by the panel edge instead of entering through a wall; a
+   level 3 run of NEGATIVE width because the injector sat left of the
+   valve it was drawn after; and a level 4 header that stopped 40px
+   above and short of the nozzle rail it was supposed to feed, with
+   the rail left as an unconnected rectangle inside the pod.
+
+   pipeRun() is not banned outright. Level 0 is one straight section
+   seen through a window, capped by a penetration at each end - there
+   is no corner, branch or bore change for piping() to render. What is
+   banned is using it for a SKID: more than one call, which is a run
+   with joints in it that are not being drawn as joints.
+   ------------------------------------------------------------ */
+{
+  const LEVELS = ['level0.html','level1.html','level2.html',
+                  'level3.html','level4.html'];
+  /* Comments first. The first cut of this check matched the word
+     "pipeRun" inside the comments explaining why pipeRun was removed,
+     and reported three levels still using it. */
+  const strip = t => t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+  const src = {};
+  for (const f of LEVELS) src[f] = strip(fs.readFileSync(f, 'utf8'));
+  const count = (t, re) => (t.match(re) || []).length;
+
+  const bars = LEVELS.filter(f => count(src[f], /LPE\.pipeRun\s*\(/g) > 1);
+  check('no level builds a skid out of pipeRun() bars', bars.length === 0,
+    bars.length ? bars.join(', ') + ' - use LPE.piping()'
+                : LEVELS.map(f => f[5] + ':' + count(src[f], /LPE\.pipeRun\s*\(/g)).join(' '));
+
+  /* the one straight section that is allowed has to be capped at both ends,
+     or it is just a bar clipped by the panel edge */
+  const uncapped = LEVELS.filter(f => count(src[f], /LPE\.pipeRun\s*\(/g) === 1
+                                   && count(src[f], /LPE\.penetration\s*\(/g) < 2);
+  check('a lone pipeRun section is capped at both ends', uncapped.length === 0,
+    uncapped.length ? uncapped.join(', ') : 'capped or not used');
+
+  /* anything with a joint declares the joint */
+  const jointed = LEVELS.filter(f => /PIPE_Y|LAY\.hdr|MAIN_Y/.test(src[f])
+                                  && count(src[f], /LPE\.pipeRun\s*\(/g) === 0);
+  const undeclared = jointed.filter(f => !/LPE\.piping\s*\(/.test(src[f]));
+  check('every level with a jointed run declares it through piping()',
+    undeclared.length === 0,
+    undeclared.length ? undeclared.join(', ') : jointed.length + ' levels declare runs');
+
+  /* a run may not begin off the panel: the feed enters through a wall */
+  const offPanel = [];
+  for (const f of LEVELS) {
+    const re = /pts:\s*\[\s*\[\s*(-?\d+)\s*,/g;
+    let m;
+    while ((m = re.exec(src[f]))) if (+m[1] <= 0) offPanel.push(f + ' x=' + m[1]);
+  }
+  check('no declared run starts off the left edge', offPanel.length === 0,
+    offPanel.length ? offPanel.join(', ') : 'all runs start inside');
+
+  /* Level 3's two bed branches were declared at the beds' own heights with
+     nothing joining them to the main, so they hung in the panel - which is
+     most of what "the piping is way off" looked like on screen.
+
+     This is deliberately a specific check, not a general connectivity one.
+     A general rule has to compare real coordinates, and these specs are
+     expressions (ternaries, layout lookups) that only resolve at runtime;
+     the first cut compared them as text and flagged nine legitimate starts
+     - a wall entry, a tank outlet, both sides of a component - while the
+     thing it was written to catch is simply that a branch leaving the main
+     must leave it AT the main. Level 4's counterpart is the "header run
+     ends on the nozzle rail" check above. */
+  const l3 = src['level3.html'];
+  const bedRuns = (l3.match(/\{pts:\[\[SP\.x,[^\]]*\],\[SP\.x,bed[AB]Y\(\)\],\[LAY\.bed[AB]\.x,bed[AB]Y\(\)\]\]/g) || []);
+  const fromMain = bedRuns.filter(r => /\[\[SP\.x,PIPE_Y\]/.test(r));
+  check('level 3 bed branches leave the main centreline',
+    bedRuns.length === 2 && fromMain.length === 2,
+    bedRuns.length + ' branch runs, ' + fromMain.length + ' rooted on PIPE_Y');
+
+  /* a level that lets fluid into a pipe uses the shared marker, via Line
+     or Cutaway - it does not stamp its own carrier specks */
+  const ownFluid = LEVELS.filter(f =>
+    /rgba\(\s*54\s*,\s*224\s*,\s*255/.test(src[f]) && !/new LPE\.Line/.test(src[f]));
+  check('no level stamps its own carrier fluid', ownFluid.length === 0,
+    ownFluid.length ? ownFluid.join(', ') : 'all carry fluid through Line');
+
+  /* Level 4's whole point is that the header FEEDS the misters, so the run
+     has to arrive at the rail the nozzles hang off. It used to stop on the
+     header centreline, 40px above it. Both ends are read out of the source
+     and compared, rather than trusting that a run exists. */
+  const l4 = src['level4.html'];
+  const rail = /RAIL_Y\s*=\s*\(\)\s*=>\s*LAY\.pod\.y\s*\+\s*(\d+)/.exec(l4);
+  const run  = /lines:\s*\[\{\s*pts:\s*\[([\s\S]*?)\]\s*,\s*r:/.exec(l4);
+  const pts  = run ? run[1].match(/\[[^\[\]]+\]/g) || [] : [];
+  const last = pts.length ? pts[pts.length - 1] : '';
+  const ryIsRail = /\bry\s*=\s*RAIL_Y\(\)/.test(l4);
+  check('level 4 header run ends on the nozzle rail',
+    !!rail && ryIsRail && /,\s*ry\s*\]$/.test(last) && pts.length >= 4,
+    rail ? 'rail = pod.y+' + rail[1] + ', last point ' + (last || 'none') : 'no RAIL_Y');
+  check('level 4 nozzles hang off that same rail',
+    /fillRect\(nx-3,\s*RAIL_Y\(\)\s*\+\s*R_HDR/.test(l4), 'nozzle bodies on RAIL_Y');
+  check('level 4 lays the pod before the header',
+    /drawPod\(g,s\);\s*drawHeader\(g,s\)/.test(l4),
+    'chamber cannot close the rail bore');
+}
+
 const pad = Math.max(...results.map(r => r.name.length));
 console.log('');
 for (const r of results)

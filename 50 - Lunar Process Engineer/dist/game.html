@@ -5197,17 +5197,30 @@ const S={ feed:0, run:'3/4', drag:false, lastAng:0, turn:0, closing:false, picki
    nothing happens, and the readout's footer printed over its own last
    row. */
 const PIPE_Y=256;
+
+/* Drawn bore follows the real bore. The main is 3/4 in at R_MAIN, and every
+   spare is scaled off it by bore ratio, so the pipe the player fits is
+   visibly the size the table says it is - which is the whole lesson. */
+const R_MAIN=11, MAIN_BORE=0.824;
+const rOf=bore=>Math.max(4, Math.round(R_MAIN*bore/MAIN_BORE*10)/10);
+const R_BED=7;
+
 const LAY={
-  tank : {x:52,  y:150, w:86,  h:132},
-  inj  : {x:188, y:PIPE_Y-20, w:46,  h:40},
-  mix  : {x:300, y:PIPE_Y-15, w:250, h:30},
-  wheel: {x:252, y:PIPE_Y-62, r:26},
-  split: {x:596, y:PIPE_Y},
-  bedA : {x:656, y:158, w:96, h:66},
-  bedB : {x:656, y:268, w:96, h:66},
-  rack : {x:300, y:314, w:250, h:52},
-  read : {x:612, y:38,  w:246, h:112},
+  pen  : {x:16},                                  // the feed comes through a wall
+  tank : {x:177, y:92,  w:86,  h:92},   // directly over the injector
+  wheel: {x:132, y:PIPE_Y-62, r:26},
+  inj  : {x:196, y:PIPE_Y-21, w:48,  h:42},
+  mix  : {x:316, y:PIPE_Y, w:232},                // centreline run, bore varies
+  split: {x:606, y:PIPE_Y},
+  bedA : {x:664, y:150, w:96, h:66},
+  bedB : {x:664, y:296, w:96, h:66},
+  rack : {x:316, y:318, w:232, h:52},
+  read : {x:620, y:30,  w:238, h:106},
 };
+/* The spool sits between two flanges. Anything narrower than the main needs
+   a reducer at each end, and that pair is drawn, not implied. */
+const RED_W=18;
+const bedAY=()=>LAY.bedA.y+LAY.bedA.h/2, bedBY=()=>LAY.bedB.y+LAY.bedB.h/2;
 
 function runNow(){ return RUNS.find(r=>r.k===S.run) || RUNS[0]; }
 
@@ -5244,86 +5257,167 @@ function buildScene(){
   A.floor(g,W,344);
   A.vignetteOnto(g,W,H);                 // room first, then signage on top
   A.stencil(g,48,110,'THE GARDEN',20,'#8b949b');
-  A.stencil(g,48,130,'NUTRIENT DOSING SKID \u00b7 BAY 3',14);
-  A.stencil(g,300,226,'MIXING RUN',11,'#8b949b');
-  A.stencil(g,300,306,'SPARES',11,'#8b949b');
-  A.arrow(g,842,300,'BEDS');
-  A.toolbox(g,118,308);
+  A.stencil(g,48,130,'NUTRIENT DOSING SKID',14);   // the bay is in the header
+  A.stencil(g,316,214,'MIXING RUN',11,'#8b949b');
+  A.stencil(g,316,310,'SPARES',11,'#8b949b');
+  A.toolbox(g,60,330);
 }
 
-/* ---- the skid ---- */
-function drawSkid(g,s){
+/* ---- the skid ----
+   Built the way levels 1 and 2 are: the metal is declared as runs and
+   fittings and handed to LPE.piping(), which draws bodies, then collars,
+   then every bore last so nothing paints over another fitting's opening.
+   The earlier version of this level drew the whole skid as flat bars with
+   LPE.pipeRun() - no walls, no elbows, no tees - and the runs started at
+   x=0, so the feed was clipped by the panel edge instead of entering
+   through the wall. The injector also sat LEFT of the valve while the draw
+   order went main -> valve -> injector, which asked for a run of negative
+   width and left a hole in the line.                                     */
+let NET=null, NETKEY='', FLOW=null;
+
+function netKey(){ return S.run; }
+
+function buildNet(){
   const T=LAY.tank, I=LAY.inj, M=LAY.mix, SP=LAY.split;
+  const r=runNow(), rr=rOf(r.bore), small=r.bore<MAIN_BORE-1e-6;
+  const x0=M.x, x1=M.x+M.w;                       // the spool's own ends
+  const a0=x0+RED_W, a1=x1-RED_W;                 // where the spool bore starts
+  const injX=I.x+I.w/2;
+
+  const lines=[
+    // feed in through the wall, through the valve, to the injector
+    {pts:[[LAY.pen.x+12,PIPE_Y],[I.x,PIPE_Y]], r:R_MAIN},
+    // injector out to the mixing run
+    {pts:[[I.x+I.w,PIPE_Y],[small?x0:a0,PIPE_Y]], r:R_MAIN},
+    // the spool itself
+    {pts:[[small?a0:x0,PIPE_Y],[small?a1:x1,PIPE_Y]], r:rr},
+    // out of the spool to the split, then on to the two beds
+    {pts:[[small?a1:x1,PIPE_Y],[SP.x,PIPE_Y]], r:R_MAIN},
+    {pts:[[SP.x,PIPE_Y],[SP.x,bedAY()],[LAY.bedA.x,bedAY()]], r:R_BED},
+    {pts:[[SP.x,PIPE_Y],[SP.x,bedBY()],[LAY.bedB.x,bedBY()]], r:R_BED},
+    // stock suction: straight down out of the tank into the injector
+    {pts:[[injX,T.y+T.h],[injX,PIPE_Y-I.h/2]], r:5},
+  ];
+  return {
+    net: LPE.piping({
+      lines,
+      /* No tee here. The engine's tee is a side-outlet whose branch leaves
+         along +x; this split sends one branch up and one down, which that
+         fitting cannot describe. A flanged split with a radiused elbow each
+         way is what a small two-bed split is actually built from. */
+      tees:[],
+      reducers: small
+        ? [{x0:x0,x1:a0,y:PIPE_Y,r1:R_MAIN,r2:rr},
+           {x0:a1,x1:x1,y:PIPE_Y,r1:rr,r2:R_MAIN}]
+        : [],
+      fittings:[{x:LAY.pen.x+30,y:PIPE_Y,r:R_MAIN,kind:'union'},
+                {x:SP.x-R_MAIN,y:PIPE_Y,r:R_MAIN,kind:'union'}],
+    }),
+    rr, small, a0, a1, x0, x1,
+  };
+}
+
+/* The fluid is the engine's Line, the same object levels 1 and 2 carry, so
+   every marker in the game is the one square marker() draws. The dosing
+   skid used to stamp its own fillRects in its own colours and sizes. */
+function buildFlow(){
+  const I=LAY.inj, SP=LAY.split, G=NET;
+  FLOW=new LPE.Line({
+    r:R_MAIN,
+    segments:[
+      {ax:LAY.pen.x+12, ay:PIPE_Y, bx:I.x,  by:PIPE_Y, r:R_MAIN},
+      {ax:I.x+I.w, ay:PIPE_Y, bx:G.small?G.a0:G.x0, by:PIPE_Y, r:R_MAIN},
+      {ax:G.small?G.a0:G.x0, ay:PIPE_Y, bx:G.small?G.a1:G.x1, by:PIPE_Y, r:G.rr},
+      {ax:G.small?G.a1:G.x1, ay:PIPE_Y, bx:SP.x, by:PIPE_Y, r:R_MAIN},
+      {ax:SP.x, ay:PIPE_Y, bx:SP.x, by:bedAY(), r:R_BED},
+      {ax:SP.x, ay:bedAY(), bx:LAY.bedA.x, by:bedAY(), r:R_BED},
+      {ax:SP.x, ay:PIPE_Y, bx:SP.x, by:bedBY(), r:R_BED},
+      {ax:SP.x, ay:bedBY(), bx:LAY.bedB.x, by:bedBY(), r:R_BED},
+    ],
+  });
+}
+
+function syncNet(){
+  const k=netKey();
+  if(k===NETKEY && NET) return;
+  NETKEY=k; NET=buildNet(); buildFlow();
+}
+
+/* Flow is advanced in step(dt), not in draw(), so the markers move at a
+   rate tied to real time rather than to how often the frame happens to
+   be painted - the same split levels 1 and 2 use. */
+function stepFlow(dt,s){
+  syncNet();
+  const live=s.q>0.004, f=live?Math.min(1,s.v/3):0;
+  FLOW.regime = s.regime==='still' ? 'laminar' : s.regime;
+  for(let i=0;i<FLOW.segs.length;i++) FLOW.set(i,{flow: i>=4 ? f*0.5 : f});   // 4..7 are the two bed branches
+  FLOW.update(dt);
+}
+
+function drawSkid(g,s){
+  const T=LAY.tank, I=LAY.inj, M=LAY.mix;
+  syncNet();
 
   // stock tank
   g.fillStyle='#2b343a'; A.rr(g,T.x,T.y,T.w,T.h,6); g.fill();
   g.fillStyle='#39444b'; g.fillRect(T.x,T.y,T.w,5);
-  const lv=T.y+30;
+  const lv=T.y+26;
   g.fillStyle='rgba(126,196,122,0.55)'; g.fillRect(T.x+6,lv,T.w-12,T.h-(lv-T.y)-8);
   g.fillStyle='rgba(160,220,150,0.8)'; g.fillRect(T.x+6,lv,T.w-12,2);
   g.strokeStyle='#4a565d'; g.lineWidth=2; A.rr(g,T.x,T.y,T.w,T.h,6); g.stroke();
   g.fillStyle=P.rim; g.font="11px 'VT323',monospace"; g.textAlign='center';
-  g.fillText('STOCK',T.x+T.w/2,T.y+20);
+  g.fillText('STOCK',T.x+T.w/2,T.y+18);
   g.font="9px 'VT323',monospace"; g.fillStyle='#8fb9ff';
   g.fillText('SG 1.22',T.x+T.w/2,T.y+T.h+13);
   g.textAlign='left';
 
-  // suction line up to the injector
-  g.strokeStyle='#39444b'; g.lineWidth=7; g.lineCap='round';
-  g.beginPath(); g.moveTo(T.x+T.w/2,T.y+T.h);
-  g.quadraticCurveTo(T.x+T.w/2+40,T.y+T.h+26,I.x+I.w/2,I.y+I.h+6); g.stroke();
+  // all the metal, in one pass, bores last
+  NET.net.draw(g);
+  LPE.penetration(g, LAY.pen.x, PIPE_Y, R_MAIN);
 
-  // feed main in, through the valve, to the injector
-  LPE.pipeRun(g, 0, LAY.wheel.x-14, PIPE_Y, 11);
-  LPE.valveBody(g, LAY.wheel.x, PIPE_Y, 11, LAY.wheel.y, S.turn, LAY.wheel.r,
-                !S.closing, s.q>0.004);
-  LPE.pipeRun(g, LAY.wheel.x+14, I.x, PIPE_Y, 11);
+  // the fluid, through the bores the metal just opened
+  const live=s.q>0.004;
+  FLOW.draw(g);
 
-  // the injector
+  // the valve sits IN the line
+  LPE.valveBody(g, LAY.wheel.x, PIPE_Y, R_MAIN, LAY.wheel.y, S.turn, LAY.wheel.r,
+                !S.closing, live);
+
+  // the injector body, straddling the run
   g.fillStyle='#4a565d'; A.rr(g,I.x,I.y,I.w,I.h,4); g.fill();
   g.fillStyle='#6d7a84'; g.fillRect(I.x,I.y,I.w,2);
   g.strokeStyle='#2b343a'; g.lineWidth=2; A.rr(g,I.x,I.y,I.w,I.h,4); g.stroke();
   g.fillStyle=P.rim; g.font="9px 'VT323',monospace"; g.textAlign='center';
   g.fillText('1:100',I.x+I.w/2,I.y+I.h/2+3);
   g.textAlign='left';
-  LPE.pipeRun(g, I.x+I.w, M.x, PIPE_Y, 11);      // injector out to the mixing run
 
-  // the mixing run: outside stays put, bore changes
-  const r=s.r, cy=M.y+M.h/2;
-  const hOut=M.h, hBore=Math.round(M.h*(r.bore/0.824));
-  g.fillStyle='#39444b'; g.fillRect(M.x,cy-hOut/2,M.w,hOut);
-  g.fillStyle='#6d7a84'; g.fillRect(M.x,cy-hOut/2,M.w,2);
-  g.fillStyle='#10161a'; g.fillRect(M.x,cy-hBore/2,M.w,hBore);
-  // the ribbon, or the mix
-  if(s.q>0.004){
-    const t=performance.now()*0.001;
-    for(let i=0;i<46;i++){
-      const px=M.x+((i*31 + t*s.v*52)%M.w);
-      /* laminar: the concentrate stays as a band in the upper half and the
-         water below it never gets it. turbulent: it is everywhere. */
+  /* The concentrate ribbon. This is the one thing the level draws itself,
+     because it is not the carrier fluid - it is the dosed stream, and
+     whether it has blended INTO the carrier is the entire puzzle. It rides
+     the same square marker shape and the same spacing as every other fluid
+     in the game; only the hue says "this is the concentrate". */
+  if(live){
+    const t=performance.now()*0.001, rr=NET.rr;
+    const x0=NET.small?NET.a0:NET.x0, x1=NET.small?NET.a1:NET.x1;
+    for(let i=0;i<34;i++){
+      const px=x0+((i*29 + t*s.v*52)%(x1-x0));
+      /* laminar: the concentrate stays a band in the upper half and the
+         water under it never gets any. turbulent: it is everywhere. */
       const lane = s.mix>=1 ? (Math.random()*2-1)
                  : (Math.random()*2-1)*s.mix + (1-s.mix)*(-0.45);
-      const py=cy+lane*(hBore/2)*0.82;
-      const conc = s.mix>=1 ? (i%3===0) : (lane<0);
-      g.fillStyle = conc ? 'rgba(126,196,122,0.9)' : 'rgba(54,224,255,0.55)';
-      const sz = conc ? 2.9 : 2.4;              // SG 1.22 draws heavier
-      g.fillRect(px-sz/2,py-sz/2,sz,sz);
+      const py=PIPE_Y+lane*rr*0.82;
+      g.fillStyle='rgba(126,196,122,0.9)';
+      g.fillRect(px-1.2,py-1.2,2.4,2.4);        // marker()'s square, at SG 1.0 size
     }
   }
-  g.fillStyle=P.amber; g.font="11px 'VT323',monospace"; g.textAlign='center';
-  g.fillText(r.label, M.x+M.w/2, M.y-6);
-  g.textAlign='left';
 
-  // out of the mixing run to the split
-  LPE.pipeRun(g, M.x+M.w, SP.x, cy, 11);
-  g.fillStyle='#39444b'; g.fillRect(SP.x-8,LAY.bedA.y+30,16,LAY.bedB.y+30-(LAY.bedA.y+30));
-  [LAY.bedA,LAY.bedB].forEach(bd=>{
-    LPE.pipeRun(g, SP.x, bd.x, bd.y+30, 8);
-  });
+  g.fillStyle=P.amber; g.font="11px 'VT323',monospace"; g.textAlign='center';
+  g.fillText(runNow().label, M.x+M.w/2, PIPE_Y-rOf(runNow().bore)-14);
+  g.textAlign='left';
 
   // the beds, coloured by how far off band they are
   [[LAY.bedA,s.ecA,'BED A'],[LAY.bedB,s.ecB,'BED B']].forEach(([bd,ec,name])=>{
-    const ok = ec>=EC_LO && ec<=EC_HI, live = s.q>0.004;
+    const ok = ec>=EC_LO && ec<=EC_HI;
     g.fillStyle='#232a2f'; A.rr(g,bd.x,bd.y,bd.w,bd.h,4); g.fill();
     g.strokeStyle= live ? (ok?'#39ff6a':'#c0493b') : '#4a565d';
     g.lineWidth=2; A.rr(g,bd.x,bd.y,bd.w,bd.h,4); g.stroke();
@@ -5444,6 +5538,7 @@ function closeOut(i){
 /* ---- frame ---- */
 function step(dt){
   const s=solve();
+  stepFlow(dt,s);
   S.turn += (S.feed - S.turn)*Math.min(1,dt*6);
   if(!SH.done && !S.closing && STEPS[si]){
     const st=STEPS[si];
@@ -5592,15 +5687,21 @@ const TRIMS=[
 
 const S={ open:0, trim:1, drag:false, lastAng:0, turn:0, closing:false, wear:0, run:0 };
 
+const R_HDR=9;                 // the mist header is a branch, not a main
 const LAY={
-  hdr  : {y:188},
-  wheel: {x:214, y:124, r:26},
+  hdr  : {y:172},
+  pen  : {x:16},                // the header comes in through the bay wall
+  wheel: {x:214, y:108, r:26},
   valve: {x:214},
-  trace: {x:300, y:62, w:330, h:104},
+  drop : {x:272},               // where the header turns down into the pod
+  trace: {x:300, y:50, w:330, h:98},
   pod  : {x:300, y:214, w:330, h:116},
   rack : {x:300, y:338, w:330, h:46},
-  read : {x:652, y:62,  w:206, h:118},
+  read : {x:652, y:50,  w:206, h:112},
 };
+const RAIL_Y=()=>LAY.pod.y+14;            // the nozzle rail IS the header
+const NOZZ=6;
+const nozzX=i=>LAY.pod.x+32+i*((LAY.pod.w-64)/(NOZZ-1));
 
 function trimNow(){ return TRIMS.find(t=>t.n===S.trim) || TRIMS[0]; }
 
@@ -5636,6 +5737,54 @@ function buildScene(){
   A.stencil(g,44,330,'HYPOBARIC \u2014 51 kPa',12,'#c0493b');
   A.stencil(g,300,206,'POD 3',11,'#8b949b');
   A.stencil(g,300,332,'TRIM',11,'#8b949b');
+}
+
+/* ---- the header ----
+   Declared as a run and handed to LPE.piping(), the way levels 1 and 2 do
+   it. What was here before drew two flat bars with LPE.pipeRun(): the first
+   started at x=0 so the header was clipped by the panel edge instead of
+   entering through the wall, and the second stopped at pod.x+20 on the
+   header centreline - 40 px above, and short of, the nozzle rail it is
+   supposed to feed. The comment said "into the pod"; the pipe ended in mid
+   air and the rail inside the pod was an unconnected rectangle. The run now
+   turns down at LAY.drop, penetrates the pod wall, and BECOMES the rail. */
+let NET=null, FLOW=null;
+
+function buildNet(){
+  const y=LAY.hdr.y, ry=RAIL_Y(), D=LAY.pod;
+  NET=LPE.piping({
+    lines:[{pts:[[LAY.pen.x+12,y],[LAY.drop.x,y],[LAY.drop.x,ry],
+                 [D.x+D.w-12,ry]], r:R_HDR}],
+    /* A nozzle is a bored block on the rail, not a pipe fitting, so each one
+       is a collar pair on the run with its body drawn under the rail. */
+    fittings:[{x:LAY.pen.x+30,y:y,r:R_HDR,kind:'union'}],
+  });
+  FLOW=new LPE.Line({
+    r:R_HDR,
+    segments:[
+      {ax:LAY.pen.x+12, ay:y,  bx:LAY.drop.x, by:y,  r:R_HDR},
+      {ax:LAY.drop.x, ay:y,  bx:LAY.drop.x, by:ry, r:R_HDR},
+      {ax:LAY.drop.x, ay:ry, bx:D.x+D.w-12, by:ry, r:R_HDR},
+    ],
+  });
+}
+
+function stepFlow(dt,s){
+  if(!NET) buildNet();
+  /* A cavitating valve passes less, and passes it unevenly. */
+  const f = s.live ? (s.cav ? 0.45 : 1) * Math.min(1, s.q/1.5) : 0;
+  for(let i=0;i<FLOW.segs.length;i++) FLOW.set(i,{flow:f});
+  FLOW.update(dt);
+}
+
+function drawHeader(g,s){
+  if(!NET) buildNet();
+  NET.draw(g);
+  LPE.penetration(g, LAY.pen.x, LAY.hdr.y, R_HDR);     // in through the bay wall
+  LPE.penetration(g, LAY.pod.x-6, RAIL_Y(), R_HDR);    // in through the pod wall
+  FLOW.draw(g);
+  LPE.valveBody(g, LAY.wheel.x, LAY.hdr.y, R_HDR, LAY.wheel.y, S.turn, LAY.wheel.r,
+                !S.closing, s.live);
 }
 
 /* ---- the pressure trace through the trim stack ---- */
@@ -5695,12 +5844,13 @@ function drawPod(g,s){
   const D=LAY.pod;
   g.fillStyle='#101a16'; A.rr(g,D.x,D.y,D.w,D.h,5); g.fill();
   g.strokeStyle='#39444b'; g.lineWidth=2; A.rr(g,D.x,D.y,D.w,D.h,5); g.stroke();
-  // the nozzle rail
-  g.fillStyle='#39444b'; g.fillRect(D.x+12,D.y+14,D.w-24,7);
-  const nz=6;
+  /* The rail is no longer drawn here - it is the header run itself, laid in
+     by drawHeader() before the pod so the chamber does not paint over it.
+     Only the nozzle bodies hang off it. */
+  const nz=NOZZ;
   for(let i=0;i<nz;i++){
-    const nx=D.x+32+i*((D.w-64)/(nz-1));
-    g.fillStyle='#5d6a73'; g.fillRect(nx-3,D.y+21,6,7);
+    const nx=nozzX(i);
+    g.fillStyle='#5d6a73'; g.fillRect(nx-3,RAIL_Y()+R_HDR,6,7);
     if(s.live){
       /* a cavitating valve passes less, and what comes out is coarse and
          uneven rather than a mist */
@@ -5709,7 +5859,7 @@ function drawPod(g,s){
       for(let d=0;d<nDrops;d++){
         const t=(performance.now()*0.0012+d*0.13+i*0.07)%1;
         const px=nx+(good?(Math.random()*2-1)*13:(Math.random()*2-1)*5);
-        const py=D.y+28+t*(D.h-52);
+        const py=RAIL_Y()+R_HDR+9+t*(D.h-56);
         g.fillStyle=good?'rgba(150,215,255,0.5)':'rgba(140,180,205,0.75)';
         const sz=good?1.6:3.0;
         g.fillRect(px-sz/2,py-sz/2,sz,sz);
@@ -5824,6 +5974,7 @@ function closeOut(i){
 
 function step(dt){
   const s=solve();
+  stepFlow(dt,s);
   S.turn += (S.open-S.turn)*Math.min(1,dt*6);
   S.run += dt;
   if(s.cav) S.wear=Math.min(1,S.wear+dt*0.05*s.sev);
@@ -5843,12 +5994,9 @@ function draw(g){
   if(!BG) buildScene();
   const s=solve();
   g.drawImage(BG,0,0);
-  // header in, through the valve, into the pod
-  LPE.pipeRun(g, 0, LAY.wheel.x-14, LAY.hdr.y, 11);
-  LPE.valveBody(g, LAY.wheel.x, LAY.hdr.y, 11, LAY.wheel.y, S.turn, LAY.wheel.r,
-                !S.closing, s.live);
-  LPE.pipeRun(g, LAY.wheel.x+14, LAY.pod.x+20, LAY.hdr.y, 11);
-  drawTrace(g,s); drawPod(g,s); drawRack(g); drawRead(g,s);
+  /* The pod goes down BEFORE the header, so the chamber body cannot close
+     the rail's bore where the run crosses its wall. */
+  drawTrace(g,s); drawPod(g,s); drawHeader(g,s); drawRack(g); drawRead(g,s);
   // the rattle, drawn as a shiver on the valve when it is cavitating
   if(s.cav && s.live){
     const j=()=>(Math.random()*2-1)*2.2*s.sev;

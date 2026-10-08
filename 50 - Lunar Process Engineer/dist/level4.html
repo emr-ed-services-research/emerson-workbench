@@ -1940,15 +1940,21 @@ const TRIMS=[
 
 const S={ open:0, trim:1, drag:false, lastAng:0, turn:0, closing:false, wear:0, run:0 };
 
+const R_HDR=9;                 // the mist header is a branch, not a main
 const LAY={
-  hdr  : {y:188},
-  wheel: {x:214, y:124, r:26},
+  hdr  : {y:172},
+  pen  : {x:16},                // the header comes in through the bay wall
+  wheel: {x:214, y:108, r:26},
   valve: {x:214},
-  trace: {x:300, y:62, w:330, h:104},
+  drop : {x:272},               // where the header turns down into the pod
+  trace: {x:300, y:50, w:330, h:98},
   pod  : {x:300, y:214, w:330, h:116},
   rack : {x:300, y:338, w:330, h:46},
-  read : {x:652, y:62,  w:206, h:118},
+  read : {x:652, y:50,  w:206, h:112},
 };
+const RAIL_Y=()=>LAY.pod.y+14;            // the nozzle rail IS the header
+const NOZZ=6;
+const nozzX=i=>LAY.pod.x+32+i*((LAY.pod.w-64)/(NOZZ-1));
 
 function trimNow(){ return TRIMS.find(t=>t.n===S.trim) || TRIMS[0]; }
 
@@ -1984,6 +1990,54 @@ function buildScene(){
   A.stencil(g,44,330,'HYPOBARIC \u2014 51 kPa',12,'#c0493b');
   A.stencil(g,300,206,'POD 3',11,'#8b949b');
   A.stencil(g,300,332,'TRIM',11,'#8b949b');
+}
+
+/* ---- the header ----
+   Declared as a run and handed to LPE.piping(), the way levels 1 and 2 do
+   it. What was here before drew two flat bars with LPE.pipeRun(): the first
+   started at x=0 so the header was clipped by the panel edge instead of
+   entering through the wall, and the second stopped at pod.x+20 on the
+   header centreline - 40 px above, and short of, the nozzle rail it is
+   supposed to feed. The comment said "into the pod"; the pipe ended in mid
+   air and the rail inside the pod was an unconnected rectangle. The run now
+   turns down at LAY.drop, penetrates the pod wall, and BECOMES the rail. */
+let NET=null, FLOW=null;
+
+function buildNet(){
+  const y=LAY.hdr.y, ry=RAIL_Y(), D=LAY.pod;
+  NET=LPE.piping({
+    lines:[{pts:[[LAY.pen.x+12,y],[LAY.drop.x,y],[LAY.drop.x,ry],
+                 [D.x+D.w-12,ry]], r:R_HDR}],
+    /* A nozzle is a bored block on the rail, not a pipe fitting, so each one
+       is a collar pair on the run with its body drawn under the rail. */
+    fittings:[{x:LAY.pen.x+30,y:y,r:R_HDR,kind:'union'}],
+  });
+  FLOW=new LPE.Line({
+    r:R_HDR,
+    segments:[
+      {ax:LAY.pen.x+12, ay:y,  bx:LAY.drop.x, by:y,  r:R_HDR},
+      {ax:LAY.drop.x, ay:y,  bx:LAY.drop.x, by:ry, r:R_HDR},
+      {ax:LAY.drop.x, ay:ry, bx:D.x+D.w-12, by:ry, r:R_HDR},
+    ],
+  });
+}
+
+function stepFlow(dt,s){
+  if(!NET) buildNet();
+  /* A cavitating valve passes less, and passes it unevenly. */
+  const f = s.live ? (s.cav ? 0.45 : 1) * Math.min(1, s.q/1.5) : 0;
+  for(let i=0;i<FLOW.segs.length;i++) FLOW.set(i,{flow:f});
+  FLOW.update(dt);
+}
+
+function drawHeader(g,s){
+  if(!NET) buildNet();
+  NET.draw(g);
+  LPE.penetration(g, LAY.pen.x, LAY.hdr.y, R_HDR);     // in through the bay wall
+  LPE.penetration(g, LAY.pod.x-6, RAIL_Y(), R_HDR);    // in through the pod wall
+  FLOW.draw(g);
+  LPE.valveBody(g, LAY.wheel.x, LAY.hdr.y, R_HDR, LAY.wheel.y, S.turn, LAY.wheel.r,
+                !S.closing, s.live);
 }
 
 /* ---- the pressure trace through the trim stack ---- */
@@ -2043,12 +2097,13 @@ function drawPod(g,s){
   const D=LAY.pod;
   g.fillStyle='#101a16'; A.rr(g,D.x,D.y,D.w,D.h,5); g.fill();
   g.strokeStyle='#39444b'; g.lineWidth=2; A.rr(g,D.x,D.y,D.w,D.h,5); g.stroke();
-  // the nozzle rail
-  g.fillStyle='#39444b'; g.fillRect(D.x+12,D.y+14,D.w-24,7);
-  const nz=6;
+  /* The rail is no longer drawn here - it is the header run itself, laid in
+     by drawHeader() before the pod so the chamber does not paint over it.
+     Only the nozzle bodies hang off it. */
+  const nz=NOZZ;
   for(let i=0;i<nz;i++){
-    const nx=D.x+32+i*((D.w-64)/(nz-1));
-    g.fillStyle='#5d6a73'; g.fillRect(nx-3,D.y+21,6,7);
+    const nx=nozzX(i);
+    g.fillStyle='#5d6a73'; g.fillRect(nx-3,RAIL_Y()+R_HDR,6,7);
     if(s.live){
       /* a cavitating valve passes less, and what comes out is coarse and
          uneven rather than a mist */
@@ -2057,7 +2112,7 @@ function drawPod(g,s){
       for(let d=0;d<nDrops;d++){
         const t=(performance.now()*0.0012+d*0.13+i*0.07)%1;
         const px=nx+(good?(Math.random()*2-1)*13:(Math.random()*2-1)*5);
-        const py=D.y+28+t*(D.h-52);
+        const py=RAIL_Y()+R_HDR+9+t*(D.h-56);
         g.fillStyle=good?'rgba(150,215,255,0.5)':'rgba(140,180,205,0.75)';
         const sz=good?1.6:3.0;
         g.fillRect(px-sz/2,py-sz/2,sz,sz);
@@ -2172,6 +2227,7 @@ function closeOut(i){
 
 function step(dt){
   const s=solve();
+  stepFlow(dt,s);
   S.turn += (S.open-S.turn)*Math.min(1,dt*6);
   S.run += dt;
   if(s.cav) S.wear=Math.min(1,S.wear+dt*0.05*s.sev);
@@ -2191,12 +2247,9 @@ function draw(g){
   if(!BG) buildScene();
   const s=solve();
   g.drawImage(BG,0,0);
-  // header in, through the valve, into the pod
-  LPE.pipeRun(g, 0, LAY.wheel.x-14, LAY.hdr.y, 11);
-  LPE.valveBody(g, LAY.wheel.x, LAY.hdr.y, 11, LAY.wheel.y, S.turn, LAY.wheel.r,
-                !S.closing, s.live);
-  LPE.pipeRun(g, LAY.wheel.x+14, LAY.pod.x+20, LAY.hdr.y, 11);
-  drawTrace(g,s); drawPod(g,s); drawRack(g); drawRead(g,s);
+  /* The pod goes down BEFORE the header, so the chamber body cannot close
+     the rail's bore where the run crosses its wall. */
+  drawTrace(g,s); drawPod(g,s); drawHeader(g,s); drawRack(g); drawRead(g,s);
   // the rattle, drawn as a shiver on the valve when it is cavitating
   if(s.cav && s.live){
     const j=()=>(Math.random()*2-1)*2.2*s.sev;
