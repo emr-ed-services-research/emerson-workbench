@@ -31,24 +31,82 @@ const LAY={
      so the run enters and leaves the frame at the same bore. An 18px pipe
      either side of a 92px window read as two unrelated objects. */
   glass : {x:206,y:148,w:470,h:88},
-  meter : {x:648,y:262,w:222,h:84},
+  meter : {x:648,y:246,w:222,h:108},
   flowS : {box:{x:196,y:262,w:128,h:22}, track:{x:334,y:273,w:188}},
   tempS : {box:{x:196,y:300,w:150,h:22}, track:{x:356,y:311,w:166}},
-  bottle: {x:40, y:262, w:34, h:62, pitch:44},
+  fsw   : {x:28, y:242, w:156, h:124, sx:40, sy:266, pitch:34},
+  sched : {x:366, y:332, w:182, h:48, pitch:64, bw:54},
   lamp  : {x:742,y:30,r:30},
   mug   : {x:556,y:338},
   book  : {x:196,y:338,w:150,h:50},
   rule  : {x:630,y:376,w:230},
 };
 
-const B={ flow:0, temp:20, fluid:'water', watch:0, drag:null };
+const B={ flow:0, temp:20, fluid:'water', section:'sch40', b1:0, b2:0, watch:0, drag:null };
 const CUT=new LPE.Cutaway({x:LAY.glass.x,y:LAY.glass.y,w:LAY.glass.w,h:LAY.glass.h});
 const FKEYS=['water','co2','propane'];
-const BOTTLE=FKEYS.map((k,i)=>({k,x:LAY.bottle.x+i*LAY.bottle.pitch,y:LAY.bottle.y,
-                                w:LAY.bottle.w,h:LAY.bottle.h}));
+const FSW=FKEYS.map((k,i)=>({k, x:LAY.fsw.sx, y:LAY.fsw.sy+i*LAY.fsw.pitch}));
 const BHIT=6;
 
-const BORE_IN=0.493, BORE_AREA=0.00133;        // NPS 3/8 Sch 40, B36.10M
+/* ---- the sections on the desk ----
+   Three short pieces of the same NPS 3/8 run, any one of which can be
+   fitted to the bench. Two differ only in wall thickness; the third is
+   necked down in the middle.
+
+   ASME B36.10M. Outside diameter is fixed by the nominal size - that is
+   what "3/8 pipe" buys you - and the schedule decides how much of it is
+   wall:
+
+     section     OD      wall     bore     flow area    restriction
+     SCH 40      0.675   0.091    0.493    0.00133      -
+     SCH 80      0.675   0.126    0.423    0.00098      -
+     REDUCER     0.675   0.091    0.493    0.00133      Cv 0.296
+
+   The reducer's Cv comes from sizing.js, which is also where level 2 gets
+   the one it pulls out of bed 3. */
+const PIPE_OD = 0.675;
+const SECTION = {
+  sch40:   { label:'SCH 40',  wall:0.091, bore:0.493, area:0.00133, cv:null },
+  sch80:   { label:'SCH 80',  wall:0.126, bore:0.423, area:0.00098, cv:null },
+  /* The throat is not decoration. sizing.js derives it from the Cv the
+     duty needs, Cv = 29.9 d^2 / sqrt(K) with K for a sudden contraction
+     and expansion, and gets 0.108 in - beta 0.219 of the bore. Area goes
+     as beta^2, so the throat is 4.8% of the bore area and the fluid
+     through it is 21 times faster. */
+  reducer: { label:'REDUCER', wall:0.091, bore:0.493, area:0.00133, cv:0.296,
+             throat:0.108, beta:0.219 },
+};
+const SECKEYS = ['sch40','sch80','reducer'];
+function pipeNow(){ return SECTION[B.section] || SECTION.sch40; }
+
+/* Two resistances in series share the pump's pressure: 1/Cv^2 = sum of
+   1/Cvi^2. With nothing fitted the valve takes all of it and there is no
+   difference across the test section at all - which is the lesson. */
+function seriesCv(a,b){ return b==null ? a : 1/Math.sqrt(1/(a*a) + 1/(b*b)); }
+
+function rig(){
+  if(manifoldOn()) return manifold();
+  const f=fluidNow(), p=pipeNow();
+  const cvV=BENCH_CV*B.flow;
+  const cvT=seriesCv(cvV, p.cv);
+  const q=FL.flow(cvT, BENCH_DP, f);
+  const v=q/448.831/p.area;
+  const t=tempLocked()?20:B.temp;
+  const re=B.flow>0.001?FL.reynolds(v,p.bore,f,t):0;
+  /* P2 is the bench discharge, open to the room, so zero gauge. P1 is what
+     is left standing between the valve and the restriction - which is the
+     whole of the restriction's share of the drop. */
+  const p2=0;
+  const p1=p.cv ? Math.pow(q/p.cv,2)*f.sg : 0;
+  /* Velocity THROUGH the throat, by continuity. The bore reading falls
+     when the reducer goes in, because the restriction takes flow out of
+     the line - so a panel showing only bore velocity contradicts the
+     lesson it is sitting next to. This is the number that rises. */
+  const aThroat = p.throat ? Math.PI*Math.pow(p.throat/2,2)/144 : null;
+  const vThroat = aThroat ? q/448.831/aThroat : null;
+  return {f,q,v,vThroat,re,t,p1,p2,dp:p1-p2,
+          regime:B.flow<=0.001?'still':FL.regime(re)};
+}
 const BENCH_CV=0.25, BENCH_DP=20;              // a needle valve and a bench pump
 const TRICKLE=[0.23,0.30], HOT=[72,80];
 
@@ -61,14 +119,6 @@ const SLID={
 
 function fluidNow(){ return FL.FLUIDS[B.fluid]; }
 function tempLocked(){ return B.fluid!=='water'; }
-function rig(){
-  const f=fluidNow();
-  const q=FL.flow(BENCH_CV*B.flow, BENCH_DP, f);
-  const v=q/448.831/BORE_AREA;
-  const t=tempLocked()?20:B.temp;
-  const re=B.flow>0.001?FL.reynolds(v,BORE_IN,f,t):0;
-  return {f,q,v,re,t,regime:B.flow<=0.001?'still':FL.regime(re)};
-}
 
 /* ---- the desk ---- */
 let BG;
@@ -89,26 +139,102 @@ function buildDesk(){
   g.fillStyle='#241c13'; g.fillRect(0,155,W,3);
   A.dither(g,0,336,W,H-336,'#1a140d',0.5);              // front edge falls away
 
-  // poster, pinned, soft at one corner
-  const PO={x:48,y:22,w:120,h:104};
-  g.fillStyle='#2a2320'; g.fillRect(PO.x,PO.y,PO.w,PO.h);
-  g.fillStyle='#8a4a1e'; g.fillRect(PO.x+6,PO.y+6,PO.w-12,34);
-  A.dither(g,PO.x+6,PO.y+6,PO.w-12,34,'#d9a441',0.35);
-  A.stencil(g,PO.x+12,PO.y+26,'CIRCUIT',14,'#f0d7a8');
-  A.stencil(g,PO.x+12,PO.y+38,'EDGE',14,'#f0d7a8');
-  for(let ly=PO.y+50;ly<PO.y+PO.h-8;ly+=9){
-    g.fillStyle='#4a3f38'; g.fillRect(PO.x+10,ly,PO.w-28,2);
-  }
-  g.fillStyle='#17161a'; g.beginPath();                   // curled corner
-  g.moveTo(PO.x+PO.w,PO.y+PO.h); g.lineTo(PO.x+PO.w-18,PO.y+PO.h);
-  g.lineTo(PO.x+PO.w,PO.y+PO.h-18); g.closePath(); g.fill();
-  g.fillStyle='#6d7a84'; g.beginPath(); g.arc(PO.x+PO.w/2,PO.y+5,2.5,0,6.284); g.fill();
+  /* Vignette BEFORE the props. Level one's scene says it plainly - "room
+     first, then signage on top of it" - and the trainer had it last, so the
+     Bayer dither fell across every label and every object on the desk. */
+  A.vignetteOnto(g,W,H);
 
-  // a second pinned thing: a schedule chart, curling
+  /* Everything that HANGS on the wall goes above the vignette too, for the
+     same reason the lamp does: the vignette is a dither, and underneath it
+     the poster and the schedule chart came out speckled, as if printed on
+     sandpaper. The vignette darkens the room; it is not a surface finish
+     for the things in it. */
+  /* The Circuit's Edge box, pinned to the wall - a pixel homage to the 1990
+     Infocom/Westwood game, not a copy of the artwork. Flat inks and hard
+     edges, nothing dithered: a dithered band reads as a dirty surface and
+     this is meant to read as something that came off a press.
+
+     The composition follows what a 1990 box did: a hot night sky over a
+     low skyline, neon signage, a coated figure in the foreground with their
+     back to you, title across the top, publisher line at the foot. Paper
+     stands a few millimetres off the wall, so it throws a shadow down-left
+     like everything else on this desk. */
+  const PO={x:48,y:22,w:120,h:116};
+  g.fillStyle='rgba(8,6,4,0.55)'; g.fillRect(PO.x-3,PO.y+5,PO.w,PO.h);
+  g.fillStyle='#120f14'; g.fillRect(PO.x,PO.y,PO.w,PO.h);            // box board
+  g.fillStyle='#241e28'; g.fillRect(PO.x,PO.y,PO.w,1);
+
+  const AX=PO.x+5, AY=PO.y+16, AW=PO.w-10, AH=66;                    // the art panel
+  // night sky, banded from deep violet down to a sodium haze
+  const sky=['#2a1240','#3a1546','#55194a','#7d2448','#a8373c'];
+  sky.forEach((c,i)=>{ g.fillStyle=c; g.fillRect(AX,AY+i*7,AW,7); });
+  g.fillStyle='#f2c46a'; g.beginPath();                              // low moon
+  g.arc(AX+AW-22,AY+14,7,0,6.284); g.fill();
+
+  // skyline: blocky towers, a couple of domes, windows left burning
+  const tow=[[0,26,13],[13,34,9],[22,20,11],[33,30,8],[41,40,12],
+             [53,24,10],[63,33,14],[77,22,9],[86,30,12],[98,26,10]];
+  tow.forEach(([tx,th,tw])=>{
+    g.fillStyle='#1b1024'; g.fillRect(AX+tx,AY+AH-th,tw,th);
+    g.fillStyle='#ffcf6a';
+    for(let wy=AY+AH-th+3; wy<AY+AH-3; wy+=5)
+      for(let wx=AX+tx+2; wx<AX+tx+tw-2; wx+=4)
+        if((wx*7+wy*13)%5<2) g.fillRect(wx,wy,1,2);
+  });
+  g.fillStyle='#1b1024'; g.beginPath();                              // a dome
+  g.arc(AX+28,AY+AH-20,9,Math.PI,0); g.fill();
+  g.fillStyle='#2a1a34'; g.fillRect(AX,AY+AH-5,AW,5);                // the street
+
+  // neon, the one saturated thing in the frame
+  g.fillStyle='#2ad8ff'; g.fillRect(AX+6,AY+40,18,2);
+  g.fillStyle='#ff3ea5'; g.fillRect(AX+6,AY+44,12,2);
+  g.fillStyle='#2ad8ff'; g.fillRect(AX+AW-26,AY+36,2,14);
+  g.fillStyle='#ff3ea5'; g.fillRect(AX+AW-21,AY+39,2,11);
+
+  // the figure: long coat, back to us, standing in the street
+  const FX=AX+AW/2-7, FY=AY+30;
+  g.fillStyle='#0a070d';
+  g.fillRect(FX+1,FY+10,13,30);                                      // coat
+  g.fillRect(FX-2,FY+13,17,13);                                      // shoulders
+  g.fillRect(FX+4,FY,7,9);                                           // head
+  g.fillStyle='#120d16'; g.fillRect(FX+4,FY,7,3);                    // rim light, lamp side
+  g.fillStyle='#ff3ea5'; g.fillRect(FX+13,FY+14,1,22);               // neon edge on the coat
+  g.fillStyle='#2ad8ff'; g.fillRect(FX,FY+16,1,18);
+
+  g.strokeStyle='#3a3040'; g.lineWidth=1;                            // art panel border
+  g.strokeRect(AX+0.5,AY+0.5,AW-1,AH-1);
+
+  // title and footer, the parts a box has that a poster does not
+  A.stencil(g,PO.x+8,PO.y+11,'CIRCUIT\u2019S EDGE',11,'#ffd24a');
+  g.fillStyle='#8f8597'; g.font="10px 'VT323',monospace"; g.textAlign='left';
+  g.fillText('WHEN GRAVITY FAILS',PO.x+8,PO.y+AH+27);
+  g.fillStyle='#5f5668'; g.font="9px 'VT323',monospace";
+  g.fillText('INFOCOM',PO.x+8,PO.y+AH+38);
+  g.fillText('1990',PO.x+PO.w-28,PO.y+AH+38);
+  g.textAlign='left';
+
+  g.fillStyle='#17161a'; g.beginPath();                              // curled corner
+  g.moveTo(PO.x+PO.w,PO.y+PO.h); g.lineTo(PO.x+PO.w-16,PO.y+PO.h);
+  g.lineTo(PO.x+PO.w,PO.y+PO.h-16); g.closePath(); g.fill();
+  g.fillStyle='#2e2833'; g.beginPath();                              // the lifted flap
+  g.moveTo(PO.x+PO.w-16,PO.y+PO.h); g.lineTo(PO.x+PO.w,PO.y+PO.h-16);
+  g.lineTo(PO.x+PO.w-2,PO.y+PO.h-2); g.closePath(); g.fill();
+  g.fillStyle='#8a94a0'; g.beginPath(); g.arc(PO.x+PO.w/2,PO.y+4,2.5,0,6.284); g.fill();
+  g.fillStyle='#454f58'; g.fillRect(PO.x+PO.w/2-2,PO.y+5,5,1);       // pin, shaded
+
+  // a second pinned thing: a schedule chart
+  g.fillStyle='rgba(8,6,4,0.55)'; g.fillRect(185,35,96,78);
   g.fillStyle='#2e2a26'; g.fillRect(188,30,96,78);
+  g.fillStyle='#3a352f'; g.fillRect(188,30,96,1);
   A.stencil(g,194,44,'SCH 40',11,'#8b7f6a');
   for(let ly=52;ly<102;ly+=8){ g.fillStyle='#4a4238'; g.fillRect(194,ly,84,1); }
+  g.fillStyle='#8a94a0'; g.beginPath(); g.arc(236,34,2.5,0,6.284); g.fill();
 
+  /* The lamp goes on AFTER the vignette, with the props. It sits in the
+     top-right corner, which is exactly where the vignette dither is at its
+     densest - so drawn underneath it, the shade and the bulb came out
+     crawling with speckle, and so did the wall around them. A light source
+     is the one thing in a scene that must not look dirty. */
   // desk lamp: arm from the right, head over the apparatus
   const L=LAY.lamp;
   g.strokeStyle='#4a4038'; g.lineWidth=6;
@@ -118,47 +244,93 @@ function buildDesk(){
   g.lineTo(L.x-13,L.y-10); g.closePath(); g.fill();
   g.fillStyle='#ffd9a0'; g.fillRect(L.x-20,L.y+14,40,4);
 
-  /* the pool of light the cutaway is already shaded by - it should come
-     from somewhere on screen, not from nowhere */
-  for(let i=0;i<7;i++){
-    const t=i/7, yy=L.y+18+t*220, half=34+t*300;
-    A.dither(g,L.x-half,yy,half*2,34,'#ffd9a0',0.055*(1-t*0.75));
+  /* The pool of light the cutaway is already shaded by - it should come
+     from somewhere on screen, not from nowhere.
+
+     Drawn as flat translucent bands, not Bayer dither. Dither is right for
+     a surface with a texture; light has none, and speckling it put visible
+     grain across the whole top-right of the wall. Banding keeps the hard
+     steps the rest of the scene is drawn in without the crawl. */
+  for(let i=0;i<9;i++){
+    const t=i/9, yy=L.y+18+t*230, half=30+t*310;
+    g.fillStyle='rgba(255,217,160,'+(0.030*(1-t*0.72)).toFixed(3)+')';
+    g.fillRect(L.x-half,yy,half*2,30);
   }
 
-  // props: the bench belongs to someone
-  // mug, with the ring it has left behind
-  g.strokeStyle='#5c4a30'; g.lineWidth=2;
-  g.beginPath(); g.arc(LAY.mug.x+19,LAY.mug.y+20,20,0,6.284); g.stroke();
-  g.fillStyle='#8f3f2a'; A.rr(g,LAY.mug.x,LAY.mug.y,38,38,3); g.fill();
-  g.fillStyle='#6d2f1f'; g.fillRect(LAY.mug.x,LAY.mug.y,38,5);
-  g.strokeStyle='#8f3f2a'; g.lineWidth=4;
-  g.beginPath(); g.arc(LAY.mug.x+42,LAY.mug.y+18,9,-1.1,1.1); g.stroke();
-  A.stencil(g,LAY.mug.x+4,LAY.mug.y+24,'NUKEM',9,'#f0d7a8');
+  /* ---- props ----
+     Everything on this desk is lit by the lamp above right. That means one
+     light direction for the whole surface: highlights on the upper right of
+     a form, the darker face down-left, and a cast shadow thrown down-left
+     from every object that stands up off the laminate. The first pass drew
+     flat rectangles with a single tone band and no shadows, which is what
+     makes a scene read as placed rather than built. */
+  const LX=LAY.lamp.x, LY=LAY.lamp.y;
+  const cast=(x,y,w,h,amt)=>{                       // soft shadow, away from the lamp
+    const dx=(x+w/2-LX)*0.05, dy=10;
+    A.dither(g,x+dx-3,y+dy,w+6,h,'#0e0a05',amt===undefined?0.40:amt);
+  };
+  /* An upright form, shaded across its width: lit face toward the lamp,
+     two steps down away from it. */
+  const column=(x,y,w,h,lit,mid,dark)=>{
+    const n=5;
+    for(let i=0;i<n;i++){
+      const t=i/(n-1);
+      const toward = (x+w/2) < LX ? 1-t : t;        // which side faces the lamp
+      g.fillStyle = toward>0.72 ? lit : (toward>0.34 ? mid : dark);
+      g.fillRect(x+Math.round(t*w), y, Math.ceil(w/n)+1, h);
+    }
+  };
 
-  // steel rule along the desk edge
-  g.fillStyle='#8a94a0'; g.fillRect(LAY.rule.x,LAY.rule.y,LAY.rule.w,9);
-  g.fillStyle='#5d6a73';
-  for(let rx=LAY.rule.x+4;rx<LAY.rule.x+LAY.rule.w-4;rx+=10) g.fillRect(rx,LAY.rule.y,1,(rx-LAY.rule.x-4)%50===0?9:5);
+  // ---- mug: a cylinder, not a rounded square
+  const M=LAY.mug;
+  g.strokeStyle='#5c4a30'; g.lineWidth=2;           // the ring it has left
+  g.beginPath(); g.ellipse(M.x+19,M.y+34,24,8,0,0,6.284); g.stroke();
+  cast(M.x,M.y+6,40,30,0.34);
+  g.strokeStyle='#8f3f2a'; g.lineWidth=5;           // handle, behind the body
+  g.beginPath(); g.arc(M.x+40,M.y+20,10,-1.25,1.25); g.stroke();
+  g.strokeStyle='#5e2616'; g.lineWidth=2;
+  g.beginPath(); g.arc(M.x+41,M.y+20,10,-1.25,1.25); g.stroke();
+  column(M.x,M.y+4,38,36,'#a85338','#8f3f2a','#5e2616');
+  g.fillStyle='#c76b47'; g.fillRect(M.x,M.y+4,38,3);          // rim catches the lamp
+  g.fillStyle='#2a1109'; g.fillRect(M.x+3,M.y+5,32,3);        // the coffee
+  g.fillStyle='#120b06'; g.fillRect(M.x,M.y+37,38,3);
+  g.fillStyle='#f0d7a8'; g.font="10px 'VT323',monospace"; g.textAlign='center';
+  g.fillText('NUKEM',M.x+19,M.y+26); g.textAlign='left';
 
-  // a row of fittings someone was comparing
-  [0,1,2].forEach(i=>{
-    const fx=424+i*40, fy=352;
-    g.fillStyle='#4a565d'; g.fillRect(fx,fy,26,18);
-    g.fillStyle='#39444b'; g.fillRect(fx+5,fy-4,16,26);
-    g.fillStyle='#2b343a'; g.fillRect(fx+9,fy+4,8,10);
-  });
+  // ---- steel rule: bevelled, and it sits ON something
+  const RU=LAY.rule;
+  cast(RU.x,RU.y,RU.w,8,0.30);
+  g.fillStyle='#6d7a84'; g.fillRect(RU.x,RU.y,RU.w,9);
+  g.fillStyle='#aab4bd'; g.fillRect(RU.x,RU.y,RU.w,2);        // lit top edge
+  g.fillStyle='#3a434a'; g.fillRect(RU.x,RU.y+7,RU.w,2);
+  g.fillStyle='#2b343a';
+  for(let rx=RU.x+5;rx<RU.x+RU.w-4;rx+=9){
+    const major=(rx-RU.x-5)%45===0;
+    g.fillRect(rx,RU.y+2,1,major?6:3);
+  }
 
-  // notebook, open, in the same hand as the note on the supply panel
-  g.fillStyle='#d8cdb4'; A.rr(g,LAY.book.x,LAY.book.y,LAY.book.w,LAY.book.h,2); g.fill();
-  g.fillStyle='#bfb295'; g.fillRect(LAY.book.x+74,LAY.book.y,2,LAY.book.h);
-    g.fillStyle='#4a3b2a'; g.font="13px 'VT323',monospace"; g.textAlign='left';
-  g.fillText('cold water',LAY.book.x+9,LAY.book.y+18);
-  g.fillText('first.',LAY.book.x+9,LAY.book.y+32);
-  g.fillText('watch the',LAY.book.x+84,LAY.book.y+18);
-  g.fillText('middle  R.O.',LAY.book.x+84,LAY.book.y+32);
-  
+  /* The three loose fittings that used to sit here are gone: the two pipe
+     samples are drawn in the same place now, and they are a control. */
 
-  A.vignetteOnto(g,W,H);
+  // ---- notebook: paper, ruled, with a spiral and a lifted corner
+  const BK=LAY.book;
+  cast(BK.x,BK.y,BK.w,BK.h,0.34);
+  g.fillStyle='#cfc4ab'; A.rr(g,BK.x,BK.y,BK.w,BK.h,2); g.fill();
+  g.fillStyle='#e2d8c0'; g.fillRect(BK.x,BK.y,BK.w,BK.h-6);   // lit page
+  g.fillStyle='#b3a88e'; g.fillRect(BK.x,BK.y+BK.h-6,BK.w,6); // shadowed edge
+  for(let ly=BK.y+10; ly<BK.y+BK.h-8; ly+=9){
+    g.fillStyle='#c3b89c'; g.fillRect(BK.x+6,ly,BK.w-12,1);
+  }
+  g.fillStyle='#9d9177'; g.fillRect(BK.x+BK.w/2-1,BK.y,2,BK.h-6);
+  g.fillStyle='#8a94a0';
+  for(let sy=BK.y+6; sy<BK.y+BK.h-8; sy+=10){                 // spiral binding
+    g.fillRect(BK.x+BK.w/2-4,sy,8,2);
+  }
+  g.fillStyle='#4a3b2a'; g.font="13px 'VT323',monospace"; g.textAlign='left';
+  g.fillText('cold water',BK.x+7,BK.y+20);
+  g.fillText('first.',BK.x+7,BK.y+33);
+  g.fillText('watch the',BK.x+BK.w/2+8,BK.y+20);
+  g.fillText('middle  R.O.',BK.x+BK.w/2+8,BK.y+33);
 }
 
 /* ---- the apparatus, clamped to the desk ---- */
@@ -187,51 +359,378 @@ function drawRig(g,r){
     g.fillStyle='#141a1e'; g.fillRect(x0,cy+hr-2,x1-x0,2);
   };
   run(0,G.x-6); run(G.x+G.w+6,W);
+  /* The bore the markers run in is the bore the numbers use. Schedule 80
+     is the same pipe from outside and a third less hole, so the wall is
+     drawn into the window and the water column shrinks between it. */
+  const BR=boreRect(), G2=LAY.glass;
+  /* Hand the throat to the water as well as to the metal, so the markers
+     squeeze and accelerate through the neck instead of crossing a drawn
+     reducer at the speed they approached it. */
+  const pNow=pipeNow();
+  CUT.set({x:BR.x,y:BR.y,w:BR.w,h:BR.h,
+           throat: pNow.beta ? {at:THROAT_AT, span:THROAT_SPAN, beta:pNow.beta} : null});
   CUT.draw(g);
+  drawThroat(g);
+  const wallTop=BR.y-G2.y, wallBot=(G2.y+G2.h)-(BR.y+BR.h);
+  [[G2.y,wallTop],[BR.y+BR.h,wallBot]].forEach(([wy,wh])=>{
+    if(wh<=0) return;
+    const wg=g.createLinearGradient(0,wy,0,wy+wh);
+    wg.addColorStop(0,'#5a646e'); wg.addColorStop(.45,'#8e99a2'); wg.addColorStop(1,'#39424b');
+    g.fillStyle=wg; g.fillRect(G2.x,wy,G2.w,wh);
+    g.fillStyle='#20272c'; g.fillRect(G2.x,wy+(wh>6?wh-2:0),G2.w,2);
+  });
+}
+
+/* ---- the three sections, as a control that is the thing it controls ----
+   Short pieces of pipe you can see down. Same outside on all three; what
+   differs is the wall, and on the third one, the middle. */
+const SECBTN = SECKEYS.map((k,i)=>({
+  k, x:LAY.sched.x + i*LAY.sched.pitch, y:LAY.sched.y,
+  w:LAY.sched.bw, h:LAY.sched.h,
+}));
+
+function drawSections(g){
+  const live = liveCtl('section');
+  SECBTN.forEach(b=>{
+    const on = B.section===b.k, p = SECTION[b.k];
+    A.dither(g,b.x-3,b.y+b.h-6,b.w+6,8,'#0e0a05',0.34);
+    const cx=b.x+b.w/2, cy=b.y+b.h/2-6, R=15;
+    const wall = R * (p.wall / (PIPE_OD/2));
+    g.fillStyle = on?'#8d98a1':(live?'#5d6872':'#3c444b');
+    g.beginPath(); g.arc(cx,cy,R,0,6.284); g.fill();
+    g.fillStyle = '#c3ccd3';                        // the cut face, toward the lamp
+    g.beginPath(); g.arc(cx,cy,R,-2.4,-0.7); g.arc(cx,cy,R-wall,-0.7,-2.4,true); g.fill();
+    g.fillStyle = '#0b1013';
+    g.beginPath(); g.arc(cx,cy,R-wall,0,6.284); g.fill();
+    if(p.cv){                                       // the necked one, seen end on
+      g.strokeStyle='#6d7a84'; g.lineWidth=2;
+      g.beginPath(); g.arc(cx,cy,(R-wall)*0.52,0,6.284); g.stroke();
+    }
+    if(on){ g.strokeStyle=P.amber; g.lineWidth=2;
+            g.beginPath(); g.arc(cx,cy,R+3,0,6.284); g.stroke(); }
+    g.fillStyle = on?P.amber:(live?'#8e9aa3':'#5a646c');
+    g.font="11px 'VT323',monospace"; g.textAlign='center';
+    g.fillText(p.label, cx, b.y+b.h+6);
+    g.fillStyle = on?'#8fb9ff':'#59646d';
+    g.font="9px 'VT323',monospace";
+    g.fillText(p.cv ? 'Cv '+p.cv.toFixed(3) : p.bore.toFixed(3)+' in', cx, b.y+b.h+16);
+    g.textAlign='left';
+  });
+}
+
+/* The bore the markers run in is the bore the numbers use. The necked
+   section keeps the same bore either side and pinches the middle, so the
+   water column narrows where the throat is and nowhere else. */
+function boreRect(){
+  const G=LAY.glass, p=pipeNow();
+  const h = Math.round(G.h * (p.bore / PIPE_OD));
+  return { x:G.x, y:G.y + Math.round((G.h-h)/2), w:G.w, h };
+}
+const THROAT_AT=0.5, THROAT_SPAN=0.085;         // where the neck sits, as fractions
+
+function drawThroat(g){
+  const p=pipeNow(); if(!p.beta) return;
+  const BR=boreRect(), mid=BR.x+BR.w*THROAT_AT;
+  const span=BR.w*THROAT_SPAN*0.42, flare=BR.w*THROAT_SPAN*0.58;
+  /* to scale: the neck leaves beta of the bore open, not an eyeballed
+     half. beta 0.219 is a much tighter hole than it was being drawn as,
+     and the tightness is the whole reason the fluid sprints. */
+  const d=BR.h*(1-p.beta)/2;
+  g.fillStyle='#7c8791';
+  [[BR.y,1],[BR.y+BR.h,-1]].forEach(([edge,dir])=>{
+    g.beginPath();
+    g.moveTo(mid-span-flare, edge);
+    g.lineTo(mid-span,       edge + dir*d);
+    g.lineTo(mid+span,       edge + dir*d);
+    g.lineTo(mid+span+flare, edge);
+    g.closePath(); g.fill();
+    g.fillStyle='#9aa5ae';                    // the lit inside face of the neck
+    g.fillRect(mid-span, edge + dir*d - (dir>0?0:2), span*2, 2);
+    g.fillStyle='#7c8791';
+  });
+}
+
+/* ---- the manifold apparatus ----
+   Same desk, different thing clamped to it. The run comes in through a
+   supply valve, meets a tee, and leaves down two branches with a valve
+   each. The cut-open section shows branch 1.
+
+   The divider is level one's, unchanged:
+       P_man = P_sup * Cvm^2 / (Cvm^2 + Cv_sum^2)
+   so the pressure at the tee depends on what EVERY branch is drawing. Open
+   the second branch and the first one falls without anybody touching it,
+   which is the entire lesson and the reason a single-outlet bench cannot
+   teach it.
+
+   Cv values are sizing.js's: supply 0.896, branch 0.513 each. */
+const CV_SUP = 0.896, CV_BR = 0.513;
+
+function manifoldOn(){ return !!(seg && seg.manifold); }
+
+function manifold(){
+  const f = fluidNow();
+  const cv1 = CV_BR*B.b1, cv2 = CV_BR*B.b2, cvSum = cv1+cv2;
+  const pMan = cvSum<=0 ? BENCH_DP
+             : BENCH_DP*(CV_SUP*CV_SUP)/(CV_SUP*CV_SUP + cvSum*cvSum);
+  const root = Math.sqrt(Math.max(0,pMan)/f.sg);
+  const q1 = cv1*root, q2 = cv2*root;
+  const v1 = q1/448.831/pipeNow().area;
+  const re = q1>0.001 ? FL.reynolds(v1,pipeNow().bore,f,20) : 0;
+  return { f, pMan, q1, q2, qTot:q1+q2,
+           q:q1, v:v1, re, t:20, p1:pMan, p2:0, dp:pMan,
+           regime: q1<=0.001 ? 'still' : FL.regime(re) };
+}
+
+/* The two levers are branch valves while this apparatus is fitted. The
+   bench has two levers; what they control is whatever is clamped to it. */
+const SLID_MAN = {
+  b1:{...LAY.flowS, label:'BRANCH 1', key:'b1', get:()=>B.b1,
+      set:v=>{B.b1=v;}, fmt:()=>Math.round(B.b1*100)+'%'},
+  b2:{...LAY.tempS, label:'BRANCH 2', key:'b2', get:()=>B.b2,
+      set:v=>{B.b2=v;}, fmt:()=>Math.round(B.b2*100)+'%'},
+};
+
+/* The tee and the second branch, drawn into the run upstream of the glass
+   so the split is visible rather than asserted. */
+function drawTee(g, r){
+  if(!manifoldOn()) return;
+  const G=LAY.glass, cy=G.y+G.h/2, hr=G.h/2+10;
+  const tx=G.x-74;                          // the tee sits before the window
+  const barW=26, dropH=96;
+  // the branch dropping away out of frame
+  g.fillStyle='#2b343a'; g.fillRect(tx-barW/2, cy, barW, dropH);
+  for(let i=0;i<4;i++){
+    g.fillStyle='rgba(140,156,168,'+(0.16-i*0.03).toFixed(2)+')';
+    g.fillRect(tx-barW/2+i*3, cy, 3, dropH);
+  }
+  g.fillStyle='#5d6a73'; g.fillRect(tx-barW/2, cy, 2, dropH);
+  g.fillStyle='#141a1e'; g.fillRect(tx+barW/2-2, cy, 2, dropH);
+  // the crotch of the tee
+  g.fillStyle='#39444b'; g.fillRect(tx-barW/2-6, cy-hr, barW+12, hr+8);
+  g.fillStyle='#6d7a84'; g.fillRect(tx-barW/2-6, cy-hr, barW+12, 2);
+  // branch 2 running, drawn as markers falling away down the drop
+  if(r.q2>0.01){
+    const n=Math.min(9, 2+Math.round(r.q2*5));
+    for(let i=0;i<n;i++){
+      const yy = cy + ((i*23 + (performance.now()*0.05*r.q2))%dropH);
+      marker2(g, tx-5+((i*7)%11), yy, r.f.sg);
+    }
+  }
+  g.fillStyle=P.rim; g.font="10px 'VT323',monospace"; g.textAlign='center';
+  g.fillText('BRANCH 2', tx, cy+dropH+12);
+  g.textAlign='left';
+}
+/* the same square the rest of the game draws, since this is still fluid */
+function marker2(g,x,y,sg){
+  const s=2.4*(sg===undefined?1:sg);
+  g.fillStyle='rgba(54,224,255,0.55)';
+  g.fillRect(x-s/2,y-s/2,s,s);
+}
+
+/* ---- the pressure trace ----
+   Fisher CVH ch6 fig 6-2, drawn over the section it describes so the dip
+   sits at the same x as the throat that causes it.
+
+   The point of the view: the lowest pressure in a restriction is NOT the
+   downstream reading. It is at the vena contracta, inside, where neither
+   gauge can see it. P2 recovers above it. */
+const FL_BENCH = 0.90;                 // globe-style trim, CVH ch5 table
+
+function venaOn(){ return !!(seg && seg.trace); }
+
+function pressures(r){
+  const p1a = r.p1 + FL.ATM, p2a = r.p2 + FL.ATM;
+  const pvc = FL.venaContracta(p1a, r.p1 - r.p2, FL_BENCH);
+  const pv  = FL.waterPv(r.t);
+  return { p1a, p2a, pvc, pv, margin: pvc - pv, cav: pvc <= pv };
+}
+
+function drawTrace(g, r){
+  const G=LAY.glass, P=pressures(r);
+  const PMAX=26;                                   // psia, full height of the window
+  const y = p => G.y + G.h - 6 - (Math.max(0,Math.min(PMAX,p))/PMAX)*(G.h-14);
+  const mid = G.x + G.w*0.52, span = G.w*0.055, flare = G.w*0.11;
+
+  g.save();
+  g.fillStyle='rgba(8,14,18,0.72)'; g.fillRect(G.x,G.y,G.w,G.h);   // dim the water
+
+  // the vapour pressure line, and the band below it
+  g.fillStyle='rgba(192,73,59,0.16)';
+  g.fillRect(G.x, y(P.pv), G.w, G.y+G.h-y(P.pv));
+  g.strokeStyle='#c0493b'; g.lineWidth=1.5; g.setLineDash([5,4]);
+  g.beginPath(); g.moveTo(G.x,y(P.pv)); g.lineTo(G.x+G.w,y(P.pv)); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle='#c0493b'; g.font="10px 'VT323',monospace";
+  g.fillText('Pv  '+P.pv.toFixed(2)+' psia', G.x+6, y(P.pv)-4);
+
+  if(r.q>0.004){
+    // P1 flat, dip through the throat, partial recovery to P2
+    g.strokeStyle='#ffd24a'; g.lineWidth=2.2; g.beginPath();
+    g.moveTo(G.x, y(P.p1a));
+    g.lineTo(mid-span-flare, y(P.p1a));
+    g.bezierCurveTo(mid-span, y(P.p1a), mid-span*0.6, y(P.pvc), mid, y(P.pvc));
+    g.bezierCurveTo(mid+span*0.9, y(P.pvc), mid+span+flare*0.6, y(P.p2a), mid+span+flare*1.3, y(P.p2a));
+    g.lineTo(G.x+G.w, y(P.p2a));
+    g.stroke();
+    // the three readings, marked where they happen
+    const pin=(px,py,lab,col)=>{
+      g.fillStyle=col; g.beginPath(); g.arc(px,py,3.2,0,6.284); g.fill();
+      g.font="10px 'VT323',monospace"; g.fillText(lab,px+6,py-4);
+    };
+    pin(G.x+42, y(P.p1a), 'P1 '+P.p1a.toFixed(1), '#8fb9ff');
+    pin(mid,    y(P.pvc), 'vena contracta '+P.pvc.toFixed(1), P.cav?'#c0493b':'#ffd24a');
+    pin(G.x+G.w-96, y(P.p2a), 'P2 '+P.p2a.toFixed(1), '#8fb9ff');
+    // the margin, called out as a bar between the dip and the line
+    if(!P.cav){
+      g.strokeStyle='rgba(126,196,122,0.9)'; g.lineWidth=1.4;
+      g.beginPath(); g.moveTo(mid, y(P.pvc)+4); g.lineTo(mid, y(P.pv)-2); g.stroke();
+      g.fillStyle='#7ec47a'; g.font="10px 'VT323',monospace"; g.textAlign='center';
+      g.fillText(P.margin.toFixed(1)+' psi', mid+34, (y(P.pvc)+y(P.pv))/2+3);
+      g.textAlign='left';
+    }
+  } else {
+    g.fillStyle='#5d6a73'; g.font="12px 'VT323',monospace"; g.textAlign='center';
+    g.fillText('open the valve', G.x+G.w/2, G.y+G.h/2);
+    g.textAlign='left';
+  }
+  g.restore();
 }
 
 /* ---- the meter block ---- */
+/* ---- the panel only shows what has been taught ----
+   REYNOLDS and REGIME used to sit on this panel from the first segment -
+   five rungs before anything explained either of them - and a labelled
+   number on screen is a reference whether or not the script says the word.
+   A row appears when its concept is introduced, so the panel grows as the
+   player does. Once the visit is over every row is live, because by then
+   nothing on it is unexplained.
+
+   FLOW is the exception: PROCESS needs something to point at when it says
+   the panel is the measurement, so it is there from the start, and that
+   lesson glosses it rather than leaving it bare. */
+const KNOWN = new Set();
 function drawMeters(g,r){
   const M=LAY.meter;
-  g.fillStyle='#232a2f'; A.rr(g,M.x,M.y,M.w,M.h,4); g.fill();
-  g.strokeStyle='#4a565d'; g.lineWidth=2; g.stroke();
-  const rows=[
-    ['VELOCITY', r.v.toFixed(2)+' ft/s', '#39ff6a'],
-    ['REYNOLDS', r.re>0?Math.round(r.re).toLocaleString('en-US'):'\u2014', '#39ff6a'],
-    ['REGIME',   r.regime.toUpperCase(),
-                 r.regime==='laminar'?'#8fb9ff':(r.regime==='turbulent'?'#ffd24a':'#8b949b')],
-    ['FLOW',     r.q.toFixed(2)+' gpm', '#39ff6a'],
+  const shows=(seg&&seg.shows)||[];      // read by the rows AND by the P1 label
+  const all=[
+    /* Supply pressure is there whether or not anything is moving - that is
+       the whole point of the PRESSURE segment - so this row never greys
+       out with the valve shut the way the flow-derived rows do. */
+    /* Called SUPPLY until the restriction rung, where a second gauge makes
+       the name necessary and it becomes P1 - the notation the handbook,
+       the Cv equation and every later level already use. */
+    {k:'pressure',    label:manifoldOn() ? 'MANIFOLD'
+                      : ((KNOWN.has('restriction')||shows.indexOf('restriction')>=0||done) ? 'P1' : 'SUPPLY'),
+     val:(manifoldOn()||KNOWN.has('restriction')||shows.indexOf('restriction')>=0||done ? r.p1 : BENCH_DP).toFixed(1)+' psi',
+     col:'#39ff6a', always:true},
+    {k:'restriction', label:'P2', val:r.p2.toFixed(1)+' psi', col:'#39ff6a',
+     always:true, hideOn:manifoldOn()},
+    {k:'manifold', label:'BRANCH 1', val:(r.q1!==undefined?r.q1:0).toFixed(2)+' gpm',
+     col:'#39ff6a', always:true, onlyOn:manifoldOn()},
+    {k:'manifold', label:'BRANCH 2', val:(r.q2!==undefined?r.q2:0).toFixed(2)+' gpm',
+     col:(r.q2>0.01?'#ffd24a':'#8b949b'), always:true, onlyOn:manifoldOn()},
+    {k:'restriction', label:'\u0394P', val:r.dp.toFixed(1)+' psi',
+     col:r.dp>0.05?'#ffd24a':'#8b949b', always:true},
+    {k:'velocity-profile',label:'VELOCITY', val:r.v.toFixed(2)+' ft/s', col:'#39ff6a'},
+    /* only while something with a throat is fitted, and the one number
+       that goes UP when you restrict a line */
+    /* hideOn, not onlyOn: the rung is in KNOWN while this segment runs, so
+       onlyOn was being short-circuited and the row sat there reading
+       0.0 ft/s with no throat in the line to read. */
+    {k:'restriction', label:'AT THROAT',
+     val:(r.vThroat||0).toFixed(1)+' ft/s', col:'#ffd24a',
+     always:true, hideOn:!r.vThroat},
+    {k:'reynolds',        label:'REYNOLDS',
+     val:r.re>0?Math.round(r.re).toLocaleString('en-US'):'\u2014', col:'#39ff6a'},
+    {k:'reynolds',        label:'REGIME',   val:r.regime.toUpperCase(),
+     col:r.regime==='laminar'?'#8fb9ff':(r.regime==='turbulent'?'#ffd24a':'#8b949b')},
+    {k:'flow',            label:'FLOW',     val:r.q.toFixed(2)+' gpm',
+     col:'#39ff6a', fromStart:true, hideOn:manifoldOn()},
   ];
+  const rows=all.filter(c=>!c.hideOn && (c.onlyOn || done || c.fromStart ||
+                            KNOWN.has(c.k) || shows.indexOf(c.k)>=0));
+  const h=Math.max(30, 12+rows.length*21);
+  g.fillStyle='#232a2f'; A.rr(g,M.x,M.y,M.w,h,4); g.fill();
+  g.strokeStyle='#4a565d'; g.lineWidth=2; g.stroke();
   rows.forEach((c,i)=>{
     const y=M.y+10+i*21;
     g.fillStyle=P.rim; g.font="11px 'VT323',monospace"; g.textAlign='left';
-    g.fillText(c[0],M.x+10,y+10);
-    g.fillStyle=B.flow>0.001?c[2]:'#5d6a73'; g.font="16px 'VT323',monospace"; g.textAlign='right';
-    g.fillText(c[1],M.x+M.w-10,y+10);
+    g.fillText(c.label,M.x+10,y+10);
+    if(!done && !KNOWN.has(c.k)){            // shown early: flag it as such
+      g.fillStyle='#6b5a3a'; g.font="9px 'VT323',monospace";
+      g.fillText('later',M.x+10+c.label.length*6.6,y+10);
+    }
+    g.fillStyle=(c.always||B.flow>0.001)?c.col:'#5d6a73';
+    g.font="16px 'VT323',monospace"; g.textAlign='right';
+    g.fillText(c.val,M.x+M.w-10,y+10);
   });
   g.textAlign='left';
 }
 
-/* ---- sample bottles instead of buttons: it is a desk ---- */
-function drawBottles(g){
-  const live=liveCtl('fluid');
-  BOTTLE.forEach(b=>{
-    const on=b.k===B.fluid, f=FL.FLUIDS[b.k];
-    const tint=b.k==='water'?'rgba(54,224,255,':(b.k==='co2'?'rgba(200,214,224,':'rgba(255,210,74,');
-    g.fillStyle='#1b2227'; A.rr(g,b.x,b.y+10,b.w,b.h-10,3); g.fill();
-    g.fillStyle=tint+(on?'0.55':'0.26')+')';
-    g.fillRect(b.x+4,b.y+10+18,b.w-8,b.h-32);
-    g.fillStyle='#4a565d'; g.fillRect(b.x+10,b.y,b.w-20,12);   // neck
-    g.fillStyle=on?P.amber:'#6d7a84'; g.fillRect(b.x+7,b.y-4,b.w-14,6);
-    g.strokeStyle=on?P.amber:(live?'#5d6a73':'#39444b'); g.lineWidth=on?2:1;
-    A.rr(g,b.x,b.y+10,b.w,b.h-10,3); g.stroke();
-    g.fillStyle=on?P.amber:(live?P.rim:'#4a545e');
-    g.font="9px 'VT323',monospace"; g.textAlign='center';
-    g.fillText(f.name.replace('LIQUID ',''),b.x+b.w/2,b.y+b.h+11);
-    g.fillStyle=on?'#8fb9ff':'#5d6a73';
-    g.fillText(f.sg.toFixed(2),b.x+b.w/2,b.y+b.h+21);
+/* ---- fluid select: three labelled switches ----
+   The bottles were scenery pretending to be a control. Nothing about a
+   glass vial says "throw me", nothing says which one is currently on the
+   loop, and the only label was four grey characters under the glass. A
+   switch bank says all three things without being explained: the lever
+   position shows state, the lamp confirms it, and the engraved plate
+   names what the switch does. */
+function drawFluidSwitches(g){
+  const S=LAY.fsw, live=liveCtl('fluid');
+
+  A.dither(g,S.x-4,S.y+S.h,S.w+8,10,'#0e0a05',0.38);          // sits on the desk
+  g.fillStyle='#39424a'; A.rr(g,S.x,S.y,S.w,S.h,3); g.fill();  // plate
+  g.fillStyle='#5a666f'; g.fillRect(S.x,S.y,S.w,2);            // lit top edge
+  g.fillStyle='#232a30'; g.fillRect(S.x,S.y+S.h-2,S.w,2);
+  g.strokeStyle='#1b2126'; g.lineWidth=1;
+  A.rr(g,S.x+0.5,S.y+0.5,S.w-1,S.h-1,3); g.stroke();
+
+  g.fillStyle='#2b333a'; g.fillRect(S.x+6,S.y+6,S.w-12,15);    // header
+  g.fillStyle=live?P.rim:'#5a666f';
+  g.font="13px 'VT323',monospace"; g.textAlign='left';
+  g.fillText('FLUID  SELECT',S.x+11,S.y+18);
+  [S.x+5,S.x+S.w-6].forEach(sx=>{                              // plate screws
+    [S.y+5,S.y+S.h-6].forEach(sy=>{
+      g.fillStyle='#6d7a84'; g.fillRect(sx-2,sy-2,4,4);
+      g.fillStyle='#1b2126'; g.fillRect(sx-2,sy,4,1);
+    });
   });
-  g.textAlign='left';
+
+  FSW.forEach(s=>{
+    const on=s.k===B.fluid, f=FL.FLUIDS[s.k];
+
+    /* A toggle, drawn as one: a bezel with a slot cut through it, and a
+       lever that occupies the top of the slot when thrown and the bottom
+       when not. The travel gap is the tell - a slab filling the whole well
+       reads as a panel, a slab with empty slot above or below it reads as
+       something that moved and can move back. The lever tip is wider than
+       its shaft so it has a thumb to push. */
+    g.fillStyle='#4e5962'; A.rr(g,s.x-1,s.y-1,24,28,3); g.fill();   // bezel
+    g.fillStyle='#69757e'; g.fillRect(s.x-1,s.y-1,24,2);            // lit edge
+    g.fillStyle='#0c1114'; g.fillRect(s.x+4,s.y+2,14,22);           // the slot
+    const ty = on ? s.y+3 : s.y+13;                                 // throw
+    g.fillStyle=on?'#c3cdd4':'#5d6872'; g.fillRect(s.x+7,ty+3,8,8); // shaft
+    g.fillStyle=on?'#dbe4ea':'#6d7983'; g.fillRect(s.x+5,ty,12,5);  // thumb tip
+    g.fillStyle=on?'#f2f7fa':'#828e98'; g.fillRect(s.x+5,ty,12,1);
+    g.fillStyle='#232b31'; g.fillRect(s.x+7,ty+10,8,2);             // shaft base
+    g.fillStyle=on?'#6f7b85':'#39434b';
+    g.font="8px 'VT323',monospace"; g.textAlign='center';
+    g.fillText(on?'I':'O', s.x+11, on ? s.y+23 : s.y+9);            // panel mark
+    g.textAlign='left';
+
+    g.fillStyle=on?'#ffb13a':'#2a3238';                        // indicator lamp
+    g.fillRect(s.x+28,s.y+8,8,8);
+    if(on){ g.globalAlpha=0.30; g.fillStyle='#ffb13a';
+            g.fillRect(s.x+26,s.y+6,12,12); g.globalAlpha=1; }
+    g.strokeStyle='#161c21'; g.lineWidth=1;
+    g.strokeRect(s.x+27.5,s.y+7.5,9,9);
+
+    g.fillStyle=on?'#f0d7a8':(live?'#8e9aa3':'#5a646c');       // engraved label
+    g.font="15px 'VT323',monospace";
+    g.fillText(f.name.replace('LIQUID ','LIQ '),s.x+44,s.y+13);
+    g.fillStyle=on?'#8fb9ff':'#59646d';
+    g.font="12px 'VT323',monospace";
+    g.fillText('SG '+f.sg.toFixed(2),s.x+44,s.y+24);
+  });
 }
 
 function slider(g,sl,live){
@@ -260,45 +759,273 @@ function slider(g,sl,live){
 /* ============================================================
    SEGMENTS \u2014 one concept each, named before it is demonstrated
    ============================================================ */
+/* ============================================================
+   THE CONCEPT LADDER
+
+   Ordered by what a person needs to already know, not by what the rig
+   happens to be able to draw.
+
+     1  PROCESS        what we are doing at all
+     2  FLUID          what is in the pipe; liquid and gas
+     3  TEMPERATURE    a property of it; random motion, not transport
+     4  PRESSURE       the stored energy; present with nothing moving
+     5  FLOW           volume per unit time; driven by pressure difference
+     ---- level 0 plays here ----
+     6  PIPE BORE          nominal size is not the opening (B36.10M)
+     7  VELOCITY PROFILE   no-slip at the wall; speed varies across the bore
+     8  VISCOSITY / REYNOLDS / LAMINAR / TURBULENT
+     9  SPECIFIC GRAVITY
+
+   ON THE DEFINITIONS: these are the real ones, not approximations that
+   happen to fit the demonstration. The first pass had a process "moving
+   something", which is transport only - one kind of process among heating,
+   mixing, separating and reacting - and had the VALVE moving the fluid. A
+   valve moves nothing. It is a variable resistance. Energy moves fluid:
+   the pump does work on it, raising its pressure, and fluid runs from high
+   pressure to low. Writing it the other way teaches something false, and
+   it is the single most load-bearing idea in the game.
+
+   ON THE WRITING: plain and direct. Name the term, define it accurately,
+   then say what the player just watched it do. A lesson is three lines at
+   103 columns - about 300 characters - so every word has to earn it.
+   ============================================================ */
+/* Scratch state for steps that must remember something across frames:
+   that the valve was opened before it was shut again, which fluids have
+   been tried. Cleared at the start of every segment, so replaying one
+   does not begin half-satisfied. */
+const PROBE={opened:false, seen:{}, sawPlain:false, sawRed:false, sawBoth:false, triedHard:false};
+
 const SEG={
-  'markers':{
-    concept:'HOW THE FLUID IS DRAWN',
-    sub:'a convention, before anything else',
-    controls:[],
-    steps:[{ ctl:[], task:'Read it, then carry on.', ok:()=>true, auto:true,
-      lesson:'Those marks are <b>not molecules</b> &mdash; you could not see one '+
-        'through a wall of steel. They are markers. Spaced so you can count them, '+
-        'moving in true proportion to each other but far slower than the real thing, '+
-        'because real water tells the eye nothing.' }],
+  'process':{
+    concept:'PROCESS',
+    sub:'material, energy, control, measurement',
+    controls:['flow'],
+    steps:[
+      { ctl:['flow'],
+        task:'Open the valve, then shut it again.',
+        ok:()=>{ if(B.flow>0.30) PROBE.opened=true;
+                 return PROBE.opened && B.flow<=0.02 && !B.drag; },
+        lesson:'A process is a set of operations that change a material\u2019s '+
+          'condition \u2014 where it is, its pressure, its temperature, what it is '+
+          'mixed with. On this bench the material is water, the energy comes from the '+
+          'pump, the valve is the control, and FLOW on the panel at your right is '+
+          'the measurement.' },
+    ],
   },
-  'flow-vs-still':{
-    concept:'PRESSURE IS NOT FLOW',
-    sub:'a line can be full and doing nothing',
+
+  'fluid':{
+    concept:'FLUID',
+    sub:'what is in the pipe',
+    controls:['fluid'],
+    steps:[
+      { ctl:['fluid'],
+        task:'Throw each of the three switches, then come back to water.',
+        ok:()=>{ PROBE.seen[B.fluid]=true;
+                 return B.fluid==='water' && PROBE.seen.co2 && PROBE.seen.propane; },
+        /* Not the continuum-mechanics definition. "Deforms continuously
+           under shear" is the rigorous way to tell a fluid from a solid,
+           and nobody at this bench is trying to tell the water from the
+           pipe. The useful question here is what is in the line and how
+           it will behave - so: no shape of its own, and the one property
+           that will change the sizing later, which is compressibility. */
+        lesson:'Each square in the cut-open pipe stands for a parcel of fluid, '+
+          'slowed so you can follow it. A fluid has no shape of its own; it takes '+
+          'the shape of whatever holds it. Liquids and gases are both fluids \u2014 a '+
+          'liquid barely compresses, a gas a lot. The three fluids on the panel at '+
+          'your left are all liquids.' },
+    ],
+  },
+
+  'temperature':{
+    concept:'TEMPERATURE',
+    sub:'a property of the fluid, with the valve shut',
+    controls:['temp'],
+    steps:[
+      { ctl:['temp'], target:{on:'temp',lo:HOT[0]/80,hi:HOT[1]/80,label:'HOT'},
+        task:'Keep the valve shut. Push TEMPERATURE into the marked band.',
+        ok:()=>B.temp>=HOT[0],
+        lesson:'Temperature measures the average kinetic energy of the molecules. '+
+          'Raise it and they move faster and more randomly, which is what the '+
+          'markers are showing you. The valve is shut, so none of that energy is '+
+          'carrying water anywhere. Random motion is not transport.' },
+    ],
+  },
+
+  'pressure':{
+    concept:'PRESSURE',
+    sub:'stored energy, with nothing moving',
+    controls:['flow'],
+    steps:[
+      { ctl:['flow'],
+        task:'Shut the valve all the way, then read SUPPLY and FLOW.',
+        ok:()=>B.flow<=0.02 && !B.drag,
+        lesson:'Pressure is the force a fluid exerts per unit of area on its '+
+          'surroundings, acting equally in every direction. The pump does work on '+
+          'the water to hold it at 20 psi. Shut, that energy is stored and not '+
+          'spent: SUPPLY reads 20 psi, FLOW reads zero.' },
+    ],
+  },
+
+  'flow':{
+    concept:'FLOW',
+    sub:'volume per unit time, past a point',
     controls:['flow'],
     steps:[
       { ctl:['flow'], target:{on:'flow',lo:0.65,hi:1,label:'OPEN'},
-        task:'Open the valve: push FLOW into the marked band.',
+        task:'Open the valve into the marked band.',
         ok:()=>B.flow>=0.65,
-        lesson:'Shut, the markers moved without going anywhere &mdash; that is '+
-          'temperature. Open, they travel. <b>Flow</b> is net movement along the '+
-          'line. A pipe that is full and a pipe that is flowing are two different '+
-          'states.' },
+        lesson:'Fluid runs from high pressure to low. Opening the valve lowers the '+
+          'resistance between them, so water passes. Flow rate is the volume '+
+          'crossing a point per unit time; FLOW on the panel reads it in '+
+          'gallons per minute. The valve pushes nothing \u2014 it sets how much resistance is in the way.' },
     ],
   },
+
+  'bore':{
+    concept:'PIPE BORE',
+    sub:'nominal size is not the opening',
+    /* The lesson is a velocity comparison, so that row has to be on the
+       panel even though the rung that explains it belongs to level 0. */
+    shows:['velocity-profile'],
+    controls:['flow','section'],
+    steps:[
+      { ctl:['flow'], target:{on:'flow',lo:0.65,hi:1,label:'OPEN'},
+        task:'Open the valve into the marked band and read VELOCITY.',
+        ok:()=>B.flow>=0.65,
+        lesson:'Both samples on the desk are NPS 3/8 pipe. That number is the '+
+          'nominal size, and it fixes the outside: 0.675 in across, either one. '+
+          'What it does not fix is the hole. The wall thickness is set '+
+          'separately, by the schedule.' },
+      { ctl:['section'],
+        task:'Leave the valve alone. Fit the SCH 80 sample and watch VELOCITY.',
+        ok:()=>B.section==='sch80',
+        lesson:'Same nominal pipe, same valve, same gallons per minute \u2014 and the '+
+          'fluid is moving faster. Schedule 80 has a thicker wall, so the bore is '+
+          '0.423 in instead of 0.493. A quarter less area for the same flow to get '+
+          'through, and it makes up the difference in speed.' },
+    ],
+  },
+
+  'restriction':{
+    concept:'PRESSURE DROP',
+    sub:'what a restriction costs you',
+    shows:['pressure','velocity-profile'],
+    controls:['flow','section'],
+    steps:[
+      { ctl:['flow'], target:{on:'flow',lo:0.65,hi:1,label:'OPEN'},
+        task:'Fit the plain SCH 40 section, open the valve, and read P1, P2 and \u0394P.',
+        ok:()=>B.flow>=0.65 && B.section==='sch40',
+        lesson:'The gauge you have been reading as SUPPLY is P1 \u2014 the pressure '+
+          'upstream of the test section. P2 is the pressure downstream of it. '+
+          'With a plain section fitted they read the same, so \u0394P is zero: a '+
+          'length of open pipe costs you almost nothing.' },
+      { ctl:['section'],
+        task:'Leave the valve alone. Fit the REDUCER section.',
+        ok:()=>B.section==='reducer',
+        lesson:'P1 now stands at about 8 psi and P2 is still zero, so \u0394P '+
+          'is 8. That pressure is not lost along the pipe \u2014 it is spent '+
+          'getting through the neck in the cutaway. The pump still holds '+
+          '20 psi; the valve and the reducer are splitting it.' },
+      { ctl:['section'],
+        task:'Leave it fitted. Find the new row, AT THROAT, on the readout.',
+        ok:()=>B.section==='reducer',
+        lesson:'That row arrived with the reducer: AT THROAT, 29.9 ft/s. '+
+          'The neck is about a fifth of the bore across, so about a '+
+          'twentieth of the area. VELOCITY above it is the full bore: '+
+          '1.4 ft/s. Narrow the way and the same flow has to move faster.' },
+      { ctl:['flow','section'],
+        task:'Compare FLOW with the reducer in and out, valve untouched.',
+        ok:()=>PROBE.sawBoth,
+        lesson:'A quarter less flow for the same valve opening. Two resistances '+
+          'in series share the pressure, and what each one takes depends on how '+
+          'tight it is. That is the whole of valve sizing in one sentence, and '+
+          'it is why a reducer nobody recorded will quietly starve a line.' },
+    ],
+  },
+
+  'manifold':{
+    concept:'THE MANIFOLD',
+    sub:'one supply, many demands',
+    manifold:true,
+    shows:['pressure'],
+    controls:['b1','b2'],
+    steps:[
+      { ctl:['b1'], target:{on:'flow',lo:0.9,hi:1,label:'OPEN'},
+        task:'Open BRANCH 1 wide and read what it delivers.',
+        ok:()=>B.b1>=0.9,
+        lesson:'One branch drawing on its own. The supply valve upstream is '+
+          'holding the tee at about 15 psi, and branch 1 is taking just under '+
+          '2 gpm of it. Nothing else is open, so all of the supply is going '+
+          'to one place.' },
+      { ctl:['b2'],
+        task:'Now open BRANCH 2. Keep your eye on BRANCH 1.',
+        ok:()=>B.b2>=0.9,
+        lesson:'Branch 1 dropped by about a quarter and nobody touched its '+
+          'valve. Opening a second demand pulled the tee pressure down from 15 '+
+          'psi to under 9, and both branches now run on what is left. What '+
+          'divides at the tee is all there ever was.' },
+      { ctl:['b1','b2'],
+        task:'Close BRANCH 2 again and watch BRANCH 1 come back.',
+        ok:()=>B.b2<=0.05 && B.b1>=0.9 && !B.drag,
+        lesson:'It recovers, because nothing was ever wrong with branch 1. A '+
+          'branch that reads low is not necessarily a branch with a fault \u2014 '+
+          'check what else is drawing before you go looking for a blockage.' },
+    ],
+  },
+
   'velocity-profile':{
     concept:'VELOCITY PROFILE',
-    sub:'why the middle of a pipe runs faster than the edge',
+    sub:'speed is not one number across the bore',
     controls:['flow'],
     steps:[
       { ctl:['flow'], target:{on:'flow',lo:0.65,hi:1,label:'OPEN'}, watch:2.6,
-        task:'Open it up, then compare the markers at the wall with the ones down the middle.',
+        task:'Open the valve. Compare the markers at the wall with the ones down the middle.',
         ok:()=>B.flow>=0.65,
-        lesson:'<b>Friction between the fluid and the pipe surface</b> holds the '+
-          'fluid at the wall almost stationary. Further from the wall less of that '+
-          'drag reaches it, so the middle moves fastest. The yellow curve is that '+
-          'spread of speed across the bore: the <b>velocity profile</b>.' },
+        lesson:'Fluid touching the pipe wall is stationary \u2014 it sticks to the '+
+          'surface. That is the no-slip condition. Each layer is held back by the '+
+          'slower one beside it, less so further out, so the centre runs fastest. '+
+          'The yellow curve plots speed against position across the bore.' },
+      { ctl:['flow'],
+        task:'Now close the valve down and watch the yellow curve.',
+        ok:()=>B.flow<=0.25 && !B.drag,
+        lesson:'The yellow curve is drawn from the speed at every point across the '+
+          'bore, so closing the valve pulls it in. Its length is how fast the fluid '+
+          'is going; its shape is how the speed is shared from wall to centre.' },
     ],
   },
+
+  'vena-contracta':{
+    concept:'THE VENA CONTRACTA',
+    sub:'the lowest pressure is the one you cannot measure',
+    trace:true,
+    shows:['pressure','restriction'],
+    controls:['flow','section','temp'],
+    steps:[
+      { ctl:['flow','section'],
+        task:'Fit the REDUCER and open the valve into the marked band.',
+        target:{on:'flow',lo:0.65,hi:1,label:'OPEN'},
+        ok:()=>B.flow>=0.65 && B.section==='reducer',
+        lesson:'The trace is pressure along the pipe. It does not step down from '+
+          'P1 to P2 \u2014 it dives well below P2 at the throat and then climbs back. '+
+          'That low point is the vena contracta, and no gauge on either flange '+
+          'can see it.' },
+      { ctl:['temp'], target:{on:'temp',lo:HOT[0]/80,hi:HOT[1]/80,label:'HOT'},
+        task:'Leave the valve alone. Heat the water and watch the red line.',
+        ok:()=>B.temp>=HOT[0],
+        lesson:'The red line is the vapour pressure of the water. Hot water boils '+
+          'at a higher pressure, so heating lifts the line toward the dip: the '+
+          'margin closes from 12.4 psi to 5.9. Nothing about the valve changed.' },
+      { ctl:['flow','section','temp'],
+        task:'Try to close that margin to nothing.',
+        ok:()=>PROBE.triedHard,
+        lesson:'You cannot, on this bench. If the dip ever reached the line the '+
+          'water would boil inside the valve and collapse again downstream \u2014 '+
+          'cavitation, which chews trim to grey powder. Twenty psi into a warm '+
+          'room is too gentle to get there. A 60 psig header into a pod at half '+
+          'an atmosphere is not.' },
+    ],
+  },
+
   'reynolds':{
     concept:'LAMINAR AND TURBULENT',
     sub:'Reynolds number, and what decides which',
@@ -307,37 +1034,43 @@ const SEG={
       { ctl:['flow'], target:{on:'flow',lo:TRICKLE[0],hi:TRICKLE[1],label:'TRICKLE'},
         task:'Close FLOW down into the marked band.',
         ok:()=>!B.drag && B.flow>=TRICKLE[0] && B.flow<=TRICKLE[1] && rig().regime==='laminar',
-        lesson:'Slowed down, the fluid travels in parallel layers that do not mix, '+
-          'and the profile pulls out into a long point. That is <b>laminar</b> flow. '+
-          'Watch the markers: they have almost stopped jittering sideways.' },
+        lesson:'Reynolds number compares the fluid\u2019s inertia to its viscosity: '+
+          'velocity times bore, divided by kinematic viscosity. Reynolds has no units. '+
+          'Below about 2,300 viscosity dominates and the layers stay ordered. That '+
+          'is laminar flow.' },
       { ctl:['temp'], target:{on:'temp',lo:HOT[0]/80,hi:HOT[1]/80,label:'HOT'},
         task:'Leave FLOW alone. Push TEMPERATURE into the marked band.',
         ok:()=>rig().regime==='turbulent',
-        lesson:'The valve has not moved, so the fluid travels at the same speed. '+
-          'Heating water lowers its <b>viscosity</b>. Reynolds is velocity x bore / '+
-          'viscosity, so lower viscosity means higher Reynolds. Past 4,000 the layers '+
-          'break up and mix right across the bore: <b>turbulent</b>.' },
+        lesson:'The valve has not moved, so the opening is unchanged. Heating water '+
+          'lowers its viscosity \u2014 its resistance to shear. Viscosity is the '+
+          'denominator of Reynolds, so Reynolds rose. Above about 4,000 inertia '+
+          'dominates and the layers break up: turbulent.' },
     ],
   },
+
   'specific-gravity':{
     concept:'SPECIFIC GRAVITY',
-    sub:'density decides how much flows; viscosity decides how it looks',
+    sub:'density, as a ratio against water',
     controls:['flow','temp','fluid'],
     steps:[
       { ctl:['fluid'],
-        task:'Put the propane bottle on the loop.',
+        task:'Switch the loop over to propane.',
         ok:()=>B.fluid==='propane',
-        lesson:'Same valve, same pressure, and <b>more</b> of it flows. Flow through '+
-          'a fixed restriction is q = Cv x sqrt(dP / SG), and propane is half the '+
-          'density of water. It is also five times less viscous, so REYNOLDS jumped '+
-          'as well. Dense and sluggish are not the same thing.' },
+        lesson:'Specific gravity is the ratio of a fluid\u2019s density to the '+
+          'density of water. Propane is 0.50, half as dense. Through a fixed '+
+          'restriction, flow goes as Cv times the square root of pressure drop '+
+          'over SG \u2014 so less dense means more volume through the same opening.' },
       { ctl:['flow','temp','fluid'],
-        task:'Now use it. Deliver 0.50 gpm, and keep the flow laminar.',
+        task:'Deliver 0.50 gpm and keep the flow laminar. Fluid, temperature and valve are all live.',
         ok:()=>{ const r=rig(); return !B.drag && r.q>=0.50 && r.regime==='laminar'; },
-        lesson:'Propane could not do it at any temperature &mdash; too little '+
-          'viscosity, so Reynolds is always high. Water could not either until you '+
-          'cooled it, because cold water is <b>more</b> viscous. Fluid, temperature '+
-          'and valve position together decide what a line does.' },
+        /* The TEMPERATURE slider greys out and reads HELD NEAR SATURATION
+           for anything but water, so 'propane fails at any temperature' was
+           asserting something the player is prevented from testing. Say what
+           the bench actually does instead. */
+        lesson:'Propane is held near saturation on this bench, so TEMPERATURE '+
+          'locks and you cannot cool it. At 20 \u00b0C it is too thin to stay '+
+          'laminar at 0.50 gpm. Water will, once cooled, because cold water is '+
+          'more viscous. Fluid, temperature and valve decide together.' },
     ],
   },
 };
@@ -360,12 +1093,25 @@ function magnet(key,v){
 
 function draw(g,dt,t){
   const r=rig();
+  /* the compare step wants the player to have actually seen both */
+  if(B.flow>0.3){ if(B.section==='reducer') PROBE.sawRed=true; else PROBE.sawPlain=true; }
+  if(PROBE.sawRed && PROBE.sawPlain) PROBE.sawBoth=true;
+  /* the margin is smallest at full flow, hottest water, reducer fitted -
+     let the step pass once the player has been to that corner */
+  if(B.flow>0.9 && B.temp>=70 && B.section==='reducer') PROBE.triedHard=true;
   g.drawImage(BG,0,0);
-  CUT.set({ flow:Math.min(1,r.v/3.0), regime:r.regime,
+  CUT.set({ flow:Math.min(1,r.v/3.0), regime:r.regime, re:r.re,
             tempF:r.t*9/5+32, sg:r.f.sg, gas:false });
-  drawRig(g,r); drawMeters(g,r); drawBottles(g);
-  slider(g,SLID.flow, liveCtl('flow'));
-  slider(g,SLID.temp, liveCtl('temp') && !tempLocked());
+  drawRig(g,r); drawTee(g,r);
+  if(venaOn()) drawTrace(g,r);
+  drawMeters(g,r); drawFluidSwitches(g); drawSections(g);
+  if(manifoldOn()){
+    slider(g,SLID_MAN.b1, liveCtl('b1'));
+    slider(g,SLID_MAN.b2, liveCtl('b2'));
+  } else {
+    slider(g,SLID.flow, liveCtl('flow'));
+    slider(g,SLID.temp, liveCtl('temp') && !tempLocked());
+  }
   if(tempLocked()){
     g.fillStyle=P.amber; g.font="10px 'VT323',monospace";
     g.fillText('HELD NEAR SATURATION',SLID.temp.box.x+6,SLID.temp.box.y-5);
@@ -401,6 +1147,9 @@ function nextSegment(){
   if(!QUEUE.length){ done=true; SH.destroy(); onDone&&onDone(); return; }
   const id=QUEUE.shift();
   seg=SEG[id]; STEPS=seg.steps; si=0; B.watch=0;
+  KNOWN.add(id);          // its readouts may appear from now on
+  PROBE.opened=false; PROBE.seen={};
+  PROBE.sawPlain=false; PROBE.sawRed=false; PROBE.sawBoth=false; PROBE.triedHard=false;
   SH.title('R.O.\u2019S BENCH \u2014 TRAINING LOOP', seg.concept.toLowerCase());
   if(STEPS[0].auto){
     SH.beat(STEPS[0].lesson, ()=>{ si=0; nextStepsOrSegment(); });
@@ -412,8 +1161,8 @@ function nextStepsOrSegment(){
 
 /* ---- input ---- */
 function down(p){
-  for(const key of ['flow','temp']){
-    const sl=SLID[key], tr=sl.track;
+  for(const key of (manifoldOn()?['b1','b2']:['flow','temp'])){
+    const sl=(manifoldOn()?SLID_MAN:SLID)[key], tr=sl.track;
     if(!liveCtl(key)) continue;
     if(key==='temp' && tempLocked()) continue;
     if(p.x>=tr.x-12 && p.x<=tr.x+tr.w+12 && Math.abs(p.y-tr.y)<18){
@@ -421,16 +1170,26 @@ function down(p){
       LPE.audio.tick(); return;
     }
   }
-  if(liveCtl('fluid')) for(const b of BOTTLE){
-    if(p.x>=b.x-BHIT && p.x<b.x+b.w+BHIT && p.y>=b.y-BHIT && p.y<b.y+b.h+22){
-      if(B.fluid!==b.k){ B.fluid=b.k; LPE.audio.clack(); }
+  /* The whole switch row is the target, lever through label - a 22px
+     lever alone is a smaller hit than the thing it represents. */
+  if(liveCtl('section')) for(const b of SECBTN){
+    if(p.x>=b.x-6 && p.x<=b.x+b.w+6 && p.y>=b.y-6 && p.y<=b.y+b.h+20){
+      if(B.section!==b.k){ B.section=b.k; LPE.audio.clack(); }
+      return;
+    }
+  }
+  if(liveCtl('fluid')) for(const s of FSW){
+    if(p.x>=s.x-10 && p.x<=LAY.fsw.x+LAY.fsw.w && p.y>=s.y-4 && p.y<=s.y+28){
+      if(B.fluid!==s.k){ B.fluid=s.k; LPE.audio.clack(); }
       return;
     }
   }
 }
 function move(p){
   if(!B.drag) return;
-  const sl=SLID[B.drag], tr=sl.track, before=sl.get();
+  const sl=(manifoldOn()?SLID_MAN:SLID)[B.drag];
+  if(!sl) return;                      // a lever from the other apparatus
+  const tr=sl.track, before=sl.get();
   sl.set(magnet(B.drag,Math.max(0,Math.min(1,(p.x-tr.x)/tr.w))));
   if(Math.floor(before*14)!==Math.floor(sl.get()*14)) LPE.audio.tick();
 }
@@ -438,7 +1197,7 @@ function move(p){
 /* ---- entry point ---- */
 LPE.trainer=function(ids,after){
   QUEUE=ids.slice(); onDone=after; done=false;
-  Object.assign(B,{flow:0,temp:20,fluid:'water',watch:0,drag:null});
+  Object.assign(B,{flow:0,temp:20,fluid:'water',section:'sch40',b1:0,b2:0,watch:0,drag:null});
   buildDesk();
   SH=LPE.mount({
     t1:'R.O.\u2019S BENCH \u2014 TRAINING LOOP', t2:'', w:W,h:H, step, draw,
@@ -447,7 +1206,7 @@ LPE.trainer=function(ids,after){
        text:'&ldquo;Before you go down there.<br>R.O. keeps a bench for this. Use it.&rdquo;'},
     ],
     onStart:nextSegment,
-    onReset(){ Object.assign(B,{flow:0,temp:20,fluid:'water',watch:0,drag:null});
+    onReset(){ Object.assign(B,{flow:0,temp:20,fluid:'water',section:'sch40',b1:0,b2:0,watch:0,drag:null});
                si=0; say(); },
   });
   SH.canvas.addEventListener('pointerdown',e=>{
@@ -458,7 +1217,14 @@ LPE.trainer=function(ids,after){
   return SH;
 };
 LPE.TRAINER_SEGMENTS=SEG;
-/* standalone: run every segment, for working on the bench itself */
-if(!window.LPE_GAME) LPE.boot(()=>LPE.trainer(Object.keys(SEG),()=>{}));
+/* Standalone: run every segment, for working on the bench itself.
+   ?seg=reynolds,specific-gravity runs just those, in that order - working
+   on the last segment should not cost four playthroughs of the first. The
+   game path never reads this; it passes the ids it wants. */
+if(!window.LPE_GAME) LPE.boot(()=>{
+  const want=(new URLSearchParams(location.search).get('seg')||'')
+    .split(',').map(s=>s.trim()).filter(s=>SEG[s]);
+  LPE.trainer(want.length?want:Object.keys(SEG),()=>{});
+});
 })();
 </script>

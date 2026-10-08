@@ -6,73 +6,13 @@
  },
  {
   "level": "level0",
-  "key": "task",
-  "v": "Open the loop: push FLOW into the OPEN band."
- },
- {
-  "level": "level0",
-  "key": "lesson",
-  "v": "With the valve shut the markers moved but stayed where they were. That motion is temperature. Now they are travelling along the pipe, and that is <b>flow</b>. A pipe that is full and a pipe that is flowing are two different states."
- },
- {
-  "level": "level0",
-  "key": "task",
-  "v": "Compare the markers at the wall with the markers down the middle."
- },
- {
-  "level": "level0",
-  "key": "lesson",
-  "v": "They are not moving at the same speed. <b>Friction between the fluid and the pipe surface</b> holds the fluid at the wall almost stationary; further from the wall less of that drag reaches it. The yellow curve is that spread of speed across the bore: the <b>velocity profile</b>."
- },
- {
-  "level": "level0",
-  "key": "task",
-  "v": "Close FLOW down into the TRICKLE band."
- },
- {
-  "level": "level0",
-  "key": "lesson",
-  "v": "At this speed the fluid travels in parallel layers that do not mix, and the profile becomes a long parabola with the centre at about twice the average speed. This is <b>laminar</b> flow. REYNOLDS, the number that identifies it, is now below 2,300."
- },
- {
-  "level": "level0",
-  "key": "task",
-  "v": "Leave FLOW alone. Push TEMPERATURE into the HOT band."
- },
- {
-  "level": "level0",
-  "key": "lesson",
-  "v": "The valve has not moved, so the fluid is travelling at the same speed. Heating water lowers its <b>viscosity</b>. Reynolds is velocity x bore / viscosity, so lower viscosity means higher Reynolds. Above 4,000 the layers break up and mix: <b>turbulent</b> flow, and the profile goes blunt."
- },
- {
-  "level": "level0",
-  "key": "task",
-  "v": "Switch the loop to LIQUID PROPANE."
- },
- {
-  "level": "level0",
-  "key": "lesson",
-  "v": "Nothing else changed and DELIVERED went up. Flow through a fixed restriction is q = Cv x sqrt(dP / SG). Propane has a <b>specific gravity</b> of 0.501 &mdash; half of water &mdash; so more of it passes for the same pressure drop. Its viscosity is five times lower too, which is why REYNOLDS jumped."
- },
- {
-  "level": "level0",
-  "key": "task",
-  "v": "Now use it. Deliver 0.50 gpm and keep the flow laminar."
- },
- {
-  "level": "level0",
-  "key": "lesson",
-  "v": "That is the chain, used. Propane could not do it at any temperature &mdash; too little viscosity, so Reynolds is always high. Water could not either until you cooled it, because cold water is <b>more</b> viscous. Fluid, temperature and valve position together decide what a line does."
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> Watch the middle of that run against the pipe wall &mdash; the centre is pulling ahead. Same <b>velocity profile</b> you saw on R.O.&rsquo;s bench, in a line that actually feeds somebody."
  },
  {
   "level": "level0",
   "key": "closing",
-  "v": "<span class=\"who\">COMMS:</span> And there it is in a real line &mdash; centre running away from the wall, exactly like the loop. You will see it in every pipe on this base now that you know to look for it."
- },
- {
-  "level": "level0",
-  "key": "closing",
-  "v": "<span class=\"who\">COMMS:</span> There it is. And look at what that gauge did &mdash; it sat at nothing while the line behind the valve was already full and already under pressure. <b>Pressure is not flow.</b> The wheel did not make water. It gave what was already standing there somewhere to go."
+  "v": "<span class=\"who\">COMMS:</span> And look at what the gauge did. It sat at nothing while the line behind the valve was already full and already under pressure. <b>Pressure is not flow.</b> The wheel did not make water &mdash; it gave what was already standing there somewhere to go."
  },
  {
   "level": "level0",
@@ -188,5 +128,310 @@
   "level": "level2",
   "key": "lesson",
   "v": "<span class=\"who\">COMMS:</span> Before you start — your call on the order. We can balance the bay the way it stands and write the numbers down, then pull the reducer. Or we can just pull it now and balance once, afterwards."
+ },
+ {
+  "level": "level3",
+  "key": "task",
+  "v": "Open the feed valve. The beds are asking for "
+ },
+ {
+  "level": "level3",
+  "key": "lesson",
+  "v": "Dose rate is right &mdash; the injector is set at 1:100 and it holds that ratio whatever the flow does. But bed A is reading high and bed B is reading low, and they are fed from the same line."
+ },
+ {
+  "level": "level3",
+  "key": "task",
+  "v": "Both beds are off band. Read MIX RUN Re and REGIME before you touch anything."
+ },
+ {
+  "level": "level3",
+  "key": "lesson",
+  "v": "Re 1,913 in the mixing run, and that is <b>laminar</b>. Laminar flow travels in layers that do not mix, so the stock never blends into the water &mdash; it rides through as a ribbon. Bed A taps the rich side of it and bed B gets what is left."
+ },
+ {
+  "level": "level3",
+  "key": "lesson",
+  "v": "A smaller pipe. Same half gallon a minute through a 1/4 in run is 1.54 ft/s instead of 0.30, Re 4,319 instead of 1,913, and turbulent flow mixes. The line was not blocked and the dose was never wrong &mdash; the pipe was too big."
+ },
+ {
+  "level": "level3",
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> Both beds on number. And the thing that fixed it was taking capacity <b>out</b> of the line.<span class=\"gap\"></span>Oversized pipe is not free. It is slower for the same duty, and slow enough is laminar."
+ },
+ {
+  "level": "level3",
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> Somebody specified that run a size up to be safe. Reasonable instinct, wrong answer &mdash; and it took three weeks of blaming the injector before anyone measured the Reynolds number in the pipe."
+ },
+ {
+  "level": "level4",
+  "key": "task",
+  "v": "Open the header valve and let the misters run."
+ },
+ {
+  "level": "level4",
+  "key": "lesson",
+  "v": "Listen to it. That is not flow noise &mdash; it is gravel. The header is passing water but the pod is getting a coarse spatter instead of a mist, and the trim has been in six weeks."
+ },
+ {
+  "level": "level4",
+  "key": "task",
+  "v": "Read ΔP PER STAGE against ALLOWABLE before you change anything."
+ },
+ {
+  "level": "level4",
+  "key": "lesson",
+  "v": "67.3 psi across one stage, and the most it can take is 60.2. Sixty psig into a pod at half an atmosphere is a ratio no single seat survives. The pressure dives under the vapour line inside the valve, the water boils, and the bubbles collapse on the way out. <b>Cavitation.</b>"
+ },
+ {
+  "level": "level4",
+  "key": "task",
+  "v": "Fit trim that clears the vapour line and still passes "
+ },
+ {
+  "level": "level4",
+  "key": "lesson",
+  "v": "Three stages. Each one takes 22.4 psi, which is inside the 23.9 any single stage can hold, so nothing boils. Two stages still choke the bottom seat; four clears it easily and then cannot pass the duty. The answer was the narrowest trim that does not cavitate, not the safest one on the shelf."
+ },
+ {
+  "level": "level4",
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> Mist is a mist again. And the trim you pulled out was not worn &mdash; it was eaten. Cavitation does not wear metal, it hammers it: every bubble that collapses on a seat takes a bit of it with it."
+ },
+ {
+  "level": "level4",
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> The pod runs at half an atmosphere because that is cheaper to build and the plants prefer it.<span class=\"gap\"></span>Nobody costed what that does to every valve feeding it off a 60 psig header. You just did."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Open the valve, then shut it again."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "A process is a set of operations that change a material’s condition — where it is, its pressure, its temperature, what it is mixed with. On this bench the material is water, the energy comes from the pump, the valve is the control, and FLOW on the panel at your right is the measurement."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Throw each of the three switches, then come back to water."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Each square in the cut-open pipe stands for a parcel of fluid, slowed so you can follow it. A fluid has no shape of its own; it takes the shape of whatever holds it. Liquids and gases are both fluids — a liquid barely compresses, a gas a lot. The three fluids on the panel at your left are all liquids."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Keep the valve shut. Push TEMPERATURE into the marked band."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Temperature measures the average kinetic energy of the molecules. Raise it and they move faster and more randomly, which is what the markers are showing you. The valve is shut, so none of that energy is carrying water anywhere. Random motion is not transport."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Shut the valve all the way, then read SUPPLY and FLOW."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Pressure is the force a fluid exerts per unit of area on its surroundings, acting equally in every direction. The pump does work on the water to hold it at 20 psi. Shut, that energy is stored and not spent: SUPPLY reads 20 psi, FLOW reads zero."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Open the valve into the marked band."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Fluid runs from high pressure to low. Opening the valve lowers the resistance between them, so water passes. Flow rate is the volume crossing a point per unit time; FLOW on the panel reads it in gallons per minute. The valve pushes nothing — it sets how much resistance is in the way."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Open the valve into the marked band and read VELOCITY."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Both samples on the desk are NPS 3/8 pipe. That number is the nominal size, and it fixes the outside: 0.675 in across, either one. What it does not fix is the hole. The wall thickness is set separately, by the schedule."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Leave the valve alone. Fit the SCH 80 sample and watch VELOCITY."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Same nominal pipe, same valve, same gallons per minute — and the fluid is moving faster. Schedule 80 has a thicker wall, so the bore is 0.423 in instead of 0.493. A quarter less area for the same flow to get through, and it makes up the difference in speed."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Fit the plain SCH 40 section, open the valve, and read P1, P2 and ΔP."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "The gauge you have been reading as SUPPLY is P1 — the pressure upstream of the test section. P2 is the pressure downstream of it. With a plain section fitted they read the same, so ΔP is zero: a length of open pipe costs you almost nothing."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Leave the valve alone. Fit the REDUCER section."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "P1 now stands at about 8 psi and P2 is still zero, so ΔP is 8. That pressure is not lost along the pipe — it is spent getting through the neck in the cutaway. The pump still holds 20 psi; the valve and the reducer are splitting it."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Leave it fitted. Find the new row, AT THROAT, on the readout."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "That row arrived with the reducer: AT THROAT, 29.9 ft/s. The neck is about a fifth of the bore across, so about a twentieth of the area. VELOCITY above it is the full bore: 1.4 ft/s. Narrow the way and the same flow has to move faster."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Compare FLOW with the reducer in and out, valve untouched."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "A quarter less flow for the same valve opening. Two resistances in series share the pressure, and what each one takes depends on how tight it is. That is the whole of valve sizing in one sentence, and it is why a reducer nobody recorded will quietly starve a line."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Open BRANCH 1 wide and read what it delivers."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "One branch drawing on its own. The supply valve upstream is holding the tee at about 15 psi, and branch 1 is taking just under 2 gpm of it. Nothing else is open, so all of the supply is going to one place."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Now open BRANCH 2. Keep your eye on BRANCH 1."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Branch 1 dropped by about a quarter and nobody touched its valve. Opening a second demand pulled the tee pressure down from 15 psi to under 9, and both branches now run on what is left. What divides at the tee is all there ever was."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Close BRANCH 2 again and watch BRANCH 1 come back."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "It recovers, because nothing was ever wrong with branch 1. A branch that reads low is not necessarily a branch with a fault — check what else is drawing before you go looking for a blockage."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Open the valve. Compare the markers at the wall with the ones down the middle."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Fluid touching the pipe wall is stationary — it sticks to the surface. That is the no-slip condition. Each layer is held back by the slower one beside it, less so further out, so the centre runs fastest. The yellow curve plots speed against position across the bore."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Now close the valve down and watch the yellow curve."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "The yellow curve is drawn from the speed at every point across the bore, so closing the valve pulls it in. Its length is how fast the fluid is going; its shape is how the speed is shared from wall to centre."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Fit the REDUCER and open the valve into the marked band."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "The trace is pressure along the pipe. It does not step down from P1 to P2 — it dives well below P2 at the throat and then climbs back. That low point is the vena contracta, and no gauge on either flange can see it."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Leave the valve alone. Heat the water and watch the red line."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "The red line is the vapour pressure of the water. Hot water boils at a higher pressure, so heating lifts the line toward the dip: the margin closes from 12.4 psi to 5.9. Nothing about the valve changed."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Try to close that margin to nothing."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "You cannot, on this bench. If the dip ever reached the line the water would boil inside the valve and collapse again downstream — cavitation, which chews trim to grey powder. Twenty psi into a warm room is too gentle to get there. A 60 psig header into a pod at half an atmosphere is not."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Close FLOW down into the marked band."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Reynolds number compares the fluid’s inertia to its viscosity: velocity times bore, divided by kinematic viscosity. Reynolds has no units. Below about 2,300 viscosity dominates and the layers stay ordered. That is laminar flow."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Leave FLOW alone. Push TEMPERATURE into the marked band."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "The valve has not moved, so the opening is unchanged. Heating water lowers its viscosity — its resistance to shear. Viscosity is the denominator of Reynolds, so Reynolds rose. Above about 4,000 inertia dominates and the layers break up: turbulent."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Switch the loop over to propane."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Specific gravity is the ratio of a fluid’s density to the density of water. Propane is 0.50, half as dense. Through a fixed restriction, flow goes as Cv times the square root of pressure drop over SG — so less dense means more volume through the same opening."
+ },
+ {
+  "level": "trainer",
+  "key": "task",
+  "v": "Deliver 0.50 gpm and keep the flow laminar. Fluid, temperature and valve are all live."
+ },
+ {
+  "level": "trainer",
+  "key": "lesson",
+  "v": "Propane is held near saturation on this bench, so TEMPERATURE locks and you cannot cool it. At 20 °C it is too thin to stay laminar at 0.50 gpm. Water will, once cooled, because cold water is more viscous. Fluid, temperature and valve decide together."
  }
 ]

@@ -1,0 +1,398 @@
+<title>Garden Dosing Skid</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<link rel="stylesheet" href="engine.css">
+<script src="engine.js"></script>
+<script src="fluids.js"></script>
+<script>
+'use strict';
+/* ============================================================
+   LEVEL THREE \u2014 THE DOSING SKID
+
+   The duty: 0.50 gpm of feed to two beds, both inside 1.4-1.8 mS/cm.
+   The dose rate is already correct. The beds are not.
+
+   The fault is the mixing run. At 0.50 gpm a 3/4 in line runs at Re 1913
+   - laminar - and laminar flow does not mix. The concentrate ribbons
+   through without blending, so the near bed takes a rich cut and the far
+   bed takes a weak one. The fix is counterintuitive and real: make the
+   pipe SMALLER. Same flow through a 1/4 in run is Re 4319, turbulent,
+   and it mixes.
+
+   Checked before it was built (reference/crosscheck.js):
+     mixing run   Re      BED A   BED B
+     3/4          1913    2.32    0.88    fail
+     1/2          2532    2.22    0.98    fail
+     3/8          3184    1.95    1.25    fail
+     1/4          4319    1.60    1.60    PASS
+   and the duty blocks the brute-force: holding 3/4 in and winding the
+   feed up until it mixes needs 1.10 gpm, more than double what the beds
+   are asking for.
+   ============================================================ */
+function startLevel3(){
+const A=LPE.art, P=LPE.palette, W=900, H=400;
+const FL=LPE_FLUIDS;
+
+/* ---- the duty ---- */
+const DUTY=0.50, EC_T=1.6, EC_LO=1.4, EC_HI=1.8, SPREAD=0.45;
+const FEED_MAX=1.20;
+
+/* ASME B36.10M bores, the same table sizing.js carries. */
+const RUNS=[
+  {k:'3/4', bore:0.824, area:0.00370, label:'3/4 in'},
+  {k:'1/2', bore:0.622, area:0.00211, label:'1/2 in'},
+  {k:'3/8', bore:0.493, area:0.00133, label:'3/8 in'},
+  {k:'1/4', bore:0.364, area:0.000724, label:'1/4 in'},
+];
+
+const S={ feed:0, run:'3/4', drag:false, lastAng:0, turn:0, closing:false, picking:false };
+
+/* ---- layout, one table ----
+   Everything on the feed sits on ONE centreline. The first pass had the
+   injector 19 px below the mixing run, so the line visibly stepped where
+   nothing happens, and the readout's footer printed over its own last
+   row. */
+const PIPE_Y=256;
+const LAY={
+  tank : {x:52,  y:150, w:86,  h:132},
+  inj  : {x:188, y:PIPE_Y-20, w:46,  h:40},
+  mix  : {x:300, y:PIPE_Y-15, w:250, h:30},
+  wheel: {x:252, y:PIPE_Y-62, r:26},
+  split: {x:596, y:PIPE_Y},
+  bedA : {x:656, y:158, w:96, h:66},
+  bedB : {x:656, y:268, w:96, h:66},
+  rack : {x:300, y:314, w:250, h:52},
+  read : {x:612, y:38,  w:246, h:112},
+};
+
+function runNow(){ return RUNS.find(r=>r.k===S.run) || RUNS[0]; }
+
+/* ---- the model ----
+   Mixedness is a straight ramp across the transition band: nothing below
+   Re 2300, complete above 4000. The ramp is the honest shape - the
+   transition really is gradual - and it is the same band the bench taught
+   on, so the number the player learned there means the same thing here. */
+function solve(){
+  const q = FEED_MAX*S.feed;
+  const r = runNow();
+  const v = q/448.831/r.area;
+  const re = q>0.004 ? FL.reynolds(v, r.bore, FL.FLUIDS.water, 20) : 0;
+  const mix = Math.max(0, Math.min(1, (re-2300)/1700));
+  /* With the dose correct, poor mixing does not change the average - it
+     splits it. The near tap takes the rich side of the ribbon, the far
+     tap takes what is left. */
+  const spread = q>0.004 ? (1-mix)*SPREAD : 0;
+  const ecA = q>0.004 ? EC_T*(1+spread) : 0;
+  const ecB = q>0.004 ? EC_T*(1-spread) : 0;
+  return { q, v, re, mix, ecA, ecB, r,
+           regime: q<=0.004 ? 'still' : FL.regime(re),
+           inBand: ecA>=EC_LO && ecA<=EC_HI && ecB>=EC_LO && ecB<=EC_HI,
+           onDuty: Math.abs(q-DUTY)<=0.03 };
+}
+
+/* ---- scenery, composed once ---- */
+let BG;
+function buildScene(){
+  BG=document.createElement('canvas'); BG.width=W; BG.height=H;
+  const g=BG.getContext('2d');
+  A.wall(g,W,H); A.rib(g,0,H); A.rib(g,866,H); A.ceiling(g,W);
+  A.overhead(g,W,58,8,false);
+  A.floor(g,W,344);
+  A.vignetteOnto(g,W,H);                 // room first, then signage on top
+  A.stencil(g,48,110,'THE GARDEN',20,'#8b949b');
+  A.stencil(g,48,130,'NUTRIENT DOSING SKID \u00b7 BAY 3',14);
+  A.stencil(g,300,226,'MIXING RUN',11,'#8b949b');
+  A.stencil(g,300,306,'SPARES',11,'#8b949b');
+  A.arrow(g,842,300,'BEDS');
+  A.toolbox(g,118,308);
+}
+
+/* ---- the skid ---- */
+function drawSkid(g,s){
+  const T=LAY.tank, I=LAY.inj, M=LAY.mix, SP=LAY.split;
+
+  // stock tank
+  g.fillStyle='#2b343a'; A.rr(g,T.x,T.y,T.w,T.h,6); g.fill();
+  g.fillStyle='#39444b'; g.fillRect(T.x,T.y,T.w,5);
+  const lv=T.y+30;
+  g.fillStyle='rgba(126,196,122,0.55)'; g.fillRect(T.x+6,lv,T.w-12,T.h-(lv-T.y)-8);
+  g.fillStyle='rgba(160,220,150,0.8)'; g.fillRect(T.x+6,lv,T.w-12,2);
+  g.strokeStyle='#4a565d'; g.lineWidth=2; A.rr(g,T.x,T.y,T.w,T.h,6); g.stroke();
+  g.fillStyle=P.rim; g.font="11px 'VT323',monospace"; g.textAlign='center';
+  g.fillText('STOCK',T.x+T.w/2,T.y+20);
+  g.font="9px 'VT323',monospace"; g.fillStyle='#8fb9ff';
+  g.fillText('SG 1.22',T.x+T.w/2,T.y+T.h+13);
+  g.textAlign='left';
+
+  // suction line up to the injector
+  g.strokeStyle='#39444b'; g.lineWidth=7; g.lineCap='round';
+  g.beginPath(); g.moveTo(T.x+T.w/2,T.y+T.h);
+  g.quadraticCurveTo(T.x+T.w/2+40,T.y+T.h+26,I.x+I.w/2,I.y+I.h+6); g.stroke();
+
+  // feed main in, through the valve, to the injector
+  LPE.pipeRun(g, 0, LAY.wheel.x-14, PIPE_Y, 11);
+  LPE.valveBody(g, LAY.wheel.x, PIPE_Y, 11, LAY.wheel.y, S.turn, LAY.wheel.r,
+                !S.closing, s.q>0.004);
+  LPE.pipeRun(g, LAY.wheel.x+14, I.x, PIPE_Y, 11);
+
+  // the injector
+  g.fillStyle='#4a565d'; A.rr(g,I.x,I.y,I.w,I.h,4); g.fill();
+  g.fillStyle='#6d7a84'; g.fillRect(I.x,I.y,I.w,2);
+  g.strokeStyle='#2b343a'; g.lineWidth=2; A.rr(g,I.x,I.y,I.w,I.h,4); g.stroke();
+  g.fillStyle=P.rim; g.font="9px 'VT323',monospace"; g.textAlign='center';
+  g.fillText('1:100',I.x+I.w/2,I.y+I.h/2+3);
+  g.textAlign='left';
+  LPE.pipeRun(g, I.x+I.w, M.x, PIPE_Y, 11);      // injector out to the mixing run
+
+  // the mixing run: outside stays put, bore changes
+  const r=s.r, cy=M.y+M.h/2;
+  const hOut=M.h, hBore=Math.round(M.h*(r.bore/0.824));
+  g.fillStyle='#39444b'; g.fillRect(M.x,cy-hOut/2,M.w,hOut);
+  g.fillStyle='#6d7a84'; g.fillRect(M.x,cy-hOut/2,M.w,2);
+  g.fillStyle='#10161a'; g.fillRect(M.x,cy-hBore/2,M.w,hBore);
+  // the ribbon, or the mix
+  if(s.q>0.004){
+    const t=performance.now()*0.001;
+    for(let i=0;i<46;i++){
+      const px=M.x+((i*31 + t*s.v*52)%M.w);
+      /* laminar: the concentrate stays as a band in the upper half and the
+         water below it never gets it. turbulent: it is everywhere. */
+      const lane = s.mix>=1 ? (Math.random()*2-1)
+                 : (Math.random()*2-1)*s.mix + (1-s.mix)*(-0.45);
+      const py=cy+lane*(hBore/2)*0.82;
+      const conc = s.mix>=1 ? (i%3===0) : (lane<0);
+      g.fillStyle = conc ? 'rgba(126,196,122,0.9)' : 'rgba(54,224,255,0.55)';
+      const sz = conc ? 2.9 : 2.4;              // SG 1.22 draws heavier
+      g.fillRect(px-sz/2,py-sz/2,sz,sz);
+    }
+  }
+  g.fillStyle=P.amber; g.font="11px 'VT323',monospace"; g.textAlign='center';
+  g.fillText(r.label, M.x+M.w/2, M.y-6);
+  g.textAlign='left';
+
+  // out of the mixing run to the split
+  LPE.pipeRun(g, M.x+M.w, SP.x, cy, 11);
+  g.fillStyle='#39444b'; g.fillRect(SP.x-8,LAY.bedA.y+30,16,LAY.bedB.y+30-(LAY.bedA.y+30));
+  [LAY.bedA,LAY.bedB].forEach(bd=>{
+    LPE.pipeRun(g, SP.x, bd.x, bd.y+30, 8);
+  });
+
+  // the beds, coloured by how far off band they are
+  [[LAY.bedA,s.ecA,'BED A'],[LAY.bedB,s.ecB,'BED B']].forEach(([bd,ec,name])=>{
+    const ok = ec>=EC_LO && ec<=EC_HI, live = s.q>0.004;
+    g.fillStyle='#232a2f'; A.rr(g,bd.x,bd.y,bd.w,bd.h,4); g.fill();
+    g.strokeStyle= live ? (ok?'#39ff6a':'#c0493b') : '#4a565d';
+    g.lineWidth=2; A.rr(g,bd.x,bd.y,bd.w,bd.h,4); g.stroke();
+    for(let i=0;i<5;i++){                      // a row of plants, greener when fed right
+      const px=bd.x+12+i*17, base=bd.y+bd.h-10;
+      const vig = !live ? 0.25 : (ok?1:(ec>EC_HI?0.55:0.4));
+      g.strokeStyle='rgba('+Math.round(90+40*vig)+','+Math.round(120+90*vig)+',90,'+(0.5+0.4*vig)+')';
+      g.lineWidth=2;
+      g.beginPath(); g.moveTo(px,base); g.lineTo(px,base-10-8*vig); g.stroke();
+      g.beginPath(); g.moveTo(px,base-8); g.lineTo(px-5,base-14-5*vig); g.stroke();
+      g.beginPath(); g.moveTo(px,base-8); g.lineTo(px+5,base-14-5*vig); g.stroke();
+    }
+    g.fillStyle=P.rim; g.font="10px 'VT323',monospace";
+    g.fillText(name,bd.x+6,bd.y+13);
+    g.fillStyle= !live ? '#5d6a73' : (ok?'#39ff6a':'#ffd24a');
+    g.font="14px 'VT323',monospace"; g.textAlign='right';
+    g.fillText(live?ec.toFixed(2):'\u2014', bd.x+bd.w-7, bd.y+14);
+    g.textAlign='left';
+  });
+}
+
+/* ---- the spares rack: four sections, one fitted ---- */
+function rackBtns(){
+  const R=LAY.rack, w=R.w/4-8;
+  return RUNS.map((r,i)=>({ r, x:R.x+i*(R.w/4), y:R.y, w, h:R.h }));
+}
+function drawRack(g){
+  const live=!S.closing && !SH.done ? true : true;
+  rackBtns().forEach(b=>{
+    const on=b.r.k===S.run;
+    g.fillStyle = on?'#2f3b34':'#232a2f'; A.rr(g,b.x,b.y,b.w,b.h,3); g.fill();
+    g.strokeStyle = on?P.amber:'#44505a'; g.lineWidth= on?2:1;
+    A.rr(g,b.x,b.y,b.w,b.h,3); g.stroke();
+    // the section, end on
+    const cx=b.x+b.w/2, cy=b.y+20, R0=13, wall=R0*(1-b.r.bore/0.824)*0.55+3;
+    g.fillStyle='#78848d'; g.beginPath(); g.arc(cx,cy,R0,0,6.284); g.fill();
+    g.fillStyle='#c3ccd3'; g.beginPath();
+    g.arc(cx,cy,R0,-2.4,-0.7); g.arc(cx,cy,R0-wall,-0.7,-2.4,true); g.fill();
+    g.fillStyle='#0b1013'; g.beginPath(); g.arc(cx,cy,R0-wall,0,6.284); g.fill();
+    g.fillStyle = on?P.amber:'#8e9aa3'; g.font="10px 'VT323',monospace"; g.textAlign='center';
+    g.fillText(b.r.label, cx, b.y+b.h-6);
+    g.textAlign='left';
+  });
+}
+
+/* ---- readout ---- */
+function drawRead(g,s){
+  const R=LAY.read;
+  g.fillStyle='#232a2f'; A.rr(g,R.x,R.y,R.w,R.h,4); g.fill();
+  g.strokeStyle='#4a565d'; g.lineWidth=2; A.rr(g,R.x,R.y,R.w,R.h,4); g.stroke();
+  const rows=[
+    ['FEED', s.q.toFixed(2)+' gpm', s.onDuty?'#39ff6a':'#ffd24a'],
+    ['MIX RUN Re', s.re>0?Math.round(s.re).toLocaleString('en-US'):'\u2014', '#39ff6a'],
+    ['REGIME', s.regime.toUpperCase(),
+     s.regime==='laminar'?'#8fb9ff':(s.regime==='turbulent'?'#ffd24a':'#8b949b')],
+    ['MIXED', s.q>0.004?Math.round(s.mix*100)+' %':'\u2014',
+     s.mix>0.72?'#39ff6a':'#c0493b'],
+  ];
+  rows.forEach((c,i)=>{
+    const y=R.y+14+i*22;
+    g.fillStyle=P.rim; g.font="10px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(c[0],R.x+10,y+9);
+    g.fillStyle=s.q>0.004?c[2]:'#5d6a73';
+    g.font="15px 'VT323',monospace"; g.textAlign='right';
+    g.fillText(c[1],R.x+R.w-10,y+9);
+  });
+  g.textAlign='left';
+  g.fillStyle='#7a6b54'; g.font="9px 'VT323',monospace";
+  g.fillText('TARGET  '+DUTY.toFixed(2)+' gpm  \u00b7  EC '+EC_LO+'-'+EC_HI,R.x+10,R.y+R.h-6);
+}
+
+/* ---- script ---- */
+const STEPS=[
+  { task:'Open the feed valve. The beds are asking for '+DUTY.toFixed(2)+' gpm.',
+    ok:s=>s.onDuty,
+    lesson:'Dose rate is right &mdash; the injector is set at 1:100 and it holds that '+
+      'ratio whatever the flow does. But bed A is reading high and bed B is reading '+
+      'low, and they are fed from the same line.' },
+  { task:'Both beds are off band. Read MIX RUN Re and REGIME before you touch anything.',
+    ok:s=>s.onDuty && s.re>0,
+    watch:2.4,
+    lesson:'Re 1,913 in the mixing run, and that is <b>laminar</b>. Laminar flow '+
+      'travels in layers that do not mix, so the stock never blends into the water '+
+      '&mdash; it rides through as a ribbon. Bed A taps the rich side of it and bed '+
+      'B gets what is left.' },
+  { task:'Fix the mixing. Hold '+DUTY.toFixed(2)+' gpm and bring both beds inside '+EC_LO+'-'+EC_HI+'.',
+    ok:s=>s.onDuty && s.inBand && !S.drag,
+    lesson:'A smaller pipe. Same half gallon a minute through a 1/4 in run is '+
+      '1.54 ft/s instead of 0.30, Re 4,319 instead of 1,913, and turbulent flow '+
+      'mixes. The line was not blocked and the dose was never wrong &mdash; the '+
+      'pipe was too big.' },
+];
+let si=0;
+function say(){ if(SH.holding||SH.done||S.closing) return;
+  SH.say(STEPS[si].task,''); SH.count((si+1)+' / '+STEPS.length); }
+
+const CLOSING=[
+  '<span class="who">COMMS:</span> Both beds on number. And the thing that fixed it '+
+  'was taking capacity <b>out</b> of the line.<span class="gap"></span>Oversized pipe '+
+  'is not free. It is slower for the same duty, and slow enough is laminar.',
+
+  '<span class="who">COMMS:</span> Somebody specified that run a size up to be safe. '+
+  'Reasonable instinct, wrong answer &mdash; and it took three weeks of blaming the '+
+  'injector before anyone measured the Reynolds number in the pipe.',
+];
+let ci=0, closeT=0;
+function closeOut(i){
+  if(i>=CLOSING.length){
+    S.closing=false;
+    SH.finish({ lesson:CLOSING[CLOSING.length-1],
+      next:()=>LPE.next && LPE.next() });
+    return;
+  }
+  S.closing=true;
+  SH.beat(CLOSING[i], ()=>closeOut(i+1));
+}
+
+/* ---- frame ---- */
+function step(dt){
+  const s=solve();
+  S.turn += (S.feed - S.turn)*Math.min(1,dt*6);
+  if(!SH.done && !S.closing && STEPS[si]){
+    const st=STEPS[si];
+    if(st.ok(s)){
+      if(st.watch){ closeT+=dt; if(closeT<st.watch) return; }
+      closeT=0;
+      const lesson=st.lesson;
+      si++;
+      if(si>=STEPS.length){ SH.beat(lesson,()=>closeOut(0)); }
+      else SH.beat(lesson, say);
+    } else closeT=0;
+  }
+}
+function draw(g){
+  if(!BG) buildScene();
+  const s=solve();
+  g.drawImage(BG,0,0);
+  drawSkid(g,s); drawRack(g); drawRead(g,s);
+}
+
+/* ---- mount ---- */
+buildScene();
+const SH=LPE.mount({
+  t1:'GARDEN \u2014 DOSING SKID',
+  t2:'Bay 3 nutrient feed \u00b7 two beds \u00b7 manual',
+  w:W,h:H, step, draw,
+  intro:[
+    {kind:'place',
+     text:'The dosing skid sits at the head of Bay 3: a stock tank, a proportional '+
+          'injector set at one part in a hundred, and a straight run of pipe before '+
+          'the feed splits to the beds.<br><br>That straight run is there to let the '+
+          'concentrate mix in before anything drinks it.'},
+    {kind:'title', eyebrow:'THE GARDEN \u00b7 BAY 3',
+     title:'DOSING SKID', sub:'TWO BEDS, ONE FEED'},
+  ],
+  onStart:()=>{ say(); },
+  onReset(){
+    Object.assign(S,{feed:0,run:'3/4',drag:false,turn:0,closing:false});
+    si=0; ci=0; closeT=0; buildScene(); say();
+  },
+});
+
+const cv=SH.canvas;
+cv.addEventListener('pointerdown',e=>{
+  LPE.audio.init(); LPE.audio.resume();
+  const p=SH.pt(e);
+  for(const b of rackBtns()){
+    if(p.x>=b.x && p.x<=b.x+b.w && p.y>=b.y && p.y<=b.y+b.h){
+      if(S.run!==b.r.k){ S.run=b.r.k; LPE.audio.clack(); }
+      return;
+    }
+  }
+  const Wl=LAY.wheel;
+  if(Math.hypot(p.x-Wl.x,p.y-Wl.y)<Wl.r+18){
+    S.drag=true; S.lastAng=Math.atan2(p.y-Wl.y,p.x-Wl.x);
+    cv.setPointerCapture(e.pointerId); LPE.audio.startFlow();
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(!S.drag) return;
+  const p=SH.pt(e), Wl=LAY.wheel, a=Math.atan2(p.y-Wl.y,p.x-Wl.x);
+  let d=a-S.lastAng;
+  while(d>Math.PI) d-=6.2832; while(d<-Math.PI) d+=6.2832;
+  S.lastAng=a;
+  const before=S.feed;
+  S.feed=Math.max(0,Math.min(1,S.feed+d/(2*6.2832)));
+  /* The duty is a number to hit, not a pixel to find: within a touch of
+     it the wheel is pulled onto it. */
+  const dutyPos=DUTY/FEED_MAX;
+  if(Math.abs(S.feed-dutyPos)<0.035) S.feed=dutyPos;
+  if(Math.floor(S.feed*18)!==Math.floor(before*18)) LPE.audio.tick();
+});
+['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>{S.drag=false;}));
+}
+
+(window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
+  label:'LEVEL 3 \u2014 THE DOSING SKID',
+  sub:'The Garden  \u00b7  nutrient feed',
+  /* The job, before the training for it. launch() plays this first;
+     see PIPELINE.md section 6. */
+  brief:[
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+     /* Every <br> segment must fit 52 characters or the card wraps it and
+        leaves the tail alone on a line. */
+     text:'&ldquo;Bay 3 again. The beds at the near end are burning<br>'+
+          'and the far end is starving, off the same feed.<br>'+
+          'Dosing says the injector is fine. Go and find out.&rdquo;'},
+  ],
+  /* Both rungs already exist on the bench and have never had a level.
+     Reynolds is what the player measures here; specific gravity is why a
+     heavier stock rides as a ribbon instead of blending. */
+  teach:['reynolds','specific-gravity'],
+  start:startLevel3,
+});
+if(!window.LPE_GAME) startLevel3();
+</script>

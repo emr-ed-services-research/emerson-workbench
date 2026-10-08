@@ -521,10 +521,6 @@ const SH=LPE.mount({
     /* The repair is not a coincidence that arrives on its own. The coach
        PUTS it on the ticket, in front of the player, and owns the cost of
        doing so - that is where the time goes, not into one extra balance. */
-    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
-     text:'&ldquo;Bay 3 is on your round this shift.<br>'+
-          'And I am adding one to your ticket while you are down there \u2014<br>'+
-          'that reducer in line 3. It comes out today.&rdquo;'},
     {kind:'place',
      text:'Bay 3 is green now. The beds you brought online are growing, the fans are '+
           'running, and line 3 is still drinking less than the other two.'+
@@ -557,6 +553,20 @@ SH.canvas.addEventListener('pointermove',onMove);
 (window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
   label:'LEVEL 2 \u2014 LINE 3 REPAIR',
   sub:'Bio-Grow Bay 3  \u00b7  corrective',
+  /* The job, before the training for it. launch() plays this first;
+     see PIPELINE.md section 6. */
+  brief:[
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+      /* Every <br> segment must fit 52 characters or the card wraps it and
+         leaves the tail alone on a line. */
+      text:'&ldquo;Bay 3 is on your round this shift.<br>'+
+           'One more on your ticket while you are down there \u2014<br>'+
+           'that reducer in line 3. It comes out today.&rdquo;'}
+  ],
+  /* Level 2 measures the reducer in bed 3 and then takes it out. The
+     rung behind that - what a restriction costs, in P1/P2 terms - is
+     taught on the bench first. */
+  teach:['restriction'],
   start:startLevel2,
 });
 if(!window.LPE_GAME) startLevel2();

@@ -1,10 +1,10 @@
 /* ============================================================
-   LEVEL SIZING — pick real values for a real application.
+   LEVEL SIZING \u2014 pick real values for a real application.
 
    A level's constants are DERIVED here, not chosen to make the arithmetic
    pretty. The first pass at Bay 3 did the opposite: Cv 7 / 4 / 2.2 were
    picked because they balanced nicely, and the bay turned out to deliver
-   46.8 gpm — 2,800 gal/hour through three hydroponic beds, on a colony
+   46.8 gpm \u2014 2,800 gal/hour through three hydroponic beds, on a colony
    whose own narration says the water is counted.
 
    Run this before writing a level. Every number it prints is traceable to
@@ -12,7 +12,7 @@
    ============================================================ */
 
 /* ---- sources on disk ----
-   Pipe: ASME B36.10M, via Fisher Control Valve Handbook 6th ed. §14.2,
+   Pipe: ASME B36.10M, via Fisher Control Valve Handbook 6th ed. \u00a714.2,
    "Identification, wall thickness, and weights are extracted from ASME
    B36.10M". Schedule 40 / STD rows, bore in inches, flow area in ft^2. */
 const PIPE = {
@@ -20,6 +20,13 @@ const PIPE = {
   '1/2': { od:0.840, wall:0.109, bore:0.622, area:0.00211 },
   '3/4': { od:1.050, wall:0.113, bore:0.824, area:0.00370 },
   '1'  : { od:1.315, wall:0.133, bore:1.049, area:0.00600 },
+};
+
+/* Schedule 80 / XS, same source. The bench needs a matched pair at one
+   nominal size to show that the nominal number fixes the outside and not
+   the hole: NPS 3/8 is 0.675 OD on both, and the wall does the rest. */
+const PIPE80 = {
+  '3/8': { od:0.675, wall:0.126, bore:0.423, area:0.00098 },
 };
 
 const GPM_TO_CFS = 1/448.831;

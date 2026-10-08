@@ -409,8 +409,6 @@ const SH=LPE.mount({
   t2:'The Garden \u00b7 Bio-Grow Bay 3',
   w:W,h:H,step:stepSim,draw,
   intro:[
-    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
-     text:'&ldquo;Nice work on Four-B \u2014 the lab says they have pressure.<br>While you are on shift: Bay 3\u2019s beds are plumbed and dry.<br>Can you bring them online?&rdquo;'},
     {kind:'place',
      text:'Two decks up from Four-B, and a different century. The lift opens on humid '+
           'air and the hum of circulation fans. Three new growing beds sit dry at the '+
@@ -441,6 +439,22 @@ say();
 (window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
   label:'LEVEL 1 \u2014 BIO-GROW BAY 3',
   sub:'The Garden  \u00b7  commissioning',
+  /* The job, before the training for it. launch() plays this first;
+     see PIPELINE.md section 6. */
+  brief:[
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+      /* Every <br> segment must fit 52 characters or the card wraps it and
+         leaves the tail alone on a line. */
+      text:'&ldquo;Nice work on Four-B \u2014 the lab has pressure.<br>'+
+           'While you are on shift: Bay 3 is plumbed and dry.<br>'+
+           'Can you bring the beds online?&rdquo;'}
+  ],
+  /* Level 1 ends on the reducer in bed 3 - a bore change. Nothing in the
+     game had ever said what a bore is, so the rung goes here. */
+  /* Bed 3's reducer is a bore change, and the whole level is one supply
+     against three competing demands. Both rungs are taught on the bench
+     before the player meets them in a line that matters. */
+  teach:['bore','manifold'],
   start:startLevel1,
 });
 if(!window.LPE_GAME) startLevel1();

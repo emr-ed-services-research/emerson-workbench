@@ -16,7 +16,11 @@ const fs = require('fs');
 const KEYED = /(lesson|task|line)\s*:\s*((?:'(?:[^'\\]|\\.)*'|"(?:[^"\\]|\\.)*"|\s*\+\s*|\s*\n\s*)+)/g;
 
 const out = [];
-for (const file of ['level0.html', 'level1.html', 'level2.html']) {
+/* trainer.html was missing from this list, so every lesson on the bench -
+   which is now where most of the teaching text lives - was never measured
+   against the box it has to fit in. */
+for (const file of ['level0.html', 'level1.html', 'level2.html', 'level3.html',
+                    'level4.html', 'trainer.html']) {
   const src = fs.readFileSync(file, 'utf8');
   const level = file.replace('.html', '');
   let m;

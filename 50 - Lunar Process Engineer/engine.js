@@ -207,6 +207,13 @@ const art = {
    axis-relative is what lets one implementation serve both. */
 function Line(opt){
   this.r=opt.r;
+  /* Fluid state for the agitation model, same fields and same defaults as
+     Cutaway carries. A level that changes fluid or temperature sets these
+     on the Line too, so both views agitate alike. */
+  this.tempF=opt.tempF===undefined?FLUID_REF_F:opt.tempF;
+  this.sg=opt.sg===undefined?1:opt.sg;
+  this.gas=!!opt.gas;
+  this.regime=opt.regime||'turbulent';
   this.segs=opt.segments.map(s=>{
     /* An arc segment carries water round an elbow. Without it the flow cuts
        the corner in a straight line and runs out through the inside wall of
@@ -295,6 +302,20 @@ function fluidAgitation(o){
    different and not merely reads different on a number. */
 function fluidSize(sg){ return 2.4*(sg===undefined?1:sg); }
 function fluidAlpha(sg){ return sg===undefined?1:Math.min(1,Math.max(0.4,0.4+(sg-1.0)*1.2)); }
+/* ---- one marker, one shape, everywhere ----
+   The reference rig draws a marker as a square of the fluid's own size,
+   centred on its position: `fillRect(px-size/2, py-size/2, size, size)`.
+   Both views in this game had instead grown their own motion streak - a
+   16px tail in `Line`, a 6-to-32px tail in `Cutaway` - invented separately
+   and tuned separately, so the same water read as two different substances
+   depending on which view you were looking at, and neither matched the rig
+   it was ported from. Every view now calls this and nothing else. */
+function marker(g,x,y,o){
+  o=o||{};
+  const s=fluidSize(o.sg), a=fluidAlpha(o.sg)*(o.alpha===undefined?1:o.alpha);
+  g.fillStyle='rgba(54,224,255,'+Math.min(1,a).toFixed(2)+')';
+  g.fillRect(x-s/2,y-s/2,s,s);
+}
 Line.prototype.seg=function(i){ return this.segs[i]; };
 Line.prototype.set=function(i,v){ Object.assign(this.segs[i],v); };
 Line.prototype.update=function(dt){
@@ -350,14 +371,13 @@ Line.prototype.draw=function(g){
         x=s.ax+s.ux*d+s.nx*off; y=s.ay+s.uy*d+s.ny*off;
         ux=s.ux; uy=s.uy;
       }
-      if(moving){
-        const tail=16*f*s.flow;
-        g.strokeStyle='rgba(54,224,255,'+(0.34+0.46*f*s.flow).toFixed(2)+')';
-        g.lineWidth=1.5; g.beginPath();
-        g.moveTo(x-ux*tail,y-uy*tail); g.lineTo(x,y); g.stroke();
-      }else{
-        g.fillStyle='rgba(54,224,255,0.38)'; g.fillRect(x,y,2,3);
-      }
+      /* Agitation and shape both come from the rig now. Brightness still
+         tracks the local profile speed, which is what makes the centre of
+         the bore read faster than the wall - but the marker is a marker at
+         every speed, never a streak. */
+      const ag=fluidAgitation({tempF:this.tempF,sg:this.sg,gas:this.gas,regime:s.regime||this.regime});
+      const jx=(Math.random()-0.5)*ag, jy=(Math.random()-0.5)*ag*0.6;
+      marker(g,x+jx,y+jy,{sg:this.sg,alpha:moving?(0.42+0.46*f*s.flow):0.38});
     });
     if(s.race && s.flow>0.03) s.race.forEach(p=>{
       const d=p.t*s.len, off=p.lane*s.r*0.86;
@@ -419,14 +439,79 @@ function Cutaway(opt){
   for(let i=0;i<n;i++) this.parts.push({t:Math.random(),lane:(Math.random()*2-1)*0.96,j:Math.random()*6.28});
 }
 Cutaway.prototype.set=function(v){ Object.assign(this,v); };
+
+/* ---- the profile, as a shape that moves ----
+   Two things were wrong with plotting it straight from `regime`.
+
+   It SNAPPED. `regime` is a verdict - laminar below Re 2300, turbulent
+   above 4000 - so the curve jumped between a parabola and a blunt
+   1/7-power the instant the number crossed. Between those two numbers is
+   the transition region, where flow is genuinely part one and part the
+   other, so blending across it is the honest plot as well as the readable
+   one.
+
+   It IGNORED FLOW. The envelope was drawn at the same width whatever the
+   valve was doing, so the one control the player has moved the curve not
+   at all and there was nothing to learn from watching it.
+
+   `turb` and `vis` are the eased, drawn values. The physics stays
+   instantaneous - the readouts still report the real Reynolds and the real
+   verdict the moment it changes - these two only decide what is on screen,
+   so a drag reads as the shape growing and changing rather than flicking. */
+const RE_LAM=2300, RE_TURB=4000;
+Cutaway.prototype.turb=1;      // 0 fully laminar, 1 fully turbulent
+Cutaway.prototype.vis=0;       // eased flow, drives how far the curve reaches
+
 Cutaway.prototype.profile=function(lane){
-  return (this.regime==='laminar'?laminarAt:profileAt)(lane);
+  const t=this.turb;
+  return laminarAt(lane)*(1-t) + profileAt(lane)*t;
 };
+/* Where the shape should settle, from Reynolds when we have it and from
+   the verdict when we do not (a level that sets regime by hand). */
+Cutaway.prototype.turbTarget=function(){
+  if(this.re>0) return Math.min(1,Math.max(0,(this.re-RE_LAM)/(RE_TURB-RE_LAM)));
+  return this.regime==='laminar' ? 0 : 1;
+};
+/* ---- a throat in the run ----
+   Set `throat` to {at, span, beta} and the bore necks down over that span:
+   beta is the throat diameter as a fraction of the bore. Continuity then
+   does the rest - area goes as beta^2, so the fluid through the neck is
+   1/beta^2 times faster.
+
+   Without this the markers crossed a drawn reducer at exactly the speed
+   they approached it, which made the restriction lesson assert something
+   the picture flatly denied. */
+Cutaway.prototype.throat=null;
+
+/* bore diameter at t, as a fraction of the full bore */
+Cutaway.prototype.boreFrac=function(t){
+  const T=this.throat; if(!T) return 1;
+  const d=Math.abs(t-T.at);
+  if(d>=T.span) return 1;
+  /* a cosine shoulder into the neck and out of it, so nothing steps */
+  const k=0.5*(1+Math.cos(Math.PI*d/T.span));        // 1 at the throat, 0 at the edge
+  return 1 - (1-T.beta)*k;
+};
+
 Cutaway.prototype.update=function(dt){
+  const ease=(a,b,rate)=>a+(b-a)*Math.min(1,dt*rate);
+  this.turb=ease(this.turb,this.turbTarget(),3.2);
+  this.vis =ease(this.vis ,this.flow        ,4.0);
   const f=this.flow;
   this.parts.forEach(p=>{
     if(f>0.02){
-      p.t+=dt*(0.17+0.62*f)*this.profile(p.lane);
+      /* same volume a second through a smaller hole: speed goes as 1/area,
+         and area goes as diameter squared */
+      /* Continuity for the plane we are actually drawing. The lanes are
+         already squeezed to bf at the throat, so the markers occupy a band
+         bf as tall; speeding them by 1/bf keeps the number of markers per
+         unit of drawn area the same through the neck as in the bore.
+         Using the true 3D 1/bf^2 instead empties the neck - the linear
+         density falls as 1/speed - and a throat with nothing in it reads
+         as a void, not as fast flow. The real 3D throat velocity is not
+         thrown away: it is the AT THROAT figure on the readout. */
+      const bf=this.boreFrac(p.t), accel=1/bf;
+      p.t+=dt*(0.17+0.62*f)*this.profile(p.lane)*accel;
       if(p.t>1){ p.t-=1; p.lane=(Math.random()*2-1)*0.96; }
     }
   });
@@ -482,7 +567,10 @@ Cutaway.prototype.draw=function(g){
   g.save();
   g.beginPath(); g.rect(x,y,w,h); g.clip();
   this.parts.forEach(p=>{
-    const px=x+p.t*w, py=mid+p.lane*half*0.93;
+    /* The lane is squeezed by the local bore, so the stream visibly
+       narrows into the neck instead of markers sailing through the metal. */
+    const bf=this.boreFrac(p.t);
+    const px=x+p.t*w, py=mid+p.lane*half*0.93*bf;
     const sp=this.profile(p.lane)/PROFILE_PEAK;
     /* Agitation from the one shared model. The laminar term is the part
        that matters most here: the rig drops it to 0.12, so laminar flow
@@ -491,26 +579,23 @@ Cutaway.prototype.draw=function(g){
     const ag=fluidAgitation({tempF:this.tempF,sg:this.sg,gas:this.gas,regime:this.regime});
     const jx=(Math.random()-0.5)*ag, jy=(Math.random()-0.5)*ag*0.6;
     const al=fluidAlpha(this.sg), sz=fluidSize(this.sg);
-    if(this.flow>0.02){
-      const tail=6+26*sp*this.flow;
-      g.strokeStyle='rgba(54,224,255,'+(al*(0.30+0.5*sp)).toFixed(2)+')';
-      g.lineWidth=2; g.beginPath();
-      g.moveTo(px-tail+jx,py+jy); g.lineTo(px+jx,py+jy); g.stroke();
-    }else{
-      g.fillStyle='rgba(54,224,255,'+(al*0.72).toFixed(2)+')';
-      g.fillRect(px+jx,py+jy,sz,sz);
-    }
+    marker(g,px+jx,py+jy,{sg:this.sg,alpha:this.flow>0.02?(0.38+0.5*sp):0.72});
   });
   g.restore();
 
   // ---- the envelope, plotted from the same profile the markers obey
   g.save();
-  g.strokeStyle='#ffd24a'; g.lineWidth=2; g.globalAlpha=this.flow>0.02?0.95:0.25;
+  g.strokeStyle='#ffd24a'; g.lineWidth=2; g.globalAlpha=0.30+0.65*this.vis;
   g.beginPath();
   for(let i=0;i<=40;i++){
     const lane=-0.98+1.96*i/40;
+    /* Reach scales with the eased flow, so closing the valve visibly pulls
+       the curve back in. A floor of 0.06 keeps a hairline on the axis at
+       dead stop rather than collapsing it to nothing - zero flow is a
+       reading, not an absence of the plot. */
     const sp=this.profile(lane)/2;
-    const px=x+10+sp*(w*0.30), py=mid+lane*half*0.93;
+    const reach=(0.06+0.94*this.vis)*(w*0.30);
+    const px=x+10+sp*reach, py=mid+lane*half*0.93;
     i?g.lineTo(px,py):g.moveTo(px,py);
   }
   g.stroke();
@@ -1168,11 +1253,39 @@ function _select(opt){
 /* Launching is the one place that knows which assignment is running, so it
    is the one place that can answer "what comes after this". Levels are
    started through here and nowhere else. */
-function launch(opt,i){
-  const lv=opt.levels[i], run=lv&&(lv.start||lv.play);
-  if(!run) return;
-  LPE_NAV={levels:opt.levels, idx:i, opt};
-  run();
+/* Launching is the one place that knows which assignment is running, so it
+   is the one place that can answer "what comes after this" - and equally
+   "what has to be understood before it". A level declares what it needs:
+
+     teach:['markers','velocity-profile']
+
+   and the bench runs those segments first, then starts the level. Each
+   concept is taught once: coming back to a level already played does not
+   sit you through the lesson again. */
+const TAUGHT = new Set();
+/* The one place the player's order of events is decided. See PIPELINE.md
+   section 6. Brief, then training, then arrival - in that order, because
+   the trainer opens with "before you go down there" and that line needs a
+   there to have been given. It used to run first: the player was sent to
+   the bench for a job nobody had mentioned, and the actual assignment
+   turned up afterwards, inside the level's own intro. */
+function launch(opt, i) {
+  const lv = opt.levels[i], run = lv && (lv.start || lv.play);
+  if (!run) return;
+  LPE_NAV = { levels: opt.levels, idx: i, opt };
+
+  const toTraining = () => {
+    const need = (lv.teach || []).filter(id => !TAUGHT.has(id));
+    if (need.length && typeof LPE.trainer === 'function') {
+      need.forEach(id => TAUGHT.add(id));   // taught once a session
+      LPE.trainer(need, run);
+      return;
+    }
+    run();
+  };
+
+  if (lv.brief && lv.brief.length) intro(lv.brief, toTraining);
+  else toTraining();
 }
 
 function mount(o){

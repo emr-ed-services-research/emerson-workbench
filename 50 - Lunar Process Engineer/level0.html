@@ -93,9 +93,8 @@ function lines(){
     case 'turning': return ['Keep turning.',
       '<b>'+S.press.toFixed(0)+' psig</b> at the lab.'];
     default: return ['That is water into Bio Lab One.',
-      '<span class="who">COMMS:</span> Good. Find the panel, work the valve, read the gauge &mdash; '+
-      'that is the job down this end, and the engineer you are standing in for did it for six years. '+
-      'Play your cards right, you might make a decent one yourself.'];
+      '<span class="who">COMMS:</span> Good. Panel open, wheel turned, gauge read. '+
+      'That is the whole job down this end of Four-B.'];
   }
 }
 /* The strip belongs to whatever is holding it. say() runs on every drag
@@ -118,14 +117,14 @@ const CLOSING=[
   /* The trainer taught this properly. Here it is only recognition - the
      same shape, in a line that matters. Re-teaching it would be the
      lesson arriving twice and landing neither time. */
-  '<span class="who">COMMS:</span> And there it is in a real line &mdash; centre '+
-  'running away from the wall, exactly like the loop. You will see it in every pipe '+
-  'on this base now that you know to look for it.',
+  '<span class="who">COMMS:</span> Watch the middle of that run against the pipe '+
+  'wall &mdash; the centre is pulling ahead. Same <b>velocity profile</b> you saw on '+
+  'R.O.&rsquo;s bench, in a line that actually feeds somebody.',
 
-  '<span class="who">COMMS:</span> There it is. And look at what that gauge did &mdash; '+
-  'it sat at nothing while the line behind the valve was already full and already '+
-  'under pressure. <b>Pressure is not flow.</b> The wheel did not make water. It gave '+
-  'what was already standing there somewhere to go.',
+  '<span class="who">COMMS:</span> And look at what the gauge did. It sat at nothing '+
+  'while the line behind the valve was already full and already under pressure. '+
+  '<b>Pressure is not flow.</b> The wheel did not make water &mdash; it gave what was '+
+  'already standing there somewhere to go.',
 
   '<span class="who">COMMS:</span> Nothing down this end is automated. No actuators, '+
   'no remote, no screens. Every run in Four-B gets opened by somebody standing where '+
@@ -189,6 +188,7 @@ function step(dt){
 
 /* ---------------- frame ---------------- */
 function draw(g,dt,t){
+  if(!BG) buildScene();            // never draw from nothing
   g.drawImage(BG,0,0);
 
   /* The lamp is on the wall face, so its light falls on the wall \u2014 it
@@ -259,464 +259,58 @@ function draw(g,dt,t){
 
 
 /* ============================================================
-   ACT 1 - THE TRAINING LOOP
-
-   Every new engineer is run through this before touching a live line, and
-   that is the honest reason a crash course gets to dial temperature and
-   swap the working fluid: you would do neither to the supply feeding a lab
-   that has no water. Real facilities have test loops. This is ours.
-
-   Act 2 - walking over and opening Bio Lab One's actual valve - is
-   unchanged below, and still ends the level.
+   The training loop used to live here as ACT 1 - a second, older crash
+   course that ran before the valve. It is gone. The bench is a device now
+   (trainer.html); it runs before this level through teach:[...] at the
+   bottom of this file. Keeping a copy here meant every concept arrived
+   twice and landed neither time - the closing lines below already said so
+   in a comment that nobody had acted on.
    ============================================================ */
-let act=1;
-const FL=LPE_FLUIDS;
-const BORE_IN=0.493, BORE_AREA=0.00133;       // NPS 3/8 Sch 40, B36.10M
-/* 0.25, not 0.5. At 0.5 the lever's full travel was 2.24 gpm, which crammed
-   every regime change into the bottom quarter of it - the applied step had a
-   window 6.3% wide at exactly 0 C, shrinking to 2.3% by 5 C. Halving it puts
-   the interesting range in the middle of the lever where it can be found. */
-const BENCH_CV=0.25, BENCH_DP=20;              // a needle valve and a bench pump
-
-/* The window where the line is laminar cold AND turbulent hot. Outside it
-   the next step is unreachable, so the lever is given a visible target and
-   a magnet rather than being left as a 4% sliver to find by feel. */
-const TRICKLE=[0.23,0.30];
-/* 70 C, not 50: at the bottom of the trickle band 50 C only reaches
-   Re 3102, so a target that works for part of the band is a target that
-   strands part of the players. The whole band is turbulent by 70. */
-const HOT=[72,80];
-/* ---- layout ----
-   One table, so the rig and the instruments are laid out together instead
-   of a console being drawn on top of a machine. Everything below reads its
-   position from here, and verify.js checks the rectangles do not overlap -
-   the first pass had the maker's plate across the temperature readout and
-   a handwritten note over the flow lever, because scenery and UI were
-   positioned independently and never compared. */
-const LAY={
-  frame : {x:26, y:58,  w:858, h:300},        // interior is x 38-872, y 70-346
-  glass : {x:280,y:94,  w:390, h:100},        // the sight glass into the run
-  tank  : {x:48, y:150, w:92,  h:96},
-  pump  : {x:206,y:190, r:26},
-  fluid : {x:700,y:94,  w:168, h:32, pitch:40},
-  note  : {x:44, y:104},                       // the handwritten one
-  read  : {y:250, h:36, x:44, w:196, gap:12}, // four readouts, above the shelf lip
-  flowS : {box:{x:44, y:310, w:150, h:24}, track:{x:204,y:326,w:220}},
-  tempS : {box:{x:452,y:310, w:170, h:24}, track:{x:632,y:326,w:220}},
-};
-
-const B={ flow:0, temp:20, fluid:'water', watch:0, drag:null };
-const CUT=new LPE.Cutaway({x:LAY.glass.x,y:LAY.glass.y,w:LAY.glass.w,h:LAY.glass.h});
-
-const FLUID_KEYS=['water','co2','propane'];
-const FBTN=FLUID_KEYS.map((k,i)=>({k,x:LAY.fluid.x,y:LAY.fluid.y+i*LAY.fluid.pitch,
-                                   w:LAY.fluid.w,h:LAY.fluid.h}));
-const FHIT=4;
-const SLIDERS={
-  flow:{...LAY.flowS, label:'FLOW', key:'flow', get:()=>B.flow,
-        set:v=>{B.flow=v;}, fmt:()=>Math.round(B.flow*100)+'%'},
-  temp:{...LAY.tempS, label:'TEMPERATURE', key:'temp', get:()=>B.temp/80,
-        set:v=>{B.temp=Math.round(v*80);}, fmt:()=>B.temp+' \u00b0C'},
-};
-
-function fluidNow(){ return FL.FLUIDS[B.fluid]; }
-/* Temperature is a free variable for water only. CO2 and propane are
-   liquid because they are held under pressure near saturation - heating
-   them does not make them hotter, it boils them. */
-function tempLocked(){ return B.fluid!=='water'; }
-function bench(){
-  const f=fluidNow();
-  const q=FL.flow(BENCH_CV*B.flow, BENCH_DP, f);
-  const v=q/448.831/BORE_AREA;
-  const t=tempLocked()?20:B.temp;
-  const re=B.flow>0.001?FL.reynolds(v,BORE_IN,f,t):0;
-  /* Re of zero is not laminar flow - it is a shut valve. Reporting it as
-     laminar let the trickle step pass with nothing moving, and then no     amount of heat could ever make a dead line turbulent. */
-  return {f,q,v,re,regime:B.flow<=0.001?'still':FL.regime(re)};
-}
-
-let BG_BENCH;
-/* ---- the rig itself ----
-   It is called a training LOOP and there was no loop: a window of bore
-   floating on a tiled wall with dials laid over the seams. A loop has a
-   tank, a pump, pipework out and back, and a frame holding all of it up.
-   Everything the player touches is now bolted to that frame.
-
-   Drawn into the background once, so it is scenery rather than something
-   redrawn every frame - the rig does not move, only the fluid inside it. */
-/* ---- the rig ----
-   It is called a training LOOP and there was no loop: a window of bore
-   floating on a tiled wall. A loop has a reservoir, a pump, pipework out
-   and back, and a frame carrying all of it - and the instruments belong
-   bolted to that frame rather than laid over it.
-
-   Drawn into the background once. The rig does not move; only the fluid
-   inside it does. */
-function buildBench(){
-  BG_BENCH=document.createElement('canvas'); BG_BENCH.width=W; BG_BENCH.height=H;
-  const g=BG_BENCH.getContext('2d');
-  A.wall(g,W,H); A.rib(g,0,H); A.ceiling(g,W);
-  A.overhead(g,W,46,7,false);
-  A.vignetteOnto(g,W,H);
-
-  const F=LAY.frame;
-  const bar=(x,y,w,h)=>{
-    g.fillStyle='#39444b'; g.fillRect(x,y,w,h);
-    g.fillStyle='#5d6a73'; g.fillRect(x,y,w,2);
-    g.fillStyle='#232b30'; g.fillRect(x,y+h-2,w,2);
-  };
-  /* backplate first, then the frame over its edges, so the frame reads as
-     being in front of the plate rather than drawn beside it */
-  g.fillStyle='#161d22'; g.fillRect(F.x,F.y,F.w,F.h);
-  A.dither(g,F.x,F.y,F.w,F.h,'#273138',0.16);
-  g.fillStyle='#0f151a'; g.fillRect(F.x,F.y+F.h-56,F.w,56);      // console runs darker
-
-  bar(F.x,F.y,F.w,12); bar(F.x,F.y+F.h-12,F.w,12);
-  bar(F.x,F.y,12,F.h);  bar(F.x+F.w-12,F.y,12,F.h);
-  bar(F.x+12,F.y+F.h-68,F.w-24,8);                               // console shelf lip
-  g.fillStyle='#8a94a0';
-  for(let bx=F.x+6;bx<F.x+F.w;bx+=46){
-    g.beginPath(); g.arc(bx,F.y+6,2,0,6.284); g.fill();
-    g.beginPath(); g.arc(bx,F.y+F.h-6,2,0,6.284); g.fill();
-  }
-  /* chamfers - somebody designed this, it was not extruded */
-  g.fillStyle='#39444b';
-  [[F.x+12,F.y+12,1,1],[F.x+F.w-12,F.y+12,-1,1]].forEach(([cx,cy,sx,sy])=>{
-    g.beginPath(); g.moveTo(cx,cy); g.lineTo(cx+20*sx,cy); g.lineTo(cx,cy+20*sy);
-    g.closePath(); g.fill();
-  });
-
-  // ---- reservoir
-  const T=LAY.tank;
-  g.fillStyle='#2b343a'; g.fillRect(T.x,T.y,T.w,T.h);
-  g.fillStyle='#39444b'; g.fillRect(T.x,T.y,T.w,4);
-  g.fillStyle='#161d21'; g.fillRect(T.x,T.y+T.h-4,T.w,4);
-  g.fillStyle='#070e13'; g.fillRect(T.x+8,T.y+10,T.w-16,T.h-20);
-  g.fillStyle='rgba(54,224,255,0.26)'; g.fillRect(T.x+8,T.y+40,T.w-16,T.h-50);
-  g.fillStyle='rgba(54,224,255,0.60)'; g.fillRect(T.x+8,T.y+40,T.w-16,2);
-  g.strokeStyle='#5d6a73'; g.lineWidth=1; g.strokeRect(T.x+8.5,T.y+10.5,T.w-17,T.h-21);
-  for(let ly=T.y+20; ly<T.y+T.h-14; ly+=14){                      // level graduations
-    g.fillStyle='#5d6a73'; g.fillRect(T.x+T.w-16,ly,6,1);
-  }
-  A.stencil(g,T.x+2,T.y-8,'RESERVOIR',13,'#8b949b');
-
-  // ---- pump and motor
-  const Pu=LAY.pump;
-  g.fillStyle='#4a565d'; g.fillRect(Pu.x-32,Pu.y+Pu.r-4,64,12);
-  g.fillStyle='#39444b'; g.beginPath(); g.arc(Pu.x,Pu.y,Pu.r,0,6.284); g.fill();
-  g.strokeStyle='#5d6a73'; g.lineWidth=3; g.stroke();
-  g.fillStyle='#2b343a'; g.beginPath(); g.arc(Pu.x,Pu.y,Pu.r-8,0,6.284); g.fill();
-  g.fillStyle='#6d7a84';
-  for(let a=0;a<8;a++){
-    g.save(); g.translate(Pu.x,Pu.y); g.rotate(a*Math.PI/4);
-    g.fillRect(-1.5,-(Pu.r-4),3,9); g.restore();
-  }
-  g.fillStyle='#8a94a0'; g.beginPath(); g.arc(Pu.x,Pu.y,4,0,6.284); g.fill();
-  A.stencil(g,Pu.x-16,Pu.y+Pu.r+20,'PUMP',13,'#8b949b');
-
-  // ---- pipework: tank -> pump -> up -> glass -> down -> tank
-  const G=LAY.glass, midY=G.y+G.h/2;
-  LPE.piping({
-    lines:[{pts:[[T.x+T.w-10,Pu.y],[Pu.x-Pu.r-4,Pu.y]], r:7},
-           {pts:[[Pu.x+Pu.r+4,Pu.y],[G.x-26,Pu.y],[G.x-26,midY],[G.x-6,midY]], r:7},
-           {pts:[[G.x+G.w+6,midY],[G.x+G.w+30,midY],[G.x+G.w+30,Pu.y+44],
-                 [T.x+T.w-28,Pu.y+44]], r:7}],
-    fittings:[{x:G.x-26,y:midY+30,r:7,kind:'union'},
-              {x:G.x+G.w+30,y:midY+30,r:7,kind:'union'}],
-  }).draw(g);
-
-  // ---- maker's plate, in the console's own dead corner
-  const px=F.x+F.w-172, py=F.y+F.h-60;
-  A.plate(g,px,py,150,30);
-  A.stencil(g,px+7,py+13,'TRAINING LOOP 4B-1',12,'#8b949b');
-  A.stencil(g,px+7,py+25,'EMERSON \u00b7 NOT IN SERVICE',10);
-  A.dither(g,px,py,150,30,P.rust,0.10);
-
-  // ---- wear: everyone on this base has stood here
-  A.dither(g,G.x-18,F.y+F.h-60,120,40,P.rust,0.16);
-  A.dither(g,F.x+14,F.y+30,26,150,P.rust,0.12);
-  A.dither(g,T.x-6,T.y+T.h-10,T.w+12,14,P.rust,0.26);
-  A.handNote(g,LAY.note.x,LAY.note.y,'cold water first. \u2014 R.O.');
-}
-
-/* ---- console ----
-   Label and value share one plate to the left; the track sits beside it.
-   Stacking the label above the track is what put it through the readouts
-   the first two times. */
-function slider(g,sl,live){
-  const v=Math.max(0,Math.min(1,sl.get()));
-  const tr=sl.track, kx=tr.x+v*tr.w, ky=tr.y;
-
-  A.plate(g,sl.box.x,sl.box.y,sl.box.w,sl.box.h);
-  g.fillStyle=live?P.rim:'#4a545e'; g.font="13px 'VT323',monospace"; g.textAlign='left';
-  g.fillText(sl.label,sl.box.x+7,sl.box.y+16);
-  g.fillStyle=live?'#39ff6a':'#5d6a73'; g.font="16px 'VT323',monospace"; g.textAlign='right';
-  g.fillText(sl.fmt(),sl.box.x+sl.box.w-7,sl.box.y+16);
-  g.textAlign='left';
-
-  const tg=(!done1&&COURSE[c1]&&COURSE[c1].target);
-  if(tg && ((tg.on==='flow')===(sl.key==='flow'))){
-    const a=tr.x+tg.lo*tr.w, b=tr.x+tg.hi*tr.w;
-    g.fillStyle='rgba(255,210,74,0.20)'; g.fillRect(a,ky-13,b-a,26);
-    g.strokeStyle='#ffd24a'; g.lineWidth=1; g.strokeRect(a+0.5,ky-13.5,b-a-1,26);
-    g.fillStyle='#ffd24a'; g.font="11px 'VT323',monospace"; g.textAlign='center';
-    g.fillText(tg.label,(a+b)/2,ky-17);
-    g.textAlign='left';
-  }
-
-  g.fillStyle='#0b1116'; g.fillRect(tr.x,ky-3,tr.w,6);
-  g.fillStyle=live?P.amber:'#39464f'; g.fillRect(tr.x,ky-3,v*tr.w,6);
-  g.fillStyle=live?'#ffd24a':'#5d6a73'; g.fillRect(kx-5,ky-11,10,22);
-  g.strokeStyle='rgba(0,0,0,0.6)'; g.lineWidth=1; g.strokeRect(kx-5,ky-11,10,22);
-}
-
-function liveCtl(which){
-  if(done1||!COURSE[c1]) return true;
-  return (COURSE[c1].ctl||[]).indexOf(which)>=0;
-}
-
-function drawBench(g,dt,t){
-  const r=bench();
-  g.drawImage(BG_BENCH,0,0);
-
-  /* Real conditions, not a 0..1 knob. The shared model turns these into
-     agitation, particle size and opacity the way the reference rig does. */
-  CUT.set({ flow:Math.min(1,r.v/3.0), regime:r.regime,
-            tempF:(tempLocked()?20:B.temp)*9/5+32,
-            sg:r.f.sg, gas:false });
-  CUT.draw(g);
-
-  FBTN.forEach(b=>{
-    const on=b.k===B.fluid, f=FL.FLUIDS[b.k], live=liveCtl('fluid');
-    A.plate(g,b.x,b.y,b.w,b.h);
-    g.strokeStyle=on?P.amber:(live?'#4d6157':'#2b3a33'); g.lineWidth=on?2:1;
-    g.strokeRect(b.x+0.5,b.y+0.5,b.w-1,b.h-1);
-    g.fillStyle=on?P.amber:(live?P.rim:'#4a545e'); g.font="14px 'VT323',monospace"; g.textAlign='left';
-    g.fillText(f.name,b.x+9,b.y+15);
-    g.fillStyle=on?'#8fb9ff':'#5d6a73'; g.font="12px 'VT323',monospace";
-    g.fillText('SG '+f.sg.toFixed(3),b.x+9,b.y+27);
-  });
-
-  const cells=[
-    ['VELOCITY',  r.v.toFixed(2)+' ft/s',  '#39ff6a'],
-    ['REYNOLDS',  r.re>0?Math.round(r.re).toLocaleString('en-US'):'\u2014', '#39ff6a'],
-    ['REGIME',    r.regime.toUpperCase(),
-                  r.regime==='laminar'?'#8fb9ff':(r.regime==='turbulent'?'#ffd24a':'#d2dae0')],
-    ['DELIVERED', r.q.toFixed(2)+' gpm',  '#39ff6a'],
-  ];
-  cells.forEach((c,i)=>{
-    const x=LAY.read.x+i*(LAY.read.w+LAY.read.gap);
-    A.plate(g,x,LAY.read.y,LAY.read.w,LAY.read.h);
-    g.fillStyle=P.rim; g.font="12px 'VT323',monospace"; g.textAlign='left';
-    g.fillText(c[0],x+8,LAY.read.y+14);
-    g.fillStyle=B.flow>0.001?c[2]:'#5d6a73'; g.font="19px 'VT323',monospace";
-    g.fillText(c[1],x+8,LAY.read.y+32);
-  });
-
-  slider(g,SLIDERS.flow, liveCtl('flow'));
-  slider(g,SLIDERS.temp, liveCtl('temp') && !tempLocked());
-  if(tempLocked()){
-    const l=SLIDERS.temp.box;
-    g.fillStyle=P.amber; g.font="11px 'VT323',monospace"; g.textAlign='left';
-    g.fillText('HELD NEAR SATURATION',l.x+7,l.y-5);
-  }
-}
-
-
-function stepBench(dt){
-  const r=bench();
-  CUT.update(dt);
-  if(r.v>0.25) B.watch+=dt;
-  LPE.audio.flow(Math.min(1,r.v/6));
-  if(!done1 && !SH.holding && COURSE[c1].ok()){
-    const last=c1>=COURSE.length-1;
-    const need=COURSE[c1].watch;
-    SH.beat(COURSE[c1].lesson, ()=>{
-      if(last){ done1=true; toAct2(); } else { c1++; B.watch=0; sayCourse(); }
-    }, need? (()=>B.watch>=need) : null);
-    SH.count(last?'\u2014':(c1+2)+' / '+COURSE.length);
-  }
-}
-
-/* ---- the crash course ----
-   Instruction, not chat. Each step names what the player did, what changed,
-   the quantity that changed it, and the term for it. The last step is the
-   only one with no target drawn on a lever, because it is the one where the
-   player has to work out the setting themselves. */
-const COURSE=[
-  { ctl:['flow'], target:{on:'flow',lo:0.65,hi:1,label:'OPEN'},
-    task:'Open the loop: push FLOW into the OPEN band.',
-    ok:()=>B.flow>=0.65,
-    lesson:'With the valve shut the markers moved but stayed where they were. That '+
-      'motion is temperature. Now they are travelling along the pipe, and that is '+
-      '<b>flow</b>. A pipe that is full and a pipe that is flowing are two different '+
-      'states.' },
-
-  { ctl:['flow'], watch:2.6, target:{on:'flow',lo:0.65,hi:1,label:'OPEN'},
-    task:'Compare the markers at the wall with the markers down the middle.',
-    ok:()=>B.flow>=0.65,
-    lesson:'They are not moving at the same speed. <b>Friction between the fluid and '+
-      'the pipe surface</b> holds the fluid at the wall almost stationary; further '+
-      'from the wall less of that drag reaches it. The yellow curve is that spread of '+
-      'speed across the bore: the <b>velocity profile</b>.' },
-
-  { ctl:['flow'], target:{on:'flow',lo:TRICKLE[0],hi:TRICKLE[1],label:'TRICKLE'},
-    task:'Close FLOW down into the TRICKLE band.',
-    ok:()=>!B.drag && B.flow>=TRICKLE[0] && B.flow<=TRICKLE[1] && bench().regime==='laminar',
-    lesson:'At this speed the fluid travels in parallel layers that do not mix, and '+
-      'the profile becomes a long parabola with the centre at about twice the average '+
-      'speed. This is <b>laminar</b> flow. REYNOLDS, the number that identifies it, is '+
-      'now below 2,300.' },
-
-  { ctl:['temp'], target:{on:'temp',lo:HOT[0]/80,hi:HOT[1]/80,label:'HOT'},
-    task:'Leave FLOW alone. Push TEMPERATURE into the HOT band.',
-    ok:()=>bench().regime==='turbulent',
-    lesson:'The valve has not moved, so the fluid is travelling at the same speed. '+
-      'Heating water lowers its <b>viscosity</b>. Reynolds is velocity x bore / '+
-      'viscosity, so lower viscosity means higher Reynolds. Above 4,000 the layers '+
-      'break up and mix: <b>turbulent</b> flow, and the profile goes blunt.' },
-
-  { ctl:['fluid'],
-    task:'Switch the loop to LIQUID PROPANE.',
-    ok:()=>B.fluid==='propane',
-    lesson:'Nothing else changed and DELIVERED went up. Flow through a fixed '+
-      'restriction is q = Cv x sqrt(dP / SG). Propane has a <b>specific gravity</b> of '+
-      '0.501 &mdash; half of water &mdash; so more of it passes for the same pressure '+
-      'drop. Its viscosity is five times lower too, which is why REYNOLDS jumped.' },
-
-  /* Apply it. No band is drawn for this one: the point is that the player
-     works out the setting from what the last four steps taught. It cannot be
-     brute-forced on the flow lever alone - 0.50 gpm is turbulent for water at
-     every temperature above about 7 C, and for propane at every temperature
-     there is. The only route is: water, cold, then open up. */
-  { ctl:['flow','temp','fluid'],
-    task:'Now use it. Deliver 0.50 gpm and keep the flow laminar.',
-    ok:()=>{ const r=bench(); return !B.drag && r.q>=0.50 && r.regime==='laminar'; },
-    lesson:'That is the chain, used. Propane could not do it at any temperature &mdash; '+
-      'too little viscosity, so Reynolds is always high. Water could not either until '+
-      'you cooled it, because cold water is <b>more</b> viscous. Fluid, temperature and '+
-      'valve position together decide what a line does.' },
-];
-let c1=0, done1=false;
-function sayCourse(){ if(done1) return; SH.say(COURSE[c1].task,''); SH.count((c1+1)+' / '+COURSE.length); }
-
-function toAct2(){
-  SH.title('BIO LAB ONE \u2014 SUPPLY PANEL','Thermal Reservoir feed \u00b7 Section 4-B \u00b7 manual');
-  act=2;
-  LPE.audio.flow(0);
-  SH.beat('<span class="who">COMMS:</span> That is the loop. Everything you just '+
-    'watched happens in every pipe on this base whether anyone is looking at it or '+
-    'not.<span class="gap"></span>Now the job. Bio Lab One, line 1, down the far '+
-    'end of Four-B &mdash; the access panel with the hand wheel behind it.', ()=>{ buildScene(); say(); });
-}
-
-/* ---- bench input ---- */
-function benchDown(p){
-  for(const key of ['flow','temp']){
-    const sl=SLIDERS[key];
-    if(!liveCtl(key)) continue;
-    if(key==='temp' && tempLocked()) continue;
-    if(p.x>=sl.x-10 && p.x<=sl.x+sl.w+10 && Math.abs(p.y-sl.y)<20){
-      B.drag=key; sl.set(magnet(key,Math.max(0,Math.min(1,(p.x-sl.x)/sl.w))));
-      LPE.audio.tick(); return true;
-    }
-  }
-  if(liveCtl('fluid')) for(const b of FBTN){
-    if(p.x>=b.x-FHIT && p.x<=b.x+b.w+FHIT &&
-       p.y>=b.y-FHIT && p.y<b.y+b.h+FHIT){   // half-open: a boundary row belongs to one button
-      if(B.fluid!==b.k){ B.fluid=b.k; LPE.audio.clack(); }
-      return true;
-    }
-  }
-  return false;
-}
-/* Within a touch of the marked band the lever is pulled into it. The window
-   is narrow because the physics makes it narrow, not because precision is
-   the lesson. */
-/* ---- bench input ---- */
-function magnet(key,v){
-  if(done1||!COURSE[c1]) return v;
-  const tg=COURSE[c1].target;
-  if(!tg || (tg.on==='flow')!==(key==='flow')) return v;
-  if(v>tg.lo-0.035 && v<tg.lo) return tg.lo;
-  if(v<tg.hi+0.035 && v>tg.hi) return tg.hi;
-  return v;
-}
-function benchDown(p){
-  for(const key of ['flow','temp']){
-    const sl=SLIDERS[key], tr=sl.track;
-    if(!liveCtl(key)) continue;
-    if(key==='temp' && tempLocked()) continue;
-    if(p.x>=tr.x-12 && p.x<=tr.x+tr.w+12 && Math.abs(p.y-tr.y)<20){
-      B.drag=key; sl.set(magnet(key,Math.max(0,Math.min(1,(p.x-tr.x)/tr.w))));
-      LPE.audio.tick(); return true;
-    }
-  }
-  if(liveCtl('fluid')) for(const b of FBTN){
-    if(p.x>=b.x-FHIT && p.x<=b.x+b.w+FHIT &&
-       p.y>=b.y-FHIT && p.y<b.y+b.h+FHIT){   // half-open: one button owns each row
-      if(B.fluid!==b.k){ B.fluid=b.k; LPE.audio.clack(); }
-      return true;
-    }
-  }
-  return false;
-}
-function benchMove(p){
-  if(!B.drag) return;
-  const sl=SLIDERS[B.drag], tr=sl.track;
-  const before=sl.get();
-  sl.set(magnet(B.drag,Math.max(0,Math.min(1,(p.x-tr.x)/tr.w))));
-  if(Math.floor(before*14)!==Math.floor(sl.get()*14)) LPE.audio.tick();
-}
 
 /* ---------------- mount ---------------- */
-buildBench();
+/* Compose the scenery before mounting. draw() runs from the first frame
+   the shell pumps, which is before onStart - so building BG in a
+   callback left drawImage(undefined) throwing on frame one, killing the
+   loop and leaving a black canvas. The standalone build happened to
+   paper over the timing; the game shell did not. */
+buildScene();
 const SH=LPE.mount({
   t1:'BIO LAB ONE \u2014 SUPPLY PANEL',
   t2:'Thermal Reservoir feed \u00b7 Section 4-B \u00b7 manual',
   w:W,h:H,
-  step:dt=>act===1?stepBench(dt):step(dt),
-  draw:(g,dt,t)=>act===1?drawBench(g,dt,t):draw(g,dt,t),
-  /* The opening is the engine's three-beat template, same as level one. */
+  step, draw,
+  /* The welcome. This is the player's first real job and the first place
+     the game speaks to them as a person rather than a bench, so it says
+     three things and stops: who is calling, where they are, and what the
+     job is. The bench has already been and gone - the trainer runs before
+     this level - so nothing here re-teaches it. */
   intro:[
-    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
-     text:'&ldquo;Bio Lab One has no water.<br>Section 4-B, line 1 &mdash; it needs opening by hand.<br>You are new, so run the training loop on your way past.&rdquo;'},
     {kind:'place',
-     text:'Four-B is the oldest run on the base. No actuators, no remote, no screens '+
-          '&mdash; just lines on brackets and wheels you turn yourself.<br><br>'+
-          'Against the far wall is the training loop: a short length of pipe, cut away '+
-          'down one side, with a pump behind it and dials on the front. It is not '+
-          'plumbed into anything. That is the point of it.'},
+     text:'Four-B is the oldest run on the base. No actuators, no remote, no '+
+          'screens &mdash; just lines on brackets and wheels you turn yourself.'+
+          '<br><br>Line 1 ends at a steel access panel with a hand wheel behind '+
+          'it and a pressure gauge above it. The Thermal Reservoir header holds '+
+          '60 psig at that wall whether anyone opens the valve or not.'},
     {kind:'title', eyebrow:'SECTION 4-B \u00b7 MANUAL SERVICES',
-     title:'TRAINING LOOP', sub:'BEFORE YOU TOUCH A LIVE LINE'},
+     title:'BIO LAB ONE', sub:'LINE 1 \u00b7 SUPPLY VALVE'},
   ],
-  /* The convention goes first. Everything after it - temperature as
-     agitation most of all - is a claim about what the marks represent,
-     and the player is owed that before any of it is shown. */
   onStart:()=>{
-    SH.title('SECTION 4-B \u2014 TRAINING LOOP','not connected to service');
-    SH.beat(
-    '<span class="who">COMMS:</span> One thing before we start. Those marks in the '+
-    'pipe are <b>not molecules</b> &mdash; you could not see a molecule through a wall '+
-    'of steel. They are markers. Spaced so you can count them, and moving in true '+
-    'proportion but far slower than the real thing, because real water tells the eye '+
-    'nothing.', sayCourse);
+    SH.beat('<span class="who">COMMS:</span> That is the panel. The wheel behind '+
+      'it is the only thing between the header and Bio Lab One, and it has been '+
+      'shut since the lab was mothballed.<span class="gap"></span>Open the panel '+
+      'and let us see what the gauge is doing before you touch anything.',
+      ()=>{ say(); });
   },
-  /* RESET restores the LEVEL, not the act you happen to be standing in.
-     It used to reset only the supply panel and then speak act 2 lines over
-     act 1, so resetting during the course left the trainer on screen being
-     narrated as though you were already at the valve. */
+  /* RESET restores the level, which is now one act rather than two. */
   onReset(){
-    act=1; c1=0; done1=false;
-    Object.assign(B,{flow:0,temp:20,fluid:'water',watch:0,drag:null});
-    CUT.set({flow:0,regime:'turbulent',temp:0.25});
     Object.assign(S,{phase:'closed',slide:0,turn:0,open:0,press:0,drag:false});
     line.set(0,{flow:0,fill:1}); line.set(1,{flow:0,fill:0});
     S.closing=false; raceT=0; line.race(1,false);
     LPE.audio.flow(0);
-    buildBench();
-    SH.title('SECTION 4-B \u2014 TRAINING LOOP','not connected to service');
-    sayCourse();
+    buildScene();
+    SH.title('BIO LAB ONE \u2014 SUPPLY PANEL',
+             'Thermal Reservoir feed \u00b7 Section 4-B \u00b7 manual');
+    say();
   },
 });
 
@@ -724,7 +318,6 @@ const cv=SH.canvas;
 cv.addEventListener('pointerdown',e=>{
   LPE.audio.init(); LPE.audio.resume();
   const p=SH.pt(e);
-  if(act===1){ benchDown(p); return; }
   if(S.phase==='closed'){ S.phase='opening'; LPE.audio.scrape(); say(); return; }
   if(S.phase!=='opening' && Math.hypot(p.x-VALVE_X,p.y-WHEEL_Y)<WHEEL_R+18){
     S.drag=true; S.lastAng=Math.atan2(p.y-WHEEL_Y,p.x-VALVE_X);
@@ -732,7 +325,6 @@ cv.addEventListener('pointerdown',e=>{
   }
 });
 cv.addEventListener('pointermove',e=>{
-  if(act===1){ benchMove(SH.pt(e)); return; }
   if(!S.drag) return;
   const p=SH.pt(e), a=Math.atan2(p.y-WHEEL_Y,p.x-VALVE_X);
   let d=a-S.lastAng;
@@ -744,13 +336,13 @@ cv.addEventListener('pointermove',e=>{
   if(Math.floor(S.open*16)!==Math.floor(before*16)) LPE.audio.tick();
   say();
 });
-['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>{S.drag=false; B.drag=null;}));
+['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>{S.drag=false;}));
 cv.addEventListener('keydown',e=>{
-  /* Act 2 only. The canvas takes focus the moment a slider is clicked, so
-     during the crash course this handler was catching the Enter and Space
-     the player presses to continue a lesson - quietly opening the supply
-     panel behind the trainer, and then narrating act 2 over act 1. */
-  if(act!==2) return;
+  /* Keyboard opening, for anyone not using a pointer. This used to need
+     gating against the crash course that ran before it: the canvas takes
+     focus on the first click, so Enter and Space pressed to advance a
+     lesson were quietly opening the supply panel behind the bench. The
+     bench is a separate device now, so there is nothing to gate against. */
   if(S.phase==='closed'&&(e.key==='Enter'||e.key===' ')){
     e.preventDefault(); LPE.audio.init(); S.phase='opening'; LPE.audio.scrape(); say(); return; }
   if(e.key==='ArrowRight'||e.key==='ArrowUp'){
@@ -759,7 +351,6 @@ cv.addEventListener('keydown',e=>{
     if(S.phase==='open') S.phase='turning';
     LPE.audio.tick(); say(); }
 });
-/* act 2 speaks for itself when toAct2 hands over */
 }
 
 /* Registered so the game shell can launch it; still runs on its own if
@@ -767,6 +358,24 @@ cv.addEventListener('keydown',e=>{
 (window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
   label:"LEVEL 0 \u2014 BIO LAB ONE SUPPLY",
   sub:"Section 4-B  \u00b7  manual",
+  /* The ladder, as far as this level needs it: what a process is, what a
+     fluid is, temperature as a property of it, pressure as the push, flow
+     as net movement, and then the velocity profile - which the closing
+     lines point at in the real line, so it has to have been taught. Each
+     is taught once; replaying the level does not repeat them. Reynolds
+     and specific gravity belong to later levels. */
+  /* The job, before the training for it. launch() plays this first;
+     see PIPELINE.md section 6. */
+  brief:[
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+      /* Every <br> segment must fit 52 characters or the card wraps it and
+         leaves the tail alone on a line. */
+      text:'&ldquo;Morning. You are the new process engineer,<br>'+
+           'so you get the walk-round.<br>'+
+           'Bio Lab One has no water. Section 4-B, line 1.<br>'+
+           'It needs opening by hand, and you are the hand.&rdquo;'}
+  ],
+  teach:['process','fluid','temperature','pressure','flow','velocity-profile'],
   start:startLevel0,
 });
 if(!window.LPE_GAME) startLevel0();

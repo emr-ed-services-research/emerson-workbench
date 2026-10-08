@@ -1,0 +1,395 @@
+<title>Garden Mist Header</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<link rel="stylesheet" href="engine.css">
+<script src="engine.js"></script>
+<script src="fluids.js"></script>
+<script>
+'use strict';
+/* ============================================================
+   LEVEL FOUR \u2014 THE MIST HEADER
+
+   The Garden runs hypobaric at 51 kPa (design doc, 2026-10-07). The
+   Thermal Reservoir header is the same 60 psig as every other level. That
+   pressure ratio is what makes this level: 74.7 psia into 7.4 psia is
+   67.3 psi of drop, and a single-stage trim cannot take it.
+
+       choked when   dP >= FL^2 (P1 - FF.Pv)       Fisher CVH ch5
+       FF = 0.96 - 0.28 sqrt(Pv/Pc)
+
+   P2 stays well above Pv, so this is CAVITATION, not flashing - the
+   design doc's step 8 was corrected on exactly this point. The dip
+   happens inside the valve and recovers; the bubbles collapse on the
+   trim and eat it.
+
+   The fix is staged trim, and the duty makes it a squeeze rather than a
+   dial. With Cv 0.35 a stage and a 1.50 gpm misting duty:
+
+     stages  dP/stage  last inlet  allowable          flow
+       1       67.3       74.7       60.2   CAVITATES  2.87
+       2       33.7       41.0       33.0   CAVITATES  2.03
+       3       22.4       29.8       23.9   clear      1.66  <- the answer
+       4       16.8       24.2       19.4   clear      1.44  starves
+       5       13.5       20.9       16.6   clear      1.28  starves
+
+   Too few and the bottom stage chokes. Too many and the header cannot
+   pass the duty. Verified in reference/crosscheck.js on every build.
+   ============================================================ */
+function startLevel4(){
+const A=LPE.art, P=LPE.palette, W=900, H=400;
+const FL=LPE_FLUIDS;
+
+/* ---- the conditions ---- */
+const POD_KPA=51, P_SUP_G=60, DUTY=1.50, FLV=0.90, CV_STAGE=0.35;
+const P1=P_SUP_G+FL.ATM, P2=POD_KPA*0.145038, PV=FL.waterPv(20);
+const FF=0.96-0.28*Math.sqrt(PV/3200.1);
+const DP=P1-P2;
+
+const TRIMS=[
+  {n:1, label:'STANDARD',  sub:'single stage'},
+  {n:2, label:'2-STAGE',   sub:'two'},
+  {n:3, label:'3-STAGE',   sub:'three'},
+  {n:4, label:'4-STAGE',   sub:'four'},
+];
+
+const S={ open:0, trim:1, drag:false, lastAng:0, turn:0, closing:false, wear:0, run:0 };
+
+const LAY={
+  hdr  : {y:188},
+  wheel: {x:214, y:124, r:26},
+  valve: {x:214},
+  trace: {x:300, y:62, w:330, h:104},
+  pod  : {x:300, y:214, w:330, h:116},
+  rack : {x:300, y:338, w:330, h:46},
+  read : {x:652, y:62,  w:206, h:118},
+};
+
+function trimNow(){ return TRIMS.find(t=>t.n===S.trim) || TRIMS[0]; }
+
+/* ---- the model ----
+   Equal pressure drop per stage. The LAST stage is the one that governs,
+   because it sits at the lowest inlet pressure in the stack. */
+function solve(){
+  const n = trimNow().n;
+  const cvTrim = CV_STAGE/Math.sqrt(n);
+  const cv = cvTrim*S.open;
+  const q = cv*Math.sqrt(DP);                    // SG 1 water
+  const dPs = DP/n;
+  const inLast = P2 + dPs;
+  const allow = FLV*FLV*(inLast - FF*PV);
+  const cav = S.open>0.02 && dPs >= allow;
+  /* how hard it is cavitating, for the noise and the damage */
+  const sev = cav ? Math.min(1,(dPs-allow)/allow) : 0;
+  const pvc = FL.venaContracta(inLast, dPs, FLV);
+  return { n, q, cv, dPs, inLast, allow, cav, sev, pvc,
+           onDuty: q>=DUTY, live:S.open>0.02 };
+}
+
+let BG;
+function buildScene(){
+  BG=document.createElement('canvas'); BG.width=W; BG.height=H;
+  const g=BG.getContext('2d');
+  A.wall(g,W,H); A.rib(g,0,H); A.rib(g,866,H); A.ceiling(g,W);
+  A.overhead(g,W,46,8,false);
+  A.floor(g,W,344);
+  A.vignetteOnto(g,W,H);
+  A.stencil(g,44,96,'THE GARDEN',20,'#8b949b');
+  A.stencil(g,44,116,'MIST HEADER \u00b7 POD 3',14);
+  A.stencil(g,44,330,'HYPOBARIC \u2014 51 kPa',12,'#c0493b');
+  A.stencil(g,300,206,'POD 3',11,'#8b949b');
+  A.stencil(g,300,332,'TRIM',11,'#8b949b');
+}
+
+/* ---- the pressure trace through the trim stack ---- */
+function drawTrace(g,s){
+  const T=LAY.trace, PMAX=80;
+  const y=p=>T.y+T.h-8-(Math.max(0,Math.min(PMAX,p))/PMAX)*(T.h-20);
+  g.fillStyle='#161d21'; A.rr(g,T.x,T.y,T.w,T.h,4); g.fill();
+  g.strokeStyle='#39444b'; g.lineWidth=1; A.rr(g,T.x,T.y,T.w,T.h,4); g.stroke();
+
+  // vapour pressure, and the band under it
+  g.fillStyle='rgba(192,73,59,0.18)';
+  g.fillRect(T.x+1,y(PV),T.w-2,T.y+T.h-y(PV)-1);
+  g.strokeStyle='#c0493b'; g.lineWidth=1.3; g.setLineDash([4,3]);
+  g.beginPath(); g.moveTo(T.x,y(PV)); g.lineTo(T.x+T.w,y(PV)); g.stroke();
+  g.setLineDash([]);
+  g.fillStyle='#c0493b'; g.font="9px 'VT323',monospace";
+  g.fillText('Pv '+PV.toFixed(2),T.x+5,y(PV)-3);
+
+  if(!s.live){
+    g.fillStyle='#5d6a73'; g.font="12px 'VT323',monospace"; g.textAlign='center';
+    g.fillText('open the header valve',T.x+T.w/2,T.y+T.h/2); g.textAlign='left';
+    return;
+  }
+  // one dip per stage, each starting lower than the last
+  const seg=(T.w-24)/s.n;
+  g.strokeStyle='#ffd24a'; g.lineWidth=2; g.beginPath();
+  g.moveTo(T.x+8,y(P1));
+  for(let i=0;i<s.n;i++){
+    const x0=T.x+12+i*seg, x1=x0+seg;
+    const pIn=P1-i*s.dPs, pOut=pIn-s.dPs;
+    const vc=FL.venaContracta(pIn,s.dPs,FLV);
+    g.lineTo(x0+seg*0.22, y(pIn));
+    g.bezierCurveTo(x0+seg*0.38,y(pIn), x0+seg*0.44,y(vc), x0+seg*0.52,y(vc));
+    g.bezierCurveTo(x0+seg*0.64,y(vc), x0+seg*0.74,y(pOut), x0+seg*0.86,y(pOut));
+    g.lineTo(x1,y(pOut));
+  }
+  g.stroke();
+  // mark every stage that dips under the line
+  for(let i=0;i<s.n;i++){
+    const x0=T.x+12+i*seg;
+    const vc=FL.venaContracta(P1-i*s.dPs,s.dPs,FLV);
+    const bad=vc<=PV;
+    g.fillStyle=bad?'#c0493b':'#7ec47a';
+    g.beginPath(); g.arc(x0+seg*0.52, y(Math.max(vc,PV*0.4)), 3.2,0,6.284); g.fill();
+    if(bad){
+      g.fillStyle='#c0493b'; g.font="9px 'VT323',monospace"; g.textAlign='center';
+      g.fillText('boils', x0+seg*0.52, y(PV)+13); g.textAlign='left';
+    }
+  }
+  g.fillStyle='#8fb9ff'; g.font="9px 'VT323',monospace";
+  g.fillText('P1 '+P1.toFixed(0),T.x+6,y(P1)-4);
+  g.fillText('P2 '+P2.toFixed(1),T.x+T.w-54,y(P2)-4);
+}
+
+/* ---- the pod ---- */
+function drawPod(g,s){
+  const D=LAY.pod;
+  g.fillStyle='#101a16'; A.rr(g,D.x,D.y,D.w,D.h,5); g.fill();
+  g.strokeStyle='#39444b'; g.lineWidth=2; A.rr(g,D.x,D.y,D.w,D.h,5); g.stroke();
+  // the nozzle rail
+  g.fillStyle='#39444b'; g.fillRect(D.x+12,D.y+14,D.w-24,7);
+  const nz=6;
+  for(let i=0;i<nz;i++){
+    const nx=D.x+32+i*((D.w-64)/(nz-1));
+    g.fillStyle='#5d6a73'; g.fillRect(nx-3,D.y+21,6,7);
+    if(s.live){
+      /* a cavitating valve passes less, and what comes out is coarse and
+         uneven rather than a mist */
+      const good=!s.cav;
+      const nDrops=good?9:4;
+      for(let d=0;d<nDrops;d++){
+        const t=(performance.now()*0.0012+d*0.13+i*0.07)%1;
+        const px=nx+(good?(Math.random()*2-1)*13:(Math.random()*2-1)*5);
+        const py=D.y+28+t*(D.h-52);
+        g.fillStyle=good?'rgba(150,215,255,0.5)':'rgba(140,180,205,0.75)';
+        const sz=good?1.6:3.0;
+        g.fillRect(px-sz/2,py-sz/2,sz,sz);
+      }
+    }
+  }
+  // plants
+  for(let i=0;i<7;i++){
+    const px=D.x+30+i*((D.w-60)/6), base=D.y+D.h-12;
+    const vig=!s.live?0.3:(s.onDuty&&!s.cav?1:0.45);
+    g.strokeStyle='rgba('+Math.round(84+40*vig)+','+Math.round(118+92*vig)+',84,'+(0.5+0.4*vig)+')';
+    g.lineWidth=2;
+    g.beginPath(); g.moveTo(px,base); g.lineTo(px,base-12-10*vig); g.stroke();
+    g.beginPath(); g.moveTo(px,base-9); g.lineTo(px-6,base-16-6*vig); g.stroke();
+    g.beginPath(); g.moveTo(px,base-9); g.lineTo(px+6,base-16-6*vig); g.stroke();
+  }
+  g.fillStyle='#c0493b'; g.font="10px 'VT323',monospace"; g.textAlign='right';
+  g.fillText(POD_KPA+' kPa',D.x+D.w-8,D.y+D.h-8); g.textAlign='left';
+}
+
+/* ---- the trim rack ---- */
+function rackBtns(){
+  const R=LAY.rack, w=R.w/4-7;
+  return TRIMS.map((t,i)=>({t, x:R.x+i*(R.w/4), y:R.y, w, h:R.h}));
+}
+function drawRack(g){
+  rackBtns().forEach(b=>{
+    const on=b.t.n===S.trim;
+    g.fillStyle=on?'#2f3b34':'#232a2f'; A.rr(g,b.x,b.y,b.w,b.h,3); g.fill();
+    g.strokeStyle=on?P.amber:'#44505a'; g.lineWidth=on?2:1;
+    A.rr(g,b.x,b.y,b.w,b.h,3); g.stroke();
+    // n stacked disks, which is what staged trim looks like
+    for(let i=0;i<b.t.n;i++){
+      const dy=b.y+9+i*(22/Math.max(1,b.t.n));
+      g.fillStyle=on?'#8d98a1':'#5d6872';
+      g.fillRect(b.x+b.w/2-14, dy, 28, Math.max(2,16/b.t.n-1));
+    }
+    g.fillStyle=on?P.amber:'#8e9aa3'; g.font="9px 'VT323',monospace"; g.textAlign='center';
+    g.fillText(b.t.label,b.x+b.w/2,b.y+b.h-6);
+    g.textAlign='left';
+  });
+}
+
+function drawRead(g,s){
+  const R=LAY.read;
+  g.fillStyle='#232a2f'; A.rr(g,R.x,R.y,R.w,R.h,4); g.fill();
+  g.strokeStyle='#4a565d'; g.lineWidth=2; A.rr(g,R.x,R.y,R.w,R.h,4); g.stroke();
+  const rows=[
+    ['MIST FLOW', s.q.toFixed(2)+' gpm', s.onDuty?'#39ff6a':'#c0493b'],
+    ['\u0394P / STAGE', s.dPs.toFixed(1)+' psi', '#39ff6a'],
+    ['ALLOWABLE', s.allow.toFixed(1)+' psi', '#8fb9ff'],
+    ['STATE', s.cav?'CAVITATING':(s.live?'CLEAR':'SHUT'),
+     s.cav?'#c0493b':(s.live?'#39ff6a':'#8b949b')],
+  ];
+  rows.forEach((c,i)=>{
+    const y=R.y+14+i*23;
+    g.fillStyle=P.rim; g.font="10px 'VT323',monospace"; g.textAlign='left';
+    g.fillText(c[0],R.x+9,y+9);
+    g.fillStyle=s.live?c[2]:'#5d6a73'; g.font="14px 'VT323',monospace"; g.textAlign='right';
+    g.fillText(c[1],R.x+R.w-9,y+9);
+  });
+  g.textAlign='left';
+  g.fillStyle='#7a6b54'; g.font="9px 'VT323',monospace";
+  g.fillText('DUTY '+DUTY.toFixed(2)+' gpm',R.x+9,R.y+R.h-7);
+}
+
+/* ---- script ---- */
+const STEPS=[
+  { task:'Open the header valve and let the misters run.',
+    ok:s=>s.live && S.open>0.9,
+    lesson:'Listen to it. That is not flow noise &mdash; it is gravel. The '+
+      'header is passing water but the pod is getting a coarse spatter instead '+
+      'of a mist, and the trim has been in six weeks.' },
+  { task:'Read \u0394P PER STAGE against ALLOWABLE before you change anything.',
+    ok:s=>s.live && S.open>0.9,
+    watch:2.6,
+    lesson:'67.3 psi across one stage, and the most it can take is 60.2. Sixty '+
+      'psig into a pod at half an atmosphere is a ratio no single seat survives. '+
+      'The pressure dives under the vapour line inside the valve, the water '+
+      'boils, and the bubbles collapse on the way out. <b>Cavitation.</b>' },
+  { task:'Fit trim that clears the vapour line and still passes '+DUTY.toFixed(2)+' gpm.',
+    ok:s=>s.live && !s.cav && s.onDuty && !S.drag,
+    lesson:'Three stages. Each one takes 22.4 psi, which is inside the 23.9 any '+
+      'single stage can hold, so nothing boils. Two stages still choke the '+
+      'bottom seat; four clears it easily and then cannot pass the duty. The '+
+      'answer was the narrowest trim that does not cavitate, not the safest '+
+      'one on the shelf.' },
+];
+let si=0, closeT=0;
+function say(){ if(SH.holding||SH.done||S.closing) return;
+  SH.say(STEPS[si].task,''); SH.count((si+1)+' / '+STEPS.length); }
+
+const CLOSING=[
+  '<span class="who">COMMS:</span> Mist is a mist again. And the trim you pulled '+
+  'out was not worn &mdash; it was eaten. Cavitation does not wear metal, it '+
+  'hammers it: every bubble that collapses on a seat takes a bit of it with it.',
+
+  '<span class="who">COMMS:</span> The pod runs at half an atmosphere because '+
+  'that is cheaper to build and the plants prefer it.<span class="gap"></span>'+
+  'Nobody costed what that does to every valve feeding it off a 60 psig header. '+
+  'You just did.',
+];
+function closeOut(i){
+  if(i>=CLOSING.length){
+    S.closing=false;
+    SH.finish({ lesson:CLOSING[CLOSING.length-1], next:()=>LPE.next && LPE.next() });
+    return;
+  }
+  S.closing=true;
+  SH.beat(CLOSING[i], ()=>closeOut(i+1));
+}
+
+function step(dt){
+  const s=solve();
+  S.turn += (S.open-S.turn)*Math.min(1,dt*6);
+  S.run += dt;
+  if(s.cav) S.wear=Math.min(1,S.wear+dt*0.05*s.sev);
+  LPE.audio.flow(s.live? (s.cav?0.9:0.5) : 0);
+  if(!SH.done && !S.closing && STEPS[si]){
+    const st=STEPS[si];
+    if(st.ok(s)){
+      if(st.watch){ closeT+=dt; if(closeT<st.watch) return; }
+      closeT=0;
+      const lesson=st.lesson; si++;
+      if(si>=STEPS.length) SH.beat(lesson,()=>closeOut(0));
+      else SH.beat(lesson, say);
+    } else closeT=0;
+  }
+}
+function draw(g){
+  if(!BG) buildScene();
+  const s=solve();
+  g.drawImage(BG,0,0);
+  // header in, through the valve, into the pod
+  LPE.pipeRun(g, 0, LAY.wheel.x-14, LAY.hdr.y, 11);
+  LPE.valveBody(g, LAY.wheel.x, LAY.hdr.y, 11, LAY.wheel.y, S.turn, LAY.wheel.r,
+                !S.closing, s.live);
+  LPE.pipeRun(g, LAY.wheel.x+14, LAY.pod.x+20, LAY.hdr.y, 11);
+  drawTrace(g,s); drawPod(g,s); drawRack(g); drawRead(g,s);
+  // the rattle, drawn as a shiver on the valve when it is cavitating
+  if(s.cav && s.live){
+    const j=()=>(Math.random()*2-1)*2.2*s.sev;
+    g.fillStyle='rgba(192,73,59,0.5)'; g.font="12px 'VT323',monospace";
+    g.textAlign='center';
+    g.fillText('\u25b2 RATTLE', LAY.wheel.x+j(), LAY.wheel.y-40+j());
+    g.textAlign='left';
+  }
+}
+
+buildScene();
+const SH=LPE.mount({
+  t1:'GARDEN \u2014 MIST HEADER',
+  t2:'Pod 3 \u00b7 hypobaric 51 kPa \u00b7 manual',
+  w:W,h:H, step, draw,
+  intro:[
+    {kind:'place',
+     text:'Pod 3 is held at 51 kPa &mdash; half an atmosphere. It is cheaper to '+
+          'build at that pressure, it leaks less, and the crop does better in '+
+          'it.<br><br>The mist header feeding it comes off the same 60 psig '+
+          'Thermal Reservoir line as everything else on this base.'},
+    {kind:'title', eyebrow:'THE GARDEN \u00b7 POD 3',
+     title:'MIST HEADER', sub:'SIXTY PSIG INTO HALF AN ATMOSPHERE'},
+  ],
+  onStart:()=>{ say(); },
+  onReset(){
+    Object.assign(S,{open:0,trim:1,drag:false,turn:0,closing:false,wear:0,run:0});
+    si=0; closeT=0; buildScene(); say();
+  },
+});
+
+const cv=SH.canvas;
+cv.addEventListener('pointerdown',e=>{
+  LPE.audio.init(); LPE.audio.resume();
+  const p=SH.pt(e);
+  for(const b of rackBtns()){
+    if(p.x>=b.x && p.x<=b.x+b.w && p.y>=b.y && p.y<=b.y+b.h){
+      if(S.trim!==b.t.n){ S.trim=b.t.n; LPE.audio.clack(); }
+      return;
+    }
+  }
+  const Wl=LAY.wheel;
+  if(Math.hypot(p.x-Wl.x,p.y-Wl.y)<Wl.r+18){
+    S.drag=true; S.lastAng=Math.atan2(p.y-Wl.y,p.x-Wl.x);
+    cv.setPointerCapture(e.pointerId); LPE.audio.startFlow();
+  }
+});
+cv.addEventListener('pointermove',e=>{
+  if(!S.drag) return;
+  const p=SH.pt(e), Wl=LAY.wheel, a=Math.atan2(p.y-Wl.y,p.x-Wl.x);
+  let d=a-S.lastAng;
+  while(d>Math.PI) d-=6.2832; while(d<-Math.PI) d+=6.2832;
+  S.lastAng=a;
+  const before=S.open;
+  S.open=Math.max(0,Math.min(1,S.open+d/(2*6.2832)));
+  if(S.open>0.94) S.open=1;                     // wide open is a stop, not a target
+  if(Math.floor(S.open*18)!==Math.floor(before*18)) LPE.audio.tick();
+});
+['pointerup','pointercancel'].forEach(k=>cv.addEventListener(k,()=>{S.drag=false;}));
+}
+
+(window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
+  label:'LEVEL 4 \u2014 THE MIST HEADER',
+  sub:'The Garden  \u00b7  pod 3',
+  /* The job, before the training for it. launch() plays this first;
+     see PIPELINE.md section 6. */
+  brief:[
+    {kind:'comms', tag:'[ COLONY INTERCOM \u00b7 CREW CHANNEL 3 ]',
+     /* Every <br> segment must fit 52 characters or the card wraps it and
+        leaves the tail alone on a line. */
+     text:'&ldquo;Pod 3 misters sound like a bucket of gravel<br>'+
+          'and the crop under them is going spotty.<br>'+
+          'Second set of trim in four months. Find out why.&rdquo;'},
+  ],
+  /* The vena contracta is what the player has to read here, and the bench
+     teaches it honestly - including that the bench itself cannot reach
+     cavitation. This pod can. */
+  teach:['vena-contracta'],
+  start:startLevel4,
+});
+if(!window.LPE_GAME) startLevel4();
+</script>

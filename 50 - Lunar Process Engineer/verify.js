@@ -16,8 +16,8 @@ const fs = require('fs');
    own copy of BENCH_CV is exactly the drift these checks exist to catch,
    and it silently passed the wrong rig when the bench was rescaled. */
 function benchCv() {
-  const m = fs.readFileSync('level0.html', 'utf8').match(/const BENCH_CV=([0-9.]+)/);
-  if (!m) throw new Error('BENCH_CV not found in level0.html');
+  const m = fs.readFileSync('trainer.html', 'utf8').match(/const BENCH_CV=([0-9.]+)/);
+  if (!m) throw new Error('BENCH_CV not found in trainer.html');
   return +m[1];
 }
 
@@ -107,6 +107,43 @@ for (const s of strings) {
   if (h > BOX + 0.5) over.push((s.level + '/' + s.key) + ' +' + Math.round(h - BOX) + 'px');
 }
 check('every guide string fits the box', over.length === 0, over.join(', ') || strings.length + ' checked');
+
+/* ------------------------------------------------------------
+   1b. DO THE COMMS CARDS WRAP CLEANLY?
+
+   A comms card is hard-broken with <br> so the voice has phrasing. If a
+   segment is wider than the card it wraps anyway, and its tail is left
+   alone on a line - the word "gravel" by itself in the middle of pod 3's
+   brief. Six of them were doing it.
+
+   .alert-box is 660px wide with 38px of side padding, and .alert-text is
+   28px VT323, whose advance is exactly 0.4 x size. So the card fits
+   (660-76)/11.2 = 52 characters, and every segment has to be inside that.
+   ------------------------------------------------------------ */
+{
+  const CARD_COLS = Math.floor((660 - 2 * 38) / (28 * 0.4));
+  const RE = new RegExp(
+    "kind:'comms'[\\s\\S]{0,240}?text:((?:'(?:[^'\\\\]|\\\\.)*'\\s*\\+?\\s*)+)", 'g');
+  const orphans = [];
+  for (const f of ['level0.html', 'level1.html', 'level2.html',
+                   'level3.html', 'level4.html', 'trainer.html']) {
+    const s = fs.readFileSync(f, 'utf8');
+    RE.lastIndex = 0;
+    let m;
+    while ((m = RE.exec(s))) {
+      const t = m[1].split(/'\s*\+\s*'/).join('').replace(/^'|'\s*$/g, '')
+        .replace(/&ldquo;|&rdquo;/g, '"').replace(/&mdash;/g, '-')
+        .replace(/\\u2014/g, '-').replace(/\\u2019/g, "'").replace(/\\'/g, "'");
+      t.split('<br>').forEach(line => {
+        const L = line.trim();
+        if (L.length > CARD_COLS)
+          orphans.push(f.replace('.html', '') + ' +' + (L.length - CARD_COLS));
+      });
+    }
+  }
+  check('comms cards break without orphaning a word', orphans.length === 0,
+    orphans.join(', ') || 'all segments within ' + CARD_COLS + ' chars');
+}
 
 /* ------------------------------------------------------------
    2. CONSTANTS STILL MATCH THE SIZING
@@ -248,7 +285,7 @@ for (const f of ['level1.html', 'level2.html']) {
    ------------------------------------------------------------ */
 {
   const FL = require('./fluids.js');
-  const src = fs.readFileSync('level0.html', 'utf8');
+  const src = fs.readFileSync('trainer.html', 'utf8');
   const m = src.match(/const TRICKLE=\[([\d.]+),([\d.]+)\]/);
   const BORE = 0.493, AREA = 0.00133, DP = 20;
   /* read from the level, not hardcoded - verify had its own copy of
@@ -272,15 +309,19 @@ for (const f of ['level1.html', 'level2.html']) {
   check('a shut valve does not report as laminar',
     /regime:B\.flow<=0\.001\?'still'/.test(src), 'reports still');
   check('the trickle band is aimed at, not hunted for',
-    /COURSE\[c1\]\.target/.test(src) && /function magnet/.test(src), 'labelled target + magnet');
-  /* The canvas takes focus when a slider is clicked, so act 2's keydown
-     handler was catching the Enter the player presses to continue a
-     lesson - opening the supply panel behind the trainer. */
-  check('act 2 keydown cannot fire during the course',
-    /addEventListener\('keydown'[\s\S]{0,400}?if\(act!==2\) return;/.test(src),
-    'gated on act');
-  check('reset restores act 1, not just the supply panel',
-    /onReset\(\)\{[\s\S]{0,400}act=1; c1=0; done1=false;/.test(src), 'act/c1/done1 cleared');
+    /STEPS\[si\]\.target/.test(src) && /function magnet/.test(src), 'labelled target + magnet');
+  /* Two checks lived here guarding level 0's act-1 crash course: that its
+     keydown handler could not fire during the course, and that RESET put
+     the player back at the start of it. The course is gone - the bench is
+     a device now - so what replaces them is the check that it really is
+     gone, because a second copy drifting back in is the actual risk. */
+  const l0 = fs.readFileSync('level0.html', 'utf8');
+  check('level 0 carries no second copy of the bench',
+    !/const COURSE=\[/.test(l0) && !/function drawBench/.test(l0) && !/act===1/.test(l0),
+    'one act, the supply panel');
+  check('level 0 teaches the rungs its closing lines lean on',
+    /teach:\[[^\]]*'velocity-profile'[^\]]*\]/.test(l0),
+    'closing points at the profile in a real line');
 }
 
 /* ------------------------------------------------------------
@@ -322,7 +363,7 @@ for (const f of ['level1.html', 'level2.html']) {
   check('applied step has a hittable lever window', lo !== null && hi - lo >= 0.03,
     lo === null ? 'NONE' : 'lever ' + lo.toFixed(2) + '-' + hi.toFixed(2));
   {
-    const lv = fs.readFileSync('level0.html', 'utf8');
+    const lv = fs.readFileSync('trainer.html', 'utf8');
     const applied = lv.indexOf("ctl:['flow','temp','fluid']");
     const hasTarget = applied >= 0 && lv.slice(applied, applied + 200).includes('target:');
     check('the applied step draws no target', applied >= 0 && !hasTarget,
@@ -340,55 +381,76 @@ for (const f of ['level1.html', 'level2.html']) {
    table, and the rectangles are checked against each other here.
    ------------------------------------------------------------ */
 {
-  const lsrc = fs.readFileSync('level0.html', 'utf8');
-  const lm = lsrc.match(/const LAY=\{[\s\S]*?\n\};/);
-  check('level 0 has one layout table', !!lm, lm ? 'LAY' : 'not found');
+  /* Rewritten for the bench that exists. This block used to read level 0,
+     which carried a second copy of the training loop with a reservoir, a
+     pump and a hand-written note. That copy is gone - the bench is
+     trainer.html now - so the check follows it, and the rectangle list is
+     the trainer's own LAY rather than the old rig's.
+
+     Scope is the things that must never sit on each other: the cut-open
+     glass, the readout panel, both lever boxes and tracks, and the fluid
+     switch plate. Decorative props are left out on purpose; the clamps
+     holding the run pass behind the FLOW box by a few pixels and that is
+     how it is drawn. */
+  const tsrc = fs.readFileSync('trainer.html', 'utf8');
+  const lm = tsrc.match(/const LAY=\{[\s\S]*?\n\};/);
+  check('the bench has one layout table', !!lm, lm ? 'LAY' : 'not found');
   if (lm) {
     const LAY = eval('(' + lm[0].replace(/^const LAY=/, '').replace(/;$/, '') + ')');
     const R = [];
-    R.push({ n:'sight glass', x:LAY.glass.x-14, y:LAY.glass.y-20, w:LAY.glass.w+28, h:LAY.glass.h+40 });
-    R.push({ n:'reservoir', ...LAY.tank });
-    R.push({ n:'pump', x:LAY.pump.x-LAY.pump.r-32, y:LAY.pump.y-LAY.pump.r, w:2*LAY.pump.r+64, h:2*LAY.pump.r+30 });
-    R.push({ n:'hand note', x:LAY.note.x, y:LAY.note.y-12, w:200, h:18 });
-    [0,1,2].forEach(i => R.push({ n:'fluid '+i, x:LAY.fluid.x, y:LAY.fluid.y+i*LAY.fluid.pitch, w:LAY.fluid.w, h:LAY.fluid.h }));
-    [0,1,2,3].forEach(i => R.push({ n:'readout '+i, x:LAY.read.x+i*(LAY.read.w+LAY.read.gap), y:LAY.read.y, w:LAY.read.w, h:LAY.read.h }));
-    R.push({ n:'FLOW label', ...LAY.flowS.box });
-    R.push({ n:'TEMP label', ...LAY.tempS.box });
+    R.push({ n:'cut-open glass', ...LAY.glass });
+    R.push({ n:'readout panel',  ...LAY.meter });
+    R.push({ n:'FLOW box',       ...LAY.flowS.box });
+    R.push({ n:'TEMP box',       ...LAY.tempS.box });
     R.push({ n:'FLOW track', x:LAY.flowS.track.x, y:LAY.flowS.track.y-13, w:LAY.flowS.track.w, h:26 });
     R.push({ n:'TEMP track', x:LAY.tempS.track.x, y:LAY.tempS.track.y-13, w:LAY.tempS.track.w, h:26 });
-    R.push({ n:'shelf lip', x:LAY.frame.x+12, y:LAY.frame.y+LAY.frame.h-68, w:LAY.frame.w-24, h:8 });
-    const hit=(a,b)=>a.x<b.x+b.w&&b.x<a.x+a.w&&a.y<b.y+b.h&&b.y<a.y+a.h;
-    const clash=[];
-    for(let i=0;i<R.length;i++) for(let j=i+1;j<R.length;j++) if(hit(R[i],R[j])) clash.push(R[i].n+' x '+R[j].n);
-    check('nothing on the rig overlaps anything else', clash.length===0, clash.join('; ') || R.length+' rectangles');
-    const F=LAY.frame, out=[];
-    R.forEach(r=>{ if(r.x<F.x+12||r.x+r.w>F.x+F.w-12||r.y<F.y+12||r.y+r.h>F.y+F.h-12) out.push(r.n); });
-    check('everything is inside the frame', out.length===0, out.join(', ') || 'within the rails');
-    check('the loop has a reservoir, a pump and a glass', !!(LAY.tank&&LAY.pump&&LAY.glass), 'all three');
-    check('the rig is plumbed, not floating', lsrc.includes('LPE.piping({'), 'pipework in the scene');
-    /* The table is only worth checking if the drawing code actually reads
-       from it. The handwritten note passed this suite while still being
-       drawn at hardcoded coordinates on top of the flow lever, because the
+    R.push({ n:'fluid switches', x:LAY.fsw.x, y:LAY.fsw.y, w:LAY.fsw.w, h:LAY.fsw.h });
+
+    const hit = (a,b) => a.x < b.x+b.w && b.x < a.x+a.w && a.y < b.y+b.h && b.y < a.y+a.h;
+    const clash = [];
+    for (let i=0;i<R.length;i++) for (let j=i+1;j<R.length;j++)
+      if (hit(R[i],R[j])) clash.push(R[i].n + ' x ' + R[j].n);
+    check('nothing on the bench overlaps anything else', clash.length === 0,
+      clash.join('; ') || R.length + ' rectangles');
+
+    const W = 900, H = 400, out = [];
+    R.forEach(r => { if (r.x < 0 || r.x+r.w > W || r.y < 0 || r.y+r.h > H) out.push(r.n); });
+    check('everything is on the bench', out.length === 0, out.join(', ') || 'within 900x400');
+
+    check('the bench has a glass, a readout and two levers',
+      !!(LAY.glass && LAY.meter && LAY.flowS && LAY.tempS), 'all four');
+    check('the run continues either side of the glass',
+      /run\(0,G\.x-6\); run\(G\.x\+G\.w\+6,W\)/.test(tsrc),
+      'solid pipe into and out of the cutaway');
+
+    /* The table is only worth checking if the drawing code reads it. The
+       hand-written note passed this suite for a while whilst still being
+       drawn at hardcoded coordinates over the flow lever, because the
        check validated a value nothing used. */
-    const usesTable = ['LAY.note.x', 'LAY.glass.x', 'LAY.tank', 'LAY.pump', 'LAY.read.y',
-                       'LAY.fluid.x', 'LAY.flowS', 'LAY.tempS', 'LAY.frame']
-      .filter(k => !lsrc.includes(k));
+    const usesTable = ['LAY.glass', 'LAY.meter', 'LAY.flowS', 'LAY.tempS',
+                       'LAY.fsw', 'LAY.lamp', 'LAY.mug', 'LAY.book', 'LAY.rule']
+      .filter(k => !tsrc.includes(k));
     check('the drawing code reads the layout table', usesTable.length === 0,
       usesTable.length ? 'not referenced: ' + usesTable.join(', ') : 'all keys referenced');
-    check('no hand-placed scenery left on the bench',
-      !/A\.handNote\(g,T\.x/.test(lsrc) && !/A\.plate\(g,F\.x\+F\.w-/.test(lsrc),
-      'note and plate come from LAY');
   }
 }
-
 /* ------------------------------------------------------------
    6. BUILD INTEGRITY
    ------------------------------------------------------------ */
-for (const f of ['level0.html', 'level1.html', 'level2.html', 'engine.js', 'jam.js', 'title-art.js']) {
-  const bad = [...new Set((fs.readFileSync(f, 'utf8').match(/[^\x00-\x7F]/g) || []))];
+for (const f of ['level0.html', 'level1.html', 'level2.html', 'level3.html',
+                 'level4.html', 'trainer.html',
+                 'engine.js', 'jam.js', 'title-art.js',
+                 /* fluids.js and sizing.js were missing from this list, so a
+                    non-ASCII dash in either of them reached the build as a
+                    warning nothing was actually checking. */
+                 'fluids.js', 'sizing.js']) {
+  // no regex: an escaped  in this line once became a real NUL byte
+  const bad = [...new Set([...fs.readFileSync(f, 'utf8')].filter(c => c.charCodeAt(0) > 127))];
   check(f + ' is ASCII', bad.length === 0, bad.length ? JSON.stringify(bad) : 'clean');
 }
-for (const f of ['dist/game.html', 'dist/level0.html', 'dist/level1.html', 'dist/level2.html']) {
+for (const f of ['dist/game.html', 'dist/level0.html', 'dist/level1.html',
+                 'dist/level2.html', 'dist/level3.html', 'dist/level4.html',
+                 'dist/trainer.html']) {
   if (!fs.existsSync(f)) { check(f + ' exists', false, 'missing'); continue; }
   let bad = 0, blocks = 0;
   for (const m of fs.readFileSync(f, 'utf8').matchAll(/<script>([\s\S]*?)<\/script>/g)) {
@@ -396,6 +458,235 @@ for (const f of ['dist/game.html', 'dist/level0.html', 'dist/level1.html', 'dist
     try { new Function(m[1]); } catch (e) { bad++; }
   }
   check(f + ' script blocks parse', bad === 0, bad ? bad + ' failed' : blocks + ' blocks');
+}
+
+/* ---- fluid representation is uniform ----
+   Standing requirement, not a style preference: every view draws fluid the
+   same way, and that way comes from the reference rig. These exist because
+   the divergence happened twice, silently, and shipped both times. */
+const ENG = fs.readFileSync('engine.js', 'utf8');
+const RIG = fs.readFileSync('reference/cve-reference-rig.html', 'utf8');
+
+/* Everything outside marker()'s own body. A fluid-coloured stroke anywhere
+   in here is a view drawing its own streak again. */
+const engOutsideMarker = (() => {
+  const i = ENG.indexOf('function marker(g,x,y,o)');
+  if (i < 0) return ENG;
+  const j = ENG.indexOf(String.fromCharCode(10,125), i);
+  return ENG.slice(0, i) + ENG.slice(j);
+})();
+const ownStreaks = engOutsideMarker.match(/rgba\(54,224,255[\s\S]{0,160}?lineTo/g) || [];
+
+check('fluid: no view strokes its own streak', ownStreaks.length === 0,
+  ownStreaks.length
+    ? ownStreaks.length + ' site(s) stroke fluid instead of calling marker()'
+    : 'marker() is the only fluid draw');
+
+check('fluid: marker() draws the rig centred square',
+  /function marker\(g,x,y,o\)/.test(ENG) && /fillRect\(x-s\/2,y-s\/2,s,s\)/.test(ENG),
+  'rig: fillRect(px-size/2, py-size/2, size, size)');
+
+const engSize = (ENG.match(/function fluidSize\(sg\)\{\s*return\s*([\d.]+)\*/) || [])[1];
+const rigSize = (RIG.match(/const size = \(lane\.service==='liquid' \? ([\d.]+)/) || [])[1];
+check('fluid: marker size matches the rig', !!engSize && engSize === rigSize,
+  'engine ' + engSize + '  rig ' + rigSize);
+
+const engAl = (ENG.match(/function fluidAlpha\(sg\)[^\r\n]*0\.4\+\(sg-1\.0\)\*([\d.]+)/) || [])[1];
+const rigAl = (RIG.match(/Math\.max\(0\.4, 0\.4 \+ \(lane\.sg-1\.0\)\*([\d.]+)\)/) || [])[1];
+check('fluid: marker alpha matches the rig', !!engAl && engAl === rigAl,
+  'engine ' + engAl + '  rig ' + rigAl);
+
+const agCalls = (ENG.match(/fluidAgitation\(/g) || []).length;
+check('fluid: both views agitate', agCalls >= 3,
+  agCalls + ' uses (helper + Line + Cutaway)');
+
+const carries = ['Line', 'Cutaway'].filter(k => {
+  const b = ENG.split(new RegExp('function ' + k + '\\('))[1] || '';
+  return /this\.tempF=/.test(b.slice(0, 900));
+});
+check('fluid: both views carry fluid state', carries.length === 2,
+  'carrying: ' + (carries.join(', ') || 'neither'));
+
+
+/* ---- the segment table only touches state that exists ----
+   A splice removed `const PROBE={...}` and left three references to it in
+   the segment table. That is a ReferenceError the moment a segment starts
+   - the guide box comes up blank - but it parses perfectly, so the
+   "script blocks parse" check passed and the build went green. Parsing is
+   not running.
+
+   Scope is deliberately narrow: the bodies of the SEG table in
+   trainer.html, which are closures that run later and so are exactly where
+   a vanished declaration hides. A whole-file identifier scan was tried
+   first and drowned in false positives from comma-declarations and prose;
+   a check nobody can read the output of is not a check. */
+(function segmentRefs() {
+  const src = fs.readFileSync('trainer.html', 'utf8');
+  const start = src.indexOf('const SEG={');
+  if (start < 0) { check('segment table: found', false, 'const SEG={ missing'); return; }
+  let d = 0, end = start;
+  for (; end < src.length; end++) {
+    if (src[end] === '{') d++;
+    else if (src[end] === '}' && --d === 0) break;
+  }
+  const table = src.slice(start, end + 1);
+
+  // everything the file declares at any level
+  const file = src.replace(/\/\*[\s\S]*?\*\//g, ' ');
+  const declared = new Set();
+  let m;
+  const decl = /\b(?:const|let|var|function)\s+([A-Za-z_$][\w$]*)/g;
+  while ((m = decl.exec(file))) declared.add(m[1]);
+  // comma continuations: const A=1, B=2, C=3
+  const run = /\b(?:const|let|var)\s+([^;\n]+)/g;
+  while ((m = run.exec(file)))
+    (m[1].match(/([A-Za-z_$][\w$]*)\s*=/g) || [])
+      .forEach(s => declared.add(s.replace(/\s*=$/, '')));
+
+  // identifiers the table reads, minus property accesses and string bodies
+  const code = table
+    .replace(/'(?:\\.|[^'\\])*'/g, "''")
+    .replace(/"(?:\\.|[^"\\])*"/g, '""')
+    .replace(/\/\*[\s\S]*?\*\//g, ' ');
+  /* Table keys, not state. 'manifold' only ever passed because a function
+     happens to share the name - the check was right to stop on 'trace'. */
+  const KEY = /^(concept|sub|controls|steps|ctl|target|task|ok|lesson|watch|auto|on|lo|hi|label|shows|manifold|trace)$/;
+  const KW = /^(if|for|while|return|new|typeof|in|of|else|throw|true|false|null|undefined|const|let|var|function|this)$/;
+  const used = new Set();
+  const idRe = /(^|[^.\w$])([A-Za-z_$][\w$]*)/g;
+  while ((m = idRe.exec(code))) {
+    const n = m[2], after = code.slice(m.index + m[0].length);
+    if (KEY.test(n) && /^\s*:/.test(after)) continue;     // it is a table key
+    if (KW.test(n)) continue;
+    used.add(n);
+  }
+  const GLOBAL = new Set(['Math', 'Object', 'String', 'Number', 'Array', 'JSON']);
+  const missing = [...used].filter(n => !declared.has(n) && !GLOBAL.has(n)).sort();
+  check('segment table references only declared state', missing.length === 0,
+    missing.length ? 'undeclared: ' + missing.join(', ')
+                   : used.size + ' names, all declared');
+})();
+/* ---- continuity: the order the player meets things ----
+   PIPELINE.md section 6. These exist because the order was wrong and
+   nothing could see it: level zero's briefing sat inside the level's own
+   mount, the trainer runs before the level, so the player was told
+   "before you go down there, R.O. keeps a bench" before anything had
+   mentioned a down there. The assignment arrived after the training. */
+{
+  const eng = fs.readFileSync('engine.js', 'utf8');
+
+  /* C1 - the brief plays, and plays BEFORE the trainer.
+
+     Checked by running launch() rather than by reading it. The first
+     version compared source positions and failed a correct sequencer:
+     toTraining is defined above the brief call and invoked after it, so
+     the text order is the reverse of the execution order. Parsing is not
+     running - that lesson again. */
+  const src = eng.slice(eng.indexOf('function launch(opt, i)'));
+  const launchSrc = src.slice(0, src.indexOf('\n}') + 2);
+  const order = [];
+  const sandbox = {
+    intro: (cards, next) => { order.push('brief(' + cards.length + ')'); next(); },
+    LPE: { trainer: (need, next) => { order.push('trainer[' + need.join(',') + ']'); next(); } },
+    TAUGHT: new Set(),
+    LPE_NAV: null,
+  };
+  let ran = null;
+  try {
+    const make = new Function('intro', 'LPE', 'TAUGHT',
+      launchSrc + '\nreturn launch;');
+    const launch = make(sandbox.intro, sandbox.LPE, sandbox.TAUGHT);
+    launch({ levels: [{
+      brief: [{ kind: 'comms' }],
+      teach: ['process', 'flow'],
+      start: () => order.push('level'),
+    }] }, 0);
+    ran = order.join(' -> ');
+  } catch (e) { ran = 'threw: ' + e.message; }
+  check('C1 brief runs before the trainer, trainer before the level',
+    ran === 'brief(1) -> trainer[process,flow] -> level', ran);
+
+  /* and a second run must not re-teach what the first one taught */
+  let repeat = null;
+  try {
+    const make = new Function('intro', 'LPE', 'TAUGHT', launchSrc + '\nreturn launch;');
+    const T = new Set();
+    const o2 = [];
+    const lp = make((c, n) => { o2.push('brief'); n(); },
+                    { trainer: (need, n) => { o2.push('trainer[' + need.join(',') + ']'); n(); } }, T);
+    const lv = { brief: [{}], teach: ['process'], start: () => o2.push('level') };
+    lp({ levels: [lv] }, 0); o2.push('|'); lp({ levels: [lv] }, 0);
+    repeat = o2.join(' ');
+  } catch (e) { repeat = 'threw: ' + e.message; }
+  check('C5 a rung already taught is not taught again',
+    repeat === 'brief trainer[process] level | brief level', repeat);
+
+  const levels = ['level0.html', 'level1.html', 'level2.html', 'level3.html', 'level4.html'];
+  const reg = f => {
+    const s = fs.readFileSync(f, 'utf8');
+    const i = s.indexOf('LPE_LEVELS=window.LPE_LEVELS');
+    return i < 0 ? '' : s.slice(i, s.indexOf('\n});', i));
+  };
+
+  /* C1 - every level states the job. A level that teaches must brief. */
+  const noBrief = levels.filter(f => !/\bbrief:\s*\[/.test(reg(f)));
+  check('C1 every level briefs the job', noBrief.length === 0,
+    noBrief.join(', ') || levels.length + ' levels');
+
+  /* C2 - the level's own intro is arrival only. A comms card still sitting
+     in there is a briefing that would play after the training. */
+  const commsInIntro = levels.filter(f => {
+    const s = fs.readFileSync(f, 'utf8');
+    const i = s.indexOf('intro:[');
+    if (i < 0) return false;
+    return /\{kind:'comms'/.test(s.slice(i, s.indexOf('\n  ],', i)));
+  });
+  check('C2 arrival cards carry no briefing', commsInIntro.length === 0,
+    commsInIntro.join(', ') || 'place and title only');
+
+  /* C3 - a level teaches what its own text names. Level zero's closing
+     points at the velocity profile in a real line, so it has to have been
+     taught; this check generalises that to every rung name. */
+  const RUNG = {
+    'velocity profile': 'velocity-profile', 'no-slip': 'velocity-profile',
+    'reynolds': 'reynolds', 'laminar': 'reynolds', 'turbulent': 'reynolds',
+    'viscosity': 'reynolds', 'specific gravity': 'specific-gravity',
+  };
+  const unmet = [];
+  levels.forEach(f => {
+    const s = fs.readFileSync(f, 'utf8');
+    const taught = new Set((reg(f).match(/'[a-z-]+'/g) || []).map(x => x.slice(1, -1)));
+    // player-facing text only: strip comments first
+    const prose = s.replace(/\/\*[\s\S]*?\*\//g, ' ').replace(/(^|[^:])\/\/[^\n]*/g, '$1 ');
+    Object.entries(RUNG).forEach(([term, rung]) => {
+      if (new RegExp('\\b' + term + '\\b', 'i').test(prose) && !taught.has(rung))
+        unmet.push(f.replace('.html', '') + ' says "' + term + '" without teaching ' + rung);
+    });
+  });
+  check('C3 levels teach the rungs their own text names', unmet.length === 0,
+    unmet.join('; ') || 'nothing named early');
+  /* C6 - scenery is composed before the shell mounts.
+     draw() runs on the first frame the shell pumps, which is before
+     onStart. Building the background in a callback left level zero doing
+     drawImage(undefined) on frame one: the exception killed the frame
+     loop and the canvas stayed black. The standalone build papered over
+     the timing, the game shell did not, and nothing caught it because
+     every check was reading source rather than playing the thing. */
+  const scenes = {
+    'level0.html': 'buildScene', 'level1.html': 'buildScene',
+    'level2.html': 'buildScene', 'level3.html': 'buildScene',
+    'level4.html': 'buildScene',
+    'trainer.html': 'buildDesk',
+  };
+  const late = [];
+  Object.entries(scenes).forEach(([f, fn]) => {
+    const s = fs.readFileSync(f, 'utf8');
+    const mount = s.search(/\b(const\s+)?SH\s*=\s*LPE\.mount\(/);
+    const call = s.indexOf(fn + '();');
+    if (mount < 0 || call < 0 || call > mount) late.push(f);
+  });
+  check('C6 scenery is composed before the shell mounts', late.length === 0,
+    late.join(', ') || Object.keys(scenes).length + ' scenes');
 }
 
 /* ------------------------------------------------------------ */

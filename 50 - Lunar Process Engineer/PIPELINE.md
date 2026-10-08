@@ -143,3 +143,61 @@ reaches a measurement — that is the signal the suite had a hole.
 - no two rectangles on the rig overlap, and the drawing code reads the
   layout table rather than hardcoding past it
 - sources are ASCII, every built script block parses
+
+---
+
+## 6. Continuity — the order the player meets things
+
+This exists because the order was wrong and nobody could see it from the
+code. Level zero's briefing lived inside the level's own mount, and the
+trainer runs *before* the level, so the player was told **"before you go
+down there, R.O. keeps a bench"** before anything had mentioned a down
+there. The job arrived after the training for it.
+
+The order is now one thing, declared per level, and `launch()` is the only
+code that sequences it.
+
+| # | stage | owned by | what it is |
+| --- | --- | --- | --- |
+| 1 | **BOOT** | engine | once a session |
+| 2 | **TITLE + MENU** | engine | SELECT ASSIGNMENT |
+| 3 | **BRIEF** | the level, `brief:[]` | the job, from COMMS. Why you are going anywhere. |
+| 4 | **TRAINER** | the device, `teach:[]` | only rungs this level needs that are not already taught |
+| 5 | **ARRIVAL** | the level, `intro:[]` | place card, then title card. You walk there *after* the bench. |
+| 6 | **PLAY** | the level | |
+| 7 | **CLOSING** | the level | what just happened, named |
+| 8 | **FINISH** | engine | debrief card, then the next assignment |
+
+### The rules
+
+- **C1 — the brief comes before the training.** A level that teaches
+  anything must say what the job is first. The trainer's own opening line
+  presumes a job exists.
+- **C2 — arrival comes after the training.** The place and title cards are
+  the player walking to the work, which happens once the bench is done.
+- **C3 — a level teaches every concept its own text names.** If a closing
+  line points at the velocity profile, `teach` includes `velocity-profile`.
+- **C4 — nothing is named before its rung**, in script or on a readout.
+  The bench panel reveals a row only once its concept is introduced; a row
+  carried early is tagged `later`.
+- **C5 — each rung is taught once per session.** `TAUGHT` is global, so a
+  concept a later level needs and an earlier one already covered does not
+  replay.
+
+### What a level registration looks like
+
+```js
+(window.LPE_LEVELS=window.LPE_LEVELS||[]).push({
+  label:'LEVEL 0 — BIO LAB ONE SUPPLY',
+  sub:'Section 4-B · manual',
+  brief:[ {kind:'comms', tag:'[ COLONY INTERCOM ]', text:'…the job…'} ],
+  teach:['process','fluid','temperature','pressure','flow','velocity-profile'],
+  start:startLevel0,
+});
+```
+
+and the level's own `intro:` carries only the place and title cards.
+
+`verify.js` holds C1, C2 and C3 to the code: every level with `teach` has a
+`brief`; no level's `intro` still opens on a comms card; and `launch()`
+plays the brief before it calls the trainer.

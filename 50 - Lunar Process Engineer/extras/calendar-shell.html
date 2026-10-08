@@ -1,0 +1,404 @@
+<meta charset="utf-8">
+<title>The Actuator Edition</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ------------------------------------------------------------------
+   A wall calendar that prints: US Letter portrait, one month a sheet,
+   image above the grid, plus a landscape gatefold centerfold between
+   June and July. On screen the deck is zoomed to fit the window so the
+   type scales with the sheet; print resets the zoom and emits every page.
+   ------------------------------------------------------------------ */
+:root{
+  --ink:#141A16; --deep:#15301F;
+  --fisher:#2B5D3B;          /* the vault's hardware token, Style Guide §5 */
+  --sun:#E08A3C; --coral:#C0493B; --brass:#C9A24B;
+  --stock:#FBF4E6; --cream:#FFFBF2;
+  --rule:#D9CBB0; --muted:#7A6B54;
+  --page-w:8.5in; --page-h:11in;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0; background:#201C17; color:var(--ink);
+  font-family:"Source Serif 4",Georgia,"Times New Roman",serif;
+  -webkit-print-color-adjust:exact; print-color-adjust:exact;
+}
+.deck{ display:flex; flex-direction:column; align-items:center; gap:22px; padding:16px 16px 92px; }
+@media screen{ .deck{ zoom: var(--fit,1); } }
+
+.page{
+  width:var(--page-w); height:var(--page-h); background:var(--stock);
+  display:none; flex-direction:column; overflow:hidden; position:relative;
+  box-shadow:0 18px 50px rgba(0,0,0,.5);
+}
+.page.active{ display:flex; }
+
+/* ---- plate ---- */
+.plate{ position:relative; width:100%; aspect-ratio:85/62; overflow:hidden; background:var(--deep); }
+/* Absolute, not 100%/100%: as a flex child the canvas took its height from
+   the bitmap ratio instead of the plate, which stretched every drawing. */
+.plate canvas{ display:block; position:absolute; inset:0; width:100%; height:100%; }
+.mast{ position:absolute; inset:0; padding:.24in .28in; display:flex;
+       flex-direction:column; justify-content:space-between; pointer-events:none; }
+.mast .top{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+.brand{ font-family:Anton,"Arial Narrow",sans-serif; line-height:.84;
+        font-size:46px; color:var(--cream); text-shadow:0 2px 16px rgba(0,0,0,.6); }
+.brand small{ display:block; font-family:"IBM Plex Mono",monospace; font-weight:600;
+        font-size:8.5px; letter-spacing:.34em; color:var(--brass); margin-top:7px; }
+.edition{ font-family:"IBM Plex Mono",monospace; font-weight:600; font-size:9px;
+        letter-spacing:.24em; text-transform:uppercase; color:var(--stock);
+        text-align:right; line-height:1.7; text-shadow:0 1px 10px rgba(0,0,0,.75); }
+.mast .bot{ display:flex; align-items:flex-end; justify-content:space-between; gap:16px; }
+.monthname{ font-family:Anton,"Arial Narrow",sans-serif; line-height:.80;
+        font-size:68px; color:var(--cream); text-shadow:0 3px 20px rgba(0,0,0,.6); }
+.monthname span{ display:block; font-size:.26em; letter-spacing:.34em;
+        color:var(--brass); margin-top:.6em; }
+.cap{ max-width:50%; text-align:right; color:var(--cream); font-size:12.5px;
+      line-height:1.42; font-style:italic; text-wrap:balance;
+      text-shadow:0 2px 12px rgba(0,0,0,.9); }
+
+/* ---- lower ---- */
+.lower{ flex:1; display:grid; grid-template-columns:1fr 1.22fr; min-height:0; }
+.specs{ padding:.22in .2in .16in .28in; border-right:1px solid var(--rule);
+        display:flex; flex-direction:column; }
+.model{ font-family:Anton,"Arial Narrow",sans-serif; font-size:21px; line-height:1.02; color:var(--deep); }
+.model small{ display:block; font-family:"IBM Plex Mono",monospace; font-weight:500;
+  font-size:8.5px; letter-spacing:.22em; text-transform:uppercase; color:var(--coral); margin-bottom:5px; }
+.sizeline{ font-family:"IBM Plex Mono",monospace; font-size:8.5px; letter-spacing:.14em;
+  text-transform:uppercase; color:var(--muted); margin-top:4px; }
+.vitals{ margin-top:10px; font-family:"IBM Plex Mono",monospace; font-size:8.6px; }
+.vitals dl{ margin:0; display:grid; grid-template-columns:auto 1fr; }
+.vitals dt{ color:var(--muted); letter-spacing:.09em; text-transform:uppercase;
+  padding:3px 9px 3px 0; border-bottom:1px dotted var(--rule); white-space:nowrap; }
+.vitals dd{ margin:0; padding:3px 0; border-bottom:1px dotted var(--rule);
+  text-align:right; color:var(--ink); font-weight:500; }
+.likes{ margin-top:11px; font-size:10.5px; line-height:1.42; }
+.likes p{ margin:0 0 7px; }
+.likes b{ font-family:"IBM Plex Mono",monospace; font-size:7.6px; font-weight:600;
+  letter-spacing:.2em; text-transform:uppercase; display:block; color:var(--fisher); }
+.figline{ margin-top:auto; font-family:"IBM Plex Mono",monospace; font-size:7px;
+  letter-spacing:.08em; color:var(--muted); text-transform:uppercase; }
+
+.gridwrap{ padding:.22in .28in .16in .2in; display:flex; flex-direction:column; }
+table.cal{ width:100%; border-collapse:collapse; table-layout:fixed; }
+table.cal th{ font-family:"IBM Plex Mono",monospace; font-size:8px; font-weight:600;
+  letter-spacing:.14em; color:var(--muted); text-transform:uppercase;
+  padding-bottom:5px; border-bottom:1.6px solid var(--fisher); }
+table.cal td{ height:.45in; vertical-align:top; border-bottom:1px solid var(--rule);
+  font-family:"IBM Plex Mono",monospace; font-size:11px; color:var(--ink);
+  padding:3px 4px 0 0; text-align:right; font-variant-numeric:tabular-nums; }
+table.cal td.pad{ color:#CFC2A6; }
+table.cal td.sun{ color:var(--coral); }
+.imprint{ margin-top:auto; padding-top:8px; border-top:1px solid var(--rule);
+  font-family:Anton,sans-serif; font-size:9px; letter-spacing:.3em;
+  text-transform:uppercase; color:var(--fisher); opacity:.72; text-align:center; }
+.disclaim{ font-family:"IBM Plex Mono",monospace; font-size:6.6px; letter-spacing:.08em;
+  text-transform:uppercase; color:var(--muted); text-align:center; margin-top:4px; }
+
+/* ---- cover ---- */
+.page.cover{ background:var(--deep); }
+.page.cover .plate{ aspect-ratio:auto; flex:1; }
+.cover-copy{ position:absolute; inset:0; display:flex; flex-direction:column;
+  justify-content:space-between; padding:.46in; pointer-events:none; }
+.cover-copy h1{ font-family:Anton,sans-serif; margin:0; line-height:.82;
+  font-size:92px; color:var(--cream); text-shadow:0 4px 26px rgba(0,0,0,.6); }
+.cover-copy h1 em{ font-style:normal; color:var(--brass); }
+.cover-sub{ font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.32em;
+  text-transform:uppercase; color:var(--stock); margin-top:16px; }
+.cover-foot{ color:var(--stock); font-size:12.5px; font-style:italic; max-width:60%;
+  text-shadow:0 2px 12px rgba(0,0,0,.8); }
+.cover-year{ font-family:Anton,sans-serif; font-size:112px; color:var(--sun);
+  line-height:.78; text-align:right; }
+
+/* ---- the centerfold: a landscape gatefold ---- */
+.page.fold{ width:11in; height:8.5in; background:var(--stock); }
+.fold-inner{ display:grid; grid-template-columns:1.1fr .9fr; height:100%; }
+.fold-art{ position:relative; overflow:hidden;
+  background:radial-gradient(120% 90% at 62% 18%, #F3E9D4 0%, #DCCDAE 46%, #B9A782 100%);
+  display:flex; align-items:center; justify-content:center; padding:.18in; }
+.fold-art svg{ height:100%; width:auto; max-width:100%; display:block;
+  filter:drop-shadow(0 14px 30px rgba(60,40,18,.42)); }
+.fold-copy{ padding:.4in .4in .28in; display:flex; flex-direction:column; }
+.fold-tag{ font-family:"IBM Plex Mono",monospace; font-size:9px; letter-spacing:.34em;
+  text-transform:uppercase; color:var(--coral); }
+.fold-copy h2{ font-family:Anton,sans-serif; margin:7px 0 0; line-height:.88;
+  font-size:48px; color:var(--deep); }
+.fold-copy h2 span{ display:block; font-size:.3em; letter-spacing:.2em;
+  color:var(--muted); margin-top:.7em; }
+.fold-lede{ margin-top:14px; font-size:13px; line-height:1.5; font-style:italic; color:#2E382F; }
+.parts{ margin-top:14px; font-family:"IBM Plex Mono",monospace; font-size:8.4px;
+  columns:2; column-gap:18px; }
+.parts div{ break-inside:avoid; padding:2.4px 0; border-bottom:1px dotted var(--rule); color:var(--ink); }
+.parts i{ display:inline-block; width:15px; color:var(--coral); font-style:normal; font-weight:600; }
+.fold-note{ margin-top:16px; font-size:11.5px; line-height:1.52; color:#2E382F;
+  border-left:3px solid var(--fisher); padding-left:12px; }
+.fold-note b{ display:block; font-family:"IBM Plex Mono",monospace; font-size:7.6px;
+  font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--fisher); margin-bottom:5px; }
+.fold-foot{ margin-top:auto; padding-top:10px; border-top:1px solid var(--rule);
+  font-family:"IBM Plex Mono",monospace; font-size:7px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--muted); display:flex; justify-content:space-between; gap:12px; }
+.gatefold-mark{ position:absolute; top:0; bottom:0; left:50%; width:1px;
+  background:repeating-linear-gradient(to bottom,#8E7C58 0 6px,transparent 6px 12px); opacity:.5; }
+
+/* ---- controls ---- */
+.bar{ position:fixed; left:50%; transform:translateX(-50%); bottom:16px; z-index:20;
+  display:flex; align-items:center; gap:6px; padding:8px 10px;
+  background:rgba(21,48,31,.95); border:1px solid rgba(251,244,230,.2);
+  border-radius:999px; box-shadow:0 10px 30px rgba(0,0,0,.6); }
+.bar button{ font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--cream); background:transparent;
+  border:1px solid rgba(251,244,230,.3); border-radius:999px; padding:7px 13px;
+  cursor:pointer; transition:background .15s,border-color .15s; }
+.bar button:hover{ background:rgba(201,162,75,.26); border-color:var(--brass); }
+.bar button:focus-visible{ outline:2px solid var(--brass); outline-offset:2px; }
+.dots{ display:flex; gap:4px; padding:0 5px; align-items:center; }
+.dots i{ width:7px; height:7px; border-radius:50%; background:rgba(251,244,230,.3);
+  cursor:pointer; display:block; transition:background .15s,transform .15s; }
+.dots i:hover{ transform:scale(1.4); }
+.dots i.on{ background:var(--brass); }
+.dots i.fold{ border-radius:2px; width:10px; height:8px; background:rgba(224,138,60,.5); }
+.dots i.fold.on{ background:var(--sun); }
+
+@media (prefers-reduced-motion:no-preference){
+  .page.active{ animation:turn .4s cubic-bezier(.22,.61,.36,1); transform-origin:top center; }
+  @keyframes turn{ from{opacity:0;transform:perspective(1700px) rotateX(-6deg) translateY(-8px);} to{opacity:1;transform:none;} }
+}
+
+@page{ size:Letter portrait; margin:.32in; }
+@page land{ size:Letter landscape; margin:.32in; }
+@media print{
+  body{ background:#fff; }
+  .bar{ display:none !important; }
+  .deck{ display:block; padding:0; gap:0; zoom:1; }
+  .page{ display:flex !important; box-shadow:none; break-after:page; page-break-after:always; animation:none !important; }
+  .page.fold{ page:land; }
+  .page:last-child{ break-after:auto; page-break-after:auto; }
+}
+</style>
+
+<div class="deck" id="deck"></div>
+<nav class="bar" aria-label="Calendar navigation">
+  <button id="prev" aria-label="Previous page">&larr;</button>
+  <div class="dots" id="dots"></div>
+  <button id="next" aria-label="Next page">&rarr;</button>
+  <button id="print">Print all</button>
+</nav>
+
+<script>
+'use strict';
+const SVG657=/*__SVG657__*/;
+/*__ART__*/
+/*__SUBJ__*/
+/*__MONTHS__*/
+
+const MN=['January','February','March','April','May','June',
+          'July','August','September','October','November','December'];
+const DOW=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+/* A fine 45-degree dot screen, the way a supplier calendar came off press.
+   Artwork only - halftoned type is just blurry type. */
+function halftone(c,W,H){
+  c.save(); c.globalCompositeOperation='multiply';
+  for(let y=0;y<H+3.1;y+=3.1){
+    const odd=Math.round(y/3.1)%2;
+    for(let x=(odd?1.55:0);x<W+3.1;x+=3.1){
+      c.fillStyle='rgba(54,38,20,0.072)';
+      c.beginPath(); c.arc(x,y,0.7,0,7); c.fill();
+    }
+  }
+  c.globalCompositeOperation='screen';
+  c.fillStyle='rgba(255,96,40,0.022)'; c.fillRect(0.6,0,W,H);
+  c.fillStyle='rgba(40,130,255,0.018)'; c.fillRect(-0.6,0,W,H);
+  c.restore();
+}
+
+function monthGrid(y,m){
+  const first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate(),
+        prev=new Date(y,m,0).getDate(), cells=[];
+  for(let i=first-1;i>=0;i--) cells.push({n:prev-i,pad:true});
+  for(let d=1;d<=days;d++) cells.push({n:d,pad:false});
+  let t=1; while(cells.length%7) cells.push({n:t++,pad:true});
+  let h='<table class="cal"><thead><tr>'+DOW.map(d=>'<th>'+d+'</th>').join('')+'</tr></thead><tbody>';
+  for(let i=0;i<cells.length;i+=7)
+    h+='<tr>'+cells.slice(i,i+7).map((c,j)=>
+      '<td class="'+(c.pad?'pad':(j===0?'sun':''))+'">'+c.n+'</td>').join('')+'</tr>';
+  return h+'</tbody></table>';
+}
+
+const deck=document.getElementById('deck'), pages=[];
+const page=(cls,html)=>{ const s=document.createElement('section');
+  s.className='page'+(cls?' '+cls:''); s.innerHTML=html; deck.appendChild(s); pages.push(s); return s; };
+
+page('cover',
+  '<div class="plate"><canvas data-art="covershot"></canvas>'+
+    '<div class="cover-copy">'+
+      '<div><h1>FISHER<br><em>THE ACTUATOR</em><br>EDITION</h1>'+
+        '<div class="cover-sub">Twelve months &middot; Final control elements &middot; '+YEAR+'</div></div>'+
+      '<div style="display:flex;align-items:flex-end;justify-content:space-between;gap:20px">'+
+        '<div class="cover-foot">They move your process. The least you can do is look at them.</div>'+
+        '<div class="cover-year">'+YEAR+'</div></div>'+
+    '</div></div>');
+
+const monthPage = d =>
+  '<div class="plate"><canvas data-art="'+d.art+'" data-back="'+d.back+'"></canvas>'+
+    '<div class="mast">'+
+      '<div class="top"><div class="brand">FISHER<small>AN EMERSON BRAND</small></div>'+
+        '<div class="edition">The Actuator Edition<br>'+YEAR+'</div></div>'+
+      '<div class="bot"><div class="monthname">'+MN[d.m].toUpperCase()+'<span>'+YEAR+'</span></div>'+
+        '<div class="cap">'+d.cap+'</div></div>'+
+    '</div></div>'+
+  '<div class="lower">'+
+    '<div class="specs">'+
+      '<div class="model"><small>Miss '+MN[d.m]+'</small>'+d.model+'</div>'+
+      '<div class="sizeline">'+d.size+' &middot; '+d.sub+'</div>'+
+      '<div class="vitals"><dl>'+d.vitals.map(v=>'<dt>'+v[0]+'</dt><dd>'+v[1]+'</dd>').join('')+'</dl></div>'+
+      '<div class="likes"><p><b>Turn-ons</b>'+d.on+'</p><p><b>Turn-offs</b>'+d.off+'</p></div>'+
+      '<div class="figline">Drawn from '+d.fig+'</div>'+
+    '</div>'+
+    '<div class="gridwrap">'+monthGrid(YEAR,d.m)+
+      '<div class="imprint">Compliments of your Emerson representative</div>'+
+      '<div class="disclaim">Figures typical for the family &mdash; not a datasheet</div>'+
+    '</div></div>';
+
+MONTHS.slice(0,6).forEach(d=>page('',monthPage(d)));
+
+page('fold',
+  '<div class="fold-inner">'+
+    '<div class="fold-art"><span class="gatefold-mark"></span>'+SVG657+'</div>'+
+    '<div class="fold-copy">'+
+      '<div class="fold-tag">Centerfold &middot; pull-out</div>'+
+      '<h2>FISHER 657<span>Spring-and-diaphragm actuator, in section</span></h2>'+
+      '<p class="fold-lede">Everything the other eleven months only hint at. One '+
+        'diaphragm, one spring and a stem, opposing each other continuously for '+
+        'thirty years, so that a number on a screen somewhere stays where you put it.</p>'+
+      '<div class="parts">'+
+        ['Upper diaphragm casing','Diaphragm','Diaphragm plate',
+         'Lower diaphragm casing','Actuator spring','Spring seat',
+         'Spring adjustor','Actuator stem','Stem connector',
+         'Travel indicator disk','Indicator scale','Yoke']
+          .map((p,i)=>'<div><i>'+(i+1)+'</i>'+p+'</div>').join('')+
+      '</div>'+
+      '<div class="fold-note"><b>How it works</b>Instrument air into the upper '+'casing presses on the diaphragm. The diaphragm plate carries that force to '+'the stem, and the stem compresses the spring. Wherever the two balance is '+'where the valve sits. Change the pressure and the balance point moves; that '+'is the whole machine.</div>'+'<div class="fold-foot"><span>Section from the vault&rsquo;s own 657 model</span>'+
+        '<span>Emerson &middot; Fisher</span></div>'+
+    '</div>'+
+  '</div>');
+
+MONTHS.slice(6).forEach(d=>page('',monthPage(d)));
+
+/* ---- cover artwork: the line-up, in silhouette ---- */
+BACK.covershot = BACK.beach;
+SUBJ.covershot = (c,W,H)=>{
+  const base=H*0.86, sil='#13241A';
+  const foot=x=>{ c.save(); c.globalAlpha=.3; c.fillStyle='#000';
+    c.beginPath(); c.ellipse(x+6,base+4,60,8,0,0,7); c.fill(); c.restore(); };
+  foot(W*0.20); c.fillStyle=sil;                       // 657
+  c.fillRect(W*0.20-26,base-96,52,88);
+  c.fillRect(W*0.20-54,base-150,108,56);
+  c.beginPath(); c.moveTo(W*0.20-66,base-150);
+  c.bezierCurveTo(W*0.20-66,base-196,W*0.20+66,base-196,W*0.20+66,base-150);
+  c.closePath(); c.fill();
+  c.fillRect(W*0.20-76,base-154,152,10);
+  foot(W*0.43); c.fillStyle=sil;                       // ET
+  c.fillRect(W*0.43-64,base-60,128,44); c.fillRect(W*0.43-34,base-98,68,40);
+  c.fillRect(W*0.43-18,base-148,36,52); c.fillRect(W*0.43-26,base-154,52,10);
+  foot(W*0.63); c.fillStyle=sil;                       // 8560
+  c.fillRect(W*0.63-40,base-106,76,98);
+  c.fillRect(W*0.63-70,base-66,194,13);
+  foot(W*0.84); c.fillStyle=sil;                       // V150
+  c.fillRect(W*0.84-52,base-94,104,86);
+  c.beginPath(); c.arc(W*0.84,base-51,30,0,7); c.fill();
+  c.fillRect(W*0.84-20,base-114,168,12);
+  c.fillStyle='rgba(255,214,160,.24)'; c.fillRect(0,base,W,H-base);
+};
+
+/* ---- render ---- */
+function render(cv){
+  const box=cv.getBoundingClientRect();
+  let W=Math.round(box.width), H=Math.round(box.height);
+  if(!W||!H){ W=820; H=Math.round(820*62/85); }
+  const dpr=1.9;
+  cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+  const c=cv.getContext('2d'); c.setTransform(dpr,0,0,dpr,0,0);
+  const b=BACK[cv.dataset.back||cv.dataset.art], s=SUBJ[cv.dataset.art];
+  if(b) b(c,W,H);
+  if(s) s(c,W,H);
+  halftone(c,W,H);
+}
+/* Fourteen full-resolution canvases is about 130 MB of backing store, and
+   Chrome quietly drops them: fills become no-ops and readback comes out
+   transparent, so every page but the one you were looking at goes blank.
+   So only the visible sheet holds a bitmap. The rest are released to 1x1
+   and redrawn when you turn to them - and all of them are brought back
+   just long enough to print. */
+function release(cv){ cv.width=1; cv.height=1; cv.dataset.ok=''; }
+function ensure(p){ p.querySelectorAll('canvas').forEach(cv=>{
+  if(cv.dataset.ok!=='1'){ render(cv); cv.dataset.ok='1'; } }); }
+function renderAll(){            // print path: everything, briefly
+  pages.forEach(p=>{ const was=p.classList.contains('active');
+    p.style.display='flex'; p.querySelectorAll('canvas').forEach(cv=>{
+      render(cv); cv.dataset.ok='1'; });
+    if(!was) p.style.display=''; });
+}
+function releaseOthers(){
+  pages.forEach((p,n)=>{ if(n!==idx) p.querySelectorAll('canvas').forEach(release); });
+}
+
+/* ---- navigation ---- */
+let idx=0;
+const dots=document.getElementById('dots');
+pages.forEach((p,i)=>{
+  const b=document.createElement('i');
+  if(p.classList.contains('fold')) b.className='fold';
+  b.tabIndex=0; b.setAttribute('role','button');
+  b.setAttribute('aria-label', i===0?'Cover':(p.classList.contains('fold')?'Centerfold':'Page '+i));
+  b.addEventListener('click',()=>show(i));
+  b.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();show(i);} });
+  dots.appendChild(b);
+});
+function fit(){
+  const p=pages[idx], land=p&&p.classList.contains('fold');
+  const hPx=96*(land?8.5:11);
+  document.documentElement.style.setProperty('--fit',
+    Math.min(1,(innerHeight-112)/hPx).toFixed(4));
+}
+function show(i){
+  idx=(i+pages.length)%pages.length;
+  pages.forEach((p,n)=>p.classList.toggle('active',n===idx));
+  [...dots.children].forEach((d,n)=>d.classList.toggle('on',n===idx));
+  fit();
+  ensure(pages[idx]);
+  releaseOthers();
+}
+document.getElementById('prev').addEventListener('click',()=>show(idx-1));
+document.getElementById('next').addEventListener('click',()=>show(idx+1));
+document.getElementById('print').addEventListener('click',()=>window.print());
+addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight') show(idx+1); else if(e.key==='ArrowLeft') show(idx-1); });
+let tx=null;
+addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+addEventListener('touchend',e=>{ if(tx===null)return;
+  const dx=e.changedTouches[0].clientX-tx; tx=null;
+  if(Math.abs(dx)>52) show(idx+(dx<0?1:-1)); },{passive:true});
+
+show(0);
+/* The figures are real images, so nothing can be composited until they
+   have decoded. Wait for all of them once, then draw. */
+function figsReady(){
+  const srcs=[...new Set(Object.values(FIGS).map(f=>f.src))];
+  return Promise.all(srcs.map(s=>new Promise(res=>{
+    const im=loadFig(s);
+    if(im.complete&&im.naturalWidth) return res();
+    im.addEventListener('load',res,{once:true});
+    im.addEventListener('error',()=>{ console.warn('figure missing:',s); res(); },{once:true});
+  })));
+}
+const boot=()=>figsReady().then(()=>{ ensure(pages[idx]); releaseOthers(); });
+ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(boot);
+else addEventListener('load',boot);
+addEventListener('beforeprint',()=>{ renderAll(); });
+ addEventListener('afterprint',releaseOthers);
+let rt; addEventListener('resize',()=>{ fit(); clearTimeout(rt); rt=setTimeout(()=>{ pages[idx].querySelectorAll('canvas').forEach(release); ensure(pages[idx]); },220); });
+</script>
