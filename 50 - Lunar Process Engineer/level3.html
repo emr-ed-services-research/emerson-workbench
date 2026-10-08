@@ -212,8 +212,16 @@ function buildNet(){
 /* The fluid is the engine's Line, the same object levels 1 and 2 carry, so
    every marker in the game is the one square marker() draws. The dosing
    skid used to stamp its own fillRects in its own colours and sizes. */
+/* The bed branches leave the main and turn through a 90. Built as straight
+   segments they drove into the corner and turned on a point, so the markers
+   crossed the outside of a bend the metal had drawn as a curve. Handing the
+   same polyline to LPE.runSegments() fillets it off the radius piping()
+   uses, so the fluid goes round the elbow the way the pipe does. */
+let BRANCH_A=null, BRANCH_B=null;
 function buildFlow(){
   const I=LAY.inj, SP=LAY.split, G=NET;
+  BRANCH_A=[[SP.x,PIPE_Y],[SP.x,bedAY()],[LAY.bedA.x,bedAY()]];
+  BRANCH_B=[[SP.x,PIPE_Y],[SP.x,bedBY()],[LAY.bedB.x,bedBY()]];
   FLOW=new LPE.Line({
     r:R_MAIN,
     segments:[
@@ -221,13 +229,12 @@ function buildFlow(){
       {ax:I.x+I.w, ay:PIPE_Y, bx:G.small?G.a0:G.x0, by:PIPE_Y, r:R_MAIN},
       {ax:G.small?G.a0:G.x0, ay:PIPE_Y, bx:G.small?G.a1:G.x1, by:PIPE_Y, r:G.rr},
       {ax:G.small?G.a1:G.x1, ay:PIPE_Y, bx:SP.x, by:PIPE_Y, r:R_MAIN},
-      {ax:SP.x, ay:PIPE_Y, bx:SP.x, by:bedAY(), r:R_BED},
-      {ax:SP.x, ay:bedAY(), bx:LAY.bedA.x, by:bedAY(), r:R_BED},
-      {ax:SP.x, ay:PIPE_Y, bx:SP.x, by:bedBY(), r:R_BED},
-      {ax:SP.x, ay:bedBY(), bx:LAY.bedB.x, by:bedBY(), r:R_BED},
-    ],
+    ].concat(LPE.runSegments(BRANCH_A, R_BED))
+     .concat(LPE.runSegments(BRANCH_B, R_BED)),
   });
+  NBR = LPE.runSegments(BRANCH_A, R_BED).length;   // where the branches start
 }
+let NBR=0;
 
 function syncNet(){
   const k=netKey();
@@ -242,7 +249,7 @@ function stepFlow(dt,s){
   syncNet();
   const live=s.q>0.004, f=live?Math.min(1,s.v/3):0;
   FLOW.regime = s.regime==='still' ? 'laminar' : s.regime;
-  for(let i=0;i<FLOW.segs.length;i++) FLOW.set(i,{flow: i>=4 ? f*0.5 : f});   // 4..7 are the two bed branches
+  for(let i=0;i<FLOW.segs.length;i++) FLOW.set(i,{flow: i>=4 ? f*0.5 : f});   // 0-3 feed, the rest branches
   FLOW.update(dt);
 }
 
@@ -335,13 +342,35 @@ function drawSkid(g,s){
     }
 
     /* 3. past the split, each bed gets what its own tap drew. Unmixed, the
-       near bed is taking the rich side of the rope and the far bed is not. */
-    [[bedAY(), s.ecA],[bedBY(), s.ecB]].forEach(([by,ec])=>{
-      const n=Math.max(0,Math.round(6*ec/EC_T));
+       near bed is taking the rich side of the rope and the far bed is not.
+
+       Walked along the whole branch PATH, riser included. Drawing only the
+       horizontal leg left the two vertical runs out of the split empty,
+       so the concentrate appeared to jump the elbow. */
+    const along=(pts,u)=>{
+      const seg=[]; let L=0;
+      for(let i=1;i<pts.length;i++){
+        const d=Math.hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1]);
+        seg.push(d); L+=d;
+      }
+      let d=((u%1)+1)%1*L;
+      for(let i=0;i<seg.length;i++){
+        if(d<=seg[i] || i===seg.length-1){
+          const f=seg[i]?Math.min(1,d/seg[i]):0;
+          const ax=pts[i][0], ay=pts[i][1], bx=pts[i+1][0], by=pts[i+1][1];
+          const ux=(bx-ax)/(seg[i]||1), uy=(by-ay)/(seg[i]||1);
+          return [ax+(bx-ax)*f, ay+(by-ay)*f, -uy, ux];   // point + across-pipe normal
+        }
+        d-=seg[i];
+      }
+    };
+    [[BRANCH_A, s.ecA],[BRANCH_B, s.ecB]].forEach(([pts,ec])=>{
+      const path=LPE.runPoly(pts, R_BED);       // the same bend the metal has
+      const n=Math.max(0,Math.round(9*ec/EC_T));
       for(let i=0;i<n;i++){
-        const bx=LAY.split.x+8+((i*((LAY.bedA.x-LAY.split.x-8)/6) + t*s.v*40)
-                 %(LAY.bedA.x-LAY.split.x-8));
-        dot(bx, by+(Math.random()*2-1)*R_BED*0.7);
+        const [px,py,nx,ny]=along(path, i/n + t*s.v*0.22);
+        const j=(Math.random()*2-1)*R_BED*0.66;
+        dot(px+nx*j, py+ny*j);
       }
     });
   }

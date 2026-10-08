@@ -126,13 +126,12 @@ function buildNet(){
        is a collar pair on the run with its body drawn under the rail. */
     fittings:[{x:LAY.pen.x+30,y:y,r:R_HDR,kind:'union'}],
   });
+  /* Same polyline as the metal, filleted the same way, so the mist feed
+     actually goes round the elbow instead of cutting the corner. */
   FLOW=new LPE.Line({
     r:R_HDR,
-    segments:[
-      {ax:LAY.pen.x+12, ay:y,  bx:LAY.drop.x, by:y,  r:R_HDR},
-      {ax:LAY.drop.x, ay:y,  bx:LAY.drop.x, by:ry, r:R_HDR},
-      {ax:LAY.drop.x, ay:ry, bx:D.x+D.w-12, by:ry, r:R_HDR},
-    ],
+    segments:LPE.runSegments([[LAY.pen.x+12,y],[LAY.drop.x,y],
+                              [LAY.drop.x,ry],[D.x+D.w-12,ry]], R_HDR),
   });
 }
 

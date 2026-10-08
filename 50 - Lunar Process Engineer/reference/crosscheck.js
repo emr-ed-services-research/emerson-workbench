@@ -208,7 +208,7 @@ ck('how much has blended depends on where you are in the run',
   /mixAt=px=> px<=x0 \? 0 : px>=x1 \? s\.mix : s\.mix\*\(px-x0\)\/\(x1-x0\)/.test(l3),
   'ramped across the spool, not switched at a line');
 ck('each bed branch carries what its own tap drew',
-  /n=Math\.max\(0,Math\.round\(6\*ec\/EC_T\)\)/.test(l3),
+  /n=Math\.max\(0,Math\.round\(9\*ec\/EC_T\)\)/.test(l3),
   'marker count tracks that bed EC');
 ck('the slow flag separates the two solves, not both of them',
   (DUTY3 / 448.831 / BORES['3/4'][1]) < 1.0 && (DUTY3 / 448.831 / BORES['1/4'][1]) >= 1.0,

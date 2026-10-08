@@ -112,6 +112,13 @@ canvas.rig:focus-visible{outline:2px solid var(--amber);outline-offset:2px;}
   text-shadow:0 0 10px rgba(57,255,106,.38);}
 .tech-sub{color:var(--amber);font-size:17px;letter-spacing:.1em;}
 .hint{color:var(--metal);font-size:15px;letter-spacing:.07em;}
+/* The brief card advances on this and only this, so it has to read as a
+   control rather than as a caption - same language as the guide strip's
+   continue button. */
+.go-hint{display:inline-block;border:1px solid var(--amber);color:var(--amber);
+  font-family:'VT323',monospace;font-size:19px;letter-spacing:.09em;
+  padding:3px 20px;cursor:pointer;}
+.go-hint:hover{background:rgba(255,182,39,.14);}
 .wrap.pending{display:none;}
 
 /* ---- game chrome: boot, title, level select ----
@@ -951,6 +958,65 @@ function pipes(runs){
   };
 }
 /* The pipe the water runs in, drawn to the one shared convention. */
+/* ---------------- a run, as the fluid sees it ----------------
+   piping() fillets every corner with arcTo at a centreline radius of
+   3 x the bore radius, which is the long-radius convention. A Line built
+   out of straight segments alone does not know that: it drives into the
+   corner, turns on a point, and the markers run out through the inside
+   wall of a bend the metal has drawn as a curve. Levels 3 and 4 both
+   shipped doing exactly that - nothing curved anywhere.
+
+   This turns one polyline into the segment list a Line wants: straights
+   shortened by the fillet, with an arc between them, off the SAME radius
+   piping() uses. Give both the same pts and they agree by construction. */
+function runSegments(pts,r,opt){
+  opt=opt||{};
+  const want=opt.bend===undefined?3*r:opt.bend, out=[];
+  const len=(a,b)=>Math.hypot(b[0]-a[0],b[1]-a[1]);
+  const unit=(a,b)=>{ const L=len(a,b)||1; return [(b[0]-a[0])/L,(b[1]-a[1])/L]; };
+  let from=pts[0];
+  for(let i=1;i<pts.length-1;i++){
+    const P=pts[i], N=pts[i+1];
+    const [ux,uy]=unit(from,P), [vx,vy]=unit(P,N);
+    if(Math.abs(ux*vy-uy*vx)<1e-6) continue;             // straight through
+    /* Clamp so a fillet can never eat more leg than there is. The outgoing
+       leg keeps half back when another corner is coming. */
+    const more=i<pts.length-2;
+    const R=Math.min(want, len(from,P)*0.98, len(P,N)*(more?0.49:0.98));
+    const A=[P[0]-ux*R, P[1]-uy*R], Bp=[P[0]+vx*R, P[1]+vy*R];
+    const C=[A[0]+vx*R, A[1]+vy*R];
+    if(len(from,A)>0.5) out.push({ax:from[0],ay:from[1],bx:A[0],by:A[1],r});
+    const a0=Math.atan2(A[1]-C[1],A[0]-C[0]);
+    let d=Math.atan2(Bp[1]-C[1],Bp[0]-C[0])-a0;
+    while(d> Math.PI) d-=2*Math.PI;                      // always the short way
+    while(d<-Math.PI) d+=2*Math.PI;
+    out.push({arc:{cx:C[0],cy:C[1],R,a0,a1:a0+d}, r});
+    from=Bp;
+  }
+  const e=pts[pts.length-1];
+  if(len(from,e)>0.5) out.push({ax:from[0],ay:from[1],bx:e[0],by:e[1],r});
+  return out;
+}
+
+/* The same filleted path as a dense polyline, for anything that has to walk
+   it by hand rather than hand it to a Line - level 3 marches the dosed
+   stream along one of these so the concentrate rounds the bends too. */
+function runPoly(pts,r,opt){
+  const out=[];
+  runSegments(pts,r,opt).forEach(sg=>{
+    if(sg.arc){
+      const {cx,cy,R,a0,a1}=sg.arc, n=8;
+      for(let i=0;i<=n;i++){
+        const a=a0+(a1-a0)*i/n;
+        out.push([cx+Math.cos(a)*R, cy+Math.sin(a)*R]);
+      }
+    } else {
+      out.push([sg.ax,sg.ay]); out.push([sg.bx,sg.by]);
+    }
+  });
+  return out.filter((pt,i)=> i===0 || Math.hypot(pt[0]-out[i-1][0],pt[1]-out[i-1][1])>0.01);
+}
+
 function pipeRun(g,x0,x1,y,r){
   g.fillStyle=P.light; g.fillRect(x0,y-r-6,x1-x0,6);
   g.fillStyle=P.mid;   g.fillRect(x0,y+r,x1-x0,6);
@@ -1227,7 +1293,8 @@ function intro(beats,onDone){
   if(!beats||!beats.length){ onDone(); return null; }
   const els=beats.map((b,i)=>{
     const d=document.createElement('div'); d.className='beat';
-    const hint='<div class="hint">'+(i<beats.length-1?'click or press ENTER &rarr;':'begin &rarr;')+'</div>';
+    const hint='<div class="hint"><span class="go-hint">'+
+      (i<beats.length-1?'continue &rarr;':'begin &rarr;')+'</span></div>';
     if(b.kind==='comms')
       d.innerHTML='<div class="alert-box"><div class="alert-tag">'+b.tag+
         '</div><div class="alert-text">'+b.text+'</div></div>'+hint;
@@ -1249,9 +1316,13 @@ function intro(beats,onDone){
     else els[n].classList.add('show');
   }
   const key=e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); next(); } };
+  /* The card used to advance on a click anywhere on it, which on a full
+     screen of briefing text is indistinguishable from "clicked at all".
+     The control is the control. */
+  const btns=()=>els.map(e=>e.querySelector('.go-hint')).filter(Boolean);
   function cleanup(){ window.removeEventListener('keydown',key);
-    els.forEach(e=>e.removeEventListener('click',next)); }
-  els.forEach(e=>e.addEventListener('click',next));
+    btns().forEach(b=>b.removeEventListener('click',next)); }
+  btns().forEach(b=>b.addEventListener('click',next));
   window.addEventListener('keydown',key);
   return {next};
 }
@@ -1577,9 +1648,18 @@ function mount(o){
       const go=e=>{
         if(until && !until()) return;            // nothing to continue from yet
         if(e.type==='keydown' && e.key!=='Enter' && e.key!==' ') return;
-        /* The click that finishes the drag which opened this lesson is not
-           the player asking to move on - they have not read a word yet. */
-        if(e.type==='click' && lastDownAt<openedAt) return;
+        if(e.type==='click'){
+          /* Only the control advances. This used to listen on the whole
+             shell, so any click anywhere - opening a valve, picking a
+             spare, missing a drag - ate the lesson you had not read yet.
+             The hint has looked like a button the whole time; now it is
+             the only thing that behaves like one. ENTER and SPACE still
+             work, for anyone who would rather not go back to the mouse. */
+          if(!(e.target.closest && e.target.closest('.beat-hint'))) return;
+          /* And the click that finishes the drag which OPENED this lesson
+             is not the player asking to move on either. */
+          if(lastDownAt<openedAt) return;
+        }
         e.preventDefault();
         drop();
         S._holding=false; if(then) then();
@@ -1733,7 +1813,8 @@ function mount(o){
   return S;
 }
 
-return {palette:P, art, Line, Cutaway, pipeRun, penetration, valveBody, handWheel, gauge,
+return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
+        penetration, valveBody, handWheel, gauge,
         piping, pipes, valveShell, valveTrim, WHEEL_SWEEP, audio, intro, mount, boot, title,
         get current(){ return LPE_CURRENT; }};
 })();
@@ -2012,13 +2093,12 @@ function buildNet(){
        is a collar pair on the run with its body drawn under the rail. */
     fittings:[{x:LAY.pen.x+30,y:y,r:R_HDR,kind:'union'}],
   });
+  /* Same polyline as the metal, filleted the same way, so the mist feed
+     actually goes round the elbow instead of cutting the corner. */
   FLOW=new LPE.Line({
     r:R_HDR,
-    segments:[
-      {ax:LAY.pen.x+12, ay:y,  bx:LAY.drop.x, by:y,  r:R_HDR},
-      {ax:LAY.drop.x, ay:y,  bx:LAY.drop.x, by:ry, r:R_HDR},
-      {ax:LAY.drop.x, ay:ry, bx:D.x+D.w-12, by:ry, r:R_HDR},
-    ],
+    segments:LPE.runSegments([[LAY.pen.x+12,y],[LAY.drop.x,y],
+                              [LAY.drop.x,ry],[D.x+D.w-12,ry]], R_HDR),
   });
 }
 

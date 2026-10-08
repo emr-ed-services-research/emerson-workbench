@@ -799,6 +799,33 @@ check('fluid: both views carry fluid state', carries.length === 2,
     'chamber cannot close the rail bore');
 }
 
+/* ------------------------------------------------------------
+   N+1. DOES A STRAY CLICK EAT THE LESSON?
+
+   Both holds listened for a click on the whole layer, so operating the
+   rig - opening a valve, picking a spare, finishing a drag - dismissed
+   the lesson you had not read yet. The hint has always been drawn as a
+   button; it has to be the only thing that acts like one.
+   ------------------------------------------------------------ */
+{
+  const eng = fs.readFileSync('engine.js', 'utf8');
+  const css = fs.readFileSync('engine.css', 'utf8');
+  check('a lesson beat advances only on its own control',
+    /e\.target\.closest\('\.beat-hint'\)/.test(eng),
+    'click gated on .beat-hint');
+  check('a brief card advances only on its own control',
+    /querySelector\('\.go-hint'\)/.test(eng) &&
+    !/els\.forEach\(e=>e\.addEventListener\('click',next\)\)/.test(eng),
+    'click gated on .go-hint');
+  check('both controls are drawn as controls',
+    /\.beat-hint\{[^}]*cursor:pointer/.test(css) && /\.go-hint\{[^}]*cursor:pointer/.test(css),
+    'bordered, amber, pointer');
+  check('the keyboard still advances both',
+    /e\.key!=='Enter' && e\.key!==' '/.test(eng) &&
+    /e\.key==='Enter'\|\|e\.key===' '/.test(eng),
+    'ENTER and SPACE');
+}
+
 const pad = Math.max(...results.map(r => r.name.length));
 console.log('');
 for (const r of results)
