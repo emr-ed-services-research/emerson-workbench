@@ -5267,9 +5267,16 @@ function solve(){
   const spread = q>0.004 ? (1-mix)*SPREAD : 0;
   const ecA = q>0.004 ? EC_T*(1+spread) : 0;
   const ecB = q>0.004 ? EC_T*(1-spread) : 0;
-  /* Velocity is a separate verdict from mixing. A mixer leaves the run
-     oversized, and the level is not allowed to pretend otherwise. */
-  const slow = q>0.004 && v < 2.0;
+  /* Velocity is a separate verdict from mixing: a mixer leaves the run
+     oversized and the level is not allowed to pretend otherwise.
+
+     The flag trips at 1.0 ft/s, not at the bottom of the 2-8 ft/s design
+     band. 2.0 flagged the 1/4 spool at 1.54 - the level's own winning
+     answer - as if it were deficient, which is the wrong thing to tell
+     someone who just got it right. 1.54 is reasonable for a small feed
+     branch; 0.30 is where you start worrying about what settles out of a
+     line that slow. The band still gets named in the debrief. */
+  const slow = q>0.004 && v < 1.0;
   return { q, v, re, mix, ecA, ecB, r, slow,
            regime: q<=0.004 ? 'still' : FL.regime(re),
            inBand: ecA>=EC_LO && ecA<=EC_HI && ecB>=EC_LO && ecB<=EC_HI,
@@ -5384,7 +5391,7 @@ function stepFlow(dt,s){
 }
 
 function drawSkid(g,s){
-  const T=LAY.tank, I=LAY.inj, M=LAY.mix;
+  const T=LAY.tank, I=LAY.inj, M=LAY.mix, injX=I.x+I.w/2;
   syncNet();
 
   // stock tank
@@ -5420,24 +5427,67 @@ function drawSkid(g,s){
   g.fillText('1:100',I.x+I.w/2,I.y+I.h/2+3);
   g.textAlign='left';
 
-  /* The concentrate ribbon. This is the one thing the level draws itself,
-     because it is not the carrier fluid - it is the dosed stream, and
-     whether it has blended INTO the carrier is the entire puzzle. It rides
-     the same square marker shape and the same spacing as every other fluid
-     in the game; only the hue says "this is the concentrate". */
+  /* The concentrate. This is the one fluid the level draws itself, because
+     it is not the carrier - it is the dosed stream, and whether it has
+     blended INTO the carrier is the entire puzzle. It rides the same square
+     marker shape and the same size as every other fluid in the game; only
+     the hue says "this is the concentrate".
+
+     It used to be drawn only inside the mixing run, which meant the thing
+     the skid exists to do - injecting - was never shown. Nothing came down
+     the suction line and nothing appeared between the injector and the
+     spool, so the concentrate simply materialised in the middle of the
+     pipe. It is now drawn where it actually goes: down out of the stock
+     tank, into the injector, and then the whole way along the feed. */
   if(live){
-    const t=performance.now()*0.001, rr=NET.rr;
-    const x0=NET.small?NET.a0:NET.x0, x1=NET.small?NET.a1:NET.x1;
-    for(let i=0;i<34;i++){
-      const px=x0+((i*29 + t*s.v*52)%(x1-x0));
+    const t=performance.now()*0.001;
+    const CONC='rgba(126,196,122,0.9)';
+    const dot=(x,y)=>{ g.fillStyle=CONC; g.fillRect(x-1.2,y-1.2,2.4,2.4); };
+
+    /* 1. down the suction, out of the tank into the injector. At 1:100 this
+       is a trickle beside the carrier, and it is drawn as one. */
+    const sy0=T.y+T.h, sy1=PIPE_Y-I.h/2, sLen=sy1-sy0;
+    for(let i=0;i<5;i++){
+      const py=sy0+((i*(sLen/5) + t*26)%sLen);
+      dot(injX, py);
+    }
+
+    /* 2. along the feed, from the injector outlet to the split. The bore it
+       is confined by changes with the fitted spool, and so does how much of
+       it has blended by the time it gets to any given point. */
+    const xi=I.x+I.w, xsp=LAY.split.x;
+    const x0=NET.x0, x1=NET.x1, a0=NET.a0, a1=NET.a1, rr=NET.rr;
+    const radAt=px=>{
+      if(!NET.small || px<=x0 || px>=x1) return R_MAIN;
+      if(px<a0) return R_MAIN+(rr-R_MAIN)*(px-x0)/(a0-x0);
+      if(px>a1) return rr+(R_MAIN-rr)*(px-a1)/(x1-a1);
+      return rr;
+    };
+    /* Blending happens ACROSS the run, not at a line. Before the spool the
+       stock is still a rope of neat concentrate; by the far flange it has
+       whatever mixedness the run achieved. */
+    const mixAt=px=> px<=x0 ? 0 : px>=x1 ? s.mix : s.mix*(px-x0)/(x1-x0);
+    const span=xsp-xi;
+    for(let i=0;i<40;i++){
+      const px=xi+((i*(span/40) + t*s.v*52)%span);
+      const m=mixAt(px);
       /* laminar: the concentrate stays a band in the upper half and the
          water under it never gets any. turbulent: it is everywhere. */
-      const lane = s.mix>=1 ? (Math.random()*2-1)
-                 : (Math.random()*2-1)*s.mix + (1-s.mix)*(-0.45);
-      const py=PIPE_Y+lane*rr*0.82;
-      g.fillStyle='rgba(126,196,122,0.9)';
-      g.fillRect(px-1.2,py-1.2,2.4,2.4);        // marker()'s square, at SG 1.0 size
+      const lane = m>=1 ? (Math.random()*2-1)
+                 : (Math.random()*2-1)*m + (1-m)*(-0.45);
+      dot(px, PIPE_Y+lane*radAt(px)*0.82);
     }
+
+    /* 3. past the split, each bed gets what its own tap drew. Unmixed, the
+       near bed is taking the rich side of the rope and the far bed is not. */
+    [[bedAY(), s.ecA],[bedBY(), s.ecB]].forEach(([by,ec])=>{
+      const n=Math.max(0,Math.round(6*ec/EC_T));
+      for(let i=0;i<n;i++){
+        const bx=LAY.split.x+8+((i*((LAY.bedA.x-LAY.split.x-8)/6) + t*s.v*40)
+                 %(LAY.bedA.x-LAY.split.x-8));
+        dot(bx, by+(Math.random()*2-1)*R_BED*0.7);
+      }
+    });
   }
 
   /* If the player fitted a mixer they should be able to SEE what is in the

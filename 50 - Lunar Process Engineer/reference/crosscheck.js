@@ -191,9 +191,28 @@ ck('the mixer blends without turbulence',
   'mix = 1 at Re ' + Math.round(reL3(DUTY3, '3/4')));
 ck('the mixer leaves the run oversized, and the panel shows it',
   near(DUTY3 / 448.831 / BORES['3/4'][1], 0.30, 0.01) &&
-  /const slow = q>0\.004 && v < 2\.0/.test(l3) &&
+  /const slow = q>0\.004 && v < 1\.0/.test(l3) &&
   /'VELOCITY'/.test(l3),
   '0.30 ft/s, flagged by s.slow and on the readout');
+/* The skid exists to INJECT, and for a while it never showed it: the
+   concentrate was drawn only inside the mixing run, so it materialised in
+   the middle of the pipe with nothing coming down the suction. */
+ck('concentrate is drawn down the suction out of the tank',
+  /down the suction, out of the tank/.test(l3) && /dot\(injX, py\)/.test(l3),
+  'markers on the stock line');
+ck('concentrate runs the whole feed, not just the spool',
+  /const xi=I\.x\+I\.w, xsp=LAY\.split\.x/.test(l3) &&
+  /px=xi\+\(\(i\*\(span\/40\)/.test(l3),
+  'injector outlet -> split');
+ck('how much has blended depends on where you are in the run',
+  /mixAt=px=> px<=x0 \? 0 : px>=x1 \? s\.mix : s\.mix\*\(px-x0\)\/\(x1-x0\)/.test(l3),
+  'ramped across the spool, not switched at a line');
+ck('each bed branch carries what its own tap drew',
+  /n=Math\.max\(0,Math\.round\(6\*ec\/EC_T\)\)/.test(l3),
+  'marker count tracks that bed EC');
+ck('the slow flag separates the two solves, not both of them',
+  (DUTY3 / 448.831 / BORES['3/4'][1]) < 1.0 && (DUTY3 / 448.831 / BORES['1/4'][1]) >= 1.0,
+  'mixer 0.30 flagged, 1/4 spool 1.54 clear');
 ck('the mixer debrief names what it did not fix',
   /size too big/.test(l3flat) && /2-8 band/.test(l3flat),
   'velocity called out in the mixer lesson');
