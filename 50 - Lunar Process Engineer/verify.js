@@ -428,7 +428,7 @@ for (const f of ['level1.html', 'level2.html']) {
        drawn at hardcoded coordinates over the flow lever, because the
        check validated a value nothing used. */
     const usesTable = ['LAY.glass', 'LAY.meter', 'LAY.flowS', 'LAY.tempS',
-                       'LAY.fsw', 'LAY.lamp', 'LAY.mug', 'LAY.book', 'LAY.rule']
+                       'LAY.fsw', 'LAY.lamp', 'LAY.pic', 'LAY.book', 'LAY.rule']
       .filter(k => !tsrc.includes(k));
     check('the drawing code reads the layout table', usesTable.length === 0,
       usesTable.length ? 'not referenced: ' + usesTable.join(', ') : 'all keys referenced');
