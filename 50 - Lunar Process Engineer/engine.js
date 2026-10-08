@@ -1424,8 +1424,12 @@ function mount(o){
        the entire point of the beat with nothing having happened yet. While
        the predicate is unmet the control reads WATCH and does not accept a
        click - not forced waiting so much as the lesson still presenting. */
+    /* Returns true if the beat took. It refuses while another is already
+       on screen, and a caller that advances its own step counter has to
+       know that, or the refused lesson vanishes without a trace - which
+       is exactly how level 4 lost the beat that explained cavitation. */
     beat(lesson,then,until){
-      if(S._holding) return;
+      if(S._holding) return false;
       S._holding=true;
       const hint=()=>'<span class="beat-hint'+(until&&!until()?' waiting':'')+'">'+
         (until&&!until()?'watch':'continue &rarr;')+'</span>';
@@ -1468,6 +1472,7 @@ function mount(o){
       S._holdDrop=drop;
       window.addEventListener('keydown',go);
       root.addEventListener('click',go);
+      return true;
     },
     get holding(){ return !!S._holding; },
     get done(){ return !!S._done; },

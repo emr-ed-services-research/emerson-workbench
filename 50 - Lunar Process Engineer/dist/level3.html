@@ -1626,8 +1626,12 @@ function mount(o){
        the entire point of the beat with nothing having happened yet. While
        the predicate is unmet the control reads WATCH and does not accept a
        click - not forced waiting so much as the lesson still presenting. */
+    /* Returns true if the beat took. It refuses while another is already
+       on screen, and a caller that advances its own step counter has to
+       know that, or the refused lesson vanishes without a trace - which
+       is exactly how level 4 lost the beat that explained cavitation. */
     beat(lesson,then,until){
-      if(S._holding) return;
+      if(S._holding) return false;
       S._holding=true;
       const hint=()=>'<span class="beat-hint'+(until&&!until()?' waiting':'')+'">'+
         (until&&!until()?'watch':'continue &rarr;')+'</span>';
@@ -1670,6 +1674,7 @@ function mount(o){
       S._holdDrop=drop;
       window.addEventListener('keydown',go);
       root.addEventListener('click',go);
+      return true;
     },
     get holding(){ return !!S._holding; },
     get done(){ return !!S._done; },
@@ -2531,15 +2536,24 @@ function step(dt){
   const s=solve();
   stepFlow(dt,s);
   S.turn += (S.feed - S.turn)*Math.min(1,dt*6);
-  if(!SH.done && !S.closing && STEPS[si]){
+  /* !SH.holding matters, and its absence cost level 4 its whole middle
+     lesson. While a beat is on screen the sim keeps running, so the NEXT
+     step's ok() is already being polled: its watch timer runs down behind
+     the text the player is still reading, and the moment it expires
+     SH.beat() is called mid-hold, hits `if(S._holding) return`, and is
+     dropped - but si has already advanced, so that lesson is gone and the
+     level jumps straight to the step after it. Levels 1 and 2 guard this;
+     levels 3 and 4 did not. */
+  if(!SH.done && !S.closing && !SH.holding && STEPS[si]){
     const st=STEPS[si];
     if(st.ok(s)){
       if(st.watch){ closeT+=dt; if(closeT<st.watch) return; }
       closeT=0;
       const lesson = typeof st.lesson==='function' ? st.lesson(s) : st.lesson;
-      si++;
-      if(si>=STEPS.length){ SH.beat(lesson,()=>closeOut(0)); }
-      else SH.beat(lesson, say);
+      /* Advance only if the beat actually took. Belt and braces behind
+         the guard above: a lesson must never be lost in silence. */
+      const last=si+1>=STEPS.length;
+      if(SH.beat(lesson, last?()=>closeOut(0):say)) si++;
     } else closeT=0;
   }
 }

@@ -317,7 +317,7 @@ for (const f of ['level1.html', 'level2.html']) {
      gone, because a second copy drifting back in is the actual risk. */
   const l0 = fs.readFileSync('level0.html', 'utf8');
   check('level 0 carries no second copy of the bench',
-    !/const COURSE=\[/.test(l0) && !/function drawBench/.test(l0) && !/act===1/.test(l0),
+    !/const COURSE=\[/.test(l0) && !/function drawBench/.test(l0) && !/\bact===1\b/.test(l0),
     'one act, the supply panel');
   check('level 0 teaches the rungs its closing lines lean on',
     /teach:\[[^\]]*'velocity-profile'[^\]]*\]/.test(l0),
@@ -824,6 +824,114 @@ check('fluid: both views carry fluid state', carries.length === 2,
     /e\.key!=='Enter' && e\.key!==' '/.test(eng) &&
     /e\.key==='Enter'\|\|e\.key===' '/.test(eng),
     'ENTER and SPACE');
+}
+
+/* ------------------------------------------------------------
+   N+2. CAN A LEVEL LOSE A LESSON?
+
+   While a beat is on screen the simulation keeps running, so the NEXT
+   step's ok() is still being polled and its watch timer still running
+   down - behind text the player has not finished reading. When it
+   expires, SH.beat() is called mid-hold, refuses, and is dropped. If
+   the level has already advanced its step counter, that lesson is gone
+   and play jumps to the step after it.
+
+   Level 4 did exactly that: steps 1 and 2 share an ok(), so it ALWAYS
+   skipped the beat that explains cavitation - the point of the level.
+   Found by playing it; nothing in the build had noticed, because every
+   check only ever asked whether the level loaded.
+   ------------------------------------------------------------ */
+{
+  const LEVELS = ['level0.html','level1.html','level2.html',
+                  'level3.html','level4.html'];
+  const unguarded = [], blind = [];
+  for (const f of LEVELS) {
+    /* Comments stripped FIRST. Twice now a check has been satisfied by
+       the comment explaining the bug it was written to catch. */
+    const src = fs.readFileSync(f, 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
+    /* Anchor on the POLL ITSELF - the ok() call - not on the file and not
+       on the first mention of STEPS. Searching the whole source was
+       satisfied by say()'s own guard, which every level has, so it passed
+       with the loop wide open; anchoring on the first STEPS[...] instead
+       landed on a declaration and failed two levels that are correct. */
+    const m = /(?:STEPS\[(?:si|step)\]|\bst)\.ok\(/.exec(src);
+    if (!m) continue;                                     // no stepped script
+    const before = src.slice(Math.max(0, m.index - 300), m.index);
+    if (!/SH\.holding/.test(before)) unguarded.push(f);
+    /* and if it keeps its own counter, it may only advance on a beat
+       that was actually accepted */
+    if (/\bsi\+\+/.test(src) && !/if\(SH\.beat\([\s\S]{0,80}?\)\) si\+\+/.test(src))
+      blind.push(f);
+  }
+  check('no level polls its next step while a lesson is held',
+    unguarded.length === 0,
+    unguarded.length ? unguarded.join(', ') : LEVELS.length + ' levels guarded');
+  check('no level advances past a beat that was refused',
+    blind.length === 0,
+    blind.length ? blind.join(', ') : 'si++ gated on SH.beat()');
+  check('beat() reports whether it took',
+    /if\(S\._holding\) return false;/.test(fs.readFileSync('engine.js','utf8')),
+    'returns false when refused');
+}
+
+/* ------------------------------------------------------------
+   N+3. IS ANY CHECK SILENTLY DEAD?
+
+   Three times now a check has been disabled by a control character
+   written into its own regex: NUL twice, and 0x08 twice more in this
+   file - "\b" means BACKSPACE in a non-raw string, not a word
+   boundary. A regex carrying a literal 0x08 can never match, so the
+   check it belongs to is always-true and the thing it guards is
+   unguarded. One of them was the check proving level 0 had been cut
+   down to a single act.
+
+   Nothing catches this by reading the output: a dead check prints the
+   same "ok" as a live one. So the files are scanned for the bytes.
+   ------------------------------------------------------------ */
+{
+  const FILES = ['verify.js','check-fit.js','build.js','engine.js','engine.css',
+                 'fluids.js','sizing.js','reference/crosscheck.js',
+                 'level0.html','level1.html','level2.html','level3.html',
+                 'level4.html','trainer.html'];
+  const dirty = [];
+  for (const f of FILES) {
+    const b = fs.readFileSync(f);
+    for (let i = 0; i < b.length; i++) {
+      const c = b[i];
+      /* tab, LF and CR are the only control bytes any of these may hold */
+      if (c < 0x20 && c !== 0x09 && c !== 0x0a && c !== 0x0d) {
+        dirty.push(f + ' 0x' + c.toString(16).padStart(2,'0') +
+                   ' at byte ' + i);
+        break;
+      }
+    }
+  }
+  check('no source carries a stray control byte', dirty.length === 0,
+    dirty.length ? dirty.join('; ') : FILES.length + ' files clean');
+}
+
+/* ------------------------------------------------------------
+   N+4. DOES A BENCH SEGMENT START FROM A KNOWN BENCH?
+
+   LPE.trainer() resets the bench when a level calls it, but
+   nextSegment() did not, so the second and later segments of a queue
+   inherited whatever the last one left set. Any first step whose
+   condition was ALREADY satisfied then fired on frame one and its
+   instruction was never shown: running flow -> bore left the valve at
+   82%, so "Open the valve into the marked band" was skipped outright
+   and the player was dropped into a lesson about something they had
+   not done. Reported as pipe bore being stuck.
+   ------------------------------------------------------------ */
+{
+  const tr = fs.readFileSync('trainer.html', 'utf8');
+  const fn = tr.slice(tr.indexOf('function nextSegment()'),
+                      tr.indexOf('function nextStepsOrSegment()'));
+  const keys = ['flow','temp','fluid','section','b1','b2'];
+  const missing = keys.filter(k => !new RegExp(k + '\s*:').test(fn));
+  check('each bench segment starts from a reset bench',
+    fn.indexOf('Object.assign(B,') >= 0 && missing.length === 0,
+    missing.length ? 'not reset: ' + missing.join(', ') : keys.length + ' fields reset');
 }
 
 const pad = Math.max(...results.map(r => r.name.length));
