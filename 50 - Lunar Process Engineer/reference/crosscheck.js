@@ -181,12 +181,34 @@ const passes = Object.keys(BORES).filter(k => {
 ck('exactly one mixing run solves it at the duty', passes.length === 1 && passes[0] === '1/4',
   'passes: ' + (passes.join(', ') || 'NONE'));
 
+/* The static mixer is the second way through, and it has to be a real
+   alternative rather than a duplicate of the first: it must clear the beds
+   WITHOUT fixing the velocity, which is the whole of the trade. */
+const l3mix = /\{k:'mix',[^}]*mixer:true\}/.test(l3);
+ck('level 3 offers a static mixer as a second fix', l3mix, 'on the spares rack');
+ck('the mixer blends without turbulence',
+  /r\.mixer \? \(q>0\.004 \? 1 : 0\)/.test(l3) && FL.regime(reL3(DUTY3, '3/4')) === 'laminar',
+  'mix = 1 at Re ' + Math.round(reL3(DUTY3, '3/4')));
+ck('the mixer leaves the run oversized, and the panel shows it',
+  near(DUTY3 / 448.831 / BORES['3/4'][1], 0.30, 0.01) &&
+  /const slow = q>0\.004 && v < 2\.0/.test(l3) &&
+  /'VELOCITY'/.test(l3),
+  '0.30 ft/s, flagged by s.slow and on the readout');
+ck('the mixer debrief names what it did not fix',
+  /size too big/.test(l3flat) && /2-8 band/.test(l3flat),
+  'velocity called out in the mixer lesson');
+
 /* and the duty has to block the brute force, or it is not a puzzle */
+/* 0.001, not 0.01: a coarse scan overshoots the threshold and then the
+   check demands the comment quote the overshoot rather than the answer. */
 let brute = null;
-for (let q = DUTY3; q <= 2.0; q += 0.01) {
+for (let q = DUTY3; q <= 2.0; q += 0.001) {
   const [a, b] = ecOf(reL3(q, '3/4'));
   if (a <= HI3 && b >= LO3) { brute = q; break; }
 }
+ck('the header comment quotes the brute-force flow the model gives',
+  new RegExp('needs ' + brute.toFixed(2) + ' gpm').test(l3),
+  'model ' + brute.toFixed(2) + ' gpm');
 ck('the 3/4 line cannot be forced inside the duty', brute === null || brute > DUTY3 * 1.5,
   brute === null ? 'never mixes' : 'needs ' + brute.toFixed(2) + ' gpm vs duty ' + DUTY3);
 
@@ -194,11 +216,15 @@ const re34 = reL3(DUTY3, '3/4'), re14 = reL3(DUTY3, '1/4');
 ck('text and model agree: Re 1,913 laminar on 3/4',
   /Re 1,913/.test(l3flat) && near(re34, 1913, 2) && FL.regime(re34) === 'laminar',
   'model ' + Math.round(re34));
-ck('text and model agree: Re 4,319 turbulent on 1/4',
-  /Re 4,319/.test(l3flat) && near(re14, 4319, 2) && FL.regime(re14) === 'turbulent',
+ck('model: 1/4 run is Re 4,319 and turbulent at the duty',
+  near(re14, 4319, 2) && FL.regime(re14) === 'turbulent',
   'model ' + Math.round(re14));
-ck('text and model agree: 1.54 ft/s instead of 0.30',
-  /1\.54 ft\/s instead of 0\.30/.test(l3flat) &&
+/* stronger than matching a literal: the lesson cannot state a number the
+   model does not produce, because it reads every number off the state */
+ck('the 1/4 lesson quotes the model, not a typed-in number',
+  /Math\.round\(s\.re\)\.toLocaleString/.test(l3) && /s\.v\.toFixed\(2\)/.test(l3),
+  'Re and velocity both come from s');
+ck('model: 1/4 runs at 1.54 ft/s where 3/4 runs at 0.30',
   near(DUTY3 / 448.831 / BORES['1/4'][1], 1.54, 0.01) &&
   near(DUTY3 / 448.831 / BORES['3/4'][1], 0.30, 0.01),
   (DUTY3 / 448.831 / BORES['1/4'][1]).toFixed(2) + ' / ' +

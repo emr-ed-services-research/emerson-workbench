@@ -15,19 +15,39 @@
    The fault is the mixing run. At 0.50 gpm a 3/4 in line runs at Re 1913
    - laminar - and laminar flow does not mix. The concentrate ribbons
    through without blending, so the near bed takes a rich cut and the far
-   bed takes a weak one. The fix is counterintuitive and real: make the
-   pipe SMALLER. Same flow through a 1/4 in run is Re 4319, turbulent,
-   and it mixes.
+   bed takes a weak one.
+
+   TWO fixes clear it, and they repair different things.
+
+   Right-size the run. Calling this counterintuitive was wrong: at the
+   0.50 gpm duty the 3/4 line sits at 0.30 ft/s against a 2-8 ft/s design
+   band, so it is not merely unmixed, it is ten times too big. A 1/4 in
+   run is 1.54 ft/s and Re 4319 - turbulent, and it mixes - for 0.061 psi.
+   This repairs the oversize AND the mixing together.
+
+   Fit a static mixer. It blends by dividing and recombining the stream,
+   so it does not need turbulence at all: it works at Re 1913 as the line
+   stands, for about 0.004 psi. But it repairs the mixing only - the run
+   is still at 0.30 ft/s afterwards, and the level says so.
+
+   A premix tank is the third answer and is deliberately NOT here: it
+   deletes the proportional injector rather than repairing it. Dose-on-
+   demand was chosen on a colony because a batch tank means standing
+   dilute nutrient solution - biofilm, EC drift from selective uptake,
+   plus agitator, level control and a transfer pump. That trade is the
+   subject of its own level (the blend tank), not this one.
 
    Checked before it was built (reference/crosscheck.js):
-     mixing run   Re      BED A   BED B
+     fitted        Re      BED A   BED B
      3/4          1913    2.32    0.88    fail
      1/2          2532    2.22    0.98    fail
      3/8          3184    1.95    1.25    fail
-     1/4          4319    1.60    1.60    PASS
-   and the duty blocks the brute-force: holding 3/4 in and winding the
-   feed up until it mixes needs 1.10 gpm, more than double what the beds
-   are asking for.
+     1/4          4319    1.60    1.60    PASS  (and v 0.30 -> 1.54)
+     static mix   1913    1.60    1.60    PASS  (v stays 0.30)
+   and the duty blocks the brute force: holding the 3/4 run and winding
+   the feed up until it mixes needs 0.92 gpm, against a duty of 0.50.
+   (That figure read 1.10 here for a while and was simply wrong - the
+   crosscheck computes it now rather than trusting the comment.)
    ============================================================ */
 function startLevel3(){
 const A=LPE.art, P=LPE.palette, W=900, H=400;
@@ -43,6 +63,9 @@ const RUNS=[
   {k:'1/2', bore:0.622, area:0.00211, label:'1/2 in'},
   {k:'3/8', bore:0.493, area:0.00133, label:'3/8 in'},
   {k:'1/4', bore:0.364, area:0.000724, label:'1/4 in'},
+  /* Not a pipe size: a spool with helical elements in it. Same bore as the
+     main, so the velocity does not change - only the blending does. */
+  {k:'mix', bore:0.824, area:0.00370, label:'STATIC MIX', mixer:true},
 ];
 
 const S={ feed:0, run:'3/4', drag:false, lastAng:0, turn:0, closing:false, picking:false };
@@ -68,10 +91,10 @@ const LAY={
   inj  : {x:196, y:PIPE_Y-21, w:48,  h:42},
   mix  : {x:316, y:PIPE_Y, w:232},                // centreline run, bore varies
   split: {x:606, y:PIPE_Y},
-  bedA : {x:664, y:150, w:96, h:66},
-  bedB : {x:664, y:296, w:96, h:66},
-  rack : {x:316, y:318, w:232, h:52},
-  read : {x:620, y:30,  w:238, h:106},
+  bedA : {x:664, y:157, w:96, h:66},   // riser 66 up from PIPE_Y
+  bedB : {x:664, y:290, w:96, h:66},   // riser 67 down
+  rack : {x:316, y:318, w:286, h:52},   // five spares now, not four
+  read : {x:620, y:30,  w:238, h:124},  // 5 rows + footer, clear of BED A
 };
 /* The spool sits between two flanges. Anything narrower than the main needs
    a reducer at each end, and that pair is drawn, not implied. */
@@ -90,14 +113,20 @@ function solve(){
   const r = runNow();
   const v = q/448.831/r.area;
   const re = q>0.004 ? FL.reynolds(v, r.bore, FL.FLUIDS.water, 20) : 0;
-  const mix = Math.max(0, Math.min(1, (re-2300)/1700));
+  /* A static mixer blends mechanically, so Re stops governing the moment
+     one is fitted. The Re readout still tells the truth about the line. */
+  const mix = r.mixer ? (q>0.004 ? 1 : 0)
+                      : Math.max(0, Math.min(1, (re-2300)/1700));
   /* With the dose correct, poor mixing does not change the average - it
      splits it. The near tap takes the rich side of the ribbon, the far
      tap takes what is left. */
   const spread = q>0.004 ? (1-mix)*SPREAD : 0;
   const ecA = q>0.004 ? EC_T*(1+spread) : 0;
   const ecB = q>0.004 ? EC_T*(1-spread) : 0;
-  return { q, v, re, mix, ecA, ecB, r,
+  /* Velocity is a separate verdict from mixing. A mixer leaves the run
+     oversized, and the level is not allowed to pretend otherwise. */
+  const slow = q>0.004 && v < 2.0;
+  return { q, v, re, mix, ecA, ecB, r, slow,
            regime: q<=0.004 ? 'still' : FL.regime(re),
            inBand: ecA>=EC_LO && ecA<=EC_HI && ecB>=EC_LO && ecB<=EC_HI,
            onDuty: Math.abs(q-DUTY)<=0.03 };
@@ -267,6 +296,23 @@ function drawSkid(g,s){
     }
   }
 
+  /* If the player fitted a mixer they should be able to SEE what is in the
+     run, not just read its name. The elements are drawn inside the bore,
+     after the fluid, because they are what the fluid is being folded
+     through - the rack icon is the same object seen end-on. */
+  if(runNow().mixer){
+    const rr=rOf(runNow().bore), x0=NET.x0, x1=NET.x1, n=7;
+    g.strokeStyle='rgba(159,216,160,0.75)'; g.lineWidth=2; g.lineCap='round';
+    for(let i=0;i<n;i++){
+      const ex=x0+24+i*((x1-x0-48)/(n-1)), k=(i%2)?1:-1;
+      g.beginPath();
+      g.moveTo(ex-9, PIPE_Y+k*rr*0.62);
+      g.quadraticCurveTo(ex, PIPE_Y-k*rr*0.70, ex+9, PIPE_Y+k*rr*0.62);
+      g.stroke();
+    }
+    g.lineCap='butt';
+  }
+
   g.fillStyle=P.amber; g.font="11px 'VT323',monospace"; g.textAlign='center';
   g.fillText(runNow().label, M.x+M.w/2, PIPE_Y-rOf(runNow().bore)-14);
   g.textAlign='left';
@@ -297,8 +343,8 @@ function drawSkid(g,s){
 
 /* ---- the spares rack: four sections, one fitted ---- */
 function rackBtns(){
-  const R=LAY.rack, w=R.w/4-8;
-  return RUNS.map((r,i)=>({ r, x:R.x+i*(R.w/4), y:R.y, w, h:R.h }));
+  const R=LAY.rack, n=RUNS.length, w=R.w/n-6;
+  return RUNS.map((r,i)=>({ r, x:R.x+i*(R.w/n), y:R.y, w, h:R.h }));
 }
 function drawRack(g){
   const live=!S.closing && !SH.done ? true : true;
@@ -313,6 +359,20 @@ function drawRack(g){
     g.fillStyle='#c3ccd3'; g.beginPath();
     g.arc(cx,cy,R0,-2.4,-0.7); g.arc(cx,cy,R0-wall,-0.7,-2.4,true); g.fill();
     g.fillStyle='#0b1013'; g.beginPath(); g.arc(cx,cy,R0-wall,0,6.284); g.fill();
+    /* The mixer has the main's bore, so end-on it would be indistinguishable
+       from the 3/4 spool. What is different is what is INSIDE it: the
+       helical elements you are looking down the axis of. */
+    if(b.r.mixer){
+      const rb=R0-wall;
+      g.strokeStyle = on?'#9fd8a0':'#6d7a84'; g.lineWidth=2; g.lineCap='round';
+      [-0.6,0.6].forEach(k=>{
+        g.beginPath();
+        g.moveTo(cx-rb*0.78, cy+k*rb*0.55);
+        g.quadraticCurveTo(cx, cy-k*rb*0.62, cx+rb*0.78, cy+k*rb*0.55);
+        g.stroke();
+      });
+      g.lineCap='butt';
+    }
     g.fillStyle = on?P.amber:'#8e9aa3'; g.font="10px 'VT323',monospace"; g.textAlign='center';
     g.fillText(b.r.label, cx, b.y+b.h-6);
     g.textAlign='left';
@@ -327,13 +387,18 @@ function drawRead(g,s){
   const rows=[
     ['FEED', s.q.toFixed(2)+' gpm', s.onDuty?'#39ff6a':'#ffd24a'],
     ['MIX RUN Re', s.re>0?Math.round(s.re).toLocaleString('en-US'):'\u2014', '#39ff6a'],
+    /* On the panel because the debrief names it: a mixer clears the beds
+       and leaves this reading low, and the player has to be able to see
+       that for themselves rather than be told it. */
+    ['VELOCITY', s.q>0.004?s.v.toFixed(2)+' ft/s':'\u2014',
+     s.q<=0.004?'#8b949b':(s.slow?'#ffd24a':'#39ff6a')],
     ['REGIME', s.regime.toUpperCase(),
      s.regime==='laminar'?'#8fb9ff':(s.regime==='turbulent'?'#ffd24a':'#8b949b')],
     ['MIXED', s.q>0.004?Math.round(s.mix*100)+' %':'\u2014',
      s.mix>0.72?'#39ff6a':'#c0493b'],
   ];
   rows.forEach((c,i)=>{
-    const y=R.y+14+i*22;
+    const y=R.y+12+i*20;
     g.fillStyle=P.rim; g.font="10px 'VT323',monospace"; g.textAlign='left';
     g.fillText(c[0],R.x+10,y+9);
     g.fillStyle=s.q>0.004?c[2]:'#5d6a73';
@@ -361,23 +426,47 @@ const STEPS=[
       'B gets what is left.' },
   { task:'Fix the mixing. Hold '+DUTY.toFixed(2)+' gpm and bring both beds inside '+EC_LO+'-'+EC_HI+'.',
     ok:s=>s.onDuty && s.inBand && !S.drag,
-    lesson:'A smaller pipe. Same half gallon a minute through a 1/4 in run is '+
-      '1.54 ft/s instead of 0.30, Re 4,319 instead of 1,913, and turbulent flow '+
-      'mixes. The line was not blocked and the dose was never wrong &mdash; the '+
-      'pipe was too big.' },
+    /* Two parts clear this step and they do not deserve the same debrief. */
+    lesson:s=>s.r.mixer
+      ? 'The mixer blends by cutting the stream and folding it back on itself, '+
+        'so it never needed turbulence &mdash; it is working at Re 1,913. Both '+
+        'beds are on number. Note what it did <b>not</b> fix: VELOCITY still '+
+        'reads '+s.v.toFixed(2)+' ft/s against a 2-8 band. The run is still a '+
+        'size too big; you have stopped it mattering.'
+      : 'A smaller pipe. Same half gallon a minute through a 1/4 in run is '+
+        s.v.toFixed(2)+' ft/s instead of 0.30, Re '+Math.round(s.re).toLocaleString('en-US')+
+        ' instead of 1,913, and turbulent flow mixes. That run was never sized '+
+        'for this duty &mdash; 0.30 ft/s against a 2-8 band is ten times too '+
+        'big. Right-size it and the mixing comes free.' },
 ];
 let si=0;
 function say(){ if(SH.holding||SH.done||S.closing) return;
   SH.say(STEPS[si].task,''); SH.count((si+1)+' / '+STEPS.length); }
 
+/* The debrief has to be honest that there was more than one way through,
+   and that the one nobody could do tonight is the one an engineer would
+   draw. Both solves land on the same first card; the second names what
+   the player did not do. */
 const CLOSING=[
-  '<span class="who">COMMS:</span> Both beds on number. And the thing that fixed it '+
-  'was taking capacity <b>out</b> of the line.<span class="gap"></span>Oversized pipe '+
-  'is not free. It is slower for the same duty, and slow enough is laminar.',
+  '<span class="who">COMMS:</span> Both beds on number. Nobody touched the dose and '+
+  'nothing was blocked.<span class="gap"></span>Somebody specified that run a size up '+
+  'to be safe. Reasonable instinct, wrong answer &mdash; and it took three weeks of '+
+  'blaming the injector before anyone measured the Reynolds number in the pipe.',
 
-  '<span class="who">COMMS:</span> Somebody specified that run a size up to be safe. '+
-  'Reasonable instinct, wrong answer &mdash; and it took three weeks of blaming the '+
-  'injector before anyone measured the Reynolds number in the pipe.',
+  '<span class="who">COMMS:</span> Worth saying what you had tonight was a spares '+
+  'rack.<span class="gap"></span>With a parts order you would put a <b>static mixer</b> '+
+  'in that run and be done: it folds the stream back through itself, so it blends at '+
+  'Re 1,913 without needing turbulence at all, for about four thousandths of a psi.',
+
+  '<span class="who">COMMS:</span> And the one that is not a repair at all &mdash; '+
+  'premix in a <b>batch tank</b>. Make it up, stir it, read the EC before anything '+
+  'drinks it.<span class="gap"></span>That deletes the injector instead of fixing it. '+
+  'It is the right answer on a farm.',
+
+  '<span class="who">COMMS:</span> It is a harder call up here. A batch tank means '+
+  'dilute nutrient standing warm in a closed colony &mdash; biofilm, and the EC drifts '+
+  'as the plants pull ions out unevenly.<span class="gap"></span>Dose-on-demand was '+
+  'chosen for a reason. Bay 7 runs the other way. You will see it.',
 ];
 let ci=0, closeT=0;
 function closeOut(i){
@@ -401,7 +490,7 @@ function step(dt){
     if(st.ok(s)){
       if(st.watch){ closeT+=dt; if(closeT<st.watch) return; }
       closeT=0;
-      const lesson=st.lesson;
+      const lesson = typeof st.lesson==='function' ? st.lesson(s) : st.lesson;
       si++;
       if(si>=STEPS.length){ SH.beat(lesson,()=>closeOut(0)); }
       else SH.beat(lesson, say);

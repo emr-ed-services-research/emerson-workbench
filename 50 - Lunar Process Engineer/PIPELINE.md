@@ -201,3 +201,35 @@ and the level's own `intro:` carries only the place and title cards.
 `verify.js` holds C1, C2 and C3 to the code: every level with `teach` has a
 `brief`; no level's `intro` still opens on a comms card; and `launch()`
 plays the brief before it calls the trainer.
+
+## 7. Levels still to build
+
+### Level 5 — the flash drum
+Flashing where it is actually real: P2 held below the vapour pressure so
+the stream does not recover. Level 4 teaches cavitation (the dip
+recovers); this is the other half of that pair and must not be built
+until level 4 has been played end to end.
+
+### Level 6 — the blend tank
+The architectural counterpart to level 3. Level 3's skid doses on demand
+with a 1:100 proportional injector and has to blend in the pipe. This one
+batches: make up to an EC target, agitate, verify before anything drinks
+it, release to the beds.
+
+It exists because level 3's debrief names it and must not be lying. The
+trade is real and runs both ways, so neither level is allowed to present
+its own architecture as simply correct:
+
+| | dose on demand (level 3) | batch (level 6) |
+|---|---|---|
+| EC verified before use | no, inferred from ratio | yes, measured in the tank |
+| blending | needs pipe length or a mixer | agitator, solved |
+| standing solution | none | a tankful, warm |
+| what goes wrong | ribbon, uneven beds | biofilm, EC drift from selective uptake |
+| kit | injector | tank, agitator, level control, transfer pump |
+
+On a closed colony the standing-solution column is what decides it, which
+is why the Garden runs injectors and why Bay 7 (level 6) does not.
+
+Teaches: batch vs continuous, EC as the controlled variable rather than a
+ratio you trust, and why a tank that sits still is not free either.

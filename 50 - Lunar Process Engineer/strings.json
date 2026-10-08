@@ -151,18 +151,23 @@
  },
  {
   "level": "level3",
-  "key": "lesson",
-  "v": "A smaller pipe. Same half gallon a minute through a 1/4 in run is 1.54 ft/s instead of 0.30, Re 4,319 instead of 1,913, and turbulent flow mixes. The line was not blocked and the dose was never wrong &mdash; the pipe was too big."
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> Both beds on number. Nobody touched the dose and nothing was blocked.<span class=\"gap\"></span>Somebody specified that run a size up to be safe. Reasonable instinct, wrong answer &mdash; and it took three weeks of blaming the injector before anyone measured the Reynolds number in the pipe."
  },
  {
   "level": "level3",
   "key": "closing",
-  "v": "<span class=\"who\">COMMS:</span> Both beds on number. And the thing that fixed it was taking capacity <b>out</b> of the line.<span class=\"gap\"></span>Oversized pipe is not free. It is slower for the same duty, and slow enough is laminar."
+  "v": "<span class=\"who\">COMMS:</span> Worth saying what you had tonight was a spares rack.<span class=\"gap\"></span>With a parts order you would put a <b>static mixer</b> in that run and be done: it folds the stream back through itself, so it blends at Re 1,913 without needing turbulence at all, for about four thousandths of a psi."
  },
  {
   "level": "level3",
   "key": "closing",
-  "v": "<span class=\"who\">COMMS:</span> Somebody specified that run a size up to be safe. Reasonable instinct, wrong answer &mdash; and it took three weeks of blaming the injector before anyone measured the Reynolds number in the pipe."
+  "v": "<span class=\"who\">COMMS:</span> And the one that is not a repair at all &mdash; premix in a <b>batch tank</b>. Make it up, stir it, read the EC before anything drinks it.<span class=\"gap\"></span>That deletes the injector instead of fixing it. It is the right answer on a farm."
+ },
+ {
+  "level": "level3",
+  "key": "closing",
+  "v": "<span class=\"who\">COMMS:</span> It is a harder call up here. A batch tank means dilute nutrient standing warm in a closed colony &mdash; biofilm, and the EC drifts as the plants pull ions out unevenly.<span class=\"gap\"></span>Dose-on-demand was chosen for a reason. Bay 7 runs the other way. You will see it."
  },
  {
   "level": "level4",
