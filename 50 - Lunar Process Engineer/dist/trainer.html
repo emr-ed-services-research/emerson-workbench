@@ -2009,7 +2009,6 @@ const LAY={
   fsw   : {x:28, y:242, w:156, h:124, sx:40, sy:266, pitch:34},
   sched : {x:366, y:332, w:182, h:48, pitch:64, bw:54},
   lamp  : {x:742,y:30,r:30},
-  pic   : {x:556,y:338},   // the framed print where the mug used to be
   book  : {x:196,y:338,w:150,h:50},
   rule  : {x:630,y:376,w:230},
 };
@@ -2252,97 +2251,6 @@ function buildDesk(){
       g.fillRect(x+Math.round(t*w), y, Math.ceil(w/n)+1, h);
     }
   };
-
-  /* ---- the framed print on the desk ----
-     What stood here was a mug drawn as a lit cylinder, and at this size it
-     read as a brown lump. R.O. keeps a framed print instead: a hero on
-     rocket boots, mid-jump, gun out. Drawn as a pixel sprite from a
-     character map rather than with curves, so it is crisp at 1:1 and can
-     be edited a pixel at a time. The coffee ring stays - something did
-     used to sit there. */
-  const M=LAY.pic;
-  g.strokeStyle='#5c4a30'; g.lineWidth=2;           // the ring it left behind
-  g.beginPath(); g.ellipse(M.x+52,M.y+32,13,5,0,0,6.284); g.stroke();
-
-  /* Twenty-three rows, two screen pixels each. The first pass read as a
-     man standing still: legs straight, boots lost under a sun band laid
-     over the bottom of the print. He is airborne now - knees bent, feet
-     splayed out behind, jets firing down out of both soles - and the
-     caption has its own strip under the art so nothing is painted over
-     the figure. */
-  const SPR=[
-    '.......kkkkk........',
-    '......khhhhhk.......',
-    '.....khhhhhhhk......',
-    '.....khsssssshk.....',
-    '.....kgggggssk......',
-    '.....ksssssssk......',
-    '......kssssk........',
-    '....kkkrrrkkk.......',
-    '...kskrrrrrrkwwwwk..',
-    '...kskrrrrrrkwWWWWk.',
-    '...kkkrrrrrrkwwwwk..',
-    '.....krrrrrrk.......',
-    '.....kRRRRRRk.......',
-    '.....kbbbbbbk.......',
-    '....kbbbbbbbk.......',
-    '...kbbbk.kbbbk......',
-    '..kbbbk...kbbbk.....',
-    '..kbbk.....kbbk.....',
-    '..kttk.....kttk.....',
-    '..kTTk.....kTTk.....',
-    '...ff.......ff......',
-    '...fF.......Ff......',
-    '....f.......f.......',
-    '....................',
-    '....................',
-    '....................',
-    '....................',
-  ];
-  const PAL={ k:'#17120d', h:'#f2d16b', s:'#e8b887', g:'#20304a',
-              r:'#c0392b', R:'#8f281d', b:'#2f4f7a', t:'#4a3a2a',
-              T:'#2b2118', w:'#8a94a0', W:'#c3ccd3',
-              f:'#ff9b2f', F:'#ffe39a' };
-  const PX=2, PW=SPR[0].length*PX, PH=SPR.length*PX;
-  const CAP=9;                                     // the caption's own strip
-  const QW=PW+8, QH=PH+8+CAP, QX=M.x, QY=M.y+40-QH;
-
-  cast(QX,QY+QH-6,QW,8,0.34);
-  g.fillStyle='#2a2119'; g.fillRect(QX-2,QY-2,QW+4,QH+4);     // frame
-  g.fillStyle='#6b5533'; g.fillRect(QX-2,QY-2,QW+4,2);        // lit top edge
-  g.fillStyle='#120d08'; g.fillRect(QX,QY,QW,QH);             // mount
-
-  /* dusk sky: he has to be against something, or he reads as a decal */
-  for(let i=0;i<PH;i++){
-    const u=i/PH;
-    g.fillStyle='rgb('+Math.round(26+52*u)+','+Math.round(18+26*u)+','+
-                 Math.round(48+26*u)+')';
-    g.fillRect(QX+4,QY+4+i,PW,1);
-  }
-  g.fillStyle='#4a2a22';                                       // ground, low
-  g.fillRect(QX+4,QY+4+PH-7,PW,7);
-  g.fillStyle='#7a4132';                                       // rim of light
-  g.fillRect(QX+4,QY+4+PH-7,PW,1);
-
-  SPR.forEach((row,y)=>{
-    for(let x=0;x<row.length;x++){
-      const c=PAL[row[x]];
-      if(c){ g.fillStyle=c; g.fillRect(QX+4+x*PX, QY+4+y*PX, PX, PX); }
-    }
-  });
-
-  g.fillStyle='rgba(255,255,255,0.06)';                        // glass sheen
-  g.beginPath(); g.moveTo(QX,QY); g.lineTo(QX+QW*0.5,QY);
-  g.lineTo(QX,QY+QH*0.7); g.closePath(); g.fill();
-
-  g.fillStyle='#1b1510'; g.fillRect(QX+4,QY+4+PH,PW,CAP-1);    // caption strip
-  g.fillStyle='#d8c79a'; g.font="9px 'VT323',monospace"; g.textAlign='center';
-  g.fillText('NUKEM',QX+QW/2,QY+4+PH+7); g.textAlign='left';
-
-  g.strokeStyle='#2a2119'; g.lineWidth=2;                      // the kickstand
-  g.beginPath(); g.moveTo(QX+QW*0.6,QY+QH+1);
-  g.lineTo(QX+QW*0.85,QY+QH+7); g.stroke();
-
 
   // ---- steel rule: bevelled, and it sits ON something
   const RU=LAY.rule;
