@@ -296,6 +296,19 @@ Per module, write:
 - 4–6 `keyConcepts`, each
   `{ "t": "...", "pages": [n], "level": "...", "role": "...", "sources": [...] }`,
   in instructor-talking-point voice;
+- **each `keyConcepts.t` must add grounding the slide doesn't already show,
+  never restate it** (confirmed as a real, recurring failure 2026-09-24 — a
+  course-wide check found the slide's own visible list or step-defs
+  compressed into one paragraph and reused as the key concept, verbatim or
+  near-verbatim, on at least six CVE1 slides spanning three different
+  chapters: 61, 84, 86, 109, 143, 148, with ~25 more pages flagged as
+  likely candidates). A useful test before accepting a drafted key concept:
+  if a reader saw only the key-concept text, with the slide's own visible
+  content hidden, would they learn something the slide doesn't already
+  say — a definition, the reasoning behind a step, a worked number, a
+  connection to what comes next? If the key concept is just the slide's
+  list in prose form, it fails this test regardless of how well-written the
+  prose is;
 - confirm `pages` / `check`;
 - set `"visual": true` and `"status": "ready"`;
 - the tags (below): chapter `domain`; module `levelTarget` / `stakes` /
@@ -608,6 +621,16 @@ an engine change, or a new authoring pass — re-run the whole checklist.
   — confirmed on CVB, 2026-09-12. Check it against the real `index.html` +
   `course-data.js`, not the slide HTML alone (see
   `40 - Engine/render/ctx-check.mjs`).
+- **Context-pane grounding, not restatement.** Non-empty is not sufficient
+  — compare the rendered key-concept text against the slide's own visible
+  list/step-def content and confirm it adds something the slide doesn't
+  already show, per Stage 2's own rule above. Confirmed as a real recurring
+  failure, not a one-off (see Stage 2).
+- **Citation cleanliness.** Read every `.tpl-source` line as a student
+  would. Every clause must be a fact about the source material — never
+  editorial-process commentary, a raw backend field name, or a numeric
+  slide cross-reference (see Style Guide §5.9's 2026-09-24 addendum;
+  confirmed on three CVE1 slides).
 - **Placeholder / undetermined-schedule language scan.** Grep every
   student-facing `course.json` string field (`course.summary`, every
   `day.title`/`day.subtitle`, `chapter.summary`, `module.objective`) for

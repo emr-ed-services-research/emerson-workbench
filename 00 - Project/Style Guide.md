@@ -615,6 +615,30 @@ needs the same one-line trail a figure slide already gives them. This
 applies whether the slide is drawn from a single topic entry or several
 (list the ids comma-separated, same convention as a multi-figure slide).
 
+**An originated diagram or table with no registered component still cites
+its conceptual grounding, not just its own absence** (established practice,
+formalized here 2026-09-24): `Originated [kind] — no component is
+registered for this competency ([source], [section/page], prose only).
+[What it is, if not a redraw / not invented — e.g. "Not a redraw of any
+source figure."]`. This is already the shipped convention on roughly a
+dozen CVE1 slides and reads correctly — it still functions as a citation
+(source, section, page range) even with no figure to point at.
+
+**The citation is a reference, not a window into the authoring process**
+(2026-09-24, after Franz asked "is the citation prose or a reference?" and
+a course-wide check found three slides that had drifted): every clause in
+`.tpl-source` must be a fact about the source material (what it is, what
+was kept or changed, a real cross-sourcebook duplicate or erratum) — never
+a note about the pipeline's own editorial process ("human-confirmed before
+authoring" is about an internal review checkpoint, not the source, and was
+removed from cve1-016), never a raw backend field name ("see slide 16's
+sourceNote" named a course-data.js field a student has no access to, and
+was removed from cve1-017), and never a numeric slide cross-reference
+(banned everywhere on-slide already — "used directly on slide 14" was
+removed from cve1-015, reworded to "elsewhere in this module"). A citation
+that needs to point at another slide's content should describe that
+content structurally (by module, by what it shows), never by number.
+
 ### 5.10 Worked application — pages 6 & 10 of the template proof
 
 Concrete targets for the rebuild (the rebuild is a separate step; this is
@@ -741,7 +765,7 @@ Basics 2026-09-13.
 figure. A slide with several clickable figures — a filmstrip/
 application-case pane, or any other shape with more than one image — must
 give **each figure its own** `data-lightbox-caption="Fig. [N], [what it
-shows]. Subject-Matter Index: [id]."`, the same one-line shape as `.tpl-source`
+shows]. Component Index: [id]."`, the same one-line shape as `.tpl-source`
 but scoped to that one image. Without it, the click-to-enlarge view falls
 back to the slide's shared citation — correct for whichever figure that
 citation was actually written about, wrong for every other one on the
@@ -749,6 +773,12 @@ slide, and the click-to-enlarge view's whole job is a clean look at ONE
 image, not a citation for figures the viewer isn't looking at. A slide
 with only one figure does not need this — §5.9's citation is already
 unambiguous there.
+
+(2026-09-22: corrected "Subject-Matter Index" to "Component Index" in this
+section's own example, matching §5.9's 2026-09-20 correction — this
+section was written 2026-09-14, before that correction, and its example
+had never been brought into line. Caught reviewing CVE1 chapter 7/8 slides
+against this section.)
 
 ### 5.14 Several named items in one figure are composed as separate images, never one flattened image
 
@@ -771,9 +801,9 @@ Structure:
 <svg viewBox="0 0 W H" width="100%" height="100%"
      preserveAspectRatio="xMidYMid meet" role="img" aria-label="...">
   <image href="../assets/sourced/item-a.png" x="0" y="0" width="W1" height="H"
-         data-lightbox-caption="Fig. N, Item A. Subject-Matter Index: id-a."></image>
+         data-lightbox-caption="Fig. N, Item A. Component Index: id-a."></image>
   <image href="../assets/sourced/item-b.png" x="X2" y="0" width="W2" height="H"
-         data-lightbox-caption="Fig. N, Item B. Subject-Matter Index: id-b."></image>
+         data-lightbox-caption="Fig. N, Item B. Component Index: id-b."></image>
 </svg>
 ```
 
@@ -790,6 +820,39 @@ shared context between them (a single continuous mechanism shown once,
 labelled in multiple places, rather than several genuinely separate
 items). That is not a violation of this rule — say so in the Stage 3
 report rather than forcing an artificial split.
+
+### 5.15 Redrawn schematic symbols use the ISA symbol library, not freehand shapes
+
+Added 2026-09-22, CVE1 Chapter 8's equation-heavy slides. When a slide needs
+a physical piping/loop schematic (a control valve, an actuator, a reducer, a
+vessel, an instrument bubble) rather than a source photo, reuse
+`40 - Engine/Presentation/build/assets/symbol-library.svg` — a real,
+per-symbol-grounded ISA 5.1 library (see that file's header comment and its
+sibling `reference.md` for exactly which shapes are vault-sourced vs.
+general ISA convention). Do not invent a new freehand symbol shape per
+slide; if the library is missing a needed symbol, add it there once so
+every future schematic inherits it, per the pipeline-gap-first triage rule.
+
+**Valve body / actuator fill is `--emerson-blue`.** A real-hardware green
+was tried: `--fisher-green` (`#2B5D3B`), sampled from three green
+Fisher-style valve photos already in the Source Library (see `reference.md`
+§2a for the method), deliberately not the `--emerson-green` brand-accent
+token — §3.3 reserves that with no authored-content role, and a bright
+PowerPoint accent is not what a real Fisher valve looks like. It shipped
+for one day and Franz reverted it the same day, 2026-09-22: *"I liked the
+blue color better."*
+
+`--fisher-green` is still **defined but unused** in `symbol-library.svg`'s
+own inline stylesheet, with the sampling method recorded, so the decision
+can be revisited without redoing the work. It was deliberately never added
+to `tokens.css` — that file is a closed set enumerated from `theme1.xml`,
+and a hardware-realism colour is a different kind of thing than a brand
+accent.
+
+(Corrected 2026-10-09: this paragraph was written mandating the green and
+was never updated after the same-day revert, so the guide required the one
+thing the library does not do. Caught reading the two against each other
+before committing.)
 
 ---
 
