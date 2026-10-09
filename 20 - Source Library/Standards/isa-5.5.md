@@ -24,6 +24,7 @@ used-by:
   - "50 - Lunar Process Engineer/vendor/process-core/schemvis.js"
   - "50 - Lunar Process Engineer/vendor/process-core/skins/modern.js"
   - "50 - Lunar Process Engineer/vendor/process-core/topology.js"
+  - "CLAUDE.md"
 ---
 
 # ISA-5.5 — Graphic Symbols for Process Displays
