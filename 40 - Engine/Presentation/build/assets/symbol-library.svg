@@ -13,11 +13,36 @@
                               Control Valve Handbook — extracted-figures/
                               ch4-fig14.14-sov-3port-spring-return-symbol.png
                               and ch4-fig14.15-...png). Geometry (two solid
-                              triangles meeting apex-to-apex) and fill colour
-                              (Emerson blue) both taken directly from that
-                              figure. Port numbering removed — this is a
-                              generic 2-port control valve, not the 3-port
-                              SOV the source figure depicts.
+                              triangles meeting apex-to-apex) taken directly
+                              from that figure. Port numbering removed — this
+                              is a generic 2-port control valve, not the
+                              3-port SOV the source figure depicts. Fill
+                              colour tried real Fisher hardware green for
+                              one day (2026-09-22) then reverted the same
+                              day (Franz: "I liked the blue color better")
+                              — back to Emerson blue. The fisher-green
+                              token stays defined below, unused, as a
+                              record of that real photo-sourced value in
+                              case it's revisited.
+    - sym-valve-actuator (dome) : REAL WEB SOURCE for the SHAPE, added
+                              2026-09-22 (superseding the original
+                              general-ISA-convention housing/yoke shape,
+                              which Franz flagged as unverified and asked
+                              to be corrected against a real reference).
+                              Traced from processcontrolsolutions.com's
+                              actuator-symbols reference chart, the entry
+                              labelled "Diaphragm" — a true semicircle
+                              dome, its width matching the bowtie's own
+                              tip-to-tip span, on a short stem. Not the
+                              paid ISA-5.1 standard itself, but a real,
+                              explicitly-labelled third-party reference,
+                              measured directly off the image rather than
+                              recalled from memory. Pipe stubs and the
+                              old housing-box/yoke-leg lines removed per
+                              Franz's direct instruction (the library
+                              symbol is the device alone). Fill: none —
+                              Franz, same day: "the actuator dome should
+                              not have a color," outline only.
     - line-process / line-signal / flow-arrow : REAL vault source for the
                               *distinction itself* — Control Valve Handbook
                               Fig. 1.1 (cvh-cmp-feedback-control-loop, used
@@ -55,11 +80,25 @@
                               cannot show Fp's physical cause without one.
 
   Colour tokens are the exact hex values from this course's own
-  tokens.css / Style Guide.md §3.1 — no non-palette colour is used.
-    emerson-blue     #004B8D   (valve body fill — "the real thing")
+  tokens.css / Style Guide.md §3.1.
+    emerson-blue     #004B8D   (valve body + actuator fill — reverted here
+                                2026-09-22, Franz: "I liked the blue color
+                                better." Also the tank fluid-level fill and
+                                page furniture in this swatch sheet.)
     emerson-charcoal #3F4040   (process line / structural outline / text)
     emerson-grey     #959797   (signal line / secondary)
     emerson-white    #FFFFFF   (component fill, page background)
+    fisher-green     #2B5D3B   (DEFINED BUT UNUSED — real Fisher hardware
+                                green, sampled 2026-09-22 by averaging
+                                pixels from three real CVH production
+                                photos of green Fisher-style valves
+                                (ch1-fig2-sliding-stem-valve.png,
+                                ch1-fig4-angle-valve.png, ch1-fig13-rotary-
+                                control-valve.png). Tried as the valve
+                                body/actuator fill for one day, reverted
+                                the same day back to Emerson blue. Kept
+                                defined, unused, as a record of that real
+                                photo-sourced value.)
 
   Stroke weights follow Style Guide §5.6's existing real/ideal vocabulary
   (solid-heavy vs. dashed-light), carried from graphs into piping lines:
@@ -74,6 +113,13 @@
       --emerson-charcoal: #3F4040;
       --emerson-grey: #959797;
       --emerson-white: #FFFFFF;
+      /* Real Fisher hardware green, NOT the --emerson-green brand-accent
+         token (#62BB46, reserved per Style Guide §3.3). Sampled 2026-09-22
+         from three real Control Valve Handbook production photos
+         (ch1-fig2-sliding-stem-valve.png, ch1-fig4-angle-valve.png,
+         ch1-fig13-rotary-control-valve.png) via pixel averaging — see
+         reference.md for the method and per-photo values. */
+      --fisher-green: #2B5D3B;
     }
     .lbl { font-size: 18px; fill: var(--emerson-charcoal); font-weight: bold; }
     .cap { font-size: 13px; fill: var(--emerson-charcoal); }
@@ -99,27 +145,31 @@
     <!-- ============================================================
          sym-valve-actuator — the same bowtie body with a spring-and-
          diaphragm pneumatic actuator on top (composite symbol).
-         GENERAL ISA convention for the actuator housing/stem/diaphragm-
-         split; the bowtie body beneath it is the same real-grounded
-         geometry as sym-valve-body.
+         REAL vault grounding for the actuator dome, added 2026-09-22
+         (Franz): confirmed against processcontrolsolutions.com's
+         actuator-symbols reference chart, labelled plainly "Diaphragm" —
+         a true semicircle dome, its width matching the bowtie's own
+         tip-to-tip span, sitting on a short stem with no separate
+         housing box or yoke legs. Measured directly off that reference
+         image, not invented — see reference.md for the full comparison.
+         No pipe stubs (Franz: the library symbol is the device alone;
+         piping connects to it in situ, drawn separately at the same
+         line weight). Bowtie body is the same real-grounded geometry as
+         sym-valve-body.
          viewBox: 0 0 120 200. Pipe centerline at y=170.
          ============================================================ -->
     <symbol id="sym-valve-actuator" viewBox="0 0 120 200">
-      <!-- inlet / outlet pipe stubs -->
-      <line x1="0" y1="170" x2="20" y2="170" stroke="var(--emerson-charcoal)" stroke-width="4"/>
-      <line x1="100" y1="170" x2="120" y2="170" stroke="var(--emerson-charcoal)" stroke-width="4"/>
       <!-- bowtie valve body -->
       <polygon points="20,140 20,200 60,170" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
       <polygon points="100,140 100,200 60,170" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
-      <!-- stem -->
-      <line x1="60" y1="140" x2="60" y2="95" stroke="var(--emerson-charcoal)" stroke-width="3"/>
-      <!-- diaphragm actuator housing: two stacked cases split by the diaphragm line -->
-      <path d="M 20 95 L 100 95 L 100 60 Q 100 40 60 40 Q 20 40 20 60 Z"
-            fill="var(--emerson-white)" stroke="var(--emerson-charcoal)" stroke-width="3"/>
-      <line x1="20" y1="67" x2="100" y2="67" stroke="var(--emerson-charcoal)" stroke-width="2.5"/>
-      <!-- yoke legs connecting housing to body -->
-      <line x1="30" y1="95" x2="30" y2="140" stroke="var(--emerson-charcoal)" stroke-width="2"/>
-      <line x1="90" y1="95" x2="90" y2="140" stroke="var(--emerson-charcoal)" stroke-width="2"/>
+      <!-- stem: rises from the bowtie's own centerline to the dome -->
+      <line x1="60" y1="170" x2="60" y2="125" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+      <!-- diaphragm actuator dome: one continuous path (arc + closing
+           straight edge) so the T-join with the stem renders with a
+           clean corner, not a two-path seam. Unfilled (2026-09-22, Franz:
+           "the actuator dome should not have a color") - outline only. -->
+      <path d="M 20 125 A 40 40 0 0 1 100 125 L 20 125 Z"
+            fill="none" stroke="var(--emerson-charcoal)" stroke-width="3" stroke-linejoin="round"/>
     </symbol>
 
     <!-- ============================================================
@@ -174,8 +224,11 @@
          viewBox: 0 0 100 60. Large bore on the left, reduced bore right.
          ============================================================ -->
     <symbol id="sym-pipe-reducer" viewBox="0 0 100 60">
+      <!-- Reduced-bore outlet stub removed 2026-09-22 (Franz: same "the
+           symbol is the device alone" call already applied to
+           sym-valve-actuator) - just the tapered body, no fixed pipe
+           stub sticking out either end. -->
       <polygon points="0,12 0,48 70,38 70,22" fill="var(--emerson-white)" stroke="var(--emerson-charcoal)" stroke-width="3" stroke-linejoin="round"/>
-      <line x1="70" y1="30" x2="100" y2="30" stroke="var(--emerson-charcoal)" stroke-width="4"/>
     </symbol>
 
     <!-- Flow-direction arrowhead for process lines. Geometry echoes the
@@ -214,7 +267,7 @@
   <g transform="translate(260,90)">
     <use href="#sym-valve-actuator" width="120" height="200"/>
     <text x="5" y="225" class="cap" font-weight="bold">Valve + diaphragm actuator</text>
-    <text x="5" y="243" class="cap">(body: vault; actuator: ISA general)</text>
+    <text x="5" y="243" class="cap">(body: vault; dome: web reference)</text>
   </g>
 
   <g transform="translate(460,90)">

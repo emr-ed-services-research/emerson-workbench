@@ -87,7 +87,7 @@ inventing), the following was checked *first*:
 | Symbol | Grounding | Detail |
 |---|---|---|
 | **Control valve body** (`sym-valve-body`) | **Vault-grounded** | Geometry (two solid triangles meeting apex-to-apex) and fill colour (Emerson blue) taken directly from CVH Fig. 14.14/14.15. Port numbers and the pilot-tag badge from the source figure were dropped — this is a generic 2-port control valve, not the 3-port solenoid valve the source actually depicts, so only the *glyph*, not the whole figure, is reused. |
-| **Control valve + diaphragm actuator** (`sym-valve-actuator`) | **Mixed** | Valve body: same vault-grounded bowtie. Actuator housing (split-case diaphragm shape, stem, yoke): **general ISA convention** — no line-schematic actuator was found in the vault (the vault's own actuator figures, e.g. Figs. 1.9/1.12, are fully-labelled cutaway photos/illustrations, not simplified schematic glyphs). |
+| **Control valve + diaphragm actuator** (`sym-valve-actuator`) | **Mixed, actuator now real-sourced** | Valve body: same vault-grounded bowtie. Actuator dome: **resolved 2026-09-22** — the original split-case-housing/yoke-legs shape was general ISA convention, unverified against any real reference (no line-schematic actuator exists in the vault; Figs. 1.9/1.12 are fully-labelled cutaway photos, not simplified glyphs). Franz asked for it to be checked against a real source; found via web search on processcontrolsolutions.com's actuator-symbols reference chart, entry labelled plainly "Diaphragm" — a true semicircle dome on a short stem, its width matched to the bowtie's own tip-to-tip span, measured directly off that image. Not the paid ISA-5.1 standard itself, but a real, explicitly-labelled third-party reference rather than a recollection. Pipe stubs and the old housing-box/yoke-leg lines removed per Franz's direct instruction — the library symbol is the device alone. |
 | **Process line + flow arrowhead** | **Vault-grounded** | The solid-heavy-line / filled-arrowhead treatment is taken directly from CVH Fig. 1.1's Manipulated/Controlled Variable arrows, generalized from "variable flow" to "piping flow," which is standard ISA usage. |
 | **Signal line (dashed)** | **Vault-grounded distinction, general execution** | Fig. 1.1 draws its feedback paths visibly thinner/lighter than the variable paths — real precedent for *a* distinction existing. The specific rendering (dashed, grey, 2px) is standard ISA 5.1 signal-line convention, not itself copied from a vault figure (Fig. 1.1's own feedback lines are thin solid grey, not dashed — dashing was added here because a solid pipe-weight line and a solid thin line look too similar at a glance on a real piping schematic, where the process line itself is also a physical object; dashing is the safer, more standard disambiguator for a true P&ID and is unambiguous ISA convention). |
 | **Instrument bubble — field-mounted** (`sym-instrument-field`) | **General ISA 5.1 convention** | Plain circle = field-mounted instrument. Not found in the vault as a line-schematic element (the closest vault precedent is the small square "S" pilot-tag badge on the SOV figures — a real but differently-shaped tagging convention). |
@@ -138,12 +138,54 @@ abstract control-loop blocks.
    exactly copying Fig. 1.1's thin-solid grey feedback line. Worth confirming
    this reads as intentional rather than as drifting from the vault's own
    established look.
-2. **Actuator symbol has no vault grounding at all.** Everything about its
-   shape (split-case diaphragm housing, yoke, stem proportions) is general
-   ISA convention. If Franz has a preferred simplified actuator glyph in
-   mind (e.g., closer to the source's own direct/reverse-acting cutaway
-   silhouettes rather than a from-scratch ISA shape), that should be decided
-   before Phase 2 builds a template around this exact shape.
+2. **Actuator symbol shape — resolved 2026-09-22.** Originally general ISA
+   convention with no grounding at all (split-case diaphragm housing, yoke,
+   stem proportions all invented). Franz asked where it came from during
+   ch8 rework; answer at the time was nowhere in the vault — flagged here
+   and never resolved until now. Corrected via web search rather than
+   further invention: processcontrolsolutions.com's actuator-symbols
+   reference chart, entry labelled plainly "Diaphragm," gave a true
+   semicircle dome on a short stem, width matched to the bowtie's own span,
+   measured directly off the image (not the paid ISA-5.1 standard itself,
+   but a real, explicitly-labelled reference). The old housing-box, split
+   line, and yoke legs are gone; pipe stubs also removed per Franz's direct
+   instruction — the library symbol is the device alone.
+   **Scope, same pattern as the fill-colour change below:** master symbol
+   library only. `cve1-145.html` and the recentred ch8 slides
+   (146/147/150/154/155/157/158) still inline the OLD dome-less actuator
+   shape in their own copies of the symbol def — propagating this to
+   already-shipped slides is a separate, not-yet-scheduled pass.
+
+2a. **Valve body / actuator fill colour — resolved 2026-09-22.** Originally
+   Emerson blue (`--emerson-blue`, matching the SOV source figure's fill).
+   Franz asked for real Fisher hardware green instead. Checked whether the
+   existing `--emerson-green` brand-accent token (`#62BB46`) was the right
+   fit first — it isn't: Style Guide §3.3 settled (2026-09-06) that green
+   and purple carry **no authored-content role** and are deliberately
+   reserved, and separately, `#62BB46` is a bright PowerPoint-theme accent,
+   not what a real green Fisher valve actually looks like. Sourced instead
+   from three real Control Valve Handbook production photos already in the
+   vault (`ch1-fig2-sliding-stem-valve.png`, `ch1-fig4-angle-valve.png`,
+   `ch1-fig13-rotary-control-valve.png` — all three tagged in the ch1
+   Subject-Matter Index as showing "a green Fisher-style globe body").
+   Sampled by loading each photo into a headless-Chrome canvas and averaging
+   the RGB of every clearly-green pixel (G channel dominant over R and B),
+   trimmed to the middle third by luminance to exclude the brightest
+   highlight rim and darkest shadow edge. Per-photo results: `#2f593b`
+   (1023 samples), `#3a523a` (48 samples), `#24633b` (792 samples) —
+   weighted average **`#2B5D3B`**. This is a new, standalone
+   `--fisher-green` token defined locally in `symbol-library.svg` and
+   `demo.html`'s own inline `:root` block — deliberately **not** added to
+   the shared `tokens.css` brand palette, since that file is a closed,
+   from-`theme1.xml` enumerated set (its own header: "must not be
+   redefined anywhere else") and a real-hardware-realism colour is a
+   different category of thing than a brand accent. Applied to
+   `sym-valve-body` and `sym-valve-actuator`'s bowtie fills only — the tank
+   fluid-level fill and page furniture stay Emerson blue.
+   **Scope, per Franz's explicit choice:** the master symbol library only.
+   Chapter 8's already-rebuilt slides (146–148, 150, 154–158) still inline
+   the old blue-filled symbol copies and were deliberately left alone —
+   recolouring them is a separate, not-yet-scheduled cleanup pass.
 3. **Instrument-bubble tag typography** (the "LT"/"LC" text) is currently
    placed by the *composing document*, not baked into the symbol, so any tag
    (PT, FT, FC, etc.) can reuse the same bubble. Confirm this is the right
