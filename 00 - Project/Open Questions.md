@@ -232,3 +232,40 @@ to model and navigate through.
 ## Add new questions below
 
 - _..._
+
+---
+
+## Earmarked 2026-10-09 — Process Core / standards threads
+
+Parked mid-flight to return to the HART bench. None are blocked on thinking;
+all are blocked on a decision or on access.
+
+**ISA-5.1 — 31 citations against a document Emerson does not hold.** The
+Standards Register's first finding. Two honest routes: request an
+individual-use copy via the Information Center's Standards Request Form, or
+re-ground each claim on ISA-5.5 (held) or on a real Emerson P&ID from the
+Source Library — which is what the `HV-` tag convention was re-grounded on when
+the same problem surfaced in Phase 2. See `20 - Source Library/Standards/isa-5.1.md`.
+
+**ISA-75.01.01 is readable but would not download.** The 2007 revision opens in
+full at `…/~edisp/isa-75.01.01~2007.pdf` (72 pages); the download button never
+fired across four attempts and two routes. Two clicks in a human's browser.
+It is the IEC 60534-2-1 harmonisation, so it settles both authorities at once —
+and the sizing maths in LPE currently rests on the Control Valve Handbook alone.
+
+**ASME B16.10 vs ISA-75.08.x.** CVE1 slides 078/079 cite ASME B16.10 for
+face-to-face dimensions. The Information Center holds the ISA-75.08.x
+face-to-face series and we cannot confirm B16.10. Worth deciding which
+authority CVE1 should cite before those slides get another pass.
+
+**Style Guide §5.15 colour correction is mine, not Franz's.** I made the guide
+match the symbol library (Emerson blue, `--fisher-green` defined-but-unused)
+because the guide mandated a colour the library does not use. If the green was
+meant to win, the change belongs in `symbol-library.svg`, not the guide.
+
+**Narration hold stands.** `narration/NOTES.md` blocks regenerating the Spring
+Verification and Stem Connector sections until Franz's own rewrite lands.
+
+**Modern skin, still open** (not blocked, just unfinished): a licensed
+DTL Argo T file if the display face is wanted, and what a board does past
+~30 tags where it needs a real layout engine rather than two columns.
