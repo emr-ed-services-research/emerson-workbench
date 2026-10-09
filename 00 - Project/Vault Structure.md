@@ -4,7 +4,7 @@ type: reference
 tags:
   - project
   - meta
-updated: 2026-08-31
+updated: 2026-10-08
 ---
 
 # Vault Structure
@@ -18,8 +18,11 @@ How this Obsidian vault is organized and how to work in it.
 | `00 - Project` | Charter, roadmap, open questions, glossary, this note |
 | `10 - Courses` | One folder per course; [[Courses]] is the map of content |
 | `20 - Source Library` | Handbooks and technical publications; [[Source Library]] is the MOC. Also hosts `Interactive Models/` — course-independent, exact-geometry equipment models derived from the manuals (first: `Fisher 657 Working Model`, built 2026-09-25 from Franz's hand-painted part masks over the 657 IOM's Figure 6; see its README for the hard-geometry rules and rebuild pipeline). Like the Component Index, these are derived teaching components that live in the library because courses reference them rather than own them. |
+| `25 - Vitruvius` | The expert-engineer persona the CVE pipeline reasons through, plus its findings ledger. Scoped to CVE1→CVE2→CVE-Industry, not department-wide. |
 | `30 - Templates` | Obsidian **note** templates (configured as the Templates plugin folder) — `Bench Book Module`, `Bench Notes Module`, `Course Home`, `Source Document` |
 | `40 - Engine` | The shared **course runtime** — the presentation engine every course is assembled from. See [[Engine]]. |
+| `45 - Process Core` | The shared **process model** — netlist, schematic view, and later dynamics. Consumers (LPE, eventually LoopBench) **vendor** a copy plus a SHA-256 lock, the same way a course vendors the engine. See its `README.md`. |
+| `50 - Lunar Process Engineer` | The process-simulation game. First consumer of `45 - Process Core`. |
 | `99 - Attachments` | PDFs, images, exported decks — the default attachment folder |
 
 `Emerson Workbench.md` at the vault root is the home note.
