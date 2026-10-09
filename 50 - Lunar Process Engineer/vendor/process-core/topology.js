@@ -95,6 +95,31 @@
      never allowed to change the topology. */
   /* ISA-5.5 3.3.13 valve mnemonics, by type. Read from the standard's
      symbol pages; these are its identifiers, not ours. */
+  /* ISA-5.5 3.3.2, group "Containers and vessels". The Process subgroup
+     gave us VSSL from the start; the Storage subgroup is on the
+     standard's pages 18-19 and went unread until 2026-10-09, which is
+     why every tank in every rig was a generic vessel.
+
+     A grow bed open to the bay is an ATMOSPHERIC TANK -- the standard's
+     own words, "a tank for material stored under atmospheric pressure"
+     -- and drawing it as a generic vessel was not wrong so much as
+     unspecific. VSSL stays the right answer for a pressurised one: its
+     description says so outright, "can also be used as a pressurized
+     vessel in either a vertical or horizontal arrangement".       */
+  const ISA_VESSEL = {
+    vessel:      'VSSL',   // 3.3.2 Process  - vessel or separator
+    separator:   'VSSL',
+    jacketed:    'JVSL',   // 3.3.2 Process  - with a heating/cooling jacket
+    reactor:     'RCTR',   // 3.3.2 Process  - a chemical reactor
+    tower:       'DTWR',   // 3.3.2 Process  - packed or trayed distillation
+    atmospheric: 'ATNK',   // 3.3.2 Storage  - stored at atmospheric pressure
+    bin:         'BINN',   // 3.3.2 Storage  - solids, discharged from the bottom
+    'floating-roof': 'FTNK', // 3.3.2 Storage - roof rides the liquid level
+    'gas-holder':    'GHDR', // 3.3.2 Storage - roof rides the gas volume
+    sphere:      'PVSL',   // 3.3.2 Storage  - pressurised spherical storage
+    'weigh-hopper': 'WHPR',// 3.3.2 Storage  - a vessel used for weighing
+  };
+
   const ISA_VALVE = {
     globe: 'VLVE', gate: 'VLVE', ball: 'VLVE', needle: 'VLVE',
     'three-way': 'VLV3',
@@ -216,12 +241,12 @@
       cls: CLASS.equipment,
       inline: false,
       draws: 'equipment',
-      /* ISA-5.5 3.3.2. VSSL is the generic one: "a vessel or separator...
-         can also be used as a pressurized vessel". The Storage subgroup
-         (Atmospheric Tank, Bin, Floating Roof Tank, Gas Holder, Pressure
-         Storage Vessel, Weigh Hopper) is on pages 18-19 if a reservoir
-         should ever be a tank rather than a generic vessel. */
-      isa: () => 'VSSL',
+      /* ISA-5.5 3.3.2. `vesselType` picks from the group -- the Process
+         subgroup's VSSL/JVSL/RCTR/DTWR and the Storage subgroup's
+         ATNK/BINN/FTNK/GHDR/PVSL/WHPR. VSSL stays the default because
+         it is the standard's own generic: "a vessel or separator...
+         can also be used as a pressurized vessel". */
+      isa: c => ISA_VESSEL[c && c.vesselType] || 'VSSL',
     },
     pump: {
       ports: c => ({
@@ -763,6 +788,7 @@
   LPE.net.KINDS = KINDS;
   LPE.net.TAG = TAG;
   LPE.net.ISA_VALVE = ISA_VALVE;
+  LPE.net.ISA_VESSEL = ISA_VESSEL;
 
 })(window.LPE = window.LPE || {});
 

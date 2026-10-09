@@ -189,6 +189,11 @@ const NETLIST=LPE.net({
   bores:{main:0.622, branch:0.493},
   fluid:{sg:1.0},                       // water; see fluids.js for the rest
   components:{
+    /* The pods are NFT grow beds, open to the bay: ISA-5.5 3.3.2's
+       Storage subgroup calls that an Atmospheric Tank, "a tank for
+       material stored under atmospheric pressure". The Thermal
+       Reservoir is pressurised, and VSSL is the standard's own answer
+       for that -- "can also be used as a pressurized vessel". */
     reservoir:{kind:'vessel', tag:'TK-1', role:'source', pressure:60},
     union1:   {kind:'union'},
     vMain:    {kind:'valve',  tag:'HV-1', key:'main', valveType:'globe', cv:0.896},
@@ -198,9 +203,9 @@ const NETLIST=LPE.net({
     v1:       {kind:'valve',  tag:'HV-3', key:'b1', valveType:'globe', cv:0.513},
     v2:       {kind:'valve',  tag:'HV-4', key:'b2', valveType:'globe', cv:0.513},
     red:      {kind:'reducer', throat:0.108, cv:0.296},
-    pod0:     {kind:'vessel', tag:'TK-2', role:'sink'},
-    pod1:     {kind:'vessel', tag:'TK-3', role:'sink'},
-    pod2:     {kind:'vessel', tag:'TK-4', role:'sink'},
+    pod0:     {kind:'vessel', tag:'TK-2', role:'sink', vesselType:'atmospheric'},
+    pod1:     {kind:'vessel', tag:'TK-3', role:'sink', vesselType:'atmospheric'},
+    pod2:     {kind:'vessel', tag:'TK-4', role:'sink', vesselType:'atmospheric'},
   },
   segments:[
     {from:'reservoir.out', to:'union1.in', bore:'main'},

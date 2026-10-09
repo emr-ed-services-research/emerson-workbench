@@ -97,9 +97,9 @@ const NET = LPE.net({
     v1:        { kind:'valve', tag:'HV-3', key:'b1', valveType:'globe', cv:0.513 },
     v2:        { kind:'valve', tag:'HV-4', key:'b2', valveType:'globe', cv:0.513 },
     red:       { kind:'reducer', throat:0.108, cv:0.296 },
-    pod0:      { kind:'vessel', tag:'TK-2', role:'sink' },
-    pod1:      { kind:'vessel', tag:'TK-3', role:'sink' },
-    pod2:      { kind:'vessel', tag:'TK-4', role:'sink' },
+    pod0:      { kind:'vessel', tag:'TK-2', role:'sink', vesselType:'atmospheric' },
+    pod1:      { kind:'vessel', tag:'TK-3', role:'sink', vesselType:'atmospheric' },
+    pod2:      { kind:'vessel', tag:'TK-4', role:'sink', vesselType:'atmospheric' },
   },
   segments: [
     { from:'reservoir.out', to:'union1.in', bore:'main' },

@@ -901,15 +901,50 @@ It also found three real defects, two of them in shipped code:
   default, and locked a 1180-wide board to a thumbnail while reporting success. It
   measures the parent's content box and clamps to the logical width.
 
+### ISA-5.5 §3.3.2 read in full — 2026-10-09
+
+The Storage subgroup was the one item blocked on a source. The standard was already on
+disk from this session's earlier Fishweb work, so no intranet trip was needed; pages
+17-19 were read, and the whole "Containers and vessels" group is now implemented.
+
+| | mnemonic | the standard's own description |
+|---|---|---|
+| **Process** | `VSSL` | a vessel or separator; *"can also be used as a pressurized vessel"* |
+| | `JVSL` | a vessel with a heating or cooling jacket |
+| | `RCTR` | a chemical reactor |
+| | `DTWR` | a packed or trayed distillation tower |
+| **Storage** | `ATNK` | *"a tank for material stored under atmospheric pressure"* |
+| | `BINN` | solids or granular material, discharged from the bottom |
+| | `FTNK` | a liquid tank whose roof rides the level |
+| | `GHDR` | a gas tank whose roof rides the volume |
+| | `PVSL` | a pressurised **spherical** vessel |
+| | `WHPR` | a vessel used for weighing |
+
+**The fix was not to redraw anything.** A grow bed open to the bay is an *atmospheric
+tank* — the standard's own words — and drawing it as a generic vessel was unspecific
+rather than wrong. Level 1's three pods are now `ATNK` and read as tanks in **both**
+skins; the Thermal Reservoir stays `VSSL`, because the standard says that is the right
+answer for a pressurised one.
+
+**I was wrong about the cause.** I had said VSSL was drawn as a rounded rectangle and
+needed redrawing. Checking the code against the standard, VSSL's geometry was already
+correct — straight sides, convex domed heads. It read as a blob because it was small and
+generic, not because the shape was wrong.
+
+**The coverage check is automatic now, and caught three more.** It used to compare the
+symbol table against a hand-written list of mnemonics; it now builds that list from the
+netlist's own `ISA_VALVE` and `ISA_VESSEL` maps. On the first run it failed with
+*"missing: JVSL, RCTR, DTWR"* — three Process-subgroup mnemonics mapped but never drawn,
+which the hand-kept list had been hiding. All three are implemented.
+
+Nothing from the standard entered the vault: no page, figure or drawing. The symbols are
+written from the descriptions, keyed by the standard's mnemonics, clause cited.
+
 #### What a further pass would still want
 
 Real art direction is iterative and this is two rounds of it. Honestly outstanding:
 
-- **Vessel symbols that read as vessels at board scale** rather than as rounded
-  rectangles. This is **blocked on a source, not on effort**: VSSL is ISA-5.5's generic
-  vessel, and redrawing it would be inventing symbology. The grounded fix is the
-  standard's own Storage subgroup — Atmospheric Tank, Pressure Storage Vessel and the
-  rest — on pages 18-19, which have never been read. That needs Fishweb access.
+- ~~Vessel symbols that read as vessels~~ — **resolved 2026-10-09**, see below.
 - A licensed **DTL Argo T** file, if the display face is wanted.
 - What a board does beyond ~30 tags, where two columns stop being enough and it genuinely
   needs a layout engine.

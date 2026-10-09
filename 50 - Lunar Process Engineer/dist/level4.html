@@ -1936,6 +1936,31 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
      never allowed to change the topology. */
   /* ISA-5.5 3.3.13 valve mnemonics, by type. Read from the standard's
      symbol pages; these are its identifiers, not ours. */
+  /* ISA-5.5 3.3.2, group "Containers and vessels". The Process subgroup
+     gave us VSSL from the start; the Storage subgroup is on the
+     standard's pages 18-19 and went unread until 2026-10-09, which is
+     why every tank in every rig was a generic vessel.
+
+     A grow bed open to the bay is an ATMOSPHERIC TANK -- the standard's
+     own words, "a tank for material stored under atmospheric pressure"
+     -- and drawing it as a generic vessel was not wrong so much as
+     unspecific. VSSL stays the right answer for a pressurised one: its
+     description says so outright, "can also be used as a pressurized
+     vessel in either a vertical or horizontal arrangement".       */
+  const ISA_VESSEL = {
+    vessel:      'VSSL',   // 3.3.2 Process  - vessel or separator
+    separator:   'VSSL',
+    jacketed:    'JVSL',   // 3.3.2 Process  - with a heating/cooling jacket
+    reactor:     'RCTR',   // 3.3.2 Process  - a chemical reactor
+    tower:       'DTWR',   // 3.3.2 Process  - packed or trayed distillation
+    atmospheric: 'ATNK',   // 3.3.2 Storage  - stored at atmospheric pressure
+    bin:         'BINN',   // 3.3.2 Storage  - solids, discharged from the bottom
+    'floating-roof': 'FTNK', // 3.3.2 Storage - roof rides the liquid level
+    'gas-holder':    'GHDR', // 3.3.2 Storage - roof rides the gas volume
+    sphere:      'PVSL',   // 3.3.2 Storage  - pressurised spherical storage
+    'weigh-hopper': 'WHPR',// 3.3.2 Storage  - a vessel used for weighing
+  };
+
   const ISA_VALVE = {
     globe: 'VLVE', gate: 'VLVE', ball: 'VLVE', needle: 'VLVE',
     'three-way': 'VLV3',
@@ -2057,12 +2082,12 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
       cls: CLASS.equipment,
       inline: false,
       draws: 'equipment',
-      /* ISA-5.5 3.3.2. VSSL is the generic one: "a vessel or separator...
-         can also be used as a pressurized vessel". The Storage subgroup
-         (Atmospheric Tank, Bin, Floating Roof Tank, Gas Holder, Pressure
-         Storage Vessel, Weigh Hopper) is on pages 18-19 if a reservoir
-         should ever be a tank rather than a generic vessel. */
-      isa: () => 'VSSL',
+      /* ISA-5.5 3.3.2. `vesselType` picks from the group -- the Process
+         subgroup's VSSL/JVSL/RCTR/DTWR and the Storage subgroup's
+         ATNK/BINN/FTNK/GHDR/PVSL/WHPR. VSSL stays the default because
+         it is the standard's own generic: "a vessel or separator...
+         can also be used as a pressurized vessel". */
+      isa: c => ISA_VESSEL[c && c.vesselType] || 'VSSL',
     },
     pump: {
       ports: c => ({
@@ -2604,6 +2629,7 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
   LPE.net.KINDS = KINDS;
   LPE.net.TAG = TAG;
   LPE.net.ISA_VALVE = ISA_VALVE;
+  LPE.net.ISA_VESSEL = ISA_VESSEL;
 
 })(window.LPE = window.LPE || {});
 
@@ -2640,6 +2666,12 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
 
    Symbols are IMPLEMENTED here from the standard's described geometry and
    keyed by its own four-character mnemonics. The document itself is
+   The whole of 3.3.2 "Containers and vessels" is implemented as of
+   2026-10-09 -- the Process subgroup (VSSL, JVSL, RCTR, DTWR) and the
+   Storage subgroup (ATNK, BINN, FTNK, GHDR, PVSL, WHPR) on the
+   standard's pages 17-19. Every one is drawn from its written
+   description in our own code, keyed by the standard's own mnemonic.
+   The standard is
    copyrighted and is not reproduced: no page, figure or drawing from it
    lives in this repository.
 
@@ -2736,6 +2768,177 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
     /* 3.3.2 Vessel: "a vessel or separator... can also be used as a
        pressurized vessel in either a vertical or horizontal
        arrangement." Drawn with dished heads. */
+    /* ---- 3.3.2 Process subgroup, page 17 ----------------------------
+       Mapped alongside VSSL and, until the automatic coverage check went
+       in, mapped without being drawn -- a hand-kept list of "mnemonics we
+       implement" had been hiding the gap. */
+
+    /* "A vessel with a heating or cooling jacket. Jacket may be on
+       straight shell, on bottom head, on top head, or any combination."
+       Drawn on the straight shell, which is the common case. */
+    JVSL: {
+      w: 2.2, h: 2.6, ports: { in: [-1.1, 0], out: [1.1, 0] },
+      path: (g, s) => {
+        const w = 0.82 * s, h = 1.05 * s, d = 0.3 * s, j = 0.22 * s;
+        g.beginPath();
+        g.moveTo(-w, -h + d);
+        g.quadraticCurveTo(-w, -h - d * 0.4, 0, -h - d * 0.4);
+        g.quadraticCurveTo(w, -h - d * 0.4, w, -h + d);
+        g.lineTo(w, h - d);
+        g.quadraticCurveTo(w, h + d * 0.4, 0, h + d * 0.4);
+        g.quadraticCurveTo(-w, h + d * 0.4, -w, h - d);
+        g.closePath();
+        /* the jacket: a bar down each side of the straight shell */
+        g.moveTo(-w - j, -h + d * 1.2); g.lineTo(-w - j, h - d * 1.2);
+        g.moveTo(w + j, -h + d * 1.2);  g.lineTo(w + j, h - d * 1.2);
+      },
+      stroke: true,
+    },
+
+    /* "A chemical reactor. Internal details may be shown to indicate
+       type of reactor." Straight shell, shallow convex heads, and the
+       head seams drawn -- which is what separates it from a plain
+       vessel at a glance. */
+    RCTR: {
+      w: 2.0, h: 2.6, ports: { in: [-1.0, 0], out: [1.0, 0] },
+      path: (g, s) => {
+        const w = 0.95 * s, h = 1.0 * s, d = 0.3 * s;
+        g.beginPath();
+        g.moveTo(-w, -h);
+        g.quadraticCurveTo(0, -h - d * 1.6, w, -h);
+        g.lineTo(w, h);
+        g.quadraticCurveTo(0, h + d * 1.6, -w, h);
+        g.closePath();
+        /* the seams where the heads meet the shell */
+        g.moveTo(-w, -h); g.lineTo(w, -h);
+        g.moveTo(-w, h);  g.lineTo(w, h);
+      },
+      stroke: true,
+    },
+
+    /* "A packed or trayed distillation tower used for separation."
+       Tall and slender with fully semicircular caps -- the proportion
+       is the symbol as much as the outline is. */
+    DTWR: {
+      w: 1.4, h: 3.4, ports: { in: [-0.7, 0], out: [0.7, 0] },
+      path: (g, s) => {
+        const w = 0.42 * s, h = 1.15 * s;
+        g.beginPath();
+        g.moveTo(-w, -h);
+        g.arc(0, -h, w, Math.PI, 0);
+        g.lineTo(w, h);
+        g.arc(0, h, w, 0, Math.PI);
+        g.closePath();
+        g.moveTo(-w, -h); g.lineTo(w, -h);
+        g.moveTo(-w, h);  g.lineTo(w, h);
+      },
+      stroke: true,
+    },
+
+    /* ---- 3.3.2 Storage subgroup, pages 18-19 ------------------------
+       Implemented from the standard's written descriptions and the
+       silhouette each one is built from, in our own code and keyed by
+       the standard's own mnemonic. No page, figure or drawing from
+       ISA-5.5 is reproduced anywhere in this repository -- see the
+       header. */
+
+    /* "A tank for material stored under atmospheric pressure."
+       A shell with a peaked roof: the roof is the whole distinction,
+       because an atmospheric tank is one that does not have to hold
+       pressure and so does not need a domed head. */
+    ATNK: {
+      w: 2.0, h: 2.4, ports: { in: [-1.0, 0], out: [1.0, 0] },
+      path: (g, s) => {
+        const w = 1.0 * s, h = 0.85 * s, roof = 0.6 * s;
+        g.beginPath();
+        g.moveTo(-w, -h); g.lineTo(0, -h - roof); g.lineTo(w, -h);
+        g.lineTo(w, h); g.lineTo(-w, h);
+        g.closePath();
+      },
+      stroke: true,
+    },
+
+    /* "A container used to store solid or granular material that is
+       discharged from the bottom." Hence the taper: the bottom corners
+       chamfer in to a narrow outlet. */
+    BINN: {
+      w: 2.0, h: 2.4, ports: { in: [-1.0, 0], out: [1.0, 0] },
+      path: (g, s) => {
+        const w = 0.95 * s, h = 1.0 * s, cut = 0.5 * s, out = 0.32 * s;
+        g.beginPath();
+        g.moveTo(-w, -h); g.lineTo(w, -h);
+        g.lineTo(w, h - cut); g.lineTo(out, h);
+        g.lineTo(-out, h); g.lineTo(-w, h - cut);
+        g.closePath();
+      },
+      stroke: true,
+    },
+
+    /* "A tank for liquids with roof of vessel moving up and down with a
+       change in stored volume." The roof is drawn inside the shell,
+       below the rim, which is what says it floats. */
+    FTNK: {
+      w: 2.0, h: 2.2, ports: { in: [-1.0, 0], out: [1.0, 0] },
+      path: (g, s) => {
+        const w = 1.0 * s, h = 0.95 * s, drop = 0.3 * s;
+        g.beginPath();
+        g.moveTo(-w, -h); g.lineTo(-w, h); g.lineTo(w, h); g.lineTo(w, -h);
+        g.moveTo(-w, -h + drop); g.lineTo(w, -h + drop);
+      },
+      stroke: true,
+    },
+
+    /* "A tank for gases with roof of vessel moving up and down with a
+       change in stored volume." Same idea as FTNK and deliberately a
+       different drawing: the bell rises from the bottom, so the inner
+       lines run up from the base rather than across the top. */
+    GHDR: {
+      w: 2.0, h: 2.2, ports: { in: [-1.0, 0], out: [1.0, 0] },
+      path: (g, s) => {
+        const w = 1.0 * s, h = 0.95 * s, inset = 0.22 * s, rise = 0.55 * s;
+        g.beginPath();
+        g.moveTo(-w, -h); g.lineTo(w, -h); g.lineTo(w, h); g.lineTo(-w, h);
+        g.closePath();
+        g.moveTo(-w + inset, h); g.lineTo(-w + inset, h - rise);
+        g.moveTo(w - inset, h);  g.lineTo(w - inset, h - rise);
+      },
+      stroke: true,
+    },
+
+    /* "A pressurized spherical vessel for storage of gases and liquids."
+       A sphere on legs -- the legs are part of the symbol, because a
+       sphere cannot stand on its own and the standard draws them. */
+    PVSL: {
+      w: 2.0, h: 2.6, ports: { in: [-1.0, 0], out: [1.0, 0] },
+      path: (g, s) => {
+        const r = 0.9 * s, leg = 0.55 * s, span = 0.55 * s;
+        g.beginPath();
+        g.arc(0, -0.18 * s, r, 0, Math.PI * 2);
+        g.moveTo(-span, -0.18 * s + r * 0.82); g.lineTo(-span, -0.18 * s + r * 0.82 + leg);
+        g.moveTo(span, -0.18 * s + r * 0.82);  g.lineTo(span, -0.18 * s + r * 0.82 + leg);
+      },
+      stroke: true,
+    },
+
+    /* "A vessel used for weighing material." A funnel slung between two
+       supports: the supports are the weighing, and without them it is
+       just a hopper. */
+    WHPR: {
+      w: 2.0, h: 2.4, ports: { in: [-1.0, 0], out: [1.0, 0] },
+      path: (g, s) => {
+        const w = 1.0 * s, h = 0.9 * s, out = 0.3 * s, neck = 0.45 * s;
+        g.beginPath();
+        g.moveTo(-w, -h); g.lineTo(w, -h);
+        g.lineTo(out, h - neck); g.lineTo(out, h);
+        g.lineTo(-out, h); g.lineTo(-out, h - neck);
+        g.closePath();
+        /* the two supports it hangs from */
+        g.moveTo(-w, -h); g.lineTo(-w, -h + 1.1 * s);
+        g.moveTo(w, -h);  g.lineTo(w, -h + 1.1 * s);
+      },
+      stroke: true,
+    },
+
     VSSL: {
       w: 1.8, h: 2.6, ports: { in: [-0.9, 0], out: [0.9, 0] },
       path: (g, s) => {

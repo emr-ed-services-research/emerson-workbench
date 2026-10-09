@@ -74,7 +74,8 @@ for (let i = 0; i < BEDS; i++) {
   components[tee] = { kind:'tee', axis:'v' };
   components[v]   = { kind:'valve', tag:'HV-' + (i+2), key:'b'+i,
                       valveType:'globe', cv:0.42 };
-  components[pod] = { kind:'vessel', tag:'TK-' + (i+2), role:'sink' };
+  components[pod] = { kind:'vessel', tag:'TK-' + (i+2), role:'sink',
+                      vesselType:'atmospheric' };
   at[tee] = [teeX, y];
   at[v]   = [COL[col], y];
   at[pod] = [POD[col], y];

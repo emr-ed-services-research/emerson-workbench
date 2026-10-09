@@ -228,8 +228,53 @@ check('valves use VLVE',
 check('vessels use VSSL',
       syms.filter(s => s.kind === 'vessel').every(s => s.isa === 'VSSL'));
 
-const needed = Object.keys(LPE.net.ISA_VALVE)
-  .map(k => LPE.net.ISA_VALVE[k]).concat(['VSSL', 'PUMP', 'IMIX']);
+/* Built from the netlist's own maps rather than a list kept by hand --
+   a hand-kept list is a list somebody forgets to extend, which is
+   exactly how six Storage mnemonics went unimplemented without any
+   check noticing. */
+const needed = Object.keys(LPE.net.ISA_VALVE).map(k => LPE.net.ISA_VALVE[k])
+  .concat(Object.keys(LPE.net.ISA_VESSEL).map(k => LPE.net.ISA_VESSEL[k]))
+  .concat(['PUMP', 'IMIX']);
+/* ---- ISA-5.5 3.3.2 Containers and vessels, read 2026-10-09 --------
+   The Storage subgroup on the standard's pages 18-19. Until these were
+   read, every tank in every rig was a generic VSSL. */
+check('a vessel says which of the group it is',
+      LPE.net.ISA_VESSEL.atmospheric === 'ATNK' &&
+      LPE.net.ISA_VESSEL.bin === 'BINN' &&
+      LPE.net.ISA_VESSEL.sphere === 'PVSL' &&
+      LPE.net.ISA_VESSEL['weigh-hopper'] === 'WHPR' &&
+      LPE.net.ISA_VESSEL['floating-roof'] === 'FTNK' &&
+      LPE.net.ISA_VESSEL['gas-holder'] === 'GHDR');
+check('and the Process subgroup is in the same map',
+      LPE.net.ISA_VESSEL.reactor === 'RCTR' &&
+      LPE.net.ISA_VESSEL.tower === 'DTWR' &&
+      LPE.net.ISA_VESSEL.jacketed === 'JVSL');
+check('VSSL is still the default -- the standard calls it the generic one',
+      LPE.net.ISA_VESSEL.vessel === 'VSSL');
+check('an untyped vessel is still VSSL, so nothing already drawn moves',
+      (function () {
+        const s = JSON.parse(JSON.stringify(net.spec));
+        const e = LPE.net(s).toPiping().equipment
+          .filter(x => x.kind === 'vessel');
+        return e.length > 0 && e.every(x => x.isa === 'VSSL');
+      })());
+check('a vessel typed atmospheric emits ATNK and draws it',
+      (function () {
+        const s = JSON.parse(JSON.stringify(net.spec));
+        s.components.pod0.vesselType = 'atmospheric';
+        const n2 = LPE.net(s);
+        const p2 = LPE.schem.plan(n2);
+        return n2.errors.length === 0 && p2.warnings.length === 0 &&
+               p2.ops.some(o => o.op === 'symbol' && o.isa === 'ATNK');
+      })());
+check('an unknown vesselType falls back to the generic rather than vanishing',
+      (function () {
+        const s = JSON.parse(JSON.stringify(net.spec));
+        s.components.pod0.vesselType = 'not-a-real-kind';
+        return LPE.net(s).toPiping().equipment
+          .filter(x => x.id === 'pod0')[0].isa === 'VSSL';
+      })());
+
 const missing = needed.filter(m => !LPE.schem.SYMBOLS[m]);
 check('a symbol exists for every mnemonic the netlist can emit',
       missing.length === 0, 'missing: ' + missing.join(', '));
