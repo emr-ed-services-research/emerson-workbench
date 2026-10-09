@@ -854,13 +854,65 @@ next to a 13-px bore. Same shapes, drawn properly.
 layout engine with no consumer is a guess that then has to be maintained. Same call as
 faults in Phase 4. When a second bay exists, it is a frame.
 
+### Round two — DONE 2026-10-09
+
+**The webfont question has a house answer, and it is not a webfont.** Style Guide §2.1:
+Arial is the theme's own major *and* minor font — "this is not a substitution, it is what
+the brand uses" — and DTL Argo T is Emerson's licensed display face, an optional
+`@font-face` with an acceptable Arial fallback. That answer is better than a fetched one
+for this surface: a board on a plant floor or an air-gapped machine must render the same
+with no network. It also holds on the merits — Arial measures **tabular**, all ten digits
+exactly 10.567 px at 19 px, so a readout does not twitch as its digits change. The display
+face is wired the way the engine wires it; the licensed file is not in the vault, so the
+fallback runs.
+
+**`faceLoaded()` measures instead of asking.** `document.fonts.check` returned true for
+`"Inter"` when Inter had never loaded, and true for `"DTL Argo T"` with no font file
+anywhere in the vault. A face that renders identically to its fallback **is** the
+fallback, so the probe compares widths. It reports DTL Argo T absent, correctly.
+
+**Flowing but off-target now shows on the line.** Before, only the readout cautioned —
+which means reading numbers to find the bad branch, on a board whose whole job is to not
+need that. The treatment is the Style Guide's rather than taste: §3.2 keeps blue as "the
+real thing", the measured quantity, and gives orange to "a semantic region or bracket",
+with a span feature drawn as an orange bracket rather than an orange version of the
+measured thing. So the pipe stays blue — it genuinely is flowing — and a capped orange
+rule runs alongside the span that is out of band.
+
+**Density probed at 26 tags.** `skins-density.html` is a twelve-bed header: 26 tagged
+components, 13 readouts, same skin and same core. The normal state is clean — nothing
+collides, everything reads. With three beds drifting, those three are findable instantly
+across the whole board without reading a number: paler line, orange bracket, orange
+value. The design holds at that density.
+
+It also found three real defects, two of them in shipped code:
+
+- **The dynamics layer went silent on a net with nothing to solve.** It errors on *more*
+  than one unknown pressure node and said nothing about *none*. The density header ran
+  into a drain with no valve, which pins the whole manifold to atmosphere; every reading
+  came back zero and the board was indistinguishable from a rig nobody had opened. Now
+  named, with the fix in the message — a real header ends in a drain valve, not an open
+  pipe. A check in `dynamics.test.js` had been asserting the silent behaviour was correct.
+- **`fit()` sized the backing store from the width it asked for, not the width it got.**
+  `style.width` sets the content box; a 1 px border moves the real one, leaving 909
+  against 911 — still resampling, just subtly. It reads the width back off the element
+  now. Verified `pixelExact: true` at both 727 and 1180 CSS px.
+- **`fit()` also measured a canvas the page had not sized**, got the 300 px attribute
+  default, and locked a 1180-wide board to a thumbnail while reporting success. It
+  measures the parent's content box and clamps to the logical width.
+
 #### What a further pass would still want
 
-Real art direction is iterative and this is one round of it. Honestly outstanding: a
-chosen webfont rather than a system stack; vessel symbols that read as vessels at board
-scale rather than as rounded rectangles; a considered treatment for a line that is
-*flowing but off-target* (today the line colours by rate and only the readout cautions);
-and a view of what happens when a board carries thirty tags instead of four.
+Real art direction is iterative and this is two rounds of it. Honestly outstanding:
+
+- **Vessel symbols that read as vessels at board scale** rather than as rounded
+  rectangles. This is **blocked on a source, not on effort**: VSSL is ISA-5.5's generic
+  vessel, and redrawing it would be inventing symbology. The grounded fix is the
+  standard's own Storage subgroup — Atmospheric Tank, Pressure Storage Vessel and the
+  rest — on pages 18-19, which have never been read. That needs Fishweb access.
+- A licensed **DTL Argo T** file, if the display face is wanted.
+- What a board does beyond ~30 tags, where two columns stop being enough and it genuinely
+  needs a layout engine.
 
 ---
 
