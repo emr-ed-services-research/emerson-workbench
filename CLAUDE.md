@@ -39,7 +39,7 @@ chrome  >  scenario  >  dynamics  >  schem-view | phys-view  >  netlist  >  regi
 |---|---|
 | `00 - Project` | Charter, architecture, pipeline, style guide, philosophy. **Start here.** |
 | `10 - Courses` | One folder per course |
-| `20 - Source Library` | Handbooks, IOMs, the Component Index, Interactive Models |
+| `20 - Source Library` | Handbooks, IOMs, the Component Index, Interactive Models, and the **Standards Register** |
 | `25 - Vitruvius` | The expert-engineer persona the CVE pipeline reasons through, plus its findings ledger. Scoped to CVE1→CVE2→CVE-Industry, **not** department-wide |
 | `30 - Templates` | Obsidian note templates (not code) |
 | `40 - Engine` | The shared course runtime. Courses **vendor** a built copy + lock file |
@@ -63,6 +63,11 @@ These exist because each one has already gone wrong.
    real source — an IOM, a handbook, an ISA standard, the Source Library. This applies to
    schematic and symbolic conventions exactly as strictly as to mechanical geometry. If
    you cannot source it, say so instead of producing it.
+
+   **Citing a standard is an id and a locator — `ISA-5.5 §3.3.2` — and nothing more.**
+   The reasoning, the edition, whether we even hold it, and what rests on it live once in
+   `20 - Source Library/Standards/`. Every citation must resolve to an entry there; the
+   check fails otherwise. An honest entry saying "never read" beats no entry.
 
 2. **Find the authoritative file before reusing artwork.** Read the folder's own README or
    pipeline doc first. The nearest-looking export is routinely a stale pre-refinement
@@ -94,6 +99,7 @@ These exist because each one has already gone wrong.
 | Lunar Process Engineer | `cd "50 - Lunar Process Engineer" && node build.js` — builds `dist/` and runs every check |
 | Process Core | `cd "45 - Process Core" && node test.js`; `node vendor.js "../50 - Lunar Process Engineer"` after a change |
 | A course | `40 - Engine/build-course.ps1`, then `40 - Engine/verify.ps1` |
+| Standards Register | `node "20 - Source Library/Standards/check-standards.js"` — add `--list` for the inventory, `--write` to refresh `used-by` |
 | Source PDFs | Poppler at `C:\Users\E1552882\poppler\poppler-26.02.0\Library\bin\` |
 
 `file://` will not load the LPE build — serve `dist/` over HTTP.
@@ -111,6 +117,7 @@ These exist because each one has already gone wrong.
 | How should it teach? | `00 - Project/teaching-philosophy.md` |
 | What is the engine? | `40 - Engine/README.md` |
 | What is the Process Core? | `45 - Process Core/README.md` |
+| What standard backs this claim? | `20 - Source Library/Standards/README.md` |
 
 ---
 
