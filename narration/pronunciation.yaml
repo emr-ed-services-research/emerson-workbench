@@ -6,7 +6,7 @@
 rules:
   # model numbers
   - match: "657"
-    say: "six fifty-seven"
+    say: "six five seven"
   - match: "667"
     say: "six sixty-seven"
 
@@ -31,6 +31,8 @@ rules:
     say: "three quarters of an inch"
   - match: "3/4 in."
     say: "three quarters of an inch"
+  - match: "1-1/8 inch"
+    say: "one and one eighth inch"
 
   # tricky words (Chatterbox read "actuator" as "acsuator"; Franz picked
   # this respelling from a three-way test, 2026-09-25)

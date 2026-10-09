@@ -1,5 +1,12 @@
 # Narration pipeline — setup notes
 
+**PENDING (2026-09-26): Franz will personally rewrite the Spring
+Verification and Stem Connector sections of `657-bench-set-travel.md` in
+the same voice as his mechanism-first opening (the current procedure text
+is CLI-drafted and approved only as a placeholder). Do not regenerate or
+polish those sections until his rewrite lands; then full regen + beat
+re-map.**
+
 **Status (2026-09-25):** COMPLETE for the 657 module. Franz approved the
 final narration (2:40, 20 segments) after two pronunciation fixes and two
 script edits. Deliverables: `output/657/657-narration.wav`, `timing.json`,

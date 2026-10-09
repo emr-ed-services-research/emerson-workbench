@@ -17,6 +17,13 @@ Pipeline contract (see the task spec):
    only to the text sent to the model
  - markdown headings are section markers, not narration; every non-heading
    paragraph is a segment, split further at sentence boundaries if long
+ - a paragraph containing only "---" is a beat marker, not narration: it
+   inserts BEAT_PAUSE_S before the next segment instead of the normal
+   PAUSE_S, for a deliberate theatrical pause mid-section (added
+   2026-09-30, Franz: "take a long beat wherever needed to make the
+   pacing strong" -- a real pause needs real silence in the audio, not
+   just a later cue in the animation code; this gives the script author
+   that control directly in the source without inventing a new section)
  - per-segment wavs land in narration/output/<module>/NN.wav, concatenated
    to narration/output/<module>/<module>-narration.wav with short pauses,
    with segment timings in timing.json for animation sync
@@ -29,6 +36,8 @@ HERE = Path(__file__).parent
 REPO = HERE.parent
 PAUSE_S = 0.45          # natural pause between segments
 SECTION_PAUSE_S = 0.9   # longer pause at a section (heading) boundary
+BEAT_PAUSE_S = 1.5      # deliberate pause requested via a "---" marker paragraph
+BEAT_MARKER = "---"
 MAX_SEG_CHARS = 260     # split longer paragraphs at sentence boundaries
 
 # ---------------------------------------------------------------- text prep
@@ -61,9 +70,13 @@ def parse_script(path):
         lines = part.splitlines()
         section = lines[0].strip()
         first_in_section = True
+        pending_beat = False
         for para in re.split(r'\n\s*\n', "\n".join(lines[1:])):
             para = " ".join(para.split())
             if not para: continue
+            if para == BEAT_MARKER:
+                pending_beat = True
+                continue
             chunks, cur = [], ""
             for s in split_sentences(para):
                 if cur and len(cur) + len(s) + 1 > MAX_SEG_CHARS:
@@ -71,10 +84,12 @@ def parse_script(path):
                 else:
                     cur = (cur + " " + s).strip()
             if cur: chunks.append(cur)
-            for c in chunks:
+            for i, c in enumerate(chunks):
                 segments.append({"text": c, "section": section,
-                                 "new_section": first_in_section})
+                                 "new_section": first_in_section,
+                                 "beat": pending_beat and i == 0})
                 first_in_section = False
+            pending_beat = False
     return segments
 
 # ---------------------------------------------------------------- ref check
@@ -210,7 +225,8 @@ def main():
         if not f.exists(): sys.exit(f"missing {f} — generate all segments first")
         wav, wsr = ta.load(str(f))
         dur = wav.shape[-1] / wsr
-        pause = SECTION_PAUSE_S if seg["new_section"] and i > 0 else PAUSE_S
+        pause = (SECTION_PAUSE_S if seg["new_section"] and i > 0
+                 else BEAT_PAUSE_S if seg.get("beat") else PAUSE_S)
         if i > 0:
             pieces.append(torch.zeros(wav.shape[0], int(pause * wsr)))
             cursor += pause
