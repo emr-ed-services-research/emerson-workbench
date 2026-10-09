@@ -13,7 +13,7 @@
   figure { margin:0; }
   figcaption { padding:8px 2px; color:#7d8a92; line-height:1.5; }
   figcaption b { color:#c8d2d6; font-weight:600; }
-  canvas { width:100%; height:auto; display:block; border:1px solid #2a3238; }
+  canvas { display:block; border:1px solid #2a3238; max-width:100%; }
   .controls { padding:4px 24px 22px; display:flex; gap:22px; flex-wrap:wrap;
               align-items:center; }
   label { display:flex; gap:8px; align-items:center; color:#7d8a92; }
@@ -39,16 +39,18 @@
   <figure>
     <canvas id="modern" width="900" height="400"></canvas>
     <figcaption><b>Modern</b> &mdash; EMERSON palette per the Style Guide
-    &sect;3.2: blue is the measured, actually-flowing quantity; grey is
-    there-but-not-the-subject. Light ground, colour held in reserve.</figcaption>
+    &sect;3.2. Blue is the measured, actually-flowing quantity; grey is
+    there-but-not-the-subject; orange is caution, and appears nowhere
+    else, so one off-target reading cannot be missed. Device-pixel exact.
+    Try shutting a bed.</figcaption>
   </figure>
 </div>
 
 <div class="controls">
   <label>MAIN <input type="range" id="main" min="0" max="1" step="0.01" value="1">
     <span class="val" id="vmain">100%</span></label>
-  <label>BED 1 <input type="range" id="b0" min="0" max="1" step="0.01" value="1">
-    <span class="val" id="vb0">100%</span></label>
+  <label>BED 1 <input type="range" id="b0" min="0" max="1" step="0.01" value="0.5">
+    <span class="val" id="vb0">50%</span></label>
   <label>BED 2 <input type="range" id="b1" min="0" max="1" step="0.01" value="0.5">
     <span class="val" id="vb1">50%</span></label>
   <label>BED 3 <input type="range" id="b2" min="0" max="1" step="0.01" value="1">
@@ -128,20 +130,20 @@ const NET = LPE.net({
        a frame is a layout, so where a number will go is a frame
        decision, not something the renderer gets to discover too late. */
     board: { pxPerInch: PX, round: 1, at: {
-      reservoir:[60,110], union1:[140,110], vMain:[200,110],
-      tee0:[310,190], tee1:[310,265],
-      v0:[440,190], v1:[440,265], v2:[440,340],
-      red:[[570,340],[640,340]],
-      pod0:[720,190], pod1:[720,265], pod2:[720,340] },
-      via:{ 'vMain.out->tee0.in':[[310,110]],
-            'tee1.out->v2.in':[[310,340]] } },
+      reservoir:[62,118], union1:[140,118], vMain:[200,118],
+      tee0:[306,186], tee1:[306,250],
+      v0:[432,186], v1:[432,250], v2:[432,314],
+      red:[[556,314],[620,314]],
+      pod0:[700,186], pod1:[700,250], pod2:[700,314] },
+      via:{ 'vMain.out->tee0.in':[[306,118]],
+            'tee1.out->v2.in':[[306,314]] } },
   },
 });
 if (NET.errors.length) document.body.insertAdjacentHTML('afterbegin',
   '<pre style="color:#e06c5a;padding:18px">' + NET.errors.join('\n') + '</pre>');
 
 const DYN = LPE.dyn(NET, { tau: 0.22 });
-const valves = { main:1, b0:1, b1:0.5, b2:1 };
+const valves = { main:1, b0:0.5, b1:0.5, b2:1 };   // the commissioned state
 
 /* ---- the 1990s skin: the game's pipework + its schematic theme ------ */
 const RIGNET = LPE.piping(NET.toPiping());
@@ -155,8 +157,27 @@ const RETRO_SCHEM = {
 const BOARD = NET.inFrame('board');
 const MODERN = LPE.skins.modern;
 
+/* High-DPI. fit() sizes the backing store to CSS x devicePixelRatio and
+   scales the context once, so a hairline lands on a real device pixel
+   instead of being resampled. Before this the modern board was a 900-wide
+   buffer shown at 737 CSS px on a 1.25 display -- soft, for no reason. */
 const rc = document.getElementById('retro').getContext('2d');
-const mc = document.getElementById('modern').getContext('2d');
+const MFIT = LPE.skins.modern.fit(document.getElementById('modern'), 900, 400);
+const mc = MFIT.g;
+
+/* WHAT COUNTS AS OFF-TARGET is the plant's business, not the skin's, so
+   it is declared here.
+   A limit that cannot be met is a bad limit. sizing.js designs the bay
+   for 2.0 gpm a bed, but the reducer spliced into bay 3 caps it near
+   1.5 and the other two balance down to meet it -- which is level 1's
+   closing lesson, not a fault. So the band is the COMMISSIONED duty the
+   bay can actually hold, not the paper design it cannot. */
+const LIMITS = {
+  'TK-2': { target: 1.5, tol: 0.25 },
+  'TK-3': { target: 1.5, tol: 0.25 },
+  'TK-4': { target: 1.5, tol: 0.25 },
+  MANIFOLD: { target: 33, tol: 8 },
+};
 
 function frame() {
   const S = DYN.step(1/60, valves);
@@ -172,9 +193,13 @@ function frame() {
   rc.restore();
 
   /* --- right: the modern look, same model, different frame --- */
-  const bplan = LPE.schem.plan(BOARD, { state: valves, scale: 15 });
-  MODERN.draw(mc, { net: BOARD, plan: bplan, width: 900, height: 400,
-                    solved: S, fullFlow: 3.5, time: performance.now()/1000 });
+  /* labelBy:'tag' -- a board captions HV-1, not the solver's own b0. */
+  const bplan = LPE.schem.plan(BOARD, { state: valves, scale: 17, labelBy: 'tag' });
+  MODERN.draw(mc, { net: BOARD, plan: bplan, width: MFIT.w, height: MFIT.h,
+                    solved: S, fullFlow: 3.5, limits: LIMITS,
+                    title: 'BIO-GROW BAY 3',
+                    subtitle: 'IRRIGATION MANIFOLD',
+                    time: performance.now()/1000 });
 
   document.getElementById('readout').textContent =
     'manifold ' + S.pressure.toFixed(1) + ' psig   |   beds ' +

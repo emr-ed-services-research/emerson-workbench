@@ -177,6 +177,25 @@ check('level 1 bay 3 reads as one run through the reducer', (function () {
          JSON.stringify(ls[0].pts) === JSON.stringify([[30, 342], [812, 342]]);
 })());
 
+/* A board captions with the tag; a game level captions with the solver's
+   own name, because that is what its own instructions say. Neither is
+   more correct, so the display chooses. */
+check('captions with the solver name by default',
+      LPE.schem.plan(net).ops.filter(o => o.op === 'symbol')
+        .some(s => s.label === 'main'));
+check('labelBy tag captions with the tag instead',
+      (function () {
+        const s = LPE.schem.plan(net, { labelBy: 'tag' })
+          .ops.filter(o => o.op === 'symbol');
+        return s.some(x => x.label === 'HV-1') && !s.some(x => x.label === 'main');
+      })());
+check('a tagged vessel captions too, not just valves',
+      LPE.schem.plan(net, { labelBy: 'tag' }).ops
+        .filter(o => o.op === 'symbol').some(s => s.label === 'TK-2'));
+check('labelBy id falls back to the map key',
+      LPE.schem.plan(net, { labelBy: 'id' }).ops
+        .filter(o => o.op === 'symbol').some(s => s.label === 'vMain'));
+
 /* ISA-5.5 3.3.1: "use line breaks to indicate that the lines do not
    join... a usual convention is to break the vertical line." */
 const crossNet = LPE.net({

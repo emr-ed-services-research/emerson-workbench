@@ -33,6 +33,23 @@
    itself cover. Nothing invents a colour -- section 3.4, "no non-token
    colour".
 
+   TYPE is decided, not defaulted. One face, a four-step scale, and
+   weights chosen per role -- see TYPE below. The face is a STACK OF
+   FONTS THAT ARE ACTUALLY INSTALLED, not a webfont: canvas silently
+   falls back when a face has not loaded, with no error and no visible
+   failure beyond slightly wrong metrics, and an earlier pass of this
+   file specified "Inter" while measuring identically to Segoe UI --
+   it had never loaded once. A consumer that genuinely has a webfont
+   can pass its own `face`, and should await document.fonts.ready
+   before the first paint.
+
+   ABNORMAL STATES are the point of holding saturation in reserve. In
+   the normal state almost nothing on this board is coloured, so one
+   orange reading is impossible to miss. Orange is the Style Guide's
+   caution (section 3.2). THE SKIN DOES NOT DECIDE WHAT IS ABNORMAL --
+   the consumer passes limits, because what counts as off-target is a
+   fact about the plant and its design duty, not about the picture.
+
    GROUND is light, not dark. Modern high-performance HMI practice moved
    off the dark CRT-era ground: a light neutral with low-saturation
    equipment, keeping saturation in reserve so that when something IS
@@ -76,24 +93,51 @@
   const GRID      = mix(EMERSON.white, EMERSON.charcoal, 0.10);  // reference
   const PIPE_EDGE = mix(EMERSON.white, EMERSON.charcoal, 0.30);  // the wall
 
-  /* One face for the whole surface, with real fallbacks -- a board that
-     silently drops to Times because a webfont did not load is not a board
-     anybody will trust. */
-  const FACE = '"Inter", "Segoe UI", system-ui, -apple-system, sans-serif';
+  /* Faces that exist on the machines this runs on. No webfont: see the
+     header. Tabular figures matter on a board -- a readout that shifts
+     width as digits change is a readout that twitches. */
+  const FACE = '"Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
+  const FACE_NUM = '"Segoe UI Variable Display", "Segoe UI", system-ui, ' +
+                   '-apple-system, "Helvetica Neue", Arial, sans-serif';
+
+  /* THE TYPE SCALE. Four steps, decided once. A board has exactly four
+     jobs for type and no more: name the board, name a thing, state a
+     value, and mark a unit or an axis. Anything that wants a fifth size
+     is usually a thing that should not be on the board. */
+  const TYPE = {
+    display: { size: 15, weight: 600, face: FACE,     track: 0.06 },  // the board's own name
+    tag:     { size: 10, weight: 600, face: FACE,     track: 0.08 },  // HV-1, TK-2
+    value:   { size: 19, weight: 600, face: FACE_NUM, track: 0    },  // 2.61
+    unit:    { size: 10, weight: 500, face: FACE,     track: 0.02 },  // gpm, psig
+  };
+  const font = r => r.weight + ' ' + r.size + 'px ' + r.face;
+
+  /* Canvas has no letter-spacing before Chrome 99 and none at all in
+     some engines, so tracking is drawn rather than declared. Only used
+     on short strings -- a tag or a board name -- where it is the
+     difference between a label and a caption. */
+  function tracked(g, s, x, y, px) {
+    if (!px) { g.fillText(s, x, y); return g.measureText(s).width; }
+    let cx = x;
+    for (const ch of s) { g.fillText(ch, cx, y); cx += g.measureText(ch).width + px; }
+    return cx - x - px;
+  }
+  const trackedWidth = (g, s, px) =>
+    g.measureText(s).width + (px ? px * (s.length - 1) : 0);
 
   /* ---- the schematic, modern ----------------------------------------
      A theme for the schem-view layer. Same six roles it names; different
      answers. Nothing below chrome changes, which is the claim. */
   const SCHEM = {
     line:        EQUIPMENT,
-    lineWidth:   1.5,
+    lineWidth:   1.75,
     symbol:      EMERSON.charcoal,
-    symbolWidth: 1.5,
+    symbolWidth: 2.25,
     fill:        EMERSON.charcoal,
     ground:      PANEL,
     gap:         PANEL,
     label:       EMERSON.grey,
-    labelFont:   '500 11px ' + FACE,
+    labelFont:   font(TYPE.tag),
   };
 
   /* ---- the pipework, modern ------------------------------------------
@@ -217,44 +261,157 @@
     });
   }
 
+  /* ---- abnormal ------------------------------------------------------
+     The skin does not decide what is off-target. A consumer passes
+     `limits: { 'TK-2': {target: 2.0, tol: 0.3} }`, because design duty is
+     a fact about the plant and not about the picture -- the same rule
+     that keeps colours out of the model keeps limits out of the skin.
+
+     Orange is the Style Guide's caution (section 3.2), and it appears
+     nowhere else on this board. That is the whole reason it works: in
+     the normal state the surface is grey and blue, so one orange reading
+     cannot be missed and nothing has to flash to earn attention. */
+  function statusOf(value, limit) {
+    if (!limit || limit.target === undefined) return 'normal';
+    const tol = limit.tol === undefined ? 0 : limit.tol;
+    return Math.abs(value - limit.target) > tol ? 'caution' : 'normal';
+  }
+
   /* ---- a value, where the thing it describes is -----------------------
      An operator graphic puts the number on the plant, not in a table off
-     to one side. Tag small and grey -- secondary; value larger and
-     charcoal -- the subject; unit smaller again. */
-  function readout(g, x, y, tag, value, unit, live) {
+     to one side. Three steps of the scale, in the order the eye wants
+     them: the value is the subject and is biggest; the tag says which
+     thing, small and tracked so it reads as a label rather than a word;
+     the unit is smallest and grey because nobody is hunting for it.
+
+     Returns its own width, so a caller lays out around it instead of
+     guessing. */
+  function readout(g, x, y, tag, value, unit, opts) {
+    const o = opts || {};
+    const status = o.status || 'normal';
+    const live = o.live !== false;
+
     g.textAlign = 'left'; g.textBaseline = 'alphabetic';
+
+    g.font = font(TYPE.tag);
     g.fillStyle = EMERSON.grey;
-    g.font = '500 10px ' + FACE;
-    g.fillText(tag, x, y - 11);
-    g.fillStyle = live ? EMERSON.blue : mix(EMERSON.white, EMERSON.charcoal, 0.45);
-    g.font = '600 17px ' + FACE;
-    const s = value;
-    g.fillText(s, x, y + 5);
-    const wv = g.measureText(s).width;
+    tracked(g, tag, x, y - 13, TYPE.tag.track * TYPE.tag.size);
+
+    g.font = font(TYPE.value);
+    g.fillStyle = status === 'caution' ? EMERSON.orange
+                : live ? EMERSON.blue
+                : mix(EMERSON.white, EMERSON.charcoal, 0.42);
+    g.fillText(value, x, y + 6);
+    const wv = g.measureText(value).width;
+
+    g.font = font(TYPE.unit);
     g.fillStyle = EMERSON.grey;
-    g.font = '500 10px ' + FACE;
-    g.fillText(unit, x + wv + 5, y + 5);
+    g.fillText(unit, x + wv + 5, y + 6);
+    const wu = g.measureText(unit).width;
+
+    /* A caution gets a rule under it, not a flash. A rule survives a
+       photograph, a projector and colour-blindness; a blink survives
+       none of those, and is the first thing an operator learns to
+       ignore. */
+    if (status === 'caution') {
+      g.fillStyle = EMERSON.orange;
+      g.fillRect(x, y + 12, wv + 5 + wu, 2);
+    }
+    g.font = font(TYPE.tag);
+    return Math.max(wv + 5 + wu,
+                    trackedWidth(g, tag, TYPE.tag.track * TYPE.tag.size));
+  }
+
+  /* ---- board furniture ------------------------------------------------
+     What makes this a board rather than a drawing: it says what it is,
+     and it says what its colours mean. A legend is not decoration on a
+     surface whose entire alarm vocabulary is "one thing went orange". */
+  function chrome(g, w, h, o) {
+    const pad = 18;
+    g.textBaseline = 'alphabetic';
+
+    if (o.title) {
+      g.textAlign = 'left';
+      g.font = font(TYPE.display);
+      g.fillStyle = mix(EMERSON.white, EMERSON.charcoal, 0.86);
+      tracked(g, o.title, pad, pad + 12, TYPE.display.track * TYPE.display.size);
+    }
+    if (o.subtitle) {
+      g.textAlign = 'right';
+      g.font = font(TYPE.unit);
+      g.fillStyle = EMERSON.grey;
+      g.fillText(o.subtitle, w - pad, pad + 12);
+    }
+    /* A hairline under the header, so the plant sits in a field rather
+       than floating on the page. */
+    g.strokeStyle = HAIRLINE;
+    g.lineWidth = 1;
+    g.beginPath();
+    g.moveTo(pad, pad + 24.5); g.lineTo(w - pad, pad + 24.5);
+    g.stroke();
+
+    if (o.legend !== false) {
+      g.textAlign = 'left';
+      g.font = font(TYPE.unit);
+      let lx = pad;
+      const key = [['FLOWING', EMERSON.blue], ['NO FLOW', HAIRLINE],
+                   ['OFF TARGET', EMERSON.orange]];
+      for (let i = 0; i < key.length; i++) {
+        g.fillStyle = key[i][1];
+        g.fillRect(lx, h - pad - 7, 14, 3);
+        g.fillStyle = EMERSON.grey;
+        g.fillText(key[i][0], lx + 20, h - pad - 2);
+        lx += 20 + g.measureText(key[i][0]).width + 22;
+      }
+    }
+  }
+
+  /* ---- high-DPI -------------------------------------------------------
+     A 900-wide backing store shown at 737 CSS pixels on a 1.25 display is
+     resampled -- it was, before this. Size the backing to CSS times
+     devicePixelRatio and scale the context once, and every hairline lands
+     on a real device pixel.
+
+     The consumer owns the element so the consumer calls this; it lives
+     here because every consumer needs exactly these six lines. */
+  function fit(canvas, logicalW, logicalH) {
+    const dpr = (typeof window !== 'undefined' && window.devicePixelRatio) || 1;
+    /* MEASURE, do not impose. An earlier cut set style.width to the
+       logical width and the page's own `max-width:100%` clamped it
+       straight back -- leaving a 1125-wide buffer shown at 729 CSS px,
+       which is exactly the resampling this function exists to remove,
+       while reporting success. The element's width belongs to the page;
+       only the aspect and the backing store belong here. */
+    const cssW = (canvas.getBoundingClientRect().width) || logicalW;
+    const cssH = cssW * logicalH / logicalW;
+    canvas.style.height = cssH + 'px';
+    canvas.width  = Math.round(cssW * dpr);
+    canvas.height = Math.round(cssH * dpr);
+    const g = canvas.getContext('2d');
+    /* One transform, so a caller still draws in logical coordinates and
+       never thinks about any of this. */
+    const s = (cssW * dpr) / logicalW;
+    g.setTransform(s, 0, 0, s, 0, 0);
+    return { g: g, w: logicalW, h: logicalH, dpr: dpr, scale: s };
   }
 
   /* ---- the surface ----------------------------------------------------
-     Paints a netlist in the modern skin. Equipment GEOMETRY is never
-     redrawn here -- the schem-view layer owns it and this file only says
-     what colour it is. Everything else is presentation: ground, grid,
-     pipe material, flow, and the numbers an operator would want. */
+     Equipment GEOMETRY is never drawn here -- the schem-view layer owns
+     it and this file only says what colour and what weight. Everything
+     else is presentation. */
   function draw(g, opts) {
     const o = opts || {};
     const net = o.net, plan = o.plan;
     const w = o.width, h = o.height;
     const solved = o.solved || { q: {}, qTot: 0, pressure: 0 };
     const full = o.fullFlow || 3.5;
+    const limits = o.limits || {};
     const t = o.time || 0;
 
     g.save();
     g.fillStyle = GROUND;
     g.fillRect(0, 0, w, h);
 
-    /* A quiet grid: reference, not decoration. Grey is "secondary", and a
-       grid that competes with the plant is a grid drawn too dark. */
     if (o.grid !== false) {
       g.strokeStyle = GRID;
       g.lineWidth = 1;
@@ -264,51 +421,68 @@
       g.stroke();
     }
 
-    /* Pipe, then the fluid in it. Both from the plan's own line ops, so
-       the geometry is the core's and this only decides how it looks. */
     const runs = lineFlows(net, plan, solved);
-    const bore = o.bore || 11;
-    for (const r of runs) runPipe(g, r.pts, bore, flowColour(r.q, full));
-    for (const r of runs) runFlow(g, r.pts, bore, r.q, full, t);
+    const bore = o.bore || 13;
+    for (let i = 0; i < runs.length; i++) {
+      runPipe(g, runs[i].pts, bore, flowColour(runs[i].q, full));
+    }
+    for (let i = 0; i < runs.length; i++) {
+      runFlow(g, runs[i].pts, bore, runs[i].q, full, t);
+    }
     g.restore();
 
-    /* Equipment: drawn by the schem-view layer, in this skin's colours.
-       Its line ops are already painted, so only the symbols are wanted. */
-    LPE.schem.draw(g, { ops: plan.ops.filter(op => op.op !== 'line'),
-                        bounds: plan.bounds, scale: plan.scale },
-                   Object.assign({}, SCHEM, { ground: null }));
+    /* A thing is named once. Anything that gets a readout below already
+       carries its tag there, so its symbol caption is dropped -- two
+       "TK-2"s a centimetre apart is not emphasis, it is noise. */
+    const named = {};
+    if (o.readouts !== false) {
+      for (const id of Object.keys(net.components)) {
+        const c = net.components[id];
+        if (c.tag && c.kind === 'vessel' && c.role === 'sink') named[c.tag] = true;
+      }
+    }
+    LPE.schem.draw(g, {
+      ops: plan.ops.filter(function (op) { return op.op !== 'line'; })
+                   .map(function (op) {
+                     return named[op.label] ? Object.assign({}, op, { label: null }) : op;
+                   }),
+      bounds: plan.bounds, scale: plan.scale },
+      Object.assign({}, SCHEM, { ground: null }));
 
-    /* The numbers, on the plant.
-
-       A sink's flow is NOT solved.q[its tag] -- see flowInto above. */
     if (o.readouts !== false) {
       g.save();
-      const arriving = (c) => flowInto(net, c.id, solved);
       for (const id of Object.keys(net.components)) {
         const c = net.components[id];
         if (!c.tag || !c.at) continue;
         if (c.kind === 'vessel' && c.role === 'sink') {
-          const q = arriving(c);
+          const q = flowInto(net, c.id, solved);
           if (q === null) continue;
-          readout(g, c.at[0] + 24, c.at[1] + 2, c.tag, q.toFixed(2), 'gpm', q > 0.001);
+          readout(g, c.at[0] + 26, c.at[1] + 2, c.tag, q.toFixed(2), 'gpm',
+                  { live: q > 0.001, status: statusOf(q, limits[c.tag]) });
         }
       }
-      /* Manifold pressure, against the valve that sets it. */
-      const src = Object.keys(net.components)
-        .map(k => net.components[k])
-        .filter(c => c.kind === 'valve' && c.cv !== undefined)[0];
+      const src = Object.keys(net.components).map(function (k) { return net.components[k]; })
+        .filter(function (c) { return c.kind === 'valve' && c.cv !== undefined; })[0];
       if (src && src.at && solved.pressure !== undefined) {
-        readout(g, src.at[0] - 34, src.at[1] - 34, 'MANIFOLD',
-                solved.pressure.toFixed(1), 'psig', solved.pressure > 0.1);
+        readout(g, src.at[0] - 36, src.at[1] - 42, 'MANIFOLD',
+                solved.pressure.toFixed(1), 'psig',
+                { live: solved.pressure > 0.1,
+                  status: statusOf(solved.pressure, limits.MANIFOLD) });
       }
       g.restore();
     }
+
+    if (o.chrome !== false) { g.save(); chrome(g, w, h, o); g.restore(); }
   }
+
   LPE.skins = LPE.skins || {};
   LPE.skins.modern = {
     EMERSON, GROUND, PANEL, HAIRLINE, EQUIPMENT, GRID, PIPE_EDGE, FACE,
     schem: SCHEM, pipe: PIPE,
-    flowColour, lineFlows, runPipe, runFlow, readout, draw, mix,
+    TYPE: TYPE, font: font, tracked: tracked,
+    flowColour: flowColour, lineFlows: lineFlows,
+    runPipe: runPipe, runFlow: runFlow, readout: readout,
+    chrome: chrome, statusOf: statusOf, fit: fit, draw: draw, mix: mix,
   };
 
 })(typeof window !== 'undefined'

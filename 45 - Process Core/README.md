@@ -174,9 +174,12 @@ black. `ground` may be `null` for "paint none", but it has to be said.
 That is what lets one plan render as 1990s pixel art and as a modern view. A default in
 the model would quietly become the model.
 
-`skins/modern.js` is the second skin: the EMERSON palette used with the Style Guide's own
-semantic roles (§3.2 — blue is the measured quantity, grey is secondary), on a light
-ground the way modern high-performance HMI does it. See
+`skins/modern.js` is the second skin, and the one that had the production art pass:
+a four-step type scale, caution states the **consumer** declares via `limits` (design duty
+is a fact about the plant, not the picture), `fit()` for device-pixel rendering, and board
+furniture. It uses the EMERSON palette with the Style Guide's own semantic roles
+(§3.2 — blue is the measured quantity, grey is secondary, orange is caution and appears
+nowhere else), on a light ground the way modern high-performance HMI does it. See
 `50 - Lunar Process Engineer/skins-preview.html` for both at once, driven by one solve.
 
 ## Known debt

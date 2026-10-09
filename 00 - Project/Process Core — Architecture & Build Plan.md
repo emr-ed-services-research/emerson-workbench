@@ -10,8 +10,10 @@ proven bit-identical to the solver it replaced; a scenario format a non-coder ca
 that runs headless; and two skins over all of it.
 
 Phase 5b delivered a credible modern renderer and the boundary that makes more of them
-cheap. **A production art pass is its own project** — see the note at the end of §9.
-**Date:** 2026-10-09 (rev. 10 — ALL PHASES COMPLETE)
+cheap, and the **production art pass** on top of it is done too — type scale, abnormal
+states, device-pixel rendering and board furniture. See the end of §9 for what it
+deliberately did not do.
+**Date:** 2026-10-09 (rev. 11 — all phases complete; production art pass done)
 **Supersedes:** nothing. This is the first write-up of the layered process architecture.
 
 **Decisions taken 2026-10-08:**
@@ -792,13 +794,73 @@ It is a **credible second skin, and the boundary that makes a third cheap** — 
 prove nothing below chrome holds an opinion about appearance, and enough to put in front
 of someone.
 
-It is **not** a finished art direction. "Stands alone at the top of the quality tier" is a
-project with its own brief: type and spacing decided rather than defaulted, equipment
-symbols drawn for this surface rather than inherited from the schematic, alarm and
-abnormal states designed, a real layout engine for boards bigger than one bay, and a pass
-on what a 4K wall display needs that a 900-px canvas does not. The architecture now makes
-that work **additive** — it is a skin and a frame, and nothing underneath has to move for
-it. Which is what Phase 5b was actually for.
+It was **not** a finished art direction. That became its own pass — below.
+
+### The production art pass — DONE 2026-10-09
+
+Against the five-item brief above.
+
+**Type is decided.** A four-step scale — `display / tag / value / unit` — with size, weight,
+face and tracking fixed per role, because a board has exactly four jobs for type and
+anything wanting a fifth is usually something that should not be on the board. Tracking is
+drawn rather than declared, since canvas letter-spacing is not reliable across engines.
+
+**The face now exists.** The previous pass specified `"Inter"` behind a comment claiming
+"real fallbacks — a board that silently drops to Times because a webfont did not load is
+not a board anybody will trust." Measured: `Inter`, `Segoe UI` and `system-ui` all
+returned **identical** text widths, so Inter had never loaded once. `document.fonts.check`
+reports true for a face it will merely fall back for, which is why nobody noticed. The
+stack is now faces that are actually installed, with a separate numeric stack so a
+readout does not twitch as digits change width. A consumer with a real webfont passes its
+own `face` and awaits `document.fonts.ready`.
+
+**Abnormal states exist, and the skin does not decide them.** A consumer passes
+`limits: {'TK-2': {target, tol}}`, because design duty is a fact about the plant, not the
+picture — the same rule that keeps colours out of the model keeps limits out of the skin.
+Off-target reads in the Style Guide's caution orange (§3.2) with a rule under it rather
+than a blink: a rule survives a photograph, a projector and colour-blindness; a blink
+survives none of them and is the first thing an operator learns to ignore. Orange appears
+nowhere else on the board, which is the whole reason holding saturation in reserve works —
+one off-target reading on an otherwise grey-and-blue surface cannot be missed.
+
+**Device-pixel exact, and this time measured.** `fit()` sizes the backing store to CSS ×
+devicePixelRatio. The first cut *imposed* a CSS width, the page's own `max-width:100%`
+clamped it straight back, and the result was a 1125-wide buffer shown at 729 CSS px —
+exactly the resampling the function exists to remove, while reporting success. It now
+measures the element and imposes only the aspect. Verified in the browser:
+`backing 911 = 729 CSS × 1.25 DPR`, `pixelExact: true`.
+
+**Boards caption with the tag.** `schem.plan` gained `labelBy: 'tag' | 'key' | 'id'`. A
+plant board shows `HV-1`, because that is what the thing is called in every document the
+operator has; a game level shows the solver's own `b0`, because that is what its own
+instructions say. Neither is more correct, so the display chooses. This is Phase 2's tag
+work finally being spent, and it was listed as available-not-done back then.
+
+Plus board furniture — title, subtitle, header rule, and a legend, because a legend is not
+decoration on a surface whose entire alarm vocabulary is "one thing went orange" — and one
+name per thing, after a readout and a symbol caption were both printing `TK-2` a
+centimetre apart.
+
+#### Two things deliberately not done
+
+**Equipment symbols were not redrawn.** The brief said "drawn for this surface rather than
+inherited from the schematic," and that was my phrasing, but acting on it literally would
+mean inventing symbology — which this project does not do, for the same reason it does not
+invent a diagram or a dimension. The ISA-5.5 shapes are the grounded ones. What changed is
+**weight and scale**: stroke widths and symbol scale raised so equipment reads as equipment
+next to a 13-px bore. Same shapes, drawn properly.
+
+**No multi-bay layout engine.** Nothing needs one — every rig that exists is one bay, and a
+layout engine with no consumer is a guess that then has to be maintained. Same call as
+faults in Phase 4. When a second bay exists, it is a frame.
+
+#### What a further pass would still want
+
+Real art direction is iterative and this is one round of it. Honestly outstanding: a
+chosen webfont rather than a system stack; vessel symbols that read as vessels at board
+scale rather than as rounded rectangles; a considered treatment for a line that is
+*flowing but off-target* (today the line colours by rate and only the readout cautions);
+and a view of what happens when a board carries thirty tags instead of four.
 
 ---
 

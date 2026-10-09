@@ -182,6 +182,12 @@
     hide: ['fitting'],  // ISA-5.5 draws equipment, not pipe connections
     state: {},          // solver valve positions, by the valve's `key`
     openAt: 0.5,        // a valve reads OPEN at or above this
+    /* What a symbol is captioned with. A plant board wants the TAG --
+       HV-1 is what the thing is called in every document the operator
+       has. A game level wants the solver's own name, because that is
+       what its own instructions say. Neither is more correct; it is a
+       display choice, so the display makes it. */
+    labelBy: 'key',     // 'tag' | 'key' | 'id'
     breakGap: 5,        // px gap drawn at a crossing
   };
 
@@ -231,7 +237,9 @@
         x: e.x, y: e.y, scale: o.scale,
         position: pos,
         open: pos === null ? null : pos >= o.openAt,
-        label: e.key || e.id,
+        label: o.labelBy === 'tag' ? (e.tag || e.id)
+             : o.labelBy === 'id'  ? e.id
+             : (e.key || e.id),
       });
     }
 

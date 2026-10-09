@@ -623,6 +623,7 @@
           r: boreAt(live, id, 'in') || boreAt(live, id, 'out'),
           type: c.valveType || c.role || null,
           key: c.key || null,      // the solver's own name, where there is one
+          tag: c.tag || null,      // and its durable one, which a board captions with
           isa: typeof c._kind.isa === 'function' ? c._kind.isa(c) : null,
         });
       } else if (c._kind.draws === 'fitting') {
