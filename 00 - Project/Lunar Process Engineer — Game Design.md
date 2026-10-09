@@ -689,14 +689,71 @@ without anyone checking which rungs were already spent.
 
 | Step | State | Where |
 | --- | --- | --- |
-| 1. Pressure with zero flow | **built** | Level 0 (closed line), and level 1 step 2 — 60 psig at the manifold with nothing moving |
-| 2. Pressure → flow | **built** | Level 0 — the hand wheel, the gauge, water into Bio Lab One |
-| 3. Pipe sizing vs. actual bore | **not built** | — |
-| 4. Laminar vs. turbulent | **not built** | engine has `laminarAt` (Poiseuille, centre exactly 2×) written and unused |
-| 5. Velocity profile across the pipe | **rendered, never taught** | every level draws the Prandtl 1/7-power profile; no level has ever pointed at it |
-| 6. Pressure drop through a restriction | **built** | level 2 — the reducer measured, then removed |
-| 7. The manifold | **built** | level 1 — this is the whole of level 1 |
-| 8. PV flash at the nozzle | **not built** | the payoff; needs 3–5 first |
+| 1. Pressure with zero flow | **built + taught** | trainer rung PRESSURE; level 0 (closed line); level 1 step 2 |
+| 2. Pressure to flow | **built + taught** | trainer rung FLOW; level 0 — the hand wheel |
+| 3. Pipe sizing vs. actual bore | **not built** | — the reducer in levels 1 and 2 is a bore change nobody has explained |
+| 4. Laminar vs. turbulent | **bench built, no level** | trainer segment `reynolds` is complete and orphaned |
+| 5. Velocity profile across the pipe | **built + taught** | trainer rung VELOCITY PROFILE, attached to level 0; level 0's closing points at it in a real line |
+| 6. Pressure drop through a restriction | **built, never taught** | level 2 measures and removes the reducer with no bench segment behind it |
+| 7. The manifold | **built, never taught** | level 1 is the whole of it, with no bench segment behind it |
+| 8. Cavitation at the nozzle | **not built** | the payoff; needs 3, 4 and 6. Was "PV flash" — corrected 2026-10-07, see below |
+
+**Step 8 corrected from flashing to cavitation (Franz, 2026-10-07).** The
+original step said the mist nozzle drops below vapour pressure and the
+liquid flashes. Checked before building: water needs a near-vacuum
+downstream to flash, and at one atmosphere it would have to be at 100 °C
+at the nozzle. What a mist nozzle actually does is **cavitate** — the
+pressure dips below Pv at the vena contracta and recovers above it. A
+different mechanic, different damage, and a different fix.
+
+Run the game's own 60 psig header into the Garden pod against Fisher's
+choked relation, ΔP ≥ F<sub>L</sub>²(P₁ − F<sub>F</sub>·P<sub>v</sub>):
+
+| feed | ΔP | ΔP allowable | verdict |
+| --- | --- | --- | --- |
+| water 20 °C | 67.3 | 60.2 | choked, cavitating |
+| water 40 °C | 67.3 | 59.7 | choked, cavitating |
+| water 60 °C | 67.3 | 58.3 | choked, cavitating |
+
+So a plain globe valve on the existing header cavitates in that pod at any
+feed temperature — a fault the player can diagnose from symptom and fix
+with staged trim. Flashing is not discarded; it moves to a service where
+it is real (hot condensate let down to a flash drum). The check reruns
+from `reference/applicability.js`.
+
+**The Garden runs hypobaric, at 51 kPa (Franz, 2026-10-07).** A world fact,
+so it binds every future Garden level. Hypobaric plant chambers are an
+established CELSS line of research, with published work spanning roughly
+10–98 kPa total pressure. The engineering driver is real and
+uncontroversial: a smaller pressure gradient across the structure means
+less mass, less leakage, and a cheaper pod to build.
+
+Two findings are worth stating carefully, because they are reported
+results rather than general laws. One chamber study reports that taking
+pressure from ambient down to 51 kPa raised net photosynthesis about 25%
+and lowered dark respiration about 40% — a single result, not a
+guaranteed effect at every condition, and the game should not lean on the
+numbers. The constraint that genuinely binds is **oxygen partial
+pressure**: below roughly 7 kPa, germination and growth fail across the
+board. So the pod is low-pressure, not low-oxygen, and 51 kPa total with
+a maintained O₂ fraction is a defensible set point.
+
+This is what makes step 8 bite — 60 psig into 51 kPa is a pressure ratio
+no single-stage trim survives. Checked, not assumed:
+`reference/crosscheck.js` recomputes it on every build.
+
+**Rungs added below step 1 (2026-10-07).** The sequence above started at
+pressure, which assumed the player already knew what a process was, what a
+fluid was, and that temperature is a property of one. Three rungs now
+precede it on the bench — PROCESS, FLUID, TEMPERATURE — and level 0 teaches
+all six of its rungs before the player reaches the valve. A seventh bench
+segment, `specific-gravity`, is complete and orphaned alongside `reynolds`.
+
+**The gap this ledger now makes obvious:** levels 1 and 2 have no `teach`
+list at all. They were built before the bench was a device, so the manifold
+(step 7) and the restriction (step 6) are both taught by the level itself,
+in passing, with no segment behind them — exactly the arrangement that was
+removed from level 0.
 
 **So level one spent step 7 ahead of steps 3, 4 and 5.** That is not a
 mistake to undo — the manifold earns its place as the first real level
