@@ -16,105 +16,166 @@
        Sample Problem No. 2," steps 3-6 (Fisher Control Valve Sourcebook —
        Power & Severe Service, 4th ed., Ch. 4, printed pp. 4-4–4-6) — xT,
        Ki, xTP≈0.67, Fk, Y=0.73, and the 236-vs-148 size confirmation
-       transcribed exactly. Closes the same case slide 155 opened, same
-       cross-reference pattern as m1's cve1-150 ("Same propane case as
-       slides 146-147") rather than a "part N of N" label, since this and
-       slide 155 belong to two different competencies bridged by the
-       mechanism content on slides 156-157, not one contiguous primitive.
-       This example converges on the first assumed size — no second
-       procedure slide needed, unlike m1's propane iteration (course.json's
-       own resolved Stage-1 flag). Do tab (2026-09-20 fix): replaced a false
-       "practice exercise that follows" reference — no such exercise exists
-       anywhere in this course, confirmed by search — with a margin-judgment
-       prompt grounded only in this slide's own numbers.
+       transcribed exactly. Closes the same case slide 155 opened.
 
-       2026-09-20 fix (Phase 1 remediation, Decision 1): the figure-less
-       adaptation flagged above no longer applies — restored the real fixed
-       32cqw figure column (gallery.css Sec 10) with a margin diagram, NOT
-       a valve/piping schematic (that's already covered by slide 155's own
-       figure for this same case; this competency's own visual content is
-       how close the actual x sits to the choking boundary, which is what
-       the whole callout/Do prompt are about). Plots x (actual, 0.49)
-       against Fk&middot;xTP (the corrected choking boundary, 0.61) and
-       Fk&middot;xT (the uncorrected boundary the common-failure callout
-       warns against using, 0.626) on one scale, so the reader can see the
-       margin the steps/callout describe in words, not just read the
-       numbers — same purpose as slide 150's pressure ladder for the
-       propane case's own choked-flow check. -->
-  <article class="slide slide--role-procedure-worked" data-slide="158" data-deck="cve1">
+       2026-09-21 (ch8-m2 rebuild, per Franz's direct complaint about this
+       category of chart — an unusable vertical margin/threshold chart —
+       already fixed once this session on m1's own cve1-150): rebuilt from
+       the previous vertical 260x520 margin diagram onto role-nomenclature-
+       equation (gallery.css §15), NOT by enlarging that chart in place
+       (naive enlargement just relocates the collision, per Franz's own
+       instruction) but by following cve1-150's real precedent directly: a
+       HORIZONTAL number-line/value-axis (viewBox 1600x480, axis geometry
+       copied verbatim from 150's own reviewed layout) rather than a
+       pipe/valve schematic — that hardware picture is already taught on
+       155; this competency's own teaching point is where the actual x sits
+       relative to the choking threshold, the same "relative position on an
+       axis" content 150 already solved this exact legibility problem for.
+
+       MERGE JUDGMENT (per task instruction, mirroring 150's own P1/P2
+       merge): Fk&middot;xTP (0.61, corrected) and Fk&middot;xT (0.626,
+       uncorrected) sit only 0.016 apart on a 0-0.8 axis — far too close to
+       label as two independent tick+callout pairs without their text
+       colliding. Both are merged into ONE callout box, which is also more
+       honest to the actual teaching point (the common-failure callout on
+       the previous shipped version already said as much in prose: the
+       fittings correction narrows the margin but doesn't flip the call in
+       THIS case) — merging states that narrow-but-real gap visually
+       instead of fighting the scale to keep them separately legible. The
+       equation itself is 157's own xTP formula, now solved with this case's
+       real numbers — the same 145→146 relationship (general formula, then
+       the worked numbers) applied to 157→158. -->
+  <article class="slide slide--role-nomenclature-equation" data-slide="158" data-deck="cve1">
     <h1 class="slide-title">Checking the Steam Case for Choked Flow</h1>
     <div class="tpl-content">
-      <div class="tpl-tabs">
-        <button class="tpl-tab is-active" type="button">1 &middot; Show</button>
-        <button class="tpl-tab" type="button">2 &middot; Tell</button>
-        <button class="tpl-tab" type="button">3 &middot; Do</button>
-      </div>
-      <div class="tpl-tabpanes">
-        <div class="tpl-tabpane is-active">
-          Same Design ED case as slide 155.
-          <ol class="tpl-steps">
-            <li>x<sub>T</sub> = 0.688 (rated, 4-in valve at 100% travel), K<sub>i</sub> = 0.5&middot;(1&minus;(4/6)&sup2;)&sup2; + [1&minus;(4/6)&#8308;] = 0.96, Fp = 0.95 (slide 155), N5 = 1000, Cv = 236 (assumed valve&rsquo;s rated capacity)</li>
-            <li>x<sub>TP</sub> = (0.688/0.95&sup2;)&middot;[1 + (0.688&middot;0.96/1000)&middot;(236/16)&sup2;]<sup>&minus;1</sup> &asymp; 0.67 &mdash; well below the 0.688 the flow-coefficient table alone would suggest</li>
-            <li>F<sub>k</sub> = k/1.4 = 1.28/1.40 = 0.91, so F<sub>k</sub>&middot;x<sub>TP</sub> = 0.61</li>
-            <li>Against the actual x = 0.49: NOT choked (0.49 &lt; 0.61), so Y = 1 &minus; 0.49/(3&middot;0.91&middot;0.67) = 0.73 &mdash; the value slide 155&rsquo;s Cv calculation already used</li>
-          </ol>
-        </div>
-        <div class="tpl-tabpane">
-          <div class="tpl-callout"><span class="tpl-callout__label">Common failure</span>Using the flow-coefficient table&rsquo;s rated x<sub>T</sub> (0.688) directly instead of correcting it to x<sub>TP</sub> for this valve&rsquo;s reducer geometry. The uncorrected number gives F<sub>k</sub>&middot;x<sub>T</sub> = 0.626 against F<sub>k</sub>&middot;x<sub>TP</sub> = 0.61 &mdash; both still clear the actual x = 0.49 in this case, but the margin to choked flow is narrower than the uncorrected number suggests, and on a service closer to the edge, skipping the fittings correction can flip the pass/fail call outright.</div>
-        </div>
-        <div class="tpl-tabpane">
-          Try it yourself: with F<sub>k</sub>&middot;x<sub>TP</sub> = 0.61 against the actual x = 0.49, how much margin sits between this case and choked flow &mdash; and does that margin feel comfortable, or close enough to the edge that you&rsquo;d flag it for a second look on a real job?
-        </div>
-      </div>
 
+      <!-- ================= 1. PERSISTENT HORIZONTAL VALUE AXIS =================
+           Axis geometry (viewBox, axis line position, arrow marker, origin
+           label) copied verbatim from cve1-150's own reviewed layout — same
+           "value axis, not hardware" treatment, now for the pressure-drop
+           ratio x instead of an absolute pressure scale. -->
       <div class="tpl-fig-wrap">
-        <div class="tpl-fig">
-          <svg viewBox="0 0 260 520" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Margin diagram for the steam case's choked-flow check, to scale from 0 to 0.75: the actual pressure-drop ratio x at 0.49 sits below both the corrected choking boundary Fk times xTP at 0.61 and the uncorrected boundary Fk times xT at 0.626, so the flow is not choked, but the margin is narrower once the fittings correction is applied.">
-            <rect x="1" y="1" width="258" height="518" fill="#ffffff"></rect>
-            <text x="130" y="22" font-size="12.5" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">Margin to choked flow</text>
+        <svg viewBox="0 0 1600 480" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Pressure-drop-ratio scale from 0 to 0.8 for the steam case: the actual ratio x at 0.49 sits well left of the choking threshold, which is shown as one merged callout holding both the corrected value Fk times xTP at 0.61 and the uncorrected value Fk times xT at 0.626, since the two are too close together to label separately. Above the axis, three callouts show the inputs and result of solving xTP itself: the rated xT and assumed valve size, the inlet coefficient Ki, and the solved xTP of about 0.67.">
 
-            <!-- Vertical scale, 0 at bottom (y=460) to 0.75 at top (y=50) -->
-            <defs>
-              <marker id="cve1158AxisArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                <path d="M0,0 L10,5 L0,10 z" fill="#3F4040"></path>
-              </marker>
-            </defs>
-            <line x1="130" y1="460" x2="130" y2="50" stroke="#3F4040" stroke-width="2" marker-end="url(#cve1158AxisArrow)"></line>
-            <line x1="122" y1="460" x2="138" y2="460" stroke="#3F4040" stroke-width="2"></line>
-            <text x="130" y="474" font-size="10" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">x = 0</text>
+          <rect x="0" y="0" width="1600" height="480" fill="#FFFFFF"/>
 
-            <!-- shaded region above the corrected choking boundary Fk*xTP = 0.61 (y=135) -->
-            <rect x="110" y="50" width="40" height="85" fill="var(--emerson-orange)" fill-opacity="0.16"></rect>
-            <text x="130" y="66" font-size="9" fill="var(--emerson-orange)" font-family="Arial, sans-serif" text-anchor="middle">choked</text>
+          <defs>
+            <marker id="arrow-axis-158" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#3F4040"/>
+            </marker>
+          </defs>
 
-            <!-- Fk . xT (uncorrected), 0.626 -->
-            <line x1="108" y1="126" x2="152" y2="126" stroke="#959797" stroke-width="1.6" stroke-dasharray="4 3"></line>
-            <text x="158" y="112" font-size="10" fill="#3F4040" font-family="Arial, sans-serif">F<tspan baseline-shift="sub" font-size="7">k</tspan>&middot;x<tspan baseline-shift="sub" font-size="7">T</tspan> (uncorrected)</text>
-            <text x="158" y="124" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif">0.626</text>
+          <!-- Persistent geometry: the axis itself is always visible.
+               2026-09-21 (Franz's clearance standard, applied here too):
+               the whole schematic below the title was moved up 30 viewBox
+               units as one rigid shift (every relative gap preserved
+               exactly) purely to give the final "choke" result box real
+               clearance from the canvas bottom — it previously sat only
+               35 units above the bottom edge, well under 145's ~60-70
+               standard. -->
+          <g class="schem-persist" font-family="Arial, sans-serif">
+            <text x="800" y="42" font-size="24" font-weight="700" text-anchor="middle">Pressure-drop ratio scale (x) &mdash; same steam case as 155</text>
+            <line x1="100" y1="220" x2="1520" y2="220" stroke="#3F4040" stroke-width="3" marker-end="url(#arrow-axis-158)"></line>
+            <text x="100" y="254" font-size="24" text-anchor="middle">0</text>
+          </g>
 
-            <!-- Fk . xTP (corrected boundary), 0.61 -->
-            <line x1="106" y1="135" x2="154" y2="135" stroke="var(--emerson-orange)" stroke-width="2.4"></line>
-            <text x="158" y="149" font-size="10" fill="var(--emerson-orange)" font-family="Arial, sans-serif" font-weight="700">F<tspan baseline-shift="sub" font-size="7">k</tspan>&middot;x<tspan baseline-shift="sub" font-size="7">TP</tspan> (corrected)</text>
-            <text x="158" y="161" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif">0.61 &mdash; choking boundary</text>
+          <!-- STEP: xt — rated xT plus the assumed valve size (Cv, d) this
+               formula needs. Not itself an axis point (xT alone is never
+               compared directly to x — only Fk&middot;xT is), so it is a
+               plain callout above the axis, not a tick. -->
+          <g class="tpl-schem-part tpl-tok" data-part="xt">
+            <rect class="callout-box" x="65" y="74" width="460" height="140" rx="6" stroke-width="2"></rect>
+            <text x="295" y="104" font-size="22" font-weight="700" text-anchor="middle">xT = 0.688 (rated, 100% travel)</text>
+            <text x="295" y="136" font-size="22" text-anchor="middle">Cv = 236, d = 4-in bore</text>
+            <text x="295" y="168" font-size="22" text-anchor="middle">(assumed valve size)</text>
+          </g>
 
-            <!-- x actual = 0.49 -->
-            <line x1="108" y1="199" x2="152" y2="199" stroke="#004B8D" stroke-width="2.6"></line>
-            <circle cx="130" cy="199" r="4.5" fill="#004B8D"></circle>
-            <text x="60" y="196" font-size="12" fill="#004B8D" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">x (actual)</text>
-            <text x="60" y="209" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">0.49</text>
+          <!-- STEP: ki — inlet coefficient, same value 157 defines
+               symbolically, now with the real reducer geometry from 155. -->
+          <g class="tpl-schem-part tpl-tok" data-part="ki">
+            <rect class="callout-box" x="565" y="74" width="380" height="120" rx="6" stroke-width="2"></rect>
+            <text x="755" y="108" font-size="24" font-weight="700" text-anchor="middle">Ki = 0.96</text>
+            <text x="755" y="142" font-size="22" text-anchor="middle">0.5&middot;(1&minus;(4/6)&sup2;)&sup2; + [1&minus;(4/6)&#8308;]</text>
+          </g>
 
-            <!-- margin bracket between x actual and the corrected boundary -->
-            <path d="M96,135 L88,135 L88,199 L96,199" fill="none" stroke="#3F4040" stroke-width="1.3"></path>
-            <text x="20" y="167" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle" transform="rotate(-90 20 167)">margin to choked</text>
+          <!-- STEP: formula — xTP solved. -->
+          <g class="tpl-schem-part tpl-tok" data-part="formula">
+            <rect class="callout-box" x="960" y="74" width="500" height="120" rx="6" stroke-width="3"></rect>
+            <text x="1210" y="110" font-size="24" font-weight="700" text-anchor="middle">x<tspan baseline-shift="sub" font-size="17">TP</tspan> &asymp; 0.67</text>
+            <text x="1210" y="144" font-size="22" text-anchor="middle">below rated x<tspan baseline-shift="sub" font-size="16">T</tspan> = 0.688 &mdash; fittings tighten it</text>
+          </g>
 
-            <text x="130" y="438" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">x<tspan baseline-shift="sub" font-size="7">T</tspan> (rated, 100% travel) = 0.688</text>
-            <text x="130" y="452" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">x<tspan baseline-shift="sub" font-size="7">TP</tspan> &asymp; 0.67 once corrected for reducers</text>
-          </svg>
+          <!-- STEP: choke — the actual comparison. x (actual) is an
+               isolated axis point (like 150's Pv/Pc); the two threshold
+               values are merged into ONE callout (see judgment-call note
+               above), tied to the axis by a bracket spanning both tick
+               positions rather than two independent leaders. -->
+          <g class="tpl-schem-part tpl-tok" data-part="choke">
+            <line x1="970" y1="210" x2="970" y2="230" stroke-width="2"></line>
+            <text x="970" y="270" font-size="22" font-weight="700" text-anchor="middle">x (actual)</text>
+            <text x="970" y="300" font-size="24" text-anchor="middle">0.49</text>
+
+            <line x1="1183" y1="210" x2="1183" y2="230" stroke-width="2"></line>
+            <line x1="1211" y1="210" x2="1211" y2="230" stroke-width="2"></line>
+            <path d="M1183,230 L1183,242 L1211,242 L1211,230" fill="none" stroke-width="2"></path>
+            <line x1="1197" y1="242" x2="1197" y2="315" stroke-width="1.5" stroke-dasharray="4 3"></line>
+
+            <rect class="callout-box" x="1035" y="315" width="460" height="135" rx="6" stroke-width="3"></rect>
+            <text x="1265" y="344" font-size="22" font-weight="700" text-anchor="middle">F<tspan baseline-shift="sub" font-size="16">k</tspan>&middot;x<tspan baseline-shift="sub" font-size="16">TP</tspan> = 0.61 (corrected)</text>
+            <text x="1265" y="378" font-size="22" text-anchor="middle">F<tspan baseline-shift="sub" font-size="16">k</tspan>&middot;x<tspan baseline-shift="sub" font-size="16">T</tspan> = 0.626 (uncorrected)</text>
+            <text x="1265" y="410" font-size="22" font-weight="700" fill="var(--emerson-blue)" text-anchor="middle">0.49 &lt; both &mdash; Not choked</text>
+          </g>
+
+        </svg>
+      </div>
+
+      <!-- ================= 2. EQUATION =================
+           157's own xTP formula, now solved with the steam case's real
+           numbers — the same 145→146 relationship applied to 157→158. Fp
+           is already known/unchanged from 155 — plain "is-revealed", no
+           tpl-tok, matching 147's own precedent for carried-over terms. -->
+      <div class="tpl-eq-wrap">
+        <div class="tpl-eq">
+          <span class="tpl-eq-cv tpl-eq-term tpl-tok is-revealed is-on" data-part="formula-intro">x<sub>TP</sub></span>
+          <span class="tpl-eq-op">= (</span>
+          <span class="tpl-eq-term tpl-tok" data-part="xt">x<sub>T</sub></span>
+          <span class="tpl-eq-op">&divide;</span>
+          <span class="tpl-eq-term is-revealed">F<sub>p</sub><sup>2</sup></span>
+          <span class="tpl-eq-op">)&middot;[1+(</span>
+          <span class="tpl-eq-term tpl-tok" data-part="xt">x<sub>T</sub></span>
+          <span class="tpl-eq-op">&middot;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="ki">K<sub>i</sub></span>
+          <span class="tpl-eq-op">&divide;</span>
+          <span class="tpl-eq-const">N5</span>
+          <span class="tpl-eq-op">)&middot;(</span>
+          <span class="tpl-eq-term tpl-tok" data-part="xt">Cv&divide;d<sup>2</sup></span>
+          <span class="tpl-eq-op">)<sup>2</sup>]<sup>&minus;1</sup></span>
+        </div>
+        <div class="tpl-eq-solved tpl-tok" data-part="formula">
+          <span class="tpl-eq-solved__line">(0.688&divide;0.95&sup2;)&middot;[1+(0.688&times;0.96&divide;1000)&times;(236&divide;16)&sup2;]<sup>&minus;1</sup> &asymp; <strong>0.67</strong></span>
         </div>
       </div>
 
-      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4, &ldquo;Compressible Fluid Sizing Sample Problem No. 2,&rdquo; printed pp. 4-4&ndash;4-6 &mdash; steps 3&ndash;6 transcribed as printed, continuing slide 155. Margin diagram (x, F<sub>k</sub>&middot;x<sub>TP</sub>, F<sub>k</sub>&middot;x<sub>T</sub> plotted to scale) is an originated diagram illustrating the source&rsquo;s own stated values, not a source figure.</p>
+      <!-- ================= 3. STEPS + DESCRIPTION ================= -->
+      <div class="tpl-step-row">
+        <div class="tpl-step-keys">
+          <button class="tpl-step-key is-active" type="button" data-part="formula-intro"
+                  data-def="Y = 0.73 was assumed earlier &mdash; this derives it.">1 &middot; x<sub>TP</sub> &mdash; checking the case</button>
+          <button class="tpl-step-key" type="button" data-part="xt"
+                  data-def="xT = 0.688 is a rated-table value at 100% travel.">2 &middot; Rated x<sub>T</sub> and valve size</button>
+          <button class="tpl-step-key" type="button" data-part="ki"
+                  data-def="Ki = 0.96, from the same reducer geometry as Ki&rsquo;s own definition.">3 &middot; The inlet coefficient (Ki)</button>
+          <button class="tpl-step-key" type="button" data-part="formula"
+                  data-def="Fittings narrow the choking margin: 0.688 down to 0.67.">4 &middot; Solve x<sub>TP</sub></button>
+          <button class="tpl-step-key" type="button" data-part="choke"
+                  data-def="The corrected and uncorrected thresholds are only 0.016 apart, so both are shown together.">5 &middot; Compare to the actual x</button>
+        </div>
+        <div class="tpl-step-def">Y = 0.73 was assumed earlier &mdash; this derives it.</div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4, &ldquo;Compressible Fluid Sizing Sample Problem No. 2,&rdquo; printed pp. 4-4&ndash;4-6.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">158</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

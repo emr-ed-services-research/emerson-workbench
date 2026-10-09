@@ -17,20 +17,156 @@
        exists (ogas-topic-choked-flow-and-cavitation-flashing /
        pss-topic-choked-flow-and-cavitation-flashing, same Ch. 3 source,
        printed pp. 3-4–3-6) and is used directly here per course.json's own
-       sourceNote. Same figure-less mechanism adaptation as slides 143-145
-       (single-column .tpl-content override) — slide 149's chart pair is the
-       FF-reading tool, not this mechanism itself, so no figure is placed
-       here. -->
+       sourceNote. Slide 149's chart pair is the FF-reading tool, not this
+       mechanism itself.
+
+       2026-09-21 (Phase 4 rebuild): this slide previously had NO figure at
+       all (has-no-fig). Per gallery.css's own .has-no-fig standard ("no
+       figure was found is not by itself a reason to skip drawing one for
+       physical/spatial content") and Franz's direct task instruction, this
+       is a genuinely physical/spatial mechanism (vaporization at the vena
+       contracta, a pressure profile crossing below vapor pressure) with a
+       real geometry to check before drawing — panel A was originally an
+       ORIGINATED cutaway; panel B is an originated pressure-profile chart.
+       Kept on role-mechanism (NOT nomenclature-equation: this is
+       a mechanism to understand, not one numbered equation to walk through
+       term by term — no real q/ΔP/Cv numbers are worked here).
+
+       2026-09-23 (Franz: "was there a reason to use these images rather
+       than the vena contracta image from the SMI?"): the Subject-Matter
+       Index already catalogued a real figure for exactly this content —
+       Control Valve Handbook 6th ed., Fig. 5.6, p.128
+       (cvh-cmp-vena-contracta-diagram) — but only as a citation; it had
+       never been extracted as an image, so the originated cutaway was
+       drawn instead of a real one that already existed. No good reason for
+       that gap — extracted it now (see Subject-Matter Index — Control
+       Valve Handbook ch5.md) and panel A below is that real figure.
+       Fig. 5.7 on the same page (cvh-cmp-pressure-profile-high-low-recovery)
+       was checked as a possible swap for panel B too, but it teaches a
+       different specific point — comparing a high- vs. low-recovery VALVE
+       at the same conditions, not one valve's cavitation-vs-flashing
+       outcome branching — so panel B stays an originated chart, corrected
+       below for its own real label collisions rather than replaced.
+
+       GEOMETRY VERIFIED AGAINST SOURCE before drawing (design-notes.md
+       checklist item 0), against course.json's own primitive text for this
+       competency plus standard ISA/Fisher usage the source's wording
+       matches directly:
+         - The vena contracta (narrowest ACTUAL flow area) sits just
+           DOWNSTREAM of the valve's own physical restriction, not at the
+           restriction itself — fluid inertia carries the streamlines
+           narrower than the hardware opening before they re-expand. This is
+           exactly what Fig. 5.6 (panel A) shows directly; it is no longer
+           asserted here about a drawn shape.
+         - Static pressure drops as the fluid accelerates through the
+           restriction, reaching its OWN minimum at the vena contracta
+           (not at the physical throat) — panel B's pressure-profile curve
+           places its minimum after the same drop, consistent with panel A,
+           though the two panels no longer share one literal coordinate
+           space now that panel A is a real photographed figure rather than
+           a drawn shape on the same grid.
+         - Choking is a threshold, not a fixed shape: once that minimum
+           drops below the liquid's vapor pressure Pv, it flashes there —
+           shown as the solid curve crossing below a dashed Pv reference
+           line.
+         - What happens AFTER the vena contracta determines the failure
+           mode, per course.json's own diagnostic: pressure recovering back
+           ABOVE Pv downstream means the vapor bubbles collapse there —
+           cavitation; staying BELOW Pv means the vapor persists downstream
+           — flashing. Drawn as two dashed alternative continuations from
+           the same minimum point (both real possible outcomes, not a
+           single predetermined path), converging on neither hardware fact
+           this course has not stated for THIS specific case — the slide
+           does not claim which one a specific service will hit.
+       No real numeric values are invented anywhere on this originated
+       diagram — it illustrates the mechanism generically, the same way
+       143's six-step loop and 144's/145's generic equations do before any
+       real numbers appear (146-147, 150). -->
   <article class="slide slide--role-mechanism" data-slide="148" data-deck="cve1">
     <h1 class="slide-title">Choked Liquid Flow &mdash; Vaporization, Not Friction</h1>
-    <div class="tpl-content" style="grid-template-columns:1fr">
-      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:74cqw;margin:0 auto">
+    <div class="tpl-content">
+
+      <!-- 2026-09-21 (Franz: "the 2 images act like 1 image, so the
+           lightbox does not help make it larger to show the class"): split
+           what was one SVG element spanning both the cutaway and the
+           pressure profile into two separate top-level figures, each its
+           own .tpl-fig, so a click on either panel enlarges just that
+           panel (slides.js's lightbox collects each direct .tpl-content
+           figure as its own navigable item). Font sizes also enlarged
+           throughout (14/13/16 → 18/22) — the min-legible-size checker
+           measured 7-8px real height on the smaller labels here (2026-09-21
+           review).
+
+           2026-09-23: panel A is now the real Fig. 5.6 image (see header
+           comment above), so it is no longer on the same literal 700x720
+           coordinate grid as panel B's chart — that grid note applied only
+           while both panels were originated SVG sharing one canvas. Panel
+           B's viewBox ("0 345 700 375") is unchanged; its own two label
+           collisions (the "Pressure"/arrow/"P1" cluster, and the
+           CAVITATION label sitting on the curve's flat run) were corrected
+           in place the same day. -->
+      <div class="tpl-fig-wrap">
+        <div style="display:flex;flex-direction:column;width:100%;height:100%;gap:1.4cqh">
+          <div class="tpl-fig" style="flex:0 0 42%;min-height:0;display:flex;align-items:center;justify-content:center">
+            <img src="../assets/sourced/cvh5-fig5-6-vena-contracta-illustration.png" style="max-width:100%;max-height:100%;object-fit:contain"
+                 alt="Flow through a valve restriction narrowing to its minimum cross-sectional area, the vena contracta, just downstream of the physical restriction, before the flow area re-expands toward the outlet."
+                 data-lightbox-caption="Fig. 5.6, Vena Contracta Illustration &mdash; Control Valve Handbook, 6th ed., p.128. Component Index: cvh-cmp-vena-contracta-diagram.">
+          </div>
+          <div class="tpl-fig" style="flex:1 1 auto;min-height:0">
+            <svg viewBox="0 345 700 375" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
+                 aria-label="Pressure-versus-position profile, aligned on the same x-axis as the valve cutaway above: pressure drops steadily through the restriction, dipping below a dashed vapor-pressure reference line at the vena contracta, then branching into two possible downstream paths — one recovering back above the vapor-pressure line, labeled cavitation, and one staying below it, labeled flashing.">
+
+              <rect x="0" y="345" width="700" height="375" fill="#FFFFFF"></rect>
+
+              <defs>
+                <marker id="arrow-flow-148b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#004B8D"></path>
+                </marker>
+              </defs>
+
+              <!-- ===== Pressure-vs-position profile, x-aligned to the pipe
+                   in the panel above: minimum lands under the vena
+                   contracta, not the physical restriction. Same absolute
+                   x-coordinates as that panel — see split note above. ===== -->
+              <text x="20" y="365" font-size="18" font-weight="700" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="start">Pressure</text>
+              <line x1="20" y1="430" x2="20" y2="377" stroke="#3F4040" stroke-width="1.6" marker-end="url(#arrow-flow-148b)"></line>
+
+              <!-- P1, upstream, flat -->
+              <line x1="20" y1="420" x2="260" y2="420" stroke="#3F4040" stroke-width="3"></line>
+              <text x="35" y="412" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="start">P1 (upstream)</text>
+
+              <!-- Measured drop through the restriction to the vena contracta's own minimum -->
+              <path d="M260,420 L330,555 L350,610" fill="none" stroke="#3F4040" stroke-width="3"></path>
+
+              <!-- Pv reference line -->
+              <line x1="20" y1="560" x2="680" y2="560" stroke="#3F4040" stroke-width="1.6" stroke-dasharray="6 4"></line>
+              <text x="30" y="580" text-anchor="start" font-family="Arial, sans-serif"><tspan font-size="20" font-weight="700" fill="#3F4040">Pv</tspan><tspan font-size="16" dx="5" fill="#3F4040">(vapor pressure)</tspan></text>
+
+              <!-- Branch A: recovers above Pv downstream = cavitation.
+                   Flat segment moved down to y=405 and both labels lifted
+                   clear above it (2026-09-23) — the curve's own flat run
+                   used to sit right through the CAVITATION label text. -->
+              <path d="M350,610 L420,480 L520,405 L680,405" fill="none" stroke="#3F4040" stroke-width="2.4" stroke-dasharray="7 5"></path>
+              <text x="675" y="366" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">Recovers above Pv</text>
+              <text x="675" y="392" font-size="18" font-weight="700" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">CAVITATION &mdash; collapses downstream</text>
+
+              <!-- Branch B: stays below Pv downstream = flashing -->
+              <path d="M350,610 L420,600 L520,590 L680,590" fill="none" stroke="#3F4040" stroke-width="2.4" stroke-dasharray="7 5"></path>
+              <text x="675" y="638" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">Stays below Pv</text>
+              <text x="675" y="666" font-size="18" font-weight="700" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">FLASHING &mdash; persists downstream</text>
+
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <ul class="tpl-list">
         <li><span class="num">1</span>Choked flow in a liquid is vaporization, not a friction ceiling &mdash; once static pressure inside the valve drops below the liquid&rsquo;s own vapor pressure, it flashes at the vena contracta and added &Delta;P stops buying more flow</li>
         <li><span class="num">2</span>The check: calculate &Delta;P<sub>max</sub> &mdash; &Delta;P<sub>max(L)</sub> = F<sub>L</sub>&sup2;&middot;(P1&minus;F<sub>F</sub>&middot;P<sub>v</sub>) with no fittings, or the Fp/F<sub>LP</sub>-corrected form with fittings &mdash; and compare it to the actual service &Delta;P</li>
         <li><span class="num">3</span>Whichever of &Delta;P<sub>max</sub> and the actual &Delta;P is smaller goes into the Cv equation; if &Delta;P<sub>max</sub> is the smaller value, the flow is choked</li>
         <li><span class="num">4</span>Once choked, the outlet pressure tells you which failure mode: below the liquid&rsquo;s vapor pressure &mdash; flashing; above it &mdash; cavitation, the collapse happens downstream instead</li>
       </ul>
-      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3 &ldquo;Liquid Valve Sizing,&rdquo; printed pp. 3-4&ndash;3-6 &mdash; the &Delta;P<sub>max</sub> equations and the outlet-pressure diagnostic transcribed as printed. Component Index: ogas-topic-choked-flow-and-cavitation-flashing, pss-topic-choked-flow-and-cavitation-flashing.</p>
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Liquid Valve Sizing,&rdquo; printed pp. 3-4&ndash;3-6.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">148</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

@@ -13,20 +13,168 @@
   <!-- cve1-ch8-m1, page 144 — eng.sizing.fundamentals-liquid-and-compressible.
        calculate-liquid-cv [apply · mechanism]. Confirmed prose-only (Fisher
        Control Valve Sourcebook — Oil & Gas, Ch. 3, p. 3-4; identical in the
-       Power & Severe Service edition) — no figure registered. Same
-       figure-less mechanism adaptation as slide 143 (single-column
-       .tpl-content override); flagged once under Concept-map gaps rather
-       than repeated on every affected slide. -->
-  <article class="slide slide--role-mechanism" data-slide="144" data-deck="cve1">
+       Power & Severe Service edition) — no figure registered.
+
+       2026-09-21 (Phase 4 rebuild, per Franz's direct review of this
+       chapter's self-drawn diagrams): rebuilt from role-mechanism/has-no-fig
+       onto role-nomenclature-equation (gallery.css §15) — this slide teaches
+       the SAME governing Cv equation 146 later grounds with real propane
+       numbers, so it is exactly the "equation's symbols, physically and
+       numerically" case the role exists for, even with no real service
+       values yet. Schematic is deliberately GENERIC: a single line-sized
+       control valve, no reducers — Fp/reducers are not introduced until
+       slide 145, and this slide's own governing equation states plainly
+       that "Fp = 1.0 and drops out entirely when the valve is installed at
+       line size." Showing the line-sized case here is not a simplification
+       for convenience, it is the literal Fp=1.0 condition the equation
+       itself describes, taught before the fittings-attached case that
+       requires Fp's own correction (145) and grounds it with hardware (146).
+       No numeric values are invented anywhere — every term (q, ΔP, Gf) is
+       shown symbolically only, matching 145's own precedent for a slide with
+       no real service numbers yet.
+
+       Valve/pipe coordinates reuse the exact same frame as 145/146
+       (sym-valve-actuator at x=680, flow line y=200) for visual continuity
+       across the module — the same physical picture recurs with reducers
+       added at 145/146, reinforcing "same valve, now with fittings bolted
+       on" rather than presenting three unrelated pictures back to back.
+
+       Kv/Av unit conversions (course.json's 4th bullet) are carried in the
+       equation's own solved-line slot as a descriptive line (no numeric
+       substitution exists to show, since Cv itself is never assigned a
+       number on this slide) — same pattern 145 already uses for its own
+       figure-less numeric conclusion. -->
+  <article class="slide slide--role-nomenclature-equation" data-slide="144" data-deck="cve1">
     <h1 class="slide-title">Solving for Required Cv</h1>
-    <div class="tpl-content" style="grid-template-columns:1fr">
-      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:72cqw;margin:0 auto">
-        <li><span class="num">1</span>Governing equation, volumetric flow: Cv = q &divide; (N1&middot;Fp&middot;&radic;(&Delta;P/Gf)), N1 = 1.0 in gpm/psia units</li>
-        <li><span class="num">2</span>Mass-flow form: substitutes N6 for N1 and w (mass flow rate) for q</li>
-        <li><span class="num">3</span>Fp = 1.0 and drops out entirely when the valve is installed at line size &mdash; no reducers, elbows, or tees at its own connections</li>
-        <li><span class="num">4</span>Two other flow-coefficient conventions convert directly off Cv: Kv = 0.865&middot;Cv, Av = 2.40&times;10<sup>&minus;5</sup>&middot;Cv &mdash; same valve, same physical capacity, different unit system</li>
-      </ul>
-      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3 &ldquo;Liquid Valve Sizing,&rdquo; printed p. 3-4 &mdash; the Cv equation and Kv/Av conversions transcribed from the source&rsquo;s own step-5 equations.</p>
+    <div class="tpl-content">
+
+      <!-- ================= 1. PERSISTENT HORIZONTAL SCHEMATIC =================
+           Symbol defs copied verbatim from 40 - Engine/Presentation/build/
+           assets/symbol-library.svg (sym-valve-actuator) — reused, not
+           redrawn. No reducers: this is the Fp=1.0, line-sized case. -->
+      <div class="tpl-fig-wrap">
+        <svg viewBox="0 0 1600 480" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Horizontal schematic: a generic control valve installed at line size in a pipe run, with no reducers or fittings at its own connections.">
+
+          <defs>
+            <symbol id="sym-valve-actuator" viewBox="0 0 120 200">
+              <polygon points="20,140 20,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <polygon points="100,140 100,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <line x1="60" y1="170" x2="60" y2="125" stroke="#3F4040" stroke-width="3"/>
+              <path d="M 20 125 A 40 40 0 0 1 100 125 L 20 125 Z" fill="none" stroke="#3F4040" stroke-width="3" stroke-linejoin="round"/>
+            </symbol>
+            <marker id="arrow-process-144" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#3F4040"/>
+            </marker>
+            <marker id="arrow-process-blue-144" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#004B8D"/>
+            </marker>
+          </defs>
+
+          <rect x="0" y="0" width="1600" height="480" fill="#FFFFFF"/>
+
+          <!-- Persistent geometry: the valve, at line size — no reducers.
+               This IS the setup, not a taught variable. -->
+          <!-- Recentred 2026-09-22 (Franz: hardware centre was 740, not the
+               viewBox's true centre 800 — same fix applied across the rest
+               of ch8). -->
+          <use href="#sym-valve-actuator" x="740" y="30" width="120" height="200"/>
+
+          <!-- Persistent identification label. -->
+          <g class="schem-persist" font-family="Arial, sans-serif">
+            <text x="800" y="46" font-size="26" font-weight="700" text-anchor="middle">Line-sized control valve</text>
+          </g>
+
+          <!-- STEP 1: Cv — intro / framing (no schematic element; equation only). -->
+
+          <!-- STEP 2: q — flow rate + direction (symbolic, no real value). -->
+          <g class="tpl-schem-part tpl-tok" data-part="q">
+            <line class="flow-line" x1="60" y1="200" x2="1540" y2="200" marker-end="url(#arrow-process-blue-144)"></line>
+            <text x="60" y="228" font-size="26" font-weight="700" text-anchor="start">q (flow rate)</text>
+          </g>
+
+          <!-- STEP 3: ΔP — P1, P2 taps at the valve's own connections (symbolic). -->
+          <g class="tpl-schem-part tpl-tok" data-part="dp">
+            <line x1="740" y1="212" x2="740" y2="290" stroke-width="2"></line>
+            <text x="740" y="314" font-size="24" font-weight="700" text-anchor="middle">P1</text>
+            <line x1="860" y1="212" x2="860" y2="290" stroke-width="2"></line>
+            <text x="860" y="314" font-size="24" font-weight="700" text-anchor="middle">P2</text>
+            <path class="hl-path" d="M740,340 L740,348 L860,348 L860,340" fill="none" stroke-width="2"></path>
+            <text x="800" y="370" font-size="22" font-weight="700" text-anchor="middle">&Delta;P = P1 &minus; P2</text>
+          </g>
+
+          <!-- STEP 4: Gf — specific gravity of the flowing liquid (symbolic). -->
+          <g class="tpl-schem-part tpl-tok" data-part="gf">
+            <text x="60" y="266" text-anchor="start"><tspan font-size="24" font-weight="700">Gf</tspan><tspan font-size="17" dx="6">(specific gravity, flowing conditions)</tspan></text>
+          </g>
+
+          <!-- STEP 5: Fp — line-sized, no reducers, so Fp = 1.0 and drops out. -->
+          <g class="tpl-schem-part tpl-tok" data-part="fp">
+            <text x="60" y="297" text-anchor="start"><tspan font-size="24" font-weight="700">Fp = 1.0</tspan><tspan font-size="17" dx="6">(line-sized &mdash; no reducers/elbows/tees)</tspan></text>
+          </g>
+
+          <!-- STEP 6: Cv solved — Kv/Av conversion, leaderless (a general
+               conversion note, not tied to one spot on the hardware, same
+               reasoning as 146's leaderless Gf/Fp values). -->
+          <g class="tpl-schem-part tpl-tok" data-part="cv">
+            <!-- Box moved up 2026-09-21 (same fix as 145/146's own callout
+                 clearance correction, applied here for consistency): bottom
+                 edge was 18 viewBox-units above the frame's own bottom edge,
+                 the same cramped pattern Franz flagged elsewhere. Now ~65
+                 units clear, matching the established standard. -->
+            <rect class="callout-box" x="1140" y="310" width="440" height="110" rx="6" stroke-width="3"></rect>
+            <text x="1360" y="342" font-size="22" text-anchor="middle">Same Cv, other unit systems:</text>
+            <text x="1360" y="373" font-size="22" font-weight="700" text-anchor="middle">Kv = 0.865 &times; Cv</text>
+            <text x="1360" y="401" font-size="21" font-weight="700" text-anchor="middle">Av = 2.40&times;10<tspan baseline-shift="super" font-size="15">&minus;5</tspan> &times; Cv</text>
+          </g>
+
+        </svg>
+      </div>
+
+      <!-- ================= 2. EQUATION ================= -->
+      <div class="tpl-eq-wrap">
+        <div class="tpl-eq">
+          <span class="tpl-eq-cv tpl-eq-term tpl-tok is-revealed is-on" data-part="cv-intro">C<sub>v</sub></span>
+          <span class="tpl-eq-op">=</span>
+          <span class="tpl-eq-term tpl-tok" data-part="q">q</span>
+          <span class="tpl-eq-op">&divide;</span>
+          <span class="tpl-eq-op">(</span>
+          <span class="tpl-eq-const">N<sub>1</sub></span>
+          <span class="tpl-eq-op">&middot;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="fp">F<sub>p</sub></span>
+          <span class="tpl-eq-op">&middot;&radic;(</span>
+          <span class="tpl-eq-term tpl-tok" data-part="dp">&Delta;P</span>
+          <span class="tpl-eq-op">&divide;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="gf">G<sub>f</sub></span>
+          <span class="tpl-eq-op">))</span>
+        </div>
+        <div class="tpl-eq-solved tpl-tok" data-part="cv">
+          <span class="tpl-eq-solved__line">Once solved, Kv = 0.865&middot;C<sub>v</sub> and A<sub>v</sub> = 2.40&times;10<sup>&minus;5</sup>&middot;C<sub>v</sub> convert to the same valve&rsquo;s capacity in other unit systems.</span>
+        </div>
+      </div>
+
+      <!-- ================= 3. STEPS + DESCRIPTION ================= -->
+      <div class="tpl-step-row">
+        <div class="tpl-step-keys">
+          <button class="tpl-step-key is-active" type="button" data-part="cv-intro"
+                  data-def="Cv is the valve&rsquo;s flow capacity &mdash; the term this equation solves for.">1 &middot; Cv &mdash; what we&rsquo;re solving for</button>
+          <button class="tpl-step-key" type="button" data-part="q"
+                  data-def="q is the volumetric flow rate through the valve, in gpm (N1 = 1.0).">2 &middot; Flow rate (q)</button>
+          <button class="tpl-step-key" type="button" data-part="dp"
+                  data-def="&Delta;P is measured at the valve&rsquo;s own inlet and outlet connections: P1 minus P2.">3 &middot; &Delta;P across the valve</button>
+          <button class="tpl-step-key" type="button" data-part="gf"
+                  data-def="Gf is the flowing liquid&rsquo;s specific gravity, relative to water (Gf = 1.0).">4 &middot; Specific gravity (Gf)</button>
+          <button class="tpl-step-key" type="button" data-part="fp"
+                  data-def="Fp = 1.0 when the valve is installed at line size, with no reducers or fittings attached.">5 &middot; Piping geometry (Fp = 1.0)</button>
+          <button class="tpl-step-key" type="button" data-part="cv"
+                  data-def="Kv and Av convert this same Cv into metric and SI unit systems.">6 &middot; Kv / Av &mdash; other units</button>
+        </div>
+        <div class="tpl-step-def">Cv is the valve&rsquo;s flow capacity &mdash; the term this equation solves for.</div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Liquid Valve Sizing,&rdquo; printed p. 3-4.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">144</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

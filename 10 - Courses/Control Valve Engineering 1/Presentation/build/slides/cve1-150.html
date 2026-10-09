@@ -20,107 +20,140 @@
        source's own real Pv/Pc numbers via the source's own FF equation, not
        a source-stated result; no FL value is given in the source for this
        valve/trim, so ΔPmax is not presented as a solved number, per
-       course.json's own sourceNote. Do tab (2026-09-20 fix): replaced a
-       false "practice exercise that follows" reference — no such exercise
-       exists anywhere in this course, confirmed by search — with a
-       recompute-it-yourself prompt grounded only in this slide's own
-       numbers.
+       course.json's own sourceNote.
 
-       2026-09-20 fix (Phase 1 remediation, Decision 1): the figure-less
-       adaptation flagged above no longer applies — restored the real fixed
-       32cqw figure column (gallery.css Sec 10) with a pressure-ladder
-       diagram, NOT a valve/piping schematic (that concept is already
-       covered on slides 146-147; this competency's own visual content is
-       the RELATIVE SIZE of P1/P2/Pv/Pc, which the choked-flow judgment
-       actually turns on). Plots the case's own four pressures on one
-       vertical axis to scale: Pc and Pv (fixed properties of propane) well
-       outside the P1/P2 band, so the actual ΔP = 25 psi reads as small
-       against that whole span — the same qualitative reasoning the
-       source's own sentence states, with no ΔPmax number invented (none is
-       computable without a source-stated FL for this valve/trim, per the
-       sourceNote above — the diagram does not draw one). -->
-  <article class="slide slide--role-procedure-worked" data-slide="150" data-deck="cve1">
+       2026-09-21 (Phase 4 rebuild, per Franz's direct call that this
+       slide's vertical pressure-ladder chart was "completely unusable, too
+       small to see" and that naive enlargement tends to just create new
+       collisions): rebuilt onto role-nomenclature-equation (gallery.css
+       §15) rather than enlarging the old chart in place.
+
+       JUDGMENT CALL (flagged per task instructions): kept a VALUE-AXIS
+       visual rather than switching to a pipe/valve schematic — that
+       physical picture is already taught on 146-147, and this
+       competency's own teaching point is the RELATIVE SIZE of four
+       pressures (Pc, P1, P2, Pv), not the hardware. But the axis is now
+       HORIZONTAL, not vertical, to actually fit the template's wide
+       fig-wrap row (~3.9:1, per design-notes.md item 1) instead of
+       cramming a portrait chart into a landscape box. P1 and P2 are only
+       25 psi apart on a 0-650 psia scale — spacing them as two independent
+       tick+label pairs at real scale would put their labels a few pixels
+       apart, exactly the kind of collision the old chart had. Instead they
+       are drawn as a single merged tick zone with ONE callout box holding
+       both values plus ΔP — which is also more honest to the actual
+       teaching point (P1 and P2 really are that close together against the
+       full Pv-to-Pc span; merging them visually states the lesson instead
+       of fighting the scale to keep them legibly separate). Pv and Pc, both
+       comfortably isolated on the scale, get ordinary tick+label treatment.
+
+       The equation used is FF = 0.96 − 0.28·√(Pv/Pc) (course.json's own
+       stated formula, page 149's chart-reading alternative) — the one real
+       equation this competency's worked determination actually solves, Pv
+       and Pc are its two terms. ΔP has no equation term (it does not appear
+       in the FF formula) so its own step reveals the schematic's merged
+       callout with no matching equation highlight, same as 146's own "d"
+       bore label had no equation counterpart. No ΔPmax value is drawn or
+       claimed as computed — the source gives no FL for this valve/trim, so
+       none exists to show (per the sourceNote above); the final step's flag
+       states the source's own qualitative finding only. -->
+  <article class="slide slide--role-nomenclature-equation" data-slide="150" data-deck="cve1">
     <h1 class="slide-title">Checking the Propane Case for Choked Flow</h1>
     <div class="tpl-content">
-      <div class="tpl-tabs">
-        <button class="tpl-tab is-active" type="button">1 &middot; Show</button>
-        <button class="tpl-tab" type="button">2 &middot; Tell</button>
-        <button class="tpl-tab" type="button">3 &middot; Do</button>
-      </div>
-      <div class="tpl-tabpanes">
-        <div class="tpl-tabpane is-active">
-          Same propane case as slides 146-147.
-          <ol class="tpl-steps">
-            <li>P<sub>v</sub> = 124.3 psia, P<sub>c</sub> = 616.3 psia &rarr; P<sub>v</sub>/P<sub>c</sub> &asymp; 0.202</li>
-            <li>F<sub>F</sub> = 0.96 &minus; 0.28&middot;&radic;(P<sub>v</sub>/P<sub>c</sub>) &asymp; 0.96 &minus; 0.28&middot;&radic;0.202 &asymp; 0.83 (the non-water chart gives the same reading)</li>
-            <li>Weigh &Delta;P<sub>max</sub> against the actual service &Delta;P of 25 psi</li>
-            <li>&Delta;P<sub>max</sub> comes out larger than 25 psi &mdash; the flow is not choked</li>
-          </ol>
-        </div>
-        <div class="tpl-tabpane">
-          <div class="tpl-callout"><span class="tpl-callout__label">Common failure</span>Running the choked-flow check and assuming it must find something. The source states this plainly: &ldquo;based on the small required pressure drop, the flow will not be choked.&rdquo; Knowing when the check doesn&rsquo;t apply is as much the skill as running it &mdash; a small required &Delta;P relative to the process pressures doesn&rsquo;t automatically mean trouble.</div>
-        </div>
-        <div class="tpl-tabpane">
-          Try it yourself: using this case&rsquo;s own P<sub>v</sub>, P<sub>c</sub>, and the F<sub>F</sub>-and-&Delta;P<sub>max</sub> method just shown, confirm for yourself that &Delta;P = 25 psi really does fall under &Delta;P<sub>max</sub> before accepting it as the value that carries into slides 146-147&rsquo;s Cv equation.
-        </div>
-      </div>
 
+      <!-- ================= 1. PERSISTENT HORIZONTAL PRESSURE SCALE ================= -->
       <div class="tpl-fig-wrap">
-        <div class="tpl-fig">
-          <svg viewBox="0 0 260 520" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Vertical pressure ladder for the propane case, to scale: critical pressure Pc at 616.3 psia near the top, P1 at 314.7 psia and P2 at 289.7 psia close together in the middle (Delta P of 25 psi between them), and vapor pressure Pv at 124.3 psia well below both, leaving a wide margin before the flow could choke.">
-            <rect x="1" y="1" width="258" height="518" fill="#ffffff"></rect>
-            <text x="130" y="22" font-size="12.5" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">Pressure ladder (psia)</text>
+        <svg viewBox="0 0 1600 480" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Horizontal pressure scale from 0 to 650 psia for the propane case: vapor pressure Pv at 124.3 psia and critical pressure Pc at 616.3 psia sit far apart near the ends of the scale, while the actual working pressures P1 (314.7 psia) and P2 (289.7 psia) sit close together near the middle, only 25 psi apart.">
 
-            <!-- Vertical axis, 0 psia at bottom (y=460) to ~650 psia at top (y=60) -->
-            <defs>
-              <marker id="cve1150AxisArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
-                <path d="M0,0 L10,5 L0,10 z" fill="#3F4040"></path>
-              </marker>
-            </defs>
-            <line x1="130" y1="460" x2="130" y2="50" stroke="#3F4040" stroke-width="2" marker-end="url(#cve1150AxisArrow)"></line>
-            <text x="130" y="42" font-size="10" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">higher</text>
-            <line x1="122" y1="460" x2="138" y2="460" stroke="#3F4040" stroke-width="2"></line>
-            <text x="130" y="474" font-size="10" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">0</text>
+          <rect x="0" y="0" width="1600" height="480" fill="#FFFFFF"/>
 
-            <!-- Pc = 616.3 psia -->
-            <line x1="110" y1="81" x2="150" y2="81" stroke="#3F4040" stroke-width="2"></line>
-            <text x="156" y="78" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700">P<tspan baseline-shift="sub" font-size="8">c</tspan></text>
-            <text x="156" y="92" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif">616.3 psia (critical)</text>
+          <!-- Persistent geometry: the scale itself and its two isolated
+               reference pressures' tick positions are the setup; the AXIS
+               line and its "0" origin are always visible from the start. -->
+          <g class="schem-persist" font-family="Arial, sans-serif">
+            <text x="800" y="42" font-size="24" font-weight="700" text-anchor="middle">Pressure scale (psia) &mdash; same propane case</text>
+            <line x1="100" y1="250" x2="1520" y2="250" stroke="#3F4040" stroke-width="3" marker-end="url(#arrow-axis-150)"></line>
+            <text x="100" y="284" font-size="24" text-anchor="middle">0</text>
+            <text x="270" y="200" font-size="22" text-anchor="middle">higher pressure &rarr;</text>
+          </g>
 
-            <!-- P1 = 314.7 psia -->
-            <line x1="112" y1="266" x2="148" y2="266" stroke="#004B8D" stroke-width="2.4"></line>
-            <text x="60" y="263" font-size="12" fill="#004B8D" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">P1</text>
-            <text x="60" y="276" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">314.7 psia</text>
+          <defs>
+            <marker id="arrow-axis-150" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#3F4040"/>
+            </marker>
+          </defs>
 
-            <!-- P2 = 289.7 psia -->
-            <line x1="112" y1="282" x2="148" y2="282" stroke="#004B8D" stroke-width="2.4"></line>
-            <text x="60" y="292" font-size="12" fill="#004B8D" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">P2</text>
-            <text x="60" y="305" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">289.7 psia</text>
+          <!-- STEP: pv — vapor pressure, isolated, below axis. -->
+          <g class="tpl-schem-part tpl-tok" data-part="pv">
+            <line x1="392" y1="240" x2="392" y2="260" stroke-width="2"></line>
+            <text x="392" y="300" font-size="22" font-weight="700" text-anchor="middle">Pv</text>
+            <text x="392" y="326" font-size="24" text-anchor="middle">124.3 psia (vapor)</text>
+          </g>
 
-            <!-- deltaP bracket between P1 and P2 -->
-            <path d="M156,266 L164,266 L164,282 L156,282" fill="none" stroke="#959797" stroke-width="1.3"></path>
-            <text x="170" y="278" font-size="10" fill="#959797" font-family="Arial, sans-serif">&Delta;P = 25 psi</text>
+          <!-- STEP: pc — critical pressure, isolated, above axis. -->
+          <g class="tpl-schem-part tpl-tok" data-part="pc">
+            <line x1="1392" y1="240" x2="1392" y2="260" stroke-width="2"></line>
+            <text x="1392" y="190" font-size="24" text-anchor="middle">616.3 psia (critical)</text>
+            <text x="1392" y="222" font-size="22" font-weight="700" text-anchor="middle">Pc</text>
+          </g>
 
-            <!-- Pv = 124.3 psia -->
-            <line x1="110" y1="384" x2="150" y2="384" stroke="#3F4040" stroke-width="2"></line>
-            <text x="156" y="381" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700">P<tspan baseline-shift="sub" font-size="8">v</tspan></text>
-            <text x="156" y="395" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif">124.3 psia (vapor)</text>
+          <!-- STEP: dp — P1/P2, merged into one callout (25 psi apart on a
+               650 psia scale — see judgment-call comment above). -->
+          <g class="tpl-schem-part tpl-tok" data-part="dp">
+            <line x1="728" y1="240" x2="728" y2="260" stroke-width="2"></line>
+            <line x1="779" y1="240" x2="779" y2="260" stroke-width="2"></line>
+            <path d="M728,225 L728,235 L779,235 L779,225" fill="none" stroke-width="2"></path>
+            <line x1="753" y1="225" x2="753" y2="210" stroke-width="1.5" stroke-dasharray="4 3"></line>
+            <rect class="callout-box" x="560" y="95" width="390" height="115" rx="6" stroke-width="3"></rect>
+            <text x="755" y="125" font-size="20" font-weight="700" text-anchor="middle">P1 = 314.7 psia</text>
+            <text x="755" y="152" font-size="20" font-weight="700" text-anchor="middle">P2 = 289.7 psia</text>
+            <text x="755" y="179" font-size="20" font-weight="700" text-anchor="middle">&Delta;P = 25 psi</text>
+          </g>
 
-            <!-- margin bracket between P2 and Pv, drawn in the open space to the
-                 RIGHT of the axis (below the deltaP bracket) rather than the left,
-                 where it would have crowded the P1/P2/Pv value labels -->
-            <path d="M182,282 L190,282 L190,384 L182,384" fill="none" stroke="var(--emerson-orange)" stroke-width="1.3"></path>
-            <text x="196" y="325" font-size="9.5" fill="var(--emerson-orange)" font-family="Arial, sans-serif">wide margin</text>
-            <text x="196" y="338" font-size="9.5" fill="var(--emerson-orange)" font-family="Arial, sans-serif">above Pv</text>
+          <!-- STEP: ff — final consequence flag, open canvas below axis. -->
+          <g class="tpl-schem-part tpl-tok" data-part="ff">
+            <rect class="callout-box" x="970" y="340" width="440" height="76" rx="6" stroke-width="3"></rect>
+            <text x="1190" y="368" font-size="22" text-anchor="middle">&Delta;P (25 psi) &lt; the full Pv&ndash;Pc span (492 psi)</text>
+            <text x="1190" y="396" font-size="20" font-weight="700" fill="var(--emerson-blue)" text-anchor="middle">Not choked</text>
+          </g>
 
-            <text x="130" y="438" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">F<tspan baseline-shift="sub" font-size="8">F</tspan> &asymp; 0.83, from Pv/Pc</text>
-            <text x="130" y="452" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">&Delta;P small vs. this span &rarr; not choked</text>
-          </svg>
+        </svg>
+      </div>
+
+      <!-- ================= 2. EQUATION ================= -->
+      <div class="tpl-eq-wrap">
+        <div class="tpl-eq">
+          <span class="tpl-eq-cv tpl-eq-term tpl-tok is-revealed is-on" data-part="ff-intro">F<sub>F</sub></span>
+          <span class="tpl-eq-op">= 0.96 &minus; 0.28&middot;&radic;(</span>
+          <span class="tpl-eq-term tpl-tok" data-part="pv">P<sub>v</sub></span>
+          <span class="tpl-eq-op">&divide;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="pc">P<sub>c</sub></span>
+          <span class="tpl-eq-op">)</span>
+        </div>
+        <div class="tpl-eq-solved tpl-tok" data-part="ff">
+          <span class="tpl-eq-solved__line">0.96 &minus; 0.28&times;&radic;(124.3&divide;616.3) = 0.96 &minus; 0.28&times;0.449 &asymp; <strong>0.83</strong></span>
         </div>
       </div>
 
-      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Liquid Sizing Sample Problem,&rdquo; printed pp. 3-6&ndash;3-8 &mdash; P<sub>v</sub>, P<sub>c</sub>, P1, P2, and &Delta;P are the source&rsquo;s own worked values, plotted to scale; F<sub>F</sub> is computed from them via the source&rsquo;s own equation, not source-stated. No &Delta;P<sub>max</sub> value is drawn &mdash; the source gives no F<sub>L</sub> for this valve/trim to compute one.</p>
+      <!-- ================= 3. STEPS + DESCRIPTION ================= -->
+      <div class="tpl-step-row">
+        <div class="tpl-step-keys">
+          <button class="tpl-step-key is-active" type="button" data-part="ff-intro"
+                  data-def="The same choked-flow check, now run against the real propane numbers.">1 &middot; FF &mdash; the check we&rsquo;re running</button>
+          <button class="tpl-step-key" type="button" data-part="pv"
+                  data-def="Vapor pressure is a property of the fluid itself, at its flowing temperature.">2 &middot; Vapor pressure (Pv)</button>
+          <button class="tpl-step-key" type="button" data-part="pc"
+                  data-def="Critical pressure is a fixed physical constant for propane.">3 &middot; Critical pressure (Pc)</button>
+          <button class="tpl-step-key" type="button" data-part="dp"
+                  data-def="P1 and P2 sit close together against the full Pv&ndash;Pc span.">4 &middot; The case&rsquo;s own &Delta;P</button>
+          <button class="tpl-step-key" type="button" data-part="ff"
+                  data-def="No FL value exists for this valve/trim, so a full numeric check doesn&rsquo;t apply here.">5 &middot; Solve FF</button>
+        </div>
+        <div class="tpl-step-def">The same choked-flow check, now run against the real propane numbers.</div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Liquid Sizing Sample Problem,&rdquo; printed pp. 3-6&ndash;3-8.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">150</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

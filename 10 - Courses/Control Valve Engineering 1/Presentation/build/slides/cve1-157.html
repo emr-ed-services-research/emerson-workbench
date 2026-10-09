@@ -19,18 +19,186 @@
        independently reproducing the source's own Sample Problem 2 result
        (xTP≈0.67, verified on slide 158) from these exact terms, since the
        source PDF's own equation typesetting extracts with garbled symbols
-       (course.json sourceNote). Same figure-less mechanism adaptation as
-       slide 154, matching m1's cve1-145 treatment. -->
-  <article class="slide slide--role-mechanism" data-slide="157" data-deck="cve1">
+       (course.json sourceNote).
+
+       2026-09-21 (ch8-m2 rebuild, held to cve1-145's OWN UPGRADED bar, per
+       direct task instruction — not the bar 145 started at): rebuilt from
+       role-mechanism/has-no-fig onto role-nomenclature-equation (gallery.css
+       §15), Franz's own precedent from 145 applied here for the identical
+       reason: "xTP/Y are the exact reason we have this slide," this being
+       compressible flow's direct structural counterpart to 145's Fp slide
+       (general, symbolic equations immediately before the worked case).
+       Schematic frame (reducers x=555/920, valve x=680, generic "Control
+       valve" label — no specific size named) copied verbatim from 145's own
+       reviewed geometry, since xTP's own definition literally reuses Fp's
+       K-factor piping geometry (Ki = K1 + KB1, the same terms Fp's ΣK
+       already introduces) — same physical installation, not a new layout.
+
+       RESEARCHED (web search, 2026-09-21, since course.json's own text
+       states the mechanism but no vault figure covers it): confirmed Y's
+       physical meaning is NOT the same mechanism 145 already drew. 145's
+       velocity-profile insets explain Fp/ΣK — how a reducer DISTORTS the
+       velocity profile arriving at the valve, a piping-geometry effect that
+       applies whether the fluid is compressible or not. Y is a genuinely
+       different, compressible-only effect: as the gas accelerates through
+       the restriction, its own density drops (it expands), so the same
+       mass flow needs a growing cross-sectional area at and past the vena
+       contracta — real industry reference material confirms Y is applied
+       "to correct the calculated flow for both changes in density at the
+       vena contracta and for vena contracta enlargement," continuing until
+       the jet reaches local sonic velocity (156's own mechanism), at which
+       point Y bottoms out at its fixed 0.667 floor. Because this is a
+       different mechanism from 145's, THIS slide draws a DIFFERENT visual
+       for it (per task instruction, not forced to copy 145's velocity-
+       profile insets) — a two-state comparison of how far the gas jet has
+       expanded by the time it reaches the vena contracta, at a modest x
+       versus a near-choked x — while still reusing 145's own reducer
+       schematic and callout-box positions for the xTP/Ki content, since
+       that correction genuinely IS the same K-factor mechanism 145 already
+       established. -->
+  <article class="slide slide--role-nomenclature-equation" data-slide="157" data-deck="cve1">
     <h1 class="slide-title">The Expansion Factor (Y) and the Xtp Correction</h1>
-    <div class="tpl-content" style="grid-template-columns:1fr">
-      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:76cqw;margin:0 auto">
-        <li><span class="num">1</span>Y = 1 &minus; x &divide; (3&middot;F<sub>k</sub>&middot;x<sub>TP</sub>) &mdash; the expansion factor drops linearly from 1.0 (no expansion) toward its 0.667 floor as x approaches the choked ratio</li>
-        <li><span class="num">2</span>With reducers or other fittings at the valve&rsquo;s own connections, x<sub>T</sub> is replaced by x<sub>TP</sub> = (x<sub>T</sub>/Fp&sup2;)&middot;[1 + (x<sub>T</sub>&middot;K<sub>i</sub>/N5)&middot;(Cv/d&sup2;)&sup2;]<sup>&minus;1</sup></li>
-        <li><span class="num">3</span>K<sub>i</sub> = K1 + K<sub>B1</sub>, the inlet head-loss coefficient &mdash; built from the same K-factor piping geometry m1&rsquo;s Fp equation already uses</li>
-        <li><span class="num">4</span>x<sub>TP</sub> folds the fittings&rsquo; own resistance into the choking threshold itself &mdash; a smaller valve in a larger line can choke at a different point than the flow-coefficient table&rsquo;s rated x<sub>T</sub> alone would suggest</li>
-      </ul>
-      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4, &ldquo;Determining x<sub>TP</sub>, the Pressure Drop Ratio Factor,&rdquo; printed pp. 4-1&ndash;4-2, 4-4&ndash;4-5 &mdash; the Y and x<sub>TP</sub> equations as stated in the source. Component Index: pss-topic-choked-flow-expansion-factor, pss-topic-xtp-piping-geometry-correction.</p>
+    <div class="tpl-content">
+
+      <!-- ================= 1. PERSISTENT HORIZONTAL SCHEMATIC =================
+           Symbol defs and reducer/valve coordinates copied verbatim from
+           145's reviewed geometry — xTP reuses the same K-factor piping
+           setup Fp already established. -->
+      <div class="tpl-fig-wrap">
+        <svg viewBox="0 0 1600 480" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Horizontal schematic: a control valve bolted directly between two identical concentric reducers, same geometry as the Fp slide. Two small insets below the pipe compare how far the gas jet has expanded by the vena contracta at a modest pressure-drop ratio versus a near-choked one.">
+
+          <defs>
+            <symbol id="sym-valve-actuator" viewBox="0 0 120 200">
+              <polygon points="20,140 20,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <polygon points="100,140 100,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <line x1="60" y1="170" x2="60" y2="125" stroke="#3F4040" stroke-width="3"/>
+              <path d="M 20 125 A 40 40 0 0 1 100 125 L 20 125 Z" fill="none" stroke="#3F4040" stroke-width="3" stroke-linejoin="round"/>
+            </symbol>
+            <symbol id="sym-pipe-reducer" viewBox="0 0 100 60">
+              <polygon points="0,12 0,48 70,38 70,22" fill="#FFFFFF" stroke="#3F4040" stroke-width="3" stroke-linejoin="round"/>
+            </symbol>
+            <marker id="arrow-process-157" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#3F4040"/>
+            </marker>
+            <marker id="arrow-process-blue-157" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#004B8D"/>
+            </marker>
+          </defs>
+
+          <rect x="0" y="0" width="1600" height="480" fill="#FFFFFF"/>
+
+          <!-- Persistent geometry: reducers, valve body — identical to
+               145's coordinates. -->
+          <!-- Recentred 2026-09-22 (Franz: same 60-unit off-center hardware
+               issue found and fixed across 145/146/147/154/155). -->
+          <use href="#sym-pipe-reducer" x="615" y="155" width="110" height="90"/>
+          <g transform="translate(980,155) scale(-1,1)">
+            <use href="#sym-pipe-reducer" width="110" height="90"/>
+          </g>
+          <use href="#sym-valve-actuator" x="740" y="30" width="120" height="200"/>
+
+          <g class="schem-persist" font-family="Arial, sans-serif">
+            <line class="flow-line" x1="60" y1="200" x2="1540" y2="200" marker-end="url(#arrow-process-blue-157)"/>
+            <text x="800" y="46" font-size="26" font-weight="700" text-anchor="middle">Control valve</text>
+          </g>
+
+          <!-- ===== STEP 1: y — the Y equation and its physical mechanism
+               (gas expansion/density drop at the vena contracta, NOT the
+               velocity-profile distortion 145 already draws). Two small
+               nozzle insets, open canvas below the pipe, well clear of the
+               reducer/valve cluster and of the Ki/formula boxes. ===== -->
+          <g class="tpl-schem-part tpl-tok" data-part="y">
+            <text x="290" y="266" font-size="22" font-weight="700" text-anchor="middle">Modest x &mdash; Y near 1.0</text>
+            <path d="M180,320 L260,320 L300,340 L300,360 L260,380 L180,380 Z" fill="#e7eaec" stroke-width="1.8"></path>
+            <line x1="300" y1="350" x2="330" y2="350" stroke-width="1.8" stroke-dasharray="3 2"></line>
+            <path d="M330,343 L380,340 L380,360 L330,357 Z" fill="none" stroke-width="1.8"></path>
+            <circle cx="205" cy="335" r="2.6"></circle>
+            <circle cx="220" cy="345" r="2.6"></circle>
+            <circle cx="205" cy="360" r="2.6"></circle>
+            <circle cx="350" cy="342" r="2.4"></circle>
+            <circle cx="365" cy="352" r="2.4"></circle>
+            <text x="290" y="418" font-size="22" text-anchor="middle">gas density drops only a little</text>
+
+            <text x="630" y="266" font-size="22" font-weight="700" text-anchor="middle">Near-choked x &mdash; Y &rarr; 0.667</text>
+            <path d="M520,320 L600,320 L640,345 L640,355 L600,380 L520,380 Z" fill="#cfe3f4" stroke-width="1.8"></path>
+            <line x1="640" y1="350" x2="670" y2="350" stroke-width="1.8" stroke-dasharray="3 2"></line>
+            <path d="M670,330 L730,322 L730,378 L670,370 Z" fill="none" stroke-width="1.8"></path>
+            <circle cx="545" cy="335" r="2.6"></circle>
+            <circle cx="560" cy="345" r="2.6"></circle>
+            <circle cx="545" cy="360" r="2.6"></circle>
+            <circle cx="690" cy="335" r="2"></circle>
+            <circle cx="710" cy="370" r="2"></circle>
+            <text x="630" y="418" font-size="22" text-anchor="middle">gas expands sharply, jet widens</text>
+          </g>
+
+          <!-- ===== STEP 2: ki — the inlet head-loss coefficient, boxed and
+               positioned exactly like 145's ΣK box (open canvas left of
+               reducer 1). Text enlarged 2026-09-21 (checker: 13.5px source
+               size was rendering at 7px real height, well under the 9px
+               floor). ===== -->
+          <g class="tpl-schem-part tpl-tok" data-part="ki">
+            <rect class="callout-box" x="120" y="55" width="460" height="90" rx="6" stroke-width="2"/>
+            <text x="350" y="88" font-size="24" font-weight="700" text-anchor="middle">Ki = K1 + KB1</text>
+            <text x="350" y="120" font-size="22" text-anchor="middle">(inlet loss + inlet Bernoulli coefficient)</text>
+          </g>
+
+          <!-- ===== STEP 3: formula — the full xTP formula, boxed and
+               positioned like 145's own reducer-collapse box. 2026-09-21:
+               moved up from y=345 (bottom 463, clearance 17 units — cramped,
+               the same defect class as 145's pre-fix reducer box) to y=290
+               (bottom 408, clearance 480-408=72), matching 145's ~60-70
+               standard. Captions enlarged from 13/13 (rendering at 7-8px
+               real, under the checker's 9px floor) to 17. -->
+          <g class="tpl-schem-part tpl-tok" data-part="formula">
+            <rect class="callout-box" x="1020" y="284" width="560" height="150" rx="6" stroke-width="3"/>
+            <text x="1300" y="312" font-size="22" text-anchor="middle">With fittings attached:</text>
+            <text x="1300" y="342" font-size="19" font-weight="700" text-anchor="middle">x<tspan baseline-shift="sub" font-size="15">TP</tspan> = (x<tspan baseline-shift="sub" font-size="15">T</tspan>&divide;Fp&sup2;)&middot;[1+(x<tspan baseline-shift="sub" font-size="15">T</tspan>&middot;K<tspan baseline-shift="sub" font-size="15">i</tspan>&divide;N5)(Cv&divide;d&sup2;)&sup2;]<tspan baseline-shift="super" font-size="15">&minus;1</tspan></text>
+            <text x="1300" y="372" font-size="22" font-style="italic" text-anchor="middle">Ki from the same K-factor geometry Fp uses</text>
+            <text x="1300" y="404" font-size="22" text-anchor="middle">reduces to x<tspan baseline-shift="sub" font-size="16">T</tspan> when line size = valve size</text>
+          </g>
+
+        </svg>
+      </div>
+
+      <!-- ================= 2. EQUATION =================
+           x and Fk are already known/introduced on slide 156 — plain
+           "is-revealed" terms with no tpl-tok/data-part, matching 147's own
+           precedent for carried-over terms, so the click handler (which
+           only tracks .tpl-tok elements) never touches them. Only Y and
+           xTP are this slide's own interactive terms. -->
+      <div class="tpl-eq-wrap">
+        <div class="tpl-eq">
+          <span class="tpl-eq-cv tpl-eq-term tpl-tok is-revealed is-on" data-part="y">Y</span>
+          <span class="tpl-eq-op">= 1 &minus;</span>
+          <span class="tpl-eq-term is-revealed">x</span>
+          <span class="tpl-eq-op">&divide; (3&middot;</span>
+          <span class="tpl-eq-term is-revealed">F<sub>k</sub></span>
+          <span class="tpl-eq-op">&middot;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="formula">x<sub>TP</sub></span>
+          <span class="tpl-eq-op">)</span>
+        </div>
+        <div class="tpl-eq-solved tpl-tok" data-part="formula">
+          <span class="tpl-eq-solved__line">Once x<sub>TP</sub> is known (via Ki and the reducer geometry), Y solves directly, dropping from 1.0 toward its 0.667 floor as x approaches the choked ratio.</span>
+        </div>
+      </div>
+
+      <!-- ================= 3. STEPS + DESCRIPTION ================= -->
+      <div class="tpl-step-row">
+        <div class="tpl-step-keys">
+          <button class="tpl-step-key is-active" type="button" data-part="y"
+                  data-def="A liquid doesn&rsquo;t expand as it drops pressure the way a gas does &mdash; liquid sizing has no equivalent term.">1 &middot; Y &mdash; the expansion mechanism</button>
+          <button class="tpl-step-key" type="button" data-part="ki"
+                  data-def="The same K-factor bookkeeping as Fp, applied to this equation.">2 &middot; The inlet coefficient (Ki)</button>
+          <button class="tpl-step-key" type="button" data-part="formula"
+                  data-def="The same valve at line size vs. behind reducers can give two different choked-flow answers.">3 &middot; The full x<sub>TP</sub> formula</button>
+        </div>
+        <div class="tpl-step-def">A liquid doesn&rsquo;t expand as it drops pressure the way a gas does &mdash; liquid sizing has no equivalent term.</div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4, &ldquo;Determining x<sub>TP</sub>, the Pressure Drop Ratio Factor,&rdquo; printed pp. 4-1&ndash;4-2, 4-4&ndash;4-5.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">157</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

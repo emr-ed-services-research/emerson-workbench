@@ -14,18 +14,185 @@
        calculate-compressible-cv [apply · mechanism]. Confirmed prose-only
        (cvh-topic-compressible-sizing-methodology, Control Valve Handbook
        §5.9; pss-topic-gas-steam-sizing-methodology, Power & Severe Service
-       Sourcebook, Ch. 4, printed p. 4-2) — no figure registered. Same
-       figure-less mechanism adaptation as slide 153. -->
-  <article class="slide slide--role-mechanism" data-slide="154" data-deck="cve1">
+       Sourcebook, Ch. 4, printed p. 4-2) — no figure registered.
+
+       2026-09-21 (ch8-m2 rebuild, matching the m1 template-gallery pass):
+       rebuilt from role-mechanism/has-no-fig onto role-nomenclature-equation
+       (gallery.css §15) — this is the direct compressible counterpart to
+       cve1-144 (liquid's general Cv equation), teaching the SAME kind of
+       generic, no-real-numbers governing equation before any worked case,
+       so it gets the identical treatment: a generic line-sized valve (no
+       reducers — Fp/reducers are not the point here, matching 144's own
+       reasoning), symbolic terms only. Schematic frame (valve at x=680,
+       flow line y=200) copied verbatim from 144 for visual continuity
+       across the liquid/compressible boundary — same physical picture,
+       now carrying a compressible-service flow line instead of a liquid
+       one.
+
+       Four bullets from course.json, one per equation term family, plus a
+       fifth (Y) that the source itself flags as genuinely NEW here — Fp is
+       "the same piping-geometry correction from liquid sizing, unchanged
+       in form"; Y has no liquid-sizing counterpart at all, so it gets its
+       own step with no numeric value yet (the source states plainly that
+       the next two slides, 156-157, derive it) rather than a placeholder
+       number invented for this slide. Volumetric alternate forms (N7/Gg
+       known, N9/M known) are carried in the equation's own solved-line
+       slot as a descriptive line, exactly the pattern 144 already uses for
+       its own Kv/Av conversion note — this slide never assigns Cv a
+       number, so there is no numeric substitution to show either way. -->
+  <article class="slide slide--role-nomenclature-equation" data-slide="154" data-deck="cve1">
     <h1 class="slide-title">Solving for Required Cv &mdash; Compressible Service</h1>
-    <div class="tpl-content" style="grid-template-columns:1fr">
-      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:74cqw;margin:0 auto">
-        <li><span class="num">1</span>Mass-flow form, specific weight g1 known: Cv = w &divide; (N6&middot;Fp&middot;Y&middot;&radic;(x&middot;P1&middot;g1))</li>
-        <li><span class="num">2</span>Volumetric forms substitute N7 (Gg known) or N9 (M known) and q&divide;&radic;(x&divide;(Gg&middot;T1&middot;Z)) in place of w&divide;&radic;(x&middot;P1&middot;g1)</li>
-        <li><span class="num">3</span>Fp is the identical piping-geometry correction from liquid sizing &mdash; unchanged in form, just applied here</li>
-        <li><span class="num">4</span>Y, the expansion factor, is new: it accounts for the gas expanding as it drops pressure through the valve &mdash; the next two slides derive it</li>
-      </ul>
-      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4 &ldquo;Compressible Fluid Sizing,&rdquo; printed p. 4-2 &mdash; the N6 mass-flow equation and the N7/N9 volumetric alternatives transcribed from the source&rsquo;s own step-5 equations. Component Index: cvh-topic-compressible-sizing-methodology, pss-topic-gas-steam-sizing-methodology.</p>
+    <div class="tpl-content">
+
+      <!-- ================= 1. PERSISTENT HORIZONTAL SCHEMATIC =================
+           Symbol defs copied verbatim from 40 - Engine/Presentation/build/
+           assets/symbol-library.svg (sym-valve-actuator) — reused, not
+           redrawn. No reducers: this is the generic, line-sized case,
+           matching 144's own reasoning (Fp/reducers are not this slide's
+           point). Frame identical to 144's (valve at x=680, flow line
+           y=200) for visual continuity. -->
+      <div class="tpl-fig-wrap">
+        <svg viewBox="0 0 1600 480" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Horizontal schematic: a generic control valve installed at line size in a compressible-service pipe run, with no reducers or fittings at its own connections.">
+
+          <defs>
+            <symbol id="sym-valve-actuator" viewBox="0 0 120 200">
+              <polygon points="20,140 20,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <polygon points="100,140 100,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <line x1="60" y1="170" x2="60" y2="125" stroke="#3F4040" stroke-width="3"/>
+              <path d="M 20 125 A 40 40 0 0 1 100 125 L 20 125 Z" fill="none" stroke="#3F4040" stroke-width="3" stroke-linejoin="round"/>
+            </symbol>
+            <marker id="arrow-process-154" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#3F4040"/>
+            </marker>
+            <marker id="arrow-process-blue-154" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#004B8D"/>
+            </marker>
+          </defs>
+
+          <rect x="0" y="0" width="1600" height="480" fill="#FFFFFF"/>
+
+          <!-- Persistent geometry: the valve, at line size — no reducers.
+               This IS the setup, not a taught variable. -->
+          <!-- Recentred 2026-09-22 (Franz: the valve center was 740, not
+               the viewBox's true center 800 — same 60-unit offset found and
+               fixed across 145/146/147). -->
+          <use href="#sym-valve-actuator" x="740" y="30" width="120" height="200"/>
+
+          <!-- Persistent identification label. -->
+          <g class="schem-persist" font-family="Arial, sans-serif">
+            <text x="800" y="46" font-size="26" font-weight="700" text-anchor="middle">Line-sized control valve</text>
+          </g>
+
+          <!-- STEP 1: Cv — intro / framing (no schematic element; equation only). -->
+
+          <!-- STEP 2: w — mass flow rate + direction (symbolic, no real value). -->
+          <g class="tpl-schem-part tpl-tok" data-part="w">
+            <line class="flow-line" x1="60" y1="200" x2="1540" y2="200" marker-end="url(#arrow-process-blue-154)"></line>
+            <text x="60" y="228" font-size="26" font-weight="700" text-anchor="start">w (mass flow rate)</text>
+          </g>
+
+          <!-- STEP 3: dp — P1, P2 taps at the valve's own connections, and the
+               ratio x = ΔP ÷ P1 the equation actually uses (symbolic). -->
+          <g class="tpl-schem-part tpl-tok" data-part="dp">
+            <line x1="740" y1="212" x2="740" y2="290" stroke-width="2"></line>
+            <text x="740" y="314" font-size="24" font-weight="700" text-anchor="middle">P1</text>
+            <line x1="860" y1="212" x2="860" y2="290" stroke-width="2"></line>
+            <text x="860" y="314" font-size="24" font-weight="700" text-anchor="middle">P2</text>
+            <path class="hl-path" d="M740,340 L740,348 L860,348 L860,340" fill="none" stroke-width="2"></path>
+            <text x="800" y="370" font-size="22" font-weight="700" text-anchor="middle">x = &Delta;P &divide; P1</text>
+          </g>
+
+          <!-- STEP 4: g1 — specific weight of the flowing gas (symbolic). -->
+          <g class="tpl-schem-part tpl-tok" data-part="g1">
+            <text x="60" y="266" text-anchor="start"><tspan font-size="24" font-weight="700">g1</tspan><tspan font-size="17" dx="6">(specific weight, flowing conditions)</tspan></text>
+          </g>
+
+          <!-- STEP 5: Fp — line-sized, no reducers, so Fp = 1.0 and drops out,
+               the identical condition liquid sizing already teaches (144). -->
+          <g class="tpl-schem-part tpl-tok" data-part="fp">
+            <text x="60" y="297" text-anchor="start"><tspan font-size="24" font-weight="700">Fp = 1.0</tspan><tspan font-size="17" dx="6">(line-sized &mdash; no reducers/elbows/tees)</tspan></text>
+          </g>
+
+          <!-- STEP 6: Y — the genuinely NEW term, no liquid-sizing
+               counterpart. No value is invented here — the source itself
+               says the next two slides derive it. Leaderless callout, open
+               canvas top-right, clear of the valve cluster and the P1/P2
+               taps below it. -->
+          <g class="tpl-schem-part tpl-tok" data-part="y">
+            <rect class="callout-box" x="1090" y="60" width="480" height="160" rx="6" stroke-width="3"></rect>
+            <text x="1330" y="92" font-size="22" font-weight="700" text-anchor="middle">Y &mdash; expansion factor (new)</text>
+            <text x="1330" y="120" font-size="22" text-anchor="middle">accounts for the gas expanding as it</text>
+            <text x="1330" y="146" font-size="22" text-anchor="middle">drops pressure through the valve</text>
+            <text x="1330" y="176" font-size="22" font-style="italic" text-anchor="middle">derived in the next module</text>
+          </g>
+
+          <!-- STEP 7: Cv solved — volumetric alternate forms (N7/N9), no
+               numeric substitution exists to show (Cv is never assigned a
+               number on this slide) — same pattern 144 already uses for its
+               own Kv/Av conversion note. Leaderless, bottom-right.
+               2026-09-21: moved up from y=362 (bottom 462, clearance 18) to
+               y=310 (bottom 410, clearance 70), matching 145's standard. -->
+          <g class="tpl-schem-part tpl-tok" data-part="cv">
+            <rect class="callout-box" x="1130" y="304" width="460" height="120" rx="6" stroke-width="3"></rect>
+            <text x="1360" y="336" font-size="22" text-anchor="middle">Same equation, other flow units:</text>
+            <text x="1360" y="368" font-size="24" font-weight="700" text-anchor="middle">Volumetric, Gg known &rarr; N7</text>
+            <text x="1360" y="400" font-size="24" font-weight="700" text-anchor="middle">Volumetric, M known &rarr; N9</text>
+          </g>
+
+        </svg>
+      </div>
+
+      <!-- ================= 2. EQUATION ================= -->
+      <div class="tpl-eq-wrap">
+        <div class="tpl-eq">
+          <span class="tpl-eq-cv tpl-eq-term tpl-tok is-revealed is-on" data-part="cv-intro">C<sub>v</sub></span>
+          <span class="tpl-eq-op">=</span>
+          <span class="tpl-eq-term tpl-tok" data-part="w">w</span>
+          <span class="tpl-eq-op">&divide;</span>
+          <span class="tpl-eq-op">(</span>
+          <span class="tpl-eq-const">N<sub>6</sub></span>
+          <span class="tpl-eq-op">&middot;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="fp">F<sub>p</sub></span>
+          <span class="tpl-eq-op">&middot;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="y">Y</span>
+          <span class="tpl-eq-op">&middot;&radic;(</span>
+          <span class="tpl-eq-term tpl-tok" data-part="dp">x</span>
+          <span class="tpl-eq-op">&middot;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="dp">P1</span>
+          <span class="tpl-eq-op">&middot;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="g1">g1</span>
+          <span class="tpl-eq-op">))</span>
+        </div>
+        <div class="tpl-eq-solved tpl-tok" data-part="cv">
+          <span class="tpl-eq-solved__line">Once solved, the volumetric forms substitute N7 (G<sub>g</sub> known) or N9 (M known), and q&divide;&radic;(x&divide;(G<sub>g</sub>&middot;T1&middot;Z)) in place of w&divide;&radic;(x&middot;P1&middot;g1).</span>
+        </div>
+      </div>
+
+      <!-- ================= 3. STEPS + DESCRIPTION ================= -->
+      <div class="tpl-step-row">
+        <div class="tpl-step-keys">
+          <button class="tpl-step-key is-active" type="button" data-part="cv-intro"
+                  data-def="w replaces q, N6 replaces N1 &mdash; the same governing equation, for compressible flow.">1 &middot; Cv &mdash; what we&rsquo;re solving for</button>
+          <button class="tpl-step-key" type="button" data-part="w"
+                  data-def="w is mass flow rate, not the volumetric q liquid sizing uses.">2 &middot; Mass flow rate (w)</button>
+          <button class="tpl-step-key" type="button" data-part="dp"
+                  data-def="x = &Delta;P &divide; P1, the ratio compressible sizing uses in place of an absolute &Delta;P.">3 &middot; Pressure-drop ratio (x)</button>
+          <button class="tpl-step-key" type="button" data-part="g1"
+                  data-def="g1 is the gas&rsquo;s specific weight, evaluated at the flowing T1 and P1.">4 &middot; Specific weight (g1)</button>
+          <button class="tpl-step-key" type="button" data-part="fp"
+                  data-def="Fp = 1.0 at line size &mdash; the same piping-geometry correction as liquid sizing.">5 &middot; Piping geometry (Fp = 1.0)</button>
+          <button class="tpl-step-key" type="button" data-part="y"
+                  data-def="Y is the one term with no liquid-sizing counterpart: the expansion factor.">6 &middot; Expansion factor (Y) &mdash; new</button>
+          <button class="tpl-step-key" type="button" data-part="cv"
+                  data-def="Volumetric forms substitute N7 (Gg known) or N9 (M known) for the mass-flow form.">7 &middot; Volumetric alternate forms</button>
+        </div>
+        <div class="tpl-step-def">w replaces q, N6 replaces N1 &mdash; the same governing equation, for compressible flow.</div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4, &ldquo;Compressible Fluid Sizing,&rdquo; printed p. 4-2.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">154</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

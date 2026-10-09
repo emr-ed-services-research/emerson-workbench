@@ -13,18 +13,239 @@
   <!-- cve1-ch8-m1, page 145 — eng.sizing.fundamentals-liquid-and-compressible.
        calculate-liquid-cv [apply · mechanism]. Confirmed prose-only (Fisher
        Control Valve Sourcebook — Oil & Gas, Ch. 3, pp. 3-2–3-4, "Determining
-       Piping Geometry Factor"). Same figure-less mechanism adaptation as
-       slides 143-144. -->
-  <article class="slide slide--role-mechanism" data-slide="145" data-deck="cve1">
+       Piping Geometry Factor").
+
+       Rebuilt 2026-09-22 (Franz review, two passes same day).
+
+       Pass 1 fixed: every on-slide/talking-point mention of another page's
+       number removed (this course has no visible slide numbers, only
+       chapter/page); ΣK now leads with one plain-language line before its
+       algebra; K1/K2 get their own schematic tags (tied to the inlet vs.
+       outlet reducer) instead of being named only inside a sentence; the
+       reducer-collapse box's leader lands dead-center on the box's own top
+       edge, not near where its text starts; the full Fp formula line was
+       cut to one short sentence.
+
+       Pass 2 fixed the organizing axis itself (Franz: pass 1 stacked three
+       full-width rows, which made the schematic the SMALLEST thing on the
+       slide and wasted the wide aspect ratio — "along the wrong axis").
+       The valve/reducer schematic is now centered and enlarged (1.25x, one
+       group transform around the flow line's own center, same source
+       geometry as 146) as the visual anchor spanning most of the width.
+       Supporting content fills the real open margins around it instead of
+       stacking beneath it: the velocity-profile insets sit in the side
+       margins left/right of the hardware at their ORIGINAL approved size
+       (box size was never the real problem — caption legibility was, so
+       only the caption grew); D and d sit directly on the flow line's own
+       open run, left and right; ΣK and the reducer-collapse box share one
+       row below, sized to support the schematic, not compete with it.
+       Viewbox is 1600x520, chosen empirically against the real .tpl-fig-
+       wrap box's measured render scale (0.536 at this aspect) so every
+       text size clears the collision checker's 12px-minimum floor with
+       margin, not just by eye.
+
+       Spacing lesson from this rebuild, worth keeping for the next slide
+       that reuses this box shape: a same-baseline vertical gap of N SVG
+       units does NOT clear an ascent of roughly 0.75x the next line's own
+       font-size — that ascent has to be measured in the same SVG-unit
+       space as the gap, which is easy to underestimate by half. Verify
+       with the actual collision checker, not by eye or by hand arithmetic
+       alone — two separate rounds of this rebuild found real overlaps
+       that looked fine on paper.
+
+       Four steps, matching the four real course.json bullets for this
+       page: (1) Fp only applies when fittings are bolted directly to the
+       valve. (2) The general ΣK term and its components. (3) The
+       concentric-reducer collapse. (4) The full Fp formula. -->
+  <article class="slide slide--role-nomenclature-equation" data-slide="145" data-deck="cve1">
     <h1 class="slide-title">The Piping Geometry Factor (Fp)</h1>
-    <div class="tpl-content" style="grid-template-columns:1fr">
-      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:72cqw;margin:0 auto">
-        <li><span class="num">1</span>Fp only enters the equation when reducers, elbows, or tees are bolted directly onto the valve&rsquo;s own inlet/outlet</li>
-        <li><span class="num">2</span>Fp = [1 + (&Sigma;K/N2)&middot;(Cv/d&sup2;)&sup2;]<sup>&minus;&frac12;</sup>, where &Sigma;K = K1 + K2 + K<sub>B1</sub> &minus; K<sub>B2</sub></li>
-        <li><span class="num">3</span>K<sub>B1</sub> and K<sub>B2</sub> cancel when the piping is the same size on both sides of the valve &mdash; the common case</li>
-        <li><span class="num">4</span>Between two identical concentric reducers: &Sigma;K collapses to K1 + K2 = 1.5&middot;(1 &minus; d&sup2;/D&sup2;)&sup2;, d = the valve&rsquo;s nominal size, D = the line size</li>
-      </ul>
-      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Determining Piping Geometry Factor,&rdquo; printed pp. 3-2&ndash;3-4 &mdash; the Fp equation and the concentric-reducer case transcribed as printed.</p>
+    <div class="tpl-content">
+
+      <!-- ================= 1. PERSISTENT HORIZONTAL SCHEMATIC =================
+           Symbol defs copied verbatim from 40 - Engine/Presentation/build/
+           assets/symbol-library.svg (sym-valve-actuator, sym-pipe-reducer) —
+           reused, not redrawn. Reducer/valve coordinates copied verbatim
+           from cve1-146.html (same direct-attachment geometry) — this
+           slide's schematic is generic (symbolic labels only) but the
+           physical arrangement it depicts is real. -->
+      <div class="tpl-fig-wrap">
+        <svg viewBox="0 0 1600 520" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Horizontal schematic: a control valve bolted directly between two identical concentric reducers, line size D necking down to valve size d at each joint.">
+
+          <defs>
+            <symbol id="sym-valve-actuator" viewBox="0 0 120 200">
+              <polygon points="20,140 20,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <polygon points="100,140 100,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <line x1="60" y1="170" x2="60" y2="125" stroke="#3F4040" stroke-width="3"/>
+              <path d="M 20 125 A 40 40 0 0 1 100 125 L 20 125 Z" fill="none" stroke="#3F4040" stroke-width="3" stroke-linejoin="round"/>
+            </symbol>
+            <symbol id="sym-pipe-reducer" viewBox="0 0 100 60">
+              <polygon points="0,12 0,48 70,38 70,22" fill="#FFFFFF" stroke="#3F4040" stroke-width="3" stroke-linejoin="round"/>
+            </symbol>
+            <marker id="arrow-process-145" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#3F4040"/>
+            </marker>
+            <marker id="arrow-process-blue-145" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#004B8D"/>
+            </marker>
+          </defs>
+
+          <rect x="0" y="0" width="1600" height="520" fill="#FFFFFF"/>
+
+          <!-- Redesigned 2026-09-22 (Franz, second pass): the first pass
+               fixed collisions but organized the slide along the wrong
+               axis — stacking three full-width rows made the diagram
+               itself the SMALLEST thing on the slide and wasted the wide
+               aspect ratio. This version centers and enlarges the actual
+               valve/reducer schematic (the primary teach, along with the
+               equation) and fits every supporting label into the real
+               open margins that surround it — left/right of the hardware,
+               above and below the flow line — rather than stacking
+               separate full-width bands beneath everything. The hardware
+               itself (reducer1, reducer2, valve) is the ORIGINAL geometry
+               copied from 146, scaled 1.25x as one group around the flow
+               line's own center so its proportions stay identical to 146,
+               just bigger. -->
+          <g transform="translate(800,260) scale(1.25) translate(-740,-200)">
+            <use href="#sym-pipe-reducer" x="555" y="155" width="110" height="90"/>
+            <g transform="translate(920,155) scale(-1,1)">
+              <use href="#sym-pipe-reducer" width="110" height="90"/>
+            </g>
+            <use href="#sym-valve-actuator" x="680" y="30" width="120" height="200"/>
+          </g>
+
+          <!-- Flow line kept OUTSIDE the scaled hardware group — it already
+               spans nearly the full canvas width, so scaling it around the
+               same pivot would push its ends off-canvas. Its own y moves
+               to match the hardware's new vertical center (260). -->
+          <g class="schem-persist" font-family="Arial, sans-serif">
+            <line class="flow-line" x1="40" y1="260" x2="1560" y2="260" marker-end="url(#arrow-process-blue-145)"/>
+            <text x="800" y="30" font-size="30" font-weight="700" text-anchor="middle">Control valve</text>
+          </g>
+
+          <!-- ===== STEP 2: ΣK — the general term and its components.
+               Leads with one plain-language line before the algebra. K1/K2
+               get their own schematic tags directly under the inlet/outlet
+               reducer — KB1/KB2 stay defined in the box text only, since
+               they tag the pressure taps at the same two joints, not a
+               third physical location. Box widened to the same width the
+               hardware now occupies, sized to support the schematic
+               without competing with it, not enlarged past that. ===== -->
+          <g class="tpl-schem-part tpl-tok" data-part="sumk">
+            <text x="638" y="341" font-size="28" font-weight="700" text-anchor="middle" fill="#004B8D">K1</text>
+            <text x="958" y="341" font-size="28" font-weight="700" text-anchor="middle" fill="#004B8D">K2</text>
+
+            <rect class="callout-box" x="40" y="378" width="740" height="80" rx="8" stroke-width="2"/>
+            <text x="410" y="407" font-size="24" font-weight="700" text-anchor="middle">&Sigma;K &mdash; the piping&rsquo;s own added resistance</text>
+            <text x="410" y="440" font-size="22" text-anchor="middle">K1 (inlet) + K2 (outlet) + KB1 &minus; KB2 (pressure taps)</text>
+          </g>
+
+          <!-- Velocity-profile insets: Franz confirmed the shapes
+               themselves are right ("the images are good") and that box
+               size was never the real problem — caption text size was.
+               Kept at their ORIGINAL, un-enlarged footprint (420x130,
+               unchanged from the version he approved) and placed in the
+               genuinely empty side margins flanking the enlarged hardware
+               (left of reducer 1, right of reducer 2) instead of a third
+               row competing with the definition boxes for the same
+               limited height. Only the caption gets materially bigger
+               (17 -> 27) and more breathing room below the box, since text
+               size was the actual complaint. -->
+          <g class="tpl-schem-part tpl-tok" data-part="sumk">
+            <g transform="translate(20,55)">
+              <rect x="0" y="0" width="420" height="130" rx="8" fill="#004B8D" fill-opacity="0.05" stroke-width="1.5"/>
+              <text x="210" y="-14" font-size="24" font-weight="700" text-anchor="middle">Upstream &mdash; uniform</text>
+              <path d="M90,20 Q140,65 90,110" fill="none" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="20" y1="20" x2="90" y2="20" stroke-width="3" marker-end="url(#arrow-process-145)"/>
+              <line x1="20" y1="45" x2="120" y2="45" stroke-width="3" marker-end="url(#arrow-process-145)"/>
+              <line x1="20" y1="65" x2="135" y2="65" stroke-width="3" marker-end="url(#arrow-process-145)"/>
+              <line x1="20" y1="85" x2="120" y2="85" stroke-width="3" marker-end="url(#arrow-process-145)"/>
+              <line x1="20" y1="110" x2="90" y2="110" stroke-width="3" marker-end="url(#arrow-process-145)"/>
+              <text x="210" y="163" font-size="27" text-anchor="middle">even, fully-developed flow</text>
+            </g>
+
+            <g transform="translate(1160,55)">
+              <rect x="0" y="0" width="420" height="130" rx="8" fill="#004B8D" fill-opacity="0.08" stroke-width="1.5"/>
+              <text x="210" y="-14" font-size="24" font-weight="700" text-anchor="middle">At the reducer &mdash; distorted</text>
+              <path d="M60,20 Q200,65 75,110" fill="none" stroke-width="1.5" stroke-dasharray="3 3"/>
+              <line x1="20" y1="20" x2="60" y2="20" stroke-width="3" marker-end="url(#arrow-process-blue-145)"/>
+              <line x1="20" y1="45" x2="100" y2="45" stroke-width="3" marker-end="url(#arrow-process-blue-145)"/>
+              <line x1="20" y1="65" x2="210" y2="65" stroke-width="3" marker-end="url(#arrow-process-blue-145)"/>
+              <line x1="20" y1="85" x2="160" y2="85" stroke-width="3" marker-end="url(#arrow-process-blue-145)"/>
+              <line x1="20" y1="110" x2="75" y2="110" stroke-width="3" marker-end="url(#arrow-process-blue-145)"/>
+              <text x="210" y="163" font-size="27" text-anchor="middle">accelerated, skewed by the taper</text>
+            </g>
+          </g>
+
+          <!-- ===== STEP 3: the concentric-reducer collapse.
+               D/d sit directly on the flow line's own open run, left and
+               right of the hardware — the same direct-adjacency
+               convention as the persistent "Control valve" label, no
+               leader for either. Reducer-collapse box's leader lands
+               dead-center on the box's own top edge, not near where its
+               text starts. -->
+          <g class="tpl-schem-part tpl-tok" data-part="reducer">
+            <!-- Below the flow line, not above (moved 2026-09-22): the
+                 space above the line near these edges is where the
+                 velocity-inset captions live — D/d were crowding directly
+                 into that same band. Below the line is genuinely open all
+                 the way down to the definition boxes. -->
+            <text x="40" y="300" font-size="28" text-anchor="start">D (line size)</text>
+            <text x="40" y="336" font-size="28" text-anchor="start">d (valve bore)</text>
+
+            <!-- Leader re-anchored 2026-09-22 (Franz): connects to the K1
+                 and K2 schematic tags themselves (a bracket spanning both,
+                 same "span the two related points" pattern the ΔP bracket
+                 already uses elsewhere), not an arbitrary point on the
+                 valve/reducer joint - this box's own formula is K1 + K2,
+                 so the leader should read as coming from those two tags. -->
+            <path d="M 638 353 L 638 363 L 958 363 L 958 353" fill="none" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <path d="M 798 363 L 798 371 L 1190 371 L 1190 378" fill="none" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <rect class="callout-box" x="820" y="378" width="740" height="80" rx="8" stroke-width="3"/>
+            <text x="1190" y="407" font-size="22" text-anchor="middle">Concentric reducers, both sides equal:</text>
+            <text x="1190" y="440" font-size="28" font-weight="700" text-anchor="middle">K1 + K2 = 1.5 &times; (1 &minus; d&sup2;/D&sup2;)&sup2;</text>
+          </g>
+
+        </svg>
+      </div>
+
+      <!-- ================= 2. EQUATION ================= -->
+      <div class="tpl-eq-wrap">
+        <div class="tpl-eq">
+          <span class="tpl-eq-term tpl-tok is-revealed is-on" data-part="fp">F<sub>p</sub></span>
+          <span class="tpl-eq-op">= [1 + (</span>
+          <span class="tpl-eq-term tpl-tok" data-part="sumk">&Sigma;K</span>
+          <span class="tpl-eq-op">/</span>
+          <span class="tpl-eq-const">N<sub>2</sub></span>
+          <span class="tpl-eq-op">)&middot;(</span>
+          <span class="tpl-eq-term tpl-tok" data-part="formula">C<sub>v</sub></span>
+          <span class="tpl-eq-op">/</span>
+          <span class="tpl-eq-term tpl-tok" data-part="reducer">d&sup2;</span>
+          <span class="tpl-eq-op">)&sup2;]<sup>&minus;&frac12;</sup></span>
+        </div>
+        <div class="tpl-eq-solved tpl-tok" data-part="formula">
+          <span class="tpl-eq-solved__line">Fp solves once &Sigma;K, N2, and the valve&rsquo;s own Cv are known.</span>
+        </div>
+      </div>
+
+      <!-- ================= 3. STEPS + DESCRIPTION ================= -->
+      <div class="tpl-step-row">
+        <div class="tpl-step-keys">
+          <button class="tpl-step-key is-active" type="button" data-part="fp"
+                  data-def="Fp applies only when fittings are bolted directly to the valve. At line size, Fp = 1.0.">1 &middot; Fp &mdash; when it applies</button>
+          <button class="tpl-step-key" type="button" data-part="sumk"
+                  data-def="&Sigma;K is the piping&rsquo;s own added resistance from fittings bolted to the valve.">2 &middot; The general term (&Sigma;K)</button>
+          <button class="tpl-step-key" type="button" data-part="reducer"
+                  data-def="Between identical concentric reducers, &Sigma;K reduces to K1 + K2 = 1.5 &times; (1 &minus; d&sup2;/D&sup2;)&sup2;.">3 &middot; The concentric-reducer case</button>
+          <button class="tpl-step-key" type="button" data-part="formula"
+                  data-def="Fp solves directly once &Sigma;K and a trial Cv are known.">4 &middot; The full Fp formula</button>
+        </div>
+        <div class="tpl-step-def">Fp applies only when fittings are bolted directly to the valve. At line size, Fp = 1.0.</div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Determining Piping Geometry Factor,&rdquo; printed pp. 3-2&ndash;3-4.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">145</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

@@ -14,18 +14,21 @@
        calculate-liquid-cv [understand · mechanism]. Confirmed prose-only
        against the real source PDF (Fisher Control Valve Sourcebook — Oil &
        Gas, Ch. 3, printed pp. 3-1–3-3; identical boilerplate in the Power &
-       Severe Service edition) — no figure exists to overlay step markers on.
-       CONCEPT-MAP GAP, flagged in this run's report: the mechanism role's
-       Gallery shape (.tpl-fig-wrap column + .tpl-list column) assumes a
-       figure; the gallery has no figure-less mechanism variant yet. Minimal
-       adaptation used here — .tpl-content overridden to a single column so
-       the six-step list runs full width, matching the templateRationale's
-       own "plain step-list mechanism treatment." No art invented (course
-       instructions: no origination-from-nothing expected in this module). -->
-  <article class="slide slide--role-mechanism" data-slide="143" data-deck="cve1">
+       Severe Service edition) — this is a genuinely non-visual procedural
+       sequence (a workflow, not a physical/spatial thing) rather than a
+       "no figure was found" shortcut — the real fixed .has-no-fig
+       modifier gallery.css now defines for exactly this shape.
+
+       2026-09-21 (Phase 4 pass, cleanup alongside the nomenclature-equation
+       rollout): swapped the old inline style="grid-template-columns:1fr"
+       hack (gallery.css's own .has-no-fig comment names this exact slide,
+       cve1-143, as one of the shipped examples that hack was written to
+       formalize) for the real .has-no-fig class now in gallery.css §3 —
+       identical rendered layout, no content change. -->
+  <article class="slide slide--role-mechanism has-no-fig" data-slide="143" data-deck="cve1">
     <h1 class="slide-title">The Six-Step ISA/IEC Liquid Sizing Procedure</h1>
-    <div class="tpl-content" style="grid-template-columns:1fr">
-      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:72cqw;margin:0 auto">
+    <div class="tpl-content">
+      <ul class="tpl-list">
         <li><span class="num">1</span>Specify the service conditions &mdash; q, P1, P2, T1, Gf, Pv, Pc</li>
         <li><span class="num">2</span>Pull the equation constant &mdash; N1 for volumetric flow, N6 for mass flow &mdash; from the equation-constants table</li>
         <li><span class="num">3</span>Determine Fp, the piping geometry factor, only if reducers, elbows, or tees are attached directly to the valve</li>
@@ -33,7 +36,7 @@
         <li><span class="num">5</span>Solve for Cv using the lesser of the actual &Delta;P and &Delta;P<sub>max</sub></li>
         <li><span class="num">6</span>Select the valve size from the flow-coefficient table &mdash; repeat the whole loop if the calculated Cv exceeds the assumed valve&rsquo;s own rated capacity</li>
       </ul>
-      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3 &ldquo;Liquid Valve Sizing,&rdquo; printed pp. 3-1&ndash;3-3 &mdash; the six steps as stated in the source, not a paraphrase.</p>
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3 &ldquo;Liquid Valve Sizing,&rdquo; printed pp. 3-1&ndash;3-3 &mdash; the six steps as stated in the source, not a paraphrase.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">143</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

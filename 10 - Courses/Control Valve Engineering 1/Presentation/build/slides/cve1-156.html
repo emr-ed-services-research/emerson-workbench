@@ -19,20 +19,187 @@
        of "Compressible Fluid Sizing Sample Problem No. 1" (same source,
        printed pp. 4-2–4-3) — used here only as this mechanism's illustrating
        case, NOT as this module's own continuing worked example (that stays
-       the steam/Design-ED case on slides 155 and 158, the only one of the
-       two source examples that demonstrates the xTP piping correction LO4
-       needs). Same figure-less mechanism adaptation as slide 153, matching
-       m1's cve1-148 treatment. -->
+       the steam/Design-ED case on slides 155 and 158). Fk·xTP≈0.61 is that
+       same steam/Design-ED case's own value, carried over from slide 158's
+       verified result to give the contrast a second real, grounded point
+       rather than inventing a second example.
+
+       2026-09-21 (ch8-m2 rebuild): this slide previously had NO figure at
+       all (has-no-fig). Per gallery.css's own .has-no-fig standard ("no
+       figure was found is not by itself a reason to skip drawing one for
+       physical/spatial content") and Franz's direct task instruction, this
+       is a genuinely physical/spatial mechanism (sonic velocity at the vena
+       contracta; a mass-flow-vs-pressure-ratio curve that plateaus) with a
+       real geometry AND a real quantitative behaviour to check before
+       drawing — built here as an ORIGINATED cutaway + curve, kept on
+       role-mechanism (NOT nomenclature-equation: this is a mechanism to
+       understand, matching m1's cve1-148 treatment, not one numbered
+       equation to walk through term by term).
+
+       GEOMETRY AND MECHANISM VERIFIED before drawing (design-notes.md
+       checklist item 0): course.json's own primitive text states plainly
+       that the gas "reaches sonic velocity at the vena contracta" — the
+       SAME location 148's liquid-choking diagram already places its own
+       minimum-pressure point, confirmed as accurate usage by real external
+       research (web search, 2026-09-21, since no vault figure covers this):
+       the vena contracta is where cross-sectional area is smallest and
+       velocity is highest; once that velocity reaches the local speed of
+       sound, "information about downstream pressure cannot travel back
+       through the supersonic throat, so reducing downstream pressure
+       further has no effect on flow through the vena contracta" — this is
+       why mass flow rate genuinely plateaus rather than merely slowing its
+       increase, and why course.json's own "the test is a ratio, not an
+       absolute pressure" framing is physically correct (the choke condition
+       depends on x = &Delta;P/P1, not on P2's absolute value). The pipe
+       cutaway reuses 148's own verified narrowing-to-vena-contracta
+       geometry (flow area continues narrowing slightly past the physical
+       restriction before re-expanding) since the same physical throat
+       geometry applies to a compressible flow reaching sonic velocity there
+       — only the downstream consequence differs (a velocity ceiling here,
+       vaporization there), which is why the diagram pairs the SAME cutaway
+       with a DIFFERENT second panel: a mass-flow-vs-pressure-ratio curve
+       (rising, then flat past the choke point) in place of 148's
+       pressure-vs-position profile, since course.json's own text frames
+       this mechanism as a ratio threshold, not a spatial pressure profile.
+       No numeric values are invented anywhere — x=0.70/FkxT=0.129 (V250)
+       and Fk&middot;xTP&asymp;0.61 (this module's own Design ED case, slide
+       158) are the only two real, sourced points marked on the curve. -->
   <article class="slide slide--role-mechanism" data-slide="156" data-deck="cve1">
     <h1 class="slide-title">Choked Compressible Flow &mdash; A Velocity Ceiling</h1>
-    <div class="tpl-content" style="grid-template-columns:1fr">
-      <ul class="tpl-list" style="grid-column:1;grid-row:1;max-width:76cqw;margin:0 auto">
+    <div class="tpl-content">
+
+      <!-- 2026-09-21 (Franz's own precedent on cve1-148 applied here — same
+           defect class): split what was one SVG spanning both the cutaway
+           and the flow-vs-x curve into two separate top-level SVG elements,
+           each its own .tpl-fig, so slides.js's lightbox (which collects
+           every direct ".tpl-content svg" as its own navigable item) can
+           enlarge either panel independently instead of only both together.
+           Font sizes also enlarged throughout — the min-legible-size
+           checker measured 6-8px real height on nearly every label here,
+           well under the 9px floor — to the same 22/18 primary/secondary
+           scale already proven to pass on 148's own two panels (same
+           tpl-fig-wrap column width, so the same real render scale
+           applies). Panel A crops "0 0 700 300" (the cutaway, unchanged
+           absolute coordinates from the original combined drawing), panel B
+           crops "0 330 700 570" (the curve) — nothing in either panel's own
+           coordinate space was moved, only cropped and relabeled at a
+           legible size, exactly 148's own technique. -->
+      <div class="tpl-fig-wrap">
+        <div style="display:flex;flex-direction:column;width:100%;height:100%;gap:1.4cqh">
+          <div class="tpl-fig" style="flex:0 0 34%;min-height:0">
+            <svg viewBox="0 0 700 300" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
+                 aria-label="Cutaway of a control valve restriction: the flow area necks down through the physical restriction and continues narrowing slightly further downstream to its own minimum at the vena contracta, where the gas is shown reaching sonic velocity.">
+
+              <rect x="0" y="0" width="700" height="300" fill="#FFFFFF"></rect>
+
+              <defs>
+                <marker id="arrow-flow-156a" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#004B8D"></path>
+                </marker>
+              </defs>
+
+              <!-- Pipe cutaway, same verified geometry as 148 (flow area
+                   narrows through the physical restriction and keeps
+                   narrowing slightly further to its own minimum at the vena
+                   contracta, downstream of the hardware, before
+                   re-expanding). -->
+              <path d="M20,100 L260,100 L330,165 L370,175 L520,100 L680,100 L680,250 L520,250 L370,195 L330,205 L260,250 L20,250 Z"
+                    fill="#cfe3f4" stroke="#004B8D" stroke-width="2"></path>
+
+              <line x1="45" y1="175" x2="90" y2="175" stroke="#004B8D" stroke-width="3" marker-end="url(#arrow-flow-156a)"></line>
+              <line x1="590" y1="175" x2="635" y2="175" stroke="#004B8D" stroke-width="3" marker-end="url(#arrow-flow-156a)"></line>
+
+              <!-- Sonic-velocity marker at the vena contracta pinch: a short
+                   burst of closely-spaced velocity arrows, standing in for
+                   "flow has reached its ceiling here" the same way 145's
+                   velocity-profile insets used arrow density to show speed. -->
+              <line x1="340" y1="172" x2="358" y2="172" stroke="#3F4040" stroke-width="2" marker-end="url(#arrow-flow-156a)"></line>
+              <line x1="340" y1="180" x2="360" y2="180" stroke="#3F4040" stroke-width="2" marker-end="url(#arrow-flow-156a)"></line>
+              <line x1="340" y1="188" x2="358" y2="188" stroke="#3F4040" stroke-width="2" marker-end="url(#arrow-flow-156a)"></line>
+
+              <text x="295" y="56" font-size="22" font-weight="700" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">Valve restriction</text>
+              <line x1="295" y1="64" x2="295" y2="132" stroke="#3F4040" stroke-width="1.3" stroke-dasharray="4 3"></line>
+
+              <!-- Vena contracta + its sonic-velocity meaning folded into
+                   ONE two-line caption (147/148's own primary+secondary
+                   pattern) instead of two separately-floating labels — the
+                   two concepts share the exact same physical point, so
+                   stating both at that one leader avoids the crowded
+                   three-label cluster the original top-of-canvas layout had. -->
+              <text x="580" y="44" font-size="22" font-weight="700" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">Vena contracta</text>
+              <text x="580" y="68" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">(sonic velocity, Mach 1)</text>
+              <path d="M580,78 L580,96 L350,96 L350,176" fill="none" stroke="#3F4040" stroke-width="1.3" stroke-dasharray="4 3"></path>
+
+              <text x="130" y="280" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">upstream, subsonic</text>
+              <text x="570" y="280" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">downstream</text>
+
+            </svg>
+          </div>
+          <div class="tpl-fig" style="flex:1 1 auto;min-height:0">
+            <svg viewBox="0 330 700 570" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
+                 aria-label="Graph of mass flow rate versus pressure-drop ratio x: flow rises with x up to a critical ratio, then flattens into a plateau beyond it — reducing downstream pressure further does not increase flow once the vena contracta is choked. Two real cases are marked on the axis: an 8-inch Design V250 ball valve on natural gas, choked well before x=0.70 at Fk times xT of only 0.129, and this module's own 4-inch Design ED steam case, which does not choke until Fk times xTP of about 0.61.">
+
+              <rect x="0" y="330" width="700" height="570" fill="#FFFFFF"></rect>
+
+              <defs>
+                <marker id="arrow-axis-156b" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+                  <path d="M0,0 L10,5 L0,10 z" fill="#3F4040"></path>
+                </marker>
+              </defs>
+
+              <!-- ratio-threshold behaviour course.json's own text frames
+                   this mechanism around, replacing 148's spatial pressure
+                   profile (that framing does not apply here: the choke
+                   condition depends on x = ΔP/P1, not on any single absolute
+                   pressure). -->
+              <text x="20" y="362" font-size="22" font-weight="700" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="start">Mass flow rate (w)</text>
+              <line x1="60" y1="850" x2="60" y2="372" stroke="#3F4040" stroke-width="1.6" marker-end="url(#arrow-axis-156b)"></line>
+              <line x1="60" y1="850" x2="660" y2="850" stroke="#3F4040" stroke-width="1.6" marker-end="url(#arrow-axis-156b)"></line>
+              <text x="660" y="882" font-size="20" font-weight="700" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">pressure-drop ratio, x = &Delta;P &divide; P1</text>
+              <text x="60" y="878" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">0</text>
+
+              <!-- Rising curve to the choke point, then a flat plateau. -->
+              <path d="M60,850 C 200,780 320,660 400,600 C 440,568 470,545 490,530"
+                    fill="none" stroke="#004B8D" stroke-width="3.2"></path>
+              <path d="M490,530 L620,530" fill="none" stroke="#004B8D" stroke-width="3.2"></path>
+              <circle cx="490" cy="530" r="6" fill="#004B8D"></circle>
+
+              <!-- Generic choke-point reference line (the x-axis position is
+                   illustrative — the two REAL marked points below are what
+                   carry the actual numbers). Label column shifted to
+                   x=420 and "flow plateaus" to x=600 (was 490/560) so the
+                   larger, legible text doesn't collide — same fix class as
+                   148's own "Vena contracta" move. -->
+              <line x1="490" y1="850" x2="490" y2="530" stroke="#959797" stroke-width="1.3" stroke-dasharray="4 3"></line>
+              <text x="420" y="485" font-size="22" font-weight="700" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">Choke point</text>
+              <text x="420" y="508" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">Fk&middot;xT (or xTP)</text>
+              <text x="600" y="500" font-size="18" font-weight="700" fill="#004B8D" font-family="Arial, sans-serif" text-anchor="middle">flow plateaus</text>
+
+              <!-- Real marked point: this module's own Design ED steam case
+                   (slides 155, 158) — Fk·xTP ≈ 0.61, NOT choked at x=0.49. -->
+              <line x1="490" y1="850" x2="490" y2="830" stroke="#004B8D" stroke-width="2.4"></line>
+              <text x="490" y="780" font-size="20" font-weight="700" fill="#004B8D" font-family="Arial, sans-serif" text-anchor="middle">Design ED (this case)</text>
+              <text x="490" y="804" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">F<tspan baseline-shift="sub" font-size="13">k</tspan>&middot;x<tspan baseline-shift="sub" font-size="13">TP</tspan> &asymp; 0.61 &mdash; not choked at x=0.49</text>
+
+              <!-- Real marked point: the natural-gas V250 contrast, choked
+                   much earlier on its own scale. -->
+              <line x1="180" y1="850" x2="180" y2="748" stroke="#EE7203" stroke-width="2.4"></line>
+              <circle cx="180" cy="748" r="6" fill="#EE7203"></circle>
+              <text x="180" y="705" font-size="20" font-weight="700" fill="#EE7203" font-family="Arial, sans-serif" text-anchor="middle">V250 (natural gas)</text>
+              <text x="180" y="729" font-size="18" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">F<tspan baseline-shift="sub" font-size="13">k</tspan>&middot;x<tspan baseline-shift="sub" font-size="13">T</tspan> = 0.129 &mdash; choked well before x=0.70</text>
+
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <ul class="tpl-list">
         <li><span class="num">1</span>Compressible choking is a velocity ceiling, not liquid sizing&rsquo;s vaporization ceiling &mdash; past a critical pressure-drop ratio, the gas reaches sonic velocity at the vena contracta and added &Delta;P stops increasing mass flow</li>
         <li><span class="num">2</span>The test is a ratio, not an absolute pressure: compare x = &Delta;P/P1 to the product F<sub>k</sub>&middot;x<sub>T</sub> (F<sub>k</sub> = k/1.4; x<sub>T</sub> is the valve&rsquo;s own rated pressure-drop-ratio factor, replaced by x<sub>TP</sub> when fittings are attached at the valve&rsquo;s own connections)</li>
-        <li><span class="num">3</span>At the critical value, Y is fixed at exactly 0.667 and can&rsquo;t go lower no matter how much further P2 is dropped</li>
+        <li><span class="num">3</span>At the critical value, Y is fixed at exactly 0.667 and can&rsquo;t go lower no matter how much further P2 is dropped &mdash; once sonic, information about a lower downstream pressure can&rsquo;t travel back upstream through the throat to pull more flow through it</li>
         <li><span class="num">4</span>Contrast: an 8-in Design V250 ball valve, natural gas, x = 0.70 against a rated-travel F<sub>k</sub>x<sub>T</sub> of only 0.129 &mdash; choked outright, and the real x<sub>T</sub> has to be reworked at the valve&rsquo;s actual opening angle three times before the calculation converges</li>
       </ul>
-      <p class="tpl-source" style="grid-column:1;grid-row:2">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4 &ldquo;Compressible Fluid Sizing,&rdquo; printed pp. 4-1&ndash;4-3 &mdash; the choking mechanism and the natural-gas contrast case transcribed as printed. Component Index: pss-topic-choked-flow-expansion-factor.</p>
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Power &amp; Severe Service, Chapter 4, &ldquo;Compressible Fluid Sizing,&rdquo; printed pp. 4-1&ndash;4-3.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">156</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>

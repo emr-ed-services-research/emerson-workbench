@@ -15,119 +15,201 @@
        slide 146). Confirmed prose-only, same source worked example as
        slide 146 — the NPS 4 reassumption (Cv=203), ΣK=0.84, Fp=0.93 →
        Cv=121.7, the refinement to Fp=0.97 → Cv=116.2, and the "~75% open"
-       conclusion are transcribed exactly, not derived independently. Do tab
-       (2026-09-20 fix): replaced a false "practice exercise that follows"
-       reference — no such exercise exists anywhere in this course,
-       confirmed by search — with a judgment prompt grounded only in this
-       slide's own numbers.
+       conclusion are transcribed exactly, not derived independently.
 
-       2026-09-20 fix (Phase 1 remediation, Decision 1): the figure-less
-       adaptation flagged above no longer applies — restored the real fixed
-       32cqw figure column (gallery.css Sec 10) with the SAME propane
-       installation as slide 146's own diagram, but drawn at the NPS 4 size
-       this slide reassumes: NPS 8 line, concentric reducers down to and
-       back up from the NPS 4 valve, P1/P2 taps at the valve's own
-       connections, and a label reading the source's own "~75% open"
-       conclusion — grounding rated Cv = 203 against the converged
-       required Cv = 116.2 the way slide 146's diagram grounds its own
-       Cv/ΔP terms. Not a copy of 146's figure: same case, different
-       valve size and outcome, drawn to match. -->
-  <article class="slide slide--role-procedure-worked" data-slide="147" data-deck="cve1">
+       2026-09-21 (Phase 4 rebuild, per Franz's direct review flagging this
+       slide's vertical 260x520 self-drawn schematic as the clearest miss in
+       the chapter): rebuilt from role-procedure-worked onto
+       role-nomenclature-equation (gallery.css §15), same real numbers, same
+       template family as slide 146.
+
+       JUDGMENT CALL (flagged per task instructions): this slide reuses
+       146's EXACT schematic frame — same reducer positions (x=555/920),
+       same valve position (x=680), same P1/P2 tap locations — rather than
+       drawing a new, differently-proportioned NPS 4 picture. Reasoning:
+       this is a direct continuation of the SAME physical installation
+       (same propane line, same P1/P2/q/Gf), only the ASSUMED valve size
+       changes. Showing the identical frame with only the valve-size label,
+       the ΣK/Fp numbers, and the d-bore label updated teaches "same
+       hardware, different size assumption" far more directly than a
+       redrawn picture would — a learner can see at a glance that nothing
+       about the installation itself changed, only the size being checked
+       against it. q, ΔP, and Gf are carried over UNCHANGED from 146: they
+       are rendered as persistent (schem-persist), already-known content,
+       not re-taught as separate click steps, so the slide's own
+       interactivity is spent entirely on what's actually NEW here (the
+       piping-geometry recompute and the two-pass convergence), rather than
+       repeating 146's own teaching beats. The two-pass iteration (Fp=0.93
+       → Cv=121.7, then refined Fp=0.97 → Cv=116.2) is shown as TWO stacked
+       schematic callouts that both remain visible by the end (this
+       template's callouts are cumulative/sticky by design) — the visible
+       stack of "first pass, then refined" is the convergence itself, not
+       just a stated conclusion. The "so what" flag uses the shared blue
+       accent (not orange, which this system reserves for a failed/caution
+       outcome per 146's own "Fails" flag) since this pass converges rather
+       than fails. -->
+  <article class="slide slide--role-nomenclature-equation" data-slide="147" data-deck="cve1">
     <h1 class="slide-title">Working the Propane Case &mdash; Converging on NPS 4</h1>
     <div class="tpl-content">
-      <div class="tpl-tabs">
-        <button class="tpl-tab is-active" type="button">1 &middot; Show</button>
-        <button class="tpl-tab" type="button">2 &middot; Tell</button>
-        <button class="tpl-tab" type="button">3 &middot; Do</button>
-      </div>
-      <div class="tpl-tabpanes">
-        <div class="tpl-tabpane is-active">
-          <ol class="tpl-steps">
-            <li>Reassume NPS 4, rated Cv = 203</li>
-            <li>Recompute for the wider bore: &Sigma;K = 0.84 &rarr; Fp = 0.93</li>
-            <li>Required Cv = 121.7 &mdash; safely under the NPS 4&rsquo;s rated 203</li>
-            <li>Refine: feed 121.7 back into the Fp equation &rarr; Fp = 0.97 &rarr; Cv converges to 116.2, close enough to 121.7 to stop</li>
-          </ol>
-        </div>
-        <div class="tpl-tabpane">
-          <div class="tpl-callout"><span class="tpl-callout__label">Common failure</span>Treating the first passing Cv as final. 121.7 sits far enough from the 203 used to derive that Fp that one more iteration is worth running &mdash; stopping at the first Cv under the rated capacity, without checking whether the Cv/d&sup2; ratio the Fp calculation was built on still holds, is how a &ldquo;passing&rdquo; calculation still ships a size that&rsquo;s subtly off.</div>
-        </div>
-        <div class="tpl-tabpane">
-          Try it yourself: this refinement moved the answer from 121.7 to 116.2 &mdash; about 5%. Would you have stopped there, or run one more iteration? There&rsquo;s no fixed rule; make the call, then see whether you agree with the source&rsquo;s own choice to stop at NPS 4, roughly 75% open.
-        </div>
-      </div>
 
+      <!-- ================= 1. PERSISTENT HORIZONTAL SCHEMATIC =================
+           Symbol defs and reducer/valve coordinates copied verbatim from
+           146's reviewed geometry — same physical installation, reassumed
+           at NPS 4. -->
       <div class="tpl-fig-wrap">
-        <div class="tpl-fig">
-          <svg viewBox="0 0 260 520" style="width:100%;height:100%;display:block" xmlns="http://www.w3.org/2000/svg" role="img"
-               aria-label="Schematic of the same propane line as slide 146, redrawn at the NPS 4 valve size: an NPS 8 line necks down through a concentric reducer to the NPS 4 control valve, P1 and P2 pressure taps at the valve's own connections, then expands back to NPS 8 through a second reducer. A label beside the valve shows it landing about 75% open.">
-            <rect x="1" y="1" width="258" height="518" fill="#ffffff"></rect>
+        <svg viewBox="0 0 1600 480" xmlns="http://www.w3.org/2000/svg" role="img"
+             aria-label="Horizontal schematic: the same NPS 8 propane line as slide 146, now reassumed at an NPS 4 control valve. Pressure taps sit at the valve's own inlet and outlet connections, unchanged from slide 146.">
 
-            <text x="130" y="22" font-size="13" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">NPS 8 line</text>
+          <defs>
+            <symbol id="sym-valve-actuator" viewBox="0 0 120 200">
+              <polygon points="20,140 20,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <polygon points="100,140 100,200 60,170" fill="#004B8D" stroke="#3F4040" stroke-width="2" stroke-linejoin="round"/>
+              <line x1="60" y1="170" x2="60" y2="125" stroke="#3F4040" stroke-width="3"/>
+              <path d="M 20 125 A 40 40 0 0 1 100 125 L 20 125 Z" fill="none" stroke="#3F4040" stroke-width="3" stroke-linejoin="round"/>
+            </symbol>
+            <symbol id="sym-pipe-reducer" viewBox="0 0 100 60">
+              <polygon points="0,12 0,48 70,38 70,22" fill="#FFFFFF" stroke="#3F4040" stroke-width="3" stroke-linejoin="round"/>
+            </symbol>
+            <marker id="arrow-process-147" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#3F4040"/>
+            </marker>
+            <marker id="arrow-process-blue-147" viewBox="0 0 10 10" refX="8" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M 0 0 L 10 5 L 0 10 z" fill="#004B8D"/>
+            </marker>
+          </defs>
 
-            <!-- Wide inlet pipe (D = NPS 8) -->
-            <rect x="96" y="30" width="60" height="80" fill="#cfe3f4" stroke="#004B8D" stroke-width="2"></rect>
-            <line x1="126" y1="34" x2="126" y2="70" stroke="#004B8D" stroke-width="2.5" marker-end="url(#cve1147FlowArrow)"></line>
-            <text x="164" y="75" font-size="11" fill="#3F4040" font-family="Arial, sans-serif">D</text>
+          <rect x="0" y="0" width="1600" height="480" fill="#FFFFFF"/>
 
-            <defs>
-              <marker id="cve1147FlowArrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-                <path d="M0,0 L10,5 L0,10 z" fill="#004B8D"></path>
-              </marker>
-            </defs>
+          <!-- Persistent geometry: reducers, valve body — same physical
+               installation as 146, unchanged. -->
+          <!-- Recentred 2026-09-22 (Franz, same fix as 146: hardware center
+               was 740, not the viewBox's true center 800). -->
+          <use href="#sym-pipe-reducer" x="615" y="155" width="110" height="90"/>
+          <g transform="translate(980,155) scale(-1,1)">
+            <use href="#sym-pipe-reducer" width="110" height="90"/>
+          </g>
+          <use href="#sym-valve-actuator" x="740" y="30" width="120" height="200"/>
 
-            <!-- Concentric reducer, 8in -> 4in (wider throat than 146's NPS 3 reducer) -->
-            <polygon points="96,110 156,110 143,150 109,150" fill="#e7eaec" stroke="#3F4040" stroke-width="1.8"></polygon>
-            <text x="164" y="132" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif">reducer</text>
+          <g class="schem-persist" font-family="Arial, sans-serif">
+            <text x="800" y="46" font-size="26" font-weight="700" text-anchor="middle">NPS 4 valve</text>
+          </g>
 
-            <!-- Narrow run into valve (d = NPS 4, wider than 146's NPS 3 run) -->
-            <rect x="109" y="150" width="34" height="35" fill="#cfe3f4" stroke="#004B8D" stroke-width="2"></rect>
+          <!-- Carried over UNCHANGED from 146 — rendered persistent
+               (already known), not gated behind a click step. -->
+          <g class="schem-persist" font-family="Arial, sans-serif">
+            <line class="flow-line" x1="60" y1="200" x2="1540" y2="200" marker-end="url(#arrow-process-blue-147)" stroke="#004B8D" stroke-width="4"></line>
+            <text x="60" y="228" font-size="26" font-weight="700" text-anchor="start">q = 800 gpm</text>
+            <text x="60" y="266" text-anchor="start"><tspan font-size="24" font-weight="700">Gf = 0.50</tspan><tspan font-size="17" dx="6">(propane, flowing)</tspan></text>
+            <text x="60" y="188" font-size="22" text-anchor="start">D (NPS 8 bore)</text>
+            <line x1="740" y1="212" x2="740" y2="290" stroke="#3F4040" stroke-width="2"></line>
+            <text x="740" y="314" font-size="24" font-weight="700" text-anchor="middle">P1</text>
+            <text x="740" y="336" font-size="20" text-anchor="middle">314.7 psia</text>
+            <line x1="860" y1="212" x2="860" y2="290" stroke="#3F4040" stroke-width="2"></line>
+            <text x="860" y="314" font-size="24" font-weight="700" text-anchor="middle">P2</text>
+            <text x="860" y="336" font-size="20" text-anchor="middle">289.7 psia</text>
+            <path d="M740,352 L740,360 L860,360 L860,352" fill="none" stroke="#3F4040" stroke-width="2"></path>
+            <text x="800" y="382" font-size="22" font-weight="700" text-anchor="middle">&Delta;P = 25 psi</text>
+          </g>
 
-            <!-- P1 tap, at valve inlet -->
-            <line x1="97" y1="178" x2="109" y2="178" stroke="#3F4040" stroke-width="1.6"></line>
-            <text x="52" y="182" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">P1</text>
-            <text x="52" y="195" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">314.7 psia</text>
+          <!-- STEP 2: reducer — recompute ΣK/Fp for the NPS 4 geometry.
+               The "d (NPS 4 bore)" label sat on top of the reducer symbol
+               (Franz review, 2026-09-21) — removed outright rather than
+               repositioned, matching how 146 already resolved this exact
+               issue for its own "d" label (146's real-numbers worked case
+               keeps only the D/Fp left-stacked list, no separate "d" callout
+               at all; only 145's GENERIC teaching slide keeps a leadered
+               "d" label, since that slide has no other content competing
+               for the joint). -->
+          <g class="tpl-schem-part tpl-tok" data-part="reducer">
+            <text x="60" y="297" text-anchor="start"><tspan font-size="24" font-weight="700">Fp = 0.93</tspan><tspan font-size="17" dx="6">(&Sigma;K = 0.84, first pass)</tspan></text>
+          </g>
 
-            <!-- Valve body: two triangles apex-to-apex, wider than 146's -->
-            <polygon points="109,185 143,185 126,207" fill="#e7eaec" stroke="#3F4040" stroke-width="2"></polygon>
-            <polygon points="109,245 143,245 126,207" fill="#e7eaec" stroke="#3F4040" stroke-width="2"></polygon>
-            <text x="164" y="196" font-size="11" fill="#3F4040" font-family="Arial, sans-serif">NPS 4 valve</text>
-            <text x="164" y="210" font-size="10" fill="#3F4040" font-family="Arial, sans-serif">rated Cv = 203</text>
-            <text x="164" y="224" font-size="10" fill="#3F4040" font-family="Arial, sans-serif">required Cv &asymp; 116.2</text>
-            <text x="164" y="238" font-size="10" fill="#004B8D" font-family="Arial, sans-serif" font-weight="700">&asymp;75% open</text>
+          <!-- STEP 3: cv1 — first-pass Cv check. Box is drawn HERE, sized to
+               hold BOTH this pass's text AND step 5's later text (below) —
+               the two are kept in ONE box, not two stacked boxes, because
+               two separate boxes only ~15px apart falsely read to the
+               automated checker (and to a viewer) as one box's text
+               overflowing into its neighbour once the sticky-reveal
+               accumulates both onto the schematic at once. Box height
+               enlarged 2026-09-21 (from 175 to 199) to hold step 5's new
+               "reads off the travel curve" line while keeping real
+               clearance to the frame's own bottom edge (bottom edge 427,
+               53 units clear of the 480 frame height). -->
+          <g class="tpl-schem-part tpl-tok" data-part="cv1">
+            <path d="M 1010 205 L 1010 270 L 1140 270" fill="none" stroke-width="1.5" stroke-dasharray="4 3"></path>
+            <rect class="callout-box" x="1130" y="228" width="460" height="199" rx="6" stroke-width="3"></rect>
+            <text x="1360" y="258" font-size="24" font-weight="700" text-anchor="middle">Cv = 121.7</text>
+            <text x="1360" y="286" font-size="24" text-anchor="middle">&lt; NPS 4 rated 203 &mdash; re-check Fp</text>
+          </g>
 
-            <!-- Actuator on top of valve, offset -->
-            <line x1="126" y1="207" x2="126" y2="185" stroke="#3F4040" stroke-width="1.4"></line>
+          <!-- STEP 4: refine — feed 121.7 back into Fp. -->
+          <g class="tpl-schem-part tpl-tok" data-part="refine">
+            <text x="60" y="328" text-anchor="start"><tspan font-size="24" font-weight="700">Fp = 0.97</tspan><tspan font-size="17" dx="6">(refined)</tspan></text>
+          </g>
 
-            <!-- narrow run out of valve -->
-            <rect x="109" y="245" width="34" height="27" fill="#cfe3f4" stroke="#004B8D" stroke-width="2"></rect>
+          <!-- STEP 5: cv — converged Cv, same box as step 3 above. Added a
+               fourth line (2026-09-21, Franz: "I couldn't quite understand
+               what converged was meaning and how we know the valve is 75%
+               open") stating plainly where the 75% figure actually comes
+               from — a source the schematic itself cannot show (this
+               valve's own travel curve) — rather than leaving it looking
+               like a number the equation above produced. -->
+          <g class="tpl-schem-part tpl-tok" data-part="cv">
+            <text x="1360" y="316" font-size="24" font-weight="700" text-anchor="middle">Cv = 116.2</text>
+            <text x="1360" y="344" font-size="24" text-anchor="middle">&asymp; 121.7 &mdash; close enough to stop</text>
+            <text x="1360" y="374" font-size="26" font-weight="700" fill="var(--emerson-blue)" text-anchor="middle">Converges &mdash; NPS 4, ~75% open</text>
+            <text x="1360" y="402" font-size="24" text-anchor="middle">(read from this valve&rsquo;s travel curve)</text>
+          </g>
 
-            <!-- P2 tap, at valve outlet -->
-            <line x1="97" y1="260" x2="109" y2="260" stroke="#3F4040" stroke-width="1.6"></line>
-            <text x="52" y="264" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="end">P2</text>
-            <text x="52" y="277" font-size="9.5" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="end">289.7 psia</text>
+        </svg>
+      </div>
 
-            <!-- deltaP bracket -->
-            <path d="M44,178 L36,178 L36,260 L44,260" fill="none" stroke="#959797" stroke-width="1.3"></path>
-            <text x="12" y="222" font-size="10.5" fill="#959797" font-family="Arial, sans-serif" text-anchor="middle" transform="rotate(-90 12 222)">&Delta;P = 25 psi</text>
-
-            <text x="150" y="262" font-size="10.5" fill="#3F4040" font-family="Arial, sans-serif">d</text>
-
-            <!-- Second reducer, 4in -> 8in -->
-            <polygon points="109,272 143,272 156,312 96,312" fill="#e7eaec" stroke="#3F4040" stroke-width="1.8"></polygon>
-
-            <!-- Wide outlet pipe -->
-            <rect x="96" y="312" width="60" height="150" fill="#cfe3f4" stroke="#004B8D" stroke-width="2"></rect>
-            <line x1="126" y1="420" x2="126" y2="462" stroke="#004B8D" stroke-width="2.5" marker-end="url(#cve1147FlowArrow)"></line>
-            <text x="126" y="484" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">q = 800 gpm</text>
-            <text x="126" y="500" font-size="12" fill="#3F4040" font-family="Arial, sans-serif" text-anchor="middle">Gf = 0.50 (propane)</text>
-
-            <text x="126" y="342" font-size="13" fill="#3F4040" font-family="Arial, sans-serif" font-weight="700" text-anchor="middle">NPS 8 line</text>
-          </svg>
+      <!-- ================= 2. EQUATION =================
+           q, ΔP, Gf are already known/unchanged from 146 — plain
+           "is-revealed" terms with no tpl-tok/data-part, so the click
+           handler (which only tracks .tpl-tok elements) never touches
+           them. Only Fp and Cv are this slide's own interactive terms. -->
+      <div class="tpl-eq-wrap">
+        <div class="tpl-eq">
+          <span class="tpl-eq-cv tpl-eq-term tpl-tok is-revealed is-on" data-part="cv-intro">C<sub>v</sub></span>
+          <span class="tpl-eq-op">=</span>
+          <span class="tpl-eq-term is-revealed">q</span>
+          <span class="tpl-eq-op">&divide;</span>
+          <span class="tpl-eq-op">(</span>
+          <span class="tpl-eq-const">N<sub>1</sub></span>
+          <span class="tpl-eq-op">&middot;</span>
+          <span class="tpl-eq-term tpl-tok" data-part="reducer">F<sub>p</sub></span>
+          <span class="tpl-eq-op">&middot;&radic;(</span>
+          <span class="tpl-eq-term is-revealed">&Delta;P</span>
+          <span class="tpl-eq-op">&divide;</span>
+          <span class="tpl-eq-term is-revealed">G<sub>f</sub></span>
+          <span class="tpl-eq-op">))</span>
+        </div>
+        <div class="tpl-eq-solved tpl-tok" data-part="cv">
+          <span class="tpl-eq-solved__line">800 &divide; (1.00 &times; 0.97 &times; &radic;(25 &divide; 0.50)) = <strong>116.2</strong></span>
         </div>
       </div>
 
-      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Liquid Sizing Sample Problem,&rdquo; printed pp. 3-6&ndash;3-8 &mdash; worked case transcribed as printed, continuing slide 146. Physical schematic (piping/reducer/P1&ndash;P2 layout) is an originated diagram illustrating the source&rsquo;s own stated geometry and stated &ldquo;~75% open&rdquo; result, not a source figure.</p>
+      <!-- ================= 3. STEPS + DESCRIPTION ================= -->
+      <div class="tpl-step-row">
+        <div class="tpl-step-keys">
+          <button class="tpl-step-key is-active" type="button" data-part="cv-intro"
+                  data-def="q, &Delta;P, and Gf are unchanged &mdash; only the trial valve size changes, to NPS 4.">1 &middot; Reassume NPS 4</button>
+          <button class="tpl-step-key" type="button" data-part="reducer"
+                  data-def="Fp needs Cv as an input, so this first pass borrows the valve&rsquo;s rated Cv (203).">2 &middot; Piping geometry (Fp)</button>
+          <button class="tpl-step-key" type="button" data-part="cv1"
+                  data-def="121.7 is far from the 203 assumed for Fp &mdash; one more pass is needed.">3 &middot; First Cv check</button>
+          <button class="tpl-step-key" type="button" data-part="refine"
+                  data-def="Refine Fp using 121.7 in place of 203, then re-solve for Cv.">4 &middot; Refine Fp</button>
+          <button class="tpl-step-key" type="button" data-part="cv"
+                  data-def="116.2 agrees with 121.7 within about 5% &mdash; converged. This valve runs about 75% open, read from its own travel curve.">5 &middot; Converged Cv</button>
+        </div>
+        <div class="tpl-step-def">q, &Delta;P, and Gf are unchanged &mdash; only the trial valve size changes, to NPS 4.</div>
+      </div>
+
+      <p class="tpl-source">After Fisher Control Valve Sourcebook &mdash; Oil &amp; Gas, Chapter 3, &ldquo;Liquid Sizing Sample Problem,&rdquo; printed pp. 3-6&ndash;3-8.</p>
     </div>
     <div class="slide-chrome"><span class="slide-chrome__copyright"></span><span class="slide-chrome__pageno">147</span><img class="slide-chrome__logo" src="../assets/brand/logo-emerson-corp-2c.png" alt="Emerson"></div>
   </article>
