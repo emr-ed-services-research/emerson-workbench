@@ -108,14 +108,21 @@
       '<span class="ew-lightbox-count"></span>' +
       "</div>" +
       '<div class="ew-lightbox-figure"></div>' +
+      '<div class="ew-lightbox-eq"></div>' +
       '<p class="ew-lightbox-caption"></p>' +
+      '<button type="button" class="ew-lightbox-nav ew-lightbox-prev" aria-label="Previous">&lsaquo;</button>' +
+      '<button type="button" class="ew-lightbox-nav ew-lightbox-next" aria-label="Next">&rsaquo;</button>' +
       "</div>";
     document.body.appendChild(overlay);
 
+    var card = overlay.querySelector(".ew-lightbox-card");
     var figureBox = overlay.querySelector(".ew-lightbox-figure");
+    var eqBox = overlay.querySelector(".ew-lightbox-eq");
     var captionEl = overlay.querySelector(".ew-lightbox-caption");
     var countEl = overlay.querySelector(".ew-lightbox-count");
     var closeBtn = overlay.querySelector(".ew-lightbox-close");
+    var prevBtn = overlay.querySelector(".ew-lightbox-prev");
+    var nextBtn = overlay.querySelector(".ew-lightbox-next");
     var currentIndex = -1;
 
     /* A citation scoped to THIS image's own panel is safe to show as its
@@ -201,6 +208,60 @@
       layoutFigure(wrap, img, w, h, callouts);
     }
 
+    /* The real slide's own role/variant marker classes (slide--role-*,
+       has-*) - NOT the base "slide" class itself (see the SVG clone note
+       below for why). Shared by the SVG clone and the equation clone so
+       both keep matching every role-scoped selector exactly as they do on
+       the real slide. */
+    function roleClassesOf(fromEl) {
+      var roleHost = fromEl.closest('[class*="slide--role-"]');
+      if (!roleHost) return "";
+      return Array.prototype.filter.call(roleHost.classList, function (c) {
+        return c.indexOf("slide--role-") === 0 || c.indexOf("has-") === 0;
+      }).join(" ");
+    }
+
+    /* stepped equation-template mode (2026-09-22, Franz): the real
+       .tpl-step-key buttons driving this slide's schematic/equation
+       reveal, or an empty array for a slide that doesn't use this role. */
+    function stepKeysFor(el) {
+      var content = el.closest && el.closest(".tpl-content");
+      if (!content) return [];
+      return Array.prototype.slice.call(content.querySelectorAll(".tpl-step-keys .tpl-step-key"));
+    }
+
+    /* Clones the live .tpl-eq-wrap (equation line + solved line, already
+       carrying whatever is-revealed/is-on/is-active state the real step
+       buttons have put it in) into the equation panel below the diagram.
+       Same "override cqw with a fixed rem size, measure natural (nowrap)
+       size, transform:scale() to fit" technique as the .ew-lightbox-table
+       branch above - cqw has no valid container to resolve against once
+       cloned outside .slide (see the CSS note on .ew-lightbox-eq). */
+    function renderEquation(content) {
+      eqBox.innerHTML = "";
+      var src = content && content.querySelector(".tpl-eq-wrap");
+      if (!src) {
+        eqBox.classList.remove("is-visible");
+        return;
+      }
+      eqBox.classList.add("is-visible");
+      var hostWrap = document.createElement("div");
+      hostWrap.className = roleClassesOf(content);
+      var clone = src.cloneNode(true);
+      clone.removeAttribute("style");
+      hostWrap.appendChild(clone);
+      eqBox.appendChild(hostWrap);
+      window.requestAnimationFrame(function () {
+        clone.style.transform = "none";
+        var boxW = eqBox.clientWidth, boxH = eqBox.clientHeight;
+        var natW = clone.scrollWidth, natH = clone.scrollHeight;
+        if (boxW && boxH && natW && natH) {
+          var scale = Math.min(boxW / natW, boxH / natH, 2.2);
+          clone.style.transform = "scale(" + scale + ")";
+        }
+      });
+    }
+
     function show(index) {
       currentIndex = index;
       var el = images[index];
@@ -265,8 +326,89 @@
         img.style.height = "100%";
         img.style.objectFit = "contain";
         figureBox.appendChild(img);
+      } else if (el.tagName.toLowerCase() === "svg") {
+        /* A raw inline <svg> (an originated schematic, not a photographed
+           figure) - found distorting badly in the lightbox (2026-09-22,
+           Franz: "every diagram in ch8... is unusable"). object-fit has NO
+           effect on an inline SVG the way it does on a true replaced
+           element like <img> - forcing width AND height to 100%
+           independently (the generic branch below) stretches the SVG's own
+           internal content non-uniformly to whatever shape the lightbox
+           card happens to be, ignoring its viewBox aspect ratio entirely.
+           Fixed the same way the table clone above computes its own scale
+           by hand: read the real viewBox, compute the single "biggest size
+           that still fully fits both axes" factor against the actual
+           figure box, and set real pixel width/height - never a bare
+           percentage - so the SVG's own preserveAspectRatio (default
+           xMidYMid meet) does real, correct letterboxing instead of
+           fighting a CSS property that does not apply to it. */
+        var clone = el.cloneNode(true);
+        clone.removeAttribute("style");
+        clone.removeAttribute("width");
+        clone.removeAttribute("height");
+        clone.style.display = "block";
+        clone.style.position = "absolute";
+        /* Every role-scoped style for this schematic (callout-box fill,
+           text colours, the is-on/is-revealed states) is written as
+           ".slide--role-X .tpl-schem-part ..." - it depends on an ancestor
+           carrying that role class. Cloning only the <svg> breaks that
+           chain entirely once it's placed under the lightbox's own DOM
+           (found 2026-09-22: a callout box rendered solid black, its own
+           text invisible against it, because rect.callout-box's fill never
+           matched with no "slide--role-..." ancestor present). Wrap the
+           clone in a bare <div> carrying the real slide's own role/variant
+           classes so every scoped selector keeps matching exactly as it
+           does on the real slide. */
+        var wrap = document.createElement("div");
+        /* Only the role/variant markers (slide--role-*, has-*) - NOT the
+           base "slide" class itself, which carries its own container-
+           query sizing/aspect-ratio/overflow rules that only make sense
+           for the real, fully-dimensioned slide element. Copying that
+           one too (tried first) hid the entire schematic instead of
+           fixing it - the wrapper's own ad hoc width/height did not
+           satisfy whatever "slide" itself assumes about its box. */
+        wrap.className = roleClassesOf(el);
+        /* Deliberately NOT forcing wrap to 100%/100% (found 2026-09-22,
+           Franz: "the diagram is not centred vertically... aligned to the
+           top"). .ew-lightbox-figure is already a real flex container
+           (align-items/justify-content: center) - forcing wrap to fill it
+           completely left nothing for that centering to act on, so the
+           clone (block flow inside a full-size wrap) just sat at the top.
+           Left to size naturally to its own content (the clone's own
+           explicit pixel width/height, set below), the flex container's
+           existing centering correctly centers it on both axes, matching
+           exactly how the <img> path already behaves via its own
+           object-fit/max-width/max-height rule. */
+        /* wrap fills the figure box and gives the absolutely-positioned
+           clone something real to centre within - the same
+           position:relative-container / position:absolute-child pattern
+           layoutFigure() already uses for the <img> case a few lines up,
+           applied here instead of trusting flex auto-centering a second
+           time (the first attempt, block flow + margin:auto inside a
+           100%-sized wrap, silently left the clone pinned top-left - flex
+           centering on the ancestor never got a chance to act on a wrap
+           that already filled all the space). */
+        wrap.style.position = "relative";
+        wrap.style.width = "100%";
+        wrap.style.height = "100%";
+        wrap.appendChild(clone);
+        figureBox.appendChild(wrap);
+        var vb = (el.getAttribute("viewBox") || "").trim().split(/\s+/).map(Number);
+        var svgNatW = vb.length === 4 && vb[2] > 0 ? vb[2] : (el.getBoundingClientRect().width || 1);
+        var svgNatH = vb.length === 4 && vb[3] > 0 ? vb[3] : (el.getBoundingClientRect().height || 1);
+        window.requestAnimationFrame(function () {
+          var boxW = wrap.clientWidth, boxH = wrap.clientHeight;
+          if (boxW && boxH && svgNatW && svgNatH) {
+            var scale = Math.min(boxW / svgNatW, boxH / svgNatH);
+            var dispW = svgNatW * scale, dispH = svgNatH * scale;
+            clone.style.width = dispW + "px";
+            clone.style.height = dispH + "px";
+            clone.style.left = ((boxW - dispW) / 2) + "px";
+            clone.style.top = ((boxH - dispH) / 2) + "px";
+          }
+        });
       } else {
-        /* A plain on-page <img>/<svg>, cloned as-is - including whatever
+        /* A plain on-page <img>, cloned as-is - including whatever
            inline style/width/height attributes it already carries from
            its small on-slide figure box. Stage 3 authoring was
            inconsistent here: some images were written with
@@ -278,7 +420,9 @@
            2026-09-12). Stripped and re-forced here so every lightbox
            image fills the figure box the same way regardless of which
            pattern the source slide happened to use, rather than requiring
-           every slide's markup to be individually consistent. */
+           every slide's markup to be individually consistent. object-fit
+           is correct here (unlike the SVG branch above) because <img> IS a
+           true CSS replaced element. */
         var clone = el.cloneNode(true);
         clone.removeAttribute("style");
         clone.removeAttribute("width");
@@ -307,7 +451,76 @@
       var singleFigureSlide = images.length === 1;
       captionEl.textContent = el.getAttribute("data-lightbox-caption") ||
         (singleFigureSlide ? captionFor(el, true) : "");
+      /* Empty rows reserve no track space (2026-09-22 fix, found chasing a
+         "diagram isn't vertically centered" report that turned out to be
+         this): an empty <p> still has non-zero line-height from its own
+         font shorthand, which an auto-sized grid row honours even with no
+         text content, silently shifting what "centered" means inside the
+         card above it. display:none removes the row from grid layout
+         entirely instead. */
+      captionEl.style.display = captionEl.textContent ? "" : "none";
       countEl.textContent = images.length > 1 ? index + 1 + " / " + images.length : "";
+
+      /* Stepped equation-template mode (2026-09-22, Franz): only when the
+         open item is this slide's schematic SVG AND that slide actually
+         uses the step-button role - every other lightbox (a plain figure,
+         a table, a two-panel contrast, a composited nomenclature-parse
+         diagram with no step buttons) is untouched. */
+      var stepKeys = el.tagName.toLowerCase() === "svg" ? stepKeysFor(el) : [];
+      var stepped = stepKeys.length > 0;
+      card.classList.toggle("has-eq-panel", stepped);
+      if (stepped) {
+        renderEquation(el.closest(".tpl-content"));
+      } else {
+        eqBox.classList.remove("is-visible");
+        eqBox.innerHTML = "";
+      }
+
+      /* Forward/back buttons: visible only when there's somewhere to go -
+         between steps for the equation template, between images for any
+         other multi-figure slide. A single-figure, non-stepped slide hides
+         them entirely rather than showing an arrow whose only behaviour is
+         "close the lightbox". */
+      var navigable = stepped ? stepKeys.length > 1 : images.length > 1;
+      prevBtn.classList.toggle("is-visible", navigable);
+      nextBtn.classList.toggle("is-visible", navigable);
+    }
+
+    /* Shared forward/back for both modes. dir: +1 forward, -1 back.
+       Stepped equation-template mode (2026-09-22, Franz): steps through
+       the SAME real .tpl-step-key buttons that drive the small on-page
+       diagram - clicking one dispatches a real click event, so the
+       existing delegated step handler (below, outside this IIFE) does all
+       the actual reveal/highlight work exactly as if the learner had
+       clicked the small button directly; this function just re-renders the
+       lightbox clones against the now-updated state afterward. Past the
+       first or last step - or, in the older multi-image mode, past the
+       first or last image on this slide - closes the lightbox rather than
+       wrapping or no-op'ing (Franz: "close to the same slide"). */
+    function advance(dir) {
+      var el = images[currentIndex];
+      var stepKeys = el.tagName.toLowerCase() === "svg" ? stepKeysFor(el) : [];
+      if (stepKeys.length) {
+        var curIdx = -1;
+        for (var si = 0; si < stepKeys.length; si++) {
+          if (stepKeys[si].classList.contains("is-active")) { curIdx = si; break; }
+        }
+        var nextIdx = curIdx + dir;
+        if (nextIdx < 0 || nextIdx >= stepKeys.length) {
+          close();
+          return;
+        }
+        stepKeys[nextIdx].click();
+        show(currentIndex);
+        return;
+      }
+      if (dir > 0) {
+        if (currentIndex < images.length - 1) show(currentIndex + 1);
+        else close();
+      } else {
+        if (currentIndex > 0) show(currentIndex - 1);
+        else close();
+      }
     }
 
     function notifyParent(isOpenNow) {
@@ -332,6 +545,8 @@
       el.addEventListener("click", function () { open(index); });
     });
     closeBtn.addEventListener("click", close);
+    prevBtn.addEventListener("click", function (e) { e.stopPropagation(); advance(-1); });
+    nextBtn.addEventListener("click", function (e) { e.stopPropagation(); advance(1); });
     overlay.addEventListener("click", function (e) {
       if (e.target === overlay) close(); /* click on the darkened backdrop */
     });
@@ -358,13 +573,7 @@
         if (!advancing && !retreating) return; /* let every other key pass through untouched */
         e.preventDefault();
         e.stopImmediatePropagation();
-        if (advancing) {
-          if (currentIndex < images.length - 1) show(currentIndex + 1);
-          else close(); /* past the last image on THIS slide - exit, don't touch slide nav */
-        } else {
-          if (currentIndex > 0) show(currentIndex - 1);
-          else close(); /* past the first image on THIS slide - exit, don't touch slide nav */
-        }
+        advance(advancing ? 1 : -1);
       },
       true /* capture: run ahead of the forward-to-parent listener below */
     );

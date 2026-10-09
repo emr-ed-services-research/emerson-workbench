@@ -1577,13 +1577,41 @@
  *    only the current step's own part(s), layered on top of is-revealed.
  * ---------------------------------------------------------------------- */
 .slide--role-nomenclature-equation .tpl-content {
-  /* Four explicit tracks, matching the four real children (fig-wrap,
-     eq-wrap, step-row, source) — the row count must match or an
-     un-declared child becomes an implicit row that silently steals space
-     from "1fr" (GALLERY FIX above, re-confirmed here the hard way during
-     the Phase 2 proof). */
-  grid-template-rows: 42cqh auto 1fr auto;
-  row-gap: 0.7cqh;
+  /* Three explicit tracks (fig-wrap, eq-wrap, step-row) — .tpl-source is no
+     longer a grid child at all (2026-09-21, Franz review: "place the
+     citation at the far bottom of the page for all slides"). It's taken
+     out of the content grid entirely and pinned near the slide's own true
+     bottom edge (see the .tpl-source override below), just above the
+     copyright/page-number chrome, rather than sharing space with the
+     step-row. This also simplifies the earlier "row count must match
+     child count or an implicit row steals space" fragility (GALLERY FIX
+     above) — with .tpl-source no longer a grid item, 3 children now
+     matches 3 explicit tracks exactly, so there is nothing left to
+     silently miscount.
+
+     row-gap tightened 0.7->0.5cqh (2026-09-21, cve1-146 rebuild): found,
+     via real getComputedStyle(...).gridTemplateRows measurement against
+     real production content (not proof.html's own shorter placeholder
+     text), that the step-row "1fr" track was still ~8px short of what its
+     own button row plus a genuine two-line step description need. Kept
+     even though .tpl-source moving out of the grid independently frees
+     more room, since a tighter gap remains correct on its own terms. */
+  grid-template-rows: 42cqh auto 1fr;
+  row-gap: 0.5cqh;
+}
+/* Citation pinned near the slide's true bottom edge, not inside the content
+   grid — sits just above .slide-chrome__copyright/__pageno (bottom:2.9cqh)
+   with clear vertical separation. Positioned relative to .tpl-content's own
+   left/right so it lines up with everything else on the slide. */
+.slide--role-nomenclature-equation .tpl-source {
+  position: absolute;
+  left: 0;
+  /* Stops short of the Emerson logo's own keep-out zone (logo left edge is
+     81.4cqw from the slide, per emerson-workbench.css) — a long citation
+     spanning the full content width ran directly under/into the logo once
+     pinned this low on the slide. */
+  right: 17cqw;
+  bottom: -7cqh;
 }
 
 /* --- 1. Schematic row -------------------------------------------------- */
@@ -1747,6 +1775,7 @@
 .slide--role-nomenclature-equation .tpl-step-row {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 0.7cqh;
   min-height: 0;
 }
@@ -1786,6 +1815,30 @@
   display: flex;
   align-items: center;
   font-size: 1.5cqw;
-  line-height: 1.4;
+  /* tightened 1.4->1.25 (2026-09-21, cve1-146 rebuild, see the row-gap note
+     above) — the other half of the small recovery that closed a real,
+     measured overlap against real two-line description text; still well
+     within normal body-text line-height range, not a legibility risk. */
+  line-height: 1.25;
   color: var(--body-text);
+}
+
+/* GALLERY FIX (2026-09-21, found rebuilding cve1-146 with real production
+   content — the base `.tpl-source` rule, used by every role, never resets
+   the browser default <p> margin (~1em top+bottom). That default margin is
+   harmless everywhere else in this file because those roles' bottom row has
+   slack to spare; here it isn't — this role's four-row budget (a large
+   fixed schematic + a two-line equation block) leaves the .tpl-step-row
+   "1fr" track almost no margin for error, and the source row's own auto
+   track absorbing ~30px of invisible margin was enough to starve the step
+   row down to a fraction of what its own button row + two-line description
+   need, visibly overlapping the step description text over the source
+   line. Confirmed via real getComputedStyle(...).gridTemplateRows
+   measurement, not guessed. Scoped to this role only — the base rule is
+   left alone since every other template's own margin/overlap behaviour is
+   already shipped and reviewed; widening this fix vault-wide is a separate,
+   deliberate change for someone to make with full re-review, not a side
+   effect of this one slide's rebuild. */
+.slide--role-nomenclature-equation .tpl-source {
+  margin: 0;
 }

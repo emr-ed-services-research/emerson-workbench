@@ -1539,12 +1539,29 @@
   padding: 1.4rem 1.4rem 1.1rem;
   /* explicit rows, not absolutely-positioned close/count floating over the
      figure: a header row the image can never grow into and cover, a
-     flexible figure row, a fixed caption row - the structural fix for the
-     close button getting visually clipped/covered by a large image. */
+     flexible figure row, an equation row (real proportional space only when
+     the "has-eq-panel" modifier is present, else collapses to 0 - see
+     .ew-lightbox-card.has-eq-panel below), a fixed caption row - the
+     structural fix for the close button getting visually clipped/covered
+     by a large image. */
   display: grid;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto minmax(0, 1fr) auto auto;
   row-gap: 0.5rem;
   box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.5);
+}
+/* Stepped equation-template lightbox (2026-09-22, Franz): diagram above,
+   equation below, both given real fixed proportional space (3:1) so the
+   equation panel's own box is stable and content-independent BEFORE
+   slides.js measures/scales its clone into it - an `auto` third row would
+   size to the equation's un-scaled natural width first and defeat the
+   scale-to-fit measurement the same way an unconstrained image would.
+   Only applied by slides.js when the open figure's slide has .tpl-step-keys
+   (this role); every other lightbox (a plain figure, a table, a two-panel
+   contrast) keeps the plain 3-effective-row layout above, where the empty,
+   display:none .ew-lightbox-eq naturally collapses its own `auto` track to
+   zero and changes nothing. */
+.ew-lightbox-card.has-eq-panel {
+  grid-template-rows: auto minmax(0, 3fr) minmax(0, 1fr) auto;
 }
 
 /* the small blue accent block, bottom-left, sitting astride the border */
@@ -1662,6 +1679,74 @@
    are never accidentally made to look clickable */
 .ew-lightbox-trigger { cursor: zoom-in; }
 .ew-lightbox-trigger:hover { filter: brightness(1.03); }
+
+/* Equation panel (2026-09-22): the cloned .tpl-eq-wrap lands here, one row
+   below the diagram. Hidden by default (display:none, set inline by
+   slides.js) so a non-stepped slide's lightbox is unaffected - see the
+   .has-eq-panel grid note above. overflow:hidden is the same safety net
+   the table clone already relies on for the one frame before its own
+   scale-to-fit transform is computed. */
+.ew-lightbox-eq {
+  display: none;
+  overflow: hidden;
+  position: relative;
+}
+.ew-lightbox-eq.is-visible {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* .tpl-eq / .tpl-eq-solved are authored in cqw units, sized against .slide's
+   own container-query box (see tokens/container-type note at the top of
+   this file) - a bare clone living outside .slide resolves cqw against no
+   valid container at all (spec: an invalid/absent container computes such
+   units to zero), which is exactly the same problem the .ew-lightbox-table
+   branch already solved for cqw-sized table text: override with a fixed,
+   generous rem size here, measure the clone's real natural (nowrap)
+   size, then let slides.js's transform:scale() do the fit-to-box work,
+   the same "biggest size that still fully fits" behaviour object-fit
+   gives an image. Chained three classes deep (.ew-lightbox-eq
+   .slide--role-nomenclature-equation .tpl-eq-wrap) so this reliably
+   outranks gallery.css's own two-class .slide--role-nomenclature-equation
+   .tpl-eq-wrap rule regardless of which stylesheet loads second - equal
+   specificity would otherwise leave the winner up to file order. */
+.ew-lightbox-eq .slide--role-nomenclature-equation .tpl-eq-wrap {
+  padding: 0;
+  transform-origin: center top;
+}
+.ew-lightbox-eq .slide--role-nomenclature-equation .tpl-eq {
+  font-size: 2.6rem;
+  white-space: nowrap;
+}
+.ew-lightbox-eq .slide--role-nomenclature-equation .tpl-eq-solved {
+  font-size: 1.5rem;
+  white-space: nowrap;
+  margin-top: 0.6rem;
+}
+
+/* Forward/back click controls (2026-09-22, Franz - "when I click forward
+   or back"). Only shown when slides.js finds something to actually
+   navigate: multiple lightbox-eligible images on this slide, or (for the
+   equation-template stepped mode) more than one step. Large hit target,
+   centered vertically over the card, outside the figure so a click never
+   competes with a callout click inside it. */
+.ew-lightbox-nav {
+  display: none;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 2.6rem; height: 2.6rem;
+  border: none; border-radius: 50%;
+  background: color-mix(in srgb, var(--emerson-charcoal) 55%, transparent);
+  color: var(--emerson-white);
+  font-size: 1.5rem; line-height: 1;
+  cursor: pointer;
+  z-index: 1;
+}
+.ew-lightbox-nav.is-visible { display: block; }
+.ew-lightbox-nav:hover { background: var(--emerson-charcoal); }
+.ew-lightbox-prev { left: -1.3rem; }
+.ew-lightbox-next { right: -1.3rem; }
 
 /* live, clickable label text over a lightbox detail asset (see slides.js
    showDetail) -- same visual language as the diagram-cleanup module's
