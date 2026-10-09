@@ -541,9 +541,16 @@ status: current
 source:
   - doc: Control Valve Handbook, Sixth Edition
     locator: "Figure 5.6 'Vena Contracta Illustration,' p. 128"
+  - doc: 20 - Source Library/Handbooks & Sourcebooks/Control Valve Handbook — extracted-figures/ch5-fig6-vena-contracta-illustration.png
+    locator: ""
 delivery: existing figure (crop) — per Style Guide §5.8 default
-used-by: []
-notes: Simple labelled flow-path diagram (Flow, P1, P2, Restriction, Vena Contracta) — an analytical/schematic diagram, not a photo.
+used-by: [{course: CVE1, slide: cve1-148.html}]
+notes: >
+  Simple labelled flow-path diagram (Flow, P1, P2, Restriction, Vena
+  Contracta) — an analytical/schematic diagram, not a photo. Extracted
+  2026-09-23 (Franz: cve1-148's panel A had originated a cutaway from
+  scratch without checking this chapter's own index first — this real
+  figure was catalogued but never actually pulled from the PDF until now).
 ```
 
 ```yaml
