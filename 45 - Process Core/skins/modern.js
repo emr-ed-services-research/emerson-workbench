@@ -93,19 +93,49 @@
   const GRID      = mix(EMERSON.white, EMERSON.charcoal, 0.10);  // reference
   const PIPE_EDGE = mix(EMERSON.white, EMERSON.charcoal, 0.30);  // the wall
 
-  /* Faces that exist on the machines this runs on. No webfont: see the
-     header. Tabular figures matter on a board -- a readout that shifts
-     width as digits change is a readout that twitches. */
-  const FACE = '"Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif';
-  const FACE_NUM = '"Segoe UI Variable Display", "Segoe UI", system-ui, ' +
-                   '-apple-system, "Helvetica Neue", Arial, sans-serif';
+  /* ---- the faces, which are the house's and not a choice made here ----
+     Style Guide section 2.1 settles this: Arial is the theme's own major
+     AND minor font -- "this is not a substitution, it is what the brand
+     uses" -- and DTL Argo T is Emerson's licensed display face, an
+     optional @font-face with an acceptable Arial fallback.
+
+     So the answer to "pick a webfont" is that the house already picked,
+     and its answer is better than a fetched one for this surface: a
+     board on a plant floor or an air-gapped machine must render the same
+     with no network, and Arial is installed on every machine this will
+     ever run on. Arial also measures TABULAR -- all ten digits are
+     10.567 px at 19 px, checked, not assumed -- so a readout does not
+     twitch as its digits change.
+
+     The display face is wired the way the engine wires it, so if the
+     licensed file is ever dropped in, the board picks it up with no
+     change here. It is not in the vault today. */
+  const FACE = '"Arial", "Helvetica Neue", Helvetica, "Liberation Sans", ' +
+               'system-ui, sans-serif';
+  const FACE_NUM = FACE;                       // Arial's figures are tabular
+  const FACE_DISPLAY = '"DTL Argo T", ' + FACE;
+
+  /* Is a face REALLY there, or will canvas quietly fall back?
+     document.fonts.check() is not an answer: it returned true for "Inter"
+     when Inter had never loaded, and true for "DTL Argo T" with no font
+     file anywhere in the vault. Both were caught by measuring instead --
+     a face that renders identically to the fallback IS the fallback. */
+  function faceLoaded(name, fallback, probe) {
+    if (typeof document === 'undefined') return false;
+    const g = document.createElement('canvas').getContext('2d');
+    const s = probe || 'HV-1 0123456789 Manifold';
+    g.font = '20px ' + fallback;
+    const base = g.measureText(s).width;
+    g.font = '20px "' + name + '", ' + fallback;
+    return g.measureText(s).width !== base;
+  }
 
   /* THE TYPE SCALE. Four steps, decided once. A board has exactly four
      jobs for type and no more: name the board, name a thing, state a
      value, and mark a unit or an axis. Anything that wants a fifth size
      is usually a thing that should not be on the board. */
   const TYPE = {
-    display: { size: 15, weight: 600, face: FACE,     track: 0.06 },  // the board's own name
+    display: { size: 15, weight: 600, face: FACE_DISPLAY, track: 0.06 }, // the board's own name
     tag:     { size: 10, weight: 600, face: FACE,     track: 0.08 },  // HV-1, TK-2
     value:   { size: 19, weight: 600, face: FACE_NUM, track: 0    },  // 2.61
     unit:    { size: 10, weight: 500, face: FACE,     track: 0.02 },  // gpm, psig
@@ -244,7 +274,7 @@
   }
 
   /* A drawn line carries whatever is feeding the component it ends at. */
-  function lineFlows(net, plan, solved) {
+  function lineFlows(net, plan, solved, limits) {
     const at = {};
     for (const id of Object.keys(net.components)) {
       const c = net.components[id];
@@ -255,7 +285,9 @@
         const c = at[end[0] + ',' + end[1]];
         if (!c) continue;
         const q = flowInto(net, c.id, solved);
-        if (q !== null) return { pts: L.pts, q };
+        /* The run carries the limit of whatever it feeds, so a caution
+           can be drawn on the span and not only on the number. */
+        if (q !== null) return { pts: L.pts, q, limit: (limits || {})[c.tag], to: c };
       }
       return { pts: L.pts, q: solved.qTot || 0 };   // a trunk carries the lot
     });
@@ -275,6 +307,54 @@
     if (!limit || limit.target === undefined) return 'normal';
     const tol = limit.tol === undefined ? 0 : limit.tol;
     return Math.abs(value - limit.target) > tol ? 'caution' : 'normal';
+  }
+
+  /* ---- a span that is off target -------------------------------------
+     A line can be flowing and still wrong, and until now only its
+     readout said so -- which means reading numbers to find the bad
+     branch, on a board whose whole job is to not need that.
+
+     The treatment comes from the Style Guide rather than from taste.
+     Section 3.2: blue stays "the real thing", the measured quantity;
+     orange marks "a semantic region or bracket -- a deadband, an
+     offset", and a span feature is an orange bracket, never an orange
+     version of the measured thing. So the pipe stays blue, because it
+     genuinely is flowing, and an orange rule runs alongside the span
+     that is out of band, capped at both ends.
+
+     The alternative -- turning the pipe orange -- would say the flow
+     itself is a caution rather than that its value is, and would spend
+     the one colour this board holds in reserve on a line that is
+     working. */
+  function offTargetSpan(g, pts, w) {
+    const off = w / 2 + 5;
+    g.save();
+    g.strokeStyle = EMERSON.orange;
+    g.lineWidth = 2;
+    g.lineCap = 'butt';
+    for (let i = 1; i < pts.length; i++) {
+      const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
+      const horiz = y0 === y1;
+      /* Offset to the side of the run, so it reads as a bracket beside
+         the pipe rather than as something in it. */
+      const dx = horiz ? 0 : off, dy = horiz ? off : 0;
+      g.beginPath();
+      g.moveTo(x0 + dx, y0 + dy);
+      g.lineTo(x1 + dx, y1 + dy);
+      g.stroke();
+      /* Caps, which is what makes it a bracket and not a second pipe. */
+      const cap = 4;
+      g.beginPath();
+      if (horiz) {
+        g.moveTo(x0 + dx, y0 + dy - cap); g.lineTo(x0 + dx, y0 + dy + cap);
+        g.moveTo(x1 + dx, y1 + dy - cap); g.lineTo(x1 + dx, y1 + dy + cap);
+      } else {
+        g.moveTo(x0 + dx - cap, y0 + dy); g.lineTo(x0 + dx + cap, y0 + dy);
+        g.moveTo(x1 + dx - cap, y1 + dy); g.lineTo(x1 + dx + cap, y1 + dy);
+      }
+      g.stroke();
+    }
+    g.restore();
   }
 
   /* ---- a value, where the thing it describes is -----------------------
@@ -382,7 +462,21 @@
        which is exactly the resampling this function exists to remove,
        while reporting success. The element's width belongs to the page;
        only the aspect and the backing store belong here. */
-    const cssW = (canvas.getBoundingClientRect().width) || logicalW;
+    /* Measuring the ELEMENT is wrong when the page has not sized it: a
+       bare <canvas> reports its 300 px attribute default, and an earlier
+       cut of this locked a 1180-wide board to a 300-wide thumbnail and
+       called it exact. Measure what is AVAILABLE instead -- the parent's
+       content box -- and never exceed the logical width. That handles
+       both cases: a canvas in a narrow grid column shrinks to the
+       column, and a canvas in a wide container gets its full size. */
+    const avail = (canvas.parentElement && canvas.parentElement.clientWidth) || 0;
+    canvas.style.width = (avail > 0 ? Math.min(logicalW, avail) : logicalW) + 'px';
+    /* Read the width BACK off the element. style.width sets the content
+       box; a border, padding or box-sizing:border-box all move the real
+       one, and sizing the backing store from the number we asked for
+       rather than the number we got leaves it off by exactly the border
+       -- 909 against 911, which is still resampling, just subtly. */
+    const cssW = canvas.clientWidth || parseFloat(canvas.style.width) || logicalW;
     const cssH = cssW * logicalH / logicalW;
     canvas.style.height = cssH + 'px';
     canvas.width  = Math.round(cssW * dpr);
@@ -421,13 +515,20 @@
       g.stroke();
     }
 
-    const runs = lineFlows(net, plan, solved);
+    const runs = lineFlows(net, plan, solved, limits);
     const bore = o.bore || 13;
     for (let i = 0; i < runs.length; i++) {
       runPipe(g, runs[i].pts, bore, flowColour(runs[i].q, full));
     }
     for (let i = 0; i < runs.length; i++) {
       runFlow(g, runs[i].pts, bore, runs[i].q, full, t);
+    }
+    /* A span that is flowing but out of band gets its bracket. Drawn
+       after the fluid so the bracket is never underneath it. */
+    for (let i = 0; i < runs.length; i++) {
+      const r = runs[i];
+      if (!(r.q > 0.001) || !r.limit) continue;
+      if (statusOf(r.q, r.limit) === 'caution') offTargetSpan(g, r.pts, bore);
     }
     g.restore();
 
@@ -482,6 +583,8 @@
     TYPE: TYPE, font: font, tracked: tracked,
     flowColour: flowColour, lineFlows: lineFlows,
     runPipe: runPipe, runFlow: runFlow, readout: readout,
+    offTargetSpan: offTargetSpan, faceLoaded: faceLoaded,
+    FACE_DISPLAY: FACE_DISPLAY,
     chrome: chrome, statusOf: statusOf, fit: fit, draw: draw, mix: mix,
   };
 

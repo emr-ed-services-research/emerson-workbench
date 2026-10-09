@@ -1,0 +1,164 @@
+<meta charset="utf-8">
+<title>Board density — 26 tags</title>
+<style>
+  body { margin:0; background:#111417; color:#c8d2d6;
+         font:14px ui-monospace, "Cascadia Mono", Menlo, monospace; }
+  header { padding:18px 24px 6px; }
+  h1 { font:18px ui-monospace, monospace; margin:0 0 4px; letter-spacing:.06em; }
+  p.sub { margin:0; color:#7d8a92; max-width:92ch; line-height:1.55; }
+  .wrap { padding:16px 24px; }
+  canvas { display:block; border:1px solid #2a3238; max-width:100%; }
+  .controls { padding:0 24px 20px; display:flex; gap:20px; align-items:center;
+              flex-wrap:wrap; color:#7d8a92; }
+  button { font:inherit; background:#1b2227; color:#c8d2d6; border:1px solid #39444c;
+           padding:5px 12px; cursor:pointer; }
+  button:hover { background:#232c33; }
+  .note { padding:0 24px 28px; color:#5f6b73; max-width:92ch; line-height:1.6; }
+  code { color:#9fb0bf; }
+</style>
+
+<header>
+  <h1>BOARD DENSITY &mdash; 26 TAGS</h1>
+  <p class="sub">The modern skin was designed against a four-tag bay. This is the
+  same skin, same core, on a twelve-bed header: 26 tagged components, 13
+  readouts. The question this page exists to answer is what breaks.</p>
+</header>
+
+<div class="wrap"><canvas id="board"></canvas></div>
+<div class="controls">
+  <button id="normal">all on target</button>
+  <button id="one">one bed shut</button>
+  <button id="drift">three beds drifting</button>
+  <button id="half">half the header shut</button>
+  <span id="readout"></span>
+</div>
+<p class="note">
+  One <code>LPE.net()</code>, one <code>LPE.dyn()</code> solve, the same
+  <code>skins/modern.js</code> the four-tag board uses. Twelve branches off one
+  manifold is still a single unknown pressure node, so the dynamics layer
+  handles it unchanged.
+</p>
+
+<script src="vendor/process-core/topology.js"></script>
+<script src="vendor/process-core/schemvis.js"></script>
+<script src="vendor/process-core/dynamics.js"></script>
+<script src="vendor/process-core/skins/modern.js"></script>
+<script>
+'use strict';
+const BEDS = 12;
+const PX = 10 / 0.493;
+const W = 1180, H = 560;
+
+/* A twelve-bed header. Two columns of six so the board has to cope with
+   readouts on both sides, which a one-column bay never tested. */
+const COL = [360, 820];        // where each column's valves sit
+const POD = [520, 980];        // and where its pods do
+const TOP = 150, GAP = 62;
+
+const components = {
+  reservoir: { kind:'vessel', tag:'TK-1', role:'source', pressure:60 },
+  vMain:     { kind:'valve',  tag:'HV-1', key:'main', valveType:'globe', cv:3.2 },
+};
+const segments = [{ from:'reservoir.out', to:'vMain.in', bore:'main' }];
+const at = { reservoir:[70,100], vMain:[180,100] };
+const via = {};
+
+let prev = 'vMain';
+for (let i = 0; i < BEDS; i++) {
+  const col = i < BEDS/2 ? 0 : 1;
+  const row = i % (BEDS/2);
+  const y   = TOP + row * GAP;
+  const tee = 't' + i, v = 'v' + i, pod = 'p' + i;
+  const teeX = col === 0 ? 260 : 700;
+
+  components[tee] = { kind:'tee', axis:'v' };
+  components[v]   = { kind:'valve', tag:'HV-' + (i+2), key:'b'+i,
+                      valveType:'globe', cv:0.42 };
+  components[pod] = { kind:'vessel', tag:'TK-' + (i+2), role:'sink' };
+  at[tee] = [teeX, y];
+  at[v]   = [COL[col], y];
+  at[pod] = [POD[col], y];
+
+  const run = { from: prev + '.out', to: tee + '.in', bore:'main' };
+  /* Every leg has to be orthogonal -- the netlist refuses a diagonal,
+     and rightly: the drawing, the elbow fillets and the water arcs all
+     assume it. Route across at the previous tee's height, then down. */
+  if (prev === 'vMain') via[run.from + '->' + run.to] = [[teeX, 100]];
+  else if (at[prev][0] !== teeX) via[run.from + '->' + run.to] = [[teeX, at[prev][1]]];
+  segments.push(run);
+  segments.push({ from: tee + '.branch', to: v + '.in', bore:'branch' });
+  segments.push({ from: v + '.out', to: pod + '.in', bore:'branch' });
+  prev = tee;
+}
+/* The header ends in a DRAIN VALVE, normally shut -- not an open pipe.
+   The first cut ran the last tee straight into a sink, which tied the
+   whole manifold to atmosphere: every reading came back zero and the
+   board looked like a rig nobody had opened. The dynamics layer now
+   names that, and a real header ends this way anyway. */
+components.vDrain = { kind:'valve', tag:'HV-14', key:'drain',
+                      valveType:'globe', cv:0.42 };
+components.drain  = { kind:'vessel', tag:'TK-99', role:'sink' };
+at.vDrain = [COL[1], TOP + (BEDS/2) * GAP];
+at.drain  = [POD[1], TOP + (BEDS/2) * GAP];
+segments.push({ from: prev + '.out', to:'vDrain.in', bore:'main' });
+segments.push({ from: 'vDrain.out', to:'drain.in', bore:'main' });
+via[prev + '.out->vDrain.in'] = [[at[prev][0], at.vDrain[1]]];
+
+const NET = LPE.net({
+  rig:'density-probe',
+  bores:{ main:0.622, branch:0.493 },
+  fluid:{ sg:1.0 },
+  components, segments,
+  frames:{ board:{ pxPerInch:PX, round:1, at, via } },
+});
+if (NET.errors.length) {
+  document.body.insertAdjacentHTML('afterbegin',
+    '<pre style="color:#e06c5a;padding:18px;white-space:pre-wrap">' +
+    NET.errors.join('\n') + '</pre>');
+}
+
+const DYN = LPE.dyn(NET, { tau:0.22 });
+if (DYN.errors.length) {
+  document.body.insertAdjacentHTML('afterbegin',
+    '<pre style="color:#e06c5a;padding:18px;white-space:pre-wrap">dyn: ' +
+    DYN.errors.join('\n') + '</pre>');
+}
+
+const valves = { main:1, drain:0 };   // the drain is shut, as it would be
+for (let i = 0; i < BEDS; i++) valves['b'+i] = 1;
+
+const LIMITS = {};
+/* The band is what the header actually holds with all twelve open,
+   not a number picked first -- a limit nothing can meet turns the whole
+   board orange, which is the same as having no limit at all. */
+for (let i = 0; i < BEDS; i++) LIMITS['TK-' + (i+2)] = { target:1.74, tol:0.25 };
+LIMITS.MANIFOLD = { target:20, tol:8 };
+
+const FIT = LPE.skins.modern.fit(document.getElementById('board'), W, H);
+
+document.getElementById('normal').onclick = () => {
+  for (let i = 0; i < BEDS; i++) valves['b'+i] = 1; };
+document.getElementById('one').onclick = () => {
+  for (let i = 0; i < BEDS; i++) valves['b'+i] = 1; valves.b4 = 0; };
+document.getElementById('drift').onclick = () => {
+  for (let i = 0; i < BEDS; i++) valves['b'+i] = 1;
+  valves.b1 = 0.35; valves.b6 = 0.4; valves.b9 = 0.3; };
+document.getElementById('half').onclick = () => {
+  for (let i = 0; i < BEDS; i++) valves['b'+i] = i < BEDS/2 ? 1 : 0; };
+
+function frame() {
+  const S = DYN.step(1/60, valves);
+  const plan = LPE.schem.plan(NET, { state: valves, scale: 15, labelBy:'tag' });
+  LPE.skins.modern.draw(FIT.g, {
+    net: NET, plan, width: FIT.w, height: FIT.h,
+    solved: S, fullFlow: 1.4, limits: LIMITS, bore: 10,
+    title: 'HEADER 7 — TWELVE BED', subtitle: 'DENSITY PROBE',
+    time: performance.now()/1000,
+  });
+  document.getElementById('readout').textContent =
+    'manifold ' + S.pressure.toFixed(1) + ' psig · total ' + S.qTot.toFixed(2) + ' gpm';
+  requestAnimationFrame(frame);
+}
+DYN.settle(valves);
+frame();
+</script>

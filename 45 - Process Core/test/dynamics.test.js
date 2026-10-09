@@ -211,15 +211,19 @@ check('opening one bed with the main shut drains it to zero',
 
 /* ---- the derivation, not the arithmetic ---------------------------- */
 console.log('');
-check('a valve with no cv is not a restriction, so it joins no nodes',
+check('a valve with no cv is not a restriction, and the layer says what that did',
       (function () {
         const s = JSON.parse(JSON.stringify(SPEC));
         delete s.components.v0.cv;
         const d = LPE.dyn(LPE.net(s));
-        /* v0 stops resisting, so bed 0 is wide open to the manifold and
-           the node now reaches a sink with nothing between: one node
-           still, but bed 0 no longer appears as a flow path. */
-        return d.errors.length === 0 && d.solve({ main: 1 }).q.b0 === undefined;
+        /* v0 stops resisting, so bed 0 is wide open from the manifold to
+           a pod sitting at atmosphere -- which pins the manifold and
+           leaves nothing to solve. It stops being a flow path, and the
+           grounding it caused is now named instead of coming back as a
+           board of zeroes. This check used to assert errors.length === 0,
+           which was the silent behaviour and not a correct one. */
+        return d.solve({ main: 1 }).q.b0 === undefined &&
+               /every node in this net is pinned/.test(d.errors.join(' '));
       })());
 
 check('the bed-3 valve and its reducer are combined in series, not summed',
@@ -235,6 +239,37 @@ check('a source with no pressure is refused by name',
         delete s.components.reservoir.pressure;
         return /reservoir is a source and declares no pressure/
           .test(LPE.dyn(LPE.net(s)).errors.join(' '));
+      })());
+
+/* The opposite failure, and the quieter one: a net with NOTHING to
+   solve. Found building a twelve-bed density board whose header ran
+   straight into a drain -- every reading was zero and the board looked
+   like a rig nobody had opened. */
+check('a net with nothing left to solve is named, not silently zero',
+      (function () {
+        const s = {
+          bores: { m: 1 }, fluid: { sg: 1 },
+          components: {
+            src: { kind: 'vessel', tag: 'TK-1', role: 'source', pressure: 60 },
+            a:   { kind: 'valve', tag: 'HV-1', key: 'a', cv: 1 },
+            t:   { kind: 'tee', axis: 'h' },
+            d1:  { kind: 'vessel', tag: 'TK-2', role: 'sink' },
+            b:   { kind: 'valve', tag: 'HV-2', key: 'b', cv: 1 },
+            d2:  { kind: 'vessel', tag: 'TK-3', role: 'sink' },
+          },
+          segments: [
+            { from: 'src.out', to: 'a.in', bore: 'm' },
+            { from: 'a.out', to: 't.in', bore: 'm' },
+            { from: 't.out', to: 'd1.in', bore: 'm' },   // header straight to a sink
+            { from: 't.branch', to: 'b.in', bore: 'm' },
+            { from: 'b.out', to: 'd2.in', bore: 'm' },
+          ],
+          frames: { rig: { at: { src: [0,0], a: [50,0], t: [100,0],
+                                 d1: [150,0], b: [100,50], d2: [100,100] } } },
+        };
+        const e = LPE.dyn(LPE.net(s)).errors.join(' ');
+        return /every node in this net is pinned/.test(e) &&
+               /put a valve \(shut is fine\)/.test(e);
       })());
 
 /* A net that needs an iterative solve must say so rather than guess.

@@ -191,6 +191,23 @@
       if (fixed[L.b] === undefined) unknown[L.b] = true;
     }
     const unknownNodes = Object.keys(unknown);
+    if (unknownNodes.length === 0 && links.length) {
+      /* Every node is pinned, so there is nothing to solve and every
+         flow is zero -- which looks exactly like a rig nobody opened.
+         It is almost always one mistake: a run terminated straight into
+         a sink with no restriction between, which grounds the whole
+         header to whatever that sink sits at. A real header ends in a
+         blind, a cap or a drain VALVE, and the valve is the thing that
+         makes the header a node. Say so, rather than returning silence
+         that reads as "shut". */
+      errors.push('every node in this net is pinned to a fixed pressure, ' +
+                  'so nothing can be solved and every flow is zero. Usually ' +
+                  'a run ends directly at a source or sink with no ' +
+                  'restriction in between, which ties the whole header to ' +
+                  'that boundary -- put a valve (shut is fine) between them, ' +
+                  'the way a real header ends in a drain valve rather than ' +
+                  'an open pipe');
+    }
     if (unknownNodes.length > 1) {
       errors.push(`this net reduces to ${unknownNodes.length} unsolved ` +
                   `pressure nodes. Only one is supported: more than one ` +
