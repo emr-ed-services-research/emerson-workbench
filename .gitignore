@@ -89,3 +89,9 @@ voice/
 # invalid 20-byte file at the vault root from an aborted regen; the real
 # course data is 10 - Courses/.../Presentation/course/course-data.js
 /course-data.js
+
+# Python bytecode and one-off render scratch files. Both regenerate; the
+# venv rule above already covers narration/.venv.
+__pycache__/
+*.pyc
+40 - Engine/render/_tmp-*.mjs
