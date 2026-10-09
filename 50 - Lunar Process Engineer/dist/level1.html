@@ -228,6 +228,16 @@ const P = {
   pipeDark:'#05121a', body:'#4a545e', rim:'#8a94a0',
 };
 
+/* ---------------- the pipework skin ----------------
+   piping() draws GEOMETRY. What that geometry looks like is this map, and
+   it is passed in rather than reached for -- so the same bore, elbow,
+   tee and reducer code can be asked to come out as 1990s dithered metal
+   or as something modern, which is the whole point of Phase 5a. The five
+   roles are all it needs; this is the 1990s one. */
+const PIPE_SKIN = {
+  body: P.body, rim: P.rim, light: P.light, mid: P.mid, dark: P.pipeDark,
+};
+
 /* ---------------- retro drawing kit ----------------
    Ordered dithering, not smooth gradients: the era's own answer to a
    limited palette, and what makes these screens read as drawn. */
@@ -850,6 +860,10 @@ Cutaway.prototype.draw=function(g){
 function piping(spec){
   const lines=spec.lines||[], tees=spec.tees||[],
         reducers=spec.reducers||[], fittings=spec.fittings||[];
+  /* The skin arrives at draw time, so one piping() can be painted twice
+     in two styles without being rebuilt. Defaults to the 1990s one
+     because every caller today wants it; a second renderer passes its
+     own and nothing in the geometry below changes. */
   /* Corners are filleted with arcTo, which bends the CENTRELINE - so the
      inner and outer walls come out as concentric arcs, the way a real elbow
      is made. A round line-join only pads the outside and leaves a sharp
@@ -881,10 +895,11 @@ function piping(spec){
     g.closePath(); g.fill();
   };
   return {
-    draw(g){
+    draw(g,skin){
+      const S=skin||PIPE_SKIN;
       // --- bodies
-      stroke(g,WALL,P.body);
-      reducers.forEach(rd=>taper(g,rd,WALL,P.body));
+      stroke(g,WALL,S.body);
+      reducers.forEach(rd=>taper(g,rd,WALL,S.body));
       /* A real tee is a forged body, not two pipes butted together: the metal
          is thicker at the junction, each of the three ends has a socket hub
          the pipe lands in, and the crotch where the branch leaves the run is
@@ -892,29 +907,29 @@ function piping(spec){
          the bodies; the crotch fillets go on after the bores, below. */
       tees.forEach(t=>{
         const REINF=3, stub=t.r+WALL+REINF+16;
-        g.fillStyle=P.body;
+        g.fillStyle=S.body;
         g.fillRect(t.x-t.r-WALL-REINF, t.y-t.branch-WALL-REINF,
                    2*(t.r+WALL+REINF), 2*(t.branch+WALL+REINF));
         g.fillRect(t.x, t.y-t.branch-WALL-REINF, stub, 2*(t.branch+WALL+REINF));
-        g.fillStyle=P.rim;                                  // socket hubs, three ends
+        g.fillStyle=S.rim;                                  // socket hubs, three ends
         g.fillRect(t.x-t.r-WALL-REINF-2, t.y-t.branch-WALL-REINF-3, 3, 2*(t.branch+WALL+REINF)+6);
         g.fillRect(t.x+stub-3, t.y-t.branch-WALL-REINF-3, 3, 2*(t.branch+WALL+REINF)+6);
       });
-      g.fillStyle=P.rim;
+      g.fillStyle=S.rim;
       reducers.forEach(rd=>{ g.fillRect(rd.x0-2,rd.y-rd.r1-WALL-2,3,2*(rd.r1+WALL)+4);
                              g.fillRect(rd.x1-1,rd.y-rd.r2-WALL-2,3,2*(rd.r2+WALL)+4); });
       fittings.forEach(f=>{ g.fillRect(f.x-3,f.y-f.r-WALL-3,3,2*(f.r+WALL)+6);
                             g.fillRect(f.x+f.r,f.y-f.r-WALL-3,3,2*(f.r+WALL)+6); });
       // --- highlight along the top of each run
-      g.save(); g.globalAlpha=0.5; stroke(g,WALL-2,P.light); g.restore();
+      g.save(); g.globalAlpha=0.5; stroke(g,WALL-2,S.light); g.restore();
       // --- BORES: nothing may close an opening after this
-      stroke(g,0,P.pipeDark);
-      reducers.forEach(rd=>taper(g,rd,0,P.pipeDark));
+      stroke(g,0,S.dark);
+      reducers.forEach(rd=>taper(g,rd,0,S.dark));
       /* --- crotch fillets, the one thing that goes on top of a bore.
          Where a branch leaves the run the metal is radiused, never a sharp
          internal corner - a square crotch is a stress riser and is not how a
          tee is made. Adding it back after the bores keeps it exact. */
-      g.fillStyle=P.body;
+      g.fillStyle=S.body;
       /* Each fillet is a QUARTER round. The sweep flags were inverted, which
          took the long way round the circle - 270 degrees instead of 90 - so
          instead of a small radius in the crotch each tee got a three-quarter
@@ -1824,6 +1839,1788 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
         get current(){ return LPE_CURRENT; }};
 })();
 
+/* @layer netlist
+   @core Process Core -- this file moves to `45 - Process Core` in Phase 1.
+   May use: nothing. The netlist is the bottom of the stack.
+   Never: a colour, a canvas call, a COORDINATE, or any consumer's runtime.
+   A netlist says what is connected to what, with bores in inches because a
+   half-inch line is half an inch however you draw it. WHERE anything sits
+   is a frame's business and HOW it looks is decided above -- which symbol,
+   what is hidden, where a line breaks, what colour anything is.
+   Enforced by layers.test.js, which fails the build rather than trusting
+   anyone to remember. See `00 - Project/Process Core -- Architecture & Build
+   Plan.md`.                                                              */
+/* ---------------- TOPOLOGY: what connects to what ----------------
+
+   A level declares its pipework ONCE, as components with named ports and
+   segments between those ports. Everything downstream - the drawing, the
+   water, the bend radii, the tee positions - is derived from that single
+   declaration.
+
+   Why this exists
+   ---------------
+   Level 1 declares the same bay THREE times, in three incompatible forms:
+
+     1. LPE.Line water segments, with elbow arc centres hand-derived
+        (cx:E1.x-BEND, cy:E1.y+BEND) and sweep angles written out
+     2. LPE.piping() drawing, as absolute pixel pts/tees/reducers
+     3. BR_SEGS branch water, with its own hand-derived tee-turn arcs
+
+   Move the riser and three places must be edited into agreement, each with
+   its own hand-computed radii and arc centres. Nothing checks that they
+   still agree. The level files carry the scars in their own comments:
+   "drawing it as one stopped the butt-capped riser leaving bed 3 hanging
+   off its end"; "the water narrows only where the fitting narrows it";
+   "Water turns into a branch, it does not appear already running sideways."
+
+   Every one of those was a disagreement between representations that a
+   single source of truth cannot have.
+
+   Where the model comes from
+   --------------------------
+   Not invented here. The structure is DEXPI's - "Data Exchange in the
+   Process Industry", the open specification for describing a P&ID as data
+   (dexpi.org, spec 1.4; vocabulary from ISO 15926). Its core is exactly
+   this: a PipingNetworkSegment records SourceItem/SourceNode ->
+   TargetItem/TargetNode, so components connect through NAMED PORTS and
+   never through coordinates.
+
+   That is the whole fix. A tee is not an {x,y} that must happen to agree
+   with a vertex in some other array; it is a component with three ports,
+   and a segment attaches TO a port. There are no two numbers left that can
+   disagree.
+
+   Borrowed: the topology model and its vocabulary. Not borrowed: the
+   Proteus XML serialisation, the ISO 15926 taxonomy, units machinery. This
+   is a canvas game, not a plant data exchange.
+
+   What this is NOT
+   ----------------
+   It carries no symbol geometry. ISA-5.1's symbol set is a separate
+   question, still blocked on getting the standard - Emerson's Information
+   Center holds 5.2/5.3/5.4/5.5 but not 5.1. Topology first; symbols later;
+   the two are independent.                                               */
+
+(function (LPE) {
+  'use strict';
+
+  /* ---- the two radius rules, stated once ----------------------------
+     Both were already in the code, just written out at each use site.
+     BEND is piping()'s own long-radius convention: centreline R = 1.5 x
+     bore diameter = 3 x bore radius, which is how a real long-radius
+     elbow is made. TEE_TURN is tighter because a tee turn IS tight -
+     nothing like a long-radius elbow - and 1.6 is the value level 1
+     settled on after the branches looked wrong at anything larger. */
+  const bendRadius = r => 3 * r;
+  const teeTurnRadius = r => r * 1.6;
+
+  /* ---- display classes ----------------------------------------------
+     What a renderer is allowed to suppress.
+
+     ISA-5.5 "Graphic Symbols for Process Displays" divides symbols into 13
+     groups, and its FIRST group, Connectors, is deliberately empty: "the
+     various possible connectors have been excluded. In the majority of
+     cases, pipe connections are not required to be detailed." So on a
+     process display a tee is not a symbol at all -- it is just where two
+     lines meet. Only equipment gets drawn.
+
+     LPE sometimes needs the opposite, though. Level 1's reducer is the
+     point of the level: it is worth about a third of the flow, and a
+     learner has to see it. So fittings are classified rather than dropped,
+     and the renderer decides. Franz's requirement (2026-10-08): if
+     fittings can be shown, they must also be hideable for clarity.
+
+     The rule that keeps this honest: **class only affects drawing.** A
+     hidden reducer still exists -- the line still runs through it, the
+     bore still changes, the solver still sees it. Suppressing a symbol is
+     never allowed to change the topology. */
+  /* ISA-5.5 3.3.13 valve mnemonics, by type. Read from the standard's
+     symbol pages; these are its identifiers, not ours. */
+  const ISA_VALVE = {
+    globe: 'VLVE', gate: 'VLVE', ball: 'VLVE', needle: 'VLVE',
+    'three-way': 'VLV3',
+    butterfly: 'BVLV',
+    check: 'CVLV',
+    relief: 'RVLV',
+  };
+
+  const CLASS = {
+    boundary:  'boundary',   // where the diagram stops: source, sink
+    fitting:   'fitting',    // pipe connections: tee, reducer, union, elbow
+    equipment: 'equipment',  // valves, vessels, pumps -- ISA-5.5's 13 groups
+  };
+
+  /* ---- components and their ports -----------------------------------
+     A port is a named attachment point. Its position is derived from the
+     component's own position and geometry, never declared separately --
+     that separation is the bug this module exists to remove.
+
+     `ports` returns {name: {x, y, dir}} where dir is the outward unit
+     vector, used to decide which way a segment leaves. */
+  const KINDS = {
+    source: {
+      ports: c => ({ out: { x: c.at[0], y: c.at[1], dir: [1, 0] } }),
+      draws: false,
+      cls: CLASS.boundary,
+    },
+    sink: {
+      ports: c => ({ in: { x: c.at[0], y: c.at[1], dir: [-1, 0] } }),
+      draws: false,
+      cls: CLASS.boundary,
+    },
+    /* A union is a fitting in the run: same bore in and out, drawn as a
+       pair of collars. It does not move the line. */
+    union: {
+      ports: c => ({
+        in:  { x: c.at[0], y: c.at[1], dir: [-1, 0] },
+        out: { x: c.at[0], y: c.at[1], dir: [1, 0] },
+      }),
+      draws: 'fitting',
+      cls: CLASS.fitting,
+    },
+    /* A tee: flow continues along the run and some of it leaves on the
+       branch. Three ports, and the branch leaves perpendicular to the run.
+       `axis` is the run's direction: 'v' for a vertical riser (branch goes
+       +x), 'h' for a horizontal header (branch goes +y). */
+    tee: {
+      ports: c => (c.axis === 'h'
+        ? { in:     { x: c.at[0], y: c.at[1], dir: [-1, 0] },
+            out:    { x: c.at[0], y: c.at[1], dir: [1, 0] },
+            branch: { x: c.at[0], y: c.at[1], dir: [0, 1] } }
+        : { in:     { x: c.at[0], y: c.at[1], dir: [0, -1] },
+            out:    { x: c.at[0], y: c.at[1], dir: [0, 1] },
+            branch: { x: c.at[0], y: c.at[1], dir: [1, 0] } }),
+      draws: 'tee',
+      cls: CLASS.fitting,
+    },
+    /* A change of bore: taper in, throat, taper out. Horizontal only,
+       which is all any level has needed; a vertical reducer would need
+       piping() to learn one too. */
+    reducer: {
+      /* The only component that occupies a SPAN rather than a point, so
+         its frame placement is two points: [[x0,y],[x1,y]]. `_a` and `_b`
+         are those, resolved by the frame before ports are read. */
+      ports: c => ({
+        in:  { x: c._a[0], y: c._a[1], dir: [-1, 0] },
+        out: { x: c._b[0], y: c._b[1], dir: [1, 0] },
+      }),
+      draws: 'reducer',
+      cls: CLASS.fitting,
+    },
+    /* ---- equipment --------------------------------------------------
+       The four kinds the levels actually contain: valves (the solver's
+       main/b0/b1/b2), vessels (reservoir, pods, the level 4 chamber),
+       pumps, and level 3's static mixer. Each maps onto one of ISA-5.5's
+       13 symbol groups, which is what schem vis will draw.
+
+       Every ISA-5.5 symbol carries a four-character mnemonic "to be used
+       as its reference name in a computer system". Those are the `isa`
+       values below, read off the standard's own symbol pages (which are
+       images, not text -- pdftotext does not see them). They are the
+       standard's identifiers, not ours, which is the point: schem vis
+       keys its symbol table on them.                                    */
+
+    /* The thing players operate. Sits IN a run, so a line passes through
+       it the way it passes through a union. `key` is the solver's own
+       name for it (main, b0, b1, b2) -- the netlist and the solver
+       referring to one valve by one name, instead of the netlist not
+       knowing valves exist at all. */
+    valve: {
+      ports: c => (c.valveType === 'three-way'
+        ? { in:     { x: c.at[0], y: c.at[1], dir: [-1, 0] },
+            out:    { x: c.at[0], y: c.at[1], dir: [1, 0] },
+            branch: { x: c.at[0], y: c.at[1], dir: [0, 1] } }
+        : { in:  { x: c.at[0], y: c.at[1], dir: [-1, 0] },
+            out: { x: c.at[0], y: c.at[1], dir: [1, 0] } }),
+      cls: CLASS.equipment,
+      inline: true,
+      draws: 'equipment',
+      /* ISA-5.5 3.3.13. VLVE covers "GLOBE, GATE, BALL, and NEEDLE
+         valves used to regulate fluid flow through piping systems", so
+         all four of those are one symbol; butterfly, check and relief
+         are their own. The symbol also carries STATE in its fill --
+         outline for closed, solid for open -- which is a display
+         convention a game can use directly. */
+      isa: c => ISA_VALVE[c && c.valveType] || 'VLVE',
+    },
+    /* Reservoirs, grow-bay pods, the level 4 chamber. `role` says whether
+       it feeds the net, receives from it, or sits in the middle -- which
+       decides its ports, and means a vessel can replace a bare source or
+       sink once it has a symbol to draw. */
+    vessel: {
+      ports: c => (c.role === 'source'
+        ? { out: { x: c.at[0], y: c.at[1], dir: [1, 0] } }
+        : c.role === 'inline'
+          ? { in:  { x: c.at[0], y: c.at[1], dir: [-1, 0] },
+              out: { x: c.at[0], y: c.at[1], dir: [1, 0] } }
+          : { in: { x: c.at[0], y: c.at[1], dir: [-1, 0] } }),
+      cls: CLASS.equipment,
+      inline: false,
+      draws: 'equipment',
+      /* ISA-5.5 3.3.2. VSSL is the generic one: "a vessel or separator...
+         can also be used as a pressurized vessel". The Storage subgroup
+         (Atmospheric Tank, Bin, Floating Roof Tank, Gas Holder, Pressure
+         Storage Vessel, Weigh Hopper) is on pages 18-19 if a reservoir
+         should ever be a tank rather than a generic vessel. */
+      isa: () => 'VSSL',
+    },
+    pump: {
+      ports: c => ({
+        in:  { x: c.at[0], y: c.at[1], dir: [-1, 0] },
+        out: { x: c.at[0], y: c.at[1], dir: [1, 0] },
+      }),
+      cls: CLASS.equipment,
+      inline: true,
+      draws: 'equipment',
+      /* ISA-5.5 3.3.10 Rotating equipment: "that class of equipment used
+         to transport slurries or liquids by internal rotary action".
+         BLWR, CMPR and TURB are the others in the group; RECP in 3.3.9 is
+         the reciprocating kind. */
+      isa: () => 'PUMP',
+    },
+    /* Level 3's static mixer. ISA-5.5 calls this an Inline Mixer; an
+       Agitator is the other symbol in the same group and is a different
+       thing (it stirs a vessel, it does not sit in a line). */
+    mixer: {
+      ports: c => ({
+        in:  { x: c.at[0], y: c.at[1], dir: [-1, 0] },
+        out: { x: c.at[0], y: c.at[1], dir: [1, 0] },
+      }),
+      cls: CLASS.equipment,
+      inline: true,
+      draws: 'equipment',
+      /* ISA-5.5 3.3.8 Mixing. IMIX, "a mixing device used to continuously
+         blend materials" -- not AGIT, which is a blade/propeller/paddle
+         agitator that stirs a vessel rather than sitting in a line. */
+      isa: () => 'IMIX',
+    },
+
+    /* A corner with nothing in it. Usually implicit - a segment's own
+       waypoints become elbows - but declarable when something needs to
+       attach to the corner itself. */
+    elbow: {
+      ports: c => ({
+        in:  { x: c.at[0], y: c.at[1], dir: [-1, 0] },
+        out: { x: c.at[0], y: c.at[1], dir: [1, 0] },
+      }),
+      draws: false,
+      cls: CLASS.fitting,
+    },
+  };
+
+  /* =================================================================== */
+
+  /* ---- frames and registration ---------------------------------------
+     A netlist is a graph, not a drawing. The same bay has to come out as a
+     1990s cutaway, as an ISA-5.5 process display and, later, as a modern
+     render -- so WHERE each component sits cannot live on the component.
+     It lives in a named frame, and `LPE.net(spec, {frame})` resolves one in.
+
+     A frame carries three things:
+
+       pxPerInch   how big an inch is here. Bores are declared in INCHES
+       round       decimal places to quantise a scaled bore to (optional)
+       at          {componentId: [x,y]}, or [[x0,y],[x1,y]] for a reducer
+       via         {segmentId: [[x,y],...]} waypoints, keyed by the same
+                   "from.port->to.port" id the segments already carry
+
+     Transposing a new physical structure over an existing netlist is then
+     exactly one thing: another frame. That is the whole of registration.  */
+
+  const DEFAULT_FRAME = { pxPerInch: 1, at: {}, via: {} };
+
+  function scaleBore(inches, frame) {
+    const px = inches * (frame.pxPerInch === undefined ? 1 : frame.pxPerInch);
+    if (frame.round === undefined) return px;
+    const m = Math.pow(10, frame.round);
+    return Math.round(px * m) / m;
+  }
+
+  function segId(s) {
+    return s.from + '->' + s.to;
+  }
+
+  function Net(spec, opts) {
+    const o = opts || {};
+    const frames = spec.frames || {};
+    const names = Object.keys(frames);
+    /* One frame and no argument means that one. More than one and the
+       caller has to say, because silently picking would be the same class
+       of accident this layer exists to end. */
+    const frameName = o.frame || (names.length === 1 ? names[0] : 'rig');
+    const frame = Object.assign({}, DEFAULT_FRAME, frames[frameName] || {});
+    const comps = {};
+    const errors = [];
+
+    if (names.length && !frames[frameName]) {
+      errors.push(`no frame "${frameName}"; this netlist declares ` +
+                  names.map(n => `"${n}"`).join(', '));
+    }
+
+    // --- bores, declared in inches, drawn in this frame's units
+    const bores = {};
+    for (const b of Object.keys(spec.bores || {})) {
+      bores[b] = scaleBore(spec.bores[b], frame);
+    }
+
+    // --- components
+    for (const id of Object.keys(spec.components || {})) {
+      const c = Object.assign({ id }, spec.components[id]);
+      const kind = KINDS[c.kind];
+      if (!kind) { errors.push(`${id}: unknown kind "${c.kind}"`); continue; }
+      c._kind = kind;
+      c._cls = kind.cls;
+      // A component may opt out of being drawn without leaving the net.
+      c._visible = c.show !== false;
+
+      /* Placement comes from the frame and only from the frame. */
+      const place = frame.at[id];
+      if (place === undefined) {
+        errors.push(`${id} has no placement in frame "${frameName}"`);
+        continue;
+      }
+      if (c.kind === 'reducer') {
+        if (!Array.isArray(place[0]) || !Array.isArray(place[1])) {
+          errors.push(`${id} is a reducer, so frame "${frameName}" must ` +
+                      `place it as two points [[x0,y],[x1,y]] -- it spans a ` +
+                      `distance rather than sitting at one`);
+          continue;
+        }
+        c._a = place[0]; c._b = place[1];
+        c.at = place[0];        // its nominal point, for anything that asks
+        c.x1 = place[1][0];
+        c.throatIn = c.throat;
+        c.throat = scaleBore(c.throat, frame);
+      } else {
+        if (Array.isArray(place[0])) {
+          errors.push(`${id} is placed as two points but only a reducer ` +
+                      `spans a distance`);
+          continue;
+        }
+        c.at = place;
+      }
+
+      c._ports = kind.ports(c);
+      comps[id] = c;
+    }
+
+    // --- segments, resolved against ports
+    const segs = (spec.segments || []).map((s, i) => {
+      const seg = Object.assign({ index: i }, s);
+      seg.from = resolvePort(comps, s.from, errors, `segment ${i} from`);
+      seg.to   = resolvePort(comps, s.to,   errors, `segment ${i} to`);
+      seg.r    = bores[s.bore];
+      if (seg.r === undefined) errors.push(`segment ${i}: unknown bore "${s.bore}"`);
+      /* Waypoints are coordinates, so they come from the frame too, keyed
+         by the segment's own "from->to" id rather than its array index --
+         an index shifts the moment somebody inserts a segment above it. */
+      seg.sid  = segId(s);
+      const via = frame.via[seg.sid] || [];
+      seg.pts  = seg.from && seg.to
+        ? [[seg.from.x, seg.from.y]]
+            .concat(via)
+            .concat([[seg.to.x, seg.to.y]])
+        : [];
+      return seg;
+    });
+
+    const net = {
+      spec, components: comps, segments: segs, bores,
+      frame: frameName, frames: names,
+      errors: errors.concat(validate(comps, segs, spec, frameName)),
+      /* `opts.hide` is a list of display classes to suppress, e.g.
+         {hide:['fitting']} for an ISA-5.5-style process display. It
+         changes which symbols are emitted and nothing else -- the lines,
+         the bores and the water are identical either way. */
+      toPiping: (opts) => toPiping(comps, segs, opts || {}),
+      toWater: () => toWater(comps, segs),
+
+      /* Identity, which is the point of a tag: a scenario names HV-1 and
+         gets the same valve in every frame and every consumer. */
+      byTag: tag => comps[Object.keys(comps)
+        .filter(id => comps[id].tag === tag)[0]],
+      byKey: key => comps[Object.keys(comps)
+        .filter(id => comps[id].key === key)[0]],
+
+      /* The same graph, placed somewhere else. This is registration in
+         one call -- and the proof that nothing above the netlist has
+         quietly baked in one view's coordinates. */
+      inFrame: name => Net(spec, { frame: name }),
+    };
+    return net;
+  }
+
+  function resolvePort(comps, ref, errors, where) {
+    if (typeof ref !== 'string' || ref.indexOf('.') < 0) {
+      errors.push(`${where}: expected "component.port", got ${JSON.stringify(ref)}`);
+      return null;
+    }
+    const dot = ref.indexOf('.');
+    const id = ref.slice(0, dot), port = ref.slice(dot + 1);
+    const c = comps[id];
+    if (!c) { errors.push(`${where}: no component "${id}"`); return null; }
+    const p = c._ports[port];
+    if (!p) {
+      errors.push(`${where}: "${id}" (${c.kind}) has no port "${port}" ` +
+                  `-- it has ${Object.keys(c._ports).join(', ')}`);
+      return null;
+    }
+    return { id, port, x: p.x, y: p.y, dir: p.dir, comp: c };
+  }
+
+  /* ---- validation ---------------------------------------------------
+     The checks a hand-written level could not make, because it had no
+     idea what was connected to what. */
+  /* An ISA tag: letters, a dash, a number. Grounded in the vault's own
+     Source Library rather than invented here -- the Pulp & Paper
+     Sourcebook's P&IDs (drawings C0748 and E0894) tag handvalves HV-1..20
+     and control valves FV-, PV-, TV-, LV- with plain sequential numbers.
+     The core validates the SHAPE and never mints a tag: which letters a
+     given valve deserves is a question about the real plant, and the
+     netlist's author is the one who knows. */
+  const TAG = /^[A-Z]{1,4}-[0-9]+$/;
+
+  function validate(comps, segs, spec, frameName) {
+    const errs = [];
+    const used = {};
+
+    /* ---- no coordinates in the spec --------------------------------
+       The whole of Phase 2. A coordinate on a component is that component
+       asserting it can only ever be drawn one way, which is exactly how
+       level 1's schematic came to line up with its cutaway by coincidence
+       rather than by construction. */
+    for (const id of Object.keys((spec && spec.components) || {})) {
+      const raw = spec.components[id];
+      for (const bad of ['at', 'x1', 'xy', 'pos']) {
+        if (raw[bad] !== undefined) {
+          errs.push(`${id} declares "${bad}": coordinates belong to a ` +
+                    `frame, not to a component. Move it to ` +
+                    `frames.${frameName}.at.${id}`);
+        }
+      }
+    }
+    for (const s of ((spec && spec.segments) || [])) {
+      if (s.via !== undefined) {
+        errs.push(`segment ${s.from}->${s.to} declares "via": waypoints ` +
+                  `are coordinates and belong to frames.${frameName}.via` +
+                  `["${s.from}->${s.to}"]`);
+      }
+    }
+
+    /* ---- equipment carries a tag -----------------------------------
+       Fittings do not: a tee or a union is part of the line and is not
+       tagged on a real P&ID, so requiring one would be inventing a
+       convention. Equipment is what a scenario will need to name. */
+    const tags = {};
+    for (const id of Object.keys(comps)) {
+      const c = comps[id];
+      if (c._cls === CLASS.equipment) {
+        if (!c.tag) {
+          errs.push(`${id} is equipment and has no tag. A scenario has to ` +
+                    `be able to name it, and a map key is this netlist's ` +
+                    `private handle, not a durable identity`);
+        } else if (!TAG.test(c.tag)) {
+          errs.push(`${id}: tag "${c.tag}" is not letters-dash-number ` +
+                    `(HV-1, FV-101, TK-2)`);
+        }
+      }
+      if (c.tag) {
+        if (tags[c.tag]) {
+          errs.push(`${id} and ${tags[c.tag]} share the tag "${c.tag}"`);
+        }
+        tags[c.tag] = id;
+      }
+    }
+
+    for (const s of segs) {
+      if (!s.from || !s.to) continue;
+
+      const a = s.from.id + '.' + s.from.port;
+      const b = s.to.id + '.' + s.to.port;
+      if (used[a]) errs.push(`port ${a} is connected twice`);
+      if (used[b]) errs.push(`port ${b} is connected twice`);
+      used[a] = used[b] = true;
+
+      // Every leg must be orthogonal: the drawing, the elbow fillets and
+      // the water arcs all assume it, and a diagonal would silently come
+      // out as a mitred corner.
+      for (let i = 1; i < s.pts.length; i++) {
+        const [x0, y0] = s.pts[i - 1], [x1, y1] = s.pts[i];
+        if (x0 !== x1 && y0 !== y1) {
+          errs.push(`segment ${s.index}: leg ${i} is diagonal ` +
+                    `(${x0},${y0})->(${x1},${y1})`);
+        }
+      }
+
+      // A bore change belongs in a reducer, not at a joint.
+      if (s.from.comp.kind !== 'reducer' && s.to.comp.kind !== 'reducer') {
+        const other = segs.filter(o => o !== s && o.from && o.to &&
+          (o.from.id === s.to.id || o.to.id === s.from.id));
+        for (const o of other) {
+          if (o.r !== s.r && s.to.comp.kind !== 'tee' && s.from.comp.kind !== 'tee') {
+            errs.push(`segments ${s.index} and ${o.index} meet at a bore ` +
+                      `change (${s.r} vs ${o.r}) with no reducer between them`);
+          }
+        }
+      }
+    }
+
+    // One solver key, one valve. Two valves sharing a key would both move
+    // when the player turned one of them, and nothing else would notice.
+    const keys = {};
+    for (const id of Object.keys(comps)) {
+      const k = comps[id].key;
+      if (!k) continue;
+      if (keys[k]) errs.push(`${id} and ${keys[k]} both claim solver key "${k}"`);
+      keys[k] = id;
+    }
+
+    // Everything must be reachable from a source, or it is drawn but dead.
+    const sources = Object.keys(comps).filter(id =>
+      comps[id].kind === 'source' ||
+      (comps[id].kind === 'vessel' && comps[id].role === 'source'));
+    if (sources.length) {
+      const seen = {};
+      const walk = id => {
+        if (seen[id]) return;
+        seen[id] = true;
+        for (const s of segs) {
+          if (!s.from || !s.to) continue;
+          if (s.from.id === id) walk(s.to.id);
+          if (s.to.id === id) walk(s.from.id);
+        }
+      };
+      sources.forEach(walk);
+      for (const id of Object.keys(comps)) {
+        if (!seen[id]) errs.push(`${id} is not reachable from any source`);
+      }
+    }
+
+    return errs;
+  }
+
+  /* ---- drawing -------------------------------------------------------
+     piping() wants continuous runs, because every corner in a `pts` array
+     becomes a real filleted elbow. So chains of segments that run straight
+     through a component - in at one port, out the other - are merged into
+     one polyline. A tee's RUN is such a chain; its BRANCH starts a new one.
+
+     This is what let level 1's riser be drawn as a single run "[30,MAIN_Y]
+     ... [RED_X0,BR_Y[2]]" passing through both tees. Written by hand that
+     was a coincidence maintained by care; here it falls out of the graph. */
+  function toPiping(comps, segs, opts) {
+    const live = segs.filter(s => s.from && s.to);
+    const out = { lines: [], tees: [], reducers: [], fittings: [], equipment: [] };
+    const hidden = {};
+    (opts.hide || []).forEach(c => { hidden[c] = true; });
+    const drawn = c => c._visible && !hidden[c._cls];
+
+    // Chain segments that continue through a component on the run.
+    const nextOf = {};
+    for (const s of live) {
+      const c = s.to.comp;
+      const continues = (s.to.port === 'in') &&
+        (c.kind === 'union' || c.kind === 'elbow' || c.kind === 'tee' ||
+         c._kind.inline === true);
+      if (!continues) continue;
+      const onward = live.find(o => o.from && o.from.id === s.to.id &&
+                                    o.from.port === 'out');
+      if (onward && onward.r === s.r) nextOf[s.index] = onward;
+    }
+    const isContinuation = {};
+    Object.keys(nextOf).forEach(k => { isContinuation[nextOf[k].index] = true; });
+
+    for (const s of live) {
+      if (isContinuation[s.index]) continue;
+      let pts = s.pts.slice();
+      let cur = s;
+      while (nextOf[cur.index]) {
+        cur = nextOf[cur.index];
+        // The joint itself is already the last point; append the rest.
+        pts = pts.concat(cur.pts.slice(1));
+      }
+      out.lines.push({ pts: simplify(pts), r: s.r });
+    }
+
+    for (const id of Object.keys(comps)) {
+      const c = comps[id];
+      if (!drawn(c)) continue;
+      if (c._kind.draws === 'tee') {
+        const branch = live.find(s => s.from && s.from.id === id &&
+                                      s.from.port === 'branch');
+        out.tees.push({
+          x: c.at[0], y: c.at[1],
+          r: boreAt(live, id, 'in') || boreAt(live, id, 'out'),
+          branch: branch ? branch.r : 0,
+        });
+      } else if (c._kind.draws === 'reducer') {
+        out.reducers.push({
+          x0: c.at[0], x1: c.x1, y: c.at[1],
+          r1: boreAt(live, id, 'in'), r2: c.throat,
+        });
+      } else if (c._kind.draws === 'equipment') {
+        out.equipment.push({
+          id, kind: c.kind, x: c.at[0], y: c.at[1],
+          r: boreAt(live, id, 'in') || boreAt(live, id, 'out'),
+          type: c.valveType || c.role || null,
+          key: c.key || null,      // the solver's own name, where there is one
+          isa: typeof c._kind.isa === 'function' ? c._kind.isa(c) : null,
+        });
+      } else if (c._kind.draws === 'fitting') {
+        out.fittings.push({
+          x: c.at[0], y: c.at[1],
+          r: boreAt(live, id, 'in') || boreAt(live, id, 'out'),
+          kind: c.fitting || 'union',
+        });
+      }
+    }
+
+    /* ---- what was left undrawn, and where its ports were -------------
+       The lines above are unchanged by hiding, by design: a hidden
+       reducer still exists and still changes the bore, so topology must
+       not pretend otherwise. But a reducer's in and out ports are 80 px
+       apart, and a display that draws no fitting there is left with a
+       hole in a connection that is actually continuous.
+
+       Resolving that is the display's call, not topology's -- so this
+       reports the facts and stops. Each entry is a component that WOULD
+       have been drawn and was not, with the port positions a line
+       reaches it at. A display that draws no fittings joins across
+       them; one that draws them ignores this list entirely. */
+    out.undrawn = [];
+    for (const id of Object.keys(comps)) {
+      const c = comps[id];
+      if (c._visible === false || !c._kind.draws || drawn(c)) continue;
+      const ports = c._kind.ports(c);
+      const used = Object.keys(ports)
+        .filter(n => live.some(s => (s.to && s.to.id === id && s.to.port === n) ||
+                                    (s.from && s.from.id === id && s.from.port === n)))
+        .map(n => [ports[n].x, ports[n].y]);
+      if (used.length >= 2) out.undrawn.push({ id, kind: c.kind, pts: used });
+    }
+    return out;
+  }
+
+  function boreAt(segs, id, port) {
+    const s = segs.find(o => (o.to && o.to.id === id && o.to.port === port) ||
+                             (o.from && o.from.id === id && o.from.port === port));
+    return s ? s.r : undefined;
+  }
+
+  /* Keep only the corners. A chain through a union or a tee leaves a
+     vertex sitting on a straight leg, and piping() fillets EVERY interior
+     vertex with arcTo -- so a collinear one is at best wasted work and at
+     worst a rounding artefact on a line that should be dead straight.
+     The hand-written level 1 run had exactly the corners and nothing
+     else; this is how that falls out of the graph instead of being
+     maintained by hand. */
+  function simplify(pts) {
+    const p = dedupe(pts);
+    if (p.length < 3) return p;
+    const out = [p[0]];
+    for (let i = 1; i < p.length - 1; i++) {
+      const [ax, ay] = p[i - 1], [bx, by] = p[i], [cx, cy] = p[i + 1];
+      const collinear = (ax === bx && bx === cx) || (ay === by && by === cy);
+      if (!collinear) out.push(p[i]);
+    }
+    out.push(p[p.length - 1]);
+    return out;
+  }
+
+  function dedupe(pts) {
+    const out = [];
+    for (const p of pts) {
+      const last = out[out.length - 1];
+      if (!last || last[0] !== p[0] || last[1] !== p[1]) out.push(p);
+    }
+    return out;
+  }
+
+  /* ---- water ---------------------------------------------------------
+     LPE.Line wants straight runs and arcs, and it must be SPLIT AT EVERY
+     TEE, because "flow is constant BETWEEN tees and changes AT them, and
+     each piece owns its particles so none can strand at a velocity
+     boundary" (level 1's own rule). A netlist knows where the tees are;
+     a hand-written coordinate list does not.
+
+     Corners become arcs on the same radius the drawing fillets them with,
+     so the water goes round the elbow the pipe actually has instead of
+     cutting the corner. */
+  function toWater(comps, segs) {
+    return segs.filter(s => s.from && s.to).map(s => {
+      const R = s.from.port === 'branch'
+        ? teeTurnRadius(s.r)      // leaving a tee is a tight turn
+        : bendRadius(s.r);        // a run corner is a long-radius elbow
+      const pts = dedupe(s.pts);
+      const out = [];
+
+      for (let i = 1; i < pts.length; i++) {
+        const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
+        const isLast = i === pts.length - 1;
+        const horiz = y0 === y1;
+
+        // Shorten this leg where it runs into a corner, and emit the arc.
+        let ax = x0, ay = y0, bx = x1, by = y1;
+        if (i > 1) { if (horiz) ax += Math.sign(x1 - x0) * R;
+                     else       ay += Math.sign(y1 - y0) * R; }
+        if (!isLast) { if (horiz) bx -= Math.sign(x1 - x0) * R;
+                       else       by -= Math.sign(y1 - y0) * R; }
+
+        if (horiz ? Math.abs(bx - ax) > 0.01 : Math.abs(by - ay) > 0.01) {
+          out.push({ ax, ay, bx, by, r: s.r });
+        }
+        if (!isLast) {
+          const [x2, y2] = pts[i + 1];
+          out.push({ arc: cornerArc(bx, by, x1, y1, x2, y2, R), r: s.r });
+        }
+      }
+      return { id: `${s.from.id}.${s.from.port}->${s.to.id}.${s.to.port}`,
+               r: s.r, segments: out };
+    });
+  }
+
+  /* The arc that carries flow from the leg ending at (bx,by) round the
+     corner at (cx,cy) and onto the leg heading toward (nx,ny). Centre is
+     one radius back along the incoming leg and one radius along the
+     outgoing one, which is what makes the inner and outer walls come out
+     concentric the way a real elbow's do. */
+  function cornerArc(bx, by, cx, cy, nx, ny, R) {
+    const inHoriz = by === cy;
+    const outDx = Math.sign(nx - cx), outDy = Math.sign(ny - cy);
+    const ccx = inHoriz ? bx : cx + outDx * R;
+    const ccy = inHoriz ? cy + outDy * R : by;
+    const a0 = Math.atan2(by - ccy, bx - ccx);
+    const ex = inHoriz ? ccx : cx;
+    const ey = inHoriz ? cy   : ccy;
+    const a1 = Math.atan2((inHoriz ? cy + outDy * R : ey) - ccy,
+                          (inHoriz ? ex : cx + outDx * R) - ccx);
+    return { cx: ccx, cy: ccy, R, a0, a1 };
+  }
+
+  LPE.net = Net;
+  LPE.net.bendRadius = bendRadius;
+  LPE.net.teeTurnRadius = teeTurnRadius;
+  LPE.net.KINDS = KINDS;
+  LPE.net.TAG = TAG;
+  LPE.net.ISA_VALVE = ISA_VALVE;
+
+})(window.LPE = window.LPE || {});
+
+/* Exposed so a renderer and the tests can agree on the vocabulary. */
+(function (LPE) { LPE.net.CLASS = {
+  boundary: 'boundary', fitting: 'fitting', equipment: 'equipment' };
+})(window.LPE);
+
+/* @layer schem-view
+   @core Process Core -- this file moves to `45 - Process Core` in Phase 1.
+   May use: the netlist's public surface (net.toPiping, net.errors). Never
+   its internals.
+   Never: any consumer's runtime -- no game engine, no palette, no level.
+   Holds no colour of its own: the consumer supplies every role and a
+   missing one throws by name. That was Phase 5a; before it this file
+   carried five default colours, which is chrome two layers down.
+   See `00 - Project/Process Core -- Architecture & Build Plan.md`.       */
+/* ---------------- SCHEM VIS: the process display ----------------
+
+   Tier 2. Reads a netlist (tier 1, topology.js) and draws it as a process
+   display: equipment as symbols, connections as plain lines. The piping
+   view (tier 3, piping() + Line) draws the same netlist as physical pipe
+   with real elbows and bores. Neither owns any geometry, so the two
+   cannot disagree.
+
+   Grounded in ISA-5.5-1985, "Graphic Symbols for Process Displays", which
+   Emerson's Information Center holds. That is the right standard rather
+   than a substitute for ISA-5.1: 5.5's own preface says ISA-S5.1 and
+   ISA-S5.3 "are drafting standards which govern the depiction of process
+   and instrumentation symbols for drawings and other printed documents",
+   while "the ISA-S5.5 symbols were developed for use on video devices
+   that represent both character display and pixel addressable displays."
+   A game screen is a pixel-addressable video display.
+
+   Symbols are IMPLEMENTED here from the standard's described geometry and
+   keyed by its own four-character mnemonics. The document itself is
+   copyrighted and is not reproduced: no page, figure or drawing from it
+   lives in this repository.
+
+   Structure: plan() decides, draw() paints. Everything that could be
+   wrong - which symbol, what state, where a line breaks - is decided in
+   plan(), which is pure data and testable without a canvas.            */
+
+(function (LPE) {
+  'use strict';
+
+  /* ---- symbol geometry ----------------------------------------------
+     Each entry draws itself centred on (0,0) at unit scale, so placement
+     and sizing stay out of the shapes. `ports` is where lines attach, in
+     the same unit space.
+
+     ISA-5.5 gives no aspect ratio -- "although no specific aspect ratio
+     is given, the shape that is drawn should be depicted as closely as
+     possible" -- so these are proportioned to read at game scale.      */
+  const SYMBOLS = {
+
+    /* 3.3.13 Valve. One symbol for globe, gate, ball and needle. The
+       standard shows it both ways: outline when the actual state is
+       CLOSED, solid when OPEN. That fill IS the state indication. */
+    VLVE: {
+      w: 2.0, h: 1.4, ports: { in: [-1, 0], out: [1, 0] },
+      path: (g, s) => {
+        g.beginPath();
+        g.moveTo(-1 * s, -0.7 * s); g.lineTo(0, 0);
+        g.lineTo(-1 * s, 0.7 * s); g.closePath();
+        g.moveTo(1 * s, -0.7 * s); g.lineTo(0, 0);
+        g.lineTo(1 * s, 0.7 * s); g.closePath();
+      },
+      fillWhenOpen: true,
+    },
+
+    /* 3.3.13 3-Way Valve. Three triangles meeting at the centre; the
+       standard notes port numbers are not part of the symbol. */
+    VLV3: {
+      w: 2.0, h: 1.8, ports: { in: [-1, 0], out: [1, 0], branch: [0, 0.9] },
+      path: (g, s) => {
+        g.beginPath();
+        g.moveTo(-1 * s, -0.7 * s); g.lineTo(0, 0); g.lineTo(-1 * s, 0.7 * s);
+        g.closePath();
+        g.moveTo(1 * s, -0.7 * s); g.lineTo(0, 0); g.lineTo(1 * s, 0.7 * s);
+        g.closePath();
+        g.moveTo(-0.7 * s, 0.9 * s); g.lineTo(0, 0); g.lineTo(0.7 * s, 0.9 * s);
+        g.closePath();
+      },
+      fillWhenOpen: true,
+    },
+
+    /* 3.3.13 Butterfly Valve: a disc on a shaft between two seats. */
+    BVLV: {
+      w: 1.6, h: 1.4, ports: { in: [-0.8, 0], out: [0.8, 0] },
+      path: (g, s) => {
+        g.beginPath();
+        g.moveTo(-0.5 * s, -0.7 * s); g.lineTo(-0.5 * s, 0.7 * s);
+        g.moveTo(0.5 * s, -0.7 * s); g.lineTo(0.5 * s, 0.7 * s);
+        g.moveTo(-0.5 * s, 0.6 * s); g.lineTo(0.5 * s, -0.6 * s);
+      },
+      stroke: true,
+      dot: true,
+    },
+
+    /* 3.3.13 Check Valve. "Arrow shows direction of allowable flow and is
+       part of the symbol" -- so the arrow is drawn, not decoration. */
+    CVLV: {
+      w: 1.8, h: 1.4, ports: { in: [-0.9, 0], out: [0.9, 0] },
+      path: (g, s) => {
+        g.beginPath();
+        g.moveTo(-0.3 * s, -0.7 * s); g.lineTo(-0.3 * s, 0.7 * s);
+        g.moveTo(0.6 * s, -0.7 * s); g.lineTo(0.6 * s, 0.7 * s);
+        g.moveTo(-0.3 * s, -0.6 * s); g.lineTo(0.6 * s, 0.6 * s);
+        // flow arrow
+        g.moveTo(-0.9 * s, 0); g.lineTo(-0.45 * s, 0);
+        g.moveTo(-0.55 * s, -0.18 * s); g.lineTo(-0.3 * s, 0);
+        g.lineTo(-0.55 * s, 0.18 * s);
+      },
+      stroke: true,
+    },
+
+    /* 3.3.13 Relief Valve: a right triangle on the line. Shown two ways
+       for normally-closed-actually-open where feedback exists. */
+    RVLV: {
+      w: 1.4, h: 1.6, ports: { in: [-0.7, 0], out: [0, -0.8] },
+      path: (g, s) => {
+        g.beginPath();
+        g.moveTo(-0.6 * s, 0.7 * s); g.lineTo(0.6 * s, 0.7 * s);
+        g.lineTo(-0.6 * s, -0.7 * s); g.closePath();
+      },
+      fillWhenOpen: true,
+    },
+
+    /* 3.3.2 Vessel: "a vessel or separator... can also be used as a
+       pressurized vessel in either a vertical or horizontal
+       arrangement." Drawn with dished heads. */
+    VSSL: {
+      w: 1.8, h: 2.6, ports: { in: [-0.9, 0], out: [0.9, 0] },
+      path: (g, s) => {
+        const w = 0.9 * s, h = 1.1 * s, d = 0.35 * s;
+        g.beginPath();
+        g.moveTo(-w, -h + d);
+        g.quadraticCurveTo(-w, -h - d * 0.4, 0, -h - d * 0.4);
+        g.quadraticCurveTo(w, -h - d * 0.4, w, -h + d);
+        g.lineTo(w, h - d);
+        g.quadraticCurveTo(w, h + d * 0.4, 0, h + d * 0.4);
+        g.quadraticCurveTo(-w, h + d * 0.4, -w, h - d);
+        g.closePath();
+      },
+      stroke: true,
+    },
+
+    /* 3.3.10 Pump: "that class of equipment used to transport slurries or
+       liquids by internal rotary action." Volute casing on a base. */
+    PUMP: {
+      w: 2.0, h: 2.0, ports: { in: [-0.9, 0], out: [0.45, -0.95] },
+      path: (g, s) => {
+        g.beginPath();
+        g.arc(0, 0, 0.72 * s, Math.PI * 0.75, Math.PI * 1.75);
+        g.lineTo(0.72 * s, -0.95 * s);
+        g.lineTo(0.18 * s, -0.95 * s);
+        g.moveTo(-0.55 * s, 0.5 * s); g.lineTo(-0.85 * s, 1.0 * s);
+        g.lineTo(0.85 * s, 1.0 * s); g.lineTo(0.55 * s, 0.5 * s);
+      },
+      stroke: true,
+    },
+
+    /* 3.3.8 Inline Mixer: "a mixing device used to continuously blend
+       materials." A zigzag element inside the line body -- distinct from
+       AGIT, which stirs a vessel and does not sit in a line. */
+    IMIX: {
+      w: 2.2, h: 1.0, ports: { in: [-1.1, 0], out: [1.1, 0] },
+      path: (g, s) => {
+        const w = 0.9 * s, h = 0.5 * s;
+        g.beginPath();
+        g.rect(-w, -h, 2 * w, 2 * h);
+        const n = 4, step = (2 * w) / n;
+        for (let i = 0; i < n; i++) {
+          g.moveTo(-w + i * step, h);
+          g.lineTo(-w + (i + 0.5) * step, -h);
+          g.lineTo(-w + (i + 1) * step, h);
+        }
+      },
+      stroke: true,
+    },
+  };
+
+  /* ---- planning ------------------------------------------------------
+     Everything decidable is decided here, as plain data, so it can be
+     checked without a canvas. draw() does no thinking.                 */
+
+  const DEFAULTS = {
+    scale: 14,          // px per symbol unit
+    hide: ['fitting'],  // ISA-5.5 draws equipment, not pipe connections
+    state: {},          // solver valve positions, by the valve's `key`
+    openAt: 0.5,        // a valve reads OPEN at or above this
+    breakGap: 5,        // px gap drawn at a crossing
+  };
+
+  function plan(net, options) {
+    const o = Object.assign({}, DEFAULTS, options || {});
+    const piping = net.toPiping({ hide: o.hide });
+    const ops = [];
+    const warnings = [];
+
+    /* Lines first: on a process display a connection is a plain line.
+       No elbow radii, no bores, no fittings -- that is tier 3's job.
+
+       And nothing it declined to draw may leave a gap: the run through a
+       hidden reducer arrives as two lines 80 px apart, which on screen
+       reads as bay 3 being cut in half rather than as a fitting nobody
+       drew. toPiping reports what it left undrawn; stitching across it
+       is this layer's decision, because this is the layer that chose not
+       to draw it. */
+    const lines = stitch(piping.lines.map(l => l.pts), piping.undrawn || []);
+    lines.forEach(pts => ops.push({ op: 'line', pts }));
+
+    /* ISA-5.5 3.3.1, the one thing the Connectors section does specify:
+       "a recommended practice to avoid any confusion on the video display
+       is to use line breaks to indicate that the lines do not join. The
+       most important lines should be kept solid with the secondary lines
+       being broken. If all lines are of equal importance, a usual
+       convention is to break the vertical line."
+
+       So: find crossings that are not joints, and break the vertical. */
+    for (const cross of crossings(lines)) {
+      ops.push({ op: 'break', x: cross.x, y: cross.y,
+                 axis: 'v', gap: o.breakGap });
+    }
+
+    /* Then equipment. A valve's fill carries its state, which is the
+       standard's own convention rather than a choice made here. */
+    for (const e of piping.equipment) {
+      const sym = SYMBOLS[e.isa];
+      if (!sym) {
+        warnings.push(`${e.id}: no symbol implemented for ISA-5.5 ${e.isa}`);
+        continue;
+      }
+      const pos = e.key != null && o.state[e.key] !== undefined
+        ? Number(o.state[e.key]) : null;
+      ops.push({
+        op: 'symbol', id: e.id, isa: e.isa, kind: e.kind,
+        x: e.x, y: e.y, scale: o.scale,
+        position: pos,
+        open: pos === null ? null : pos >= o.openAt,
+        label: e.key || e.id,
+      });
+    }
+
+    return { ops, warnings, scale: o.scale, bounds: bounds(ops) };
+  }
+
+  /* Join lines that stop at opposite ports of a component nobody drew.
+
+     Each `undrawn` entry carries that component's port positions. A line
+     ENDING on one of them and another line STARTING on a different one
+     belong to the same connection, so they become one polyline with the
+     undrawn component's footprint collapsed out of it: the join takes the
+     first line's own last point and continues from the second's second
+     point, which is what makes the 80 px of reducer disappear rather than
+     be drawn as a straight line nobody can explain.
+
+     Conservative on purpose. A port with two lines ending on it is a
+     shape this does not understand, so it is left alone -- a visible gap
+     is a better failure than a wrong connection. */
+  function stitch(lines, undrawn) {
+    if (!undrawn.length) return lines;
+    const out = lines.map(pts => pts.slice());
+    const at = (p, q) => p[0] === q[0] && p[1] === q[1];
+
+    for (const u of undrawn) {
+      for (const a of u.pts) {
+        for (const b of u.pts) {
+          if (at(a, b)) continue;
+          const ends = out.filter(L => L.length && at(L[L.length - 1], a));
+          const starts = out.filter(L => L.length && at(L[0], b));
+          if (ends.length !== 1 || starts.length !== 1) continue;
+          const head = ends[0], tail = starts[0];
+          if (head === tail) continue;
+          head.push.apply(head, tail.slice(1));
+          tail.length = 0;
+        }
+      }
+    }
+    return out.filter(L => L.length > 1).map(collinear);
+  }
+
+  /* A stitched join leaves a vertex mid-run. piping() fillets every
+     interior vertex, and crossings() treats each leg separately, so a
+     collinear one is at best noise. topology.js drops them for the same
+     reason; this is the same rule applied after a join it did not make. */
+  function collinear(pts) {
+    if (pts.length < 3) return pts;
+    const out = [pts[0]];
+    for (let i = 1; i < pts.length - 1; i++) {
+      const a = pts[i - 1], b = pts[i], c = pts[i + 1];
+      const flat = (a[0] === b[0] && b[0] === c[0]) ||
+                   (a[1] === b[1] && b[1] === c[1]);
+      if (!flat) out.push(b);
+    }
+    out.push(pts[pts.length - 1]);
+    return out;
+  }
+
+  /* Where two line legs cross without sharing an endpoint. Orthogonal
+     only, which the netlist already guarantees. */
+  function crossings(lines) {
+    const legs = [];
+    lines.forEach((pts, li) => {
+      for (let i = 1; i < pts.length; i++) {
+        legs.push({ li, a: pts[i - 1], b: pts[i],
+                    horiz: pts[i - 1][1] === pts[i][1] });
+      }
+    });
+    const out = [];
+    for (let i = 0; i < legs.length; i++) {
+      for (let j = i + 1; j < legs.length; j++) {
+        const A = legs[i], B = legs[j];
+        if (A.horiz === B.horiz) continue;
+        const h = A.horiz ? A : B, v = A.horiz ? B : A;
+        const hy = h.a[1], vx = v.a[0];
+        const hx0 = Math.min(h.a[0], h.b[0]), hx1 = Math.max(h.a[0], h.b[0]);
+        const vy0 = Math.min(v.a[1], v.b[1]), vy1 = Math.max(v.a[1], v.b[1]);
+        // Strictly inside both, so a shared corner or a tee is not a crossing.
+        if (vx > hx0 && vx < hx1 && hy > vy0 && hy < vy1) {
+          out.push({ x: vx, y: hy });
+        }
+      }
+    }
+    return out;
+  }
+
+  function bounds(ops) {
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+    const hit = (x, y) => {
+      if (x < x0) x0 = x; if (x > x1) x1 = x;
+      if (y < y0) y0 = y; if (y > y1) y1 = y;
+    };
+    for (const op of ops) {
+      if (op.op === 'line') op.pts.forEach(p => hit(p[0], p[1]));
+      else if (op.op === 'symbol') {
+        const s = SYMBOLS[op.isa];
+        hit(op.x - s.w * op.scale, op.y - s.h * op.scale);
+        hit(op.x + s.w * op.scale, op.y + s.h * op.scale);
+      }
+    }
+    return Number.isFinite(x0) ? { x0, y0, x1, y1 } : null;
+  }
+
+  /* ---- painting ------------------------------------------------------
+     No decisions here. Walks the plan and strokes it.
+
+     AND NO COLOURS. This layer knows that a line needs a colour; it does
+     not get to know which. The same plan has to come out as 1990s pixel
+     art and as a modern render, and a default here would quietly become
+     the model -- it did: this block used to carry five of them, which is
+     chrome that had leaked two layers down, recorded as debt in Phase 0
+     and removed here in Phase 5a.
+
+     Every role below must be supplied. A missing one throws, by name,
+     rather than falling back: a silent fallback is how a display ends up
+     black on black and nobody can say why.                             */
+
+  /* What has to be coloured. `ground` may legitimately be null -- meaning
+     "do not paint a ground" -- but it must be SAID, not omitted. */
+  const ROLES = ['line', 'symbol', 'fill', 'label', 'ground', 'gap'];
+  const METRICS = ['lineWidth', 'symbolWidth', 'labelFont'];
+
+  /* Validate once, at setup, rather than inside a 60 fps draw loop. */
+  function theme(spec) {
+    const t = Object.assign({}, spec);
+    const missing = ROLES.filter(r => !(r in t))
+      .concat(METRICS.filter(m => t[m] === undefined));
+    if (missing.length) {
+      throw new Error(
+        'schem.draw needs a theme and this one is missing: ' +
+        missing.join(', ') + '. The process core holds no colours -- the ' +
+        'same plan has to render as pixel art and as a modern view, so the ' +
+        'consumer says what each role looks like. "ground" may be null for ' +
+        '"paint none", but it has to be said. Roles: ' + ROLES.join(', ') +
+        '; metrics: ' + METRICS.join(', '));
+    }
+    return t;
+  }
+
+  function draw(g, p, theme_) {
+    const t = theme(theme_ || {});
+
+    if (t.ground && p.bounds) {
+      g.fillStyle = t.ground;
+      g.fillRect(p.bounds.x0 - 20, p.bounds.y0 - 20,
+                 (p.bounds.x1 - p.bounds.x0) + 40,
+                 (p.bounds.y1 - p.bounds.y0) + 40);
+    }
+
+    g.save();
+    g.lineCap = 'butt';
+    g.lineJoin = 'miter';
+
+    for (const op of p.ops) {
+      if (op.op !== 'line') continue;
+      g.strokeStyle = t.line; g.lineWidth = t.lineWidth;
+      g.beginPath();
+      g.moveTo(op.pts[0][0], op.pts[0][1]);
+      for (let i = 1; i < op.pts.length; i++) g.lineTo(op.pts[i][0], op.pts[i][1]);
+      g.stroke();
+    }
+
+    /* Breaks are painted over the line in the ground colour, which is how
+       a break reads on a display: the secondary line simply stops. */
+    for (const op of p.ops) {
+      if (op.op !== 'break') continue;
+      /* A break is the secondary line simply stopping, so it is painted
+         over in whatever is behind it -- which only the consumer knows. */
+      g.strokeStyle = t.gap;
+      g.lineWidth = t.lineWidth + 2;
+      g.beginPath();
+      g.moveTo(op.x, op.y - op.gap);
+      g.lineTo(op.x, op.y + op.gap);
+      g.stroke();
+    }
+
+    for (const op of p.ops) {
+      if (op.op !== 'symbol') continue;
+      const sym = SYMBOLS[op.isa];
+      g.save();
+      g.translate(op.x, op.y);
+      g.strokeStyle = t.symbol; g.lineWidth = t.symbolWidth;
+      g.fillStyle = t.fill;
+      sym.path(g, op.scale);
+      if (sym.fillWhenOpen && op.open) g.fill();
+      g.stroke();
+      if (sym.dot) {
+        g.beginPath(); g.arc(0, 0, 0.12 * op.scale, 0, Math.PI * 2); g.fill();
+      }
+      g.restore();
+
+      if (op.label) {
+        g.fillStyle = t.label; g.font = t.labelFont;
+        g.textAlign = 'center'; g.textBaseline = 'top';
+        g.fillText(op.label, op.x, op.y + sym.h * op.scale * 0.6);
+      }
+    }
+    g.restore();
+  }
+
+  LPE.schem = { plan, draw, theme, SYMBOLS, DEFAULTS, ROLES, METRICS };
+
+})(window.LPE = window.LPE || {});
+
+/* @layer dynamics
+   @core Process Core -- Phase 3.
+
+   WHAT FLOWS, AND AT WHAT PRESSURE, read off the netlist.
+
+   May use: the netlist's public surface. Never a view, a colour, a canvas,
+   or any consumer's runtime -- this layer answers "how much water", and
+   every question about how that looks belongs above it.
+
+   -------------------------------------------------------------------
+   Before this, every level retyped its own solver: level 1 carried
+   CV_MAIN_MAX / CV_BR_MAX / CV_REDUCER, its own series-Cv helper, its own
+   pressure divider and its own first-order lag, none of which the netlist
+   knew about. Two declarations of one rig, which is the disease the
+   netlist exists to cure, one layer up from where it was cured.
+
+   The model, which is the one level 1 already had, now derived instead of
+   written:
+
+   RESTRICTIONS are the components that have a Cv -- valves (whose Cv is
+   their rating times how far they are open) and reducers (fixed). Nothing
+   else resists: pipe friction is not modelled, and a tee or a union is a
+   hole with a shape.
+
+   NODES therefore fall out rather than being chosen. If no restriction
+   sits between two points, they are at the same pressure and they are the
+   same node. In level 1 that makes the whole riser between the main valve
+   and the three bed valves ONE node -- the manifold -- which is exactly
+   the lumping the hand-written solver did, not because somebody decided
+   to lump it but because there is nothing in between to drop pressure
+   across.
+
+   Boundary nodes are fixed: one holding a source sits at its supply
+   pressure, one holding a sink sits at its own (0 = open to atmosphere).
+
+   Then, for a node fed through Cv_u from Ps and drained through a
+   parallel Cv_d to 0, flow in equals flow out:
+
+       Cv_u * sqrt((Ps - Pn)/SG) = Cv_d * sqrt(Pn/SG)
+           ->  Pn = Ps * Cv_u^2 / (Cv_u^2 + Cv_d^2)
+
+   which is the line level 1 had, now with its derivation attached.
+
+   PRESSURE IS STATE, not a function of the valves. Water is
+   incompressible: shut the main with every bed shut and the trapped
+   volume keeps whatever pressure it had, because nothing can leave. So
+   solve() produces a TARGET, step() walks the held pressure toward it on
+   a first-order lag, and flows are computed from the pressure that is
+   actually there rather than the one it is heading for.
+
+   -------------------------------------------------------------------
+   WHAT THIS IS NOT. A network with a loop in it -- a recycle, a ring
+   main, two sources feeding one header -- has no closed form and needs an
+   iterative solve (Hardy Cross or a Newton step per node). That is not
+   built. Such a net is REFUSED by name rather than silently given a wrong
+   answer, because a plausible wrong flow is worse than no flow.
+
+   And this is 1D network hydraulics, which is what a P&ID means by
+   dynamics. It is not CFD. What happens inside one valve body belongs in
+   an offline solve whose result arrives here as a Cv curve.
+                                                                         */
+
+(function (LPE) {
+  'use strict';
+
+  /* Two restrictions in series: resistances add, and Cv is the reciprocal
+     of a resistance, so the squares add reciprocally. Level 1's own
+     helper, verbatim, because bit-identical arithmetic is the bar.
+
+     seriesCv(0, x) is 0 and needs no guard: 1/(0*0) is Infinity, and
+     1/sqrt(Infinity) is 0. A shut valve in series with anything is shut. */
+  const seriesCv = (a, b) => 1 / Math.sqrt(1 / (a * a) + 1 / (b * b));
+
+  /* A component resists flow if it has a Cv. `cv` on a valve is its
+     rating -- what it passes wide open -- and position scales it. */
+  function restrictionCv(c, state) {
+    if (c.cv === undefined) return null;
+    if (c.kind === 'valve') {
+      const pos = c.key !== undefined && state[c.key] !== undefined
+        ? state[c.key]
+        : (state[c.tag] !== undefined ? state[c.tag] : 0);
+      return c.cv * pos;
+    }
+    return c.cv;
+  }
+
+  const isRestriction = c => c.cv !== undefined;
+
+  function Dynamics(net, options) {
+    const o = options || {};
+    const sg = o.sg !== undefined ? o.sg
+             : (net.spec.fluid && net.spec.fluid.sg !== undefined
+                ? net.spec.fluid.sg : 1);
+    const tau = o.tau !== undefined ? o.tau : 0.22;
+    const errors = [];
+    const comps = net.components;
+    const live = net.segments.filter(s => s.from && s.to);
+
+    /* ---- nodes: what is at the same pressure as what -----------------
+       Union-find over the graph with every restriction left out. Walking
+       in declaration order keeps node membership deterministic, which
+       matters because the parallel sum below is floating point and
+       addition is not associative. */
+    const parent = {};
+    const find = a => { while (parent[a] !== a) { parent[a] = parent[parent[a]]; a = parent[a]; } return a; };
+    const union = (a, b) => { const ra = find(a), rb = find(b); if (ra !== rb) parent[rb] = ra; };
+
+    const ids = Object.keys(comps);
+    /* A restriction is a boundary, so each of its ports is its own point;
+       everything else is a single point. */
+    for (const id of ids) {
+      if (isRestriction(comps[id])) {
+        parent[id + '.in'] = id + '.in';
+        parent[id + '.out'] = id + '.out';
+      } else {
+        parent[id] = id;
+      }
+    }
+    const pointOf = (id, port) =>
+      isRestriction(comps[id]) ? id + '.' + (port === 'in' ? 'in' : 'out') : id;
+
+    for (const s of live) {
+      union(pointOf(s.from.id, s.from.port === 'in' ? 'in' : 'out'),
+            pointOf(s.to.id, s.to.port === 'in' ? 'in' : 'out'));
+    }
+
+    /* ---- boundaries --------------------------------------------------
+       A source node sits at its supply pressure; a sink at its own. */
+    const fixed = {};
+    for (const id of ids) {
+      const c = comps[id];
+      const src = c.kind === 'source' || (c.kind === 'vessel' && c.role === 'source');
+      const snk = c.kind === 'sink'   || (c.kind === 'vessel' && c.role === 'sink');
+      if (!src && !snk) continue;
+      const n = find(id);
+      const p = c.pressure !== undefined ? c.pressure : (src ? null : 0);
+      if (src && p === null) {
+        errors.push(`${id} is a source and declares no pressure; ` +
+                    `add "pressure" to it (psig) -- the dynamics layer ` +
+                    `cannot invent a supply`);
+        continue;
+      }
+      if (fixed[n] !== undefined && fixed[n] !== p) {
+        errors.push(`node holding ${id} is fixed at two pressures ` +
+                    `(${fixed[n]} and ${p})`);
+      }
+      fixed[n] = p;
+    }
+
+    /* ---- restrictions, and which nodes they join ---------------------
+       Declaration order is preserved deliberately: the parallel sum is
+       floating point, and a + b + c is not bit-identical to c + b + a. */
+    let links = ids.filter(id => isRestriction(comps[id])).map(id => ({
+      ids: [id],
+      a: find(id + '.in'),
+      b: find(id + '.out'),
+    }));
+
+    /* ---- series reduction --------------------------------------------
+       A node that is not a boundary and has exactly two restrictions on
+       it is a piece of pipe between them: nothing branches there, so the
+       pair is one restriction. Level 1's bed-3 valve and its reducer are
+       exactly this, and the hand-written solver combined them by hand. */
+    let merged = true;
+    while (merged) {
+      merged = false;
+      const degree = {};
+      for (const L of links) {
+        degree[L.a] = (degree[L.a] || 0) + 1;
+        degree[L.b] = (degree[L.b] || 0) + 1;
+      }
+      for (const n of Object.keys(degree)) {
+        if (fixed[n] !== undefined || degree[n] !== 2) continue;
+        const pair = links.filter(L => L.a === n || L.b === n);
+        if (pair.length !== 2) continue;              // a self-loop; leave it
+        const [p, q] = pair;
+        const outer = x => (x.a === n ? x.b : x.a);
+        const joined = { ids: p.ids.concat(q.ids), a: outer(p), b: outer(q), series: true };
+        links = links.filter(L => L !== p && L !== q).concat([joined]);
+        merged = true;
+        break;
+      }
+    }
+
+    /* ---- what shape did we end up with? ------------------------------
+       Everything the levels contain reduces to one unknown node. More
+       than one has no closed form and is refused by name. */
+    const unknown = {};
+    for (const L of links) {
+      if (fixed[L.a] === undefined) unknown[L.a] = true;
+      if (fixed[L.b] === undefined) unknown[L.b] = true;
+    }
+    const unknownNodes = Object.keys(unknown);
+    if (unknownNodes.length > 1) {
+      errors.push(`this net reduces to ${unknownNodes.length} unsolved ` +
+                  `pressure nodes. Only one is supported: more than one ` +
+                  `means a loop or a staged header, which has no closed ` +
+                  `form and needs an iterative solve that is not built. ` +
+                  `Refusing rather than returning a plausible wrong flow`);
+    }
+    const node = unknownNodes[0];
+
+    /* Upstream links feed the node from a higher fixed pressure;
+       downstream links drain it to a lower one. */
+    const sideOf = L => (L.a === node ? L.b : L.a);
+    const onNode = links.filter(L => L.a === node || L.b === node);
+    const supplyP = onNode.reduce((m, L) => Math.max(m, fixed[sideOf(L)] || 0), 0);
+    const up   = onNode.filter(L => fixed[sideOf(L)] === supplyP && supplyP > 0);
+    const down = onNode.filter(L => up.indexOf(L) < 0);
+
+    let held = 0;
+
+    function cvOf(L, state) {
+      let c = restrictionCv(comps[L.ids[0]], state);
+      for (let i = 1; i < L.ids.length; i++) {
+        c = seriesCv(c, restrictionCv(comps[L.ids[i]], state));
+      }
+      return c;
+    }
+
+    function solve(state) {
+      const s = state || {};
+      /* Summed in declaration order. See the note on links above. */
+      let cvUp = 0;
+      for (const L of up) cvUp += cvOf(L, s);
+
+      const downCv = down.map(L => cvOf(L, s));
+      let cvDown = 0;
+      for (const c of downCv) cvDown += c;
+
+      let target;
+      if (cvUp <= 0) {
+        /* Isolated. With everything downstream shut too, the volume is
+           trapped and holds what it had; with anything open it drains. */
+        target = cvDown <= 0 ? held : 0;
+      } else if (cvDown <= 0) {
+        target = supplyP;                 // dead-headed against the header
+      } else {
+        target = supplyP * (cvUp * cvUp) / (cvUp * cvUp + cvDown * cvDown);
+      }
+
+      /* Flows follow the pressure that is actually there, not the one it
+         is heading for. This is the difference between a bay that fills
+         and a bay that teleports. */
+      const root = Math.sqrt(Math.max(0, held) / sg);
+      const q = {};
+      let qTot = 0;
+      down.forEach((L, i) => {
+        const f = downCv[i] * root;
+        qTot += f;
+        for (const id of L.ids) {
+          const c = comps[id];
+          if (c.key !== undefined) q[c.key] = f;
+          if (c.tag) q[c.tag] = f;
+          q[id] = f;
+        }
+      });
+
+      return { cvUp, cvDown, pressure: held, target, q, qTot,
+               flows: down.map((L, i) => ({ ids: L.ids, cv: downCv[i],
+                                            q: downCv[i] * root })) };
+    }
+
+    return {
+      errors: errors.concat(net.errors),
+      nodes: unknownNodes.length,
+      tau, sg, supply: supplyP,
+
+      solve,
+      /* Walk the held pressure toward the target. The same first-order
+         lag every level had; owned here so no level picks its own. */
+      step(dt, state) {
+        const s = solve(state);
+        held += (s.target - held) * Math.min(1, dt / tau);
+        return s;
+      },
+      get pressure() { return held; },
+      set pressure(v) { held = v; },
+      /* Settle instantly -- for a calibration pass that wants the steady
+         state without running the clock. */
+      settle(state) { held = solve(state).target; return solve(state); },
+    };
+  }
+
+  LPE.dyn = Dynamics;
+  LPE.dyn.seriesCv = seriesCv;
+
+})(typeof window !== 'undefined'
+   ? (window.LPE = window.LPE || {})
+   : (module.exports = module.exports || {}));
+
+/* @layer scenario
+   @core Process Core -- Phase 4.
+
+   A LEVEL, AS DATA.
+
+   May use: the netlist (to resolve tags) and a dynamics reading. Never a
+   view, a colour, a canvas, a consumer's runtime -- and never a word of
+   prose.
+
+   -------------------------------------------------------------------
+   WHAT A SCENARIO IS. Take a level. Remove the narrative, remove the
+   chrome. What is left is a rig, what the player may touch, and what has
+   to become true. That is not a game format -- it is a troubleshooting
+   exercise, which is also what a LoopBench bench exercise is and what a
+   competency assessment item would be. The same artifact serves all
+   three, because the engineering problem does not care what is drawn on
+   top of it.
+
+   So this is deliberately AUTHORABLE BY SOMEONE WHO DOES NOT WRITE CODE.
+   A scenario is plain data -- it survives JSON.stringify and comes back
+   working, which is tested -- and every condition is a declared
+   comparison rather than a predicate function. A GUI editor later is an
+   editor over this shape; until there is one, an engineer can write one
+   in a text file and the validator will tell them, in their own
+   vocabulary, what is wrong with it.
+
+   NO WORDS LIVE HERE. A scenario step carries an `id`; the narrative
+   layer binds text to that id. The test of whether the split is real is
+   that the same scenario runs silent in LoopBench and fully narrated in
+   a game -- so `task`, `lesson`, `text` and friends are REJECTED by name
+   rather than merely discouraged.
+
+   -------------------------------------------------------------------
+   A STEP
+
+     id        what this step is called. The narrative binds to it.
+     operable  tags the player may touch here. Everything else is locked.
+     observe   the tag this step is about, if there is one. The chrome
+               decides HOW to draw attention; the scenario only says to what.
+     when      conditions, ALL of which must hold. See below.
+
+   A CONDITION is one of:
+
+     { measure:'HV-1.position', atLeast:0.9 }   one reading, a bound
+     { measure:'HV-2.position', atMost:0.35 }
+     { each:[...measures], atLeast:1.0 }        every one of them
+     { spread:[...measures], atMost:0.15 }      max minus min
+
+   A MEASURE is '<tag>.<quantity>'. Quantities are `position` (how far
+   open a valve is, 0..1) and `flow` (what is passing it). Both are read
+   off the rig by TAG, which is what tags were for.
+
+   -------------------------------------------------------------------
+   WHAT IS NOT HERE. Faults. The plan lists them, and every level's use
+   of the word "fault" today is narrative prose -- level 2 talks about a
+   fault in the line, but nothing in any level injects one. A schema with
+   no consumer is a guess that then has to be maintained, so the slot is
+   left out until a level actually needs to inject something. When one
+   does, a fault is an override on a component (a valve stuck at a
+   position, a bore fouled) and belongs beside `start`.
+                                                                         */
+
+(function (LPE) {
+  'use strict';
+
+  const QUANTITIES = ['position', 'flow'];
+  /* Words are the narrative layer's job. Rejected by name so the split
+     cannot quietly erode one helpful string at a time. */
+  const PROSE_KEYS = ['task', 'lesson', 'text', 'title', 'label', 'caption',
+                      'message', 'prompt', 'hint', 'description'];
+
+  function parseMeasure(m) {
+    if (typeof m !== 'string') return null;
+    const dot = m.lastIndexOf('.');
+    if (dot < 1) return null;
+    return { tag: m.slice(0, dot), quantity: m.slice(dot + 1) };
+  }
+
+  function Scenario(spec, net) {
+    const errors = [];
+    const steps = (spec && spec.steps) || [];
+
+    const tagsIn = {};
+    const knownTags = [];
+    if (net) {
+      for (const id of Object.keys(net.components)) {
+        const c = net.components[id];
+        if (c.tag) { tagsIn[c.tag] = c; knownTags.push(c.tag); }
+      }
+    }
+    const tagList = () => knownTags.length
+      ? knownTags.join(', ') : '(this rig has no tagged equipment)';
+
+    /* ---- validation, in the author's vocabulary --------------------- */
+    const where = (i) => 'step ' + (i + 1) +
+      (steps[i] && steps[i].id ? ' ("' + steps[i].id + '")' : '');
+
+    const checkMeasure = (i, m) => {
+      const parsed = parseMeasure(m);
+      if (!parsed) {
+        errors.push(where(i) + ': "' + m + '" is not a measurement. ' +
+          'Write it as <tag>.<quantity>, for example "HV-1.position"');
+        return;
+      }
+      if (net && !tagsIn[parsed.tag]) {
+        errors.push(where(i) + ': there is no "' + parsed.tag + '" in this ' +
+          'rig. It has: ' + tagList());
+      }
+      if (QUANTITIES.indexOf(parsed.quantity) < 0) {
+        errors.push(where(i) + ': "' + parsed.quantity + '" is not something ' +
+          'this rig reports. Try: ' + QUANTITIES.join(', '));
+      }
+    };
+
+    if (!steps.length) errors.push('this scenario has no steps, so there is nothing to do');
+
+    const seen = {};
+    steps.forEach((s, i) => {
+      if (!s.id) {
+        errors.push(where(i) + ' has no id. The narrative binds its words to ' +
+          'the id, so a step without one can never be given any');
+      } else if (seen[s.id]) {
+        errors.push('two steps are both called "' + s.id + '". Ids have to be ' +
+          'unique, or the narrative cannot tell them apart');
+      }
+      if (s.id) seen[s.id] = true;
+
+      for (const k of PROSE_KEYS) {
+        if (s[k] !== undefined) {
+          errors.push(where(i) + ' carries "' + k + '". A scenario holds no ' +
+            'words -- it is meant to run silent in a bench exercise as well as ' +
+            'narrated in a game. Put the text in the narrative, against the id ' +
+            '"' + (s.id || '?') + '"');
+        }
+      }
+
+      (s.operable || []).forEach(tag => {
+        if (net && !tagsIn[tag]) {
+          errors.push(where(i) + ': cannot make "' + tag + '" operable, there ' +
+            'is no such thing in this rig. It has: ' + tagList());
+        }
+      });
+      if (s.observe && net && !tagsIn[s.observe]) {
+        errors.push(where(i) + ': cannot observe "' + s.observe + '", there is ' +
+          'no such thing in this rig. It has: ' + tagList());
+      }
+
+      const when = s.when || [];
+      if (!when.length) {
+        errors.push(where(i) + ' has no "when", so nothing the player does ' +
+          'could ever finish it');
+      }
+      when.forEach(c => {
+        const forms = ['measure', 'each', 'spread'].filter(f => c[f] !== undefined);
+        if (forms.length !== 1) {
+          errors.push(where(i) + ': a condition says exactly one of "measure", ' +
+            '"each" or "spread"' +
+            (forms.length ? ' -- this one says ' + forms.join(' and ') : ''));
+          return;
+        }
+        const bounds = ['atLeast', 'atMost'].filter(b => c[b] !== undefined);
+        if (!bounds.length) {
+          errors.push(where(i) + ': a condition needs "atLeast" or "atMost" -- ' +
+            'without a bound there is nothing to compare against');
+        }
+        if (c.measure !== undefined) checkMeasure(i, c.measure);
+        if (c.each !== undefined) {
+          if (!Array.isArray(c.each) || c.each.length < 2) {
+            errors.push(where(i) + ': "each" wants a list of two or more ' +
+              'measurements; for one, use "measure"');
+          } else c.each.forEach(m => checkMeasure(i, m));
+        }
+        if (c.spread !== undefined) {
+          if (!Array.isArray(c.spread) || c.spread.length < 2) {
+            errors.push(where(i) + ': "spread" is the gap between the highest ' +
+              'and lowest of a list, so it wants two or more measurements');
+          } else c.spread.forEach(m => checkMeasure(i, m));
+        }
+      });
+    });
+
+    if (spec && spec.start) {
+      Object.keys(spec.start).forEach(tag => {
+        if (net && !tagsIn[tag]) {
+          errors.push('"start" sets "' + tag + '", which is not in this rig. ' +
+            'It has: ' + tagList());
+        }
+      });
+    }
+    if (spec && spec.rig && net && net.spec.rig && spec.rig !== net.spec.rig) {
+      errors.push('this scenario is written for rig "' + spec.rig + '" but was ' +
+        'given "' + net.spec.rig + '"');
+    }
+
+    /* ---- reading the rig --------------------------------------------
+       A measurement is resolved by TAG. Positions come from whatever the
+       consumer is holding valve state in -- which may still be keyed by
+       the solver's private names -- so the tag is translated through the
+       netlist rather than the consumer having to know both. */
+    function read(m, state, solved) {
+      const { tag, quantity } = parseMeasure(m);
+      const c = tagsIn[tag];
+      if (quantity === 'position') {
+        if (state == null) return 0;
+        if (c && c.key !== undefined && state[c.key] !== undefined) return state[c.key];
+        return state[tag] !== undefined ? state[tag] : 0;
+      }
+      if (quantity === 'flow') {
+        if (!solved || !solved.q) return 0;
+        if (solved.q[tag] !== undefined) return solved.q[tag];
+        if (c && c.key !== undefined && solved.q[c.key] !== undefined) return solved.q[c.key];
+        return 0;
+      }
+      return 0;
+    }
+
+    function holds(c, state, solved) {
+      if (c.measure !== undefined) {
+        const v = read(c.measure, state, solved);
+        if (c.atLeast !== undefined && !(v >= c.atLeast)) return false;
+        if (c.atMost !== undefined && !(v <= c.atMost)) return false;
+        return true;
+      }
+      const list = (c.each || c.spread).map(m => read(m, state, solved));
+      if (c.each !== undefined) {
+        /* Min against a bound -- the same comparison a hand-written step
+           made with Math.min, so the arithmetic is unchanged. */
+        const lo = Math.min.apply(null, list);
+        const hi = Math.max.apply(null, list);
+        if (c.atLeast !== undefined && !(lo >= c.atLeast)) return false;
+        if (c.atMost !== undefined && !(hi <= c.atMost)) return false;
+        return true;
+      }
+      const gap = Math.max.apply(null, list) - Math.min.apply(null, list);
+      if (c.atLeast !== undefined && !(gap >= c.atLeast)) return false;
+      if (c.atMost !== undefined && !(gap <= c.atMost)) return false;
+      return true;
+    }
+
+    return {
+      spec, errors, steps,
+      count: steps.length,
+      at: i => steps[i],
+      ids: steps.map(s => s.id),
+
+      /* Which tags the player may touch at this step. Everything else is
+         locked, which is the scenario's business and not the chrome's. */
+      operable: i => (steps[i] && steps[i].operable) || [],
+      observe: i => (steps[i] && steps[i].observe) || null,
+
+      /* Has this step been satisfied? Every condition must hold. */
+      met(i, state, solved) {
+        const s = steps[i];
+        if (!s) return false;
+        return (s.when || []).every(c => holds(c, state, solved));
+      },
+
+      /* The starting position of everything the scenario sets, keyed the
+         way the consumer holds state. */
+      initial() {
+        const out = {};
+        const start = (spec && spec.start) || {};
+        for (const tag of Object.keys(start)) {
+          const c = tagsIn[tag];
+          out[c && c.key !== undefined ? c.key : tag] = start[tag];
+        }
+        return out;
+      },
+
+      read: (m, state, solved) => read(m, state, solved),
+    };
+  }
+
+  LPE.scenario = Scenario;
+  LPE.scenario.QUANTITIES = QUANTITIES;
+  LPE.scenario.PROSE_KEYS = PROSE_KEYS;
+
+})(typeof window !== 'undefined'
+   ? (window.LPE = window.LPE || {})
+   : (module.exports = module.exports || {}));
+
 </script>
 <script>
 'use strict';
@@ -1866,9 +3663,19 @@ const wheels=[
   {key:'b2',  x:VALVE_X,y:BR_Y[2],label:'BED 3'},
 ];
 
-/* ---------- physics (verbatim) ---------- */
-const P_SUP=60, SG=1.0;
-/* DERIVED, not chosen - run `node sizing.js` to regenerate and see the
+/* ---------- physics ----------
+   The solver is the PROCESS CORE's, not this level's. What was here -- a
+   hand-written pressure divider, a series-Cv helper, a first-order lag and
+   three loose Cv constants -- is now derived from the netlist below by
+   `LPE.dyn`, which reads the same graph the drawing reads.
+
+   The core's dynamics test keeps the old solver as an ORACLE and requires
+   the derived one to agree with it bit for bit across 60,000 valve and
+   pressure combinations, so this is a change of authorship and not a
+   change of behaviour.
+
+   The Cv values moved onto the components they belong to. They are still
+   DERIVED, not chosen -- run `node sizing.js` to regenerate and see the
    working. Application: 3 NFT beds at 2.0 gpm each (an NFT channel runs
    1-2 L/min; a bed carries ~6), manifold at 15.2 psig because
    micro-irrigation headers run 10-25 psi, not mains pressure. Lines from
@@ -1877,33 +3684,7 @@ const P_SUP=60, SG=1.0;
    The first pass had Cv 7 / 4 / 2.2, picked because they balanced nicely,
    and the bay delivered 46.8 gpm - 2,800 gal/hour through three grow beds
    on a colony whose own narration says the water is counted. */
-const CV_MAIN_MAX=0.896, CV_BR_MAX=0.513, CV_REDUCER=0.296;
 const valves={main:0,b0:0,b1:0,b2:0};
-const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));
-/* Manifold pressure is STATE, not recomputed each frame. Water is
-   incompressible: shut the main with every bed shut and that volume is
-   trapped - it holds whatever pressure it had, because nothing can leave. */
-let pManHeld=0;
-const P_TAU=0.22;
-function solve(){
-  const cvMain=CV_MAIN_MAX*valves.main;
-  const cv=[CV_BR_MAX*valves.b0, CV_BR_MAX*valves.b1, 0];
-  const raw2=CV_BR_MAX*valves.b2;
-  cv[2]= raw2>0 ? seriesCv(raw2,CV_REDUCER) : 0;   // bed 3 runs through the reducer
-  const cvSum=cv[0]+cv[1]+cv[2];
-  let pTarget;
-  if(cvMain<=0){
-    pTarget=(cvSum<=0) ? pManHeld : 0;             // isolated and full = trapped
-  } else if(cvSum<=0){
-    pTarget=P_SUP;                                 // dead-headed against the header
-  } else {
-    pTarget=P_SUP*(cvMain*cvMain)/(cvMain*cvMain+cvSum*cvSum);
-  }
-  const pMan=pManHeld;                             // flows follow pressure that is
-  const root=Math.sqrt(Math.max(0,pMan)/SG);       // actually there, not the target
-  const q=cv.map(c=>c*root);
-  return {cvMain,cv,cvSum,pMan,pTarget,q,qTot:q[0]+q[1]+q[2]};
-}
 
 /* ---------- air fill (verbatim) ----------
    New pipe is full of air at room pressure. Water stands to each closed
@@ -1966,6 +3747,156 @@ const NET=LPE.piping({
   reducers:[{x0:RED_X0,x1:RED_X1,y:BR_Y[2],r1:R_MAIN,r2:RED_R}],
   fittings:[{x:wheelMainX-54,y:MAIN_Y,r:R_MAIN,kind:"union"}],
 });
+/* The schematic's skin. The Process Core names the roles and holds no
+   colours at all -- the same plan has to come out as this and as a modern
+   view -- so saying what each role looks like is chrome's job, which is
+   here. These are the five the core used to carry as defaults.
+   `gap` is what a crossing break is painted over in: whatever is behind
+   the line, which only this layer knows. */
+const SCHEM_SKIN={
+  line:'#9fb0bf', lineWidth:2,
+  symbol:'#d7dde3', symbolWidth:2,
+  fill:'#d7dde3',
+  ground:P.shadow,
+  gap:P.shadow,
+  label:'#8b959e', labelFont:"11px ui-monospace, monospace",
+};
+
+/* The schematic view. Equipment as ISA-5.5 symbols, connections as plain
+   lines, valve fill carrying state -- the standard's own convention, so an
+   open valve is a solid bowtie. The solver's valve object goes straight in
+   as `state`; there is no second copy of anything. */
+function drawSchem(g,S){
+  /* Its own ground, over the whole screen. A process display is a display,
+     not an overlay: the bay's wall panels and stencils showing through the
+     schematic made it read as a ghost of the room rather than a view of
+     the plant. The room is still there when you switch back. */
+  g.fillStyle=P.shadow; g.fillRect(0,0,W,H);
+  const plan=LPE.schem.plan(NETLIST,{state:valves, scale:12});
+  LPE.schem.draw(g,plan,SCHEM_SKIN);
+  /* The one thing the schematic adds over the rig: what each bed is
+     actually getting, read off the same solve the rig view uses. */
+  g.font="13px 'VT323',monospace"; g.textAlign='left';
+  BR_Y.forEach((y,i)=>{
+    const q=S.q[i];
+    g.fillStyle=q>0.05?P.water:P.body;
+    g.fillText(q.toFixed(2)+' GPM', POD_X+26, y+4);
+  });
+}
+
+/* ---- the same bay as a NETLIST -------------------------------------
+   One declaration of what connects to what. It drives the schematic view;
+   the rig view above is still drawn from its own arrays for now, and
+   verify.js asserts the two produce identical piping geometry, so they
+   cannot drift apart while both exist.
+
+   NO COORDINATES LIVE HERE. A component says what it is, what it is
+   called and how big its bore is in INCHES -- a half-inch line is half an
+   inch however you draw it. Where each one sits is the RIG FRAME below,
+   and a second frame is all it would take to hang this same bay on a
+   different drawing. That separation is the whole of Phase 2; before it,
+   the schematic lined up with the cutaway because they were literally the
+   same numbers, which is a coincidence and not a mechanism.
+
+   Tags are HV- because these are HANDVALVES -- four hand wheels, no
+   actuators, no loops. Grounded in the Source Library rather than chosen:
+   the Pulp & Paper Sourcebook's P&IDs (drawings C0748, E0894) tag
+   handvalves HV-1..HV-20 and keep FV-/PV-/TV-/LV- for control valves in a
+   loop. Calling these FV- would claim an instrument that is not there. */
+const NETLIST=LPE.net({
+  /* ASME B36.10M Sch 40 bores, the same ones sizing.js works from. */
+  bores:{main:0.622, branch:0.493},
+  fluid:{sg:1.0},                       // water; see fluids.js for the rest
+  components:{
+    reservoir:{kind:'vessel', tag:'TK-1', role:'source', pressure:60},
+    union1:   {kind:'union'},
+    vMain:    {kind:'valve',  tag:'HV-1', key:'main', valveType:'globe', cv:0.896},
+    tee0:     {kind:'tee',    axis:'v'},
+    tee1:     {kind:'tee',    axis:'v'},
+    v0:       {kind:'valve',  tag:'HV-2', key:'b0', valveType:'globe', cv:0.513},
+    v1:       {kind:'valve',  tag:'HV-3', key:'b1', valveType:'globe', cv:0.513},
+    v2:       {kind:'valve',  tag:'HV-4', key:'b2', valveType:'globe', cv:0.513},
+    red:      {kind:'reducer', throat:0.108, cv:0.296},
+    pod0:     {kind:'vessel', tag:'TK-2', role:'sink'},
+    pod1:     {kind:'vessel', tag:'TK-3', role:'sink'},
+    pod2:     {kind:'vessel', tag:'TK-4', role:'sink'},
+  },
+  segments:[
+    {from:'reservoir.out', to:'union1.in', bore:'main'},
+    {from:'union1.out',    to:'vMain.in',  bore:'main'},
+    {from:'vMain.out',     to:'tee0.in',   bore:'main'},
+    {from:'tee0.out',      to:'tee1.in',   bore:'main'},
+    {from:'tee1.out',      to:'v2.in',     bore:'main'},
+    {from:'v2.out',        to:'red.in',    bore:'main'},
+    {from:'red.out',       to:'pod2.in',   bore:'main'},
+    {from:'tee0.branch',   to:'v0.in',     bore:'branch'},
+    {from:'v0.out',        to:'pod0.in',   bore:'branch'},
+    {from:'tee1.branch',   to:'v1.in',     bore:'branch'},
+    {from:'v1.out',        to:'pod1.in',   bore:'branch'},
+  ],
+  /* ---- THE RIG FRAME ------------------------------------------------
+     Where this bay sits on the cutaway, in the cutaway's own pixels.
+     pxPerInch is the scale the drawing was built at: R_BR is the anchor,
+     so a 0.493 in branch bore draws 10 px wide and everything else
+     follows. Rounding to 0.1 px is this drawing's own quantisation -- the
+     constants above were hand-written rounded and the rig must keep
+     reproducing exactly.
+
+     Waypoints are keyed by the segment they belong to rather than by
+     index, because an index moves the moment a segment is inserted above
+     it. These two are the riser's elbows, E1 and E2. */
+  frames:{
+    rig:{
+      pxPerInch:PX_PER_IN, round:1,
+      at:{
+        reservoir:[30,MAIN_Y],
+        union1:   [wheelMainX-54,MAIN_Y],
+        vMain:    [wheelMainX,MAIN_Y],
+        tee0:     [TRUNK_X,BR_Y[0]],
+        tee1:     [TRUNK_X,BR_Y[1]],
+        v0:       [VALVE_X,BR_Y[0]],
+        v1:       [VALVE_X,BR_Y[1]],
+        v2:       [VALVE_X,BR_Y[2]],
+        red:      [[RED_X0,BR_Y[2]],[RED_X1,BR_Y[2]]],
+        pod0:     [POD_X,BR_Y[0]],
+        pod1:     [POD_X,BR_Y[1]],
+        pod2:     [POD_X,BR_Y[2]],
+      },
+      via:{
+        'vMain.out->tee0.in':[[TRUNK_X,MAIN_Y]],
+        'tee1.out->v2.in':   [[TRUNK_X,BR_Y[2]]],
+      },
+    },
+  },
+});
+
+/* The dynamics layer, reading the netlist above. `solve()` keeps the shape
+   this level has always read -- q as an array in bed order -- so nothing
+   downstream had to change when the physics moved out. */
+const DYN=LPE.dyn(NETLIST,{tau:0.22});
+function solve(){
+  const S=DYN.solve(valves);
+  return {cvMain:S.cvUp, cvSum:S.cvDown, pMan:S.pressure, pTarget:S.target,
+          q:[S.q.b0,S.q.b1,S.q.b2], qTot:S.qTot};
+}
+
+/* Rig or schematic. Same netlist underneath, so the two views cannot
+   disagree about what is connected to what -- which is the whole reason
+   the netlist exists. V, because ENTER and SPACE belong to the lesson's
+   own continue control and must not be overloaded. */
+const T1={rig:   'IRRIGATION MANIFOLD \u2014 CUTAWAY  \u00b7  V: SCHEMATIC',
+          schem: 'IRRIGATION MANIFOLD \u2014 SCHEMATIC  \u00b7  V: CUTAWAY'};
+let view='rig';
+window.addEventListener('keydown',e=>{
+  if(e.key!=='v'&&e.key!=='V') return;
+  e.preventDefault();
+  view=(view==='rig'?'schem':'rig');
+  /* The topbar carries the offer. A key nobody is told about is a key
+     nobody presses, and the canvas is the rig's, not a place to park
+     instructions. */
+  SH.title(T1[view]);
+});
+
 /* Bay 3 runs full bore up to the reducer, squeezes through its throat, and
    opens out again - three segments, so the water narrows only where the
    fitting narrows it instead of the whole branch being drawn thin. */
@@ -1990,42 +3921,84 @@ const BR_TOTAL=branches.map(b=>b.segs.reduce((t,s)=>t+s.len,0));
    carries 44 gpm and the next 26, and both pinned to full and drew the same,
    hiding the very thing the riser is there to show. */
 const FLOW_REF=(()=>{
-  const keep={...valves}, keepP=pManHeld;
-  const settle=v=>{ Object.assign(valves,v); let S=solve(); pManHeld=S.pTarget; return solve(); };
+  const keep={...valves}, keepP=DYN.pressure;
+  const settle=v=>{ Object.assign(valves,v); DYN.settle(valves); return solve(); };
   const all=settle({main:1,b0:1,b1:1,b2:1}).qTot;
   const one=settle({main:1,b0:1,b1:0,b2:0}).q[0];
-  Object.assign(valves,keep); pManHeld=keepP;
+  Object.assign(valves,keep); DYN.pressure=keepP;
   return {riser:all, branch:one};
 })();
 
-/* ---------- the six steps (verbatim) ---------- */
-const STEPS=[
-  { keys:['main'], watch:-1,
+/* ---------- the six steps ----------
+   Split in two, which is Phase 4.
+
+   THE SCENARIO is the engineering problem: what the player may touch and
+   what has to become true. It is plain data -- no functions, no words, no
+   pixels -- so it could be a file an engineer edits without writing any
+   JavaScript, and the core's validator answers in their vocabulary when
+   they get it wrong. The same scenario runs headless in the core's tests
+   with no renderer present at all, which is the proof that the split is
+   real rather than cosmetic.
+
+   THE NARRATIVE is everything that is said, bound to a step's id. Two
+   files, two authors, neither blocking the other: an engineer can change
+   what the bay does without touching a sentence, and whoever owns voice
+   can rewrite every sentence without touching the engineering.         */
+const SCENARIO={
+  rig:'bio-grow-bay-3',
+  start:{'HV-1':0,'HV-2':0,'HV-3':0,'HV-4':0},
+  steps:[
+    { id:'open-main',      operable:['HV-1'],
+      when:[{measure:'HV-1.position', atLeast:0.9}] },
+    { id:'open-bed-1',     operable:['HV-2'], observe:'HV-2',
+      when:[{measure:'HV-2.position', atLeast:0.9}] },
+    { id:'open-bed-2',     operable:['HV-3'], observe:'HV-3',
+      when:[{measure:'HV-3.position', atLeast:0.9}] },
+    { id:'open-bed-3',     operable:['HV-4'], observe:'HV-4',
+      when:[{measure:'HV-4.position', atLeast:0.9}] },
+    { id:'throttle-bed-1', operable:['HV-2'], observe:'HV-4',
+      when:[{measure:'HV-2.position', atMost:0.35}] },
+    { id:'balance',        operable:['HV-2','HV-3','HV-4'],
+      when:[{each:  ['HV-2.flow','HV-3.flow','HV-4.flow'], atLeast:1.0},
+            {spread:['HV-2.flow','HV-3.flow','HV-4.flow'], atMost:0.15}] },
+  ],
+};
+
+const NARRATIVE={
+  'open-main':{
     task:'Open the MAIN SUPPLY valve. Drag the hand wheel.',
-    ok:()=>valves.main>=0.9,
     lesson:'60 psig at the manifold &mdash; and <b>nothing is moving</b>. In Four-B the gauge sat downstream, so it only woke up once water ran. This one sits on the manifold: the line is loaded and perfectly still, with every bed shut.' },
-  { keys:['b0'], watch:0,
+  'open-bed-1':{
     task:'Open BED 1.',
-    ok:()=>valves.b0>=0.9,
     lesson:'The valve created nothing \u2014 it opened a path, and the pressure spent itself. And watch what left first: that run was new pipe, <b>full of air</b>, which had to vent out the emitters before water reached a single root.' },
-  { keys:['b1'], watch:1,
+  'open-bed-2':{
     task:'Open BED 2. Keep an eye on Bed 1\u2019s number.',
-    ok:()=>valves.b1>=0.9,
     lesson:'Bed 1 <b>dropped</b> when Bed 2 opened, and nobody touched Bed 1. One supply, two demands &mdash; what divides at the tee is all there ever was.' },
-  { keys:['b2'], watch:2,
+  'open-bed-3':{
     task:'Open BED 3.',
-    ok:()=>valves.b2>=0.9,
     lesson:'Bed 3 is on the old run with a <b>reducer</b> in it. Same valve, same manifold pressure, noticeably less flow &mdash; and watch the particles sprint through that throat. Squeeze the bore and velocity goes up while pressure goes down. The restriction is in the pipe, not the valve.' },
-  { keys:['b0'], watch:2,
+  'throttle-bed-1':{
     task:'Now throttle BED 1 back to about a quarter open \u2014 and watch Bed 3.',
-    ok:()=>valves.b0<=0.35,
     lesson:'Bed 3 came up and nobody touched Bed 3. Add resistance to one branch and manifold pressure rises for every other branch. In a shared system <b>there is no local change</b>.' },
-  { keys:['b0','b1','b2'], watch:-1,
+  'balance':{
     task:'Last job: balance the bay. Three identical beds should drink about the same \u2014 get all three within a tenth of a gallon of each other.',
-    ok:()=>{ const S=solve(); const mn=Math.min(...S.q), mx=Math.max(...S.q);
-             return mn>=1.0 && (mx-mn)<=0.15; },
     lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch: Bed 3 can never pass more than its reducer allows, so the other two came back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling \u2014 that reducer is not costing one bed, it is capping all three.' },
-];
+};
+
+/* Zipped back together for this level's own step machinery. `keys` is the
+   solver's names for whatever the scenario made operable, and `watch` is
+   the bed index of whatever it said to observe -- both translated through
+   the netlist, so the scenario never has to know either. */
+const SC=LPE.scenario(SCENARIO,NETLIST);
+if(SC.errors.length) throw new Error('level 1 scenario: '+SC.errors.join('; '));
+const BED_OF={'HV-2':0,'HV-3':1,'HV-4':2};
+const STEPS=SCENARIO.steps.map((s,i)=>({
+  keys:SC.operable(i).map(tag=>NETLIST.byTag(tag).key),
+  watch:SC.observe(i)===null?-1:(BED_OF[SC.observe(i)]!==undefined?BED_OF[SC.observe(i)]:-1),
+  task:NARRATIVE[s.id].task,
+  lesson:NARRATIVE[s.id].lesson,
+  ok:()=>SC.met(i,valves,DYN.solve(valves)),
+}));
 let step=0, done=false;
 /* Once the assignment is over the rig is unlocked: every wheel turns, and
    every wheel lights, because every one of them is now a control you may
@@ -2058,6 +4031,7 @@ function pipeV(g,x,y0,y1,r){
 }
 function draw(g,dt,t){
   const S=solve();
+  if(view==='schem'){ drawSchem(g,S); return; }
   g.drawImage(BG,0,0);
 
   // ---- pipe work ----
@@ -2141,7 +4115,7 @@ function draw(g,dt,t){
 /* ---------- simulation ---------- */
 function stepSim(dt){
   const S=solve();
-  pManHeld += (S.pTarget-pManHeld)*Math.min(1,dt/P_TAU);
+  DYN.step(dt,valves);          // the lag lives in the dynamics layer now
   for(let i=0;i<3;i++){
     if(S.q[i]>0) fill[i]=Math.min(1,fill[i]+S.q[i]*FILL_RATE*dt/BR_LEN);
     const f=Math.min(1,S.q[i]/FLOW_REF.branch);
@@ -2227,7 +4201,7 @@ function onMove(e){
 /* ---------- mount ---------- */
 buildScene();
 const SH=LPE.mount({
-  t1:'IRRIGATION MANIFOLD \u2014 CUTAWAY',
+  t1:T1.rig,
   t2:'The Garden \u00b7 Bio-Grow Bay 3',
   w:W,h:H,step:stepSim,draw,
   intro:[
@@ -2247,7 +4221,7 @@ const SH=LPE.mount({
   onStart:say,
   onReset(){
     valves.main=valves.b0=valves.b1=valves.b2=0;
-    pManHeld=0; step=0; done=false;
+    DYN.pressure=0; step=0; done=false;
     for(let i=0;i<3;i++){ fill[i]=FILL_START; branches[i].set(0,{flow:0,fill:FILL_START}); }
     LPE.audio.flow(0); LPE.audio.vent(0); LPE.audio.rush(0); say();
   },

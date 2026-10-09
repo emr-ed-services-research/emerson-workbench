@@ -1,0 +1,195 @@
+<title>Two skins, one rig</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=VT323&display=swap">
+<style>
+  :root { color-scheme: light dark; }
+  body { margin:0; background:#111417; color:#c8d2d6;
+         font:14px ui-monospace, "Cascadia Mono", Menlo, monospace; }
+  header { padding:18px 24px 6px; }
+  h1 { font:18px ui-monospace, monospace; margin:0 0 4px; letter-spacing:.06em; }
+  p.sub { margin:0; color:#7d8a92; max-width:78ch; line-height:1.55; }
+  .pair { display:grid; grid-template-columns:1fr 1fr; gap:18px; padding:18px 24px 8px; }
+  @media (max-width:1400px){ .pair{ grid-template-columns:1fr; } }
+  figure { margin:0; }
+  figcaption { padding:8px 2px; color:#7d8a92; line-height:1.5; }
+  figcaption b { color:#c8d2d6; font-weight:600; }
+  canvas { width:100%; height:auto; display:block; border:1px solid #2a3238; }
+  .controls { padding:4px 24px 22px; display:flex; gap:22px; flex-wrap:wrap;
+              align-items:center; }
+  label { display:flex; gap:8px; align-items:center; color:#7d8a92; }
+  input[type=range]{ width:140px; }
+  .val { color:#c8d2d6; min-width:3.2em; display:inline-block; }
+  .note { padding:0 24px 28px; color:#5f6b73; max-width:88ch; line-height:1.6; }
+  code { color:#9fb0bf; }
+</style>
+
+<header>
+  <h1>TWO SKINS, ONE RIG</h1>
+  <p class="sub">Bio-Grow Bay 3. The same netlist, the same dynamics, the same
+  scenario &mdash; rendered twice. Nothing below chrome knows which of these it
+  is being drawn as, and the hand wheels below drive both at once.</p>
+</header>
+
+<div class="pair">
+  <figure>
+    <canvas id="retro" width="900" height="400"></canvas>
+    <figcaption><b>1990s</b> &mdash; the game&rsquo;s skin. Dithered metal on a
+    dark ground, VT323, ISA-5.5 symbols.</figcaption>
+  </figure>
+  <figure>
+    <canvas id="modern" width="900" height="400"></canvas>
+    <figcaption><b>Modern</b> &mdash; EMERSON palette per the Style Guide
+    &sect;3.2: blue is the measured, actually-flowing quantity; grey is
+    there-but-not-the-subject. Light ground, colour held in reserve.</figcaption>
+  </figure>
+</div>
+
+<div class="controls">
+  <label>MAIN <input type="range" id="main" min="0" max="1" step="0.01" value="1">
+    <span class="val" id="vmain">100%</span></label>
+  <label>BED 1 <input type="range" id="b0" min="0" max="1" step="0.01" value="1">
+    <span class="val" id="vb0">100%</span></label>
+  <label>BED 2 <input type="range" id="b1" min="0" max="1" step="0.01" value="0.5">
+    <span class="val" id="vb1">50%</span></label>
+  <label>BED 3 <input type="range" id="b2" min="0" max="1" step="0.01" value="1">
+    <span class="val" id="vb2">100%</span></label>
+  <span id="readout" style="color:#9fb0bf"></span>
+</div>
+
+<p class="note">
+  Both panels are painted from one <code>LPE.net()</code> declaration through one
+  <code>LPE.dyn()</code> solve. The left one passes the game&rsquo;s skin to
+  <code>piping().draw(g, skin)</code> and <code>schem.draw(g, plan, theme)</code>;
+  the right one passes the core&rsquo;s <code>skins/modern.js</code>. The core
+  itself names no colour &mdash; it names the roles <code>line, symbol, fill,
+  label, ground, gap</code> and the skin answers them, which the layer guard
+  enforces on every build.
+</p>
+
+<script src="engine.js"></script>
+<script src="vendor/process-core/topology.js"></script>
+<script src="vendor/process-core/schemvis.js"></script>
+<script src="vendor/process-core/dynamics.js"></script>
+<script src="vendor/process-core/scenario.js"></script>
+<script src="vendor/process-core/skins/modern.js"></script>
+<script>
+'use strict';
+const P = LPE.palette;
+const MAIN_Y = 86, TRUNK_X = 320, POD_X = 812, BR_Y = [170, 256, 342];
+const R_BR = 10, PX = R_BR / 0.493;
+const R_MAIN = Math.round(0.622 * PX * 10) / 10;
+const RED_R  = Math.round(0.108 * PX * 10) / 10;
+
+/* ---- one rig ------------------------------------------------------- */
+const NET = LPE.net({
+  rig: 'bio-grow-bay-3',
+  bores: { main: 0.622, branch: 0.493 },
+  fluid: { sg: 1.0 },
+  components: {
+    reservoir: { kind:'vessel', tag:'TK-1', role:'source', pressure:60 },
+    union1:    { kind:'union' },
+    vMain:     { kind:'valve', tag:'HV-1', key:'main', valveType:'globe', cv:0.896 },
+    tee0:      { kind:'tee', axis:'v' },
+    tee1:      { kind:'tee', axis:'v' },
+    v0:        { kind:'valve', tag:'HV-2', key:'b0', valveType:'globe', cv:0.513 },
+    v1:        { kind:'valve', tag:'HV-3', key:'b1', valveType:'globe', cv:0.513 },
+    v2:        { kind:'valve', tag:'HV-4', key:'b2', valveType:'globe', cv:0.513 },
+    red:       { kind:'reducer', throat:0.108, cv:0.296 },
+    pod0:      { kind:'vessel', tag:'TK-2', role:'sink' },
+    pod1:      { kind:'vessel', tag:'TK-3', role:'sink' },
+    pod2:      { kind:'vessel', tag:'TK-4', role:'sink' },
+  },
+  segments: [
+    { from:'reservoir.out', to:'union1.in', bore:'main' },
+    { from:'union1.out',    to:'vMain.in',  bore:'main' },
+    { from:'vMain.out',     to:'tee0.in',   bore:'main' },
+    { from:'tee0.out',      to:'tee1.in',   bore:'main' },
+    { from:'tee1.out',      to:'v2.in',     bore:'main' },
+    { from:'v2.out',        to:'red.in',    bore:'main' },
+    { from:'red.out',       to:'pod2.in',   bore:'main' },
+    { from:'tee0.branch',   to:'v0.in',     bore:'branch' },
+    { from:'v0.out',        to:'pod0.in',   bore:'branch' },
+    { from:'tee1.branch',   to:'v1.in',     bore:'branch' },
+    { from:'v1.out',        to:'pod1.in',   bore:'branch' },
+  ],
+  /* TWO FRAMES. The rig frame is the cutaway's own pixels; the board frame
+     spreads the same graph out for a wall display. Phase 2's whole point:
+     transposing a different layout over one netlist is another frame. */
+  frames: {
+    rig: { pxPerInch: PX, round: 1, at: {
+      reservoir:[30,MAIN_Y], union1:[116,MAIN_Y], vMain:[170,MAIN_Y],
+      tee0:[TRUNK_X,BR_Y[0]], tee1:[TRUNK_X,BR_Y[1]],
+      v0:[410,BR_Y[0]], v1:[410,BR_Y[1]], v2:[410,BR_Y[2]],
+      red:[[600,BR_Y[2]],[680,BR_Y[2]]],
+      pod0:[POD_X,BR_Y[0]], pod1:[POD_X,BR_Y[1]], pod2:[POD_X,BR_Y[2]] },
+      via:{ 'vMain.out->tee0.in':[[TRUNK_X,MAIN_Y]],
+            'tee1.out->v2.in':[[TRUNK_X,BR_Y[2]]] } },
+    /* Laid out for a board, with room on the right for the readouts --
+       a frame is a layout, so where a number will go is a frame
+       decision, not something the renderer gets to discover too late. */
+    board: { pxPerInch: PX, round: 1, at: {
+      reservoir:[60,110], union1:[140,110], vMain:[200,110],
+      tee0:[310,190], tee1:[310,265],
+      v0:[440,190], v1:[440,265], v2:[440,340],
+      red:[[570,340],[640,340]],
+      pod0:[720,190], pod1:[720,265], pod2:[720,340] },
+      via:{ 'vMain.out->tee0.in':[[310,110]],
+            'tee1.out->v2.in':[[310,340]] } },
+  },
+});
+if (NET.errors.length) document.body.insertAdjacentHTML('afterbegin',
+  '<pre style="color:#e06c5a;padding:18px">' + NET.errors.join('\n') + '</pre>');
+
+const DYN = LPE.dyn(NET, { tau: 0.22 });
+const valves = { main:1, b0:1, b1:0.5, b2:1 };
+
+/* ---- the 1990s skin: the game's pipework + its schematic theme ------ */
+const RIGNET = LPE.piping(NET.toPiping());
+const RETRO_SCHEM = {
+  line:'#9fb0bf', lineWidth:2, symbol:'#d7dde3', symbolWidth:2,
+  fill:'#d7dde3', ground:P.shadow, gap:P.shadow,
+  label:'#8b959e', labelFont:"13px 'VT323', monospace",
+};
+
+/* ---- the modern skin, in the BOARD frame ---------------------------- */
+const BOARD = NET.inFrame('board');
+const MODERN = LPE.skins.modern;
+
+const rc = document.getElementById('retro').getContext('2d');
+const mc = document.getElementById('modern').getContext('2d');
+
+function frame() {
+  const S = DYN.step(1/60, valves);
+
+  /* --- left: the game's own look --- */
+  rc.fillStyle = P.shadow; rc.fillRect(0, 0, 900, 400);
+  RIGNET.draw(rc);
+  const plan = LPE.schem.plan(NET, { state: valves, scale: 12 });
+  rc.save(); rc.translate(0, 0);
+  LPE.schem.draw(rc, { ops: plan.ops.filter(o => o.op === 'symbol'),
+                       bounds: plan.bounds, scale: plan.scale },
+                 Object.assign({}, RETRO_SCHEM, { ground: null }));
+  rc.restore();
+
+  /* --- right: the modern look, same model, different frame --- */
+  const bplan = LPE.schem.plan(BOARD, { state: valves, scale: 15 });
+  MODERN.draw(mc, { net: BOARD, plan: bplan, width: 900, height: 400,
+                    solved: S, fullFlow: 3.5, time: performance.now()/1000 });
+
+  document.getElementById('readout').textContent =
+    'manifold ' + S.pressure.toFixed(1) + ' psig   |   beds ' +
+    ['HV-2','HV-3','HV-4'].map(t => (S.q[t]||0).toFixed(2)).join(' / ') + ' gpm';
+  requestAnimationFrame(frame);
+}
+
+for (const k of ['main','b0','b1','b2']) {
+  const el = document.getElementById(k);
+  const out = document.getElementById('v' + k);
+  el.addEventListener('input', () => {
+    valves[k] = +el.value;
+    out.textContent = Math.round(valves[k] * 100) + '%';
+  });
+}
+DYN.settle(valves);
+frame();
+</script>

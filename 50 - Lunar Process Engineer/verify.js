@@ -153,10 +153,27 @@ check('every guide string fits the box', over.length === 0, over.join(', ') || s
    numbers drift away from what sizing.js derives for the application.
    ------------------------------------------------------------ */
 const EXPECT = { CV_MAIN_MAX: 0.896, CV_BR_MAX: 0.513, CV_REDUCER: 0.296 };
+/* Two shapes now, because level 1 migrated to the Process Core in Phase 3
+   and level 2 has not. A migrated level carries its Cv on the netlist
+   component it belongs to; an unmigrated one still has the three loose
+   constants. Both are read, so neither can drift, and this check keeps
+   working through the rest of the migration instead of having to be
+   switched over in one go. */
+const LOOSE = /const CV_MAIN_MAX=([\d.]+), CV_BR_MAX=([\d.]+), CV_REDUCER=([\d.]+);/;
+const onNet = (src, id) => {
+  const m = src.match(new RegExp(id + ':\\s*\\{[^}]*cv:([\\d.]+)'));
+  return m ? +m[1] : null;
+};
 for (const f of ['level1.html', 'level2.html']) {
   const src = fs.readFileSync(f, 'utf8');
-  const m = src.match(/const CV_MAIN_MAX=([\d.]+), CV_BR_MAX=([\d.]+), CV_REDUCER=([\d.]+);/);
-  const got = m ? { CV_MAIN_MAX: +m[1], CV_BR_MAX: +m[2], CV_REDUCER: +m[3] } : null;
+  const m = src.match(LOOSE);
+  const got = m
+    ? { CV_MAIN_MAX: +m[1], CV_BR_MAX: +m[2], CV_REDUCER: +m[3] }
+    : (onNet(src, 'vMain') === null ? null : {
+        CV_MAIN_MAX: onNet(src, 'vMain'),
+        CV_BR_MAX:   onNet(src, 'v0'),
+        CV_REDUCER:  onNet(src, 'red'),
+      });
   const ok = got && Object.keys(EXPECT).every(k => Math.abs(got[k] - EXPECT[k]) < 1e-9);
   check(f + ' Cv matches sizing.js', ok, got ? JSON.stringify(got) : 'not found');
   // bore radii are derived from the real bores, not typed in
@@ -186,7 +203,51 @@ function solver(file) {
     'const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));' +
     s.slice(i, j + 1) + ' return solve();');
 }
-const L1 = solver('level1.html'), L2 = solver('level2.html');
+
+/* Level 1 no longer HAS a solver to extract -- in Phase 3 its physics
+   moved to the Process Core's dynamics layer, derived from its netlist.
+   So level 1's side of this comparison is now the real thing: its own
+   declaration, read out of level1.html, handed to the real LPE.dyn.
+
+   The guarantee is unchanged and arguably stronger. It used to be "the
+   two levels contain the same arithmetic"; it is now "level 2's
+   hand-written solver still agrees with the authority level 1 uses".
+   Level 2 has not been migrated, so this is what keeps it honest until
+   it is. */
+function coreSolver() {
+  const vm = require('vm');
+  const src = fs.readFileSync('level1.html', 'utf8');
+  const decl = (text, start) => {
+    const a = text.indexOf(start);
+    if (a < 0) throw new Error('not found in level1.html: ' + start);
+    let d = 0, b = a;
+    for (; b < text.length; b++) {
+      const ch = text[b];
+      if (ch === '{' || ch === '(') d++;
+      else if (ch === '}' || ch === ')') { d--; if (d === 0) { b++; break; } }
+    }
+    return text.slice(a, b) + ';';
+  };
+  const host = { window: {} };
+  vm.createContext(host);
+  vm.runInContext(fs.readFileSync('vendor/process-core/topology.js', 'utf8'), host);
+  vm.runInContext(fs.readFileSync('vendor/process-core/dynamics.js', 'utf8'), host);
+
+  const sand = { LPE: host.window.LPE };
+  vm.createContext(sand);
+  vm.runInContext(
+    src.slice(src.indexOf('const MAIN_Y='), src.indexOf('/* ---------- physics')) +
+    '\n' + decl(src, 'const NETLIST=LPE.net(') +
+    '\nglobalThis.__dyn = LPE.dyn(NETLIST, {tau:0.22});', sand);
+  const dyn = sand.__dyn;
+  if (dyn.errors.length) throw new Error('level 1 dynamics: ' + dyn.errors.join('; '));
+  return (valves, pManHeld) => {
+    dyn.pressure = pManHeld;
+    const S = dyn.solve(valves);
+    return { q: [S.q.b0, S.q.b1, S.q.b2], pTarget: S.target, qTot: S.qTot };
+  };
+}
+const L1 = coreSolver(), L2 = solver('level2.html');
 let states = 0, differ = 0;
 for (const m of [0, 0.5, 1]) for (const a of [0, 0.5, 1])
   for (const b of [0, 0.5, 1]) for (const c of [0, 0.5, 1]) {
@@ -197,7 +258,7 @@ for (const m of [0, 0.5, 1]) for (const a of [0, 0.5, 1])
                  Math.abs(r1.pTarget - r2.pTarget) < 1e-12;
     if (!same) differ++;
   }
-check('level 1 and 2 solvers identical with the reducer in', differ === 0,
+check('level 2 still agrees with the core level 1 runs on', differ === 0,
   differ ? differ + ' of ' + states + ' differ' : states + ' states');
 
 /* ------------------------------------------------------------
@@ -934,9 +995,109 @@ check('fluid: both views carry fluid state', carries.length === 2,
     missing.length ? 'not reset: ' + missing.join(', ') : keys.length + ' fields reset');
 }
 
+/* ------------------------------------------------------------
+   N+5. DO LEVEL 1'S TWO DECLARATIONS OF THE BAY AGREE?
+
+   Level 1 now says what the bay is twice: the hand-tuned LPE.piping()
+   spec the rig view draws from, and the LPE.net() netlist the schematic
+   view draws from. Two declarations of one rig is exactly the drift
+   that the netlist exists to end, and while both are present the only
+   thing stopping them diverging is a measurement.
+
+   So this reads BOTH out of level1.html -- not a copy kept here, which
+   is the same mistake one layer up -- evaluates them against the real
+   LPE.net, and requires the netlist's toPiping() to reproduce the
+   hand-written spec exactly: every line, bore, tee, reducer and
+   fitting. Move a riser in one and not the other and the build fails.
+
+   topology.test.js makes the same claim, but against geometry typed
+   into the test. This one is against the file the game ships.
+   ------------------------------------------------------------ */
+{
+  const vm = require('vm');
+  /* Slice a `const X=LPE.f(...)` declaration by scanning braces from its
+     first bracket, so the literal comes out whole however it is
+     formatted and without this file holding a copy of it. */
+  const decl = (text, start) => {
+    const i = text.indexOf(start);
+    if (i < 0) throw new Error('not found in level1.html: ' + start);
+    let d = 0, j = i;
+    for (; j < text.length; j++) {
+      const ch = text[j];
+      if (ch === '{' || ch === '(') d++;
+      else if (ch === '}' || ch === ')') { d--; if (d === 0) { j++; break; } }
+    }
+    return text.slice(i, j) + ';';
+  };
+
+  let detail = '', same = false;
+  try {
+    const src = fs.readFileSync('level1.html', 'utf8');
+    const geo = src.slice(src.indexOf('const MAIN_Y='),
+                          src.indexOf('/* ---------- physics'));
+    /* The VENDORED core publishes onto a window; give it one and take
+       LPE.net off it. The real router that ships, not a stand-in and not
+       the copy in `45 - Process Core` -- this check has to be true of what
+       the game actually bundles. */
+    const host = { window: {} };
+    vm.createContext(host);
+    vm.runInContext(
+      fs.readFileSync('vendor/process-core/topology.js', 'utf8'), host);
+    const realNet = host.window.LPE.net;
+
+    /* LPE.piping is the identity here: the rig view's declaration IS the
+       spec to compare against, so recording it is all that is wanted. */
+    const sand = { LPE: { piping: s => s, net: realNet } };
+    vm.createContext(sand);
+    vm.runInContext(geo + '\n' + decl(src, 'const NET=LPE.piping(') + '\n' +
+                    decl(src, 'const NETLIST=LPE.net(') + '\n' +
+                    'globalThis.__o = {hand: NET, list: NETLIST};', sand);
+    const hand = sand.__o.hand, list = sand.__o.list;
+
+    if (list.errors.length) {
+      detail = 'netlist invalid: ' + list.errors.join('; ');
+    } else {
+      /* Round before comparing: these are pixel coordinates derived from
+         bores in inches, so 12.6 can arrive as 12.600000000000001 from
+         one route and not the other without anything being wrong. Order
+         is not meaningful either -- the graph walk emits lines in its own
+         order -- so both sides are sorted the same way. */
+      const n = v => Math.round(v * 1000) / 1000;
+      const canon = o => JSON.stringify({
+        lines: (o.lines || [])
+          .map(l => ({ r: n(l.r), pts: l.pts.map(q => [n(q[0]), n(q[1])]) }))
+          .sort((a, b) => JSON.stringify(a) < JSON.stringify(b) ? -1 : 1),
+        tees: (o.tees || [])
+          .map(x => ({ x: n(x.x), y: n(x.y), r: n(x.r), branch: n(x.branch) }))
+          .sort((a, b) => a.y - b.y || a.x - b.x),
+        reducers: (o.reducers || [])
+          .map(r => ({ x0: n(r.x0), x1: n(r.x1), y: n(r.y), r1: n(r.r1), r2: n(r.r2) }))
+          .sort((a, b) => a.y - b.y || a.x0 - b.x0),
+        fittings: (o.fittings || [])
+          .map(f => ({ x: n(f.x), y: n(f.y), r: n(f.r), kind: f.kind }))
+          .sort((a, b) => a.y - b.y || a.x - b.x),
+      });
+      const a = canon(hand), b = canon(list.toPiping());
+      same = a === b;
+      detail = same
+        ? hand.lines.length + ' lines, ' + hand.tees.length + ' tees, ' +
+          hand.reducers.length + ' reducer, ' + hand.fittings.length + ' fitting'
+        : 'rig  ' + a + '\n        netlist  ' + b;
+    }
+  } catch (e) { detail = e.message; }
+  check("level 1's netlist reproduces its own rig exactly", same, detail);
+}
+
 const pad = Math.max(...results.map(r => r.name.length));
 console.log('');
 for (const r of results)
   console.log('  ' + (r.ok ? 'ok  ' : 'FAIL') + '  ' + r.name.padEnd(pad) + '  ' + (r.detail || ''));
 console.log('\n  ' + (FAIL ? FAIL + ' CHECK(S) FAILED' : results.length + ' checks passed') + '\n');
-process.exit(FAIL ? 1 : 0);
+/* Not 'FAIL ? 1 : 0'. build.js requires this file LAST, after the
+   cross-check and the vendored-core lock check, and those record a failure
+   by setting process.exitCode. Exiting 0 here because VERIFY passed
+   silently discarded theirs: the build printed "BUILD FAILED - vendored
+   Process Core does not match its lock" and then exited 0, which is the
+   dead-check failure mode this very file has a section about, one level up.
+   Honour a failure somebody else already recorded. */
+process.exit(FAIL ? 1 : (process.exitCode || 0));

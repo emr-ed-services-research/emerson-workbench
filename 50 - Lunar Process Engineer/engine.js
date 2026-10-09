@@ -26,6 +26,16 @@ const P = {
   pipeDark:'#05121a', body:'#4a545e', rim:'#8a94a0',
 };
 
+/* ---------------- the pipework skin ----------------
+   piping() draws GEOMETRY. What that geometry looks like is this map, and
+   it is passed in rather than reached for -- so the same bore, elbow,
+   tee and reducer code can be asked to come out as 1990s dithered metal
+   or as something modern, which is the whole point of Phase 5a. The five
+   roles are all it needs; this is the 1990s one. */
+const PIPE_SKIN = {
+  body: P.body, rim: P.rim, light: P.light, mid: P.mid, dark: P.pipeDark,
+};
+
 /* ---------------- retro drawing kit ----------------
    Ordered dithering, not smooth gradients: the era's own answer to a
    limited palette, and what makes these screens read as drawn. */
@@ -648,6 +658,10 @@ Cutaway.prototype.draw=function(g){
 function piping(spec){
   const lines=spec.lines||[], tees=spec.tees||[],
         reducers=spec.reducers||[], fittings=spec.fittings||[];
+  /* The skin arrives at draw time, so one piping() can be painted twice
+     in two styles without being rebuilt. Defaults to the 1990s one
+     because every caller today wants it; a second renderer passes its
+     own and nothing in the geometry below changes. */
   /* Corners are filleted with arcTo, which bends the CENTRELINE - so the
      inner and outer walls come out as concentric arcs, the way a real elbow
      is made. A round line-join only pads the outside and leaves a sharp
@@ -679,10 +693,11 @@ function piping(spec){
     g.closePath(); g.fill();
   };
   return {
-    draw(g){
+    draw(g,skin){
+      const S=skin||PIPE_SKIN;
       // --- bodies
-      stroke(g,WALL,P.body);
-      reducers.forEach(rd=>taper(g,rd,WALL,P.body));
+      stroke(g,WALL,S.body);
+      reducers.forEach(rd=>taper(g,rd,WALL,S.body));
       /* A real tee is a forged body, not two pipes butted together: the metal
          is thicker at the junction, each of the three ends has a socket hub
          the pipe lands in, and the crotch where the branch leaves the run is
@@ -690,29 +705,29 @@ function piping(spec){
          the bodies; the crotch fillets go on after the bores, below. */
       tees.forEach(t=>{
         const REINF=3, stub=t.r+WALL+REINF+16;
-        g.fillStyle=P.body;
+        g.fillStyle=S.body;
         g.fillRect(t.x-t.r-WALL-REINF, t.y-t.branch-WALL-REINF,
                    2*(t.r+WALL+REINF), 2*(t.branch+WALL+REINF));
         g.fillRect(t.x, t.y-t.branch-WALL-REINF, stub, 2*(t.branch+WALL+REINF));
-        g.fillStyle=P.rim;                                  // socket hubs, three ends
+        g.fillStyle=S.rim;                                  // socket hubs, three ends
         g.fillRect(t.x-t.r-WALL-REINF-2, t.y-t.branch-WALL-REINF-3, 3, 2*(t.branch+WALL+REINF)+6);
         g.fillRect(t.x+stub-3, t.y-t.branch-WALL-REINF-3, 3, 2*(t.branch+WALL+REINF)+6);
       });
-      g.fillStyle=P.rim;
+      g.fillStyle=S.rim;
       reducers.forEach(rd=>{ g.fillRect(rd.x0-2,rd.y-rd.r1-WALL-2,3,2*(rd.r1+WALL)+4);
                              g.fillRect(rd.x1-1,rd.y-rd.r2-WALL-2,3,2*(rd.r2+WALL)+4); });
       fittings.forEach(f=>{ g.fillRect(f.x-3,f.y-f.r-WALL-3,3,2*(f.r+WALL)+6);
                             g.fillRect(f.x+f.r,f.y-f.r-WALL-3,3,2*(f.r+WALL)+6); });
       // --- highlight along the top of each run
-      g.save(); g.globalAlpha=0.5; stroke(g,WALL-2,P.light); g.restore();
+      g.save(); g.globalAlpha=0.5; stroke(g,WALL-2,S.light); g.restore();
       // --- BORES: nothing may close an opening after this
-      stroke(g,0,P.pipeDark);
-      reducers.forEach(rd=>taper(g,rd,0,P.pipeDark));
+      stroke(g,0,S.dark);
+      reducers.forEach(rd=>taper(g,rd,0,S.dark));
       /* --- crotch fillets, the one thing that goes on top of a bore.
          Where a branch leaves the run the metal is radiused, never a sharp
          internal corner - a square crotch is a stress riser and is not how a
          tee is made. Adding it back after the bores keeps it exact. */
-      g.fillStyle=P.body;
+      g.fillStyle=S.body;
       /* Each fillet is a QUARTER round. The sweep flags were inverted, which
          took the long way round the circle - 270 degrees instead of 90 - so
          instead of a small radius in the crotch each tee got a three-quarter

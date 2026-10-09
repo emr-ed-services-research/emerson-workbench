@@ -44,9 +44,19 @@ const wheels=[
   {key:'b2',  x:VALVE_X,y:BR_Y[2],label:'BED 3'},
 ];
 
-/* ---------- physics (verbatim) ---------- */
-const P_SUP=60, SG=1.0;
-/* DERIVED, not chosen - run `node sizing.js` to regenerate and see the
+/* ---------- physics ----------
+   The solver is the PROCESS CORE's, not this level's. What was here -- a
+   hand-written pressure divider, a series-Cv helper, a first-order lag and
+   three loose Cv constants -- is now derived from the netlist below by
+   `LPE.dyn`, which reads the same graph the drawing reads.
+
+   The core's dynamics test keeps the old solver as an ORACLE and requires
+   the derived one to agree with it bit for bit across 60,000 valve and
+   pressure combinations, so this is a change of authorship and not a
+   change of behaviour.
+
+   The Cv values moved onto the components they belong to. They are still
+   DERIVED, not chosen -- run `node sizing.js` to regenerate and see the
    working. Application: 3 NFT beds at 2.0 gpm each (an NFT channel runs
    1-2 L/min; a bed carries ~6), manifold at 15.2 psig because
    micro-irrigation headers run 10-25 psi, not mains pressure. Lines from
@@ -55,33 +65,7 @@ const P_SUP=60, SG=1.0;
    The first pass had Cv 7 / 4 / 2.2, picked because they balanced nicely,
    and the bay delivered 46.8 gpm - 2,800 gal/hour through three grow beds
    on a colony whose own narration says the water is counted. */
-const CV_MAIN_MAX=0.896, CV_BR_MAX=0.513, CV_REDUCER=0.296;
 const valves={main:0,b0:0,b1:0,b2:0};
-const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));
-/* Manifold pressure is STATE, not recomputed each frame. Water is
-   incompressible: shut the main with every bed shut and that volume is
-   trapped - it holds whatever pressure it had, because nothing can leave. */
-let pManHeld=0;
-const P_TAU=0.22;
-function solve(){
-  const cvMain=CV_MAIN_MAX*valves.main;
-  const cv=[CV_BR_MAX*valves.b0, CV_BR_MAX*valves.b1, 0];
-  const raw2=CV_BR_MAX*valves.b2;
-  cv[2]= raw2>0 ? seriesCv(raw2,CV_REDUCER) : 0;   // bed 3 runs through the reducer
-  const cvSum=cv[0]+cv[1]+cv[2];
-  let pTarget;
-  if(cvMain<=0){
-    pTarget=(cvSum<=0) ? pManHeld : 0;             // isolated and full = trapped
-  } else if(cvSum<=0){
-    pTarget=P_SUP;                                 // dead-headed against the header
-  } else {
-    pTarget=P_SUP*(cvMain*cvMain)/(cvMain*cvMain+cvSum*cvSum);
-  }
-  const pMan=pManHeld;                             // flows follow pressure that is
-  const root=Math.sqrt(Math.max(0,pMan)/SG);       // actually there, not the target
-  const q=cv.map(c=>c*root);
-  return {cvMain,cv,cvSum,pMan,pTarget,q,qTot:q[0]+q[1]+q[2]};
-}
 
 /* ---------- air fill (verbatim) ----------
    New pipe is full of air at room pressure. Water stands to each closed
@@ -144,6 +128,156 @@ const NET=LPE.piping({
   reducers:[{x0:RED_X0,x1:RED_X1,y:BR_Y[2],r1:R_MAIN,r2:RED_R}],
   fittings:[{x:wheelMainX-54,y:MAIN_Y,r:R_MAIN,kind:"union"}],
 });
+/* The schematic's skin. The Process Core names the roles and holds no
+   colours at all -- the same plan has to come out as this and as a modern
+   view -- so saying what each role looks like is chrome's job, which is
+   here. These are the five the core used to carry as defaults.
+   `gap` is what a crossing break is painted over in: whatever is behind
+   the line, which only this layer knows. */
+const SCHEM_SKIN={
+  line:'#9fb0bf', lineWidth:2,
+  symbol:'#d7dde3', symbolWidth:2,
+  fill:'#d7dde3',
+  ground:P.shadow,
+  gap:P.shadow,
+  label:'#8b959e', labelFont:"11px ui-monospace, monospace",
+};
+
+/* The schematic view. Equipment as ISA-5.5 symbols, connections as plain
+   lines, valve fill carrying state -- the standard's own convention, so an
+   open valve is a solid bowtie. The solver's valve object goes straight in
+   as `state`; there is no second copy of anything. */
+function drawSchem(g,S){
+  /* Its own ground, over the whole screen. A process display is a display,
+     not an overlay: the bay's wall panels and stencils showing through the
+     schematic made it read as a ghost of the room rather than a view of
+     the plant. The room is still there when you switch back. */
+  g.fillStyle=P.shadow; g.fillRect(0,0,W,H);
+  const plan=LPE.schem.plan(NETLIST,{state:valves, scale:12});
+  LPE.schem.draw(g,plan,SCHEM_SKIN);
+  /* The one thing the schematic adds over the rig: what each bed is
+     actually getting, read off the same solve the rig view uses. */
+  g.font="13px 'VT323',monospace"; g.textAlign='left';
+  BR_Y.forEach((y,i)=>{
+    const q=S.q[i];
+    g.fillStyle=q>0.05?P.water:P.body;
+    g.fillText(q.toFixed(2)+' GPM', POD_X+26, y+4);
+  });
+}
+
+/* ---- the same bay as a NETLIST -------------------------------------
+   One declaration of what connects to what. It drives the schematic view;
+   the rig view above is still drawn from its own arrays for now, and
+   verify.js asserts the two produce identical piping geometry, so they
+   cannot drift apart while both exist.
+
+   NO COORDINATES LIVE HERE. A component says what it is, what it is
+   called and how big its bore is in INCHES -- a half-inch line is half an
+   inch however you draw it. Where each one sits is the RIG FRAME below,
+   and a second frame is all it would take to hang this same bay on a
+   different drawing. That separation is the whole of Phase 2; before it,
+   the schematic lined up with the cutaway because they were literally the
+   same numbers, which is a coincidence and not a mechanism.
+
+   Tags are HV- because these are HANDVALVES -- four hand wheels, no
+   actuators, no loops. Grounded in the Source Library rather than chosen:
+   the Pulp & Paper Sourcebook's P&IDs (drawings C0748, E0894) tag
+   handvalves HV-1..HV-20 and keep FV-/PV-/TV-/LV- for control valves in a
+   loop. Calling these FV- would claim an instrument that is not there. */
+const NETLIST=LPE.net({
+  /* ASME B36.10M Sch 40 bores, the same ones sizing.js works from. */
+  bores:{main:0.622, branch:0.493},
+  fluid:{sg:1.0},                       // water; see fluids.js for the rest
+  components:{
+    reservoir:{kind:'vessel', tag:'TK-1', role:'source', pressure:60},
+    union1:   {kind:'union'},
+    vMain:    {kind:'valve',  tag:'HV-1', key:'main', valveType:'globe', cv:0.896},
+    tee0:     {kind:'tee',    axis:'v'},
+    tee1:     {kind:'tee',    axis:'v'},
+    v0:       {kind:'valve',  tag:'HV-2', key:'b0', valveType:'globe', cv:0.513},
+    v1:       {kind:'valve',  tag:'HV-3', key:'b1', valveType:'globe', cv:0.513},
+    v2:       {kind:'valve',  tag:'HV-4', key:'b2', valveType:'globe', cv:0.513},
+    red:      {kind:'reducer', throat:0.108, cv:0.296},
+    pod0:     {kind:'vessel', tag:'TK-2', role:'sink'},
+    pod1:     {kind:'vessel', tag:'TK-3', role:'sink'},
+    pod2:     {kind:'vessel', tag:'TK-4', role:'sink'},
+  },
+  segments:[
+    {from:'reservoir.out', to:'union1.in', bore:'main'},
+    {from:'union1.out',    to:'vMain.in',  bore:'main'},
+    {from:'vMain.out',     to:'tee0.in',   bore:'main'},
+    {from:'tee0.out',      to:'tee1.in',   bore:'main'},
+    {from:'tee1.out',      to:'v2.in',     bore:'main'},
+    {from:'v2.out',        to:'red.in',    bore:'main'},
+    {from:'red.out',       to:'pod2.in',   bore:'main'},
+    {from:'tee0.branch',   to:'v0.in',     bore:'branch'},
+    {from:'v0.out',        to:'pod0.in',   bore:'branch'},
+    {from:'tee1.branch',   to:'v1.in',     bore:'branch'},
+    {from:'v1.out',        to:'pod1.in',   bore:'branch'},
+  ],
+  /* ---- THE RIG FRAME ------------------------------------------------
+     Where this bay sits on the cutaway, in the cutaway's own pixels.
+     pxPerInch is the scale the drawing was built at: R_BR is the anchor,
+     so a 0.493 in branch bore draws 10 px wide and everything else
+     follows. Rounding to 0.1 px is this drawing's own quantisation -- the
+     constants above were hand-written rounded and the rig must keep
+     reproducing exactly.
+
+     Waypoints are keyed by the segment they belong to rather than by
+     index, because an index moves the moment a segment is inserted above
+     it. These two are the riser's elbows, E1 and E2. */
+  frames:{
+    rig:{
+      pxPerInch:PX_PER_IN, round:1,
+      at:{
+        reservoir:[30,MAIN_Y],
+        union1:   [wheelMainX-54,MAIN_Y],
+        vMain:    [wheelMainX,MAIN_Y],
+        tee0:     [TRUNK_X,BR_Y[0]],
+        tee1:     [TRUNK_X,BR_Y[1]],
+        v0:       [VALVE_X,BR_Y[0]],
+        v1:       [VALVE_X,BR_Y[1]],
+        v2:       [VALVE_X,BR_Y[2]],
+        red:      [[RED_X0,BR_Y[2]],[RED_X1,BR_Y[2]]],
+        pod0:     [POD_X,BR_Y[0]],
+        pod1:     [POD_X,BR_Y[1]],
+        pod2:     [POD_X,BR_Y[2]],
+      },
+      via:{
+        'vMain.out->tee0.in':[[TRUNK_X,MAIN_Y]],
+        'tee1.out->v2.in':   [[TRUNK_X,BR_Y[2]]],
+      },
+    },
+  },
+});
+
+/* The dynamics layer, reading the netlist above. `solve()` keeps the shape
+   this level has always read -- q as an array in bed order -- so nothing
+   downstream had to change when the physics moved out. */
+const DYN=LPE.dyn(NETLIST,{tau:0.22});
+function solve(){
+  const S=DYN.solve(valves);
+  return {cvMain:S.cvUp, cvSum:S.cvDown, pMan:S.pressure, pTarget:S.target,
+          q:[S.q.b0,S.q.b1,S.q.b2], qTot:S.qTot};
+}
+
+/* Rig or schematic. Same netlist underneath, so the two views cannot
+   disagree about what is connected to what -- which is the whole reason
+   the netlist exists. V, because ENTER and SPACE belong to the lesson's
+   own continue control and must not be overloaded. */
+const T1={rig:   'IRRIGATION MANIFOLD \u2014 CUTAWAY  \u00b7  V: SCHEMATIC',
+          schem: 'IRRIGATION MANIFOLD \u2014 SCHEMATIC  \u00b7  V: CUTAWAY'};
+let view='rig';
+window.addEventListener('keydown',e=>{
+  if(e.key!=='v'&&e.key!=='V') return;
+  e.preventDefault();
+  view=(view==='rig'?'schem':'rig');
+  /* The topbar carries the offer. A key nobody is told about is a key
+     nobody presses, and the canvas is the rig's, not a place to park
+     instructions. */
+  SH.title(T1[view]);
+});
+
 /* Bay 3 runs full bore up to the reducer, squeezes through its throat, and
    opens out again - three segments, so the water narrows only where the
    fitting narrows it instead of the whole branch being drawn thin. */
@@ -168,42 +302,84 @@ const BR_TOTAL=branches.map(b=>b.segs.reduce((t,s)=>t+s.len,0));
    carries 44 gpm and the next 26, and both pinned to full and drew the same,
    hiding the very thing the riser is there to show. */
 const FLOW_REF=(()=>{
-  const keep={...valves}, keepP=pManHeld;
-  const settle=v=>{ Object.assign(valves,v); let S=solve(); pManHeld=S.pTarget; return solve(); };
+  const keep={...valves}, keepP=DYN.pressure;
+  const settle=v=>{ Object.assign(valves,v); DYN.settle(valves); return solve(); };
   const all=settle({main:1,b0:1,b1:1,b2:1}).qTot;
   const one=settle({main:1,b0:1,b1:0,b2:0}).q[0];
-  Object.assign(valves,keep); pManHeld=keepP;
+  Object.assign(valves,keep); DYN.pressure=keepP;
   return {riser:all, branch:one};
 })();
 
-/* ---------- the six steps (verbatim) ---------- */
-const STEPS=[
-  { keys:['main'], watch:-1,
+/* ---------- the six steps ----------
+   Split in two, which is Phase 4.
+
+   THE SCENARIO is the engineering problem: what the player may touch and
+   what has to become true. It is plain data -- no functions, no words, no
+   pixels -- so it could be a file an engineer edits without writing any
+   JavaScript, and the core's validator answers in their vocabulary when
+   they get it wrong. The same scenario runs headless in the core's tests
+   with no renderer present at all, which is the proof that the split is
+   real rather than cosmetic.
+
+   THE NARRATIVE is everything that is said, bound to a step's id. Two
+   files, two authors, neither blocking the other: an engineer can change
+   what the bay does without touching a sentence, and whoever owns voice
+   can rewrite every sentence without touching the engineering.         */
+const SCENARIO={
+  rig:'bio-grow-bay-3',
+  start:{'HV-1':0,'HV-2':0,'HV-3':0,'HV-4':0},
+  steps:[
+    { id:'open-main',      operable:['HV-1'],
+      when:[{measure:'HV-1.position', atLeast:0.9}] },
+    { id:'open-bed-1',     operable:['HV-2'], observe:'HV-2',
+      when:[{measure:'HV-2.position', atLeast:0.9}] },
+    { id:'open-bed-2',     operable:['HV-3'], observe:'HV-3',
+      when:[{measure:'HV-3.position', atLeast:0.9}] },
+    { id:'open-bed-3',     operable:['HV-4'], observe:'HV-4',
+      when:[{measure:'HV-4.position', atLeast:0.9}] },
+    { id:'throttle-bed-1', operable:['HV-2'], observe:'HV-4',
+      when:[{measure:'HV-2.position', atMost:0.35}] },
+    { id:'balance',        operable:['HV-2','HV-3','HV-4'],
+      when:[{each:  ['HV-2.flow','HV-3.flow','HV-4.flow'], atLeast:1.0},
+            {spread:['HV-2.flow','HV-3.flow','HV-4.flow'], atMost:0.15}] },
+  ],
+};
+
+const NARRATIVE={
+  'open-main':{
     task:'Open the MAIN SUPPLY valve. Drag the hand wheel.',
-    ok:()=>valves.main>=0.9,
     lesson:'60 psig at the manifold &mdash; and <b>nothing is moving</b>. In Four-B the gauge sat downstream, so it only woke up once water ran. This one sits on the manifold: the line is loaded and perfectly still, with every bed shut.' },
-  { keys:['b0'], watch:0,
+  'open-bed-1':{
     task:'Open BED 1.',
-    ok:()=>valves.b0>=0.9,
     lesson:'The valve created nothing \u2014 it opened a path, and the pressure spent itself. And watch what left first: that run was new pipe, <b>full of air</b>, which had to vent out the emitters before water reached a single root.' },
-  { keys:['b1'], watch:1,
+  'open-bed-2':{
     task:'Open BED 2. Keep an eye on Bed 1\u2019s number.',
-    ok:()=>valves.b1>=0.9,
     lesson:'Bed 1 <b>dropped</b> when Bed 2 opened, and nobody touched Bed 1. One supply, two demands &mdash; what divides at the tee is all there ever was.' },
-  { keys:['b2'], watch:2,
+  'open-bed-3':{
     task:'Open BED 3.',
-    ok:()=>valves.b2>=0.9,
     lesson:'Bed 3 is on the old run with a <b>reducer</b> in it. Same valve, same manifold pressure, noticeably less flow &mdash; and watch the particles sprint through that throat. Squeeze the bore and velocity goes up while pressure goes down. The restriction is in the pipe, not the valve.' },
-  { keys:['b0'], watch:2,
+  'throttle-bed-1':{
     task:'Now throttle BED 1 back to about a quarter open \u2014 and watch Bed 3.',
-    ok:()=>valves.b0<=0.35,
     lesson:'Bed 3 came up and nobody touched Bed 3. Add resistance to one branch and manifold pressure rises for every other branch. In a shared system <b>there is no local change</b>.' },
-  { keys:['b0','b1','b2'], watch:-1,
+  'balance':{
     task:'Last job: balance the bay. Three identical beds should drink about the same \u2014 get all three within a tenth of a gallon of each other.',
-    ok:()=>{ const S=solve(); const mn=Math.min(...S.q), mx=Math.max(...S.q);
-             return mn>=1.0 && (mx-mn)<=0.15; },
     lesson:'<b>That</b> is commissioning. You balanced down to the weakest branch: Bed 3 can never pass more than its reducer allows, so the other two came back to meet it. The whole bay now runs at Bed 3&rsquo;s ceiling \u2014 that reducer is not costing one bed, it is capping all three.' },
-];
+};
+
+/* Zipped back together for this level's own step machinery. `keys` is the
+   solver's names for whatever the scenario made operable, and `watch` is
+   the bed index of whatever it said to observe -- both translated through
+   the netlist, so the scenario never has to know either. */
+const SC=LPE.scenario(SCENARIO,NETLIST);
+if(SC.errors.length) throw new Error('level 1 scenario: '+SC.errors.join('; '));
+const BED_OF={'HV-2':0,'HV-3':1,'HV-4':2};
+const STEPS=SCENARIO.steps.map((s,i)=>({
+  keys:SC.operable(i).map(tag=>NETLIST.byTag(tag).key),
+  watch:SC.observe(i)===null?-1:(BED_OF[SC.observe(i)]!==undefined?BED_OF[SC.observe(i)]:-1),
+  task:NARRATIVE[s.id].task,
+  lesson:NARRATIVE[s.id].lesson,
+  ok:()=>SC.met(i,valves,DYN.solve(valves)),
+}));
 let step=0, done=false;
 /* Once the assignment is over the rig is unlocked: every wheel turns, and
    every wheel lights, because every one of them is now a control you may
@@ -236,6 +412,7 @@ function pipeV(g,x,y0,y1,r){
 }
 function draw(g,dt,t){
   const S=solve();
+  if(view==='schem'){ drawSchem(g,S); return; }
   g.drawImage(BG,0,0);
 
   // ---- pipe work ----
@@ -319,7 +496,7 @@ function draw(g,dt,t){
 /* ---------- simulation ---------- */
 function stepSim(dt){
   const S=solve();
-  pManHeld += (S.pTarget-pManHeld)*Math.min(1,dt/P_TAU);
+  DYN.step(dt,valves);          // the lag lives in the dynamics layer now
   for(let i=0;i<3;i++){
     if(S.q[i]>0) fill[i]=Math.min(1,fill[i]+S.q[i]*FILL_RATE*dt/BR_LEN);
     const f=Math.min(1,S.q[i]/FLOW_REF.branch);
@@ -405,7 +582,7 @@ function onMove(e){
 /* ---------- mount ---------- */
 buildScene();
 const SH=LPE.mount({
-  t1:'IRRIGATION MANIFOLD \u2014 CUTAWAY',
+  t1:T1.rig,
   t2:'The Garden \u00b7 Bio-Grow Bay 3',
   w:W,h:H,step:stepSim,draw,
   intro:[
@@ -425,7 +602,7 @@ const SH=LPE.mount({
   onStart:say,
   onReset(){
     valves.main=valves.b0=valves.b1=valves.b2=0;
-    pManHeld=0; step=0; done=false;
+    DYN.pressure=0; step=0; done=false;
     for(let i=0;i<3;i++){ fill[i]=FILL_START; branches[i].set(0,{flow:0,fill:FILL_START}); }
     LPE.audio.flow(0); LPE.audio.vent(0); LPE.audio.rush(0); say();
   },

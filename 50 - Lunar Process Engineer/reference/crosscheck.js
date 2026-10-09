@@ -61,7 +61,10 @@ ck('SCH 80 area matches sizing.js', !!(sz80 && trS80) && sz80[3] === trS80[3],
 /* the reducer Cv appears in four files and must be one number */
 const grab = (f, re) => { const m = read(f).match(re); return m ? m[1] : null; };
 const cvTrainer = grab('trainer.html', /reducer:\s*\{[^}]*cv:([\d.]+)/);
-const cvL1 = grab('level1.html', /CV_REDUCER=([\d.]+)/);
+/* Level 1's Cv values moved onto the netlist components in Phase 3, so
+   they are scraped from there now. Same guarantee, new address: one
+   reducer Cv across the whole game. */
+const cvL1 = grab('level1.html', /red:\s*\{[^}]*cv:([\d.]+)/);
 const cvL2 = grab('level2.html', /CV_REDUCER=([\d.]+)/);
 const cvSize = (() => {                       // sizing.js prints it; recompute instead
   const m = read('sizing.js').match(/cvRed\s*=\s*([^\n;]+)/);
@@ -113,13 +116,18 @@ console.log('\n4b. MANIFOLD LESSON — one supply, two demands');
 const l1 = read('level1.html');
 const cvSupT = grab('trainer.html', /CV_SUP\s*=\s*([\d.]+)/);
 const cvBrT  = grab('trainer.html', /CV_BR\s*=\s*([\d.]+)/);
-const cvSupL = grab('level1.html', /CV_MAIN_MAX=([\d.]+)/);
-const cvBrL  = grab('level1.html', /CV_BR_MAX=([\d.]+)/);
+const cvSupL = grab('level1.html', /vMain:\s*\{[^}]*cv:([\d.]+)/);
+const cvBrL  = grab('level1.html', /v0:\s*\{[^}]*cv:([\d.]+)/);
 ck('supply Cv matches level 1', cvSupT === cvSupL, cvSupT + ' / ' + cvSupL);
 ck('branch Cv matches level 1', cvBrT === cvBrL, cvBrT + ' / ' + cvBrL);
-ck('the bench uses level 1 divider, not its own',
+/* The divider itself left level 1 in Phase 3: it lives in the Process
+   Core's dynamics layer, which is where the bench must now be matched
+   against. Checking level1.html for it would pass forever on a file that
+   no longer contains a solver. */
+const dynSrc = read('vendor/process-core/dynamics.js');
+ck('the bench uses the core divider, not its own',
   /Cvm\^2 \/ \(Cvm\^2 \+ Cv_sum\^2\)/.test(read('trainer.html')) &&
-  /pTarget=P_SUP\*\(cvMain\*cvMain\)\/\(cvMain\*cvMain\+cvSum\*cvSum\)/.test(l1),
+  /supplyP \* \(cvUp \* cvUp\) \/ \(cvUp \* cvUp \+ cvDown \* cvDown\)/.test(dynSrc),
   'same relation both sides');
 
 const CVS = +cvSupT, CVB2 = +cvBrT;

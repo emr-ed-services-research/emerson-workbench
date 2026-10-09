@@ -1,0 +1,46 @@
+<!doctype html><meta charset=utf-8><title>schem vis</title>
+<style>body{margin:0;background:#16191c;font-family:system-ui;color:#8b959e}
+h2{font:600 11px/1 ui-monospace,monospace;letter-spacing:.12em;text-transform:uppercase;
+   color:#5d666e;margin:18px 0 8px 18px}
+canvas{display:block;margin:0 18px;background:#15181b;border:1px solid #2b3238;border-radius:3px}</style>
+<h2>Level 1 bay — main open, bed 1 open, beds 2 and 3 shut</h2>
+<canvas id=a width=1000 height=440></canvas>
+<h2>All valves open</h2>
+<canvas id=b width=1000 height=440></canvas>
+<script src="topology.js"></script><script src="schemvis.js"></script>
+<script>
+/* The core holds no colours; a consumer says what each role looks like. */
+const SKIN={line:'#9fb0bf',lineWidth:2,symbol:'#d7dde3',symbolWidth:2,
+            fill:'#d7dde3',ground:'#15181b',gap:'#15181b',
+            label:'#8b959e',labelFont:'11px ui-monospace, monospace'};
+const MAIN_Y=86,TRUNK_X=320,POD_X=812,BR_Y=[170,256,342];
+const net=LPE.net({bores:{main:12.6,branch:10},components:{
+ reservoir:{kind:'vessel',at:[60,MAIN_Y],role:'source'},
+ vMain:{kind:'valve',at:[190,MAIN_Y],key:'main',valveType:'globe'},
+ tee0:{kind:'tee',at:[TRUNK_X,BR_Y[0]],axis:'v'},
+ tee1:{kind:'tee',at:[TRUNK_X,BR_Y[1]],axis:'v'},
+ v0:{kind:'valve',at:[500,BR_Y[0]],key:'b0',valveType:'globe'},
+ v1:{kind:'valve',at:[500,BR_Y[1]],key:'b1',valveType:'globe'},
+ v2:{kind:'valve',at:[500,BR_Y[2]],key:'b2',valveType:'globe'},
+ mix:{kind:'mixer',at:[650,BR_Y[2]]},
+ pod0:{kind:'vessel',at:[POD_X,BR_Y[0]],role:'sink'},
+ pod1:{kind:'vessel',at:[POD_X,BR_Y[1]],role:'sink'},
+ pod2:{kind:'vessel',at:[POD_X,BR_Y[2]],role:'sink'}},
+ segments:[
+ {from:'reservoir.out',to:'vMain.in',bore:'main'},
+ {from:'vMain.out',to:'tee0.in',bore:'main',via:[[TRUNK_X,MAIN_Y]]},
+ {from:'tee0.out',to:'tee1.in',bore:'main'},
+ {from:'tee1.out',to:'v2.in',bore:'main',via:[[TRUNK_X,BR_Y[2]]]},
+ {from:'v2.out',to:'mix.in',bore:'main'},
+ {from:'mix.out',to:'pod2.in',bore:'main'},
+ {from:'tee0.branch',to:'v0.in',bore:'branch'},
+ {from:'v0.out',to:'pod0.in',bore:'branch'},
+ {from:'tee1.branch',to:'v1.in',bore:'branch'},
+ {from:'v1.out',to:'pod1.in',bore:'branch'}]});
+document.title = net.errors.length ? 'ERRORS: '+net.errors.join('; ') : 'schem vis ok';
+function paint(id,state){const g=document.getElementById(id).getContext('2d');
+ g.save();g.translate(20,30);
+ LPE.schem.draw(g,LPE.schem.plan(net,{state,scale:13}),SKIN);g.restore();}
+paint('a',{main:1,b0:1,b1:0,b2:0});
+paint('b',{main:1,b0:1,b1:1,b2:1});
+</script>

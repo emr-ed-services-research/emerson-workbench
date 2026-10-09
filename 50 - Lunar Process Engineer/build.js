@@ -2,7 +2,23 @@
    every output gets the same copy, so they cannot drift. */
 const fs=require('fs');
 const read=f=>fs.readFileSync(f,'utf8');
-const css=read('engine.css'), js=read('engine.js');
+const css=read('engine.css');
+/* topology.js and schemvis.js are the PROCESS CORE, vendored in from
+   `45 - Process Core`. They are not LPE's: they define LPE.net and
+   LPE.schem, which any consumer may use, and LoopBench will use the same
+   files. Never edit them here -- edit the core and re-vendor, which the
+   lock check below enforces.
+
+   Bundling them rather than adding <script src> tags to each level keeps
+   the one rule this build exists for -- one engine on disk, every output
+   gets the same copy. A level page that loaded them itself would also be invisible
+   to game.html, which inlines only each level's own inline script, so the
+   game would come up with LPE.net undefined and nothing would say so. */
+const CORE='vendor/process-core/';
+const js=read('engine.js')+String.fromCharCode(10)+read(CORE+'topology.js')
+        +String.fromCharCode(10)+read(CORE+'schemvis.js')
+        +String.fromCharCode(10)+read(CORE+'dynamics.js')
+        +String.fromCharCode(10)+read(CORE+'scenario.js');
 const scriptOf=f=>{                       // the inline <script> body of a level page
   const h=read(f), i=h.indexOf('<script>',h.indexOf('engine.js'));
   return h.slice(h.indexOf('>',i)+1, h.lastIndexOf('</script>'));
@@ -72,6 +88,27 @@ if (!process.env.LPE_SKIP_VERIFY) {
       console.log('  ' + n + ' cross-checks passed (ASME tables, handbook relations, lesson text)');
     }
   } catch (e) { console.error(e.message); process.exitCode = 1; }
+  /* THE VENDORED CORE must be exactly what `45 - Process Core` shipped.
+     Its own tests ran in the core before it was vendored -- that is what
+     vendor.js refuses to skip -- so what this consumer has to prove is a
+     different thing: that nobody edited the copy. A hand-edit here would
+     fork the core silently, and the fork would surface months later in
+     LoopBench rather than in the change that caused it.
+
+         node "../45 - Process Core/test.js"      run the core's tests
+         node "../45 - Process Core/vendor.js" .  re-vendor after a change
+  */
+  try {
+    const vendorTool = require('../45 - Process Core/vendor.js');
+    const v = vendorTool.verify(require('path').join(__dirname, 'vendor', 'process-core'));
+    if (!v.ok) {
+      console.error('  BUILD FAILED - vendored Process Core does not match its lock');
+      console.error('  ' + v.why);
+      process.exitCode = 1;
+    } else {
+      console.log('  Process Core verified (' + v.why + ')');
+    }
+  } catch (e) { console.error('  BUILD FAILED - ' + e.message); process.exitCode = 1; }
   try { require('./verify.js'); } catch (e) {
     console.error('');
     console.error('  BUILD FAILED - verify.js did not run: ' + (e && e.message));
