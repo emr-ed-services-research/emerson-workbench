@@ -95,3 +95,21 @@ voice/
 __pycache__/
 *.pyc
 40 - Engine/render/_tmp-*.mjs
+
+# One-off experiment, dry-run and preview OUTPUT under 10 - Courses.
+# Pipeline-generated and reproducible from it -- mostly rendered PNGs,
+# ~18 MB when this rule was added (2026-10-09).
+#
+# Named by family, deliberately NOT a blanket "_*" rule. Several
+# underscore-prefixed directories ARE tracked and are real: _Template
+# Gallery/, _generator/, _Origination Test - */, _Template Proof - ch3/,
+# and a _preview/ under 14101. core.ignorecase is true here, so a loose
+# pattern would also catch that last one by case alone. A blanket rule
+# would quietly stop showing new files added to any of them.
+#
+# Note this reverses earlier practice: the vault has committed this kind
+# of artifact before (the _Origination Test and _Template Proof trees).
+# Going forward these stay out of history.
+10 - Courses/_Domain-Tier Dry Run*/
+10 - Courses/_Preview*/
+10 - Courses/*/Presentation/build/_*-prototype/
