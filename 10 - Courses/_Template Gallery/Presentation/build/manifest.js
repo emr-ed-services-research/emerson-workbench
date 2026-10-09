@@ -17,5 +17,6 @@ window.EW_MANIFEST = [
     { "n": 16, "file": "tg-016.html", "family": "role-nomenclature-parse","section": "Canvas Phase 1b", "title": "Role: Nomenclature (parse)",        "hasNotes": false, "review": "" },
     { "n": 17, "file": "tg-017.html", "family": "role-application-pick", "section": "Canvas Phase 1b", "title": "Role: Application (pick one, analyze)", "hasNotes": false, "review": "" },
     { "n": 18, "file": "tg-018.html", "family": "role-procedure-list",   "section": "Canvas Phase 1b", "title": "Role: Procedure (runsheet, no figure)", "hasNotes": false, "review": "" },
-    { "n": 19, "file": "tg-019.html", "family": "divider-statement",     "section": "Structural (not Axis-C, not Stage-3-selected)", "title": "Divider (statement) — chapter/module title card", "hasNotes": false, "review": "" }
+    { "n": 19, "file": "tg-019.html", "family": "divider-statement",     "section": "Structural (not Axis-C, not Stage-3-selected)", "title": "Divider (statement) — chapter/module title card", "hasNotes": false, "review": "" },
+    { "n": 20, "file": "tg-020.html", "family": "role-check-has-fig",    "section": "Origination Root-Cause Fixes (2026-09-20)", "title": "Role: Check (with figure)", "hasNotes": false, "review": "" }
 ];

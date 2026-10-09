@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ISA Schematic Symbol Library — Phase 1 Demo</title>
+<style>
+  :root {
+    --emerson-blue: #004B8D;
+    --emerson-charcoal: #3F4040;
+    --emerson-grey: #959797;
+    --emerson-white: #FFFFFF;
+    --fisher-green: #2B5D3B; /* real hardware green, see symbol-library.svg header */
+  }
+  body {
+    margin: 0;
+    padding: 32px;
+    background: var(--emerson-white);
+    font-family: Arial, Helvetica, sans-serif;
+    color: var(--emerson-charcoal);
+  }
+  h1 {
+    color: var(--emerson-blue);
+    font-size: 22px;
+    margin: 0 0 4px 0;
+  }
+  .rule {
+    height: 3px;
+    background: var(--emerson-blue);
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  p.note {
+    max-width: 900px;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--emerson-charcoal);
+  }
+  .frame {
+    border: 1px solid #ddd;
+    max-width: 1100px;
+    margin: 20px 0;
+  }
+  .cap { font-size: 13px; fill: var(--emerson-charcoal); }
+  .lbl { font-size: 15px; fill: var(--emerson-charcoal); font-weight: bold; }
+  .tag-fill { fill: var(--emerson-white); }
+  .legend {
+    display: flex;
+    gap: 32px;
+    margin-top: 12px;
+    font-size: 13px;
+  }
+  .legend div { display: flex; align-items: center; gap: 8px; }
+  .swatch-line { width: 40px; height: 0; border-top: 4px solid var(--emerson-charcoal); }
+  .swatch-dash { width: 40px; height: 0; border-top: 2px dashed var(--emerson-grey); }
+</style>
+</head>
+<body>
+
+  <h1>Emerson Workbench &mdash; ISA Schematic Symbol Library: Composed Example</h1>
+  <div class="rule"></div>
+
+  <p class="note">
+    <strong>Phase 1 asset build.</strong> This is a standalone proof composition, not a
+    course slide &mdash; horizontal (flow left&ndash;to&ndash;right), built entirely from the
+    primitives defined in <code>symbol-library.svg</code>. It demonstrates a basic tank
+    level-control loop: a level transmitter (LT) senses the tank's level and signals a
+    panel-mounted level controller (LC), which signals the control valve's actuator to
+    throttle outlet flow &mdash; the same functional skeleton as the vault's own
+    Control Valve Handbook Fig.&nbsp;1.1 feedback loop (already used on
+    <code>cve1-005.html</code>), but drawn as a real physical piping/instrumentation
+    schematic instead of an abstract block diagram.
+  </p>
+
+  <div class="frame">
+  <svg viewBox="0 0 1120 500" width="1120" height="500" xmlns="http://www.w3.org/2000/svg">
+
+    <defs>
+      <!-- Same symbol set as symbol-library.svg, inlined here so this file is fully
+           self-contained (no external file reference needed to view it). -->
+
+      <symbol id="sym-valve-body" viewBox="0 0 120 100">
+        <line x1="0" y1="50" x2="20" y2="50" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+        <line x1="100" y1="50" x2="120" y2="50" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+        <polygon points="20,20 20,80 60,50" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
+        <polygon points="100,20 100,80 60,50" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
+      </symbol>
+
+      <symbol id="sym-valve-actuator" viewBox="0 0 120 200">
+        <polygon points="20,140 20,200 60,170" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
+        <polygon points="100,140 100,200 60,170" fill="var(--emerson-blue)" stroke="var(--emerson-charcoal)" stroke-width="2" stroke-linejoin="round"/>
+        <line x1="60" y1="170" x2="60" y2="125" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+        <path d="M 20 125 A 40 40 0 0 1 100 125 L 20 125 Z"
+              fill="none" stroke="var(--emerson-charcoal)" stroke-width="3" stroke-linejoin="round"/>
+      </symbol>
+
+      <symbol id="sym-instrument-field" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" class="tag-fill" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+      </symbol>
+
+      <symbol id="sym-instrument-panel" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="42" class="tag-fill" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+        <!-- bisecting line split with a gap so a centered tag label never renders through it -->
+        <line x1="10" y1="50" x2="35" y2="50" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+        <line x1="65" y1="50" x2="90" y2="50" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+      </symbol>
+
+      <symbol id="sym-vessel-tank" viewBox="0 0 140 180">
+        <path d="M 15 40 A 55 25 0 0 1 125 40 L 125 150 L 15 150 Z"
+              fill="var(--emerson-white)" stroke="var(--emerson-charcoal)" stroke-width="4" stroke-linejoin="round"/>
+        <path d="M 15 40 A 55 25 0 0 0 125 40" fill="none" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+        <path d="M 18 95 L 122 95 L 122 148 L 18 148 Z" fill="var(--emerson-blue)" opacity="0.12"/>
+        <line x1="70" y1="150" x2="70" y2="170" stroke="var(--emerson-charcoal)" stroke-width="4"/>
+        <line x1="125" y1="80" x2="140" y2="80" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+      </symbol>
+
+      <symbol id="sym-pipe-reducer" viewBox="0 0 100 60">
+        <polygon points="0,12 0,48 70,38 70,22" fill="var(--emerson-white)" stroke="var(--emerson-charcoal)" stroke-width="3" stroke-linejoin="round"/>
+      </symbol>
+
+      <marker id="arrow-process" viewBox="0 0 10 10" refX="8" refY="5"
+              markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--emerson-charcoal)"/>
+      </marker>
+
+      <marker id="arrow-signal" viewBox="0 0 10 10" refX="8" refY="5"
+              markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--emerson-grey)"/>
+      </marker>
+    </defs>
+
+    <rect x="0" y="0" width="1120" height="500" fill="var(--emerson-white)"/>
+
+    <!-- ============ PROCESS PIPING (solid, charcoal, flow left-to-right) ============ -->
+    <!-- tank outlet -> reducer -->
+    <line x1="130" y1="380" x2="580" y2="380" stroke="var(--emerson-charcoal)" stroke-width="4" marker-end="url(#arrow-process)"/>
+    <!-- reducer -->
+    <use href="#sym-pipe-reducer" x="580" y="359" width="70" height="42"/>
+    <!-- reducer -> valve inlet -->
+    <!-- (valve symbol itself draws its own short inlet/outlet stubs) -->
+    <!-- valve -> outlet, off frame -->
+    <line x1="770" y1="380" x2="1080" y2="380" stroke="var(--emerson-charcoal)" stroke-width="4" marker-end="url(#arrow-process)"/>
+
+    <!-- tank side tap -> LT (solid process tap line, thinner) -->
+    <polyline points="200,290 280,290 280,265" fill="none" stroke="var(--emerson-charcoal)" stroke-width="3"/>
+
+    <!-- ============ SIGNAL WIRING (dashed, grey) ============ -->
+    <!-- LT -> LC -->
+    <path d="M 280 175 L 280 120 L 455 120" fill="none" stroke="var(--emerson-grey)" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#arrow-signal)"/>
+    <!-- LC -> valve actuator -->
+    <path d="M 545 120 L 620 120 L 620 208 L 710 208 L 710 233" fill="none" stroke="var(--emerson-grey)" stroke-width="2" stroke-dasharray="8 6" marker-end="url(#arrow-signal)"/>
+
+    <!-- ============ COMPONENTS ============ -->
+    <!-- Tank -->
+    <use href="#sym-vessel-tank" x="60" y="210" width="140" height="180"/>
+
+    <!-- LT bubble -->
+    <use href="#sym-instrument-field" x="235" y="175" width="90" height="90"/>
+    <text x="280" y="226" class="lbl" text-anchor="middle">LT</text>
+
+    <!-- LC bubble -->
+    <use href="#sym-instrument-panel" x="455" y="75" width="90" height="90"/>
+    <text x="500" y="126" class="lbl" text-anchor="middle">LC</text>
+
+    <!-- Control valve + actuator -->
+    <use href="#sym-valve-actuator" x="650" y="210" width="120" height="200"/>
+
+    <!-- ============ LABELS ============ -->
+    <text x="130" y="450" class="cap" font-weight="bold">Tank (controlled process)</text>
+    <text x="332" y="205" class="cap" font-weight="bold">LT &mdash; Level Transmitter</text>
+    <text x="332" y="222" class="cap">(field-mounted)</text>
+    <text x="500" y="60" class="cap" font-weight="bold" text-anchor="middle">LC &mdash; Level</text>
+    <text x="500" y="45" class="cap" text-anchor="middle">Controller (panel)</text>
+    <text x="710" y="450" class="cap" font-weight="bold" text-anchor="middle">Control valve +</text>
+    <text x="710" y="466" class="cap" text-anchor="middle">diaphragm actuator</text>
+    <text x="582" y="426" class="cap">Concentric reducer</text>
+    <text x="1000" y="370" class="cap" font-weight="bold">Flow &rarr;</text>
+
+  </svg>
+  </div>
+
+  <div class="legend">
+    <div><span class="swatch-line"></span> Process / piping line (solid, 4px, charcoal)</div>
+    <div><span class="swatch-dash"></span> Instrument signal line (dashed, 2px, grey)</div>
+  </div>
+
+  <p class="note" style="margin-top:24px;">
+    <strong>Reading the loop:</strong> the tank's level is sensed by <strong>LT</strong>
+    (a field-mounted instrument &mdash; plain circle), which sends a signal to
+    <strong>LC</strong> (a panel/DCS-mounted controller &mdash; circle bisected by a
+    line), which signals the control valve's diaphragm actuator to throttle the outlet
+    line. Solid heavy lines are physical process piping; dashed lines are instrument
+    signals &mdash; never the two drawn the same way. See <code>reference.md</code> for
+    full per-symbol sourcing.
+  </p>
+
+</body>
+</html>
