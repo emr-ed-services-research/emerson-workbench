@@ -55,6 +55,15 @@ const PATTERNS = [
   [/\bIEC[-\s]?(\d{5})(?:-[\d-]+)?/g,           m => 'IEC ' + m[1]],
   [/\bISO[-\s]?(15848|15926|15156|5211)\b/g,    m => 'ISO ' + m[1]],
   [/\bNACE[-\s]?(MR\d+)/g,                      m => 'NACE ' + m[1]],
+  /* NOT standards bodies. Fitting resistance is published as journal
+     correlations and as one commercial book, and the vault rests on them
+     exactly as it rests on an ASME table -- so they are governed here too
+     rather than sitting outside the one mechanism that checks citations.
+     The register's remit is every external source, not every external
+     STANDARD; see README. */
+  [/\bCrane[-\s]?TP[-\s]?410\b/g,              () => 'Crane TP-410'],
+  [/\bDarby[-\s]?3-?K\b/g,                     () => 'Darby 3-K'],
+  [/\bHooper[-\s]?2-?K\b/g,                    () => 'Hooper 2-K'],
 ];
 
 /* Joint publications: two spellings, one authority, one entry. */

@@ -10,7 +10,13 @@ updated: 2026-10-09
 
 # Standards Register
 
-Every external standard the Workbench rests on, one entry each.
+Every external source the Workbench rests on, one entry each.
+
+Mostly standards. Not only standards: fitting resistance reaches us as journal
+correlations (`Darby 3-K`, `Hooper 2-K`) and as one commercial book
+(`Crane TP-410`), and the vault leans on those exactly as it leans on an ASME
+table. Keeping them outside the register would put the sources with the
+*weakest* provenance beyond the one mechanism that checks provenance.
 
 ## Why this exists
 

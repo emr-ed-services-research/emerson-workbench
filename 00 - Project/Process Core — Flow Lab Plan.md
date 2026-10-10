@@ -1,7 +1,7 @@
 ---
 title: Process Core — Flow Lab Plan
 type: plan
-status: PROPOSED — awaiting approval; nothing built
+status: PROPOSED — awaiting approval; nothing built. Rev 2: sources resolved, Phase 2 unblocked
 tags:
   - project
   - process-core
@@ -34,15 +34,27 @@ Three legitimate sources of an answer:
 | The real bench | LoopBench, a DVC6200 on real air with position feedback | **exists** |
 | Hand-calculable limits | dead-head, full open, single branch | free |
 
-**And there is no fitting-resistance source in this vault.** Not one. We can
-size a valve; we cannot say what an elbow costs. `Crane TP-410` is the
-canonical reference and Emerson carries no Crane at all — its Misc grouping is
-AGA, MSS, UL and VDMA. That is a Standards Request Form, not a search, and it
-has a lead time nobody here controls.
+**Fitting resistance has a source, and it is not Crane.** An earlier revision
+of this plan said the lab was blocked on obtaining `Crane TP-410`. That was
+wrong, and the error was equating *absent from Emerson's subscription* with
+*not sourceable*. An exhaustive search on 2026-10-10 settled it:
 
-So the plan is sequenced so that **nothing is blocked waiting on it**, and the
-machinery that will consume K values is built in a way that reports their
-absence instead of papering over it.
+| source | status | role |
+|---|---|---|
+| `Darby 3-K` | published, free, coefficients transcribed | **primary** |
+| `Hooper 2-K` | published, free, coefficients transcribed | cross-check |
+| `Crane TP-410` | a commercial book, ~USD 144, not an Emerson holding | optional third opinion |
+
+Crane is not a standard, so no request form will produce it — it is a purchase,
+and a small one. It is also **not needed**: run at the size this vault actually
+works in, NPS ½ at Re ≈ 10,000, Crane and Darby agree within **7%**, and
+`Hooper` is the outlier at **+39%**, not Crane.
+
+**The number that governs the whole phase:** published fitting-loss data
+carries **25–30% uncertainty**, 10% at the very best. The disagreement between
+all three methods sits *inside* the noise of the underlying measurements. So
+precision-hunting here is chasing precision the data does not have, and every
+stored K must carry its uncertainty band with it.
 
 ---
 
@@ -111,29 +123,48 @@ dimension it, so it is left out and said so.
 ## Phase 2 — the resistance interface, with absence made loud
 
 **Goal.** Define how a part declares its loss, **without inventing a single
-value.**
+value** — and carry its uncertainty beside it, because a K quoted to three
+decimals as though exact is a lie the arithmetic will happily tell.
 
-- `catalogue` gains an optional `resistance: {K, basis, source}`.
+- `catalogue` gains an optional `resistance: {basis, source, uncertainty}`
+  — a *basis* rather than a number, since K depends on Reynolds and bore
+  and is therefore computed at solve time, not stored.
 - `dynamics` learns to include ΣK alongside valve Cv.
 - A part with no sourced K carries `K: null`, and the solver **refuses to
   quietly ignore it** — a loop containing unsourced fittings reports exactly
   which ones and declines to publish a figure as if it were complete.
 
-**Seeded with what is actually held.** `ISA-75.01.01` and the Control Valve
-Handbook give the piping geometry factor `Fp` and ΣK for reducers and expanders
-attached to a valve. That is real, citable, and enough for one real loop — and
-that loop is the bench.
+**Seeded from `Darby 3-K`**, whose coefficients are now in the register, plus
+`ISA-75.01.01` and the Control Valve Handbook for the piping geometry factor
+`Fp` and ΣK on reducers and expanders attached to a valve — a case Darby's
+table does not cover and should not be stretched onto.
 
-**In parallel, not blocking.** File the Standards Request for `Crane TP-410`,
-plus `ISA-5.1` while the form is open (34 citations rest on it). Elbow and tee
-K values land whenever they land; the interface does not wait.
+`Hooper 2-K` goes in as an alternate basis, because a second independent
+correlation is how a transcription slip gets caught.
 
-**What proves it.** A loop with an unsourced elbow in it fails loudly and names
-the elbow. A reducer-on-valve loop reproduces the Handbook's `Fp` worked
-example.
+**The judgement this phase has to make in the open.** No published correlation
+has a socket-weld row; the choice is `threaded` or `flanged/welded`. For
+`ASME B16.11` fittings the honest mapping is **threaded** — B16.11 governs
+socket-welding and threaded fittings in one document and gives them the same
+body dimensions, so they are the same forging with a different end
+preparation, and both are compact blocks with sharp internal corners. A
+flanged or butt-welded elbow has a real radius, which is why its coefficient
+is lower. Recorded in the `Darby 3-K` entry, not buried in code.
 
-**Blocked on.** Nothing to build. The *values* are blocked, which is the point
-of designing it this way.
+**What proves it.** A reducer-on-valve loop reproduces the Handbook's `Fp`
+worked example. A loop containing a fitting with no sourced K fails loudly and
+names it. And Darby against Hooper on the same loop differs by less than the
+25–30% the data is worth — if it differs by more, something is transcribed
+wrong.
+
+**How much it is worth, measured before building it.** On level 1's bay the
+fittings come to **0.77 psi against a 15.2 psig manifold — about 5%**, which
+the dynamics layer currently ignores entirely. That is a real quantified error,
+worth fixing but not urgent. It scales hard, though: the same five fittings
+cost 7% at 6 gpm, **20% at 10 gpm** and 78% at 20 gpm. Any loop faster than a
+grow bay needs this phase before its numbers mean anything.
+
+**Blocked on.** Nothing.
 
 ---
 
