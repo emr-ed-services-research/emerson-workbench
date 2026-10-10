@@ -1840,37 +1840,52 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
 (function (LPE) {
   'use strict';
 
-  /* ---- the two radius rules, stated once -- AND NEITHER IS SOURCED ---
+  /* ---- the two radius rules -- BOTH WRONG, AND NOW MEASURABLY SO -----
 
-     Both came out of Lunar Process Engineer, where they were written at
-     each use site, and collecting them here made them look more
-     authoritative than they are. They are the geometry every drawn corner
-     and every curve the water follows is derived from, so what backs them
-     matters.
+     Both came out of Lunar Process Engineer, written at each use site,
+     and collecting them here made them look more authoritative than they
+     are. Every drawn corner and every curve the water follows derives
+     from them, so what backs them matters. Nothing did.
 
-     BEND claims a standard it cannot cite. The old comment here read
-     "centreline R = 1.5 x bore diameter ... which is how a real
-     long-radius elbow is made". A long-radius buttwelding elbow is
-     conventionally 1.5 x NPS -- the NOMINAL size, not the bore, which is
-     a different and smaller number. On the levels' own B36.10M bores that
-     is a 24-31 % difference, i.e. every elbow drawn about a quarter again
-     too round. RECALLED, NOT READ: `ASME B16.9` is not held. See
-     `20 - Source Library/Standards/asme-b16.9.md`, which records the
-     doubt and the arithmetic rather than letting the claim stand.
+     THE REAL ERROR IS NOT THE NUMBER, IT IS THE FITTING FAMILY.
 
-     Note also that applying the real convention needs NOMINAL size, and
-     the netlist carries bore. That gap is in the entry too.
+     BEND claimed "how a real long-radius elbow is made", citing the
+     buttwelding convention. But **a half-inch line is not buttwelded.**
+     At small bore, real pipework uses socket-welding or threaded
+     fittings -- `ASME B16.11` -- and a socket-welding 90 degree elbow is
+     a COMPACT FORGED BLOCK, not a sweeping curve. There is no long
+     radius at this size to get right or wrong.
 
-     TEE_TURN claims nothing, and its own history says why: 1.6 is "the
-     value level 1 settled on after the branches looked wrong at anything
-     larger." That is an art decision. It is kept because changing it
-     moves shipped geometry and because no source has been found that
-     specifies a branch turn radius at all -- a tee's crotch is a forging
-     detail rather than a dimensioned feature -- but it is labelled for
-     what it is, not dressed as engineering.
+     Measured against the standards, both now held and read 2026-10-10:
 
-     Do not cite either of these as grounded. */
-  const bendRadius = r => 3 * r;          // UNVERIFIED -- see asme-b16.9.md
+       B16.11 Table 1, socket-weld 90 el, Class 3000, centre-to-socket
+         NPS 3/8   13.5 mm = 0.531 in
+         NPS 1/2   15.5 mm = 0.610 in
+       B16.9 Table 6.1-1, long radius buttweld elbow, centre-to-end
+         NPS 1/2   38 mm = 1.50 in   (flat to NPS 1; scales from 1-1/4)
+         -- and the table STARTS at NPS 1/2, so 3/8 has no entry at all
+
+       this code, at level 1's NPS 1/2 main    1.866 in
+
+     So: 3x too large against the fitting actually used, and 24 % too
+     large even against the buttweld one it wrongly cited.
+
+     TEE_TURN claims nothing and never could. Its own history says why --
+     1.6 is "the value level 1 settled on after the branches looked wrong
+     at anything larger", which is an art decision. B16.11 gives the real
+     locating dimension for a socket-weld tee (same `A` as the elbow), so
+     a sourced replacement now exists.
+
+     NEITHER IS FIXED HERE, deliberately. Correcting them moves every
+     elbow in every level and needs nominal size to reach this layer,
+     which it does not yet -- the netlist carries bore. Both belong in
+     the component catalogue Franz has specified, where a part carries
+     its own dimensions from its own standard instead of a renderer
+     carrying a formula. Recorded, measured, and left for that.
+
+     See `20 - Source Library/Standards/asme-b16.11.md` (the one that
+     governs) and `asme-b16.9.md` (the one that was wrongly cited). */
+  const bendRadius = r => 3 * r;          // WRONG -- see asme-b16.11.md
   const teeTurnRadius = r => r * 1.6;     // ART, not a standard
 
   /* ---- display classes ----------------------------------------------

@@ -37,6 +37,10 @@ used-by:
 
 NOT AVAILABLE. The Information Center's ISA listing carries 5.2, 5.3, 5.4 and 5.5 under 'Symbols, Specification Forms, and General Terminology'. 5.1 is absent — checked 2026-10-09. An individual-use copy could be requested via the Standards Request Form.
 
+**Confirmed absent by full-text search, 2026-10-10.** A Fishweb Quick Search for `ISA-5.1` across every collection returns **11 results, and not one of them is the standard**. All are documents that *cite* it: ISA-5.4 (Instrument Loop Diagrams), ISA-5.2 (Binary Logic Diagrams), ISA-98.00.01, the ISA-77 series, ASME TDP-1, and two Emerson procedures (AG14326020/21). The search index reaches the PDFs themselves — it found and named B16.9 and B16.11 the same way — so this is a real absence, not a cataloguing gap.
+
+**That makes closing this a purchasing decision, not a searching one.** No amount of further looking inside Emerson will produce ISA-5.1; it has to be bought from ISA or requested as an individual-use copy. Worth deciding deliberately, because 32 citations across the vault currently rest on it.
+
 ## What has been read
 
 Nothing. No copy has ever been opened.

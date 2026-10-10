@@ -6,119 +6,83 @@ tags:
   - standards
 standard-id: "ASME B16.9"
 publisher: ASME
-edition: unknown — not held
-holding: not-held
+edition: 2024 (Revision of ASME B16.9-2018)
+holding: confirmed
 updated: 2026-10-10
 used-by:
-  - "45 - Process Core/src/topology.js"
   - "50 - Lunar Process Engineer/vendor/process-core/topology.js"
 ---
 
 # ASME B16.9 — Factory-Made Wrought Buttwelding Fittings
 
 **Publisher:** ASME
-**Edition on hand / cited:** unknown — not held
-**Holding:** `not-held`
+**Edition on hand / cited:** 2024 (Revision of ASME B16.9-2018)
+**Holding:** `confirmed`
 
 ## Access
 
-ASME is in Emerson's enterprise set, with a dedicated "Enterprise Access - ASME"
-route — the same one noted on the `ASME B16.10` entry. Not opened. This entry
-exists because something in the vault **depends on what this standard says** and
-nobody has checked it, which is worth recording even while the answer is
-"we have not looked."
+Emerson Information Center / eDocs, document number `ASME_B16.9`, 48 pages.
+Found via Fishweb Quick Search, 2026-10-10. Needs VPN.
+
+Per-licensee watermark restricting reproduction and distribution. **Not
+vendored into the vault.** Dimensions and clause references only, the same
+handling as `ISA-5.5` and `ASME B16.11`.
 
 ## What has been read
 
-The standard itself: nothing. Its **dimension table for 90-degree long-radius
-elbows** has been read from published secondary sources that cite it, and
-cross-checked between independent manufacturer references. That settles the
-number the vault depends on; it does not make the document held.
+**Table 6.1-1, Dimensions of Long Radius Elbows.** The front matter's list of
+changes, which names the dimension tables as the `6.1-N` series.
+
+## Table 6.1-1 — Long Radius Elbows
+
+Centre-to-end, mm (in.). For a 90° elbow this **is** the centreline radius.
+
+| NPS | OD at bevel | 90° elbow `A` | 45° elbow `B` |
+|---|---|---|---|
+| 1/2   | 21.3 (0.84) | **38 (1.50)** | 16 (0.62) |
+| 3/4   | 26.7 (1.05) | **38 (1.50)** | 19 (0.75) |
+| 1     | 33.4 (1.32) | **38 (1.50)** | 22 (0.88) |
+| 1-1/4 | 42.2 (1.66) | 48 (1.88) | 25 (1.00) |
+| 1-1/2 | 48.3 (1.90) | 57 (2.25) | 29 (1.12) |
+| 2     | 60.3 (2.38) | 76 (3.00) | 35 (1.38) |
+| 2-1/2 | 73.0 (2.88) | 95 (3.75) | 44 (1.75) |
+| 3     | 88.9 (3.50) | 114 (4.50) | 51 (2.00) |
+| 4     | 114.3 (4.50) | 152 (6.00) | 64 (2.50) |
+
+**The "1.5 × NPS" rule holds only from NPS 1 upward.** Below that the
+dimension does not scale — it floors at a flat 38 mm (1.50 in). And the table
+**starts at NPS 1/2**: there is no B16.9 elbow for NPS 3/8.
+
+## A correction, kept on the record
+
+This entry was first written on 2026-10-10 **from memory**, stating the rule
+as "1.5 × NPS at every size" and working an error table off it. That was
+wrong. It was then corrected from published manufacturer tables, and has now
+been verified against the standard itself — which agrees with the corrected
+version exactly.
+
+Both earlier versions are described rather than deleted, because the sequence
+*recalled → corroborated → verified* is what this register exists to make
+visible. The first version was flagged `RECALLED, NOT READ` at the time it was
+written, and that flag was the thing that kept it honest.
 
 ## What rests on it
 
-The Process Core's **elbow radius convention**, which every drawn pipe corner
-and every curve the water follows is derived from:
+Less than was assumed. `bendRadius` in `45 - Process Core/src/topology.js`
+cited "how a real long-radius elbow is made" — but **a ½ in line is not
+buttwelded**, so this standard does not govern the geometry the core was
+drawing. `ASME B16.11` (socket-welding) does, and is now held.
 
-```js
-// 45 - Process Core/src/topology.js
-const bendRadius = r => 3 * r;
-```
-
-The code describes this as "centreline R = 1.5 x bore diameter = 3 x bore
-radius, which is how a real long-radius elbow is made." That sentence makes a
-claim about this standard, and this standard is not held, so the claim is
-unverified.
-
-## The specific doubt — and a correction
-
-> **The first version of this entry got the rule wrong from memory.** It said a
-> long-radius elbow is "1.5 x NPS" at every size, and worked an error table off
-> that. Corroborated catalogue data says otherwise. The wrong version is left
-> described here rather than quietly deleted, because the mistake is the reason
-> this register exists.
-
-**Center-to-end dimension, 90° long-radius elbow** (for a 90° elbow this *is*
-the centreline radius), from published B16.9 dimension tables:
-
-| NPS | center-to-end | 1.5 x NPS would be |
-|---|---|---|
-| 1/2   | **1.50 in** | 0.75 in |
-| 3/4   | **1.50 in** | 1.125 in |
-| 1     | **1.50 in** | 1.50 in |
-| 1-1/4 | 1.90 in | 1.875 in |
-| 1-1/2 | 2.25 in | 2.25 in |
-| 2     | 3.00 in | 3.00 in |
-
-Two things fall out, and both matter here:
-
-1. **The 1.5 x NPS rule only holds from NPS 1 upward.** Below that the
-   dimension does not scale at all — it floors at a flat **1.50 in**. A formula
-   that scales with size is structurally wrong in exactly the range Lunar
-   Process Engineer works in.
-2. **The table starts at NPS 1/2.** NPS 3/8 — level 1's branch bore of
-   0.493 in — is not covered by this standard at all. There is no B16.9 elbow
-   for that line.
-
-Against the core's `bendRadius = 3 * r`, where `r` is the bore diameter scaled
-by the frame (level 1: `r` = 12.6 px for the 0.622 in main, at 20.28 px/in):
-
-| Line | NPS | code radius | B16.9 | |
-|---|---|---|---|---|
-| main   | 1/2 | 1.866 in | 1.50 in | **+24 % too large** |
-| branch | 3/8 | 1.479 in | *not covered*; nearest NPS 1/2 is 1.50 in | within 1.4 % |
-
-So the main run's elbows are about a quarter again too round, and the branch is
-right by coincidence — the floor at 1.50 in happens to land where a scaling
-formula puts a 3/8 line.
-
-**Source:** published B16.9 dimension tables, corroborated across independent
-manufacturer references (Wermac; metalspiping; Ferrobend). The standard itself
-is still **not held** — these are secondary sources that cite it, which is
-enough to settle the number and not enough to make this entry `confirmed`.
-
-A separate problem the table makes visible: the netlist carries **bore**, not
-**nominal**. Applying the real convention needs nominal size to reach the
-geometry layer. LPE's `sizing.js` already holds the B36.10M mapping
-(NPS → OD, wall, bore, area), so the data exists; it simply does not reach the
-core today.
+What this standard is still good for: anything the vault draws at NPS 1-1/4
+and above, where buttwelding is real and the long-radius sweep exists.
 
 ## What was deliberately not taken
 
-n/a — not opened.
+Tables 6.1-2 onward (short radius elbows, returns, tees, reducers, caps,
+laterals), pressure/proof testing, materials, tolerances. Read when something
+depends on them.
 
 ## Copyright
 
-Unverified.
-
-## Note
-
-Raised 2026-10-10 from Franz's concern that the Process Core was taking its
-conventions from Lunar Process Engineer's own bolted-on geometry rather than
-from engineering sources. The audit that followed found the hydraulics
-(`ISA-75.01.01`) and the symbology (`ISA-5.5`) properly grounded, and the pipe
-geometry almost entirely not. This is the piece of it that at least *claims* a
-source. The companion `teeTurnRadius = r * 1.6` claims none — its own comment
-records it as "the value level 1 settled on after the branches looked wrong at
-anything larger," which is an art decision and is now labelled as one in the
-code.
+ASME, licensed to Emerson. Per-licensee watermark; reproduction and
+distribution restricted. No page, figure or table image copied.
