@@ -30,7 +30,10 @@ nobody has checked it, which is worth recording even while the answer is
 
 ## What has been read
 
-Nothing.
+The standard itself: nothing. Its **dimension table for 90-degree long-radius
+elbows** has been read from published secondary sources that cite it, and
+cross-checked between independent manufacturer references. That settles the
+number the vault depends on; it does not make the document held.
 
 ## What rests on it
 
@@ -47,32 +50,58 @@ radius, which is how a real long-radius elbow is made." That sentence makes a
 claim about this standard, and this standard is not held, so the claim is
 unverified.
 
-## The specific doubt
+## The specific doubt — and a correction
 
-A long-radius buttwelding elbow is conventionally specified as **centreline
-radius = 1.5 x NPS** — the *nominal* pipe size. The core's formula uses the
-**bore**, which is a different number, and larger.
+> **The first version of this entry got the rule wrong from memory.** It said a
+> long-radius elbow is "1.5 x NPS" at every size, and worked an error table off
+> that. Corroborated catalogue data says otherwise. The wrong version is left
+> described here rather than quietly deleted, because the mistake is the reason
+> this register exists.
 
-Worked against the bores the levels actually use, which come from
-`ASME B36.10M` and are registered:
+**Center-to-end dimension, 90° long-radius elbow** (for a 90° elbow this *is*
+the centreline radius), from published B16.9 dimension tables:
 
-| Line | NPS | Sch 40 bore | 1.5 x NPS | code: 1.5 x bore | difference |
-|---|---|---|---|---|---|
-| main   | 1/2 in | 0.622 in | 0.750 in | 0.933 in | **+24 %** |
-| branch | 3/8 in | 0.493 in | 0.563 in | 0.740 in | **+31 %** |
+| NPS | center-to-end | 1.5 x NPS would be |
+|---|---|---|
+| 1/2   | **1.50 in** | 0.75 in |
+| 3/4   | **1.50 in** | 1.125 in |
+| 1     | **1.50 in** | 1.50 in |
+| 1-1/4 | 1.90 in | 1.875 in |
+| 1-1/2 | 2.25 in | 2.25 in |
+| 2     | 3.00 in | 3.00 in |
 
-If the convention is as recalled, every elbow in Lunar Process Engineer is
-drawn roughly a quarter again too round, and the core has been stating a
-standard it does not hold as the reason.
+Two things fall out, and both matter here:
 
-**This is recalled, not read.** It is exactly the kind of claim this register
-exists to stop being made from memory — recorded here as an open question
-rather than acted on. Resolving it needs the standard, or a sourced secondary
-in the Source Library. Neither is in hand.
+1. **The 1.5 x NPS rule only holds from NPS 1 upward.** Below that the
+   dimension does not scale at all — it floors at a flat **1.50 in**. A formula
+   that scales with size is structurally wrong in exactly the range Lunar
+   Process Engineer works in.
+2. **The table starts at NPS 1/2.** NPS 3/8 — level 1's branch bore of
+   0.493 in — is not covered by this standard at all. There is no B16.9 elbow
+   for that line.
 
-A second problem the table makes visible: the netlist knows **bore**, not
-**nominal**. Even once the convention is confirmed, applying it correctly needs
-nominal size to reach the geometry layer, which today it does not.
+Against the core's `bendRadius = 3 * r`, where `r` is the bore diameter scaled
+by the frame (level 1: `r` = 12.6 px for the 0.622 in main, at 20.28 px/in):
+
+| Line | NPS | code radius | B16.9 | |
+|---|---|---|---|---|
+| main   | 1/2 | 1.866 in | 1.50 in | **+24 % too large** |
+| branch | 3/8 | 1.479 in | *not covered*; nearest NPS 1/2 is 1.50 in | within 1.4 % |
+
+So the main run's elbows are about a quarter again too round, and the branch is
+right by coincidence — the floor at 1.50 in happens to land where a scaling
+formula puts a 3/8 line.
+
+**Source:** published B16.9 dimension tables, corroborated across independent
+manufacturer references (Wermac; metalspiping; Ferrobend). The standard itself
+is still **not held** — these are secondary sources that cite it, which is
+enough to settle the number and not enough to make this entry `confirmed`.
+
+A separate problem the table makes visible: the netlist carries **bore**, not
+**nominal**. Applying the real convention needs nominal size to reach the
+geometry layer. LPE's `sizing.js` already holds the B36.10M mapping
+(NPS → OD, wall, bore, area), so the data exists; it simply does not reach the
+core today.
 
 ## What was deliberately not taken
 
