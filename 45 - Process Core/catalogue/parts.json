@@ -77,33 +77,196 @@
 
   "pipe": {
     "_source": {
-      "std": "ASME B36.10M", "table": "Schedule 40 / STD",
-      "note": "transcribed via 50 - Lunar Process Engineer/sizing.js, which cites the same rows"
+      "std": "ASME B36.10M",
+      "table": "Schedule 40 / STD and Schedule 80 / XS",
+      "read": "2026-10-10",
+      "note": [
+        "VIA the Control Valve Handbook 6th ed., chapter 14 Pipe Data, which is",
+        "what the vault actually holds. ASME B36.10M itself is registered and has",
+        "never been opened -- its register entry says so -- and recording this as",
+        "the standard would claim a document nobody here has read.",
+        "",
+        "Seeded at NPS 1/8 to 10 because the department serves power, nuclear,",
+        "refining and severe service. The catalogue previously stopped at NPS 1/2,",
+        "which is a grow bay, not a refinery.",
+        "",
+        "NPS 12 and larger are NOT here: the Handbook chapter continues on pages",
+        "the reader does not match. Named so nobody assumes completeness.",
+        "",
+        "Every row satisfies bore = od - 2*wall to the printed precision, which is",
+        "how the reader found them at all. The nominal size column is merged across",
+        "schedules, and carrying it forward silently produced NPS 8 bores wearing",
+        "NPS 6 labels.",
+        "",
+        "`nps` is NUMERIC so a fitting can be matched to its pipe; `npsLabel` keeps",
+        "the printed form, because 1.25 and 1-1/4 are the same size and only one of",
+        "them is what anybody writes on a drawing."
+      ]
+    },
+    "PIPE/NPS0.125/S40": {
+      "class": "pipe", "nps": 0.125, "npsLabel": "1/8", "schedule": 40,
+      "dims": { "od": 0.405, "wall": 0.068, "bore": 0.269 },
+      "asPrinted": { "od": "0.405 in", "wall": "0.068 in", "bore": "0.269 in" }
+    },
+    "PIPE/NPS0.125/S80": {
+      "class": "pipe", "nps": 0.125, "npsLabel": "1/8", "schedule": 80,
+      "dims": { "od": 0.405, "wall": 0.095, "bore": 0.215 },
+      "asPrinted": { "od": "0.405 in", "wall": "0.095 in", "bore": "0.215 in" }
+    },
+    "PIPE/NPS0.25/S40": {
+      "class": "pipe", "nps": 0.25, "npsLabel": "1/4", "schedule": 40,
+      "dims": { "od": 0.54, "wall": 0.088, "bore": 0.364 },
+      "asPrinted": { "od": "0.54 in", "wall": "0.088 in", "bore": "0.364 in" }
+    },
+    "PIPE/NPS0.25/S80": {
+      "class": "pipe", "nps": 0.25, "npsLabel": "1/4", "schedule": 80,
+      "dims": { "od": 0.54, "wall": 0.119, "bore": 0.302 },
+      "asPrinted": { "od": "0.54 in", "wall": "0.119 in", "bore": "0.302 in" }
     },
     "PIPE/NPS0.375/S40": {
-      "class": "pipe", "nps": 0.375, "schedule": 40,
+      "class": "pipe", "nps": 0.375, "npsLabel": "3/8", "schedule": 40,
       "dims": { "od": 0.675, "wall": 0.091, "bore": 0.493 },
       "asPrinted": { "od": "0.675 in", "wall": "0.091 in", "bore": "0.493 in" }
     },
+    "PIPE/NPS0.375/S80": {
+      "class": "pipe", "nps": 0.375, "npsLabel": "3/8", "schedule": 80,
+      "dims": { "od": 0.675, "wall": 0.126, "bore": 0.423 },
+      "asPrinted": { "od": "0.675 in", "wall": "0.126 in", "bore": "0.423 in" }
+    },
     "PIPE/NPS0.5/S40": {
-      "class": "pipe", "nps": 0.5, "schedule": 40,
-      "dims": { "od": 0.840, "wall": 0.109, "bore": 0.622 },
-      "asPrinted": { "od": "0.840 in", "wall": "0.109 in", "bore": "0.622 in" }
+      "class": "pipe", "nps": 0.5, "npsLabel": "1/2", "schedule": 40,
+      "dims": { "od": 0.84, "wall": 0.109, "bore": 0.622 },
+      "asPrinted": { "od": "0.84 in", "wall": "0.109 in", "bore": "0.622 in" }
+    },
+    "PIPE/NPS0.5/S80": {
+      "class": "pipe", "nps": 0.5, "npsLabel": "1/2", "schedule": 80,
+      "dims": { "od": 0.8400000000000001, "wall": 0.147, "bore": 0.546 },
+      "asPrinted": { "od": "0.8400000000000001 in", "wall": "0.147 in", "bore": "0.546 in" }
     },
     "PIPE/NPS0.75/S40": {
-      "class": "pipe", "nps": 0.75, "schedule": 40,
-      "dims": { "od": 1.050, "wall": 0.113, "bore": 0.824 },
-      "asPrinted": { "od": "1.050 in", "wall": "0.113 in", "bore": "0.824 in" }
+      "class": "pipe", "nps": 0.75, "npsLabel": "3/4", "schedule": 40,
+      "dims": { "od": 1.05, "wall": 0.113, "bore": 0.824 },
+      "asPrinted": { "od": "1.05 in", "wall": "0.113 in", "bore": "0.824 in" }
+    },
+    "PIPE/NPS0.75/S80": {
+      "class": "pipe", "nps": 0.75, "npsLabel": "3/4", "schedule": 80,
+      "dims": { "od": 1.05, "wall": 0.154, "bore": 0.742 },
+      "asPrinted": { "od": "1.05 in", "wall": "0.154 in", "bore": "0.742 in" }
     },
     "PIPE/NPS1/S40": {
-      "class": "pipe", "nps": 1, "schedule": 40,
+      "class": "pipe", "nps": 1, "npsLabel": "1", "schedule": 40,
       "dims": { "od": 1.315, "wall": 0.133, "bore": 1.049 },
       "asPrinted": { "od": "1.315 in", "wall": "0.133 in", "bore": "1.049 in" }
     },
-    "PIPE/NPS0.375/S80": {
-      "class": "pipe", "nps": 0.375, "schedule": 80,
-      "dims": { "od": 0.675, "wall": 0.126, "bore": 0.423 },
-      "asPrinted": { "od": "0.675 in", "wall": "0.126 in", "bore": "0.423 in" }
+    "PIPE/NPS1/S80": {
+      "class": "pipe", "nps": 1, "npsLabel": "1", "schedule": 80,
+      "dims": { "od": 1.315, "wall": 0.179, "bore": 0.957 },
+      "asPrinted": { "od": "1.315 in", "wall": "0.179 in", "bore": "0.957 in" }
+    },
+    "PIPE/NPS1.25/S40": {
+      "class": "pipe", "nps": 1.25, "npsLabel": "1-1/4", "schedule": 40,
+      "dims": { "od": 1.66, "wall": 0.14, "bore": 1.38 },
+      "asPrinted": { "od": "1.66 in", "wall": "0.14 in", "bore": "1.38 in" }
+    },
+    "PIPE/NPS1.25/S80": {
+      "class": "pipe", "nps": 1.25, "npsLabel": "1-1/4", "schedule": 80,
+      "dims": { "od": 1.6600000000000001, "wall": 0.191, "bore": 1.278 },
+      "asPrinted": { "od": "1.6600000000000001 in", "wall": "0.191 in", "bore": "1.278 in" }
+    },
+    "PIPE/NPS1.5/S80": {
+      "class": "pipe", "nps": 1.5, "npsLabel": "1-1/2", "schedule": 80,
+      "dims": { "od": 1.9, "wall": 0.2, "bore": 1.5 },
+      "asPrinted": { "od": "1.9 in", "wall": "0.2 in", "bore": "1.5 in" }
+    },
+    "PIPE/NPS1.5/S40": {
+      "class": "pipe", "nps": 1.5, "npsLabel": "1-1/2", "schedule": 40,
+      "dims": { "od": 1.9000000000000001, "wall": 0.145, "bore": 1.61 },
+      "asPrinted": { "od": "1.9000000000000001 in", "wall": "0.145 in", "bore": "1.61 in" }
+    },
+    "PIPE/NPS2/S40": {
+      "class": "pipe", "nps": 2, "npsLabel": "2", "schedule": 40,
+      "dims": { "od": 2.375, "wall": 0.154, "bore": 2.067 },
+      "asPrinted": { "od": "2.375 in", "wall": "0.154 in", "bore": "2.067 in" }
+    },
+    "PIPE/NPS2/S80": {
+      "class": "pipe", "nps": 2, "npsLabel": "2", "schedule": 80,
+      "dims": { "od": 2.375, "wall": 0.218, "bore": 1.939 },
+      "asPrinted": { "od": "2.375 in", "wall": "0.218 in", "bore": "1.939 in" }
+    },
+    "PIPE/NPS2.5/S40": {
+      "class": "pipe", "nps": 2.5, "npsLabel": "2-1/2", "schedule": 40,
+      "dims": { "od": 2.875, "wall": 0.203, "bore": 2.469 },
+      "asPrinted": { "od": "2.875 in", "wall": "0.203 in", "bore": "2.469 in" }
+    },
+    "PIPE/NPS2.5/S80": {
+      "class": "pipe", "nps": 2.5, "npsLabel": "2-1/2", "schedule": 80,
+      "dims": { "od": 2.875, "wall": 0.276, "bore": 2.323 },
+      "asPrinted": { "od": "2.875 in", "wall": "0.276 in", "bore": "2.323 in" }
+    },
+    "PIPE/NPS3/S40": {
+      "class": "pipe", "nps": 3, "npsLabel": "3", "schedule": 40,
+      "dims": { "od": 3.5, "wall": 0.216, "bore": 3.068 },
+      "asPrinted": { "od": "3.5 in", "wall": "0.216 in", "bore": "3.068 in" }
+    },
+    "PIPE/NPS3/S80": {
+      "class": "pipe", "nps": 3, "npsLabel": "3", "schedule": 80,
+      "dims": { "od": 3.5, "wall": 0.3, "bore": 2.9 },
+      "asPrinted": { "od": "3.5 in", "wall": "0.3 in", "bore": "2.9 in" }
+    },
+    "PIPE/NPS3.5/S40": {
+      "class": "pipe", "nps": 3.5, "npsLabel": "3-1/2", "schedule": 40,
+      "dims": { "od": 4, "wall": 0.226, "bore": 3.548 },
+      "asPrinted": { "od": "4 in", "wall": "0.226 in", "bore": "3.548 in" }
+    },
+    "PIPE/NPS3.5/S80": {
+      "class": "pipe", "nps": 3.5, "npsLabel": "3-1/2", "schedule": 80,
+      "dims": { "od": 4, "wall": 0.318, "bore": 3.364 },
+      "asPrinted": { "od": "4 in", "wall": "0.318 in", "bore": "3.364 in" }
+    },
+    "PIPE/NPS4/S40": {
+      "class": "pipe", "nps": 4, "npsLabel": "4", "schedule": 40,
+      "dims": { "od": 4.5, "wall": 0.237, "bore": 4.026 },
+      "asPrinted": { "od": "4.5 in", "wall": "0.237 in", "bore": "4.026 in" }
+    },
+    "PIPE/NPS4/S80": {
+      "class": "pipe", "nps": 4, "npsLabel": "4", "schedule": 80,
+      "dims": { "od": 4.5, "wall": 0.337, "bore": 3.826 },
+      "asPrinted": { "od": "4.5 in", "wall": "0.337 in", "bore": "3.826 in" }
+    },
+    "PIPE/NPS5/S40": {
+      "class": "pipe", "nps": 5, "npsLabel": "5", "schedule": 40,
+      "dims": { "od": 5.563, "wall": 0.258, "bore": 5.047 },
+      "asPrinted": { "od": "5.563 in", "wall": "0.258 in", "bore": "5.047 in" }
+    },
+    "PIPE/NPS5/S80": {
+      "class": "pipe", "nps": 5, "npsLabel": "5", "schedule": 80,
+      "dims": { "od": 5.563, "wall": 0.375, "bore": 4.813 },
+      "asPrinted": { "od": "5.563 in", "wall": "0.375 in", "bore": "4.813 in" }
+    },
+    "PIPE/NPS6/S40": {
+      "class": "pipe", "nps": 6, "npsLabel": "6", "schedule": 40,
+      "dims": { "od": 6.625, "wall": 0.28, "bore": 6.065 },
+      "asPrinted": { "od": "6.625 in", "wall": "0.28 in", "bore": "6.065 in" }
+    },
+    "PIPE/NPS6/S80": {
+      "class": "pipe", "nps": 6, "npsLabel": "6", "schedule": 80,
+      "dims": { "od": 6.625, "wall": 0.432, "bore": 5.761 },
+      "asPrinted": { "od": "6.625 in", "wall": "0.432 in", "bore": "5.761 in" }
+    },
+    "PIPE/NPS8/S40": {
+      "class": "pipe", "nps": 8, "npsLabel": "8", "schedule": 40,
+      "dims": { "od": 8.625, "wall": 0.322, "bore": 7.981 },
+      "asPrinted": { "od": "8.625 in", "wall": "0.322 in", "bore": "7.981 in" }
+    },
+    "PIPE/NPS8/S80": {
+      "class": "pipe", "nps": 8, "npsLabel": "8", "schedule": 80,
+      "dims": { "od": 8.625, "wall": 0.5, "bore": 7.625 },
+      "asPrinted": { "od": "8.625 in", "wall": "0.5 in", "bore": "7.625 in" }
+    },
+    "PIPE/NPS10/S40": {
+      "class": "pipe", "nps": 10, "npsLabel": "10", "schedule": 40,
+      "dims": { "od": 10.75, "wall": 0.365, "bore": 10.02 },
+      "asPrinted": { "od": "10.75 in", "wall": "0.365 in", "bore": "10.02 in" }
     }
   },
 

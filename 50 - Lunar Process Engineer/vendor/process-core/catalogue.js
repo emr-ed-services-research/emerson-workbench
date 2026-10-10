@@ -73,7 +73,15 @@
      magnitude larger than this and gets caught. */
   const TOL = 1e-4;
 
-  const GROUPS_SKIP = { _readme: 1, units: 1 };
+  /* `resistance` is not a parts group. It is a table of BASES -- a
+     fitting's loss is a correlation, not a dimension, so it cannot live
+     in `dims` and be checked against an as-printed value. Parts point
+     at a basis by name; the basis carries the coefficients, the
+     publication and the uncertainty. */
+  const GROUPS_SKIP = { _readme: 1, units: 1, resistance: 1 };
+
+  const RES_NEED = { 'darby-3k': ['K1', 'Ki', 'Kd'],
+                     'hooper-2k': ['K1', 'Kinf'] };
 
   function load(data) {
     if (!data || typeof data !== 'object')
@@ -84,6 +92,47 @@
     const parts = {};
     const sources = {};
     const groups = [];
+
+    /* The resistance table, checked before anything points at it. A
+       basis with no publication is a number somebody liked the look of,
+       and a basis with no uncertainty invites being quoted as exact. */
+    const bases = {};
+    for (const id of Object.keys(data.resistance || {})) {
+      if (id.charAt(0) === '_') continue;
+      const entry = data.resistance[id];
+      const methods = {};
+      for (const mk of Object.keys(entry)) {
+        if (mk === 'appliesTo') continue;
+        const b = entry[mk];
+        if (!b || typeof b !== 'object' || b.method !== mk)
+          throw new Error('catalogue resistance "' + id + '.' + mk +
+            '": a basis must be an object whose `method` matches the key ' +
+            'it is filed under, so a copied block cannot end up claiming ' +
+            'to be a correlation it is not.');
+        const need = RES_NEED[b.method];
+        if (!need)
+          throw new Error('catalogue resistance "' + id + '": method "' +
+            b.method + '" is not one this catalogue knows. Known: ' +
+            Object.keys(RES_NEED).join(', ') + '.');
+        const miss = need.filter(k => typeof b[k] !== 'number');
+        if (miss.length)
+          throw new Error('catalogue resistance "' + id + '.' + mk +
+            '" is missing ' + miss.join(', ') + '.');
+        if (typeof b.source !== 'string' || !b.source.trim())
+          throw new Error('catalogue resistance "' + id + '.' + mk +
+            '" names no source. A loss coefficient with no publication ' +
+            'behind it is exactly what this catalogue exists to refuse.');
+        if (typeof b.uncertaintyPct !== 'number')
+          throw new Error('catalogue resistance "' + id + '.' + mk +
+            '" carries no uncertaintyPct. Published fitting-loss data runs ' +
+            '25-30%, and a K stored without its band will be quoted as ' +
+            'though it were exact.');
+        methods[mk] = Object.freeze(Object.assign({}, b));
+      }
+      if (!Object.keys(methods).length)
+        throw new Error('catalogue resistance "' + id + '" has no methods.');
+      bases[id] = Object.freeze(methods);
+    }
 
     for (const g of Object.keys(data)) {
       if (GROUPS_SKIP[g]) continue;
@@ -150,6 +199,19 @@
                             'value nothing converts is a number no consumer ' +
                             'can use and no test can check.');
 
+        /* A reference that does not resolve is worse than none: it
+           looks like the part has a sourced loss when nothing backs it. */
+        const refs = part.resistance;
+        if (refs !== undefined) {
+          const list = (typeof refs === 'string') ? [refs]
+            : Object.keys(refs).map(k => refs[k]);
+          for (const rid of list)
+            if (!bases[rid])
+              throw new Error(at + ' points at resistance basis "' + rid +
+                '", which the catalogue does not define. Defined: ' +
+                Object.keys(bases).join(', ') + '.');
+        }
+
         parts[id] = Object.freeze(Object.assign({ id: id, group: g }, part,
           { dims: Object.freeze(Object.assign({}, dims)),
             asPrinted: Object.freeze(Object.assign({}, printed)) }));
@@ -169,6 +231,35 @@
        of, which is what makes the drawing defensible. */
     function sourceOf(id) { part(id); return sources[id]; }
 
+    /* The basis for a part, by method. A tee has two -- run and branch
+       -- because no published correlation treats them as one, so the
+       path must be named. A part with no basis returns null and the
+       caller is expected to say so rather than substitute zero. */
+    function resistanceOf(id, method, via) {
+      const pt = part(id);
+      const refs = pt.resistance;
+      if (refs === undefined) return null;
+      let rid;
+      if (typeof refs === 'string') rid = refs;
+      else {
+        if (!via)
+          throw new Error('catalogue.resistanceOf: "' + id + '" has more ' +
+            'than one path (' + Object.keys(refs).join(', ') + ') and they ' +
+            'cost different amounts. Name the path.');
+        rid = refs[via];
+        if (!rid)
+          throw new Error('catalogue.resistanceOf: "' + id + '" has no path ' +
+            '"' + via + '". It has: ' + Object.keys(refs).join(', ') + '.');
+      }
+      const m = bases[rid];
+      if (!method) return m;
+      if (!m[method])
+        throw new Error('catalogue.resistanceOf: basis "' + rid + '" carries ' +
+          'no "' + method + '". It carries: ' + Object.keys(m).join(', ') +
+          '. The methods disagree, so one is never substituted for another.');
+      return m[method];
+    }
+
     function where(sel) {
       sel = sel || {};
       return Object.keys(parts).sort().map(k => parts[k]).filter(p => {
@@ -184,6 +275,8 @@
       groups: () => groups.slice(),
       where: where,
       sourceOf: sourceOf,
+      resistanceOf: resistanceOf,
+      bases: () => Object.keys(bases).sort(),
       size: Object.keys(parts).length
     });
   }

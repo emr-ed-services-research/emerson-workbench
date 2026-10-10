@@ -1850,7 +1850,15 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
      magnitude larger than this and gets caught. */
   const TOL = 1e-4;
 
-  const GROUPS_SKIP = { _readme: 1, units: 1 };
+  /* `resistance` is not a parts group. It is a table of BASES -- a
+     fitting's loss is a correlation, not a dimension, so it cannot live
+     in `dims` and be checked against an as-printed value. Parts point
+     at a basis by name; the basis carries the coefficients, the
+     publication and the uncertainty. */
+  const GROUPS_SKIP = { _readme: 1, units: 1, resistance: 1 };
+
+  const RES_NEED = { 'darby-3k': ['K1', 'Ki', 'Kd'],
+                     'hooper-2k': ['K1', 'Kinf'] };
 
   function load(data) {
     if (!data || typeof data !== 'object')
@@ -1861,6 +1869,47 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
     const parts = {};
     const sources = {};
     const groups = [];
+
+    /* The resistance table, checked before anything points at it. A
+       basis with no publication is a number somebody liked the look of,
+       and a basis with no uncertainty invites being quoted as exact. */
+    const bases = {};
+    for (const id of Object.keys(data.resistance || {})) {
+      if (id.charAt(0) === '_') continue;
+      const entry = data.resistance[id];
+      const methods = {};
+      for (const mk of Object.keys(entry)) {
+        if (mk === 'appliesTo') continue;
+        const b = entry[mk];
+        if (!b || typeof b !== 'object' || b.method !== mk)
+          throw new Error('catalogue resistance "' + id + '.' + mk +
+            '": a basis must be an object whose `method` matches the key ' +
+            'it is filed under, so a copied block cannot end up claiming ' +
+            'to be a correlation it is not.');
+        const need = RES_NEED[b.method];
+        if (!need)
+          throw new Error('catalogue resistance "' + id + '": method "' +
+            b.method + '" is not one this catalogue knows. Known: ' +
+            Object.keys(RES_NEED).join(', ') + '.');
+        const miss = need.filter(k => typeof b[k] !== 'number');
+        if (miss.length)
+          throw new Error('catalogue resistance "' + id + '.' + mk +
+            '" is missing ' + miss.join(', ') + '.');
+        if (typeof b.source !== 'string' || !b.source.trim())
+          throw new Error('catalogue resistance "' + id + '.' + mk +
+            '" names no source. A loss coefficient with no publication ' +
+            'behind it is exactly what this catalogue exists to refuse.');
+        if (typeof b.uncertaintyPct !== 'number')
+          throw new Error('catalogue resistance "' + id + '.' + mk +
+            '" carries no uncertaintyPct. Published fitting-loss data runs ' +
+            '25-30%, and a K stored without its band will be quoted as ' +
+            'though it were exact.');
+        methods[mk] = Object.freeze(Object.assign({}, b));
+      }
+      if (!Object.keys(methods).length)
+        throw new Error('catalogue resistance "' + id + '" has no methods.');
+      bases[id] = Object.freeze(methods);
+    }
 
     for (const g of Object.keys(data)) {
       if (GROUPS_SKIP[g]) continue;
@@ -1927,6 +1976,19 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
                             'value nothing converts is a number no consumer ' +
                             'can use and no test can check.');
 
+        /* A reference that does not resolve is worse than none: it
+           looks like the part has a sourced loss when nothing backs it. */
+        const refs = part.resistance;
+        if (refs !== undefined) {
+          const list = (typeof refs === 'string') ? [refs]
+            : Object.keys(refs).map(k => refs[k]);
+          for (const rid of list)
+            if (!bases[rid])
+              throw new Error(at + ' points at resistance basis "' + rid +
+                '", which the catalogue does not define. Defined: ' +
+                Object.keys(bases).join(', ') + '.');
+        }
+
         parts[id] = Object.freeze(Object.assign({ id: id, group: g }, part,
           { dims: Object.freeze(Object.assign({}, dims)),
             asPrinted: Object.freeze(Object.assign({}, printed)) }));
@@ -1946,6 +2008,35 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
        of, which is what makes the drawing defensible. */
     function sourceOf(id) { part(id); return sources[id]; }
 
+    /* The basis for a part, by method. A tee has two -- run and branch
+       -- because no published correlation treats them as one, so the
+       path must be named. A part with no basis returns null and the
+       caller is expected to say so rather than substitute zero. */
+    function resistanceOf(id, method, via) {
+      const pt = part(id);
+      const refs = pt.resistance;
+      if (refs === undefined) return null;
+      let rid;
+      if (typeof refs === 'string') rid = refs;
+      else {
+        if (!via)
+          throw new Error('catalogue.resistanceOf: "' + id + '" has more ' +
+            'than one path (' + Object.keys(refs).join(', ') + ') and they ' +
+            'cost different amounts. Name the path.');
+        rid = refs[via];
+        if (!rid)
+          throw new Error('catalogue.resistanceOf: "' + id + '" has no path ' +
+            '"' + via + '". It has: ' + Object.keys(refs).join(', ') + '.');
+      }
+      const m = bases[rid];
+      if (!method) return m;
+      if (!m[method])
+        throw new Error('catalogue.resistanceOf: basis "' + rid + '" carries ' +
+          'no "' + method + '". It carries: ' + Object.keys(m).join(', ') +
+          '. The methods disagree, so one is never substituted for another.');
+      return m[method];
+    }
+
     function where(sel) {
       sel = sel || {};
       return Object.keys(parts).sort().map(k => parts[k]).filter(p => {
@@ -1961,6 +2052,8 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
       groups: () => groups.slice(),
       where: where,
       sourceOf: sourceOf,
+      resistanceOf: resistanceOf,
+      bases: () => Object.keys(bases).sort(),
       size: Object.keys(parts).length
     });
   }
@@ -1993,35 +2086,252 @@ window.LPE.catalogueData={
 
   "units": { "canonical": "in", "note": "as-printed values keep their own unit" },
 
+  "resistance": {
+    "_note": [
+      "WHAT A FITTING COSTS. Not a number -- a correlation, evaluated at the",
+      "Reynolds number and bore in play. Two are held and they disagree, so",
+      "both are carried and the caller chooses; see src/sizing.js for which",
+      "is the outlier at which size.",
+      "",
+      "THE JUDGEMENT THIS FORCES, stated here rather than buried in code:",
+      "NO PUBLISHED CORRELATION HAS A SOCKET-WELD ROW. The choice is",
+      "'threaded' or 'flanged/welded', and for ASME B16.11 fittings the",
+      "honest mapping is THREADED -- B16.11 governs socket-welding AND",
+      "threaded fittings in one document and gives them the same body",
+      "dimensions, Table 1 and Table 5 carrying the same centre-to-bottom-of-",
+      "socket A. They are the same forging with a different end preparation,",
+      "and both are compact blocks with sharp internal corners. A flanged or",
+      "butt-welded elbow has a real radius, which is exactly why its",
+      "coefficient is lower.",
+      "",
+      "If anything this UNDER-states the loss: a socket-weld joint leaves a",
+      "small annular step at the socket bottom that a threaded one does not.",
+      "No source quantifies it, so it is not modelled -- recorded, not guessed.",
+      "",
+      "Every basis carries its uncertainty. Published fitting-loss data runs",
+      "25-30% in general and 10% at the very best."
+    ],
+    "ELBOW90/THREADED": {
+      "appliesTo": "elbow-socketweld, mapped to threaded -- see _note",
+      "darby-3k": { "method": "darby-3k", "K1": 800, "Ki": 0.14, "Kd": 4.0,
+                    "uncertaintyPct": 30,
+                    "source": "Darby 3-K, 90 deg elbow R/D=1, threaded" },
+      "hooper-2k": { "method": "hooper-2k", "K1": 800, "Kinf": 0.40,
+                     "uncertaintyPct": 30,
+                     "source": "Hooper 2-K, 90 deg elbow R/D=1, threaded" }
+    },
+    "TEE/RUN/THREADED": {
+      "appliesTo": "tee-socketweld, flow straight through the run",
+      "darby-3k": { "method": "darby-3k", "K1": 200, "Ki": 0.091, "Kd": 4.0,
+                    "uncertaintyPct": 30,
+                    "source": "Darby 3-K, tee run-through, threaded" },
+      "hooper-2k": { "method": "hooper-2k", "K1": 200, "Kinf": 0.10,
+                     "uncertaintyPct": 30,
+                     "source": "Hooper 2-K, tee run-through, screwed" }
+    },
+    "TEE/BRANCH/THREADED": {
+      "appliesTo": "tee-socketweld, flow turning out of the branch",
+      "darby-3k": { "method": "darby-3k", "K1": 500, "Ki": 0.274, "Kd": 4.0,
+                    "uncertaintyPct": 30,
+                    "source": "Darby 3-K, tee through-branch, threaded R/D=1" },
+      "hooper-2k": { "method": "hooper-2k", "K1": 500, "Kinf": 0.70,
+                     "uncertaintyPct": 30,
+                     "source": "Hooper 2-K, tee used as elbow, screwed" }
+    }
+  },
+
   "pipe": {
     "_source": {
-      "std": "ASME B36.10M", "table": "Schedule 40 / STD",
-      "note": "transcribed via 50 - Lunar Process Engineer/sizing.js, which cites the same rows"
+      "std": "ASME B36.10M",
+      "table": "Schedule 40 / STD and Schedule 80 / XS",
+      "read": "2026-10-10",
+      "note": [
+        "VIA the Control Valve Handbook 6th ed., chapter 14 Pipe Data, which is",
+        "what the vault actually holds. ASME B36.10M itself is registered and has",
+        "never been opened -- its register entry says so -- and recording this as",
+        "the standard would claim a document nobody here has read.",
+        "",
+        "Seeded at NPS 1/8 to 10 because the department serves power, nuclear,",
+        "refining and severe service. The catalogue previously stopped at NPS 1/2,",
+        "which is a grow bay, not a refinery.",
+        "",
+        "NPS 12 and larger are NOT here: the Handbook chapter continues on pages",
+        "the reader does not match. Named so nobody assumes completeness.",
+        "",
+        "Every row satisfies bore = od - 2*wall to the printed precision, which is",
+        "how the reader found them at all. The nominal size column is merged across",
+        "schedules, and carrying it forward silently produced NPS 8 bores wearing",
+        "NPS 6 labels.",
+        "",
+        "`nps` is NUMERIC so a fitting can be matched to its pipe; `npsLabel` keeps",
+        "the printed form, because 1.25 and 1-1/4 are the same size and only one of",
+        "them is what anybody writes on a drawing."
+      ]
+    },
+    "PIPE/NPS0.125/S40": {
+      "class": "pipe", "nps": 0.125, "npsLabel": "1/8", "schedule": 40,
+      "dims": { "od": 0.405, "wall": 0.068, "bore": 0.269 },
+      "asPrinted": { "od": "0.405 in", "wall": "0.068 in", "bore": "0.269 in" }
+    },
+    "PIPE/NPS0.125/S80": {
+      "class": "pipe", "nps": 0.125, "npsLabel": "1/8", "schedule": 80,
+      "dims": { "od": 0.405, "wall": 0.095, "bore": 0.215 },
+      "asPrinted": { "od": "0.405 in", "wall": "0.095 in", "bore": "0.215 in" }
+    },
+    "PIPE/NPS0.25/S40": {
+      "class": "pipe", "nps": 0.25, "npsLabel": "1/4", "schedule": 40,
+      "dims": { "od": 0.54, "wall": 0.088, "bore": 0.364 },
+      "asPrinted": { "od": "0.54 in", "wall": "0.088 in", "bore": "0.364 in" }
+    },
+    "PIPE/NPS0.25/S80": {
+      "class": "pipe", "nps": 0.25, "npsLabel": "1/4", "schedule": 80,
+      "dims": { "od": 0.54, "wall": 0.119, "bore": 0.302 },
+      "asPrinted": { "od": "0.54 in", "wall": "0.119 in", "bore": "0.302 in" }
     },
     "PIPE/NPS0.375/S40": {
-      "class": "pipe", "nps": 0.375, "schedule": 40,
+      "class": "pipe", "nps": 0.375, "npsLabel": "3/8", "schedule": 40,
       "dims": { "od": 0.675, "wall": 0.091, "bore": 0.493 },
       "asPrinted": { "od": "0.675 in", "wall": "0.091 in", "bore": "0.493 in" }
     },
+    "PIPE/NPS0.375/S80": {
+      "class": "pipe", "nps": 0.375, "npsLabel": "3/8", "schedule": 80,
+      "dims": { "od": 0.675, "wall": 0.126, "bore": 0.423 },
+      "asPrinted": { "od": "0.675 in", "wall": "0.126 in", "bore": "0.423 in" }
+    },
     "PIPE/NPS0.5/S40": {
-      "class": "pipe", "nps": 0.5, "schedule": 40,
-      "dims": { "od": 0.840, "wall": 0.109, "bore": 0.622 },
-      "asPrinted": { "od": "0.840 in", "wall": "0.109 in", "bore": "0.622 in" }
+      "class": "pipe", "nps": 0.5, "npsLabel": "1/2", "schedule": 40,
+      "dims": { "od": 0.84, "wall": 0.109, "bore": 0.622 },
+      "asPrinted": { "od": "0.84 in", "wall": "0.109 in", "bore": "0.622 in" }
+    },
+    "PIPE/NPS0.5/S80": {
+      "class": "pipe", "nps": 0.5, "npsLabel": "1/2", "schedule": 80,
+      "dims": { "od": 0.8400000000000001, "wall": 0.147, "bore": 0.546 },
+      "asPrinted": { "od": "0.8400000000000001 in", "wall": "0.147 in", "bore": "0.546 in" }
     },
     "PIPE/NPS0.75/S40": {
-      "class": "pipe", "nps": 0.75, "schedule": 40,
-      "dims": { "od": 1.050, "wall": 0.113, "bore": 0.824 },
-      "asPrinted": { "od": "1.050 in", "wall": "0.113 in", "bore": "0.824 in" }
+      "class": "pipe", "nps": 0.75, "npsLabel": "3/4", "schedule": 40,
+      "dims": { "od": 1.05, "wall": 0.113, "bore": 0.824 },
+      "asPrinted": { "od": "1.05 in", "wall": "0.113 in", "bore": "0.824 in" }
+    },
+    "PIPE/NPS0.75/S80": {
+      "class": "pipe", "nps": 0.75, "npsLabel": "3/4", "schedule": 80,
+      "dims": { "od": 1.05, "wall": 0.154, "bore": 0.742 },
+      "asPrinted": { "od": "1.05 in", "wall": "0.154 in", "bore": "0.742 in" }
     },
     "PIPE/NPS1/S40": {
-      "class": "pipe", "nps": 1, "schedule": 40,
+      "class": "pipe", "nps": 1, "npsLabel": "1", "schedule": 40,
       "dims": { "od": 1.315, "wall": 0.133, "bore": 1.049 },
       "asPrinted": { "od": "1.315 in", "wall": "0.133 in", "bore": "1.049 in" }
     },
-    "PIPE/NPS0.375/S80": {
-      "class": "pipe", "nps": 0.375, "schedule": 80,
-      "dims": { "od": 0.675, "wall": 0.126, "bore": 0.423 },
-      "asPrinted": { "od": "0.675 in", "wall": "0.126 in", "bore": "0.423 in" }
+    "PIPE/NPS1/S80": {
+      "class": "pipe", "nps": 1, "npsLabel": "1", "schedule": 80,
+      "dims": { "od": 1.315, "wall": 0.179, "bore": 0.957 },
+      "asPrinted": { "od": "1.315 in", "wall": "0.179 in", "bore": "0.957 in" }
+    },
+    "PIPE/NPS1.25/S40": {
+      "class": "pipe", "nps": 1.25, "npsLabel": "1-1/4", "schedule": 40,
+      "dims": { "od": 1.66, "wall": 0.14, "bore": 1.38 },
+      "asPrinted": { "od": "1.66 in", "wall": "0.14 in", "bore": "1.38 in" }
+    },
+    "PIPE/NPS1.25/S80": {
+      "class": "pipe", "nps": 1.25, "npsLabel": "1-1/4", "schedule": 80,
+      "dims": { "od": 1.6600000000000001, "wall": 0.191, "bore": 1.278 },
+      "asPrinted": { "od": "1.6600000000000001 in", "wall": "0.191 in", "bore": "1.278 in" }
+    },
+    "PIPE/NPS1.5/S80": {
+      "class": "pipe", "nps": 1.5, "npsLabel": "1-1/2", "schedule": 80,
+      "dims": { "od": 1.9, "wall": 0.2, "bore": 1.5 },
+      "asPrinted": { "od": "1.9 in", "wall": "0.2 in", "bore": "1.5 in" }
+    },
+    "PIPE/NPS1.5/S40": {
+      "class": "pipe", "nps": 1.5, "npsLabel": "1-1/2", "schedule": 40,
+      "dims": { "od": 1.9000000000000001, "wall": 0.145, "bore": 1.61 },
+      "asPrinted": { "od": "1.9000000000000001 in", "wall": "0.145 in", "bore": "1.61 in" }
+    },
+    "PIPE/NPS2/S40": {
+      "class": "pipe", "nps": 2, "npsLabel": "2", "schedule": 40,
+      "dims": { "od": 2.375, "wall": 0.154, "bore": 2.067 },
+      "asPrinted": { "od": "2.375 in", "wall": "0.154 in", "bore": "2.067 in" }
+    },
+    "PIPE/NPS2/S80": {
+      "class": "pipe", "nps": 2, "npsLabel": "2", "schedule": 80,
+      "dims": { "od": 2.375, "wall": 0.218, "bore": 1.939 },
+      "asPrinted": { "od": "2.375 in", "wall": "0.218 in", "bore": "1.939 in" }
+    },
+    "PIPE/NPS2.5/S40": {
+      "class": "pipe", "nps": 2.5, "npsLabel": "2-1/2", "schedule": 40,
+      "dims": { "od": 2.875, "wall": 0.203, "bore": 2.469 },
+      "asPrinted": { "od": "2.875 in", "wall": "0.203 in", "bore": "2.469 in" }
+    },
+    "PIPE/NPS2.5/S80": {
+      "class": "pipe", "nps": 2.5, "npsLabel": "2-1/2", "schedule": 80,
+      "dims": { "od": 2.875, "wall": 0.276, "bore": 2.323 },
+      "asPrinted": { "od": "2.875 in", "wall": "0.276 in", "bore": "2.323 in" }
+    },
+    "PIPE/NPS3/S40": {
+      "class": "pipe", "nps": 3, "npsLabel": "3", "schedule": 40,
+      "dims": { "od": 3.5, "wall": 0.216, "bore": 3.068 },
+      "asPrinted": { "od": "3.5 in", "wall": "0.216 in", "bore": "3.068 in" }
+    },
+    "PIPE/NPS3/S80": {
+      "class": "pipe", "nps": 3, "npsLabel": "3", "schedule": 80,
+      "dims": { "od": 3.5, "wall": 0.3, "bore": 2.9 },
+      "asPrinted": { "od": "3.5 in", "wall": "0.3 in", "bore": "2.9 in" }
+    },
+    "PIPE/NPS3.5/S40": {
+      "class": "pipe", "nps": 3.5, "npsLabel": "3-1/2", "schedule": 40,
+      "dims": { "od": 4, "wall": 0.226, "bore": 3.548 },
+      "asPrinted": { "od": "4 in", "wall": "0.226 in", "bore": "3.548 in" }
+    },
+    "PIPE/NPS3.5/S80": {
+      "class": "pipe", "nps": 3.5, "npsLabel": "3-1/2", "schedule": 80,
+      "dims": { "od": 4, "wall": 0.318, "bore": 3.364 },
+      "asPrinted": { "od": "4 in", "wall": "0.318 in", "bore": "3.364 in" }
+    },
+    "PIPE/NPS4/S40": {
+      "class": "pipe", "nps": 4, "npsLabel": "4", "schedule": 40,
+      "dims": { "od": 4.5, "wall": 0.237, "bore": 4.026 },
+      "asPrinted": { "od": "4.5 in", "wall": "0.237 in", "bore": "4.026 in" }
+    },
+    "PIPE/NPS4/S80": {
+      "class": "pipe", "nps": 4, "npsLabel": "4", "schedule": 80,
+      "dims": { "od": 4.5, "wall": 0.337, "bore": 3.826 },
+      "asPrinted": { "od": "4.5 in", "wall": "0.337 in", "bore": "3.826 in" }
+    },
+    "PIPE/NPS5/S40": {
+      "class": "pipe", "nps": 5, "npsLabel": "5", "schedule": 40,
+      "dims": { "od": 5.563, "wall": 0.258, "bore": 5.047 },
+      "asPrinted": { "od": "5.563 in", "wall": "0.258 in", "bore": "5.047 in" }
+    },
+    "PIPE/NPS5/S80": {
+      "class": "pipe", "nps": 5, "npsLabel": "5", "schedule": 80,
+      "dims": { "od": 5.563, "wall": 0.375, "bore": 4.813 },
+      "asPrinted": { "od": "5.563 in", "wall": "0.375 in", "bore": "4.813 in" }
+    },
+    "PIPE/NPS6/S40": {
+      "class": "pipe", "nps": 6, "npsLabel": "6", "schedule": 40,
+      "dims": { "od": 6.625, "wall": 0.28, "bore": 6.065 },
+      "asPrinted": { "od": "6.625 in", "wall": "0.28 in", "bore": "6.065 in" }
+    },
+    "PIPE/NPS6/S80": {
+      "class": "pipe", "nps": 6, "npsLabel": "6", "schedule": 80,
+      "dims": { "od": 6.625, "wall": 0.432, "bore": 5.761 },
+      "asPrinted": { "od": "6.625 in", "wall": "0.432 in", "bore": "5.761 in" }
+    },
+    "PIPE/NPS8/S40": {
+      "class": "pipe", "nps": 8, "npsLabel": "8", "schedule": 40,
+      "dims": { "od": 8.625, "wall": 0.322, "bore": 7.981 },
+      "asPrinted": { "od": "8.625 in", "wall": "0.322 in", "bore": "7.981 in" }
+    },
+    "PIPE/NPS8/S80": {
+      "class": "pipe", "nps": 8, "npsLabel": "8", "schedule": 80,
+      "dims": { "od": 8.625, "wall": 0.5, "bore": 7.625 },
+      "asPrinted": { "od": "8.625 in", "wall": "0.5 in", "bore": "7.625 in" }
+    },
+    "PIPE/NPS10/S40": {
+      "class": "pipe", "nps": 10, "npsLabel": "10", "schedule": 40,
+      "dims": { "od": 10.75, "wall": 0.365, "bore": 10.02 },
+      "asPrinted": { "od": "10.75 in", "wall": "0.365 in", "bore": "10.02 in" }
     }
   },
 
@@ -2039,7 +2349,8 @@ window.LPE.catalogueData={
       ]
     },
     "ELBOW90/SW3000/NPS0.375": {
-      "class": "elbow-socketweld", "nps": 0.375, "rating": "Class 3000",
+      "class": "elbow-socketweld",
+      "resistance": "ELBOW90/THREADED", "nps": 0.375, "rating": "Class 3000",
       "dims": { "centreToSocket": 0.5315, "socketBore": 0.7087,
                 "fittingBore": 0.5236, "socketWall": 0.1579,
                 "bodyWall": 0.1260, "socketDepth": 0.3740 },
@@ -2049,7 +2360,8 @@ window.LPE.catalogueData={
       "tolerance": { "centreToSocket": "±1.5 mm" }
     },
     "ELBOW90/SW3000/NPS0.5": {
-      "class": "elbow-socketweld", "nps": 0.5, "rating": "Class 3000",
+      "class": "elbow-socketweld",
+      "resistance": "ELBOW90/THREADED", "nps": 0.5, "rating": "Class 3000",
       "dims": { "centreToSocket": 0.6102, "socketBore": 0.8740,
                 "fittingBore": 0.6535, "socketWall": 0.1839,
                 "bodyWall": 0.1469, "socketDepth": 0.3740 },
@@ -2059,7 +2371,9 @@ window.LPE.catalogueData={
       "tolerance": { "centreToSocket": "±1.5 mm" }
     },
     "TEE/SW3000/NPS0.375": {
-      "class": "tee-socketweld", "nps": 0.375, "rating": "Class 3000",
+      "class": "tee-socketweld",
+      "resistance": { "run": "TEE/RUN/THREADED",
+                      "branch": "TEE/BRANCH/THREADED" }, "nps": 0.375, "rating": "Class 3000",
       "dims": { "centreToSocket": 0.5315, "socketBore": 0.7087,
                 "fittingBore": 0.5236, "bodyWall": 0.1260,
                 "socketDepth": 0.3740 },
@@ -2069,7 +2383,9 @@ window.LPE.catalogueData={
       "tolerance": { "centreToSocket": "±1.5 mm" }
     },
     "TEE/SW3000/NPS0.5": {
-      "class": "tee-socketweld", "nps": 0.5, "rating": "Class 3000",
+      "class": "tee-socketweld",
+      "resistance": { "run": "TEE/RUN/THREADED",
+                      "branch": "TEE/BRANCH/THREADED" }, "nps": 0.5, "rating": "Class 3000",
       "dims": { "centreToSocket": 0.6102, "socketBore": 0.8740,
                 "fittingBore": 0.6535, "bodyWall": 0.1469,
                 "socketDepth": 0.3740 },

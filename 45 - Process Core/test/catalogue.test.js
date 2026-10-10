@@ -108,10 +108,26 @@ if (cat) {
     !!src && /Table 1/.test(src.table || ''),
     'table: ' + JSON.stringify(src && src.table));
 
-  /* Selection, which is how a consumer will actually reach the catalogue. */
+  /* Selection, which is how a consumer will actually reach the catalogue.
+     A SIZE IS NO LONGER A PART. Until the pipe group was reseeded from
+     the Handbook's chapter 14, NPS 1/2 had exactly one row, so selecting
+     on size alone identified a part. It now has Schedule 40 and Schedule
+     80 -- same size, different wall, different bore -- and selecting on
+     size alone correctly returns both. The old expectation of one hit was
+     not a stricter check, it was a smaller catalogue. */
   const halfInch = cat.where({ class: 'pipe', nps: 0.5 });
-  check('selection by class and size works', halfInch.length === 1,
-    'NPS 1/2 schedule 40 pipe: ' + halfInch.length + ' hits');
+  check('selecting a SIZE returns every schedule in it',
+    halfInch.length === 2,
+    'NPS 1/2: ' + halfInch.map(p => 'Sch ' + p.schedule).join(', '));
+  check('and selecting size AND schedule identifies one part',
+    cat.where({ class: 'pipe', nps: 0.5, schedule: 40 }).length === 1);
+  check('the catalogue now reaches industrial sizes, not just a grow bay',
+    cat.where({ class: 'pipe' }).some(p => p.nps >= 6),
+    cat.where({ class: 'pipe' }).length + ' pipe rows, largest NPS ' +
+    Math.max.apply(null, cat.where({ class: 'pipe' }).map(p => p.nps)));
+  check('and keeps the printed size label beside the numeric one',
+    cat.part('PIPE/NPS1.25/S40').npsLabel === '1-1/4',
+    '1.25 and 1-1/4 are the same size; only one is what goes on a drawing');
 
   /* Reference data, not a scratchpad. */
   let froze = false;
