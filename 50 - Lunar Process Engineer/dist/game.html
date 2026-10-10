@@ -903,7 +903,27 @@ function pipes(runs){
    piping() uses. Give both the same pts and they agree by construction. */
 function runSegments(pts,r,opt){
   opt=opt||{};
-  const want=opt.bend===undefined?3*r:opt.bend, out=[];
+  /* THE RADIUS IS THE NETLIST'S. This used to read `3*r`, which was a
+     THIRD copy of the bend convention -- topology.js owns it, physvis.js
+     was reconciled to ask for it when it was extracted, and this one
+     survived only because all three happened to agree. They do: every
+     corner in levels 3 and 4 has legs far longer than the radius, so the
+     clamp below never fires and the water follows the metal exactly.
+     Measured, not assumed.
+
+     THE REAL FIX IS NOT HERE. The core already does this properly, in
+     `LPE.net.toWater()`: it is driven by a netlist rather than a
+     hand-written point list, it SPLITS AT EVERY TEE (flow is constant
+     between tees and changes at them), and it uses teeTurnRadius for a
+     branch exit instead of the long-radius elbow, because leaving a tee
+     is a tight turn. This function knows none of that.
+
+     It survives because levels 3 and 4 have not been migrated to
+     netlists; level 1 has, and uses toWater. When they migrate, delete
+     this. Until then it must not be allowed to drift. */
+  const want = opt.bend !== undefined ? opt.bend
+             : (LPE.net && LPE.net.bendRadius ? LPE.net.bendRadius(r) : 3*r);
+  const out=[];
   const len=(a,b)=>Math.hypot(b[0]-a[0],b[1]-a[1]);
   const unit=(a,b)=>{ const L=len(a,b)||1; return [(b[0]-a[0])/L,(b[1]-a[1])/L]; };
   let from=pts[0];
