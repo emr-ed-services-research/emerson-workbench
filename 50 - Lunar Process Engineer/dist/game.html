@@ -8024,9 +8024,19 @@ const BR_Y=[170,256,342];
      restriction      throat 0.108 in  derived from the Cv it has to have
    The main was drawn at 11 px for a long time, which is NPS 3/8 wearing a
    half-inch label; at this scale it is 12.6. */
+/* THE BORES ARE NOT TYPED HERE. They come from the Process Core's
+   component catalogue, which reads them from ASME B36.10M and refuses to
+   load unless every dimension matches what it says the standard printed.
+   Level 1 was migrated first; this is the same bay, so it reads the same
+   two parts. */
+const CAT=LPE.catalogue.load(LPE.catalogueData);
+const BORE_MAIN=CAT.part('PIPE/NPS0.5/S40').dims.bore;      // 0.622 in
+const BORE_BR  =CAT.part('PIPE/NPS0.375/S40').dims.bore;    // 0.493 in
 const R_BR=10;                                      // the anchor
-const PX_PER_IN=R_BR/0.493;                         // ~20.3 px per inch of bore
-const R_MAIN=Math.round(0.622*PX_PER_IN*10)/10;     // 12.6
+const PX_PER_IN=R_BR/BORE_BR;                       // ~20.3 px per inch of bore
+const R_MAIN=Math.round(BORE_MAIN*PX_PER_IN*10)/10; // 12.6
+const MAN_TOP=132;        // the manifold body's inlet face, below the elbow
+const P_SUP=60;           // the Thermal Reservoir, psig
 const RED_X0=600, RED_X1=680, RED_R=Math.round(0.108*PX_PER_IN*10)/10;
 const VALVE_X=410, WHEEL_R=18, STEM=24;
 const BR_LEN=POD_X-TRUNK_X;
@@ -8042,7 +8052,6 @@ const wheels=[
    Verified against level one state-for-state by diffphys.js: with
    reducerIn true this solve is identical to level one's across all 27
    valve combinations. The ONLY new thing is that the series term can go. */
-const P_SUP=60, SG=1.0;
 /* DERIVED, not chosen - run `node sizing.js` to regenerate and see the
    working. Application: 3 NFT beds at 2.0 gpm each (an NFT channel runs
    1-2 L/min; a bed carries ~6), manifold at 15.2 psig because
@@ -8052,30 +8061,103 @@ const P_SUP=60, SG=1.0;
    The first pass had Cv 7 / 4 / 2.2, picked because they balanced nicely,
    and the bay delivered 46.8 gpm - 2,800 gal/hour through three grow beds
    on a colony whose own narration says the water is counted. */
-const CV_MAIN_MAX=0.896, CV_BR_MAX=0.513, CV_REDUCER=0.296;
 const valves={main:1,b0:1,b1:1,b2:1};
 let reducerIn=true;
-const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));
-let pManHeld=0;
-const P_TAU=0.22;
+
+/* ---- THE BAY, AS A NETLIST -----------------------------------------
+   This file used to carry its own solver: a Cv table, a series-Cv helper,
+   a pressure-split formula and a lagged manifold pressure, about thirty
+   lines of arithmetic that had to stay identical to level 1's by hand.
+   verify.js compared the two across 81 valve states for exactly that
+   reason -- the check existed because the duplication did.
+
+   It is the same bay. So it is now the same netlist, and the physics is
+   `LPE.dyn` reading it, which is what level 1 already does. The Cv values
+   live on the valve components where a reader can see which valve has
+   which, instead of in three constants at the top.
+
+   WHAT IS DIFFERENT FROM LEVEL 1, and the only thing: the reducer comes
+   out. That makes the netlist a function of one boolean rather than a
+   constant, because pulling a fitting changes what is connected to what
+   -- which is precisely a netlist's business, not a renderer's.
+
+   ONE BODY, NOT TWO TEES. Level 1 says why at length: mass is launch
+   cost, every discrete fitting is a part number somebody stocks, and
+   every joint is a leak path. This file still drew two forged tees for
+   the same bay, which is two levels disagreeing about what the hardware
+   IS. They cannot disagree now -- there is one description. */
+const specFor=red=>({
+  bores:{main:'PIPE/NPS0.5/S40', branch:'PIPE/NPS0.375/S40'},
+  fluid:{sg:1.0},
+  components:{
+    reservoir:{kind:'vessel', tag:'TK-1', role:'source', pressure:P_SUP},
+    union1:   {kind:'union'},
+    vMain:    {kind:'valve',  tag:'HV-1', key:'main', valveType:'globe', cv:0.896},
+    manifold: {kind:'manifold'},
+    v0:       {kind:'valve',  tag:'HV-2', key:'b0', valveType:'globe', cv:0.513},
+    v1:       {kind:'valve',  tag:'HV-3', key:'b1', valveType:'globe', cv:0.513},
+    v2:       {kind:'valve',  tag:'HV-4', key:'b2', valveType:'globe', cv:0.513},
+    /* The swap. A reducer restricts; a coupling does not -- it is a
+       collar pair with the same bore either side, which is the entire
+       point of it. Topologically both are inline two-port fittings, so
+       the segments below are the same either way; what changes is
+       whether there is a Cv in the line. `fitting:` is the render hint
+       for which one to draw, because union-versus-coupling is a
+       fabrication fact and a renderer cannot deduce it from coordinates. */
+    red:      red ? {kind:'reducer', throat:0.108, cv:0.296}
+                  : {kind:'union', fitting:'coupling'},
+    pod0:     {kind:'vessel', tag:'TK-2', role:'sink', vesselType:'atmospheric'},
+    pod1:     {kind:'vessel', tag:'TK-3', role:'sink', vesselType:'atmospheric'},
+    pod2:     {kind:'vessel', tag:'TK-4', role:'sink', vesselType:'atmospheric'},
+  },
+  segments:[
+    {from:'reservoir.out', to:'union1.in', bore:'main'},
+    {from:'union1.out',    to:'vMain.in',  bore:'main'},
+    {from:'vMain.out',     to:'manifold.in',  bore:'main'},
+    {from:'manifold.out',  to:'v2.in',     bore:'main'},
+    {from:'v2.out',        to:'red.in',    bore:'main'},
+    {from:'red.out',       to:'pod2.in',   bore:'main'},
+    {from:'manifold.b0',   to:'v0.in',     bore:'branch'},
+    {from:'v0.out',        to:'pod0.in',   bore:'branch'},
+    {from:'manifold.b1',   to:'v1.in',     bore:'branch'},
+    {from:'v1.out',        to:'pod1.in',   bore:'branch'},
+  ],
+  frames:{
+    rig:{
+      pxPerInch:PX_PER_IN, round:1,
+      at:{
+        reservoir:[30,MAIN_Y],
+        union1:   [wheelMainX-54,MAIN_Y],
+        vMain:    [wheelMainX,MAIN_Y],
+        manifold: [[TRUNK_X,MAN_TOP],[TRUNK_X,BR_Y[0]],
+                   [TRUNK_X,BR_Y[1]],[TRUNK_X,BR_Y[2]]],
+        v0:       [VALVE_X,BR_Y[0]],
+        v1:       [VALVE_X,BR_Y[1]],
+        v2:       [VALVE_X,BR_Y[2]],
+        /* A reducer spans two points -- it has a length and a taper. A
+           coupling is a point. Placing one where the other is expected
+           is refused by name, which is the frame doing its job. */
+        red:      red ? [[RED_X0,BR_Y[2]],[RED_X1,BR_Y[2]]]
+                      : [(RED_X0+RED_X1)/2,BR_Y[2]],
+        pod0:     [POD_X,BR_Y[0]],
+        pod1:     [POD_X,BR_Y[1]],
+        pod2:     [POD_X,BR_Y[2]],
+      },
+      via:{
+        'vMain.out->manifold.in':[[TRUNK_X,MAIN_Y]],
+        'manifold.out->v2.in':   [[TRUNK_X,BR_Y[2]]],
+      },
+    },
+  },
+});
+
+let NETLIST,DYN;
+/* `solve()` keeps the shape this level has always read -- q as an array in
+   bed order -- so nothing downstream changed when the physics moved out. */
 function solve(){
-  const cvMain=CV_MAIN_MAX*valves.main;
-  const cv=[CV_BR_MAX*valves.b0, CV_BR_MAX*valves.b1, 0];
-  const raw2=CV_BR_MAX*valves.b2;
-  cv[2]= raw2>0 ? (reducerIn?seriesCv(raw2,CV_REDUCER):raw2) : 0;
-  const cvSum=cv[0]+cv[1]+cv[2];
-  let pTarget;
-  if(cvMain<=0){
-    pTarget=(cvSum<=0) ? pManHeld : 0;
-  } else if(cvSum<=0){
-    pTarget=P_SUP;
-  } else {
-    pTarget=P_SUP*(cvMain*cvMain)/(cvMain*cvMain+cvSum*cvSum);
-  }
-  const pMan=pManHeld;
-  const root=Math.sqrt(Math.max(0,pMan)/SG);
-  const q=cv.map(c=>c*root);
-  return {cvMain,cv,cvSum,pMan,pTarget,q,qTot:q[0]+q[1]+q[2]};
+  const S=DYN.solve(valves);
+  return {cvMain:S.cvUp, cvSum:S.cvDown, pMan:S.pressure, pTarget:S.target,
+          q:[S.q.b0,S.q.b1,S.q.b2], qTot:S.qTot};
 }
 
 /* ---------- air fill ----------
@@ -8096,7 +8178,10 @@ const FILL_RATE=50;
 const venting=i=>fill[i]>FILL_START+0.001 && fill[i]<1;
 
 /* ---------- water ---------- */
-const BEND=3*R_MAIN;
+/* The same long-radius value the piping uses, ASKED FOR rather than
+   restated -- topology.js owns the convention. This was the last copy of
+   `3 x bore radius` in this level, as it was in level 1. */
+const BEND=LPE.net.bendRadius(R_MAIN);
 const E1={x:TRUNK_X,y:MAIN_Y}, E2={x:TRUNK_X,y:BR_Y[2]};
 const main=new LPE.Line({r:R_MAIN,segments:[
   {ax:30,ay:MAIN_Y,bx:wheelMainX,by:MAIN_Y,fill:1},
@@ -8114,26 +8199,24 @@ const trunk=new LPE.Line({r:R_MAIN,segments:[
    and the water's path are the same description of the same hardware. A
    level that let those two drift would show a reducer that was not there. */
 let NET, branches, BR_SEGS, BR_TOTAL;
-const TEE_R=R_BR*1.6;
+/* The tee-turn radius is the netlist's, not a number restated here. */
+const TEE_R=LPE.net.teeTurnRadius(R_BR);
 function buildNet(){
-  NET=LPE.piping({
-    lines:[
-      {pts:[[30,MAIN_Y],[TRUNK_X,MAIN_Y],[TRUNK_X,BR_Y[2]],
-            [reducerIn?RED_X0:POD_X,BR_Y[2]]], r:R_MAIN},
-    ].concat(reducerIn?[{pts:[[RED_X1,BR_Y[2]],[POD_X,BR_Y[2]]], r:R_MAIN}]:[])
-     .concat([
-      {pts:[[TRUNK_X,BR_Y[0]],[POD_X,BR_Y[0]]], r:R_BR},
-      {pts:[[TRUNK_X,BR_Y[1]],[POD_X,BR_Y[1]]], r:R_BR},
-    ]),
-    tees:[{x:TRUNK_X,y:BR_Y[0],r:R_MAIN,branch:R_BR},
-          {x:TRUNK_X,y:BR_Y[1],r:R_MAIN,branch:R_BR}],
-    reducers: reducerIn?[{x0:RED_X0,x1:RED_X1,y:BR_Y[2],r1:R_MAIN,r2:RED_R}]:[],
-    /* The union on the header, and - once the swap is done - the coupling
-       that replaces the reducer. A coupling is a collar pair: same bore
-       either side, which is the entire point of it. */
-    fittings:[{x:wheelMainX-54,y:MAIN_Y,r:R_MAIN,kind:'union'}]
-      .concat(reducerIn?[]:[{x:(RED_X0+RED_X1)/2,y:BR_Y[2],r:R_BR,kind:'coupling'}]),
-  });
+  /* Rebuild the netlist, not just the drawing. Pulling the reducer
+     changes what is connected to what, so the graph changes and the
+     physics and the geometry both fall out of the new one -- which is
+     the only way they cannot drift. The lagged manifold pressure is
+     carried across, because the bay does not forget its pressure when a
+     fitting is swapped; without this the pull would snap it to zero. */
+  const keepP=DYN?DYN.pressure:0;
+  NETLIST=LPE.net(specFor(reducerIn),{frame:'rig',catalogue:CAT});
+  if(NETLIST.errors.length)
+    throw new Error('level 2 netlist: '+NETLIST.errors.join('; '));
+  DYN=LPE.dyn(NETLIST,{tau:0.22});
+  if(DYN.errors.length)
+    throw new Error('level 2 dynamics: '+DYN.errors.join('; '));
+  DYN.pressure=keepP;
+  NET=LPE.piping(NETLIST.toPiping());
   BR_SEGS=BR_Y.map((y,i)=> i!==2
     ? [{arc:{cx:TRUNK_X+TEE_R,cy:y-TEE_R,R:TEE_R,a0:Math.PI,a1:Math.PI/2},r:R_BR},
        {ax:TRUNK_X+TEE_R,ay:y,bx:POD_X,by:y,r:R_BR}]
@@ -8149,13 +8232,16 @@ function buildNet(){
 }
 buildNet();
 
+/* The bay at its best -- reducer out, everything open -- measured on a
+   THROWAWAY netlist rather than by toggling the live one and putting it
+   back. The old version mutated three globals and restored them; a
+   restore that is one line long is a restore that will one day be two. */
 const FLOW_REF=(()=>{
-  const keep={...valves}, keepP=pManHeld, keepR=reducerIn;
-  reducerIn=false;                       // reference the bay at its best
-  const settle=v=>{ Object.assign(valves,v); let S=solve(); pManHeld=S.pTarget; return solve(); };
+  const n=LPE.net(specFor(false),{frame:'rig',catalogue:CAT});
+  const d=LPE.dyn(n,{tau:0.22});
+  const settle=v=>{ d.settle(v); return d.solve(v); };
   const all=settle({main:1,b0:1,b1:1,b2:1}).qTot;
-  const one=settle({main:1,b0:1,b1:0,b2:0}).q[0];
-  Object.assign(valves,keep); pManHeld=keepP; reducerIn=keepR;
+  const one=settle({main:1,b0:1,b1:0,b2:0}).q.b0;
   return {riser:all, branch:one};
 })();
 
@@ -8171,16 +8257,23 @@ let result=null;                          // and the same, after the repair
    That is how the first run of this level recorded a baseline of 8.8 gpm
    for a bay that settles at 11.5. A measurement taken before the rig stops
    moving is not a measurement. */
-const settled=()=>Math.abs(solve().pTarget-pManHeld)<0.12;
+const settled=()=>Math.abs(solve().pTarget-DYN.pressure)<0.12;
 
 /* What the bay is ON ITS WAY TO, not where the needle happens to be this
    frame. Recorded figures are read from here: within the settle tolerance
    the live value still drifts enough to print 15.7 for a bay that runs at
    15.61, and the whole level turns on two numbers being comparable. */
 function steady(){
-  const S=solve(), root=Math.sqrt(Math.max(0,S.pTarget)/SG);
-  const q=S.cv.map(c=>c*root);
-  return {q, per:(q[0]+q[1]+q[2])/3, tot:q[0]+q[1]+q[2]};
+  /* Was: re-derive each branch flow from its Cv and sqrt(pTarget/SG), a
+     copy of the solver's own arithmetic living in the view. Now it asks
+     the dynamics layer what the bay settles to and reads the answer.
+     The live pressure is put back, because this is a QUERY -- the needle
+     must keep lagging on screen while a recorded figure is taken. */
+  const keep=DYN.pressure;
+  DYN.settle(valves);
+  const S=solve();
+  DYN.pressure=keep;
+  return {q:S.q, per:S.qTot/3, tot:S.qTot};
 }
 
 /* Balanced means even AND as high as the weakest branch allows - not merely
@@ -8374,7 +8467,7 @@ function draw(g,dt,t){
 /* ---------- simulation ---------- */
 function stepSim(dt){
   const S=solve();
-  pManHeld += (S.pTarget-pManHeld)*Math.min(1,dt/P_TAU);
+  DYN.step(dt,valves);          // the lag lives in the dynamics layer now
   for(let i=0;i<3;i++){
     if(S.q[i]>0) fill[i]=Math.min(1,fill[i]+S.q[i]*FILL_RATE*dt/BR_LEN);
     const f=Math.min(1,S.q[i]/FLOW_REF.branch);
@@ -8496,7 +8589,7 @@ function onMove(e){
 
 /* ---------- mount ---------- */
 buildScene();
-pManHeld=solve().pTarget;        // the bay is already running when you walk in
+DYN.settle(valves);              // the bay is already running when you walk in
 const SH=LPE.mount({
   t1:'BIO-GROW BAY 3 \u2014 LINE 3 REPAIR',
   t2:'The Garden \u00b7 Bio-Grow Bay 3 \u00b7 line 3 repair',
@@ -8524,7 +8617,7 @@ const SH=LPE.mount({
     reducerIn=true; baseline=null; result=null; STEPS=null; step=0; done=false; route='';
     fill[0]=fill[1]=fill[2]=1;
     buildNet();
-    pManHeld=solve().pTarget;
+    DYN.settle(valves);
     LPE.audio.flow(0); LPE.audio.vent(0); LPE.audio.rush(0);
     askRoute();
   },

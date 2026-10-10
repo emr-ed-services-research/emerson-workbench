@@ -160,9 +160,32 @@ const EXPECT = { CV_MAIN_MAX: 0.896, CV_BR_MAX: 0.513, CV_REDUCER: 0.296 };
    working through the rest of the migration instead of having to be
    switched over in one go. */
 const LOOSE = /const CV_MAIN_MAX=([\d.]+), CV_BR_MAX=([\d.]+), CV_REDUCER=([\d.]+);/;
+/* Find a component's Cv in a level's netlist declaration.
+
+   Plain scanning rather than a regex, because the shape it has to cope
+   with is no longer simple: level 2's reducer is
+
+     red:      red ? {kind:'reducer', throat:0.108, cv:0.296}
+                   : {kind:'union', fitting:'coupling'},
+
+   -- the fitting comes out mid-level, so the component is a ternary. The
+   Cv being looked for is the reducer's, which is in the FIRST object
+   after the key. Walk to that object, take its braces, read cv. */
 const onNet = (src, id) => {
-  const m = src.match(new RegExp(id + ':\\s*\\{[^}]*cv:([\\d.]+)'));
-  return m ? +m[1] : null;
+  const k = src.indexOf('\n    ' + id + ':');
+  if (k < 0) return null;
+  const open = src.indexOf('{', k);
+  if (open < 0) return null;
+  let d = 0, end = open;
+  for (; end < src.length; end++) {
+    if (src[end] === '{') d++;
+    else if (src[end] === '}') { d--; if (d === 0) { end++; break; } }
+  }
+  const body = src.slice(open, end);
+  const c = body.indexOf('cv:');
+  if (c < 0) return null;
+  const v = parseFloat(body.slice(c + 3));
+  return isFinite(v) ? v : null;
 };
 for (const f of ['level1.html', 'level2.html']) {
   const src = fs.readFileSync(f, 'utf8');
@@ -207,43 +230,41 @@ for (const f of ['level1.html', 'level2.html']) {
 }
 
 /* ------------------------------------------------------------
-   3. PHYSICS: the two levels must agree
+   3. THE TWO LEVELS MUST DESCRIBE THE SAME BAY
 
-   Level two is the same bay as level one. With the reducer in, its solver
-   must be identical across every valve combination, or the two levels are
-   quietly modelling different rigs.
+   Level two is level one's bay with one fitting removable. For as long as
+   level two carried its own hand-written solver, this section compared
+   that solver against the core across 81 valve states, and the check
+   existed because the duplication did.
+
+   LEVEL TWO HAS NOW BEEN MIGRATED, so that comparison would run the core
+   against the core -- a thing compared to itself, which this repo already
+   knows is the one shape a check must never take. Deleting it outright
+   would be worse: the risk it guarded is still real, it has just moved.
+
+   What can still go wrong is that the two FILES drift. Each declares the
+   bay itself -- its own components, its own Cv values, its own frame --
+   and nothing stops someone editing one. So the comparison moves up to
+   the declarations:
+
+     PHYSICS   both netlists, through the real LPE.dyn, across all 81
+               valve combinations, as before.
+     GEOMETRY  both netlists through toPiping(), canonicalised. This is
+               NEW. The old check could not see geometry at all, so the
+               two levels drawing the same bay differently was invisible
+               to it -- and that is exactly what had happened: level 1 was
+               migrated to a single manifold body while level 2 still drew
+               two forged tees for the same hardware. Nothing caught it.
+
+   Both are read out of the level files and run through the vendored core,
+   so neither level can quietly become a different rig.
    ------------------------------------------------------------ */
-function solver(file) {
-  const s = fs.readFileSync(file, 'utf8');
-  const i = s.indexOf('function solve()');
-  let depth = 0, j = s.indexOf('{', i);
-  for (let k = j; k < s.length; k++) {
-    if (s[k] === '{') depth++;
-    else if (s[k] === '}') { depth--; if (!depth) { j = k; break; } }
-  }
-  return new Function('valves', 'pManHeld', 'reducerIn',
-    'const P_SUP=60,SG=1.0,CV_MAIN_MAX=' + EXPECT.CV_MAIN_MAX +
-    ',CV_BR_MAX=' + EXPECT.CV_BR_MAX + ',CV_REDUCER=' + EXPECT.CV_REDUCER + ';' +
-    'const seriesCv=(a,b)=>1/Math.sqrt(1/(a*a)+1/(b*b));' +
-    s.slice(i, j + 1) + ' return solve();');
-}
-
-/* Level 1 no longer HAS a solver to extract -- in Phase 3 its physics
-   moved to the Process Core's dynamics layer, derived from its netlist.
-   So level 1's side of this comparison is now the real thing: its own
-   declaration, read out of level1.html, handed to the real LPE.dyn.
-
-   The guarantee is unchanged and arguably stronger. It used to be "the
-   two levels contain the same arithmetic"; it is now "level 2's
-   hand-written solver still agrees with the authority level 1 uses".
-   Level 2 has not been migrated, so this is what keeps it honest until
-   it is. */
-function coreSolver() {
+function levelNet(file, declStart, tail) {
   const vm = require('vm');
-  const src = fs.readFileSync('level1.html', 'utf8');
+  const src = fs.readFileSync(file, 'utf8');
   const decl = (text, start) => {
     const a = text.indexOf(start);
-    if (a < 0) throw new Error('not found in level1.html: ' + start);
+    if (a < 0) throw new Error('not found in ' + file + ': ' + start);
     let d = 0, b = a;
     for (; b < text.length; b++) {
       const ch = text[b];
@@ -252,12 +273,11 @@ function coreSolver() {
     }
     return text.slice(a, b) + ';';
   };
+  /* The VENDORED core, with the real catalogue and the real parts data --
+     the levels declare their bores as catalogue part ids, so a stub with
+     the right numbers in it would make this pass while proving nothing. */
   const host = { window: {} };
   vm.createContext(host);
-  /* The catalogue first, and its DATA with it. Level 1 declares its bores
-     as catalogue part ids now, so the sandbox has to be able to answer the
-     same lookup the browser does -- otherwise this check would be testing a
-     level that cannot exist. The build inlines the same JSON the same way. */
   vm.runInContext(fs.readFileSync('vendor/process-core/catalogue.js', 'utf8'), host);
   vm.runInContext('window.LPE.catalogueData=' +
     fs.readFileSync('vendor/process-core/catalogue/parts.json', 'utf8') + ';', host);
@@ -266,31 +286,138 @@ function coreSolver() {
 
   const sand = { LPE: host.window.LPE };
   vm.createContext(sand);
-  vm.runInContext(
-    src.slice(src.indexOf('const MAIN_Y='), src.indexOf('/* ---------- physics')) +
-    '\n' + decl(src, 'const NETLIST=LPE.net(') +
-    '\nglobalThis.__dyn = LPE.dyn(NETLIST, {tau:0.22});', sand);
-  const dyn = sand.__dyn;
-  if (dyn.errors.length) throw new Error('level 1 dynamics: ' + dyn.errors.join('; '));
-  return (valves, pManHeld) => {
-    dyn.pressure = pManHeld;
-    const S = dyn.solve(valves);
-    return { q: [S.q.b0, S.q.b1, S.q.b2], pTarget: S.target, qTot: S.qTot };
-  };
+  /* The bay's CONSTANTS only -- stop at the physics marker, as this
+     check always did. Slicing all the way to the declaration would
+     drag in the water section, which builds LPE.Line objects the
+     engine owns and this sandbox has no reason to load. */
+  const head = src.slice(src.indexOf('const MAIN_Y='),
+                         src.indexOf('/* ---------- physics'));
+  vm.runInContext(head + '\n' + decl(src, declStart) + '\n' + tail, sand);
+  return sand.__net;
 }
-const L1 = coreSolver(), L2 = solver('level2.html');
-let states = 0, differ = 0;
+
+const N1 = levelNet('level1.html', 'const NETLIST=LPE.net(',
+                    'globalThis.__net = NETLIST;');
+/* Reducer IN, which is the configuration level 2 starts in and the only
+   one level 1 has. Level 2 with the reducer pulled is a DIFFERENT rig on
+   purpose, and comparing that to level 1 would be meaningless. */
+const N2 = levelNet('level2.html', 'const specFor=red=>(',
+                    'globalThis.__net = LPE.net(specFor(true),' +
+                    '{frame:"rig",catalogue:CAT});');
+
+for (const [nm, n] of [['level 1', N1], ['level 2', N2]])
+  if (n.errors.length) throw new Error(nm + ' netlist: ' + n.errors.join('; '));
+
+/* --- geometry
+
+   Canonicalised GENERICALLY -- every key toPiping() returns, not a list
+   of the ones someone remembered. The first version of this check
+   enumerated lines/tees/reducers/fittings/bodies and reported "every
+   fitting identical", and it was lying: the manifold comes out under
+   `manifolds`, and `bodies` is always empty, so the single most important
+   component in the bay was not being compared at all. A check that names
+   the fields it compares is a check that silently stops covering the one
+   added next. */
+const canon = v => {
+  if (Array.isArray(v)) return v.map(canon)
+    .map(x => JSON.stringify(x)).sort().map(x => JSON.parse(x));
+  if (v && typeof v === 'object') return Object.keys(v).sort()
+    .reduce((o, k) => (o[k] = canon(v[k]), o), {});
+  if (typeof v === 'number') return Math.round(v * 1000) / 1000;
+  return v;
+};
+const P1 = N1.toPiping(), P2 = N2.toPiping();
+const g1 = JSON.stringify(canon(P1)), g2 = JSON.stringify(canon(P2));
+const keys = Object.keys(P1).sort().join(', ');
+check('the two levels draw the same bay', g1 === g2,
+  g1 === g2
+    ? 'every key identical: ' + keys + ' -- ' + P1.lines.length + ' lines, ' +
+      P1.manifolds.length + ' manifold, ' + P1.reducers.length + ' reducer, ' +
+      P1.equipment.length + ' items of equipment'
+    : 'level 1  ' + g1 + String.fromCharCode(10) + '        level 2  ' + g2);
+
+/* --- physics */
+const dynOf = n => host_dyn(n);
+function host_dyn(n) {
+  const vm = require('vm');
+  const h = { window: {} };
+  vm.createContext(h);
+  vm.runInContext(fs.readFileSync('vendor/process-core/topology.js', 'utf8'), h);
+  vm.runInContext(fs.readFileSync('vendor/process-core/dynamics.js', 'utf8'), h);
+  return h.window.LPE.dyn(n, { tau: 0.22 });
+}
+const D1 = dynOf(N1), D2 = dynOf(N2);
+for (const [nm, d] of [['level 1', D1], ['level 2', D2]])
+  if (d.errors.length) throw new Error(nm + ' dynamics: ' + d.errors.join('; '));
+
+let states = 0, differ = 0, worst = 0;
 for (const m of [0, 0.5, 1]) for (const a of [0, 0.5, 1])
   for (const b of [0, 0.5, 1]) for (const c of [0, 0.5, 1]) {
     const v = { main: m, b0: a, b1: b, b2: c };
-    const r1 = L1(v, 37, true), r2 = L2(v, 37, true);
+    D1.pressure = 37; D2.pressure = 37;
+    const r1 = D1.solve(v), r2 = D2.solve(v);
     states++;
-    const same = r1.q.every((q, i) => Math.abs(q - r2.q[i]) < 1e-12) &&
-                 Math.abs(r1.pTarget - r2.pTarget) < 1e-12;
-    if (!same) differ++;
+    for (const k of ['b0', 'b1', 'b2'])
+      worst = Math.max(worst, Math.abs(r1.q[k] - r2.q[k]));
+    worst = Math.max(worst, Math.abs(r1.target - r2.target));
+    if (worst > 1e-12) differ++;
   }
-check('level 2 still agrees with the core level 1 runs on', differ === 0,
-  differ ? differ + ' of ' + states + ' differ' : states + ' states');
+check('and solve to the same flows', differ === 0,
+  differ ? differ + ' of ' + states + ' differ, worst ' + worst
+         : states + ' states, worst difference ' + worst);
+
+/* Section 4 below asks whether the puzzles are still solvable, and needs
+   to drive level 2 in BOTH configurations -- that is the whole shape of
+   the level, reducer in then reducer out. It used to call a solver
+   extracted from the file; it now calls the netlist the file declares,
+   in each configuration, through the real dynamics layer.
+
+   Same signature as the old extracted solver, so section 4 is unchanged:
+   (valves, pressure, reducerIn) -> {q, pTarget, qTot}. */
+const N2out = levelNet('level2.html', 'const specFor=red=>(',
+                       'globalThis.__net = LPE.net(specFor(false),' +
+                       '{frame:"rig",catalogue:CAT});');
+if (N2out.errors.length)
+  throw new Error('level 2 netlist, reducer out: ' + N2out.errors.join('; '));
+const D2out = dynOf(N2out);
+if (D2out.errors.length)
+  throw new Error('level 2 dynamics, reducer out: ' + D2out.errors.join('; '));
+
+const L2 = (v, p, red) => {
+  const d = red === false ? D2out : D2;
+  d.pressure = p;
+  const S = d.solve(v);
+  return { q: [S.q.b0, S.q.b1, S.q.b2], pTarget: S.target, qTot: S.qTot };
+};
+
+/* Pulling the reducer must actually do something, or the level's entire
+   payoff is staged. Checked here rather than assumed: the two netlists
+   differ by exactly one component, and the flow through bed 3 has to
+   rise when it comes out. */
+const redIn  = L2({ main: 1, b0: 1, b1: 1, b2: 1 }, 15.2, true);
+const redOut = L2({ main: 1, b0: 1, b1: 1, b2: 1 }, 15.2, false);
+check('pulling the reducer changes the bay', redOut.q[2] > redIn.q[2] * 1.2,
+  'bed 3 at the same manifold pressure: ' + redIn.q[2].toFixed(3) +
+  ' -> ' + redOut.q[2].toFixed(3) + ' gpm');
+
+/* ...and changes the DRAWING, which is the half a solver check cannot see.
+   The repaired bay must show a coupling where the reducer was, carry no
+   reducer at all, and run bed 3 as one unbroken length -- five runs become
+   four, because the two stubs either side of the reducer are now one pipe.
+
+   The coupling sits on a MAIN-bore run, so it is drawn at the main radius.
+   The hand-written version this replaced drew it at the branch radius, a
+   small wrong number that nothing was ever going to catch. */
+const PA = N2.toPiping(), PB = N2out.toPiping();
+const coup = PB.fittings.filter(f => f.kind === 'coupling');
+check('and changes the drawing', 
+  PA.reducers.length === 1 && PB.reducers.length === 0 &&
+  coup.length === 1 && PA.lines.length === PB.lines.length + 1 &&
+  Math.abs(coup[0].r - PA.reducers[0].r1) < 1e-9,
+  'reducer ' + PA.reducers.length + ' -> ' + PB.reducers.length +
+  ', runs ' + PA.lines.length + ' -> ' + PB.lines.length +
+  ', coupling at r' + (coup[0] ? coup[0].r : '?') +
+  ' (main bore, matching the run it sits in)');
 
 /* ------------------------------------------------------------
    4. THE PUZZLES ARE STILL SOLVABLE

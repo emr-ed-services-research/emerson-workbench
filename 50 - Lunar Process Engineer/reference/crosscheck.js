@@ -61,11 +61,17 @@ ck('SCH 80 area matches sizing.js', !!(sz80 && trS80) && sz80[3] === trS80[3],
 /* the reducer Cv appears in four files and must be one number */
 const grab = (f, re) => { const m = read(f).match(re); return m ? m[1] : null; };
 const cvTrainer = grab('trainer.html', /reducer:\s*\{[^}]*cv:([\d.]+)/);
-/* Level 1's Cv values moved onto the netlist components in Phase 3, so
-   they are scraped from there now. Same guarantee, new address: one
-   reducer Cv across the whole game. */
-const cvL1 = grab('level1.html', /red:\s*\{[^}]*cv:([\d.]+)/);
-const cvL2 = grab('level2.html', /CV_REDUCER=([\d.]+)/);
+/* Both levels' Cv values live on their netlist components now -- level 1
+   moved in Phase 3, level 2 when its hand-written solver was retired. Same
+   guarantee, new address: one reducer Cv across the whole game.
+
+   The optional group is for level 2, whose reducer is a ternary because
+   the fitting comes out mid-level:
+     red: red ? {kind:'reducer', ..., cv:0.296} : {kind:'union', ...}
+   The Cv wanted is the reducer's, which is the first object after the key. */
+const RED_CV = /red:\s*(?:[^{,]*\?\s*)?\{[^}]*cv:([\d.]+)/;
+const cvL1 = grab('level1.html', RED_CV);
+const cvL2 = grab('level2.html', RED_CV);
 const cvSize = (() => {                       // sizing.js prints it; recompute instead
   const m = read('sizing.js').match(/cvRed\s*=\s*([^\n;]+)/);
   return m ? m[1].trim() : null;
