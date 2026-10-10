@@ -32,8 +32,8 @@ Every `.js` here opens with an `@layer` header naming its layer and what it may 
 `test/layers.test.js` checks the **code** against that claim, not the comment.
 
 ```
-chrome > scenario > dynamics > schem-view | phys-view > netlist > catalogue
-  > registration
+chrome > scenario > dynamics > schem-view | phys-view > netlist > geometry
+  > catalogue > registration
 ```
 
 The dynamics layer answers *how much flows where*; anything about how that LOOKS is
@@ -42,6 +42,20 @@ and answers *what a part actually is* — NPS 1/2 pipe is 0.622 in bore because
 `ASME B36.10M` says so. It is the bottom of the stack, it depends on nothing, and its
 data lives in `catalogue/*.json` rather than in JS because LoopBench is Python and must
 read the same rows.
+
+The **geometry** layer sits above it and answers *what a part looks like, at its
+real size* -- polygons in INCHES, from catalogue dimensions, with no scale, no
+frame and no colour. It is the layer that was missing: `phys-view` draws LPE's
+schematic, whose bore is exaggerated against its length by about an order of
+magnitude, so a real dimension had nowhere to land. A sourced length pushed
+through a bore-to-radius factor is not a measurement.
+
+```
+node reference.js      ->  reference/index.html, every part drawn to scale
+```
+
+Open that after changing a shape rule. The numbers can all be right and the
+shape still be wrong, and no test here would say so.
 
 **Every dimension in the catalogue carries the value as printed in its standard beside
 the canonical one, and `load()` re-derives one from the other and refuses the catalogue
