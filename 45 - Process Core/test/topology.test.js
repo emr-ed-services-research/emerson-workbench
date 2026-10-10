@@ -631,5 +631,99 @@ check('HV-1 and FV-101 are both well-formed; the core never mints one',
       LPE.net.TAG.test('TK-2') && !LPE.net.TAG.test('hv-1') &&
       !LPE.net.TAG.test('HV1'));
 
+
+/* ---------------------------------------------------------------------
+   BORES THAT COME FROM A DOCUMENT RATHER THAN A KEYSTROKE
+
+   0.622 is the right bore for NPS 1/2 Sch 40 pipe, and it is right because
+   `ASME B36.10M` says so -- but a netlist holding the literal 0.622 knows
+   none of that, and nothing would notice a moved digit. Declaring the bore
+   as a catalogue part id makes the catalogue answer, and the catalogue
+   cannot load unless every dimension in it matches what it says the
+   standard printed.
+
+   What these checks are NOT about: the drawn corner radius. See the
+   correction in topology.js -- this schematic has no length scale, so a
+   real fitting dimension does not belong in its arcs. The fitting's real
+   dimensions are reachable through `fittingFor()` for consumers that ARE
+   to scale, and that is what is checked here.                          */
+console.log('');
+const fs = require('fs');
+require(path.join(__dirname, '..', 'src', 'catalogue.js'));
+const CAT = LPE.catalogue.load(JSON.parse(fs.readFileSync(
+  path.join(__dirname, '..', 'catalogue', 'parts.json'), 'utf8')));
+
+const byPart = JSON.parse(JSON.stringify(SPEC));
+byPart.bores = { main: 'PIPE/NPS0.5/S40', branch: 'PIPE/NPS0.375/S40' };
+
+const nP = LPE.net(byPart, { frame: 'rig', catalogue: CAT });
+check('a netlist can declare its bores as catalogue part ids',
+      nP.errors.length === 0, nP.errors.join('; '));
+check('and gets the same pixel radii the literals gave',
+      nP.bores.main === R_MAIN && nP.bores.branch === R_BR,
+      'main ' + nP.bores.main + ' (want ' + R_MAIN + '), branch ' +
+      nP.bores.branch + ' (want ' + R_BR + ')');
+
+/* The whole point: the number now arrives with a document behind it. */
+check('and can say which part the bore came from',
+      nP.pipeFor('main').id === 'PIPE/NPS0.5/S40');
+check('and that part cites ASME B36.10M',
+      CAT.sourceOf('PIPE/NPS0.5/S40').std === 'ASME B36.10M',
+      JSON.stringify(CAT.sourceOf('PIPE/NPS0.5/S40').std));
+
+/* The real fitting, for anything that is to scale. */
+const elb = nP.fittingFor('main', 'elbow90');
+check('the real elbow for the main is the NPS 1/2 socket-weld one',
+      !!elb && elb.id === 'ELBOW90/SW3000/NPS0.5', elb && elb.id);
+check('and it carries B16.11 centre-to-socket, not a scaled render value',
+      !!elb && Math.abs(elb.dims.centreToSocket - 15.5 / 25.4) < 1e-4,
+      elb && String(elb.dims.centreToSocket));
+check('the branch gets the NPS 3/8 elbow, a different part',
+      nP.fittingFor('branch', 'elbow90').id === 'ELBOW90/SW3000/NPS0.375');
+check('a socket-weld tee is reachable the same way',
+      nP.fittingFor('main', 'tee').id === 'TEE/SW3000/NPS0.5');
+
+/* The finding that started all of this, as a standing assertion. The
+   schematic draws this corner at 3 x bore; the real part is nothing like
+   that, and the two numbers are allowed to differ BECAUSE the drawing is
+   not to scale. What is not allowed is pretending either is the other. */
+check('the real elbow and the drawn corner are far apart, and that is fine',
+      elb.dims.centreToSocket < 0.7 && LPE.net.bendRadius(0.622) > 1.8,
+      'real ' + elb.dims.centreToSocket.toFixed(4) + ' in vs drawn ' +
+      LPE.net.bendRadius(0.622).toFixed(3) + ' in-equivalent -- the drawn ' +
+      'one is a render convention in a picture with no length scale');
+
+/* Honest nulls. A bare-number bore has no part, and inventing one is the
+   failure the catalogue exists to prevent. */
+const nLit = LPE.net(SPEC, { frame: 'rig', catalogue: CAT });
+check('a bare-number bore reports no part rather than guessing one',
+      nLit.pipeFor('main') === null &&
+      nLit.fittingFor('main', 'elbow90') === null);
+
+/* Refusals, each by name. */
+const noCat = LPE.net(byPart, { frame: 'rig' });
+check('a part id with no catalogue passed is refused by name',
+      noCat.errors.some(e => /no catalogue was passed/.test(e)),
+      noCat.errors.join('; '));
+
+const badId = JSON.parse(JSON.stringify(byPart));
+badId.bores.main = 'PIPE/NPS9/S40';
+check('an unknown part id is refused by name',
+      LPE.net(badId, { frame: 'rig', catalogue: CAT }).errors
+        .some(e => /no catalogue part/.test(e)));
+
+/* A fitting is not a pipe. Sizing a run from an elbow is nonsense, and the
+   error has to say why rather than producing NaN pixels. */
+const notPipe = JSON.parse(JSON.stringify(byPart));
+notPipe.bores.main = 'ELBOW90/SW3000/NPS0.5';
+check('a part with no bore dimension cannot size a run',
+      LPE.net(notPipe, { frame: 'rig', catalogue: CAT }).errors
+        .some(e => /has no bore dimension/.test(e)));
+
+let unknownKind = '';
+try { nP.fittingFor('main', 'flange'); } catch (e) { unknownKind = e.message; }
+check('asking for a fitting class the catalogue lacks throws, and says so',
+      /do not know what a "flange" is/.test(unknownKind), unknownKind);
+
 console.log(`\n${failures ? failures + ' FAILED' : 'all passed'}\n`);
 process.exit(failures ? 1 : 0);

@@ -1840,7 +1840,7 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
 (function (LPE) {
   'use strict';
 
-  /* ---- the two radius rules -- BOTH WRONG, AND NOW MEASURABLY SO -----
+  /* ---- the two radius rules -- UNSCALED BY DESIGN, AND SAYING SO -----
 
      Both came out of Lunar Process Engineer, written at each use site,
      and collecting them here made them look more authoritative than they
@@ -1876,17 +1876,62 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
      locating dimension for a socket-weld tee (same `A` as the elbow), so
      a sourced replacement now exists.
 
-     NEITHER IS FIXED HERE, deliberately. Correcting them moves every
-     elbow in every level and needs nominal size to reach this layer,
-     which it does not yet -- the netlist carries bore. Both belong in
-     the component catalogue Franz has specified, where a part carries
-     its own dimensions from its own standard instead of a renderer
-     carrying a formula. Recorded, measured, and left for that.
+     ---- AND A CORRECTION TO THE PARAGRAPH THAT USED TO SIT HERE ----
 
-     See `20 - Source Library/Standards/asme-b16.11.md` (the one that
-     governs) and `asme-b16.9.md` (the one that was wrongly cited). */
-  const bendRadius = r => 3 * r;          // WRONG -- see asme-b16.11.md
-  const teeTurnRadius = r => r * 1.6;     // ART, not a standard
+     It said both numbers were wrong and would be fixed once the catalogue
+     could supply the real dimension. The catalogue now exists and supplies
+     it -- 0.6102 in for the NPS 1/2 socket-weld elbow -- and dropping that
+     number in here would be a WORSE error than the one it replaced.
+
+     Because this drawing has no length scale.
+
+       `pxPerInch` is applied to BORES ONLY, to get a drawn radius. Every
+       position in a frame's `at` is authored in raw pixels. So:
+
+         branch bore   0.493 in  drawn 20 px wide   => 1 in = 40.5 px
+         branch run    TRUNK_X -> POD_X, 492 px     => 12.1 inches
+
+       A 12-inch run to a grow bed is not what level 1 means. The bay is
+       metres across. Bore is exaggerated against length by about an order
+       of magnitude, which is what a schematic IS -- a P&ID does the same
+       thing and nobody calls it an error.
+
+     Put 0.6102 in through `pxPerInch` and you have used the BORE scale to
+     place a LENGTH. That is the same category mistake as `3 * r`, only
+     now wearing a citation, which makes it harder to spot rather than
+     easier. A sourced number in the wrong frame is not an improvement.
+
+     SO THE HONEST SPLIT, and it is the layer rule this file already
+     states applied to itself:
+
+       the fitting's IDENTITY and its REAL dimensions are model facts and
+       come from the catalogue -- `net.fittingFor()` below returns them;
+
+       the radius this schematic DRAWS a corner at is a render convention
+       in a deliberately unscaled picture, and belongs to whoever is
+       drawing. It is not a claim about a part and must stop being written
+       as though it were.
+
+     The two numbers below are therefore kept, unchanged, and relabelled
+     for what they actually are. What changed is that the real dimension is
+     now reachable beside them, so a consumer that IS to scale -- a
+     to-scale assembly drawing, LoopBench's real bench -- asks the
+     catalogue instead of scaling these.
+
+     What was genuinely wrong and IS now fixed: level 1 declared its bores
+     as bare literals (`main: 0.622`) retyped out of a standard by hand.
+     Bores are declarable as catalogue part ids, so 0.622 arrives from
+     `ASME B36.10M` through a loader that checks it, not from a keystroke.
+
+     See `20 - Source Library/Standards/asme-b16.11.md` (the fitting family
+     that governs), `asme-b16.9.md` (the one originally cited in error) and
+     `asme-b36.10m.md` (where the bores come from). */
+
+  /* RENDER CONVENTIONS, not dimensions. See the correction above: this
+     schematic has no length scale, so neither of these can be a sourced
+     length. For the real fitting, call `net.fittingFor()`. */
+  const bendRadius = r => 3 * r;          // schematic corner, unscaled
+  const teeTurnRadius = r => r * 1.6;     // schematic branch exit, unscaled
 
   /* ---- display classes ----------------------------------------------
      What a renderer is allowed to suppress.
@@ -2205,10 +2250,58 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
                   names.map(n => `"${n}"`).join(', '));
     }
 
-    // --- bores, declared in inches, drawn in this frame's units
+    /* --- bores, declared in inches, drawn in this frame's units
+
+       A bore may be declared two ways:
+
+         main: 0.622                  a bare number of inches
+         main: 'PIPE/NPS0.5/S40'      a CATALOGUE PART ID
+
+       The second is the one to use. A bare number is a dimension somebody
+       retyped: 0.622 is right, and it is right because `ASME B36.10M` says
+       so, but nothing in the netlist knows that and nothing would notice if
+       a digit moved. A part id makes the catalogue answer, and the
+       catalogue refuses to load at all unless every dimension in it agrees
+       with what it says the standard printed.
+
+       Bare numbers still work. Level 1's `throat: 0.108` is derived from a
+       Cv the restriction has to have, not read out of a table, so there is
+       no part to name -- and inventing a catalogue entry for it would be
+       exactly the dishonesty the catalogue exists to prevent. */
+    const cat = o.catalogue || null;
     const bores = {};
+    const boreParts = {};
     for (const b of Object.keys(spec.bores || {})) {
-      bores[b] = scaleBore(spec.bores[b], frame);
+      const decl = spec.bores[b];
+      let inches = decl;
+      if (typeof decl === 'string') {
+        if (!cat) {
+          errors.push(`bore "${b}" names the catalogue part "${decl}", but ` +
+            `no catalogue was passed. Call LPE.net(spec, {catalogue}) with ` +
+            `a loaded catalogue, or declare the bore as a number of inches ` +
+            `and accept that nothing will check it.`);
+          continue;
+        }
+        if (!cat.has(decl)) {
+          errors.push(`bore "${b}": no catalogue part "${decl}"`);
+          continue;
+        }
+        const part = cat.part(decl);
+        if (typeof part.dims.bore !== 'number') {
+          errors.push(`bore "${b}": catalogue part "${decl}" has no bore ` +
+            `dimension, so it cannot size a run. Its dimensions are: ` +
+            Object.keys(part.dims).join(', '));
+          continue;
+        }
+        inches = part.dims.bore;
+        boreParts[b] = part;
+      }
+      if (typeof inches !== 'number' || !isFinite(inches) || inches <= 0) {
+        errors.push(`bore "${b}" is ${JSON.stringify(decl)}; expected a ` +
+          `positive number of inches or a catalogue part id`);
+        continue;
+      }
+      bores[b] = scaleBore(inches, frame);
     }
 
     // --- components
@@ -2303,6 +2396,44 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
     const net = {
       spec, components: comps, segments: segs, bores,
       frame: frameName, frames: names,
+
+      /* ---- the REAL fitting, for consumers that are actually to scale ----
+
+         `bendRadius` above is a render convention in an unscaled
+         schematic. This is the other half: the actual part, from the
+         catalogue, with the dimensions a document prints.
+
+         A to-scale assembly drawing asks this. LoopBench, which has real
+         pipe on a real bench, asks this. Level 1's schematic does not, and
+         should not -- scaling a 0.6102 in elbow by a bore-to-radius factor
+         would be a category error dressed as precision.
+
+         It answers for a BORE NAME, because that is what the netlist
+         knows. `fittingFor('main', 'elbow90')` ->  the socket-weld elbow
+         for whatever pipe the main is. Null when the bore was declared as
+         a bare number, because then there is no part to look up and
+         guessing one would invent exactly what the catalogue prevents. */
+      fittingFor: (boreName, what) => {
+        if (!cat) return null;
+        const pipe = boreParts[boreName];
+        if (!pipe) return null;         // bare number: no part, no answer
+        const nps = pipe.nps;
+        const want = { elbow90: 'elbow-socketweld', tee: 'tee-socketweld' };
+        const cls = want[what];
+        if (!cls)
+          throw new Error(`fittingFor: do not know what a "${what}" is. ` +
+            `Known: ${Object.keys(want).join(', ')}. Add it to the ` +
+            `catalogue first -- this function maps a bore to a part that ` +
+            `exists, it does not conjure part classes.`);
+        const hits = cat.where({ class: cls, nps: nps });
+        return hits.length ? hits[0] : null;
+      },
+
+      /* Which catalogue part a bore came from, or null if it was a bare
+         number. A drawing that wants to state its own provenance asks
+         this and gets something it can cite. */
+      pipeFor: boreName => boreParts[boreName] || null,
+      catalogue: cat,
       errors: errors.concat(validate(comps, segs, spec, frameName)),
       /* `opts.hide` is a list of display classes to suppress, e.g.
          {hide:['fitting']} for an ISA-5.5-style process display. It
