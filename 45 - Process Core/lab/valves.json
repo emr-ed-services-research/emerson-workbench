@@ -1,7 +1,175 @@
 {
- "generated": "2026-10-10T15:18:54.362Z",
+ "generated": "2026-10-10T16:59:15.493Z",
  "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
  "valves": [
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-1",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "1 & 1-1/4",
+   "portIn": 1.3125,
+   "travelIn": 0.75,
+   "cv100": 22.1,
+   "FL": 0.81
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-1",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "1-1/2",
+   "portIn": 1.875,
+   "travelIn": 0.75,
+   "cv100": 44,
+   "FL": 0.79
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-1",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "1-1/2",
+   "portIn": 1.3125,
+   "travelIn": 0.75,
+   "cv100": 29.9,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-1",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "2",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 77.6,
+   "FL": 0.77
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-1",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "2",
+   "portIn": 1.3125,
+   "travelIn": 0.75,
+   "cv100": 31.2,
+   "FL": 0.87
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-1",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "2-1/2",
+   "portIn": 2.875,
+   "travelIn": 1.5,
+   "cv100": 109,
+   "FL": 0.81
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-1",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "2-1/2",
+   "portIn": 1.875,
+   "travelIn": 0.75,
+   "cv100": 71.2,
+   "FL": 0.86
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-1",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "3",
+   "portIn": 3.4375,
+   "travelIn": 1.5,
+   "cv100": 161,
+   "FL": 0.77
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-1",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "3",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 91.9,
+   "FL": 0.86
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-2",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 251,
+   "FL": 0.79
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-2",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "4",
+   "portIn": 2.875,
+   "travelIn": 1.5,
+   "cv100": 130,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-2",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 460,
+   "FL": 0.82
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-2",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "8",
+   "portIn": 8,
+   "travelIn": 2,
+   "cv100": 744,
+   "FL": 0.87
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-2",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 863,
+   "FL": 0.85
+  },
   {
    "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
    "page": "ED-3",
@@ -364,6 +532,11 @@
   }
  ],
  "rejected": [
+  {
+   "page": 2,
+   "y": 399,
+   "why": "expected 10 travel points and FL, found 2"
+  },
   {
    "page": 4,
    "y": 319,

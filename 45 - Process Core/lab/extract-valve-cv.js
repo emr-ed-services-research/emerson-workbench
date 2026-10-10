@@ -69,12 +69,55 @@ const PDF = '20 - Source Library/Equipment Manuals/Valve Bodies/' +
             'fisher-ed-ead-edr-catalog-12-flow-coefficients-dec2023.pdf';
 const DOC = 'Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023';
 
-/* Which pages carry which characteristic. Only the standard cages are
-   taken here; Whisper, WhisperFlo, Cavitrol and DST are severe-service
-   trims and are a separate job with their own meanings. */
+/* WHICH PAGES, and what this file actually is.
+
+   `Catalog 12` is a multi-section catalog. What the vault holds is its
+   ED/EAD/EDR section -- 19 pages -- NOT the whole thing. Its contents,
+   read rather than assumed:
+
+     1-6    ED quick-opening, linear, equal-percentage     standard cages
+     7-8    ED-J and ET-J, CL300, linear                   standard cage
+     9-16   ED Whisper Trim I / III, WhisperFlo, EWD       severe service
+     17-18  ET Cavitrol III, ET Dirty Service Trim         severe service
+     19     a pointer: ET-C has coefficients identical to
+            NPS 3 through 8 ED with full-sized port
+
+   So the standard ET, EZ and EW cages are genuinely absent, and so is
+   every rotary line. But pages 1-2 and 7-8 ARE standard-cage tables and
+   the first pass through this file skipped them, which understated the
+   coverage we already had.
+
+   Severe-service pages are left out deliberately: Cavitrol, Whisper and
+   DST tables carry extra columns -- minimum throttling Cv, unbalanced
+   area, Kn -- that mean specific things, and reading them as if they
+   were a standard cage would lose exactly the information that makes
+   them severe-service trim.
+
+   `metric: false` marks a sheet whose geometry columns are inches only.
+   Pages 7-8 print no millimetre column, so a parser expecting the
+   four-number mm/inch pairing rejects every row on them. */
 const SHEETS = [
-  { pages: [3, 4], cage: 'linear', body: 'ED', cls: 'CL125-CL600' },
-  { pages: [5, 6], cage: 'equal-percentage', body: 'ED', cls: 'CL125-CL600' },
+  { pages: [1, 2], cage: 'quick-opening', body: 'ED', cls: 'CL125-CL600',
+    metric: true },
+  { pages: [3, 4], cage: 'linear', body: 'ED', cls: 'CL125-CL600',
+    metric: true },
+  { pages: [5, 6], cage: 'equal-percentage', body: 'ED', cls: 'CL125-CL600',
+    metric: true },
+  /* PAGES 7-8 ARE EXCLUDED, and the reason is worth keeping.
+
+     They were included on the first attempt as one linear sheet, and
+     both invariant checks fired: NPS 12 port 9.5 came back with two
+     capacities, 938 and 473, and three pairs inverted. Not a parse
+     failure -- a MISLABEL. Page 7 stacks THREE tables (Linear, Equal
+     Percentage, Whisper III Level A1 flow-up) and page 8 is Cavitrol
+     III one- and two-stage. Calling all of it "linear" merged a
+     noise-reducing trim with a standard cage, which is how 938 and 473
+     ended up claiming to be the same valve.
+
+     Reading them properly means splitting page 7 by the y of each
+     sub-heading and giving Whisper and Cavitrol their own cage names.
+     That is bounded work, not done, and shipping the merge in the
+     meantime would put a wrong Cv in front of a sizing calculation. */
 ];
 
 const WORD = /<word xMin="([0-9.]+)" yMin="([0-9.]+)" xMax="([0-9.]+)" yMax="([0-9.]+)">([^<]*)<\/word>/g;
@@ -147,22 +190,40 @@ function run() {
         return best.nps;
       };
 
-      /* A Cv row: a "C" immediately followed by its subscript "v". */
+      /* A Cv row. TWO TYPESETTINGS in one document, which is why the
+         first pass read nothing at all from pages 7-8: the ED sheets
+         set it as "C" plus a subscript "v" on a lower baseline, and the
+         CL300 sheets set it as the single word "Cv". Both are accepted,
+         and the label width differs, so the data starts at a different
+         offset in each case. */
       for (const r of rows) {
-        const i = r.ws.findIndex((w, k) =>
+        let i = r.ws.findIndex((w, k) =>
           w.t === 'C' && r.ws[k + 1] && r.ws[k + 1].t === 'v');
+        let skip = 2;
+        if (i < 0) {
+          i = r.ws.findIndex(w => w.t === 'Cv');
+          skip = 1;
+        }
         if (i < 0) continue;
 
-        const after = r.ws.slice(i + 2).map(w => num(w.t)).filter(v => v !== null);
+        const after = r.ws.slice(i + skip).map(w => num(w.t)).filter(v => v !== null);
         /* ten travel points then FL. Anything else is a row this parser
            does not understand, and it is rejected rather than trimmed
            to fit -- trimming is how the wrong column becomes the answer. */
-        if (after.length !== 11) {
+        /* Eleven is ten travel points plus FL. TWELVE means the sheet
+           also prints a coefficient at a fixed small travel -- the
+           quick-opening pages carry "Coeffs for 6 mm (0.25 in) travel"
+           ahead of the percentage columns. It is a real datum, it is
+           just not one of the ten, so it is dropped here rather than
+           silently shifting every column by one. */
+        let pts = after;
+        if (pts.length === 12) pts = pts.slice(1);
+        if (pts.length !== 11) {
           out.rejected.push({ page: page, y: Math.round(r.y),
             why: 'expected 10 travel points and FL, found ' + after.length });
           continue;
         }
-        const cv100 = after[9], FL = after[10];
+        const cv100 = pts[9], FL = pts[10];
 
         /* The geometry for this row: port diameter in inches and travel
            in inches sit left of the coefficient column, on this row or
@@ -184,15 +245,19 @@ function run() {
             if (cand.length >= 4) { geo = geo.concat(cand); break; }
           }
         }
-        /* portMM portIN travelMM travelIN -- take the last four, since a
-           merged valve-size number may precede them. */
-        if (geo.length < 4) {
+        /* Two layouts. Metric sheets print portMM portIN travelMM
+           travelIN; the CL300 sheets print inches only. Take the last
+           four or the last two accordingly, since a merged valve-size
+           number may precede either. */
+        const want = sheet.metric ? 4 : 2;
+        if (geo.length < want) {
           out.rejected.push({ page: page, y: Math.round(r.y),
             why: 'no port/travel geometry found beside or below the row' });
           continue;
         }
-        const g = geo.slice(-4);
-        const portIn = g[1], travelIn = g[3];
+        const g = geo.slice(-want);
+        const portIn = sheet.metric ? g[1] : g[0];
+        const travelIn = sheet.metric ? g[3] : g[1];
         if (!(portIn > 0 && portIn < 30) || !(travelIn > 0 && travelIn < 10)) {
           out.rejected.push({ page: page, y: Math.round(r.y),
             why: 'geometry out of range: port ' + portIn + ' in, travel ' +
