@@ -120,6 +120,79 @@ check('every run corner became an arc',
 check('a branch leaves on the tighter tee-turn radius',
       LPE.net.teeTurnRadius(R_BR) < LPE.net.bendRadius(R_BR));
 
+/* That check compares two CONSTANTS, and passed happily for as long as
+   the branch arc was missing entirely. The turn where a branch leaves a
+   tee is the one corner in the model that does not sit inside a segment
+   -- the riser is one, the branch is another, the bend belongs to
+   neither -- so the filleting loop never saw it and a branch came back
+   dead straight. The water then cut the corner the drawing had curved,
+   running outside its own pipe. Check the ARC, not the arithmetic. */
+const branches = water.filter(w => /\.branch->/.test(w.id));
+check('every branch run is there to test', branches.length === 2);
+check('a branch run actually CARRIES its turn',
+      branches.every(b => b.segments.some(s => s.arc)),
+      branches.map(b => b.id + ':' + b.segments.filter(s => s.arc).length).join(' '));
+check('and the turn is on the tee radius, not the long-radius elbow',
+      branches.every(b => {
+        const a = b.segments.find(s => s.arc);
+        return a && a.arc.R === LPE.net.teeTurnRadius(b.r);
+      }));
+check('the fillet comes FIRST -- the water turns before it runs',
+      branches.every(b => b.segments[0] && b.segments[0].arc));
+
+/* Every corner in an axis-aligned rig is a quarter turn. cornerArc got
+   this wrong for a VERTICAL incoming leg: it placed the end point at the
+   centre's own height, so both deltas were zero and atan2(0,0) returned
+   0 -- a zero-length arc instead of a quarter. It was right for a
+   horizontal incoming leg by coincidence, which is why nothing caught
+   it: until a branch needed filleting, no corner in the model entered
+   vertically. */
+const sweep = a => {
+  let d = a.a1 - a.a0;
+  while (d >  Math.PI) d -= 2 * Math.PI;
+  while (d < -Math.PI) d += 2 * Math.PI;
+  return Math.abs(d);
+};
+const allArcs = water.flatMap(w => w.segments.filter(s => s.arc).map(s => s.arc));
+check('every arc is a quarter turn, whichever way it enters',
+      allArcs.length > 0 &&
+      allArcs.every(a => Math.abs(sweep(a) - Math.PI / 2) < 1e-9),
+      allArcs.map(a => (sweep(a) / Math.PI).toFixed(3) + 'pi').join(' '));
+check('and both orientations are represented, or this proves nothing',
+      allArcs.some(a => Math.abs(a.a0 - Math.PI) < 1e-9) &&
+      allArcs.some(a => Math.abs(a.a0 + Math.PI / 2) < 1e-9),
+      allArcs.map(a => (a.a0 / Math.PI).toFixed(3) + 'pi').join(' '));
+
+/* A run has to JOIN UP. Emitting a fillet is half the job: the leg it
+   turns into must start where the arc ends, or the two overlap by a
+   radius and the water doubles back over itself.
+
+   Found by mutation -- deleting the leg-shortening left every other
+   check green, because they all look at the arc and none looked at the
+   seam. Particles walk these segments end to end, so a gap strands them
+   and an overlap teleports them. */
+const endsOf = s => s.arc
+  ? { a: [s.arc.cx + s.arc.R * Math.cos(s.arc.a0),
+          s.arc.cy + s.arc.R * Math.sin(s.arc.a0)],
+      b: [s.arc.cx + s.arc.R * Math.cos(s.arc.a1),
+          s.arc.cy + s.arc.R * Math.sin(s.arc.a1)] }
+  : { a: [s.ax, s.ay], b: [s.bx, s.by] };
+
+let brokenSeam = null;
+for (const run of water) {
+  for (let i = 1; i < run.segments.length; i++) {
+    const prev = endsOf(run.segments[i - 1]), cur = endsOf(run.segments[i]);
+    const gap = Math.hypot(cur.a[0] - prev.b[0], cur.a[1] - prev.b[1]);
+    if (gap > 0.01) {
+      brokenSeam = `${run.id} seg ${i}: ${gap.toFixed(2)}px from the one before`;
+      break;
+    }
+  }
+  if (brokenSeam) break;
+}
+check('every run joins up end to end, arcs included',
+      brokenSeam === null, brokenSeam || '');
+
 /* ---- hiding fittings -------------------------------------------------
    Franz's requirement: if fittings can be drawn, they must be hideable.
    The rule that keeps it honest is that hiding is a RENDER concern -- the

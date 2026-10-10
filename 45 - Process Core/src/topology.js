@@ -732,12 +732,57 @@
      so the water goes round the elbow the pipe actually has instead of
      cutting the corner. */
   function toWater(comps, segs) {
-    return segs.filter(s => s.from && s.to).map(s => {
+    const live = segs.filter(s => s.from && s.to);
+
+    /* Where does the run ARRIVE from, at this tee?
+
+       Needed because a branch turns at the tee, and that turn is the one
+       corner in the whole model that does not sit inside a segment: the
+       riser is one segment, the branch is another, and the bend belongs
+       to neither. The loop below only fillets corners it finds in a
+       single `pts` list, so without this a branch came back dead straight
+       and the water cut the corner the drawing had curved -- running
+       outside its own pipe, which is the bug the levels call "nothing
+       curved anywhere".
+
+       The incoming direction is taken from the segment that FEEDS the
+       tee, not from the tee's declared axis: the axis says the run is
+       vertical, it does not say the water is coming down it. */
+    const feedOf = teeId => {
+      const feed = live.find(o => o.to.id === teeId && o.to.port === 'in');
+      if (!feed) return null;
+      const fp = dedupe(feed.pts);
+      return fp.length >= 2 ? fp[fp.length - 2] : null;
+    };
+
+    return live.map(s => {
       const R = s.from.port === 'branch'
         ? teeTurnRadius(s.r)      // leaving a tee is a tight turn
         : bendRadius(s.r);        // a run corner is a long-radius elbow
       const pts = dedupe(s.pts);
       const out = [];
+
+      /* A fillet carrying the water off the run and into the branch. It
+         starts one radius back up the run, so the arc is geometrically
+         part of the riser -- which is correct: the metal curves there
+         too, and the branch's own first leg begins where the bend ends. */
+      let turnsAtStart = false;
+      if (s.from.port === 'branch' && pts.length >= 2) {
+        const from = feedOf(s.from.id);
+        const corner = pts[0], next = pts[1];
+        if (from) {
+          const inHoriz = from[1] === corner[1];
+          const outHoriz = corner[1] === next[1];
+          if (inHoriz !== outHoriz) {            // it genuinely turns
+            const back = inHoriz
+              ? [corner[0] - Math.sign(corner[0] - from[0]) * R, corner[1]]
+              : [corner[0], corner[1] - Math.sign(corner[1] - from[1]) * R];
+            out.push({ arc: cornerArc(back[0], back[1], corner[0], corner[1],
+                                      next[0], next[1], R), r: s.r });
+            turnsAtStart = true;
+          }
+        }
+      }
 
       for (let i = 1; i < pts.length; i++) {
         const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
@@ -746,8 +791,10 @@
 
         // Shorten this leg where it runs into a corner, and emit the arc.
         let ax = x0, ay = y0, bx = x1, by = y1;
-        if (i > 1) { if (horiz) ax += Math.sign(x1 - x0) * R;
-                     else       ay += Math.sign(y1 - y0) * R; }
+        if (i > 1 || turnsAtStart) {
+          if (horiz) ax += Math.sign(x1 - x0) * R;
+          else       ay += Math.sign(y1 - y0) * R;
+        }
         if (!isLast) { if (horiz) bx -= Math.sign(x1 - x0) * R;
                        else       by -= Math.sign(y1 - y0) * R; }
 
@@ -775,10 +822,20 @@
     const ccx = inHoriz ? bx : cx + outDx * R;
     const ccy = inHoriz ? cy + outDy * R : by;
     const a0 = Math.atan2(by - ccy, bx - ccx);
-    const ex = inHoriz ? ccx : cx;
-    const ey = inHoriz ? cy   : ccy;
-    const a1 = Math.atan2((inHoriz ? cy + outDy * R : ey) - ccy,
-                          (inHoriz ? ex : cx + outDx * R) - ccx);
+
+    /* The arc ENDS on the outgoing leg, at its tangent point -- one
+       radius along it from the corner. Stated once, for both
+       orientations, rather than branched.
+
+       The branched version was wrong for a vertical-in corner: it set the
+       end's y to the centre's own y, so both deltas came out zero and
+       atan2(0,0) returned 0 instead of a quarter turn. It happened to be
+       right for horizontal-in, where that same expression lands on the
+       correct answer by coincidence -- which is why it survived. Nothing
+       exercised the other case until a branch leaving a tee needed
+       filleting, because that is the only corner in the model whose
+       incoming leg is vertical. */
+    const a1 = Math.atan2((cy + outDy * R) - ccy, (cx + outDx * R) - ccx);
     return { cx: ccx, cy: ccy, R, a0, a1 };
   }
 

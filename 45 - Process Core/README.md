@@ -200,21 +200,6 @@ nowhere else), on a light ground the way modern high-performance HMI does it. Se
 
 ## Known debt
 
-- **`toWater()` does not round a branch leaving a tee**, and that blocks migrating any
-  level's water to it. The intent is in the code — it picks `teeTurnRadius` when a
-  segment starts at a `branch` port — but the radius is only *used* when a corner falls
-  **inside** a segment. At a tee the turn happens *between* two segments (the riser
-  going down, the branch going out), so neither emits the arc and the run comes back
-  `[straight]`.
-
-  Level 1's hand-built water does round it, with the same 1.6 the core defines. So
-  swapping it for `toWater()` today would be a **regression**: the water would cut each
-  tee corner and run outside the pipe the drawing has curved — the exact bug
-  `runSegments` was written to fix, and which levels 3 and 4 once shipped with.
-
-  Checked by comparing `toWater()` against level 1's shipped water, 2026-10-10:
-  11 runs out, and the two `*.branch->*` runs carry no arc.
-
 - `fittings` is thin. The spec carries `{x, y, r, kind}` and the renderer draws a
   collar — a band of metal, not a fitting library. There are no flanges, no discrete
   elbow bodies, no valve bodies. That is unfinished work rather than damaged work, and
