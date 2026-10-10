@@ -33,7 +33,7 @@ Every `.js` here opens with an `@layer` header naming its layer and what it may 
 
 ```
 chrome > scenario > dynamics > schem-view | phys-view > netlist
-  > geometry | sizing > catalogue > registration
+  > geometry | sizing | instrument | trim > catalogue > registration
 ```
 
 The dynamics layer answers *how much flows where*; anything about how that LOOKS is
@@ -60,6 +60,17 @@ piping geometry factor, pressure recovery and the choked-drop check, graded
 against the Control Valve Handbook's printed worked example. The **dynamics**
 layer does NOT have any of that -- it is `q = Cv*sqrt(dP/SG)`, honest at the
 2 gpm it was written for and not at refinery scale.
+
+The **instrument** layer answers *what a device reports*, which is not a number:
+a reading carries a status, and `unavailable` -- the chain that would produce it
+is not physically there -- is a first-class case, not a null. Grounded in
+`ANSI/ISA-51.1` for range/span/accuracy and NAMUR NE43 for the 4-20 mA failure
+bands.
+
+The **trim** layer answers *what a valve does as it strokes*. Travel is not
+position: a real Fisher cage curve, read from Catalog 12, plus the INSTALLED
+characteristic, which is what the inherent one becomes once the rest of the
+line takes its share of the drop.
 
 Open that after changing a shape rule. The numbers can all be right and the
 shape still be wrong, and no test here would say so.

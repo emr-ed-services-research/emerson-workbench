@@ -1,7 +1,7 @@
 ---
 title: Process Core — Flow Lab Plan
 type: plan
-status: Rev 3 — Phases 0, 1 and 2 BUILT. Phases 3-5 outstanding.
+status: Rev 4 — Phases 0, 1, 2, 4 and 5 BUILT. Only Phase 3 outstanding, and it needs bench hardware.
 tags:
   - project
   - process-core
@@ -168,7 +168,7 @@ grow bay needs this phase before its numbers mean anything.
 
 ---
 
-## Phase 3 — the bench as a benchmark
+## Phase 3 — the bench as a benchmark  ⏸ NEEDS HARDWARE (air + actuator)
 
 **Goal.** LoopBench's real rig becomes a lab loop whose expected values are
 **measured, not published** — which is better evidence than a worked example.
@@ -185,7 +185,7 @@ against the hardware when something looks wrong.
 
 ---
 
-## Phase 4 — the instrumentation layer
+## Phase 4 — the instrumentation layer  ✅ BUILT
 
 **Goal.** Instruments as first-class model objects that *observe* the process:
 range, span, units, accuracy, failure mode. A transmitter is not a number; it
@@ -203,7 +203,7 @@ device.
 
 ---
 
-## Phase 5 — valve construction
+## Phase 5 — valve construction  ✅ BUILT
 
 **Goal.** Trim and characteristic as model objects: linear, equal-percentage,
 quick-opening; travel to Cv; seat and shutoff class.
