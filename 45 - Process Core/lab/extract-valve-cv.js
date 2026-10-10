@@ -36,23 +36,25 @@
    valve-size cell can be attached to every row its box spans.
 
    -------------------------------------------------------------------
-   WHAT IS NOT CAPTURED YET, and it matters.
+   THE NOMINAL VALVE SIZE, and how it is recovered.
 
-   The NOMINAL VALVE SIZE. Each row carries its port diameter, travel,
-   Cv and FL, all verified by eye against the rendered page -- but the
-   NPS cell is merged vertically across the two or three port rows it
-   covers and sits in the far-left column, and this parser does not yet
-   attach it.
+   `Fp` takes `d`, the valve's NOMINAL size, to work out what attached
+   reducers cost -- so without it the lab can only ask "does it fit",
+   never "what does it pass with reducers on it".
 
-   That is enough for a CAPACITY check (is this valve big enough for the
-   required Cv) and NOT enough for a sized one, because `Fp` takes `d`,
-   the valve's nominal size, to work out what the attached reducers
-   cost. So lab.js can ask "does it fit" and cannot yet ask "what does
-   it actually pass with reducers on it".
+   The NPS cell is merged vertically across the two or three port rows
+   it covers, and the renderer centres it on that group rather than
+   aligning it to any row. So it is attached by NEAREST LABEL IN Y,
+   which is exactly right for a centred merged cell:
 
-   Recovering it means taking words in the leftmost x-band and attaching
-   each to every Cv row its box spans vertically. Known, bounded, not
-   done.
+     port rows   179   219   259   300   340
+     NPS labels  179         236         317
+                 1&1-1/4    1-1/2        2
+
+   Port row 219 is 40pt from the 1&1-1/4 label and 17pt from 1-1/2, so
+   it takes 1-1/2. Every row in a group is closer to its own centred
+   label than to a neighbouring group's. Checked against the rendered
+   page before being relied on.
 
    Run: node lab/extract-valve-cv.js                                   */
 'use strict';
@@ -123,6 +125,28 @@ function run() {
       const words = wordsOf(page);
       const rows = rowsOf(words);
 
+      /* NPS labels live in the leftmost band, left of the port-diameter
+         column. Words on one row are joined: "1", "&", "1-1/4". */
+      const labels = [];
+      for (const r of rows) {
+        const band = r.ws.filter(w => w.x >= 50 && w.x < 92 && r.y > 160);
+        if (!band.length) continue;
+        /* "6(2)" is NPS 6 carrying footnote 2. Footnote markers are
+           typeset into the cell and are not part of the size. */
+        const txt = band.map(w => w.t).join(' ')
+          .replace(/&amp;/g, '&').replace(/\(\d\)/g, '')
+          .replace(/\s+/g, ' ').trim();
+        if (!/^[0-9]/.test(txt)) continue;      // headings are not sizes
+        labels.push({ y: r.y, nps: txt });
+      }
+      const npsAt = y => {
+        if (!labels.length) return null;
+        let best = labels[0];
+        for (const L of labels)
+          if (Math.abs(L.y - y) < Math.abs(best.y - y)) best = L;
+        return best.nps;
+      };
+
       /* A Cv row: a "C" immediately followed by its subscript "v". */
       for (const r of rows) {
         const i = r.ws.findIndex((w, k) =>
@@ -176,9 +200,18 @@ function run() {
           continue;
         }
 
+        /* The geometry row carries the port; the NPS label is centred
+           on the group that row belongs to, so measure from the
+           geometry's y rather than the Cv row's. */
+        const nps = npsAt(r.y + 10);
+        if (!nps) {
+          out.rejected.push({ page: page, y: Math.round(r.y),
+            why: 'no NPS label found in the left band' });
+          continue;
+        }
         out.valves.push({
           doc: DOC, page: 'ED-' + page, body: sheet.body, cls: sheet.cls,
-          cage: sheet.cage, portIn: portIn, travelIn: travelIn,
+          cage: sheet.cage, nps: nps, portIn: portIn, travelIn: travelIn,
           cv100: cv100, FL: FL,
         });
       }
@@ -212,6 +245,68 @@ function run() {
                   ? '  (plausible: FL is a fraction and always below 1)'
                   : '  -- OUT OF RANGE, FL must lie between 0 and 1'));
   }
+  /* INDEPENDENT CHECKS ON THE PAIRING, because the failure this parser
+     exists to avoid -- Cv attached to the wrong port -- produces a table
+     that looks entirely reasonable.
+
+     THE FIRST VERSION OF THIS CHECK WAS WRONG and is worth recording.
+     It asserted Cv/port^2 near constant, on the reasoning that capacity
+     scales with port area. It warned at 78% scatter, which looked like a
+     parse failure and was not: maximum TRAVEL varies too, and an NPS 8
+     with a 3 in stroke passes 818 against 567 for the same port at 2 in.
+     A reduced port in a larger body also runs richer than the same port
+     in a small one, because the body restricts the approach less. The
+     ratio was never going to be constant, so a scatter bound was testing
+     the checker's assumption rather than the data.
+
+     What IS invariant:
+       - one (size, port, travel) has exactly one Cv
+       - within a size and travel, more port passes more
+     Both are facts about valves rather than guesses about trends. */
+  console.log('');
+  const key = v => [v.cage, v.nps, v.portIn, v.travelIn].join('|');
+  const seen = {};
+  let dupes = 0;
+  for (const v of out.valves) {
+    const k = key(v);
+    if (seen[k] !== undefined && seen[k] !== v.cv100) {
+      dupes++;
+      console.log('  WARN  ' + v.cage + ' NPS ' + v.nps + ' port ' + v.portIn +
+        ' travel ' + v.travelIn + ': two different Cv (' + seen[k] + ', ' +
+        v.cv100 + ') -- the same valve cannot have two capacities');
+    }
+    seen[k] = v.cv100;
+  }
+  console.log('  ' + (dupes ? 'WARN' : 'ok  ') +
+    '  one capacity per (size, port, travel): ' +
+    (dupes ? dupes + ' conflicts' : 'no conflicts in ' +
+     Object.keys(seen).length + ' distinct valves'));
+
+  let bad = 0, pairs = 0;
+  for (const cage of Object.keys(byCage)) {
+    const g = {};
+    out.valves.filter(v => v.cage === cage).forEach(v => {
+      const k = v.nps + '|' + v.travelIn;
+      (g[k] = g[k] || []).push(v);
+    });
+    for (const k of Object.keys(g)) {
+      const rs = g[k].slice().sort((x, y) => x.portIn - y.portIn);
+      for (let i = 1; i < rs.length; i++) {
+        pairs++;
+        if (!(rs[i].cv100 > rs[i - 1].cv100)) {
+          bad++;
+          console.log('  WARN  ' + cage + ' NPS ' + rs[i].nps +
+            ': port ' + rs[i].portIn + ' passes ' + rs[i].cv100 +
+            ', less than port ' + rs[i - 1].portIn + ' at ' + rs[i - 1].cv100);
+        }
+      }
+    }
+  }
+  console.log('  ' + (bad ? 'WARN' : 'ok  ') +
+    '  more port passes more flow: ' +
+    (bad ? bad + ' of ' + pairs + ' pairs inverted'
+         : pairs + ' same-size pairs, all monotonic'));
+
   console.log('\n  wrote lab/valves.json');
   return 0;
 }

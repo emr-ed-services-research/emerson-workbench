@@ -97,6 +97,86 @@ ok('and the demand they state is industrial, not bench-scale',
   ', full range ' + demands[0].toFixed(1) + ' to ' +
   demands[demands.length - 1].toFixed(0));
 
+/* ============================================ CAPACITY, GRADED ======= */
+console.log('\nCAPACITY -- does Emerson\'s own valve cover its own service?\n');
+
+const valves = JSON.parse(
+  fs.readFileSync(path.join(__dirname, 'valves.json'), 'utf8'));
+
+/* "1-1/2" -> 1.5, "2" -> 2 */
+function nps(t) {
+  const m = String(t).trim().match(/^(\d+)(?:\s*-\s*(\d+)\/(\d+))?$/);
+  if (!m) return null;
+  return +m[1] + (m[2] ? +m[2] / +m[3] : 0);
+}
+const table = valves.valves
+  .filter(v => v.cage === 'equal-percentage')
+  .map(v => ({ nps: nps(v.nps.replace(/\s*&.*$/, '')), cv: v.cv100, FL: v.FL }))
+  .filter(v => v.nps !== null);
+const tableMax = Math.max.apply(null, table.map(v => v.nps));
+
+/* THE TRICK THAT AVOIDS GUESSING A FLUID. Required Cv = (Q/sqrt(dP)) *
+   sqrt(SG), and only the first factor is published. So rather than
+   inventing an SG, invert the question: what is the HEAVIEST fluid the
+   specified valve could still pass this service with? At or above 1.0
+   the selection covers any hydrocarbon there is, and the case is
+   consistent without anyone having guessed anything.
+
+   THE BODY MUST MATCH, and the first version of this did not check.
+   ED, ET and EZ are different bodies with different ports and different
+   capacities at the same nominal size. Grading an ET service against
+   the ED table flagged two cases as inconsistent -- a furnace fuel
+   valve and an amine make-up valve -- and both were artifacts of using
+   the wrong catalog, not findings about Emerson's selections. A wrong
+   answer about somebody else's engineering is the worst kind this lab
+   can produce, so a case is graded only when the body it names is one
+   whose table is actually held. */
+const HELD_BODIES = ['ED', 'EAD', 'EDR'];
+let graded = 0, outOfTable = 0, wrongBody = 0;
+const marginal = [];
+for (const c of liquid) {
+  if (!c.selection) continue;
+  const sel = c.selection.join(' ');
+  if (!/easy-?e|\bE[DTZ]\b/i.test(sel)) continue;
+  const m = sel.match(/NPS\s*([\d\-\/]+)\s*(?:to|through|-)\s*NPS\s*([\d\-\/]+)/i);
+  if (!m) continue;
+
+  const bodies = sel.match(/\b(ED|ET|EZ|ES|EW|EAD|EAT|GX)\b/g) || [];
+  /* EVERY named body must be held, not merely one of them. Where the
+     book offers "EZ, ET, ED or GX" the engineer picks whichever fits,
+     so bounding the service by ED's capacity proves nothing -- showing
+     a selection inadequate means showing that NONE of the offered
+     bodies can do it. The second version of this check still graded
+     that case on ED alone and flagged a furnace fuel valve: the same
+     error as the first version, one step smaller. */
+  if (!bodies.length || !bodies.every(b => HELD_BODIES.indexOf(b) >= 0)) { wrongBody++; continue; }
+
+  const hi = nps(m[2]);
+  if (hi === null) continue;
+  if (hi > tableMax) { outOfTable++; continue; }
+  const cands = table.filter(v => v.nps <= hi);
+  if (!cands.length) continue;
+  const cvMax = Math.max.apply(null, cands.map(v => v.cv));
+  const dp = mid(c.p1) - mid(c.p2);
+  if (!(dp > 0)) continue;
+  const demand = mid(c.q) / Math.sqrt(dp);        // = Cv * sqrt(SG)
+  const sgMax = Math.pow(cvMax / demand, 2);
+  graded++;
+  if (sgMax < 1.0)
+    marginal.push({ c: c, sgMax: sgMax, cvMax: cvMax, demand: demand, hi: hi });
+}
+
+ok('every easy-e case is graded against its OWN body, or not at all',
+  true, graded + ' graded against the held ED table; ' + wrongBody +
+  ' name only ET, EZ, EW or GX, whose tables are not held; ' + outOfTable +
+  ' reach above NPS ' + tableMax + ', which the ED catalog does not cover');
+if (graded)
+  ok('and the specified valve covers its service for any liquid to SG 1.0',
+    marginal.length === 0,
+    marginal.map(x => x.c.valve + ': needs Cv ' + x.demand.toFixed(0) +
+      '*sqrt(SG), NPS ' + x.hi + ' passes ' + x.cvMax +
+      ', so only SG <= ' + x.sgMax.toFixed(2)).join('; '));
+
 /* ================================================= NOT GRADEABLE ===== */
 console.log('\nNOT GRADEABLE YET -- and exactly why, per case class\n');
 
@@ -106,11 +186,14 @@ const blockers = [
    'and gas mixture) and never its SG. Without it Cv*sqrt(SG) cannot ' +
    'become Cv. Needs a sourced fluid-property table, NOT an estimate -- ' +
    'a guessed SG would make every one of these cases look graded.'],
-  ['Cv and FL for the valve lines the books name',
-   'Vee-Ball, Control-Disk and easy-e ET/EZ. Fisher Catalog 12 flow ' +
-   'coefficients are held for ED/EAD/EDR (19 pages, Cv at every 10% of ' +
-   'travel plus FL, XT and Fd) and that family is a start, but the ' +
-   'rotary lines the refinery cases mostly specify are not in it.'],
+  ['Fisher Catalog 12 sections for ET, EZ, EW and the rotary lines',
+   'ED/EAD/EDR is read -- 30 rows with size, port, travel, Cv and FL, ' +
+   'checked for one capacity per valve and for monotonic port. But the ' +
+   'refinery corpus almost never specifies ED: it specifies ET, EZ and ' +
+   'EW among the globes and Vee-Ball, Control-Disk and V500 among the ' +
+   'rotaries, and those catalog sections are not in the vault. The ET ' +
+   'pages we do hold are Cavitrol III, Dirty Service Trim and WhisperFlo ' +
+   '-- severe-service trims, not the standard cage.'],
   ['Pv and Pc per fluid, for the choke check',
    'Without them sizeLiquid() reports the check as NOT MADE rather than ' +
    'implying the valve is safe. At refinery pressure drops choking is ' +
