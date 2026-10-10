@@ -31,7 +31,7 @@ const path = require('path');
 /* The stack, bottom to top. A file must declare one of these. Tooling
    (test.js, vendor.js) declares `registration` because it belongs to no
    process layer; only files under src/ count as a layer's implementation. */
-const LAYERS = ['registration', 'catalogue', 'geometry', 'netlist',
+const LAYERS = ['registration', 'catalogue', 'geometry', 'sizing', 'netlist',
                 'schem-view', 'phys-view', 'dynamics', 'scenario', 'chrome'];
 
 /* Every .js in the core, discovered rather than listed. A list is a thing

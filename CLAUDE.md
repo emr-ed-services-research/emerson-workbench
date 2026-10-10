@@ -27,7 +27,7 @@ how a process system is modelled and drawn:
 
 ```
 chrome  >  scenario  >  dynamics  >  schem-view | phys-view  >  netlist
-  >  geometry  >  catalogue  >  registration
+  >  geometry | sizing  >  catalogue  >  registration
 ```
 
 "Cartridge" is **reserved** for Workbench Layer 3. Do not use it for anything else.

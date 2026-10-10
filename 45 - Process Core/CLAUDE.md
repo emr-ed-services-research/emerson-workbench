@@ -32,8 +32,8 @@ Every `.js` here opens with an `@layer` header naming its layer and what it may 
 `test/layers.test.js` checks the **code** against that claim, not the comment.
 
 ```
-chrome > scenario > dynamics > schem-view | phys-view > netlist > geometry
-  > catalogue > registration
+chrome > scenario > dynamics > schem-view | phys-view > netlist
+  > geometry | sizing > catalogue > registration
 ```
 
 The dynamics layer answers *how much flows where*; anything about how that LOOKS is
@@ -53,6 +53,13 @@ through a bore-to-radius factor is not a measurement.
 ```
 node reference.js      ->  reference/index.html, every part drawn to scale
 ```
+
+The **sizing** layer sits beside geometry: geometry is the shape of one part,
+sizing is the flow physics of one part. `ISA-75.01.01` liquid sizing with the
+piping geometry factor, pressure recovery and the choked-drop check, graded
+against the Control Valve Handbook's printed worked example. The **dynamics**
+layer does NOT have any of that -- it is `q = Cv*sqrt(dP/SG)`, honest at the
+2 gpm it was written for and not at refinery scale.
 
 Open that after changing a shape rule. The numbers can all be right and the
 shape still be wrong, and no test here would say so.

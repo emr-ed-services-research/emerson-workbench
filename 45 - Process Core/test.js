@@ -22,6 +22,7 @@ const SUITES = [
   ['test/layers.test.js',   'layer guard (tiers, no consumer reach-in)'],
   ['test/catalogue.test.js','catalogue (parts trace to a document)'],
   ['test/geometry.test.js', 'geometry (real shape, in inches, from the table)'],
+  ['test/sizing.test.js',   'sizing (ISA-75.01.01, vs a printed answer)'],
   ['test/topology.test.js', 'netlist (level 1 reproduction, validation)'],
   ['test/schemvis.test.js', 'schem view (ISA-5.5 symbols, state, line breaks)'],
   ['test/physvis.test.js',  'phys view (elbows, tees, reducers, draw order)'],
