@@ -176,10 +176,34 @@ for (const f of ['level1.html', 'level2.html']) {
       });
   const ok = got && Object.keys(EXPECT).every(k => Math.abs(got[k] - EXPECT[k]) < 1e-9);
   check(f + ' Cv matches sizing.js', ok, got ? JSON.stringify(got) : 'not found');
-  // bore radii are derived from the real bores, not typed in
-  check(f + ' radii derived from bores',
-    /const PX_PER_IN=R_BR\/0\.493;/.test(src) && /R_MAIN=Math\.round\(0\.622\*PX_PER_IN/.test(src),
-    'PX_PER_IN + R_MAIN');
+  /* Bore radii must be DERIVED from the real bores, never typed in.
+     There are now two ways to satisfy that, and they are not equal:
+
+       CATALOGUE  the bore comes from the Process Core's component
+                  catalogue, which reads it from ASME B36.10M and refuses
+                  to load unless every dimension matches what it says the
+                  standard printed. Level 1.
+
+       LITERAL    the bore is the right number typed into the file. It is
+                  correct and it has nothing behind it -- a moved digit
+                  would go unnoticed. Level 2, still.
+
+     Both pass, because level 2 has not been migrated and failing it here
+     would just mean disabling the check. But the check REPORTS which tier
+     the file is at, so the remaining debt stays visible in the output
+     instead of being flattened into a tick. */
+  const viaCat = /PX_PER_IN=R_BR\/BORE_BR/.test(src) &&
+                 /R_MAIN=Math\.round\(BORE_MAIN\*PX_PER_IN/.test(src) &&
+                 /CAT\.part\('PIPE\/NPS0\.5\/S40'\)\.dims\.bore/.test(src) &&
+                 /CAT\.part\('PIPE\/NPS0\.375\/S40'\)\.dims\.bore/.test(src);
+  const viaLit = /const PX_PER_IN=R_BR\/0\.493;/.test(src) &&
+                 /R_MAIN=Math\.round\(0\.622\*PX_PER_IN/.test(src);
+  check(f + ' radii derived from bores', viaCat || viaLit,
+    viaCat ? 'from the catalogue -- ASME B36.10M, load-time checked'
+           : viaLit ? 'from literals -- correct, but nothing is checking them'
+           : 'neither: PX_PER_IN and R_MAIN must derive from a bore, from ' +
+             'the catalogue (preferred) or from the literal inches. A ' +
+             'hand-typed pixel radius is a bore nobody can trace.');
 }
 
 /* ------------------------------------------------------------
@@ -230,6 +254,13 @@ function coreSolver() {
   };
   const host = { window: {} };
   vm.createContext(host);
+  /* The catalogue first, and its DATA with it. Level 1 declares its bores
+     as catalogue part ids now, so the sandbox has to be able to answer the
+     same lookup the browser does -- otherwise this check would be testing a
+     level that cannot exist. The build inlines the same JSON the same way. */
+  vm.runInContext(fs.readFileSync('vendor/process-core/catalogue.js', 'utf8'), host);
+  vm.runInContext('window.LPE.catalogueData=' +
+    fs.readFileSync('vendor/process-core/catalogue/parts.json', 'utf8') + ';', host);
   vm.runInContext(fs.readFileSync('vendor/process-core/topology.js', 'utf8'), host);
   vm.runInContext(fs.readFileSync('vendor/process-core/dynamics.js', 'utf8'), host);
 
@@ -1046,11 +1077,22 @@ const EXPECTED_L1_GEOMETRY = "{\"lines\":[{\"r\":10,\"pts\":[[320,170],[812,170]
        the game actually bundles. */
     const host = { window: {} };
     vm.createContext(host);
+    /* Level 1 declares its bores as catalogue part ids, so the real
+       catalogue and the real parts data have to be here too -- the same
+       JSON the build inlines, not a stand-in. A stub with the right
+       numbers in it would make this check pass while proving nothing. */
+    vm.runInContext(
+      fs.readFileSync('vendor/process-core/catalogue.js', 'utf8'), host);
+    vm.runInContext('window.LPE.catalogueData=' +
+      fs.readFileSync('vendor/process-core/catalogue/parts.json', 'utf8') +
+      ';', host);
     vm.runInContext(
       fs.readFileSync('vendor/process-core/topology.js', 'utf8'), host);
     const realNet = host.window.LPE.net;
 
-    const sand = { LPE: { piping: s => s, net: realNet } };
+    const sand = { LPE: { piping: s => s, net: realNet,
+                          catalogue: host.window.LPE.catalogue,
+                          catalogueData: host.window.LPE.catalogueData } };
     vm.createContext(sand);
     vm.runInContext(geo + '\n' +
                     decl(src, 'const NETLIST=LPE.net(') + '\n' +

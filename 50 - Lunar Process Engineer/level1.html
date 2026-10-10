@@ -31,9 +31,17 @@ const MAN_TOP=132;        // the manifold body's inlet face, below the elbow
      restriction      throat 0.108 in  derived from the Cv it has to have
    The main was drawn at 11 px for a long time, which is NPS 3/8 wearing a
    half-inch label; at this scale it is 12.6. */
+/* THE BORES ARE NOT TYPED HERE ANY MORE. They come out of the Process
+   Core's component catalogue, which reads them from ASME B36.10M and
+   refuses to load unless every dimension in it matches what it says the
+   standard printed. 0.622 was right when it was a literal; it just had
+   nothing behind it, and nothing would have noticed a moved digit. */
+const CAT=LPE.catalogue.load(LPE.catalogueData);
+const BORE_MAIN=CAT.part('PIPE/NPS0.5/S40').dims.bore;      // 0.622 in
+const BORE_BR  =CAT.part('PIPE/NPS0.375/S40').dims.bore;    // 0.493 in
 const R_BR=10;                                      // the anchor
-const PX_PER_IN=R_BR/0.493;                         // ~20.3 px per inch of bore
-const R_MAIN=Math.round(0.622*PX_PER_IN*10)/10;     // 12.6
+const PX_PER_IN=R_BR/BORE_BR;                       // ~20.3 px per inch of bore
+const R_MAIN=Math.round(BORE_MAIN*PX_PER_IN*10)/10; // 12.6
 const RED_X0=600, RED_X1=680, RED_R=Math.round(0.108*PX_PER_IN*10)/10;      // the spliced-in reducer on bay 3
 const VALVE_X=410, WHEEL_R=18, STEM=24;
 const BR_LEN=POD_X-TRUNK_X;
@@ -172,7 +180,7 @@ function drawSchem(g,S){
    loop. Calling these FV- would claim an instrument that is not there. */
 const NETLIST=LPE.net({
   /* ASME B36.10M Sch 40 bores, the same ones sizing.js works from. */
-  bores:{main:0.622, branch:0.493},
+  bores:{main:'PIPE/NPS0.5/S40', branch:'PIPE/NPS0.375/S40'},
   fluid:{sg:1.0},                       // water; see fluids.js for the rest
   components:{
     /* The pods are NFT grow beds, open to the bay: ISA-5.5 3.3.2's
@@ -267,7 +275,7 @@ const NETLIST=LPE.net({
       },
     },
   },
-});
+}, {catalogue:CAT});
 
 /* ---- the rig view, DRAWN FROM THE NETLIST ---------------------------
    This used to be a second declaration of the same bay: four `pts`

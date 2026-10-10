@@ -15,7 +15,15 @@ const css=read('engine.css');
    to game.html, which inlines only each level's own inline script, so the
    game would come up with LPE.net undefined and nothing would say so. */
 const CORE='vendor/process-core/';
-const js=read('engine.js')+String.fromCharCode(10)+read(CORE+'topology.js')
+/* The catalogue is DATA -- `catalogue/parts.json` -- and a browser cannot
+   require() a file. It rides in as one assignment ahead of the core that
+   reads it, which keeps the JSON the single copy: the core vendors it, the
+   build inlines it, nobody retypes a bore. catalogue.js must come first of
+   the core files because the assignment needs window.LPE to exist. */
+const js=read('engine.js')+String.fromCharCode(10)+read(CORE+'catalogue.js')
+        +String.fromCharCode(10)
+        +'window.LPE.catalogueData='+read(CORE+'catalogue/parts.json')+';'
+        +String.fromCharCode(10)+read(CORE+'topology.js')
         +String.fromCharCode(10)+read(CORE+'schemvis.js')
         +String.fromCharCode(10)+read(CORE+'physvis.js')
         +String.fromCharCode(10)+read(CORE+'dynamics.js')
