@@ -1,7 +1,7 @@
 ---
 title: Process Core — Component Catalogue
 type: design
-status: DRAFT — for approval, nothing built
+status: DECIDED — four calls made 2026-10-10; nothing built yet
 tags:
   - project
   - process-core
@@ -11,7 +11,7 @@ updated: 2026-10-10
 
 # Process Core — Component Catalogue
 
-**Status: draft for approval. No code exists.**
+**Status: design decided, no code written.** The four open questions are answered in section 8, with reasons, so they can be overturned on the reasoning rather than reopened.
 
 Franz, 2026-10-10:
 
@@ -148,12 +148,38 @@ of the part; it does not carry how it strokes.
 | `fitting` | elbows, tees, reducers, couplings, unions, caps | **ASME B16.11** (socket-weld / threaded), **ASME B16.9** (buttweld, NPS ½ and up) | yes, both read 2026-10-10 |
 | `valve` | type, size, Cv, face-to-face, rating | **ISA-75.01.01**, **ASME B16.10**, **ASME B16.34** | partly |
 | `vessel` | geometry, role, ISA-5.5 mnemonic | **ISA-5.5** §3.3.2 | yes |
-| `material` | density, class, service limits | **nothing held** | **no** |
+| `material` | group, P-T rating, service limits | **ASME B16.34** (material groups), **NACE MR0175 / MR0103** (sour service), **ASME B31.1** (allowables), Control Valve Handbook ch6 | **yes, more than expected** |
 
-**Materials is the real gap**, and should be admitted as one rather than
-invented. A first entry can carry name and appearance class only, with
-`source: null` flagged — which the catalogue's test will report, which is the
-point.
+### Materials — a correction to this draft
+
+The first version of this document said materials were ungrounded and nothing
+was held. **That was wrong**, and the register already said so:
+
+- **ASME B16.34** is registered and is a *materials* standard as much as a
+  dimensional one — its pressure-temperature tables are indexed by class,
+  **body material** and service temperature. 75 hits across 17 files in CVE1.
+- **NACE MR0175** and **MR0103** are both registered: material limits for
+  sulfide stress cracking, in production and in refining respectively.
+- **ASME B31.1** carries allowable stresses by material.
+- The Control Valve Handbook's materials chapter is already subject-indexed.
+
+So a material is not a label. It is the axis a pressure rating hangs on, and
+the catalogue should treat it that way from the start:
+
+```js
+'CS-A105': {
+  group:   'ASME B16.34 Material Group 1.1',
+  spec:    'ASTM A105',          // the product spec -- NOT held, see below
+  ptSource:{ std: 'ASME B16.34', note: 'P-T by group and temperature' },
+  sour:    { std: 'NACE MR0175', limits: '…' },
+}
+```
+
+**The genuine gap is narrower than "materials": it is the ASTM/ASME-SA
+product specifications themselves** — A105, A106, A182, A312, A350. Emerson
+plainly uses them (they appear throughout the supplier documents in eDocs),
+and they are not in the register. That is a specific, closable gap, and
+naming it precisely is worth more than the vague one this draft started with.
 
 ### The sixth class: `manufactured`
 
@@ -238,13 +264,65 @@ lands**, not after.
 
 ---
 
-## 8. Open questions for Franz
+## 8. Decisions
 
-1. **Does the shape hold** — catalogue at the bottom, dimensions on the part,
-   recipes on the views?
-2. **Materials**: seed it honestly empty, or leave the class out until a
-   source exists?
-3. **Phase 4's visible change** — review before it lands, or trust the
-   snapshot test?
-4. **Does the catalogue ship with LPE**, or is it vendored separately? It is
-   reference data, not code, and LoopBench will want the same rows.
+Franz, 2026-10-10: *"Make the best call."* Four calls, with reasons, so they
+can be overturned on the reasoning rather than re-litigated from scratch.
+
+### 1. The shape holds — catalogue at the bottom, dims on parts, recipes on views
+
+Taken. The strongest argument is that **half of it already exists and works**:
+`schemvis.SYMBOLS` is exactly this — a table keyed by ISA mnemonic, each entry
+declarative and cited to a clause, where adding a symbol means adding a row.
+That file has needed no structural change since it was written. `physvis`,
+which is procedures, has needed one for every new part and produced a hand-
+picked constant each time. The pattern is not a proposal; it is the half of
+the codebase that has been behaving.
+
+### 2. Materials is in, and seeded properly
+
+Taken, and the draft's own premise corrected above. A material is the axis a
+pressure rating hangs on, not an appearance label — so leaving the class out
+"until a source exists" would have been wrong twice over: the sources exist,
+and without them a part cannot state what it is rated for.
+
+Seed from B16.34's material groups, which is held and already taught. Record
+the ASTM product specs by designation with `held: false` — honest, narrow and
+closable, rather than a vague gap.
+
+### 3. Phase 4 gets eyes before it lands
+
+Taken, and both: keep the snapshot test *and* review the render.
+
+They prove different things. The snapshot proves **the pixels moved exactly as
+computed** — it cannot say the drawing reads correctly, and a correct-by-
+arithmetic elbow that looks wrong on a 1990s pixel rig is still a problem.
+This project's own rule is that nothing "renders clean" without naming the
+view inspected, and tonight bore that out twice: a diagonal header and a grey
+slab, both of which every test passed and only looking caught.
+
+Phase 4 tightens elbows roughly 3× on socket-weld runs. That is the largest
+visual change in the core's history and the first one that is *correct*.
+
+### 4. It ships inside Process Core — but as DATA, not code
+
+Taken, with a specific shape, because this is the call most likely to be
+regretted later.
+
+The catalogue lives under `45 - Process Core/catalogue/` as **JSON**, vendored
+with the rest of the core under the same lock. Not a separate package:
+splitting it means two locks, two versions and the chance of a rig resolving
+parts from a catalogue a different vintage from the netlist reading it.
+
+But **not a `.js` table either** — and this is the part that matters.
+**LoopBench is Python.** A JavaScript parts table is unreadable to it, so a JS
+catalogue would force a second copy of every row, which is precisely the
+disease the netlist exists to cure, reintroduced one layer down. JSON is read
+natively by both. A thin `catalogue.js` loader gives the core its ergonomics;
+the rows themselves stay language-neutral.
+
+One more consequence worth stating: the Standards Register's own check should
+eventually read the catalogue, so that a part citing `ASME B16.11` counts as a
+citation and a part citing a standard with no entry **fails the build**. The
+register already does this for prose and code. Parts are a stronger case —
+they are where a wrong citation becomes a wrong dimension.
