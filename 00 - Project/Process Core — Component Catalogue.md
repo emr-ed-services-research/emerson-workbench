@@ -140,7 +140,7 @@ of the part; it does not carry how it strokes.
 
 ---
 
-## 4. The five classes
+## 4. The classes
 
 | Class | Holds | Seeded from | Held? |
 |---|---|---|---|
@@ -148,6 +148,7 @@ of the part; it does not carry how it strokes.
 | `fitting` | elbows, tees, reducers, couplings, unions, caps | **ASME B16.11** (socket-weld / threaded), **ASME B16.9** (buttweld, NPS ½ and up) | yes, both read 2026-10-10 |
 | `valve` | type, size, Cv, face-to-face, rating | **ISA-75.01.01**, **ASME B16.10**, **ASME B16.34** | partly |
 | `vessel` | geometry, role, ISA-5.5 mnemonic | **ISA-5.5** §3.3.2 | yes |
+| `manifold` | body, ports, port spacing, configuration | **manufacturer standard** (Rosemount instrument manifolds; ASCO valve bases), Control Valve Handbook ch4 fig. | product literature |
 | `material` | group, P-T rating, service limits | **ASME B16.34** (material groups), **NACE MR0175 / MR0103** (sour service), **ASME B31.1** (allowables), Control Valve Handbook ch6 | **yes, more than expected** |
 
 ### Materials — a correction to this draft
@@ -181,24 +182,122 @@ plainly uses them (they appear throughout the supplier documents in eDocs),
 and they are not in the register. That is a specific, closable gap, and
 naming it precisely is worth more than the vague one this draft started with.
 
-### The sixth class: `manufactured`
+### Manifolds are a CATALOGUE class, not a novelty
 
-Franz's lunar manifold is not a catalogue fitting and must not pretend to be:
+An earlier version of this document made a manifold a one-off
+`manufactured` part with `provenance: 'design-decision'`. **That was wrong.**
+Franz, 2026-10-10: *"a manifold shouldn't be novel. It is pretty standard."*
 
-```js
-'MANIFOLD/PRINTED/3PORT/NPS0.5': {
-  class: 'manifold-printed',
-  provenance: 'design-decision',          // NOT a standard
-  decision: '00 - Project/… lunar manifold',
-  rationale: 'mass is launch cost; every joint is a leak path; the bay\'s '
-           + 'water is mined from ice and counted',
-  dims: { /* chosen, and SAID to be chosen */ },
-}
-```
+He is right, and the vault already proves it. Emerson's own Control Valve
+Handbook catalogues one — `cvh-cmp-sov-manifold-assembly`, *"a physical
+multi-valve manifold consolidating several solenoid-operated valves into one
+assembly"*, with a printed figure. Manifolds are ordinary industrial products
+in at least four families: instrument (2-, 3- and 5-valve), pneumatic valve,
+hydraulic, and distribution/header.
 
-`provenance: 'design-decision'` is a first-class value beside `standard`. It
-keeps an authored part honest and visibly distinct from a catalogued one —
-the same discipline as the Standards Register's `not-held`.
+So `manifold` is a normal catalogue class seeded from real sources like any
+other. What the lunar rig chooses is a *configuration* of a standard part —
+not an invention.
+
+### The principle this exposes: authority varies by class
+
+Franz: *"Look elsewhere for parts if industrial doesn't have it, something
+else does."*
+
+The catalogue must **not** assume its sources are ASME and ISA. That
+assumption is what produced the evening's worst error — reaching for a
+buttwelding standard because it was the one in hand, when the governing
+document was a different standard in a different family. Each class has its
+own authority, and some live outside process piping entirely:
+
+| Class | Where the authority lives | Status |
+|---|---|---|
+| pipe | ASME B36.10M | held |
+| buttweld fittings | ASME B16.9 | held |
+| socket-weld / threaded fittings | ASME B16.11 | held |
+| valve ratings | ASME B16.34 | registered |
+| valve sizing | ISA-75.01.01 | registered |
+| flanges | ASME B16.5 | no entry |
+| **instrument manifolds** | **manufacturer standard — Rosemount (Emerson)**; the 2/3/5-valve configurations are a settled convention | product literature, in eDocs |
+| **pneumatic valve manifolds** | **ISO** valve-interface standards; ASCO (Emerson) builds to them | *numbers not verified — see below* |
+| hydraulic manifolds | ISO cavity standards, SAE | not checked |
+| tube fittings | ISO, and manufacturer standards | not checked |
+
+**Three consequences for the design:**
+
+**1. `provenance` needs a third value.** Not just `standard` and
+`design-decision`, but **`manufacturer-standard`** — a Rosemount manifold or
+an ASCO valve base is a real, dimensioned, orderable part whose authority is
+a catalogue rather than a standards body. That is a perfectly good source,
+and pretending otherwise would push real parts into the "invented" bucket.
+
+**2. Emerson's own product literature is a first-class source.** It is in
+eDocs, it is ours, and for several of these classes it is *the* authority.
+The Standards Register's honesty rules extend to it unchanged: name the
+document, the revision, and what was read.
+
+**3. Before seeding a class, ask who governs it** — rather than reaching for
+the nearest ASME number. That question, asked once about elbows, would have
+saved the whole detour.
+
+> **Unverified:** the ISO numbers for pneumatic valve interfaces are
+> recollection, not reading. Given that recalling a standard from memory is
+> exactly what went wrong earlier today, they are deliberately left unnamed
+> here until someone opens them. The *shape* of the claim — that pneumatic
+> manifolds are ISO-standardised and Emerson builds to those interfaces — is
+> what matters for the design; the numbers can be filled in when checked.
+
+### And it goes wider than industry — it goes to INDUSTRIES
+
+Franz: *"agriculture, medical, they are different industries likely with
+standards and catalogs too."*
+
+This is the correction that actually bites, because it indicts the whole
+evening rather than one lookup.
+
+**Level 1 is an agricultural rig.** It is an NFT grow bed fed by a
+proportional dosing injector — microirrigation, not process plant. Its
+governing bodies are agricultural: **ASABE** (American Society of Agricultural
+and Biological Engineers) and the **ISO** irrigation-equipment series. Its
+fittings are barbed, compression or solvent-weld polymer. Its pipe is
+polyethylene or PVC sized by a different convention.
+
+Tonight the core cited a *buttwelding* standard for it. I corrected that to a
+*socket-welding* standard — forged carbon steel, Class 3000, for refinery
+pipework. **That is also the wrong family.** Closer, and still reaching for
+the nearest authority in Emerson's domain instead of asking who governs a
+grow bed. The same mistake, one level up, made while fixing the first one.
+
+What this means for the catalogue:
+
+**The catalogue is cross-industry by construction, or it is wrong by default.**
+A part's `source` must be able to name any authority — ASME, ISA, ASABE, ISO,
+AAMI, a manufacturer — and nothing in the schema may privilege process
+piping. The default assumption has to be *"which industry is this rig?"*, not
+*"which ASME number is nearest?"*
+
+Industries the vault can already foresee needing:
+
+| Industry | Likely authorities | Why it will come up |
+|---|---|---|
+| process / oil & gas | ASME, ISA, NACE, API | CVE1/2, LoopBench, the bench |
+| **agriculture / irrigation** | **ASABE, ISO irrigation series** | **level 1, and every grow-bay rig after it** |
+| medical / life science | ISO small-bore connector series, AAMI | any biolab rig; also the reason misconnection-proof fittings exist at all |
+| semiconductor / high purity | SEMI | if ultrapure water or gas ever appears |
+| food & beverage | 3-A sanitary standards | sanitary fittings are a different family again |
+
+> **Unverified, deliberately:** every specific number above is withheld for
+> the same reason as the pneumatic ones. ASABE and the ISO irrigation series
+> are the right *bodies* — that much is checkable common ground — but which
+> document governs a microirrigation manifold is a question for whoever opens
+> one, not for recollection. Tonight's record on recalled standard numbers is
+> one wrong out of one.
+
+**Practical consequence for seeding.** Do not seed the catalogue from
+Emerson's shelf and then look for rigs that fit it. Seed it per rig, from the
+industry that rig belongs to. Level 1 needs irrigation parts, and that
+sourcing errand has not been done — the ASME work tonight serves the *bench*
+and CVE, which are genuinely process-industry, and serves level 1 not at all.
 
 ---
 
