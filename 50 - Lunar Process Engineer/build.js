@@ -17,6 +17,7 @@ const css=read('engine.css');
 const CORE='vendor/process-core/';
 const js=read('engine.js')+String.fromCharCode(10)+read(CORE+'topology.js')
         +String.fromCharCode(10)+read(CORE+'schemvis.js')
+        +String.fromCharCode(10)+read(CORE+'physvis.js')
         +String.fromCharCode(10)+read(CORE+'dynamics.js')
         +String.fromCharCode(10)+read(CORE+'scenario.js');
 const scriptOf=f=>{                       // the inline <script> body of a level page

@@ -22,6 +22,7 @@ const SUITES = [
   ['test/layers.test.js',   'layer guard (tiers, no consumer reach-in)'],
   ['test/topology.test.js', 'netlist (level 1 reproduction, validation)'],
   ['test/schemvis.test.js', 'schem view (ISA-5.5 symbols, state, line breaks)'],
+  ['test/physvis.test.js',  'phys view (elbows, tees, reducers, draw order)'],
   ['test/dynamics.test.js', 'dynamics (level 1 solver, bit-identical)'],
   ['test/scenario.test.js', 'scenario (a level as data, run headless)'],
 ];

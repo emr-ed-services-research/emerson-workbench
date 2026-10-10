@@ -641,110 +641,26 @@ Cutaway.prototype.draw=function(g){
   flange(x); flange(x+w);
 };
 
-/* ---------------- PIPING: runs and fittings ----------------
-   Pipe is described the way it is actually built - continuous runs with
-   fittings at the joints - rather than as a pile of rectangles:
+/* ---------------- PIPING: the consumer's end of phys-view ----------
+   The renderer MOVED to the Process Core as `@layer phys-view`
+   (`vendor/process-core/physvis.js`). Everything about how pipe is built
+   -- long-radius elbows off the netlist's own bend radius, forged tees
+   with socket hubs and radiused crotches, reducer cones, and the three
+   draw passes that keep a bore from being painted shut -- lives there
+   now, where the layer guard can hold it to the rules.
 
-     lines:    [{pts:[[x,y],...], r}]   a run; every corner becomes an elbow
-     tees:     [{x,y,r,branch}]         a branch taken off a run
-     reducers: [{x0,x1,y,r1,r2}]        a change of bore
-     fittings: [{x,y,r,kind}]           unions, caps and the like
+   What stays HERE is the one thing that is not the model's business: the
+   default skin. The core holds no colours and throws by name if a role is
+   missing, so a caller that wants the 1990s look gets it from the
+   consumer, which is where chrome belongs. Every existing call site is
+   unchanged.
 
-   Corners are stroked with a round join, so a 90 gets a real radius on the
-   outside instead of a mitred box. Everything is drawn in three passes -
-   all bodies, then collars, then every BORE last - so no fitting can ever
-   paint over another's opening. That ordering is what keeps tees clear, and
-   it is the engine's job rather than each level's.                        */
+   Edit the core and re-vendor. Editing a file under vendor/ is a build
+   failure, by design.                                                   */
 function piping(spec){
-  const lines=spec.lines||[], tees=spec.tees||[],
-        reducers=spec.reducers||[], fittings=spec.fittings||[];
-  /* The skin arrives at draw time, so one piping() can be painted twice
-     in two styles without being rebuilt. Defaults to the 1990s one
-     because every caller today wants it; a second renderer passes its
-     own and nothing in the geometry below changes. */
-  /* Corners are filleted with arcTo, which bends the CENTRELINE - so the
-     inner and outer walls come out as concentric arcs, the way a real elbow
-     is made. A round line-join only pads the outside and leaves a sharp
-     inside corner, which is a mitred fitting and the wrong shape for flow.
-     The radius follows the long-radius convention: centreline R = 1.5 x the
-     bore diameter, i.e. 3 x the bore radius. */
-  const bendOf=r=>3*r;
-  const stroke=(g,pad,col)=>{
-    g.strokeStyle=col; g.lineCap='butt'; g.lineJoin='round';
-    lines.forEach(L=>{
-      g.lineWidth=2*(L.r+pad);
-      const R=bendOf(L.r);
-      g.beginPath();
-      g.moveTo(L.pts[0][0],L.pts[0][1]);
-      for(let i=1;i<L.pts.length-1;i++)
-        g.arcTo(L.pts[i][0],L.pts[i][1],L.pts[i+1][0],L.pts[i+1][1],R);
-      const e=L.pts[L.pts.length-1];
-      g.lineTo(e[0],e[1]);
-      g.stroke();
-    });
-  };
-  const TAPER=16;
-  const taper=(g,rd,pad,col)=>{            // taper in, throat, taper out
-    const {x0,x1,y,r1,r2}=rd, a=x0+TAPER, b=x1-TAPER;
-    g.fillStyle=col;
-    g.beginPath();
-    g.moveTo(x0,y-r1-pad); g.lineTo(a,y-r2-pad); g.lineTo(b,y-r2-pad); g.lineTo(x1,y-r1-pad);
-    g.lineTo(x1,y+r1+pad); g.lineTo(b,y+r2+pad); g.lineTo(a,y+r2+pad); g.lineTo(x0,y+r1+pad);
-    g.closePath(); g.fill();
-  };
+  const inner = LPE.phys(spec);
   return {
-    draw(g,skin){
-      const S=skin||PIPE_SKIN;
-      // --- bodies
-      stroke(g,WALL,S.body);
-      reducers.forEach(rd=>taper(g,rd,WALL,S.body));
-      /* A real tee is a forged body, not two pipes butted together: the metal
-         is thicker at the junction, each of the three ends has a socket hub
-         the pipe lands in, and the crotch where the branch leaves the run is
-         radiused rather than square. The reinforcement and hubs go in with
-         the bodies; the crotch fillets go on after the bores, below. */
-      tees.forEach(t=>{
-        const REINF=3, stub=t.r+WALL+REINF+16;
-        g.fillStyle=S.body;
-        g.fillRect(t.x-t.r-WALL-REINF, t.y-t.branch-WALL-REINF,
-                   2*(t.r+WALL+REINF), 2*(t.branch+WALL+REINF));
-        g.fillRect(t.x, t.y-t.branch-WALL-REINF, stub, 2*(t.branch+WALL+REINF));
-        g.fillStyle=S.rim;                                  // socket hubs, three ends
-        g.fillRect(t.x-t.r-WALL-REINF-2, t.y-t.branch-WALL-REINF-3, 3, 2*(t.branch+WALL+REINF)+6);
-        g.fillRect(t.x+stub-3, t.y-t.branch-WALL-REINF-3, 3, 2*(t.branch+WALL+REINF)+6);
-      });
-      g.fillStyle=S.rim;
-      reducers.forEach(rd=>{ g.fillRect(rd.x0-2,rd.y-rd.r1-WALL-2,3,2*(rd.r1+WALL)+4);
-                             g.fillRect(rd.x1-1,rd.y-rd.r2-WALL-2,3,2*(rd.r2+WALL)+4); });
-      fittings.forEach(f=>{ g.fillRect(f.x-3,f.y-f.r-WALL-3,3,2*(f.r+WALL)+6);
-                            g.fillRect(f.x+f.r,f.y-f.r-WALL-3,3,2*(f.r+WALL)+6); });
-      // --- highlight along the top of each run
-      g.save(); g.globalAlpha=0.5; stroke(g,WALL-2,S.light); g.restore();
-      // --- BORES: nothing may close an opening after this
-      stroke(g,0,S.dark);
-      reducers.forEach(rd=>taper(g,rd,0,S.dark));
-      /* --- crotch fillets, the one thing that goes on top of a bore.
-         Where a branch leaves the run the metal is radiused, never a sharp
-         internal corner - a square crotch is a stress riser and is not how a
-         tee is made. Adding it back after the bores keeps it exact. */
-      g.fillStyle=S.body;
-      /* Each fillet is a QUARTER round. The sweep flags were inverted, which
-         took the long way round the circle - 270 degrees instead of 90 - so
-         instead of a small radius in the crotch each tee got a three-quarter
-         blob laid over it. */
-      tees.forEach(t=>{
-        const CR=Math.max(3,t.branch*0.6), cx=t.x+t.r;
-        [-1,1].forEach(sy=>{
-          const cy=t.y+sy*t.branch;
-          g.beginPath();
-          g.moveTo(cx,cy);
-          g.lineTo(cx+CR,cy);
-          if(sy<0) g.arc(cx+CR,cy-CR,CR, Math.PI/2, Math.PI, false);
-          else     g.arc(cx+CR,cy+CR,CR,-Math.PI/2,-Math.PI, true);
-          g.closePath(); g.fill();
-        });
-      });
-    },
+    draw(g, skin){ inner.draw(g, skin || PIPE_SKIN); },
   };
 }
 

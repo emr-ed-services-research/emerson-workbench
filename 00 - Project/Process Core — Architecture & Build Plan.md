@@ -76,7 +76,7 @@ Honest accounting of what exists today, as of this writing.
 |---|---|---|
 | Netlist | Built, sound | `45 - Process Core/src/topology.js` |
 | Schematic view | Built, sound | `45 - Process Core/src/schemvis.js` |
-| Physical view | Built; skinnable as of 5a | `piping()` in LPE `engine.js` |
+| Physical view | Built; skinnable as of 5a; **extracted 2026-10-10** | `45 - Process Core/src/physvis.js` — LPE keeps a 23-line adapter that supplies the 1990s skin |
 | Dynamics | Built (Phase 3) | `45 - Process Core/src/dynamics.js` — level 1 migrated, level 2 not yet |
 | Scenario | Built (Phase 4) | `45 - Process Core/src/scenario.js` — level 1 migrated |
 | Chrome | A boundary, with two skins | LPE `engine.js` (1990s) and `45 - Process Core/skins/modern.js` |

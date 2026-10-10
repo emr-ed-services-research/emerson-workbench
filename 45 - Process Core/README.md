@@ -29,7 +29,7 @@ This is the same relationship `40 - Engine` has with a course.
   scenario    rig + what may be touched + what must become true   src/scenario.js
   dynamics    network hydraulics from the netlist    src/dynamics.js
   schem-view  ISA-5.5 process display                src/schemvis.js
-  phys-view   the physical rig                       not built (still in LPE's engine.js)
+  phys-view   the rig as it is actually built        src/physvis.js
   netlist     components, ports, connections         src/topology.js
   registration  tags + coordinate frames             src/topology.js (Phase 2)
 ```
@@ -49,6 +49,7 @@ reading the comment.
   src/            THE MODEL. No colour anywhere in here.
     topology.js     @layer netlist
     schemvis.js     @layer schem-view
+    physvis.js      @layer phys-view
     dynamics.js     @layer dynamics
     scenario.js     @layer scenario
   skins/          CHROME. The only files allowed to name a colour.
@@ -184,6 +185,16 @@ nowhere else), on a light ground the way modern high-performance HMI does it. Se
 
 ## Known debt
 
-- `phys-view` still lives in LPE's `engine.js` rather than here. As of Phase 5a it takes
-  a skin (`NET.draw(g, skin)`) instead of reaching for the game palette, so it is
-  re-skinnable where it stands; moving it into the core has no consumer yet.
+- `fittings` is thin. The spec carries `{x, y, r, kind}` and the renderer draws a
+  collar — a band of metal, not a fitting library. There are no flanges, no discrete
+  elbow bodies, no valve bodies. That is unfinished work rather than damaged work, and
+  `physvis.js` says so in its own header so the next reader does not mistake the gap
+  for a bug.
+- **A third copy of the bend radius is still loose in LPE.** `runSegments()` in
+  `engine.js` — the water path — computes `3*r` itself, with a comment noting it must
+  agree with the pipe renderer by hand. The core's two copies were reconciled when
+  `physvis.js` was extracted (it asks `net.bendRadius` and its test fails if a literal
+  reappears); this one is in the consumer and was left alone deliberately, because the
+  flow path is a separate concern from this extraction. It is the same bug class, and
+  the comment records that levels 3 and 4 once shipped with the two disagreeing —
+  "nothing curved anywhere."
