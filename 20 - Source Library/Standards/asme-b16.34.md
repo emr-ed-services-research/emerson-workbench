@@ -10,6 +10,7 @@ edition: unverified
 holding: publisher-licensed
 updated: 2026-10-09
 used-by:
+  - "00 - Project/Process Core — Component Catalogue.md"
   - "10 - Courses/14101 Valve Trim and Body Maintenance/Curriculum — 14101.md"
   - "10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/build/manifest.js"
   - "10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/build/slides/1400-016.html"

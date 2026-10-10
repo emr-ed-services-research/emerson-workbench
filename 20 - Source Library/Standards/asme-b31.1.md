@@ -10,6 +10,7 @@ edition: unverified
 holding: publisher-licensed
 updated: 2026-10-09
 used-by:
+  - "00 - Project/Process Core — Component Catalogue.md"
   - "10 - Courses/Control Valve Engineering 1/Presentation/build/slides/cve1-077.html"
   - "10 - Courses/Control Valve Engineering 1/Presentation/build/slides/cve1-079.html"
   - "10 - Courses/Control Valve Engineering 1/Presentation/course/course-data.js"

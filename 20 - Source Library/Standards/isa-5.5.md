@@ -12,6 +12,7 @@ updated: 2026-10-09
 used-by:
   - "00 - Project/Open Questions.md"
   - "00 - Project/Process Core — Architecture & Build Plan.md"
+  - "00 - Project/Process Core — Component Catalogue.md"
   - "45 - Process Core/README.md"
   - "45 - Process Core/TOPOLOGY.md"
   - "45 - Process Core/skins/modern.js"

@@ -10,7 +10,7 @@ edition: 2024 (Revision of ASME B16.9-2018)
 holding: confirmed
 updated: 2026-10-10
 used-by:
-  - "50 - Lunar Process Engineer/vendor/process-core/topology.js"
+  - "00 - Project/Process Core — Component Catalogue.md"
 ---
 
 # ASME B16.9 — Factory-Made Wrought Buttwelding Fittings

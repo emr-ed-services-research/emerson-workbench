@@ -10,6 +10,8 @@ edition: unverified
 holding: publisher-licensed
 updated: 2026-10-09
 used-by:
+  - "00 - Project/Process Core — Architecture & Build Plan.md"
+  - "00 - Project/Process Core — Component Catalogue.md"
   - "45 - Process Core/src/physvis.js"
   - "50 - Lunar Process Engineer/PIPELINE.md"
   - "50 - Lunar Process Engineer/level1.html"

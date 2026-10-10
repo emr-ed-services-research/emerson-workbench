@@ -10,6 +10,7 @@ edition: unverified
 holding: publisher-licensed
 updated: 2026-10-09
 used-by:
+  - "00 - Project/Process Core — Component Catalogue.md"
   - "20 - Source Library/Subject-Matter Index — Control Valve Handbook ch6.md"
   - "20 - Source Library/Subject-Matter Index — Oil & Gas Sourcebook ch7.md"
 ---

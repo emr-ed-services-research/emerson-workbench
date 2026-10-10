@@ -12,6 +12,7 @@ updated: 2026-10-09
 used-by:
   - "00 - Project/Lunar Process Engineer — Game Design.md"
   - "00 - Project/Open Questions.md"
+  - "00 - Project/Process Core — Component Catalogue.md"
 ---
 
 # ISA-75.01.01 — Flow Equations for Sizing Control Valves
