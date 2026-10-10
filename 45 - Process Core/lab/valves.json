@@ -1,0 +1,348 @@
+{
+ "generated": "2026-10-10T14:55:19.898Z",
+ "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+ "valves": [
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 1.3125,
+   "travelIn": 0.75,
+   "cv100": 20.6,
+   "FL": 0.84
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 1.875,
+   "travelIn": 0.75,
+   "cv100": 39.2,
+   "FL": 0.82
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 1.3125,
+   "travelIn": 0.75,
+   "cv100": 29.2,
+   "FL": 0.91
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 72.9,
+   "FL": 0.77
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 1.3125,
+   "travelIn": 0.75,
+   "cv100": 33.3,
+   "FL": 0.87
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 2.875,
+   "travelIn": 1.5,
+   "cv100": 108,
+   "FL": 0.81
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 1.875,
+   "travelIn": 0.75,
+   "cv100": 57,
+   "FL": 0.84
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 3.4375,
+   "travelIn": 1.5,
+   "cv100": 148,
+   "FL": 0.82
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 102,
+   "FL": 0.85
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 236,
+   "FL": 0.82
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-3",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 2.875,
+   "travelIn": 1.5,
+   "cv100": 113,
+   "FL": 0.84
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-4",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 433,
+   "FL": 0.84
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-4",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 322,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-4",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 8,
+   "travelIn": 2,
+   "cv100": 688,
+   "FL": 0.87
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-4",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 846,
+   "FL": 0.87
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 1.3125,
+   "travelIn": 0.75,
+   "cv100": 17.2,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 1.875,
+   "travelIn": 0.75,
+   "cv100": 35.8,
+   "FL": 0.84
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 1.3125,
+   "travelIn": 0.75,
+   "cv100": 23.1,
+   "FL": 0.91
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 59.7,
+   "FL": 0.85
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 1.3125,
+   "travelIn": 0.75,
+   "cv100": 24.3,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 2.875,
+   "travelIn": 1.5,
+   "cv100": 99.4,
+   "FL": 0.84
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 1.875,
+   "travelIn": 0.75,
+   "cv100": 43.9,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 3.4375,
+   "travelIn": 1.5,
+   "cv100": 136,
+   "FL": 0.82
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 70.7,
+   "FL": 0.87
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 224,
+   "FL": 0.82
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-5",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 2.875,
+   "travelIn": 1.5,
+   "cv100": 112,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-6",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 394,
+   "FL": 0.85
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-6",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 274,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-6",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 8,
+   "travelIn": 2,
+   "cv100": 567,
+   "FL": 0.85
+  },
+  {
+   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+   "page": "ED-6",
+   "body": "ED",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 818,
+   "FL": 0.86
+  }
+ ],
+ "rejected": [
+  {
+   "page": 4,
+   "y": 319,
+   "why": "expected 10 travel points and FL, found 2"
+  },
+  {
+   "page": 6,
+   "y": 307,
+   "why": "expected 10 travel points and FL, found 2"
+  }
+ ]
+}
