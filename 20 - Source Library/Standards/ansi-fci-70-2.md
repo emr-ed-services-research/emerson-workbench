@@ -12,6 +12,7 @@ updated: 2026-10-09
 used-by:
   - "00 - Project/Competency Hierarchy — CVE1, CVE2, CVE3 v3.md"
   - "00 - Project/Lunar Process Engineer — Game Design.md"
+  - "00 - Project/Process Core — Flow Lab Plan.md"
   - "10 - Courses/14101 Valve Trim and Body Maintenance/Curriculum — 14101.md"
   - "10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/build/_engine-snapshots/20260830-021934Z/build/css/TEMPLATES.md"
   - "10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/build/_engine-snapshots/20260903-235320Z/build/css/TEMPLATES.md"

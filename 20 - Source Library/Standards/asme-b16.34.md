@@ -21,6 +21,8 @@ used-by:
   - "20 - Source Library/Subject-Matter Index — Control Valve Handbook ch6.md"
   - "20 - Source Library/Subject-Matter Index — Power & Severe Service Sourcebook ch10.md"
   - "45 - Process Core/catalogue/parts.json"
+  - "45 - Process Core/test/catalogue.test.js"
+  - "50 - Lunar Process Engineer/vendor/process-core/catalogue/parts.json"
 ---
 
 # ASME B16.34 — Valves — Flanged, Threaded, and Welding End

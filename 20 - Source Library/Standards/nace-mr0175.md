@@ -14,6 +14,7 @@ used-by:
   - "20 - Source Library/Subject-Matter Index — Control Valve Handbook ch6.md"
   - "20 - Source Library/Subject-Matter Index — Oil & Gas Sourcebook ch7.md"
   - "45 - Process Core/catalogue/parts.json"
+  - "50 - Lunar Process Engineer/vendor/process-core/catalogue/parts.json"
 ---
 
 # NACE MR0175 — Petroleum and natural gas industries — Materials for use in H2S-containing environments

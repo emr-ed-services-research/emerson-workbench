@@ -12,8 +12,13 @@ updated: 2026-10-09
 used-by:
   - "00 - Project/Process Core — Architecture & Build Plan.md"
   - "00 - Project/Process Core — Component Catalogue.md"
+  - "45 - Process Core/CLAUDE.md"
   - "45 - Process Core/catalogue/parts.json"
+  - "45 - Process Core/reference.js"
+  - "45 - Process Core/src/catalogue.js"
   - "45 - Process Core/src/physvis.js"
+  - "45 - Process Core/src/topology.js"
+  - "45 - Process Core/test/topology.test.js"
   - "50 - Lunar Process Engineer/PIPELINE.md"
   - "50 - Lunar Process Engineer/level1.html"
   - "50 - Lunar Process Engineer/level2.html"
@@ -22,7 +27,11 @@ used-by:
   - "50 - Lunar Process Engineer/reference/crosscheck.js"
   - "50 - Lunar Process Engineer/sizing.js"
   - "50 - Lunar Process Engineer/trainer.html"
+  - "50 - Lunar Process Engineer/vendor/process-core/catalogue.js"
+  - "50 - Lunar Process Engineer/vendor/process-core/catalogue/parts.json"
   - "50 - Lunar Process Engineer/vendor/process-core/physvis.js"
+  - "50 - Lunar Process Engineer/vendor/process-core/topology.js"
+  - "50 - Lunar Process Engineer/verify.js"
 ---
 
 # ASME B36.10M — Welded and Seamless Wrought Steel Pipe
