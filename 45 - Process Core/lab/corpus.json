@@ -1,0 +1,3982 @@
+{
+ "generated": "2026-10-10T14:27:52.369Z",
+ "cases": [
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "4. Fuel Valve",
+   "page": "4-43",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Fuel gas",
+   "p1": {
+    "lo": 40,
+    "hi": 60,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 30,
+    "hi": 35,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 90,
+    "hi": 90,
+    "unit": "° F"
+   },
+   "q": {
+    "lo": 130000,
+    "hi": 208000,
+    "unit": "scfh"
+   },
+   "selection": [
+    "NPS 1 to NPS 6 easy-e EZ, ET, EWT, or GX",
+    "If low noise trim is required, use caution if the fuel gas"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "5. Reflux Valve Function",
+   "page": "4-43",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Naphtha and gas mixture",
+   "p1": {
+    "lo": 70,
+    "hi": 100,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 40,
+    "hi": 80,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 200,
+    "hi": 480,
+    "unit": "° F"
+   },
+   "q": {
+    "lo": 670,
+    "hi": 760,
+    "unit": "gpm"
+   },
+   "selection": [
+    "Lower Flow Rates: NPS 2 to NPS 12 Vee-Ball",
+    "Higher Flow Rates: NPS 6 to NPS 12 Control-Disk",
+    "ENVIRO-SEAL graphite packing",
+    "Materials of Construction: WCC body with standard"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "9. Bottoms Valve Function",
+   "page": "4-44",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Heavy vacuum gas oil, slop wax, heavy bottoms",
+   "p1": {
+    "lo": 50,
+    "hi": 260,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 30,
+    "hi": 220,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 630,
+    "hi": 750,
+    "unit": "° F"
+   },
+   "q": {
+    "lo": 1900,
+    "hi": 2100,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 2 to NPS 12 Vee-Ball or reverse flow V500",
+    "Materials of Construction: WC9 or 300-series SST body"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.1 related to the furnace). Stripping steam is also injected",
+   "valve": "1. Feed Valve",
+   "page": "4-48",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Crude unit bottoms",
+   "p1": {
+    "lo": 150,
+    "hi": 300,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 147,
+    "hi": 298,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 630,
+    "hi": 680,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 164,
+    "hi": 219,
+    "unit": "gpm"
+   },
+   "selection": [
+    "Lower Flow Rates: NPS 1 to NPS 4 easy-e EZ",
+    "Higher Flow Rates: NPS 6 to NPS 12 easy-e EWD or NPS"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.1 related to the furnace). Stripping steam is also injected",
+   "valve": "2. Fuel Valve",
+   "page": "4-48",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Fuel gas",
+   "p1": {
+    "lo": 40,
+    "hi": 60,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 30,
+    "hi": 35,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 90,
+    "hi": 90,
+    "unit": "° F"
+   },
+   "q": {
+    "lo": 130000,
+    "hi": 208000,
+    "unit": "scfh"
+   }
+  },
+  {
+   "book": "refining",
+   "unit": "4.1 related to the furnace). Stripping steam is also injected",
+   "valve": "2. Fuel Valve",
+   "page": "4-48",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon liquid",
+   "p1": {
+    "lo": 85,
+    "hi": 300,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 65,
+    "hi": 280,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 150,
+    "hi": 300,
+    "unit": "° F"
+   },
+   "q": {
+    "lo": 1165,
+    "hi": 1635,
+    "unit": "gpm"
+   },
+   "selection": [
+    "Lower Flow: NPS 1 to NPS 4 easy-e EZ, ET, ED, or GX",
+    "Higher Flow: NPS 3 to NPS 8 Vee-Ball",
+    "ENVIRO-SEAL PTFE packing",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.1 related to the furnace). Stripping steam is also injected",
+   "valve": "2. Fuel Valve",
+   "page": "4-48",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 28,
+    "hi": 250,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 1,
+    "hi": 200,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 450,
+    "hi": 575,
+    "unit": "° F"
+   },
+   "q": {
+    "lo": 1000,
+    "hi": 2000,
+    "unit": "lb/h"
+   },
+   "selection": [
+    "NPS 2 to NPS 8 easy-e ED or NPS 6 to NPS 12 EWD",
+    "ENVIRO-SEAL graphite packing",
+    "Materials of Construction: Materials compliant with"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.1 related to the furnace). Stripping steam is also injected",
+   "valve": "7. Vacuum Resid Valve",
+   "page": "4-49",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Vacuum resid",
+   "p1": {
+    "lo": 190,
+    "hi": 300,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 150,
+    "hi": 295,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 630,
+    "hi": 750,
+    "unit": "° F"
+   },
+   "q": {
+    "lo": 1200,
+    "hi": 1350,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 3 to NPS 8 V500 (reverse flow) or NPS 6 to NPS 12"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.1 related to the furnace). Stripping steam is also injected",
+   "valve": "7. Vacuum Resid Valve",
+   "page": "4-49",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "LVGO or HVGO",
+   "p1": {
+    "lo": 140,
+    "hi": 225,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 10,
+    "hi": 175,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 110,
+    "hi": 175,
+    "unit": "° F"
+   },
+   "q": {
+    "lo": 150,
+    "hi": 1000,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 2 to NPS 6 easy-e ET or NPS 6 to NPS 12 EWT or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "3. Unit Feed Valve",
+   "page": "4-52",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Vacuum bottoms",
+   "p1": {
+    "lo": 200,
+    "hi": 290,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 180,
+    "hi": 270,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 390,
+    "hi": 450,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 1310,
+    "hi": 1500,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 4 to NPS 8 V500 or NPS 4 to NPS 12 Vee-Ball",
+    "ENVIRO-SEAL packing",
+    "Materials of Construction: WCC or WC9 body with"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "9. Coke Condensate Valve",
+   "page": "4-53",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Coker feed",
+   "p1": {
+    "lo": 385,
+    "hi": 645,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 145,
+    "hi": 475,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 565,
+    "hi": 800,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 159,
+    "hi": 175,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 2 to NPS 3 V500 or V500FFD (Figure 4.6.3)",
+    "ENVIRO-SEAL packing",
+    "Materials of Construction: Chrome Moly or 300-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "1. Unit Feed Valve",
+   "page": "4-57",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Untreated feed from various upstream units",
+   "p1": {
+    "lo": 85,
+    "hi": 1775,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 40,
+    "hi": 1265,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 800,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 9,
+    "hi": 1165,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 2 to NPS 3 HPT or HPS or NPS 2 to NPS 8 easy-e ET"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "3. Separator Let-Down Valve",
+   "page": "4-59",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon with entrained hydrogen",
+   "p1": {
+    "lo": 450,
+    "hi": 1100,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 200,
+    "hi": 900,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 110,
+    "hi": 555,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 215,
+    "hi": 1815,
+    "unit": "gpm"
+   },
+   "selection": [
+    "See the following section on outgassing application"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "6. Reactor Hydrogen Valve",
+   "page": "4-61",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Recycle hydrogen",
+   "p1": {
+    "lo": 878,
+    "hi": 1286,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 790,
+    "hi": 1224,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 139,
+    "hi": 215,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 10,
+    "hi": 10.14,
+    "unit": "MMscfd 458333 scfh"
+   },
+   "selection": [
+    "NPS 2 HPS or NPS 2 to NPS 3 easy-e ET or EZ",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "7. Sour Water Letdown Valve",
+   "page": "4-61",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon with entrained hydrogen",
+   "p1": {
+    "lo": 185,
+    "hi": 690,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 25,
+    "hi": 115,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 140,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 6,
+    "hi": 34,
+    "unit": "gpm"
+   },
+   "selection": [
+    "See outgassing discussion as previously discussed in"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "8. Recycle Purge Valve",
+   "page": "4-62",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Treated product",
+   "p1": {
+    "lo": 125,
+    "hi": 175,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 75,
+    "hi": 150,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 215,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 255,
+    "hi": 865,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 6 to NPS 8 easy-e ET",
+    "Materials of Construction: WCC with 400-series SST"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "10. Makeup Hydrogen Valve",
+   "page": "4-62",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen",
+   "p1": {
+    "lo": 575,
+    "hi": 1850,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 330,
+    "hi": 1280,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 205,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 1.3,
+    "hi": 20,
+    "unit": "MMscfh"
+   },
+   "selection": [
+    "NPS 2 HPS or NPS 1.5 to NPS 2 easy-e EZ",
+    "Materials of Construction: WCC body with 300-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "11. Stripper Reflux Valve",
+   "page": "4-62",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Unstabilized naphtha",
+   "p1": {
+    "lo": 155,
+    "hi": 240,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 60,
+    "hi": 180,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 115,
+    "hi": 135,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 20,
+    "hi": 90,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 1.5 to NPS 3 easy-e ET, EZ or NotchFlo DST",
+    "Anti-cavitation trim may be required depending on"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "12. Stripper Light-Ends Valve",
+   "page": "4-62",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Stripper offgas",
+   "p1": {
+    "lo": 120,
+    "hi": 130,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 100,
+    "hi": 105,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 115,
+    "hi": 135,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 1,
+    "hi": 4.1,
+    "unit": "MMscfd"
+   },
+   "selection": [
+    "NPS 1.5 to NPS 4 easy-e ET",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "13. Stripper Naphtha Valve",
+   "page": "4-63",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Treated naphtha",
+   "p1": {
+    "lo": 150,
+    "hi": 225,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 125,
+    "hi": 200,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 105,
+    "hi": 220,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 18,
+    "hi": 1290,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 1 to NPS 6 easy-e ET or EZ",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "1. Feed Valve",
+   "page": "4-63",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Heavy Gas Oil",
+   "p1": {
+    "lo": 50,
+    "hi": 190,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 45,
+    "hi": 175,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 180,
+    "hi": 620,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 335,
+    "hi": 1385,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 4 to NPS 8 V300 or NPS 3 to NPS 6 easy-e ET or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "2. Recycle Hydrogen Valve",
+   "page": "4-64",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen and Light Hydrocarbons",
+   "p1": {
+    "lo": 2175,
+    "hi": 2975,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 2105,
+    "hi": 2900,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 150,
+    "hi": 230,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 15000,
+    "hi": 23755,
+    "unit": "lb/h"
+   },
+   "selection": [
+    "NPS 3 to NPS 10 HPT, easy-e EHT, HPAT, or EHAT",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "2. Recycle Hydrogen Valve",
+   "page": "4-65",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Fuel Gas",
+   "p1": {
+    "lo": 45,
+    "hi": 60,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 2,
+    "hi": 35,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 100,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 1180,
+    "hi": 7670,
+    "unit": "m3/h"
+   },
+   "selection": [
+    "NPS 2 to NPS 4 easy-e EZ or ET",
+    "Materials of Construction: WCC with 400-series SST"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "2. Recycle Hydrogen Valve",
+   "page": "4-66",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen and light hydrocarbons",
+   "p1": {
+    "lo": 2030,
+    "hi": 2900,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 1960,
+    "hi": 2540,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 185,
+    "hi": 210,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 11800,
+    "hi": 77755,
+    "unit": "m3/h"
+   },
+   "selection": [
+    "NPS 2 to NPS 4 HPT or HPD",
+    "Materials of Construction: WCC with 400-series or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "2. Recycle Hydrogen Valve",
+   "page": "4-66",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Sour cracked hydrocarbon with entrained gas &",
+   "p1": {
+    "lo": 1865,
+    "hi": 2450,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 405,
+    "hi": 680,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 470,
+    "hi": 800,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 48225,
+    "hi": 48225,
+    "unit": "bpd"
+   },
+   "selection": [
+    "See the following section on outgassing application"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "7. Fractionator Bottom Valve",
+   "page": "4-68",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon with entrained gas & particulate",
+   "p1": {
+    "lo": 375,
+    "hi": 655,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 145,
+    "hi": 160,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 475,
+    "hi": 485,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 45890,
+    "hi": 69890,
+    "unit": "bpd"
+   },
+   "selection": [
+    "See outgassing discussion from high-pressure"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "7. Fractionator Bottom Valve",
+   "page": "4-68",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon with entrained gas & particulate",
+   "p1": {
+    "lo": 375,
+    "hi": 655,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 145,
+    "hi": 160,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 130,
+    "hi": 160,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 45890,
+    "hi": 69890,
+    "unit": "bpd"
+   },
+   "selection": [
+    "See outgassing discussion from high-pressure"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "12. Recycle Purge Valve",
+   "page": "4-68",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen and light hydrocarbons",
+   "p1": {
+    "lo": 700,
+    "hi": 1807,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 100,
+    "hi": 1750,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 140,
+    "hi": 147,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 1180,
+    "hi": 8260,
+    "unit": "m3/h"
+   },
+   "selection": [
+    "NPS 1 to NPS 2 HPS",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "16. Fractionator Pump-Around Valve",
+   "page": "4-69",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Depends on process design",
+   "p1": {
+    "lo": 115,
+    "hi": 175,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 80,
+    "hi": 140,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 350,
+    "hi": 440,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 22650,
+    "hi": 90575,
+    "unit": "bpd"
+   },
+   "selection": [
+    "NPS 4 to NPS 8 High Performance Butterfly Valve with"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "17. Fractionator Reflux Valve",
+   "page": "4-70",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Depends on process design",
+   "p1": {
+    "lo": 100,
+    "hi": 260,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 75,
+    "hi": 220,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 140,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 1960,
+    "hi": 46800,
+    "unit": "bpd"
+   },
+   "selection": [
+    "NPS 1 to NPS 6 easy-e ET or EZ",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "18. Fractionator Heavy Naphtha Valve",
+   "page": "4-70",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Naphtha",
+   "p1": {
+    "lo": 65,
+    "hi": 260,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 55,
+    "hi": 230,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 375,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 2568,
+    "hi": 36330,
+    "unit": "bpd"
+   },
+   "selection": [
+    "NPS 4 HPBV or NPS 3 to NPS 4 easy-e ET or NPS 4 VeeBall",
+    "Materials of Construction: WCC body with 400-series or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "19. Fractionator Distillate Valve",
+   "page": "4-70",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Distillate (or other product depending on",
+   "p1": {
+    "lo": 54,
+    "hi": 190,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 49,
+    "hi": 119,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 546,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 6100,
+    "hi": 74270,
+    "unit": "bpd"
+   },
+   "selection": [
+    "NPS 1.5 to 6 easy-e EZ or ET or NPS 4 to NPS 8 Vee-Ball",
+    "Materials of Construction: WCC body with 316/Alloy 6"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "21. Fractionator Light Naphtha Valve",
+   "page": "4-70",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Light Naphtha",
+   "p1": {
+    "lo": 35,
+    "hi": 245,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 26,
+    "hi": 230,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 200,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 3020,
+    "hi": 27170,
+    "unit": "bpd"
+   },
+   "selection": [
+    "NPS 8 to NPS 16 easy-e ET/EUT or NPS 2 to NPS 12"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "1. Reactor Effluent Valve",
+   "page": "4-73",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon and hydrogen",
+   "p1": {
+    "lo": 305,
+    "hi": 650,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 175,
+    "hi": 205,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 115,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 1805,
+    "hi": 2150,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 6 to NPS 8 easy-e ET or EWT",
+    "Materials of Construction: WCC body with 300-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "2. Feed Valve",
+   "page": "4-73",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Treated naphtha",
+   "p1": {
+    "lo": 160,
+    "hi": 190,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 135,
+    "hi": 160,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 195,
+    "hi": 220,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 765,
+    "hi": 2100,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 3 to NPS 6 easy-e ET or NPS 3 to NPS 6 V500",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "5. Compressor Bypass Valve",
+   "page": "4-73",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen and hydrocarbon",
+   "p1": {
+    "lo": 125,
+    "hi": 725,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 80,
+    "hi": 380,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 180,
+    "hi": 250,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 115,
+    "hi": 298,
+    "unit": "MMscfd"
+   },
+   "selection": [
+    "NPS 6 to NPS 20 easy-e ET or EWT",
+    "Materials of Construction: WCC body with 400-series or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "6. Separator Liquid Valve",
+   "page": "4-76",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Complex hydrocarbons",
+   "p1": {
+    "lo": 740,
+    "hi": 815,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 90,
+    "hi": 695,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 115,
+    "hi": 120,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 925,
+    "hi": 2005,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 3 to NPS 8 easy-e ET or NotchFlo DST",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "6. Separator Liquid Valve",
+   "page": "4-76",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 145,
+    "hi": 595,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 125,
+    "hi": 595,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 365,
+    "hi": 750,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 54560,
+    "hi": 165100,
+    "unit": "lb/h"
+   },
+   "selection": [
+    "NPS 6 to NPS 8 easy-e ED or ET or NPS 8 to NPS 12"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "8. Net Hydrogen Valve",
+   "page": "4-76",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen and light hydrocarbons",
+   "p1": {
+    "lo": 635,
+    "hi": 655,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 625,
+    "hi": 625,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 110,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 90,
+    "hi": 150,
+    "unit": "MMscfd"
+   },
+   "selection": [
+    "NPS 6 to NPS 8 easy-e ET",
+    "Materials of Construction: WCC body with 300-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "9. Stabilizer Reflux Valve",
+   "page": "4-76",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Light hydrocarbons",
+   "p1": {
+    "lo": 190,
+    "hi": 375,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 135,
+    "hi": 135,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 390,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 8330,
+    "hi": 8330,
+    "unit": "bpd"
+   },
+   "selection": [
+    "NPS 2 to NPS 6 easy-e EZ or ET",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "11. Stabilizer Vent Gas Valve",
+   "page": "4-77",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Vent Gas",
+   "p1": {
+    "lo": 135,
+    "hi": 140,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 115,
+    "hi": 125,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 100,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 262917,
+    "hi": 441667,
+    "unit": "scfh"
+   },
+   "selection": [
+    "NPS 4 to NPS 6 Vee-Ball or NPS 3 to NPS 6 easy-e ET",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "13. Stabilizer Light-Ends Valve",
+   "page": "4-78",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Light hydrocarbons",
+   "p1": {
+    "lo": 100,
+    "hi": 130,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 26,
+    "hi": 26,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 165,
+    "hi": 245,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 23,
+    "hi": 23,
+    "unit": "MMscfd"
+   },
+   "selection": [
+    "NPS 6 to NPS 8 easy-e EWT",
+    "Materials of Construction: WCC body with 300-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "1. Charge Oil Flow Control Valve",
+   "page": "4-80",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Charge oil",
+   "p1": {
+    "lo": 260,
+    "hi": 350,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 85,
+    "hi": 220,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 160,
+    "hi": 160,
+    "unit": "°F – 175°F"
+   },
+   "q": {
+    "lo": 660,
+    "hi": 6600,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 6 to NPS 14 Vee-Ball V500, CV500, easy-e ET, or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "2. Charge Pump Spillback Control Valve",
+   "page": "4-80",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Charge oil",
+   "p1": {
+    "lo": 260,
+    "hi": 350,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 20,
+    "hi": 30,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 160,
+    "hi": 160,
+    "unit": "°F – 175°F"
+   },
+   "q": {
+    "lo": 330,
+    "hi": 1000,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 3 or NPS 4 V500, easy-e ET, or NotchFlo DST",
+    "WCC Body and 316/Alloy 6 trim",
+    "Anti-cavitation trim may be required",
+    "Class V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "4. Inlet Air to Regenerator Control Valve",
+   "page": "4-80",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Air",
+   "p1": {
+    "lo": 45,
+    "hi": 75,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 45,
+    "hi": 75,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 300,
+    "hi": 300,
+    "unit": "°F – 430°F"
+   },
+   "q": {
+    "lo": 10.5,
+    "hi": 21,
+    "unit": "MMscfh"
+   },
+   "selection": [
+    "NPS 36 to NPS 48 A11",
+    "WCC body and trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "1. Fractionator Bottoms to Reactor Control Valve",
+   "page": "4-82",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Slurry with entrained catalyst",
+   "p1": {
+    "lo": 75,
+    "hi": 115,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 45,
+    "hi": 75,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 535,
+    "hi": 535,
+    "unit": "°F – 680°F"
+   },
+   "q": {
+    "lo": 130,
+    "hi": 500,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 2 to NPS 8 Vee-Ball, V500, or 461",
+    "C5 or 316SST body and Alloy 6 trim",
+    "Class IV or V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "2. Main Column Reflux Control Valve",
+   "page": "4-82",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Distillate",
+   "p1": {
+    "lo": 85,
+    "hi": 130,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 45,
+    "hi": 75,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 105,
+    "hi": 105,
+    "unit": "°F – 140°F"
+   },
+   "q": {
+    "lo": 350,
+    "hi": 1700,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 4 to NPS 8 V500, easy-e ET, or NotchFlo DST",
+    "WCC or 316SST body and 316/Alloy 6 trim",
+    "Anti-cavitation trim may be required",
+    "Class IV or V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "3. Main Column Reflux Spillback Control Valve",
+   "page": "4-82",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Distillate",
+   "p1": {
+    "lo": 85,
+    "hi": 130,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 30,
+    "hi": 45,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 105,
+    "hi": 105,
+    "unit": "°F – 140°F"
+   },
+   "q": {
+    "lo": 440,
+    "hi": 615,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 3 to NPS 4 easy-e ET or NotchFlo DST",
+    "WCC or 316SST body and 316/Alloy 6 trim",
+    "Anti-cavitation trim may be required",
+    "Class V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "4. Lean Cycle Oil Pump Spillback Control Valve",
+   "page": "4-82",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Lean cycle oil",
+   "p1": {
+    "lo": 290,
+    "hi": 320,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 30,
+    "hi": 45,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 390,
+    "hi": 390,
+    "unit": "°F – 430°F"
+   },
+   "q": {
+    "lo": 175,
+    "hi": 770,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 2 to NPS 4 easy-e ET or NotchFlo DST",
+    "WCC body and 316/Alloy 6 trim",
+    "Anti-cavitation trim may be required",
+    "Class V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "5. Lean Cycle Oil to Storage Control Valve",
+   "page": "4-82",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Lean cycle oil",
+   "p1": {
+    "lo": 290,
+    "hi": 320,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 130,
+    "hi": 260,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 105,
+    "hi": 105,
+    "unit": "°F – 120°F"
+   },
+   "q": {
+    "lo": 265,
+    "hi": 1320,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 3 to NPS 6 Vee-Ball, V500, or easy-e ET",
+    "WCC body and 316/Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "6. Steam to Lean Cycle Oil Stripper",
+   "page": "4-82",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Heavy cycle oil",
+   "p1": {
+    "lo": 145,
+    "hi": 245,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 60,
+    "hi": 190,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 430,
+    "hi": 430,
+    "unit": "°F – 520°F"
+   },
+   "q": {
+    "lo": 1320,
+    "hi": 5300,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 8 to NPS 12 Vee-Ball V500, CV500, easy-e ET or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "8. Heavy Cycle Oil Pump-around Spillback Control",
+   "page": "4-82",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Heavy cycle oil",
+   "p1": {
+    "lo": 145,
+    "hi": 245,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 45,
+    "hi": 60,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 375,
+    "hi": 375,
+    "unit": "°F - 430°F"
+   },
+   "q": {
+    "lo": 330,
+    "hi": 880,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 3 to NPS 4 easy-e ET or NotchFlo DST",
+    "C5 or 316 SST body and trim",
+    "Anti-cavitation trim may be required",
+    "Class V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "10. Main Column Bottoms Circulation Control",
+   "page": "4-84",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon slurry",
+   "p1": {
+    "lo": 85,
+    "hi": 115,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 60,
+    "hi": 75,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 520,
+    "hi": 520,
+    "unit": "°F - 680°F"
+   },
+   "q": {
+    "lo": 660,
+    "hi": 1320,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 6 to NPS 8 Vee-Ball or V500",
+    "C5 or 316 SST body and Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "11. Main Column Bottoms Pump Spillback Control",
+   "page": "4-84",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon slurry",
+   "p1": {
+    "lo": 100,
+    "hi": 130,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 45,
+    "hi": 75,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 520,
+    "hi": 520,
+    "unit": "°F – 680°F"
+   },
+   "q": {
+    "lo": 660,
+    "hi": 3100,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 4 to NPS 8 V500",
+    "C5 or 316 SST body and Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "3. Primary Absorber Feed Control Valve",
+   "page": "4-85",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Distillate",
+   "p1": {
+    "lo": 190,
+    "hi": 305,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 175,
+    "hi": 260,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 105,
+    "hi": 105,
+    "unit": "°F - 140°F"
+   },
+   "q": {
+    "lo": 880,
+    "hi": 3750,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 8 to NPS 12 easy-e EW or V300",
+    "WCC body and 316/Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "4. Primary Absorber Bottoms Control Valve",
+   "page": "4-85",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Distillate",
+   "p1": {
+    "lo": 175,
+    "hi": 275,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 160,
+    "hi": 245,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 105,
+    "hi": 105,
+    "unit": "°F - 140°F"
+   },
+   "q": {
+    "lo": 1100,
+    "hi": 4200,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 8 to NPS 12 easy-e ET, EW, or V300",
+    "WCC body and 316/Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "6. Rich Oil from Secondary Absorber",
+   "page": "4-86",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Rich oil",
+   "p1": {
+    "lo": 175,
+    "hi": 260,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 60,
+    "hi": 90,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 140,
+    "hi": 140,
+    "unit": "°F - 175°F"
+   },
+   "q": {
+    "lo": 220,
+    "hi": 660,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 3 to NPS 4 easy-e ET or V500",
+    "WCC body and 316/Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "7. Stripper Feed Control Valve",
+   "page": "4-86",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Light hydrocarbons",
+   "p1": {
+    "lo": 260,
+    "hi": 350,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 220,
+    "hi": 330,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 120,
+    "hi": 120,
+    "unit": "°F - 175°F"
+   },
+   "q": {
+    "lo": 880,
+    "hi": 8800,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 6 to NPS 16 easy-e ET, NPS 6 to NPS 8 V500, or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "8. Stripper Bottoms to Debutanizer",
+   "page": "4-86",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Light Hydrocarbons",
+   "p1": {
+    "lo": 220,
+    "hi": 290,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 175,
+    "hi": 205,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 250,
+    "hi": 250,
+    "unit": "°F - 265°F"
+   },
+   "q": {
+    "lo": 1100,
+    "hi": 8800,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 6 to NPS 16 easy-e ET, NPS 6 to NPS 12 CV500 or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "9. Debutanizer Overhead Control Valve",
+   "page": "4-86",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "C3 and C4 hydrocarbons",
+   "p1": {
+    "lo": 175,
+    "hi": 205,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 160,
+    "hi": 190,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 140,
+    "hi": 140,
+    "unit": "°F - 175°F"
+   },
+   "q": {
+    "lo": 1,
+    "hi": 4,
+    "unit": "MMscfh"
+   },
+   "selection": [
+    "NPS 10 to NPS 12 8580 or V300",
+    "WCC body and 316/Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "10. Debutanizer Bottoms Level Control Valve",
+   "page": "4-86",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Gasoline",
+   "p1": {
+    "lo": 175,
+    "hi": 205,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 115,
+    "hi": 145,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 210,
+    "hi": 210,
+    "unit": "°F - 230°F"
+   },
+   "q": {
+    "lo": 310,
+    "hi": 1540,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 6 to NPS 8 V500 or NPS 6 to NPS 10 V300",
+    "WCC body and 316/Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "11. Depropanizer Overhead Control Valve",
+   "page": "4-86",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Propane",
+   "p1": {
+    "lo": 230,
+    "hi": 260,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 220,
+    "hi": 245,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 120,
+    "hi": 120,
+    "unit": "°F - 140°F"
+   },
+   "q": {
+    "lo": 1.7,
+    "hi": 3.5,
+    "unit": "MMscfh"
+   },
+   "selection": [
+    "NPS 12 to NPS 16 8532 or V300",
+    "WCC body and 316/Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "12. Depropanizer Reflux Control Valve",
+   "page": "4-86",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Propane",
+   "p1": {
+    "lo": 230,
+    "hi": 260,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 190,
+    "hi": 220,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 120,
+    "hi": 120,
+    "unit": "°F - 140°F"
+   },
+   "q": {
+    "lo": 4400,
+    "hi": 8800,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 8 to NPS 10 easy-e ET or NPS 8 V500",
+    "WCC body and 316/Alloy 6 trim",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "1. Sour Gas Valve",
+   "page": "4-95",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Sour gas",
+   "p1": {
+    "lo": 85,
+    "hi": 115,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 15,
+    "hi": 95,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 100,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 22820,
+    "hi": 32145,
+    "unit": "lb/h"
+   }
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "1. Sour Gas Valve",
+   "page": "4-95",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Scrubbed gas",
+   "p1": {
+    "lo": 550,
+    "hi": 650,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 525,
+    "hi": 625,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 120,
+    "hi": 150,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 750000,
+    "hi": 1000000,
+    "unit": "scfh"
+   },
+   "selection": [
+    "NPS 2 to NPS 4 easy-e ET",
+    "Materials of Construction: WCC body with 300-series/"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "1. Sour Gas Valve",
+   "page": "4-95",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "H2S Rich Diethylamine (Fat DEA)",
+   "p1": {
+    "lo": 650,
+    "hi": 2250,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 127,
+    "hi": 175,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 130,
+    "hi": 165,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 345,
+    "hi": 1260,
+    "unit": "gpm"
+   },
+   "selection": [
+    "See the following section on outgassing application"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "5. Flashed Gas Valve",
+   "page": "4-97",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Light hydrocarbon gas",
+   "p1": {
+    "lo": 115,
+    "hi": 175,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 100,
+    "hi": 110,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 137,
+    "hi": 148,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 32000,
+    "hi": 1230000,
+    "unit": "scfh"
+   },
+   "selection": [
+    "NPS 1.5 to NPS 2 easy-e ET or EZ",
+    "Materials of Construction: WCC body with 300-series/"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "6. Rich Amine Flash Tank Bottoms Valve",
+   "page": "4-97",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Rich amine",
+   "p1": {
+    "lo": 115,
+    "hi": 175,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 80,
+    "hi": 145,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 135,
+    "hi": 150,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 990,
+    "hi": 2160,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 6 V500 or NPS 4 to NPS 8 easy-e ET or EWT",
+    "Materials of Construction: WCC body with 300-series/"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "7. Amine Storage Valve",
+   "page": "4-97",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Lean amine",
+   "p1": {
+    "lo": 115,
+    "hi": 145,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 110,
+    "hi": 130,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 130,
+    "hi": 140,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 176370,
+    "hi": 198415,
+    "unit": "lb/h"
+   },
+   "selection": [
+    "NPS 6 to NPS 8 easy-e EWT or NPS 4 to NPS 8 Vee-Ball",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "8. Amine Make-up Valve",
+   "page": "4-97",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Lean amine",
+   "p1": {
+    "lo": 360,
+    "hi": 2320,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 350,
+    "hi": 2250,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 130,
+    "hi": 140,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 3,
+    "hi": 2115,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 2 to 6 HPT or NPS 1 to NPS 3 easy-e EZ",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "9. Off Gas Valve",
+   "page": "4-97",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Sulfur gas",
+   "p1": {
+    "lo": 105,
+    "hi": 625,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 35,
+    "hi": 610,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 240,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 40455,
+    "hi": 96960,
+    "unit": "lb/h"
+   },
+   "selection": [
+    "NPS 1 to 4 easy-e ET or EZ",
+    "Materials of Construction: WCC body with 300-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "10. Steam Reboiler Valve",
+   "page": "4-99",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 215,
+    "hi": 435,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 175,
+    "hi": 275,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 300,
+    "hi": 445,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 9700,
+    "hi": 13670,
+    "unit": "lb/h"
+   },
+   "selection": [
+    "NPS 2 to NPS 4 easy-e EZ",
+    "Materials of Construction: WCC body with 400 series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "1. Acid Gas from Amine Valve",
+   "page": "4-100",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Acid gas",
+   "p1": {
+    "lo": 3.5,
+    "hi": 41,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 2,
+    "hi": 39,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 115,
+    "hi": 195,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 0.43,
+    "hi": 6.5,
+    "unit": "MMscfd"
+   },
+   "selection": [
+    "ENVIRO-SEAL PTFE or graphite packing",
+    "NACE required",
+    "Class V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "3. Fuel Gas Valve",
+   "page": "4-100",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Fuel gas",
+   "p1": {
+    "lo": 30,
+    "hi": 85,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 15,
+    "hi": 65,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 95,
+    "hi": 100,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 0.49,
+    "hi": 1.2,
+    "unit": "MMscfd"
+   },
+   "selection": [
+    "NPS 2 to NPS 3 GX or NPS 1.5 to NPS 4 easy-e ET or EZ",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "4. Oxygen Valve",
+   "page": "4-100",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Sour Gas",
+   "p1": {
+    "lo": 13,
+    "hi": 40,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 12,
+    "hi": 38,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 185,
+    "hi": 187,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 1.2,
+    "hi": 6.3,
+    "unit": "MMscfd"
+   },
+   "selection": [
+    "NPS 6 to NPS 8 easy-e EWT or NPS 8 to NPS 10 Vee-Ball",
+    "Fluid: Oxygen",
+    "P2 = 1.0 barg (15 psig)",
+    "T = 43°C (110°F)"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.15 Blending Unit",
+   "valve": "(unknown)",
+   "page": "4-107",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Gasoline",
+   "p1": {
+    "lo": 70,
+    "hi": 85,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 50,
+    "hi": 60,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 80,
+    "hi": 100,
+    "unit": "°F"
+   },
+   "q": {
+    "lo": 880,
+    "hi": 2930,
+    "unit": "gpm"
+   },
+   "selection": [
+    "NPS 2 to NPS 6 Control-Disk or NPS 3 to NPS 6 Vee-Ball",
+    "Materials of Construction: WCC body with 300-series"
+   ]
+  }
+ ],
+ "rejected": [
+  {
+   "book": "refining",
+   "unit": "(unknown)",
+   "valve": "(unknown)",
+   "page": null,
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Rich oil",
+   "p1": {
+    "lo": 159,
+    "hi": 246,
+    "unit": "psig"
+   },
+   "errors": [
+    "no P2",
+    "no T",
+    "no Q"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "(unknown)",
+   "valve": "(unknown)",
+   "page": null,
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Propane",
+   "p1": {
+    "lo": 217,
+    "hi": 246,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 140,
+    "hi": 140,
+    "unit": "°F - 176°F"
+   },
+   "errors": [
+    "2x P2 (columns interleaved)",
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 3 to NPS 4 easy-e ET or V500",
+    "WCC body and 316/Alloy 6 trim",
+    "T = 50°C – 60°C (122°F - 140°F)",
+    "Q = 50,000 – 100,000 Nm3/hr"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "(unknown)",
+   "valve": "10. Debutanizer Overhead Control Valve",
+   "page": null,
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "C3 and C4 hydrocarbons",
+   "p1": {
+    "lo": 159,
+    "hi": 188,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 144,
+    "hi": 173,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 140,
+    "hi": 140,
+    "unit": "°F - 176°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 10 to NPS 12 Control-Disk or Vee-Ball",
+    "WCC body and 316/Alloy 6 trim",
+    "Equal percentage characteristic",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "(unknown)",
+   "valve": "11. Debutanizer Bottoms Level Control Valve",
+   "page": null,
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Gasoline",
+   "p1": {
+    "lo": 159,
+    "hi": 188,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 101,
+    "hi": 130,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 212,
+    "hi": 212,
+    "unit": "°F - 230°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 6 to NPS 10 V500 or Vee-Ball",
+    "WCC body and 316/Alloy 6 trim",
+    "Equal percentage characteristic",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "(unknown)",
+   "valve": "13. Depropanizer Reflux Control Valve",
+   "page": "4-40",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Propane",
+   "p1": {
+    "lo": 217,
+    "hi": 246,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 173,
+    "hi": 202,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 122,
+    "hi": 122,
+    "unit": "°F - 140°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 8 to NPS 10 easy-e ET or NPS 6 to NPS 8 V500",
+    "WCC body and 316/Alloy 6 trim",
+    "Equal percentage characteristic",
+    "Class IV shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "(unknown)",
+   "page": "4-40",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Crude oil, wash water, and emulsifiers",
+   "p1": {
+    "lo": 300,
+    "hi": 325,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 230,
+    "hi": 275,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 450,
+    "hi": 600,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 6 to NPS 16 butterfly or NPS 6 to NPS 16 Vee-Ball"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "(unknown)",
+   "page": "4-41",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "errors": [
+    "no Fluid",
+    "no P1",
+    "no P2",
+    "no T",
+    "no Q"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "(unknown)",
+   "page": "4-41",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon liquid",
+   "p1": {
+    "lo": 150,
+    "hi": 150,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 200,
+    "hi": 644,
+    "unit": "°F"
+   },
+   "errors": [
+    "no P2",
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "Lower Flow Rates: NPS 1 to NPS 4 easy-e EZ, ET or ED",
+    "Higher Flow Rates: NPS 3 to NPS 8 Vee-Ball",
+    "ENVIRO-SEAL packing",
+    "Fluid: Crude oil",
+    "Materials of Construction: NACE materials are likely"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "6. Fractionator Stripping Steam Valve",
+   "page": "4-43",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 150,
+    "hi": 250,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 450,
+    "hi": 575,
+    "unit": "° F"
+   },
+   "errors": [
+    "no P2",
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 2 to NPS 8 easy-e ED or NPS 6 to NPS 12 easy-e"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "7. Overhead Product Valve Function",
+   "page": "4-44",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Naphtha",
+   "p1": {
+    "lo": 100,
+    "hi": 100,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 200,
+    "hi": 200,
+    "unit": "° F"
+   },
+   "errors": [
+    "no P2",
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 4 to NPS 8 easy-e ET or NPS 6 to NPS 12 Vee-Ball",
+    "Materials of Construction: generally WCC body with"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "7. Overhead Product Valve Function",
+   "page": "4-44",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 150,
+    "hi": 250,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 450,
+    "hi": 575,
+    "unit": "° F"
+   },
+   "errors": [
+    "no P2",
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 2 to NPS 8 easy-e ED or NPS 6 to NPS 12 easy-e"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "10. Overhead Pressure Control Valve Function",
+   "page": "4-45",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Mixture of gases including H2, H2S, ethane,",
+   "p1": {
+    "lo": 90,
+    "hi": 90,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 175,
+    "hi": 175,
+    "unit": "° F"
+   },
+   "errors": [
+    "no P2",
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 2 to NPS 6 easy-e ET",
+    "ENVIRO-SEAL PTFE packing",
+    "Materials of Construction: generally WCC body with"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.4 Crude Desalter/",
+   "valve": "10. Overhead Pressure Control Valve Function",
+   "page": "4-45",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Kerosene or diesel with particulate",
+   "p1": {
+    "lo": 100,
+    "hi": 100,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 400,
+    "hi": 575,
+    "unit": "° F"
+   },
+   "errors": [
+    "no P2",
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 2 to NPS 12 Vee-Ball or V500",
+    "Low flow or clean fluid applications could use a globe"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "1. Decoke Water Valve",
+   "page": "4-50",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Water",
+   "p1": {
+    "lo": 155,
+    "hi": 200,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 40,
+    "hi": 170,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 190,
+    "hi": 450,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "1. Decoke Water Valve",
+   "page": "4-50",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 150,
+    "hi": 575,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 20,
+    "hi": 535,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 416,
+    "hi": 800,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "Lower Flow: NPS 1.5 to NPS 2 easy-e EZ",
+    "Higher Flow: NPS 4 to 8 easy-e ED or easy-e ET",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "3. Unit Feed Valve",
+   "page": "4-52",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrocarbon gas, steam, possibly coke",
+   "errors": [
+    "no P1",
+    "no P2",
+    "no T",
+    "q has no US-customary value in parentheses"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "8. Coker Heater Fuel Gas Valve",
+   "page": "4-53",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Fuel gas",
+   "p1": {
+    "lo": 40,
+    "hi": 150,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 21,
+    "hi": 76,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 150,
+    "hi": 450,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 1.5 to 3 easy-e EZ or ET or NPS 2 to NPS 3 Vee-Ball",
+    "ENVIRO-SEAL packing",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "9. Coke Condensate Valve",
+   "page": "4-53",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Coke condensate",
+   "p1": {
+    "lo": 30,
+    "hi": 65,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 5,
+    "hi": 40,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 300,
+    "hi": 750,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 1.5 to NPS 4 V500 or NPS 1.5 to 4 easy-e EZ or ET"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "15. Fractionator Pump-around Valve",
+   "page": "4-53",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Heavy oil or light oil",
+   "p1": {
+    "lo": 89,
+    "hi": 200,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 45,
+    "hi": 177,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 405,
+    "hi": 795,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 6 to NPS 8 V500 or NPS 6 to NPS 12 HighPerformance Butterfly Valve; depending on process"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "16. Fractionator Reflux Valve",
+   "page": "4-53",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Naphtha",
+   "p1": {
+    "lo": 115,
+    "hi": 300,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 50,
+    "hi": 280,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 360,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 2 to NPS 4 easy-e ED, EZ, or ET or NPS 3 Vee-Ball",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "16. Fractionator Reflux Valve",
+   "page": "4-53",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "LCGO or HCGO reflux",
+   "p1": {
+    "lo": 82,
+    "hi": 339,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 55,
+    "hi": 240,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 105,
+    "hi": 567,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 3 to 4 easy-e ET or ED or NPS 2 to NPS 8 V500",
+    "Materials of Construction: WCC Body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "16. Fractionator Reflux Valve",
+   "page": "4-55",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "LCGO",
+   "p1": {
+    "lo": 17,
+    "hi": 170,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 8,
+    "hi": 85,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 405,
+    "hi": 455,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "Lower Flow: NPS 3 to NPS 8 easy-e ET",
+    "Higher Flow: NPS 6 to NPS 10 Vee-Ball",
+    "Materials of Construction: WCC with 400-series SST or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "16. Fractionator Reflux Valve",
+   "page": "4-55",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "HCGO",
+   "p1": {
+    "lo": 27,
+    "hi": 35,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 9,
+    "hi": 28,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 660,
+    "hi": 850,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 3 to NPS 8 V500 or NPS 3 to NPS 6 easy-e ET or EZ",
+    "Materials of Construction: C12 Body with 300-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "21. Fractionator Light End Valve",
+   "page": "4-55",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Light gas",
+   "p1": {
+    "lo": 250,
+    "hi": 340,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 240,
+    "hi": 290,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 155,
+    "hi": 160,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 1.5 to NPS 2 easy-e EZ",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "22. Fractionator Naphtha Valve",
+   "page": "4-55",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Naphtha",
+   "p1": {
+    "lo": 140,
+    "hi": 265,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 75,
+    "hi": 180,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 420,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 1 to NPS 4 easy-e ED, ET, or EZ",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "22. Fractionator Naphtha Valve",
+   "page": "4-55",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 110,
+    "hi": 395,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 8,
+    "hi": 374,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 500,
+    "hi": 700,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 1.5 to NPS 8 easy-e ED, ET, EZ, or ES",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "22. Fractionator Naphtha Valve",
+   "page": "4-55",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "LCGO",
+   "p1": {
+    "lo": 20,
+    "hi": 290,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 19,
+    "hi": 270,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 160,
+    "hi": 500,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 2 to NPS 8 easy-e ET or NPS 6 to NPS 8 V500",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.6 Delayed Coker Unit",
+   "valve": "22. Fractionator Naphtha Valve",
+   "page": "4-55",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "HCGO",
+   "p1": {
+    "lo": 20,
+    "hi": 290,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 15,
+    "hi": 220,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 300,
+    "hi": 795,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 3 to NPS 6 V500 or NPS 2 to NPS 3 easy-e ES or ET",
+    "Materials of Construction: C12 or WC9 or WCC body"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "2. Fuel Valve",
+   "page": "4-58",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Fuel gas",
+   "p1": {
+    "lo": 35,
+    "hi": 55,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 15,
+    "hi": 25,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 100,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 2 to NPS 3 easy-e EZ or ET",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "4. Compressor Suction Valve",
+   "page": "4-60",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen",
+   "errors": [
+    "no P1",
+    "no T",
+    "no Q",
+    "p2 has no US-customary value in parentheses"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "5. Compressor Bypass",
+   "page": "4-60",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Treated gas",
+   "p1": {
+    "lo": 700,
+    "hi": 945,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 465,
+    "hi": 885,
+    "unit": "psig"
+   },
+   "q": {
+    "lo": 4.9,
+    "hi": 4.9,
+    "unit": "MMscfd, 509000 scfh"
+   },
+   "errors": [
+    "2x T (columns interleaved)"
+   ],
+   "selection": [
+    "NPS 3 easy-e ET",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.7 Hydrotreater",
+   "valve": "6. Reactor Hydrogen Valve",
+   "page": "4-61",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen and light hydrocarbons",
+   "p1": {
+    "lo": 610,
+    "hi": 1080,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 330,
+    "hi": 365,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 140,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 2 to NPS 3 easy-e ET or EZ",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "2. Recycle Hydrogen Valve",
+   "page": "4-66",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Sour cracked hydrocarbon with entrained gas &",
+   "p1": {
+    "lo": 1825,
+    "hi": 2410,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 405,
+    "hi": 650,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 125,
+    "hi": 130,
+    "unit": "°F"
+   },
+   "errors": [
+    "no Q"
+   ],
+   "selection": [
+    "See the following section on outgassing application"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "7. Fractionator Bottom Valve",
+   "page": "4-68",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "errors": [
+    "no Fluid",
+    "no P1",
+    "no P2",
+    "no T",
+    "no Q"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "7. Fractionator Bottom Valve",
+   "page": "4-68",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "errors": [
+    "2x Fluid (columns interleaved)",
+    "2x P1 (columns interleaved)",
+    "2x P2 (columns interleaved)",
+    "2x T (columns interleaved)",
+    "2x Q (columns interleaved)"
+   ],
+   "selection": [
+    "NPS 6 Vee-Ball or NPS 6 HPT",
+    "NPS 4 to NPS 8 easy-e ET or NPS 3 to NPS 6 HPT",
+    "Materials of Construction: WCC or chrome-moly body"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "20. Fractionator Vent Gas Valve",
+   "page": "4-70",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Vent Gas",
+   "p1": {
+    "lo": 16,
+    "hi": 615,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 4,
+    "hi": 584,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 208,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 1 to NPS 6 easy-e EZ or ET",
+    "Materials of Construction: WCC body with 400-series or"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "22. Compressor Suction Valve",
+   "page": "4-70",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen",
+   "errors": [
+    "no P1",
+    "p2 has no US-customary value in parentheses",
+    "t has no US-customary value in parentheses",
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "Valve selection is dependent on process conditions,"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.8 Hydrocracker",
+   "valve": "23. Compressor Bypass",
+   "page": "4-71",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Treated Gas",
+   "errors": [
+    "no P1",
+    "p2 has no US-customary value in parentheses",
+    "t has no US-customary value in parentheses",
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "Valve selection is dependent on process conditions,"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "3. Recycle Hydrogen Valve",
+   "page": "4-73",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "errors": [
+    "no Fluid",
+    "no P1",
+    "no P2",
+    "no T",
+    "no Q"
+   ],
+   "selection": [
+    "NPS 12 to NPS 30 Control-Disk",
+    "Materials of Construction: WCC body with 300 series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "4. Fuel Valve",
+   "page": "4-73",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "errors": [
+    "2x Fluid (columns interleaved)",
+    "2x P1 (columns interleaved)",
+    "2x P2 (columns interleaved)",
+    "2x T (columns interleaved)",
+    "2x Q (columns interleaved)"
+   ],
+   "selection": [
+    "Lower Flow Rates: NPS 1 to NPS 3 easy-e EZ",
+    "Higher Flow Rates: NPS 6 to NPS 10 easy-e ET or EWT",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.9 Catalytic Reformer Unit",
+   "valve": "12. Stabilizer Reformate Valve",
+   "page": "4-77",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Reformate",
+   "p1": {
+    "lo": 117,
+    "hi": 120,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 60,
+    "hi": 60,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 100,
+    "hi": 140,
+    "unit": "°F"
+   },
+   "errors": [
+    "q has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 8 to NPS 10 easy-e EWT",
+    "Materials of Construction: WCC body with 400-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "5. Inlet Air Vent to Atmosphere Control Valve",
+   "page": "4-80",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Air",
+   "p2": {
+    "lo": 1,
+    "hi": 1,
+    "unit": "psig"
+   },
+   "errors": [
+    "no P1",
+    "no T",
+    "no Q"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "5. Inlet Air Vent to Atmosphere Control Valve",
+   "page": "4-80",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Fuel gas",
+   "p2": {
+    "lo": 45,
+    "hi": 100,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 85,
+    "hi": 85,
+    "unit": "°F – 105°F"
+   },
+   "q": {
+    "lo": 2800,
+    "hi": 7800,
+    "unit": "scfh"
+   },
+   "errors": [
+    "2x P1 (columns interleaved)"
+   ],
+   "selection": [
+    "NPS 16 to NPS 24 easy-e EW or FB",
+    "WCC body and trim",
+    "Noise attenuation trim may be required",
+    "Class V shutoff",
+    "T = 30°C – 40°C (85°F – 105°F)"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "6. Stripping Steam to Distributors Control Valve",
+   "page": "4-81",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 75,
+    "hi": 100,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 45,
+    "hi": 75,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 390,
+    "hi": 390,
+    "unit": "°F – 430°F"
+   },
+   "errors": [
+    "no Q"
+   ],
+   "selection": [
+    "NPS 1.5 to NPS 6 easy-e ET",
+    "WCC body and 316/Alloy 6 trim",
+    "Noise attenuation trim may be required",
+    "Class IV or V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "7. Steam to Reactor Flow Control Valve",
+   "page": "4-81",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 85,
+    "hi": 130,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 30,
+    "hi": 60,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 390,
+    "hi": 390,
+    "unit": "°F – 430°F"
+   },
+   "errors": [
+    "no Q"
+   ],
+   "selection": [
+    "NPS 4 to NPS 6 NPS easy-e ET",
+    "WCC body and 316/Alloy 6 trim",
+    "Noise attenuation trim may be required",
+    "Class IV or V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "6. Steam to Lean Cycle Oil Stripper",
+   "page": "4-82",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Steam",
+   "p1": {
+    "lo": 130,
+    "hi": 245,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 15,
+    "hi": 45,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 390,
+    "hi": 390,
+    "unit": "°F – 455°F"
+   },
+   "errors": [
+    "no Q"
+   ],
+   "selection": [
+    "NPS 2 to NPS 3 easy-e ET",
+    "WCC body and 316/Alloy 6 trim"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "6. Steam to Lean Cycle Oil Stripper",
+   "page": "4-82",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Varying hydrocarbons",
+   "p1": {
+    "lo": 85,
+    "hi": 115,
+    "unit": "psig"
+   },
+   "errors": [
+    "no P2",
+    "no T",
+    "no Q"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "1. First Stage Wet Gas Recycle Control Valve",
+   "page": "4-84",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Wet gas",
+   "p1": {
+    "lo": 85,
+    "hi": 145,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 30,
+    "hi": 60,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 230,
+    "hi": 230,
+    "unit": "°F - 265°F"
+   },
+   "errors": [
+    "no Q"
+   ],
+   "selection": [
+    "NPS 8 to NPS 16 easy-e ET or EW",
+    "WCC body and 316/Alloy 6 trim",
+    "Noise attenuation trim may be required",
+    "Class V shutoff"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "2. Second Stage Wet Gas Recycle Control Valve",
+   "page": "4-85",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Wet gas",
+   "p1": {
+    "lo": 190,
+    "hi": 305,
+    "unit": "psig"
+   },
+   "errors": [
+    "no P2",
+    "no T",
+    "no Q"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.10 Fluidized Catalytic",
+   "valve": "2. Second Stage Wet Gas Recycle Control Valve",
+   "page": "4-85",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Lean oil (heavy naphtha)",
+   "p1": {
+    "lo": 260,
+    "hi": 350,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 230,
+    "hi": 230,
+    "unit": "°F - 265°F"
+   },
+   "errors": [
+    "2x P2 (columns interleaved)",
+    "no Q"
+   ],
+   "selection": [
+    "NPS 10 to NPS 16 easy-e ET or EW",
+    "WCC body and 316/Alloy 6 trim",
+    "T = 40°C – 50°C (105°F - 120°F)",
+    "Q = 30 – 150 m3/hr (130 – 660 gpm)"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.12 Amine Unit",
+   "valve": "4. Lean Amine Valve",
+   "page": "4-97",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Lean Amine",
+   "p1": {
+    "lo": 115,
+    "hi": 2320,
+    "unit": "psig"
+   },
+   "p2": {
+    "lo": 95,
+    "hi": 1815,
+    "unit": "psig"
+   },
+   "t": {
+    "lo": 130,
+    "hi": 140,
+    "unit": "°F"
+   },
+   "errors": [
+    "no Q"
+   ],
+   "selection": [
+    "NPS 2 to NPS 4 HPAS or HPT or NPS 1 to NPS 2 easy-e"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "4. Oxygen Valve",
+   "page": "4-100",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "p1": {
+    "lo": 30,
+    "hi": 30,
+    "unit": "psig"
+   },
+   "errors": [
+    "no Fluid",
+    "no P2",
+    "no T",
+    "no Q"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "5. Main Air Valve",
+   "page": "4-101",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "errors": [
+    "no Fluid",
+    "no P1",
+    "no P2",
+    "no T",
+    "no Q"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "5. Main Air Valve",
+   "page": "4-101",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "errors": [
+    "2x Fluid (columns interleaved)",
+    "2x P1 (columns interleaved)",
+    "2x P2 (columns interleaved)",
+    "2x T (columns interleaved)",
+    "2x Q (columns interleaved)"
+   ],
+   "selection": [
+    "NPS 10 to NPS 16 Control-Disk or NPS 12 to NPS 16"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "6. Trim Air Valve",
+   "page": "4-102",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "errors": [
+    "no Fluid",
+    "no P1",
+    "no P2",
+    "no T",
+    "no Q"
+   ],
+   "selection": [
+    "Fluid: Steam",
+    "NPS 4 to NPS 8 Vee-Ball",
+    "P1 = 41 - 48 barg (595 - 695 psig)",
+    "Materials of Construction: WCC body with 300-series"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "10. Liquid Sulfur Product Valves",
+   "page": "4-102",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Molten sulfur",
+   "t": {
+    "lo": 330,
+    "hi": 330,
+    "unit": "°F"
+   },
+   "errors": [
+    "no P1",
+    "no P2",
+    "no Q"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "3. Counter-current Depressurization",
+   "page": "4-104",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen and light hydrocarbons",
+   "p1": {
+    "lo": 160,
+    "hi": 160,
+    "unit": "psig"
+   },
+   "errors": [
+    "no P2",
+    "no Q",
+    "t has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 6 8580 with FieldQ actuator"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "3. Counter-current Depressurization",
+   "page": "4-105",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Off gas",
+   "p1": {
+    "lo": 8,
+    "hi": 30,
+    "unit": "psig"
+   },
+   "errors": [
+    "no P2",
+    "no Q",
+    "t has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 10 8580 with FieldQ actuator",
+    "Stroking speed requirement of 2 seconds or less",
+    "Materials of Construction: WCC body with 316 SST disk"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "3. Counter-current Depressurization",
+   "page": "4-105",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen",
+   "p1": {
+    "lo": 30,
+    "hi": 95,
+    "unit": "psig"
+   },
+   "errors": [
+    "no P2",
+    "no Q",
+    "t has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 3 GX",
+    "Stroking speed requirement of 2 seconds or less",
+    "Materials of Construction: WCC body with 316L SST Ion"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.13 Sulfur Recovery Unit",
+   "valve": "3. Counter-current Depressurization",
+   "page": "4-105",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen",
+   "p1": {
+    "lo": 160,
+    "hi": 160,
+    "unit": "psig"
+   },
+   "errors": [
+    "no P2",
+    "no Q",
+    "t has no US-customary value in parentheses"
+   ]
+  },
+  {
+   "book": "refining",
+   "unit": "4.15 Blending Unit",
+   "valve": "(unknown)",
+   "page": "4-105",
+   "doc": "Fisher Control Valve Sourcebook -- Refining (D103205X012)",
+   "fluid": "Hydrogen",
+   "p1": {
+    "lo": 160,
+    "hi": 160,
+    "unit": "psig"
+   },
+   "errors": [
+    "no P2",
+    "no Q",
+    "t has no US-customary value in parentheses"
+   ],
+   "selection": [
+    "NPS 3 8580 with FieldQ actuator",
+    "Stroking speed requirement of 2 seconds or less",
+    "Materials of Construction: WCC body with 316 SST disk"
+   ]
+  }
+ ]
+}
