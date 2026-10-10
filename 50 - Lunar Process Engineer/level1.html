@@ -106,28 +106,6 @@ const trunk=new LPE.Line({r:R_MAIN,segments:[
   {ax:TRUNK_X,ay:BR_Y[1],bx:TRUNK_X,by:E2.y-BEND,fill:1},      // only bed 3 left
   {arc:{cx:E2.x+BEND,cy:E2.y-BEND,R:BEND,a0:Math.PI,a1:Math.PI/2},fill:1}, // elbow out
 ]});
-/* The bay as it is actually built: a run from the header that turns down
-   into the riser, three branches teed off it, and the reducer somebody
-   spliced into bay 3. Corners become real elbows; the engine draws every
-   bore last so no fitting can close another one off. */
-const NET=LPE.piping({
-  lines:[
-    /* One continuous run: header, down the riser, out to bed 3. Both
-       corners are elbows. The riser TERMINATES at bed 3 - it is not a tee
-       there - and drawing it as one stopped the butt-capped riser leaving
-       bed 3 hanging off its end. */
-    {pts:[[30,MAIN_Y],[TRUNK_X,MAIN_Y],[TRUNK_X,BR_Y[2]],[RED_X0,BR_Y[2]]], r:R_MAIN},
-    {pts:[[RED_X1,BR_Y[2]],[POD_X,BR_Y[2]]], r:R_MAIN},  // past it, same bore in as out
-    {pts:[[TRUNK_X,BR_Y[0]],[POD_X,BR_Y[0]]], r:R_BR},
-    {pts:[[TRUNK_X,BR_Y[1]],[POD_X,BR_Y[1]]], r:R_BR},
-  ],
-  // only beds 1 and 2 are taken off the riser as branches
-  tees:[{x:TRUNK_X,y:BR_Y[0],r:R_MAIN,branch:R_BR},
-        {x:TRUNK_X,y:BR_Y[1],r:R_MAIN,branch:R_BR}],
-  // one fitting: taper in, throat, taper out
-  reducers:[{x0:RED_X0,x1:RED_X1,y:BR_Y[2],r1:R_MAIN,r2:RED_R}],
-  fittings:[{x:wheelMainX-54,y:MAIN_Y,r:R_MAIN,kind:"union"}],
-});
 /* The schematic's skin. The Process Core names the roles and holds no
    colours at all -- the same plan has to come out as this and as a modern
    view -- so saying what each role looks like is chrome's job, which is
@@ -165,11 +143,15 @@ function drawSchem(g,S){
   });
 }
 
-/* ---- the same bay as a NETLIST -------------------------------------
-   One declaration of what connects to what. It drives the schematic view;
-   the rig view above is still drawn from its own arrays for now, and
-   verify.js asserts the two produce identical piping geometry, so they
-   cannot drift apart while both exist.
+/* ---- the bay, AS A NETLIST -----------------------------------------
+   THE one declaration of what connects to what. It drives the schematic
+   view, the dynamics, the scenario -- and now the rig view too, which
+   used to be a second set of pixel arrays sitting above this block.
+
+   verify.js policed those two for drift and they never drifted, which is
+   the moment to delete one rather than keep checking it. The check now
+   guards this netlist's OUTPUT against the geometry that was proven
+   correct while both existed.
 
    NO COORDINATES LIVE HERE. A component says what it is, what it is
    called and how big its bore is in INCHES -- a half-inch line is half an
@@ -255,6 +237,25 @@ const NETLIST=LPE.net({
     },
   },
 });
+
+/* ---- the rig view, DRAWN FROM THE NETLIST ---------------------------
+   This used to be a second declaration of the same bay: four `pts`
+   arrays, two tees, a reducer and a union, written out in pixels beside
+   the netlist that already said all of it. verify.js existed to stop the
+   two drifting, and proved for weeks that they agreed -- which is the
+   moment to delete one, not to keep checking it.
+
+   `toPiping()` derives the identical geometry from the connections and
+   the rig frame: same four runs, same two tees off the riser, the same
+   reducer spliced into bay 3, the same union. The check that used to
+   compare them now guards the netlist's OUTPUT against the geometry that
+   was proven correct, which is the risk that still exists.
+
+   NOTE the position. This has to come after NETLIST, not where the hand
+   arrays used to sit above it -- a const read before its declaration is
+   a dead screen with every test passing, which this project has already
+   shipped once. */
+const NET=LPE.piping(NETLIST.toPiping());
 
 /* The dynamics layer, reading the netlist above. `solve()` keeps the shape
    this level has always read -- q as an array in bed order -- so nothing

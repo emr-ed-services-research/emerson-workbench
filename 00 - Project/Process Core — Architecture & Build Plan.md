@@ -74,7 +74,7 @@ Honest accounting of what exists today, as of this writing.
 
 | Layer | State | Where it lives |
 |---|---|---|
-| Netlist | Built, sound | `45 - Process Core/src/topology.js` |
+| Netlist | Built, sound; **level 1 now DRAWS from it** (2026-10-10) | `45 - Process Core/src/topology.js` — level 1 rig view migrated; levels 2-4 still hand-written |
 | Schematic view | Built, sound | `45 - Process Core/src/schemvis.js` |
 | Physical view | Built; skinnable as of 5a; **extracted 2026-10-10** | `45 - Process Core/src/physvis.js` — LPE keeps a 23-line adapter that supplies the 1990s skin |
 | Dynamics | Built (Phase 3) | `45 - Process Core/src/dynamics.js` — level 1 migrated, level 2 not yet |

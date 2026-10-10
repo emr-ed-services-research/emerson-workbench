@@ -1015,7 +1015,12 @@ check('fluid: both views carry fluid state', carries.length === 2,
    ------------------------------------------------------------ */
 {
   const vm = require('vm');
-  /* Slice a `const X=LPE.f(...)` declaration by scanning braces from its
+  /* Level 1's rig geometry, recorded while the hand-written arrays and
+   the netlist both existed and were proven identical. See the note
+   at the comparison below for why this is a snapshot. */
+const EXPECTED_L1_GEOMETRY = "{\"lines\":[{\"r\":10,\"pts\":[[320,170],[812,170]]},{\"r\":10,\"pts\":[[320,256],[812,256]]},{\"r\":12.6,\"pts\":[[30,86],[320,86],[320,342],[600,342]]},{\"r\":12.6,\"pts\":[[680,342],[812,342]]}],\"tees\":[{\"x\":320,\"y\":170,\"r\":12.6,\"branch\":10},{\"x\":320,\"y\":256,\"r\":12.6,\"branch\":10}],\"reducers\":[{\"x0\":600,\"x1\":680,\"y\":342,\"r1\":12.6,\"r2\":2.2}],\"fittings\":[{\"x\":116,\"y\":86,\"r\":12.6,\"kind\":\"union\"}]}";
+
+/* Slice a `const X=LPE.f(...)` declaration by scanning braces from its
      first bracket, so the literal comes out whole however it is
      formatted and without this file holding a copy of it. */
   const decl = (text, start) => {
@@ -1045,14 +1050,12 @@ check('fluid: both views carry fluid state', carries.length === 2,
       fs.readFileSync('vendor/process-core/topology.js', 'utf8'), host);
     const realNet = host.window.LPE.net;
 
-    /* LPE.piping is the identity here: the rig view's declaration IS the
-       spec to compare against, so recording it is all that is wanted. */
     const sand = { LPE: { piping: s => s, net: realNet } };
     vm.createContext(sand);
-    vm.runInContext(geo + '\n' + decl(src, 'const NET=LPE.piping(') + '\n' +
+    vm.runInContext(geo + '\n' +
                     decl(src, 'const NETLIST=LPE.net(') + '\n' +
-                    'globalThis.__o = {hand: NET, list: NETLIST};', sand);
-    const hand = sand.__o.hand, list = sand.__o.list;
+                    'globalThis.__o = {list: NETLIST};', sand);
+    const list = sand.__o.list;
 
     if (list.errors.length) {
       detail = 'netlist invalid: ' + list.errors.join('; ');
@@ -1077,15 +1080,32 @@ check('fluid: both views carry fluid state', carries.length === 2,
           .map(f => ({ x: n(f.x), y: n(f.y), r: n(f.r), kind: f.kind }))
           .sort((a, b) => a.y - b.y || a.x - b.x),
       });
-      const a = canon(hand), b = canon(list.toPiping());
+      /* RECORDED GEOMETRY, not a second declaration.
+
+         Until level 1 drew from its netlist this compared two copies of
+         the same bay -- the hand-written `pts` arrays against
+         toPiping() -- and its job was to stop them drifting. They never
+         did, which is the moment to delete one rather than keep checking
+         it, so the arrays are gone and the rig is drawn from the
+         netlist.
+
+         What is left to protect is the netlist's OUTPUT. This is the
+         geometry that was proven correct while both existed, frozen
+         here: if a change to topology.js, to the frame, or to a bore
+         moves a single pixel of level 1's rig, this says so. A snapshot
+         is the right shape for that -- it cannot be satisfied by the
+         code it is checking, the way comparing a thing to itself can. */
+      const a = EXPECTED_L1_GEOMETRY, b = canon(list.toPiping());
       same = a === b;
+      const got = list.toPiping();
       detail = same
-        ? hand.lines.length + ' lines, ' + hand.tees.length + ' tees, ' +
-          hand.reducers.length + ' reducer, ' + hand.fittings.length + ' fitting'
-        : 'rig  ' + a + '\n        netlist  ' + b;
+        ? got.lines.length + ' lines, ' + got.tees.length + ' tees, ' +
+          got.reducers.length + ' reducer, ' + got.fittings.length +
+          ' fitting -- drawn from the netlist, matching the recorded geometry'
+        : 'recorded  ' + a + '\n        netlist   ' + b;
     }
   } catch (e) { detail = e.message; }
-  check("level 1's netlist reproduces its own rig exactly", same, detail);
+  check("level 1's rig comes out of its netlist, pixel for pixel", same, detail);
 }
 
 const pad = Math.max(...results.map(r => r.name.length));
