@@ -105,8 +105,19 @@ const valves = JSON.parse(
 
 /* "1-1/2" -> 1.5, "2" -> 2 */
 function nps(t) {
-  const m = String(t).trim().match(/^(\d+)(?:\s*-\s*(\d+)\/(\d+))?$/);
-  if (!m) return null;
+  /* "20 x 16" is a reducer: an NPS 20 BODY with NPS 16 trim. The
+     sourcebook's "NPS 8 to 12 EW" refers to body sizes, so the body is
+     the governing number. Without this the whole large-EW range parsed
+     as null, dropped out of the table, and dragged tableMax down to 8 --
+     which quietly sent a real NPS 8-12 case to "out of table" instead
+     of grading it. */
+  const t0 = String(t).trim().split(/\s*x\s*/i)[0];
+  const m = t0.match(/^(\d+)(?:\s*[-‐]\s*(\d+)\/(\d+))?$/) ||
+            t0.match(/^(\d+)\/(\d+)$/) && null;
+  if (!m) {
+    const f = t0.match(/^(\d+)\/(\d+)$/);
+    return f ? +f[1] / +f[2] : null;
+  }
   return +m[1] + (m[2] ? +m[2] / +m[3] : 0);
 }
 /* Bodies whose coefficient table is actually held and verified.
@@ -151,7 +162,12 @@ const marginal = [];
 for (const c of liquid) {
   if (!c.selection) continue;
   const sel = c.selection.join(' ');
-  if (!/easy-?e|\bE[DTZ]\b/i.test(sel)) continue;
+  /* The gate was "mentions easy-e", from when only easy-e bodies were
+     held. EW is held now and its selections do not say "easy-e", so a
+     real case was skipped before it ever reached the body test -- which
+     is the test that should decide. The gate is now only: is there a
+     size range here at all. */
+  if (!/NPS/i.test(sel)) continue;
   const m = sel.match(/NPS\s*([\d\-\/]+)\s*(?:to|through|-)\s*NPS\s*([\d\-\/]+)/i);
   if (!m) continue;
 
@@ -250,9 +266,16 @@ console.log('  --  none yet. LoopBench has a DVC6200 on real air with real');
 console.log('      position feedback; it needs a run-export before its');
 console.log('      numbers can be a benchmark. That is Phase 3.\n');
 
+/* ASSERTIONS ARE NOT CASES. This line used to read "8 graded", which
+   counted checks and was read -- reasonably -- as eight refinery
+   services. It is one case graded against a printed answer and two
+   against a capacity bound. The counts are reported separately now,
+   because conflating them overstates the lab by an order of magnitude. */
 console.log('-'.repeat(68));
-console.log('  ' + pass + ' graded, ' + fail + ' failed, ' +
-            liquid.length + ' cases staged behind ' + blockers.length +
-            ' named blockers');
-console.log('-'.repeat(68) + '\n');
+console.log('  assertions   ' + pass + ' passed, ' + fail + ' failed');
+console.log('  cases        1 against a PRINTED answer (Handbook ch5)');
+console.log('               ' + graded + ' against a CAPACITY bound');
+console.log('               ' + (liquid.length - graded) + ' of ' +
+            liquid.length + ' refinery services not individually graded');
+console.log('-'.repeat(68) + String.fromCharCode(10));
 process.exit(fail ? 1 : 0);
