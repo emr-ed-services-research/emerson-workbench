@@ -72,6 +72,17 @@ position: a real Fisher cage curve, read from Catalog 12, plus the INSTALLED
 characteristic, which is what the inherent one becomes once the rest of the
 line takes its share of the drop.
 
+**The layers compose, opt-in.** `dynamics` will use a valve's real trim
+characteristic and a fitting's sourced resistance -- but only for a component
+that DECLARES them (`trim` with a curve, `resistance` with a basis). Declare
+nothing and the arithmetic is bit-for-bit what it was, which is why LPE's
+81-state comparison is untouched. Declaring them and not loading the layer is
+an error BY NAME, never a silent fall back to the simpler model.
+
+The size of the thing: an ED equal-percentage cage passes 23% of its flow at
+half travel, not 50%. The linear assumption is wrong by more than a factor of
+two, in the middle of the stroke, where a loop spends its time.
+
 Open that after changing a shape rule. The numbers can all be right and the
 shape still be wrong, and no test here would say so.
 

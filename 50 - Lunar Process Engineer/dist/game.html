@@ -4605,20 +4605,118 @@ window.LPE.catalogueData={
      1/sqrt(Infinity) is 0. A shut valve in series with anything is shut. */
   const seriesCv = (a, b) => 1 / Math.sqrt(1 / (a * a) + 1 / (b * b));
 
+  /* ---- WHERE THE OTHER LAYERS COMPOSE -------------------------------
+
+     This one function decides what a component does to the flow, and
+     until now it knew two things: a valve's Cv scales linearly with
+     position, and everything else is a constant. Both are
+     simplifications that were honest for a teaching bay at 2 gpm.
+
+     A VALVE AT 50% TRAVEL DOES NOT PASS 50% OF ITS Cv. Which fraction
+     it passes is the trim's characteristic, and `LPE.trim` reads it
+     from the manufacturer's own curve. An ED equal-percentage cage
+     passes 23% at half travel, not 50 -- so the linear assumption is
+     not a small error, it is more than a factor of two in the middle of
+     the stroke, which is where control happens.
+
+     A FITTING RESISTS. `LPE.sizing` turns a published K into the
+     equivalent Cv through the standard's own N2, so a sourced elbow can
+     join a Cv network without anybody inventing a bridge.
+
+     BOTH ARE OPT-IN, and that is deliberate. A component gets the real
+     physics only if it DECLARES it -- `trim` with a curve, `resistance`
+     with a basis. Absent, the arithmetic is bit-for-bit what it was,
+     which is why Lunar Process Engineer's recorded geometry and its
+     81-state solver comparison are untouched by this. The game adopts
+     when it wants to; see the vault's standing note on not letting a
+     consumer become the reference.
+
+     AND DECLARING IT MUST WORK OR FAIL LOUDLY. If a component asks for
+     a characteristic and the trim layer is not loaded, that is an error
+     by name -- never a silent fall back to linear, which would be the
+     model quietly doing something other than what the netlist says. */
+
+  function buildTrims(comps, errors) {
+    const out = {};
+    for (const id of Object.keys(comps)) {
+      const c = comps[id];
+      if (!c.trim) continue;
+      if (!LPE.trim) {
+        errors.push(id + ' declares a trim characteristic, but the trim ' +
+          'layer is not loaded. Load src/trim.js, or remove the ' +
+          'declaration -- a valve asked to follow its real curve must ' +
+          'not silently fall back to a linear one.');
+        continue;
+      }
+      try {
+        out[id] = LPE.trim.fromCurve(c.trim);
+      } catch (e) {
+        errors.push(id + ' trim: ' + e.message);
+      }
+    }
+    return out;
+  }
+
+  function buildFittingCv(comps, errors, refRe) {
+    const out = {};
+    for (const id of Object.keys(comps)) {
+      const c = comps[id];
+      if (!c.resistance) continue;
+      if (!LPE.sizing) {
+        errors.push(id + ' declares a resistance basis, but the sizing ' +
+          'layer is not loaded. Load src/sizing.js.');
+        continue;
+      }
+      if (!(refRe > 0)) {
+        errors.push(id + ' declares a resistance basis, but no reference ' +
+          'Reynolds number was given. K depends on it. Pass {reynolds} to ' +
+          'LPE.dyn, or state it on the netlist -- it is not assumed.');
+        continue;
+      }
+      const d = c.bore !== undefined ? c.bore : null;
+      if (!(d > 0)) {
+        errors.push(id + ' declares a resistance basis but has no bore, ' +
+          'and both the correlation and the conversion to Cv need one.');
+        continue;
+      }
+      try {
+        const r = LPE.sizing.resistance(c.resistance, refRe, d);
+        out[id] = { cv: LPE.sizing.cvFromK(r.K, d), K: r.K,
+                    lo: LPE.sizing.cvFromK(r.hi, d),
+                    hi: LPE.sizing.cvFromK(r.lo, d),
+                    method: r.method, source: r.source };
+      } catch (e) {
+        errors.push(id + ' resistance: ' + e.message);
+      }
+    }
+    return out;
+  }
+
   /* A component resists flow if it has a Cv. `cv` on a valve is its
-     rating -- what it passes wide open -- and position scales it. */
-  function restrictionCv(c, state) {
+     rating -- what it passes wide open -- and position scales it,
+     unless the valve carries a real characteristic. */
+  function restrictionCv(c, state, trims, fittings) {
+    if (fittings && fittings[c.id]) return fittings[c.id].cv;
     if (c.cv === undefined) return null;
     if (c.kind === 'valve') {
       const pos = c.key !== undefined && state[c.key] !== undefined
         ? state[c.key]
         : (state[c.tag] !== undefined ? state[c.tag] : 0);
+      const t = trims && trims[c.id];
+      if (t) {
+        /* The curve is in Cv at percent of travel. Below its first
+           printed point the catalogue says nothing, and trim returns
+           null there rather than extrapolating -- that is the seat
+           region, where leakage class governs. Shut is shut. */
+        const cv = t.cvAt(Math.max(0, Math.min(100, pos * 100)));
+        return cv === null ? 0 : cv;
+      }
       return c.cv * pos;
     }
     return c.cv;
   }
 
-  const isRestriction = c => c.cv !== undefined;
+  const isRestriction = c => c.cv !== undefined || c.resistance !== undefined;
 
   function Dynamics(net, options) {
     const o = options || {};
@@ -4634,6 +4732,26 @@ window.LPE.catalogueData={
     const warnings = [];
     let determinate = false;
     const comps = net.components;
+
+    /* The composed layers, built once. A netlist that declares none of
+       this gets `trims` and `fittings` empty, restrictionCv takes its
+       original path, and the arithmetic is unchanged to the bit. */
+    const refRe = o.reynolds !== undefined ? o.reynolds
+                : (net.spec.reynolds !== undefined ? net.spec.reynolds : null);
+    const trims = buildTrims(comps, errors);
+    const fittings = buildFittingCv(comps, errors, refRe);
+    const composed = Object.keys(trims).length + Object.keys(fittings).length;
+    if (composed) {
+      warnings.push(composed + ' component(s) use real part physics: ' +
+        Object.keys(trims).length + ' with a trim characteristic, ' +
+        Object.keys(fittings).length + ' with a sourced resistance.' +
+        (Object.keys(fittings).length
+          ? ' Fitting K is evaluated at Re ' + refRe + ' and is NOT ' +
+            'iterated with flow -- at industrial Reynolds numbers the ' +
+            'Re-dependent term is a fraction of a percent of K, but this ' +
+            'is a stated simplification, not an exact solve.'
+          : ''));
+    }
     const live = net.segments.filter(s => s.from && s.to);
 
     /* ---- nodes: what is at the same pressure as what -----------------
@@ -4826,9 +4944,9 @@ window.LPE.catalogueData={
     let held = 0;
 
     function cvOf(L, state) {
-      let c = restrictionCv(comps[L.ids[0]], state);
+      let c = restrictionCv(comps[L.ids[0]], state, trims, fittings);
       for (let i = 1; i < L.ids.length; i++) {
-        c = seriesCv(c, restrictionCv(comps[L.ids[i]], state));
+        c = seriesCv(c, restrictionCv(comps[L.ids[i]], state, trims, fittings));
       }
       return c;
     }

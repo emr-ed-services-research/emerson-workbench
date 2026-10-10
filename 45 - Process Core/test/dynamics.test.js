@@ -425,5 +425,111 @@ check('a two-stage header is refused rather than guessed at',
                /iterative solve that is not built/.test(d.errors.join(' '));
       })());
 
+/* ================= COMPOSITION ======================================
+   The other layers finally reach the solver. Until this, dynamics knew
+   two things that were simplifications: a valve's Cv scales linearly
+   with position, and a fitting does not exist.
+
+   Both are now opt-in. A component that declares nothing solves with
+   bit-for-bit the same arithmetic -- which is why every check above,
+   and Lunar Process Engineer's 81-state comparison, are untouched.  */
+console.log('');
+const fs = require('fs');
+require(path.join(__dirname, '..', 'src', 'trim.js'));
+require(path.join(__dirname, '..', 'src', 'sizing.js'));
+
+const VALVES = JSON.parse(fs.readFileSync(
+  path.join(__dirname, '..', 'lab', 'valves.json'), 'utf8')).valves;
+const EQPCT = VALVES.find(v => v.cage === 'equal-percentage' &&
+                               v.body === 'ED' && v.cv100 > 90);
+
+function twoNode(extra, dynOpts) {
+  const spec = {
+    bores: { main: 2.067 }, fluid: { sg: 1.0 },
+    components: {
+      src: { kind: 'vessel', tag: 'TK-1', role: 'source', pressure: 100 },
+      v1: Object.assign({ kind: 'valve', tag: 'HV-1', key: 'm',
+                          valveType: 'globe', cv: EQPCT.cv100 }, extra || {}),
+      snk: { kind: 'vessel', tag: 'TK-2', role: 'sink',
+             vesselType: 'atmospheric' },
+    },
+    segments: [{ from: 'src.out', to: 'v1.in', bore: 'main' },
+               { from: 'v1.out', to: 'snk.in', bore: 'main' }],
+    frames: { rig: { pxPerInch: 1, at: { src: [0, 0], v1: [10, 0], snk: [20, 0] } } },
+  };
+  const n = LPE.net(spec, { frame: 'rig' });
+  if (n.errors.length) throw new Error('netlist: ' + n.errors.join('; '));
+  return LPE.dyn(n, dynOpts || { tau: 0.22 });
+}
+
+const flowAt = (d, t) => { d.settle({ m: t }); return d.solve({ m: t }).qTot; };
+
+const plain = twoNode();
+const withTrim = twoNode({ trim: { curve: EQPCT.curve } });
+check('a netlist that declares nothing still builds clean',
+      plain.errors.length === 0);
+check('and so does one that declares a real characteristic',
+      withTrim.errors.length === 0, withTrim.errors.join('; '));
+
+/* THE POINT. Wide open the two agree -- same valve, same rating. In the
+   middle of the stroke, where control actually happens, they do not. */
+check('both pass the same flow wide open',
+  Math.abs(flowAt(plain, 1) - flowAt(withTrim, 1)) < 1e-9,
+  flowAt(plain, 1).toFixed(4) + ' vs ' + flowAt(withTrim, 1).toFixed(4));
+
+const fracP = flowAt(plain, 0.5) / flowAt(plain, 1);
+const fracT = flowAt(withTrim, 0.5) / flowAt(withTrim, 1);
+check('the linear assumption gives half flow at half travel',
+  Math.abs(fracP - 0.5) < 0.02, (100 * fracP).toFixed(0) + '%');
+check('the real equal-percentage cage gives about a quarter',
+  fracT > 0.15 && fracT < 0.30, (100 * fracT).toFixed(0) + '%');
+check('so the linear assumption is wrong by more than a factor of two',
+  fracP / fracT > 2,
+  'at half travel: ' + (100 * fracP).toFixed(0) + '% assumed against ' +
+  (100 * fracT).toFixed(0) + '% real -- not a small error, and it sits ' +
+  'exactly where a loop spends its time');
+check('and the real curve is monotonic in travel',
+  [0.2, 0.4, 0.6, 0.8, 1].every((t, i, a) =>
+    i === 0 || flowAt(withTrim, t) > flowAt(withTrim, a[i - 1])));
+
+/* A sourced fitting joins the series through the standard's own N2. */
+const DARBY_ELBOW = { method: 'darby-3k', K1: 800, Ki: 0.14, Kd: 4.0,
+                      uncertaintyPct: 30, source: 'Darby 3-K, threaded elbow' };
+const withFitting = twoNode({}, { tau: 0.22, reynolds: 150000 });
+check('a reference Reynolds number is accepted on the dyn options',
+      withFitting.errors.length === 0, withFitting.errors.join('; '));
+
+/* And declaring the real physics without the means to compute it must
+   fail by name, never fall back to the simpler model. */
+let msg = '';
+try {
+  const n = LPE.net({
+    bores: { main: 2.067 }, fluid: { sg: 1 },
+    components: {
+      src: { kind: 'vessel', tag: 'TK-1', role: 'source', pressure: 100 },
+      f1: { kind: 'union', resistance: DARBY_ELBOW, bore: 2.067 },
+      snk: { kind: 'vessel', tag: 'TK-2', role: 'sink', vesselType: 'atmospheric' },
+    },
+    segments: [{ from: 'src.out', to: 'f1.in', bore: 'main' },
+               { from: 'f1.out', to: 'snk.in', bore: 'main' }],
+    frames: { rig: { pxPerInch: 1, at: { src: [0, 0], f1: [10, 0], snk: [20, 0] } } },
+  }, { frame: 'rig' });
+  msg = LPE.dyn(n, { tau: 0.22 }).errors.join('; ');
+} catch (e) { msg = e.message; }
+check('a resistance basis with no reference Reynolds is refused by name',
+  /no reference Reynolds/.test(msg) && /not assumed/.test(msg), msg);
+
+let bad = '';
+try { bad = twoNode({ trim: { curve: [5, 3, 9] } }).errors.join('; '); }
+catch (e) { bad = e.message; }
+check('a trim curve that falls as it opens is refused',
+  /not a trim/.test(bad), bad);
+
+/* The solver says when it is using real part physics, because a model
+   that silently changed its own arithmetic would be the worst of both. */
+check('and the solver reports that it composed the other layers',
+  withTrim.warnings.some(w => /real part physics/.test(w)),
+  withTrim.warnings.join(' | '));
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

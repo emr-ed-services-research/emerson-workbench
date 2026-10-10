@@ -282,6 +282,35 @@
     return V * (D / 12) / nu;
   }
 
+  /* ---- K AND Cv ARE THE SAME STATEMENT ------------------------------
+     A resistance coefficient and a flow coefficient describe the same
+     restriction in different currencies, and the standard already
+     carries the exchange rate. ISA-75.01.01's piping geometry factor
+
+         Fp = 1 / sqrt(1 + (sumK / N2) * (Cv / d^2)^2)
+
+     is written so that sumK and (Cv/d^2) trade off exactly. Setting the
+     two terms equal gives
+
+         K = N2 * (d^2 / Cv)^2      and      Cv = d^2 * sqrt(N2 / K)
+
+     with N2 = 890 for d in inches -- the same constant the sizing above
+     uses, from the standard's own Equation Constants table. So this is
+     not a new correlation, it is the one already in the file, read the
+     other way round. That matters: it means a fitting's published K can
+     enter a Cv-based network solve without anybody inventing a bridge. */
+  function cvFromK(K, d) {
+    if (!(K > 0))
+      throw new Error('sizing.cvFromK: K must be positive. A fitting with ' +
+        'zero resistance is not a restriction and should not be in the ' +
+        'series at all.');
+    if (!(d > 0))
+      throw new Error('sizing.cvFromK: bore must be positive inches -- the ' +
+        'conversion is through d^2 and is meaningless without it.');
+    return d * d * Math.sqrt(N2 / K);
+  }
+  const kFromCv = (Cv, d) => N2 * Math.pow((d * d) / Cv, 2);
+
   /* ---- A LINE OF FITTINGS, WITH ABSENCE MADE LOUD -------------------
 
      Totalling minor losses is a sum, and that is exactly why it is
@@ -354,7 +383,8 @@
     sizeLiquid: sizeLiquid, requiredCv: requiredCv,
     reducerK: reducerK, Ff: Ff, Fp: Fp, FLP: FLP, N1: N1, N2: N2,
     resistance: resistance, dPfromK: dPfromK, reynolds: reynolds,
-    seriesLoss: seriesLoss, METHODS: Object.keys(METHODS),
+    seriesLoss: seriesLoss, cvFromK: cvFromK, kFromCv: kFromCv,
+    METHODS: Object.keys(METHODS),
   };
 
 })(window.LPE = window.LPE || {});
