@@ -299,6 +299,41 @@ industry that rig belongs to. Level 1 needs irrigation parts, and that
 sourcing errand has not been done — the ASME work tonight serves the *bench*
 and CVE, which are genuinely process-industry, and serves level 1 not at all.
 
+### What Emerson's shelf actually covers — checked 2026-10-10
+
+Information Center → Standards → **External Standards**. The enterprise
+agreement (Intertek, formerly SAI Global, signed 2024–2027) covers these
+publishers:
+
+> ANSI · API · ASME · ASTM COMPASS · AVENTICS · AWS · Chlorine Institute ·
+> CSA · EN (CEN/CENELEC) · FCI · FM · GOST · IEC · IEEE · **ISA** · **ISO** ·
+> ISPE GAMP · Lloyd's Register · Mexican NOM · MIL · AGA/MSS/UL/VDMA · NACE ·
+> NADCA · NAMUR · NBIC · NORSOK · PIP · US NRC · WIB · Shell
+
+**ASABE is not there. No agricultural engineering body is.** That is the
+expected result for a process-controls company, and it means the agricultural
+route for level 1 runs through **ISO**, which *is* covered — ISO publishes an
+irrigation-equipment series — or through manufacturer literature
+(Netafim, Rain Bird, Toro), which `provenance: 'manufacturer-standard'`
+already accommodates.
+
+**And there is a route for anything missing**, which this document previously
+mis-stated as a purchase. The same page:
+
+> *"Emerson maintains a collection of these standards by licensing them for
+> single use… If a standard cannot be found, you can request it using the
+> **Standards Request Form**."*
+
+So a gap is an **internal request**, not a procurement decision. That applies
+to ISA-5.1 (32 citations, every neighbour held, 5.1 absent — confirmed from
+the by-number index) and to any ASABE document, if ISO turns out not to cover
+what a grow bay needs.
+
+Two errands follow, and neither is ASME:
+
+1. **Check ISO's irrigation-equipment series** via Enterprise Access – ISO.
+2. **Request ISA-5.1** on the Standards Request Form.
+
 ---
 
 ## 5. Assembly

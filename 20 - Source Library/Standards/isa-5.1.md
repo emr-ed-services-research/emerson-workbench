@@ -39,7 +39,19 @@ NOT AVAILABLE. The Information Center's ISA listing carries 5.2, 5.3, 5.4 and 5.
 
 **Confirmed absent by full-text search, 2026-10-10.** A Fishweb Quick Search for `ISA-5.1` across every collection returns **11 results, and not one of them is the standard**. All are documents that *cite* it: ISA-5.4 (Instrument Loop Diagrams), ISA-5.2 (Binary Logic Diagrams), ISA-98.00.01, the ISA-77 series, ASME TDP-1, and two Emerson procedures (AG14326020/21). The search index reaches the PDFs themselves — it found and named B16.9 and B16.11 the same way — so this is a real absence, not a cataloguing gap.
 
-**That makes closing this a purchasing decision, not a searching one.** No amount of further looking inside Emerson will produce ISA-5.1; it has to be bought from ISA or requested as an individual-use copy. Worth deciding deliberately, because 32 citations across the vault currently rest on it.
+**Confirmed a third time, from the authoritative index, 2026-10-10.** The Information Center's *All ISA Standards Sorted by Number* listing — 192 entries, and the one an earlier session could not get to load — runs straight through the 5-series:
+
+> ISA-37.8 → **ISA-5.06.01** → **ISA-5.2** → **ISA-5.3** → **ISA-5.4** → **ISA-5.5** → ISA-50.00.01
+
+There is no 5.1. Emerson holds every neighbour and not the one the vault cites 32 times.
+
+**And this is NOT a purchasing decision — an earlier version of this entry said it was, and that was wrong.** The External Standards page states the route plainly:
+
+> *"External standards are sometimes too expensive to maintain for enterprise use. To minimize cost, Emerson maintains a collection of these standards by licensing them for single use and limiting their access… If a standard cannot be found, you can request it using the **Standards Request Form**."*
+
+So the action is an **internal individual-use request**, not a purchase: `Information Center → Standards → External Standards → Standards Request Form`. Contact `Fisher-Mtown.Info-Center@emerson.com`.
+
+That is a materially cheaper answer than "buy it from ISA", and it is the one thing standing between 32 uncheckable citations and a held document.
 
 ## What has been read
 
