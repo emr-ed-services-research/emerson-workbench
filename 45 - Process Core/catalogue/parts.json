@@ -21,6 +21,60 @@
 
   "units": { "canonical": "in", "note": "as-printed values keep their own unit" },
 
+  "resistance": {
+    "_note": [
+      "WHAT A FITTING COSTS. Not a number -- a correlation, evaluated at the",
+      "Reynolds number and bore in play. Two are held and they disagree, so",
+      "both are carried and the caller chooses; see src/sizing.js for which",
+      "is the outlier at which size.",
+      "",
+      "THE JUDGEMENT THIS FORCES, stated here rather than buried in code:",
+      "NO PUBLISHED CORRELATION HAS A SOCKET-WELD ROW. The choice is",
+      "'threaded' or 'flanged/welded', and for ASME B16.11 fittings the",
+      "honest mapping is THREADED -- B16.11 governs socket-welding AND",
+      "threaded fittings in one document and gives them the same body",
+      "dimensions, Table 1 and Table 5 carrying the same centre-to-bottom-of-",
+      "socket A. They are the same forging with a different end preparation,",
+      "and both are compact blocks with sharp internal corners. A flanged or",
+      "butt-welded elbow has a real radius, which is exactly why its",
+      "coefficient is lower.",
+      "",
+      "If anything this UNDER-states the loss: a socket-weld joint leaves a",
+      "small annular step at the socket bottom that a threaded one does not.",
+      "No source quantifies it, so it is not modelled -- recorded, not guessed.",
+      "",
+      "Every basis carries its uncertainty. Published fitting-loss data runs",
+      "25-30% in general and 10% at the very best."
+    ],
+    "ELBOW90/THREADED": {
+      "appliesTo": "elbow-socketweld, mapped to threaded -- see _note",
+      "darby-3k": { "method": "darby-3k", "K1": 800, "Ki": 0.14, "Kd": 4.0,
+                    "uncertaintyPct": 30,
+                    "source": "Darby 3-K, 90 deg elbow R/D=1, threaded" },
+      "hooper-2k": { "method": "hooper-2k", "K1": 800, "Kinf": 0.40,
+                     "uncertaintyPct": 30,
+                     "source": "Hooper 2-K, 90 deg elbow R/D=1, threaded" }
+    },
+    "TEE/RUN/THREADED": {
+      "appliesTo": "tee-socketweld, flow straight through the run",
+      "darby-3k": { "method": "darby-3k", "K1": 200, "Ki": 0.091, "Kd": 4.0,
+                    "uncertaintyPct": 30,
+                    "source": "Darby 3-K, tee run-through, threaded" },
+      "hooper-2k": { "method": "hooper-2k", "K1": 200, "Kinf": 0.10,
+                     "uncertaintyPct": 30,
+                     "source": "Hooper 2-K, tee run-through, screwed" }
+    },
+    "TEE/BRANCH/THREADED": {
+      "appliesTo": "tee-socketweld, flow turning out of the branch",
+      "darby-3k": { "method": "darby-3k", "K1": 500, "Ki": 0.274, "Kd": 4.0,
+                    "uncertaintyPct": 30,
+                    "source": "Darby 3-K, tee through-branch, threaded R/D=1" },
+      "hooper-2k": { "method": "hooper-2k", "K1": 500, "Kinf": 0.70,
+                     "uncertaintyPct": 30,
+                     "source": "Hooper 2-K, tee used as elbow, screwed" }
+    }
+  },
+
   "pipe": {
     "_source": {
       "std": "ASME B36.10M", "table": "Schedule 40 / STD",
@@ -67,7 +121,8 @@
       ]
     },
     "ELBOW90/SW3000/NPS0.375": {
-      "class": "elbow-socketweld", "nps": 0.375, "rating": "Class 3000",
+      "class": "elbow-socketweld",
+      "resistance": "ELBOW90/THREADED", "nps": 0.375, "rating": "Class 3000",
       "dims": { "centreToSocket": 0.5315, "socketBore": 0.7087,
                 "fittingBore": 0.5236, "socketWall": 0.1579,
                 "bodyWall": 0.1260, "socketDepth": 0.3740 },
@@ -77,7 +132,8 @@
       "tolerance": { "centreToSocket": "±1.5 mm" }
     },
     "ELBOW90/SW3000/NPS0.5": {
-      "class": "elbow-socketweld", "nps": 0.5, "rating": "Class 3000",
+      "class": "elbow-socketweld",
+      "resistance": "ELBOW90/THREADED", "nps": 0.5, "rating": "Class 3000",
       "dims": { "centreToSocket": 0.6102, "socketBore": 0.8740,
                 "fittingBore": 0.6535, "socketWall": 0.1839,
                 "bodyWall": 0.1469, "socketDepth": 0.3740 },
@@ -87,7 +143,9 @@
       "tolerance": { "centreToSocket": "±1.5 mm" }
     },
     "TEE/SW3000/NPS0.375": {
-      "class": "tee-socketweld", "nps": 0.375, "rating": "Class 3000",
+      "class": "tee-socketweld",
+      "resistance": { "run": "TEE/RUN/THREADED",
+                      "branch": "TEE/BRANCH/THREADED" }, "nps": 0.375, "rating": "Class 3000",
       "dims": { "centreToSocket": 0.5315, "socketBore": 0.7087,
                 "fittingBore": 0.5236, "bodyWall": 0.1260,
                 "socketDepth": 0.3740 },
@@ -97,7 +155,9 @@
       "tolerance": { "centreToSocket": "±1.5 mm" }
     },
     "TEE/SW3000/NPS0.5": {
-      "class": "tee-socketweld", "nps": 0.5, "rating": "Class 3000",
+      "class": "tee-socketweld",
+      "resistance": { "run": "TEE/RUN/THREADED",
+                      "branch": "TEE/BRANCH/THREADED" }, "nps": 0.5, "rating": "Class 3000",
       "dims": { "centreToSocket": 0.6102, "socketBore": 0.8740,
                 "fittingBore": 0.6535, "bodyWall": 0.1469,
                 "socketDepth": 0.3740 },

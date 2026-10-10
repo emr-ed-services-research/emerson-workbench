@@ -136,6 +136,39 @@ if (cat) {
     'and small bore is not buttwelded anyway -- that is B16.11 territory.');
 }
 
+/* ---- RESISTANCE BASES -------------------------------------------------
+   A fitting's loss is a correlation, not a dimension, so it cannot be
+   checked against an as-printed value the way a bore is. What CAN be
+   required is that it names a publication and an uncertainty, and that
+   every part pointing at one points at something real.              */
+console.log('');
+if (cat) {
+  check('the catalogue defines resistance bases',
+    cat.bases().length >= 3, cat.bases().join(', '));
+
+  const el = cat.resistanceOf('ELBOW90/SW3000/NPS0.5', 'darby-3k');
+  check('a socket-weld elbow has a sourced Darby basis',
+    !!el && el.K1 === 800 && el.Ki === 0.14, JSON.stringify(el && el.source));
+  check('and a Hooper basis too, so the two can be compared',
+    !!cat.resistanceOf('ELBOW90/SW3000/NPS0.5', 'hooper-2k'));
+  check('every basis carries an uncertainty',
+    el.uncertaintyPct === 30, String(el.uncertaintyPct));
+
+  /* A tee costs different amounts through the run and out the branch,
+     and no published correlation treats them as one. */
+  const run = cat.resistanceOf('TEE/SW3000/NPS0.5', 'darby-3k', 'run');
+  const br = cat.resistanceOf('TEE/SW3000/NPS0.5', 'darby-3k', 'branch');
+  check('a tee has a different basis for run and branch', run.Ki !== br.Ki,
+    'run Ki ' + run.Ki + ', branch Ki ' + br.Ki);
+  check('and turning out of the branch costs more than running through',
+    br.Ki > run.Ki);
+
+  /* Pipe has no fitting loss. Returning null is the point: the caller
+     must notice, rather than being handed a zero that looks computed. */
+  check('pipe has no resistance basis, and says so with null',
+    cat.resistanceOf('PIPE/NPS0.5/S40', 'darby-3k') === null);
+}
+
 /* ------------------------------------------- 2 & 3. every guard really bites */
 
 console.log('');
@@ -159,6 +192,22 @@ refuses('a transposed digit is refused',
 refuses('a group with no stated source is refused',
   d => { delete d.fitting._source; },
   'names no source');
+
+refuses('a resistance basis with no publication is refused',
+  d => { delete d.resistance['ELBOW90/THREADED']['darby-3k'].source; },
+  'names no source');
+refuses('a resistance basis with no uncertainty is refused',
+  d => { delete d.resistance['ELBOW90/THREADED']['darby-3k'].uncertaintyPct; },
+  'carries no uncertaintyPct');
+refuses('a basis filed under the wrong method name is refused',
+  d => { d.resistance['ELBOW90/THREADED']['darby-3k'].method = 'hooper-2k'; },
+  'matches the key');
+refuses('a basis missing a coefficient is refused',
+  d => { delete d.resistance['ELBOW90/THREADED']['darby-3k'].Kd; },
+  'is missing Kd');
+refuses('a part pointing at a basis that does not exist is refused',
+  d => { d.fitting['ELBOW90/SW3000/NPS0.5'].resistance = 'ELBOW90/INVENTED'; },
+  'which the catalogue does not define');
 
 refuses('a part with no class is refused',
   d => { delete d.pipe['PIPE/NPS0.5/S40'].class; },

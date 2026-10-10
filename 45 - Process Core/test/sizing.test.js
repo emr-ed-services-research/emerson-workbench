@@ -117,6 +117,106 @@ check('capping at the choked drop demands MORE Cv than the full drop would',
   ' if the full ' + hard.dP.toFixed(0) + ' psi were usable -- it is not, ' +
   'because the valve chokes at ' + hard.dPchoked.toFixed(0) + ' psi');
 
+/* ---- FITTING RESISTANCE ----------------------------------------------
+   Both correlations recomputed here from their published coefficients,
+   independently of the layer, at a condition worked by hand:
+   NPS 1/2 Sch 40 bore 0.622 in, water at about 2 gpm, Re 10,127.     */
+console.log('');
+const RE = 10127, BORE = 0.622;
+const DARBY = { method: 'darby-3k', K1: 800, Ki: 0.14, Kd: 4.0, uncertaintyPct: 30 };
+const HOOP = { method: 'hooper-2k', K1: 800, Kinf: 0.40, uncertaintyPct: 30 };
+
+const dK = 800 / RE + 0.14 * (1 + 4.0 / Math.pow(BORE, 0.3));
+const hK = 800 / RE + 0.40 * (1 + 1 / BORE);
+
+check('Darby 3-K reproduces K1/Re + Ki(1 + Kd/D^0.3)',
+  within(S.resistance(DARBY, RE, BORE).K, dK, 0.001),
+  S.resistance(DARBY, RE, BORE).K.toFixed(4) + ' vs ' + dK.toFixed(4));
+check('Hooper 2-K reproduces K1/Re + Kinf(1 + 1/D)',
+  within(S.resistance(HOOP, RE, BORE).K, hK, 0.001),
+  S.resistance(HOOP, RE, BORE).K.toFixed(4) + ' vs ' + hK.toFixed(4));
+
+/* THE FINDING THAT JUSTIFIES CARRYING BOTH. Hooper runs 30% above Darby
+   here -- but the data's own uncertainty is 25-30%, so the two bands
+   OVERLAP. The methods do not actually disagree beyond what the
+   underlying measurements are worth, which is why this layer reports a
+   band and refuses to pick a winner. */
+const rd = S.resistance(DARBY, RE, BORE), rh = S.resistance(HOOP, RE, BORE);
+check('Hooper reads higher than Darby at small bore', rh.K > rd.K,
+  rh.K.toFixed(3) + ' vs ' + rd.K.toFixed(3));
+check('but their uncertainty bands overlap, so they do not truly disagree',
+  rd.hi > rh.lo,
+  'Darby ' + rd.lo.toFixed(3) + '-' + rd.hi.toFixed(3) +
+  ', Hooper ' + rh.lo.toFixed(3) + '-' + rh.hi.toFixed(3));
+
+/* And the ordering flips with size, which is the whole reason the basis
+   is a property of the part rather than a constant in this file. */
+const big = 6.065, bigRe = 467545;
+const DB = { method: 'darby-3k', K1: 800, Ki: 0.056, Kd: 3.9 };
+const HB = { method: 'hooper-2k', K1: 800, Kinf: 0.20 };
+check('at NPS 6 the ordering inverts -- Darby becomes the low one',
+  S.resistance(DB, bigRe, big).K < S.resistance(HB, bigRe, big).K,
+  'Darby ' + S.resistance(DB, bigRe, big).K.toFixed(3) +
+  ' vs Hooper ' + S.resistance(HB, bigRe, big).K.toFixed(3));
+
+check('every result carries its uncertainty band',
+  rd.uncertaintyPct === 30 && rd.lo < rd.K && rd.hi > rd.K);
+check('and the band defaults to 30% rather than to zero when unstated',
+  S.resistance({ method: 'darby-3k', K1: 800, Ki: 0.14, Kd: 4 }, RE, BORE)
+    .uncertaintyPct === 30,
+  'an unstated uncertainty must not read as certainty');
+
+/* Head loss and Reynolds, each against a hand figure. */
+check('Reynolds for 2.112 ft/s in a 0.622 in bore is about 10,100',
+  within(S.reynolds(2.112, 0.622, 1.081e-5), 10127, 1),
+  S.reynolds(2.112, 0.622, 1.081e-5).toFixed(0));
+check('one velocity head of water at 2.112 ft/s is about 0.030 psi',
+  within(S.dPfromK(1, 2.112, 1.0), 0.0300, 2),
+  S.dPfromK(1, 2.112, 1.0).toFixed(5) + ' psi');
+check('and loss scales with the square of velocity',
+  within(S.dPfromK(1, 4.224, 1) / S.dPfromK(1, 2.112, 1), 4, 0.01));
+
+/* ---- A LINE OF FITTINGS, AND WHAT HAPPENS WHEN ONE IS UNSOURCED ------
+   The whole point of the interface: a fitting with no K contributes
+   zero to a sum, so the total still looks finished. It must not be
+   possible to get that number by accident.                          */
+console.log('');
+const LINE_V = 2.112, LINE_SG = 1.0;
+const threeKnown = [
+  { label: 'elbow 1', basis: DARBY },
+  { label: 'elbow 2', basis: DARBY },
+  { label: 'tee run', basis: { method: 'darby-3k', K1: 200, Ki: 0.091, Kd: 4 } },
+];
+const line = S.seriesLoss(threeKnown, LINE_V, LINE_SG, RE, BORE);
+check('a fully sourced line totals its fittings',
+  line.complete === true && line.items.length === 3,
+  'K = ' + line.K.toFixed(3) + ', dP = ' + line.dP.toFixed(5) + ' psi');
+check('and the total is the sum of the parts',
+  within(line.K, line.items.reduce((t, x) => t + x.K, 0), 0.0001));
+check('the uncertainty band widens with the line, it does not cancel',
+  line.Khi > line.K && line.Klo < line.K && line.Khi - line.Klo > 0.5,
+  line.Klo.toFixed(3) + ' to ' + line.Khi.toFixed(3));
+
+/* THE REFUSAL THAT MATTERS */
+const withGap = threeKnown.concat([{ label: 'reducer, no basis' }]);
+let gapMsg = '';
+try { S.seriesLoss(withGap, LINE_V, LINE_SG, RE, BORE); }
+catch (e) { gapMsg = e.message; }
+check('one unsourced fitting refuses the WHOLE total',
+  /no sourced resistance/.test(gapMsg) && /reducer, no basis/.test(gapMsg),
+  gapMsg.slice(0, 90));
+check('and the refusal explains why a zero would be worse than nothing',
+  /contributes zero/.test(gapMsg) && /look finished/.test(gapMsg));
+
+/* A partial is available, but only on request and only as a bound. */
+const partial = S.seriesLoss(withGap, LINE_V, LINE_SG, RE, BORE,
+                             { allowPartial: true });
+check('a partial can be asked for explicitly', partial.complete === false);
+check('and it is labelled a LOWER BOUND, not a result',
+  /LOWER BOUND/.test(partial.bound) && /reducer, no basis/.test(partial.bound));
+check('the partial equals the sourced part exactly, nothing imputed',
+  within(partial.K, line.K, 0.0001));
+
 /* ---- honest refusals -------------------------------------------------- */
 console.log('');
 const refuses = (label, fn, expect) => {
@@ -134,6 +234,19 @@ refuses('a valve bigger than its line is refused',
   () => S.reducerK(10, 8), 'exceeds line bore');
 refuses('no candidate list is refused rather than defaulted',
   () => S.requiredCv(SVC, [], LINE), 'no default valve line');
+refuses('a fitting with no basis gets no invented resistance',
+  () => S.resistance(null, RE, BORE), 'no basis given');
+refuses('an unknown correlation is refused by name',
+  () => S.resistance({ method: 'crane-410', n: 30 }, RE, BORE),
+  'unknown method');
+refuses('a basis missing a coefficient is refused, and names which',
+  () => S.resistance({ method: 'darby-3k', K1: 800 }, RE, BORE), 'Ki, Kd');
+refuses('Reynolds number is required, not optional',
+  () => S.resistance(DARBY, 0, BORE), 'Reynolds number must be positive');
+refuses('and so is the bore, in inches',
+  () => S.resistance(DARBY, RE, 0), 'positive number of');
+refuses('an empty line is refused, because it is not the same as no loss',
+  () => S.seriesLoss([], 1, 1, RE, BORE), 'An empty line has no loss');
 
 /* Without Pv and Pc the choke check CANNOT be made, and the result has to
    say so instead of implying the valve is safe. */

@@ -1,7 +1,7 @@
 ---
 title: Process Core — Flow Lab Plan
 type: plan
-status: PROPOSED — awaiting approval; nothing built. Rev 2: sources resolved, Phase 2 unblocked
+status: Rev 3 — Phases 0, 1 and 2 BUILT. Phases 3-5 outstanding.
 tags:
   - project
   - process-core
@@ -58,7 +58,7 @@ stored K must carry its uncertainty band with it.
 
 ---
 
-## Phase 0 — the harness, graded on physics we already have
+## Phase 0 — the harness, graded on physics we already have  ✅ BUILT
 
 **Goal.** `45 - Process Core/lab/`, one directory per loop: a netlist, a
 declared operating point, the published answer, and the citation for it.
@@ -86,7 +86,7 @@ running it, and a failure here is the most valuable single output of Phase 0.
 
 ---
 
-## Phase 1 — the flow path: centreline and area profile `A(s)`
+## Phase 1 — the flow path: centreline and area profile `A(s)`  ✅ BUILT
 
 **Goal.** `geometry` gains, for each part, the path a fluid takes through it
 and the passage area along that path.
@@ -120,7 +120,7 @@ dimension it, so it is left out and said so.
 
 ---
 
-## Phase 2 — the resistance interface, with absence made loud
+## Phase 2 — the resistance interface, with absence made loud  ✅ BUILT
 
 **Goal.** Define how a part declares its loss, **without inventing a single
 value** — and carry its uncertainty beside it, because a K quoted to three

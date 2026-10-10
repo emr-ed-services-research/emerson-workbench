@@ -169,9 +169,192 @@
              exhausted: picked === null };
   }
 
+  /* ================= FITTING RESISTANCE =============================
+
+     WHAT A FITTING COSTS, and the one thing this must never do is
+     invent it.
+
+     A fitting's loss is not a number. It is a CORRELATION evaluated at
+     the Reynolds number and bore in play, and the two published
+     correlations this vault holds disagree -- so which one is used, and
+     how uncertain the answer is, travel with every result.
+
+       Darby 3-K   K = K1/Re + Ki * (1 + Kd / D^0.3)
+       Hooper 2-K  K = K1/Re + Kinf * (1 + 1/D)
+
+     with D the internal diameter in INCHES.
+
+     WHICH IS RIGHT DEPENDS ON SIZE, which is why neither is hardcoded.
+     Measured on a long-radius buttweld elbow at 10 ft/s:
+
+       NPS 1/2, Re 10k    Crane 0.810  Hooper 1.122  Darby 0.865
+       NPS 6,   Re 468k   Crane 0.240  Hooper 0.235  Darby 0.185
+       NPS 24,  Re 1.7M   Crane 0.192  Hooper 0.209  Darby 0.142
+
+     At small bore Hooper is the outlier; at every industrial size Darby
+     is, low by 23 to 47 percent, while Crane and Hooper agree inside 2.
+     A layer that picked one for you would be picking wrong half the
+     time, so the basis is part of the part's record and the caller can
+     ask for the other and compare.
+
+     UNCERTAINTY IS NOT OPTIONAL. Published fitting-loss data carries 25
+     to 30 percent in general and 10 percent at the very best, and
+     proprietary items run -50 to +100 against generic data. Every
+     result carries its band. A K quoted to three decimals as though it
+     were exact is a lie the arithmetic will happily tell.
+
+     See `20 - Source Library/Standards/darby-3k.md`, `hooper-2k.md`
+     and `crane-tp-410.md`.                                           */
+
+  const METHODS = {
+    'darby-3k': {
+      need: ['K1', 'Ki', 'Kd'],
+      K: (b, Re, D) => b.K1 / Re + b.Ki * (1 + b.Kd / Math.pow(D, 0.3)),
+      cite: 'Darby 3-K',
+    },
+    'hooper-2k': {
+      need: ['K1', 'Kinf'],
+      K: (b, Re, D) => b.K1 / Re + b.Kinf * (1 + 1 / D),
+      cite: 'Hooper 2-K',
+    },
+  };
+
+  function resistance(basis, Re, D) {
+    if (!basis || typeof basis !== 'object')
+      throw new Error('sizing.resistance: no basis given. A fitting with no ' +
+        'sourced resistance has no resistance this layer will invent -- ask ' +
+        'the catalogue for the part\'s basis, and if it has none, say so ' +
+        'rather than passing zero.');
+    const m = METHODS[basis.method];
+    if (!m)
+      throw new Error('sizing.resistance: unknown method "' + basis.method +
+        '". Known: ' + Object.keys(METHODS).join(', ') + '. Add one only ' +
+        'with its publication, not from a table somebody copied.');
+    const miss = m.need.filter(k => typeof basis[k] !== 'number');
+    if (miss.length)
+      throw new Error('sizing.resistance: ' + basis.method + ' needs ' +
+        miss.join(', ') + ' and the basis does not carry ' +
+        (miss.length > 1 ? 'them' : 'it') + '.');
+    if (!(Re > 0))
+      throw new Error('sizing.resistance: Reynolds number must be positive. ' +
+        'K depends on it -- at Re 10,000 the laminar term is a tenth of the ' +
+        'answer and at Re 1,000,000 it is nothing, so it cannot be skipped.');
+    if (!(D > 0))
+      throw new Error('sizing.resistance: bore must be a positive number of ' +
+        'inches. Both correlations carry a size term and both read it in ' +
+        'inches, so a millimetre here is wrong by a factor of 25.');
+
+    const K = m.K(basis, Re, D);
+    const pct = typeof basis.uncertaintyPct === 'number'
+      ? basis.uncertaintyPct : 30;
+    return {
+      K: K, method: basis.method, cite: m.cite,
+      uncertaintyPct: pct, lo: K * (1 - pct / 100), hi: K * (1 + pct / 100),
+      source: basis.source || null,
+      note: basis.note || null,
+    };
+  }
+
+  /* Head loss from a resistance coefficient, in psi, for V in ft/s.
+
+       dP = K * rho * V^2 / (2 * gc * 144)
+          = K * V^2 * sg * 62.4 / (2 * 32.174 * 144)
+          = K * V^2 * sg * 6.734e-3
+
+     The constant was 2.238e-3 on the first pass, which is this
+     arithmetic done wrong by a factor of three, and the test caught it:
+     one velocity head of water at 2.112 ft/s is 0.0300 psi and the
+     layer was returning 0.0100. Worth leaving the derivation here
+     rather than the number alone, since a bare constant is exactly what
+     nobody re-checks. */
+  const PSI_PER_VHEAD = 62.4 / (2 * 32.174 * 144);   // 6.734e-3
+  function dPfromK(K, V, sg) {
+    if (!(V >= 0)) throw new Error('sizing.dPfromK: velocity must be >= 0');
+    if (!(sg > 0)) throw new Error('sizing.dPfromK: specific gravity must be > 0');
+    return K * sg * V * V * PSI_PER_VHEAD;
+  }
+
+  /* Reynolds number for a round bore. D in inches, V in ft/s, nu in
+     ft2/s -- water at 20 C is 1.081e-5. */
+  function reynolds(V, D, nu) {
+    if (!(D > 0)) throw new Error('sizing.reynolds: bore must be positive inches');
+    if (!(nu > 0)) throw new Error('sizing.reynolds: kinematic viscosity must be positive');
+    return V * (D / 12) / nu;
+  }
+
+  /* ---- A LINE OF FITTINGS, WITH ABSENCE MADE LOUD -------------------
+
+     Totalling minor losses is a sum, and that is exactly why it is
+     dangerous: a fitting with no sourced K contributes zero to a sum
+     and the answer still looks finished. A quiet zero is the single
+     most expensive thing this layer could do, because the number that
+     comes out is plausible, specific, and wrong in the direction that
+     makes a line look better than it is.
+
+     So `seriesLoss` REFUSES. It returns no total at all while any entry
+     is unsourced, names every one of them, and says what would close
+     the gap. A partial answer is available only if the caller asks for
+     it explicitly with `allowPartial`, and even then it is labelled as
+     a lower bound rather than a result.
+
+     Each entry is {label, basis} -- a basis from the catalogue -- or
+     {label, K} for something already evaluated. Conditions are the
+     velocity and specific gravity in that reach.                     */
+  function seriesLoss(entries, V, sg, Re, D, opts) {
+    if (!Array.isArray(entries) || !entries.length)
+      throw new Error('sizing.seriesLoss: give it the fittings in the line. ' +
+        'An empty line has no loss, which is a different statement from a ' +
+        'line whose losses are unknown, and the caller should not be able ' +
+        'to confuse the two by passing nothing.');
+    const allowPartial = !!(opts && opts.allowPartial);
+
+    const got = [], missing = [];
+    for (const e of entries) {
+      if (typeof e.K === 'number') {
+        got.push({ label: e.label, K: e.K, lo: e.K, hi: e.K, source: e.source || null });
+        continue;
+      }
+      if (e.basis) {
+        const r = resistance(e.basis, Re, D);
+        got.push({ label: e.label, K: r.K, lo: r.lo, hi: r.hi, source: r.source });
+        continue;
+      }
+      missing.push(e.label || '(unnamed fitting)');
+    }
+
+    const sum = a => a.reduce((t, x) => t + x, 0);
+    const K = sum(got.map(x => x.K));
+    const result = {
+      items: got, missing: missing,
+      K: K, Klo: sum(got.map(x => x.lo)), Khi: sum(got.map(x => x.hi)),
+      dP: dPfromK(K, V, sg),
+      dPlo: dPfromK(sum(got.map(x => x.lo)), V, sg),
+      dPhi: dPfromK(sum(got.map(x => x.hi)), V, sg),
+      complete: missing.length === 0,
+    };
+
+    if (missing.length && !allowPartial)
+      throw new Error('sizing.seriesLoss: ' + missing.length + ' of ' +
+        entries.length + ' fittings have no sourced resistance -- ' +
+        missing.join(', ') + '. No total is returned, because a fitting ' +
+        'with no K contributes zero to a sum and the answer would still ' +
+        'look finished. Give each one a basis from the catalogue, or ask ' +
+        'for a partial with {allowPartial:true} and read it as a LOWER ' +
+        'BOUND on the real loss.');
+
+    if (missing.length) {
+      result.bound = 'LOWER BOUND -- ' + missing.length + ' unsourced: ' +
+        missing.join(', ') + '. The real loss is higher by whatever they ' +
+        'cost, which nobody here knows.';
+    }
+    return result;
+  }
+
   LPE.sizing = {
     sizeLiquid: sizeLiquid, requiredCv: requiredCv,
     reducerK: reducerK, Ff: Ff, Fp: Fp, FLP: FLP, N1: N1, N2: N2,
+    resistance: resistance, dPfromK: dPfromK, reynolds: reynolds,
+    seriesLoss: seriesLoss, METHODS: Object.keys(METHODS),
   };
 
 })(window.LPE = window.LPE || {});
