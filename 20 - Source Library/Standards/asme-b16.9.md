@@ -11,6 +11,7 @@ holding: confirmed
 updated: 2026-10-10
 used-by:
   - "00 - Project/Process Core — Component Catalogue.md"
+  - "45 - Process Core/catalogue/parts.json"
 ---
 
 # ASME B16.9 — Factory-Made Wrought Buttwelding Fittings

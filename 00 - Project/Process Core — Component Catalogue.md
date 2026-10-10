@@ -329,10 +329,58 @@ to ISA-5.1 (32 citations, every neighbour held, 5.1 absent — confirmed from
 the by-number index) and to any ASABE document, if ISO turns out not to cover
 what a grow bay needs.
 
-Two errands follow, and neither is ASME:
+### The ISO route is closed too — checked 2026-10-10
 
-1. **Check ISO's irrigation-equipment series** via Enterprise Access – ISO.
-2. **Request ISA-5.1** on the Standards Request Form.
+Checked, same sitting. Emerson's ISO holdings are **142 documents**, and all
+142 were read from the by-number listing. The curated collections are:
+
+> castings · fasteners · flow measurement · IT and risk management · pipe
+> thread · pipe, valve and flange · quality and environmental management ·
+> screw thread · tolerances
+
+**There is no irrigation standard and no TC 23 document of any kind.** Not
+ISO 8779 (polyethylene pipes for irrigation), not ISO 9261 (emitters and
+emitting pipe), not ISO 15873 (subsurface). The shelf is fasteners, welding
+procedures, threads, industrial valves and management systems — a
+process-controls company's shelf, exactly as it should be.
+
+**So the agricultural sourcing route through Emerson is closed on both
+publishers.** For a grow-bay rig the remaining honest options are:
+
+1. **Manufacturer literature** — Netafim, Rain Bird, Toro, Jain. Published
+   catalogues with real dimensions, real emitter flow rates and real pressure
+   ratings. `provenance: 'manufacturer-standard'` already exists in this design
+   for exactly this, and it is not a lesser grade of evidence than a standard —
+   for microirrigation it is closer to how the parts are actually specified.
+2. **Request ASABE or the ISO irrigation series** on the Standards Request Form.
+3. **Change the rig.** If level 1 wants to be a process rig, it can be one, and
+   the ASME shelf serves it immediately. That is a design decision, not a
+   sourcing one, and it belongs to the game not the core.
+
+Option 1 is the recommendation: it needs no internal request, it is what a real
+designer would use, and it keeps the catalogue honest about where small-bore
+polyethropylene irrigation parts actually get their numbers.
+
+### Two things worth having fell out of the search
+
+Both found while looking for irrigation and registered on the spot:
+
+- **`ISO 3419`** — non-alloy and alloy steel butt-welding fittings. The ISO
+  counterpart to `ASME B16.9`, held as eDocs `ISO_3419`. The catalogue needs to
+  be able to say *which* family a dimension came from; one that can only answer
+  in ASME has an unstated assumption in it.
+- **`NACE MR0175` / `ISO 15156`** — located exactly, all three parts plus every
+  technical circular, and the edition settled at **2021/2020** from the listing
+  without opening the document. Part 3 governs corrosion-resistant alloys, which
+  is where this catalogue's stainless entry gets its sour-service limit. Its
+  register entry said `edition: unverified` for one day.
+
+### Errands remaining, and none of them is ASME
+
+1. **Manufacturer catalogues for microirrigation**, if level 1 stays agricultural.
+2. **Request ISA-5.1** on the Standards Request Form — 34 citations rest on it.
+3. **Open `ASME B16.34`** for the material-group and pressure-temperature tables
+   the `material` class currently records as unread.
 
 ---
 

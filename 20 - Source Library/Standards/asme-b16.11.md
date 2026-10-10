@@ -11,6 +11,7 @@ holding: confirmed
 updated: 2026-10-10
 used-by:
   - "00 - Project/Process Core — Component Catalogue.md"
+  - "45 - Process Core/catalogue/parts.json"
   - "45 - Process Core/src/topology.js"
   - "50 - Lunar Process Engineer/vendor/process-core/topology.js"
 ---
