@@ -200,6 +200,55 @@
       draws: 'tee',
       cls: CLASS.fitting,
     },
+
+    /* ---- MANIFOLD: one body, several ports -------------------------
+
+       Not two tees that a renderer is told to draw together. A manifold
+       is a different object from an assembly of fittings, and the
+       difference is physical: a fabricated run has a forged tee at each
+       junction, with a socket hub the pipe lands in and a radiused
+       crotch where the branch leaves. A manifold machined or printed as
+       one body has neither. It has PORTS, and passages bored through it.
+
+       Drawing hubs on a part that was never assembled invents a joint
+       that does not exist, so the two cannot share a representation.
+
+       Topology is unchanged either way -- flow branches at the same
+       points whatever the thing is made of -- which is exactly why this
+       belongs in the netlist rather than being inferred downstream.
+       Only whoever specified the rig knows how it was made, and a
+       renderer cannot deduce it from coordinates.
+
+       PLACEMENT is a list of points, the same idea as the reducer's
+       span taken to its conclusion: INLET first, OUTLET last, branch
+       ports in between in declaration order.
+
+           at: { man: [[x,y0], [x,y1], [x,y2], [x,y3]] }
+                        inlet    b0       b1      outlet
+
+       Ports are `in`, `out`, and `b0`..`bN`. On a process display it is
+       still class `fitting`: ISA-5.5's Connectors group is empty
+       because pipe connections are not detailed, and a manifold body is
+       no more a schematic symbol than a tee is. It is a PHYSICAL fact,
+       and phys-view is where physical facts are drawn. */
+    manifold: {
+      ports: c => {
+        const p = c._pts, n = p.length;
+        const vert = p[0][0] === p[n - 1][0];
+        const ports = {
+          in:  { x: p[0][0],     y: p[0][1],     dir: vert ? [0, -1] : [-1, 0] },
+          out: { x: p[n - 1][0], y: p[n - 1][1], dir: vert ? [0, 1]  : [1, 0] },
+        };
+        for (let i = 1; i < n - 1; i++) {
+          ports['b' + (i - 1)] = {
+            x: p[i][0], y: p[i][1], dir: vert ? [1, 0] : [0, 1],
+          };
+        }
+        return ports;
+      },
+      draws: 'manifold',
+      cls: CLASS.fitting,
+    },
     /* A change of bore: taper in, throat, taper out. Horizontal only,
        which is all any level has needed; a vertical reducer would need
        piping() to learn one too. */
@@ -386,7 +435,35 @@
         errors.push(`${id} has no placement in frame "${frameName}"`);
         continue;
       }
-      if (c.kind === 'reducer') {
+      if (c.kind === 'manifold') {
+        /* A list, not a point: inlet, branches, outlet. Refused by name
+           when it is short or crooked, because a manifold placed wrong
+           draws a body across geometry that is not its own. */
+        if (!Array.isArray(place[0])) {
+          errors.push(`${id} is a manifold, so frame "${frameName}" must ` +
+                      `place it as a LIST of points -- inlet first, outlet ` +
+                      `last, one per branch in between`);
+          continue;
+        }
+        if (place.length < 3) {
+          errors.push(`${id} is a manifold with ${place.length} point(s) in ` +
+                      `frame "${frameName}". It needs at least three: an ` +
+                      `inlet, one branch and an outlet. With no branch it ` +
+                      `is a length of pipe, not a manifold`);
+          continue;
+        }
+        const sameX = place.every(p => p[0] === place[0][0]);
+        const sameY = place.every(p => p[1] === place[0][1]);
+        if (!sameX && !sameY) {
+          errors.push(`${id} is a manifold whose ports in frame ` +
+                      `"${frameName}" are not in line. A manifold body is ` +
+                      `one run of material: every port sits on one axis`);
+          continue;
+        }
+        c._pts = place;
+        c.at = place[0];           // its nominal point, for anything that asks
+        c._axis = sameX ? 'v' : 'h';
+      } else if (c.kind === 'reducer') {
         if (!Array.isArray(place[0]) || !Array.isArray(place[1])) {
           errors.push(`${id} is a reducer, so frame "${frameName}" must ` +
                       `place it as two points [[x0,y],[x1,y]] -- it spans a ` +
@@ -559,12 +636,28 @@
         }
       }
 
-      // A bore change belongs in a reducer, not at a joint.
-      if (s.from.comp.kind !== 'reducer' && s.to.comp.kind !== 'reducer') {
+      /* A bore change belongs in a reducer, not at a joint -- EXCEPT
+         where a component is built to take one.
+
+         A tee was already exempt: a reducing tee is a stock fitting and
+         the branch outlet is commonly smaller than the run.
+
+         A MANIFOLD is exempt for a stronger reason. Feeding branches
+         narrower than the run is the whole purpose of the thing, and
+         there is no joint at the port to put a reducer in -- the bore
+         changes inside one piece of material. Demanding a fitting there
+         would be demanding a joint the part was specified to avoid.
+
+         This rule was written when every junction was fabricated, which
+         is why it needed widening rather than overriding: the principle
+         is sound, its list of exceptions was just incomplete. */
+      const TAKES_BORE_CHANGE = { tee: true, manifold: true, reducer: true };
+      if (!TAKES_BORE_CHANGE[s.from.comp.kind] &&
+          !TAKES_BORE_CHANGE[s.to.comp.kind]) {
         const other = segs.filter(o => o !== s && o.from && o.to &&
           (o.from.id === s.to.id || o.to.id === s.from.id));
         for (const o of other) {
-          if (o.r !== s.r && s.to.comp.kind !== 'tee' && s.from.comp.kind !== 'tee') {
+          if (o.r !== s.r) {
             errs.push(`segments ${s.index} and ${o.index} meet at a bore ` +
                       `change (${s.r} vs ${o.r}) with no reducer between them`);
           }
@@ -617,7 +710,8 @@
      was a coincidence maintained by care; here it falls out of the graph. */
   function toPiping(comps, segs, opts) {
     const live = segs.filter(s => s.from && s.to);
-    const out = { lines: [], tees: [], reducers: [], fittings: [], equipment: [] };
+    const out = { lines: [], tees: [], manifolds: [], reducers: [],
+                  fittings: [], equipment: [] };
     const hidden = {};
     (opts.hide || []).forEach(c => { hidden[c] = true; });
     const drawn = c => c._visible && !hidden[c._cls];
@@ -659,6 +753,20 @@
           x: c.at[0], y: c.at[1],
           r: boreAt(live, id, 'in') || boreAt(live, id, 'out'),
           branch: branch ? branch.r : 0,
+        });
+      } else if (c._kind.draws === 'manifold') {
+        /* One body with ports, so it is emitted as one thing. The bore
+           of each port is whatever line actually lands on it -- a
+           manifold commonly feeds branches smaller than its own run,
+           which is most of why it exists. */
+        const p = c._pts, n = p.length;
+        out.manifolds.push({
+          id, axis: c._axis,
+          a: p[0], b: p[n - 1],
+          run: boreAt(live, id, 'in') || boreAt(live, id, 'out'),
+          ports: p.slice(1, n - 1).map((pt, i) => ({
+            x: pt[0], y: pt[1], r: boreAt(live, id, 'b' + i) || 0,
+          })),
         });
       } else if (c._kind.draws === 'reducer') {
         out.reducers.push({
@@ -779,8 +887,11 @@
     };
 
     return live.map(s => {
-      const R = s.from.port === 'branch'
-        ? teeTurnRadius(s.r)      // leaving a tee is a tight turn
+      /* A manifold's branch ports are b0..bN; a tee's is `branch`.
+         Both are a branch leaving a run, and both turn tightly. */
+      const isBranch = s.from.port === 'branch' || /^b\d+$/.test(s.from.port);
+      const R = isBranch
+        ? teeTurnRadius(s.r)      // leaving a run sideways is a tight turn
         : bendRadius(s.r);        // a run corner is a long-radius elbow
       const pts = dedupe(s.pts);
       const out = [];
@@ -790,7 +901,7 @@
          part of the riser -- which is correct: the metal curves there
          too, and the branch's own first leg begins where the bend ends. */
       let turnsAtStart = false;
-      if (s.from.port === 'branch' && pts.length >= 2) {
+      if (isBranch && pts.length >= 2) {
         const from = feedOf(s.from.id);
         const corner = pts[0], next = pts[1];
         if (from) {

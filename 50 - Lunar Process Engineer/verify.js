@@ -1018,7 +1018,7 @@ check('fluid: both views carry fluid state', carries.length === 2,
   /* Level 1's rig geometry, recorded while the hand-written arrays and
    the netlist both existed and were proven identical. See the note
    at the comparison below for why this is a snapshot. */
-const EXPECTED_L1_GEOMETRY = "{\"lines\":[{\"r\":10,\"pts\":[[320,170],[812,170]]},{\"r\":10,\"pts\":[[320,256],[812,256]]},{\"r\":12.6,\"pts\":[[30,86],[320,86],[320,342],[600,342]]},{\"r\":12.6,\"pts\":[[680,342],[812,342]]}],\"tees\":[{\"x\":320,\"y\":170,\"r\":12.6,\"branch\":10},{\"x\":320,\"y\":256,\"r\":12.6,\"branch\":10}],\"reducers\":[{\"x0\":600,\"x1\":680,\"y\":342,\"r1\":12.6,\"r2\":2.2}],\"fittings\":[{\"x\":116,\"y\":86,\"r\":12.6,\"kind\":\"union\"}]}";
+const EXPECTED_L1_GEOMETRY = "{\"lines\":[{\"r\":10,\"pts\":[[320,170],[812,170]]},{\"r\":10,\"pts\":[[320,256],[812,256]]},{\"r\":12.6,\"pts\":[[30,86],[320,86],[320,132]]},{\"r\":12.6,\"pts\":[[320,342],[600,342]]},{\"r\":12.6,\"pts\":[[680,342],[812,342]]}],\"tees\":[],\"reducers\":[{\"x0\":600,\"x1\":680,\"y\":342,\"r1\":12.6,\"r2\":2.2}],\"fittings\":[{\"x\":116,\"y\":86,\"r\":12.6,\"kind\":\"union\"}]}";
 
 /* Slice a `const X=LPE.f(...)` declaration by scanning braces from its
      first bracket, so the literal comes out whole however it is

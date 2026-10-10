@@ -528,6 +528,99 @@ check('two components cannot share a tag', (function () {
   s.components.pod0.tag = 'HV-7';
   return /share the tag "HV-7"/.test(LPE.net(s).errors.join(' '));
 })());
+/* ---- MANIFOLD: one body, several ports -----------------------------
+   A manifold is a different OBJECT from a row of tees, not a drawing
+   preference applied to one. Modelling it as tees and telling the
+   renderer to group them would put a fabrication fact in the renderer,
+   where nothing can check it and nothing else can read it.
+
+   Topology is identical either way -- the flow branches at the same
+   points whatever the part is made of -- which is exactly why the
+   netlist has to carry it: a renderer cannot deduce from coordinates
+   how something was manufactured. */
+console.log('');
+const MAN = {
+  bores: { main: 0.622, br: 0.493 }, fluid: { sg: 1 },
+  components: {
+    tank: { kind: 'vessel', tag: 'TK-1', role: 'source', pressure: 60 },
+    man:  { kind: 'manifold' },
+    v0: { kind: 'valve', tag: 'HV-2', key: 'b0', cv: 0.5 },
+    v1: { kind: 'valve', tag: 'HV-3', key: 'b1', cv: 0.5 },
+    v2: { kind: 'valve', tag: 'HV-4', key: 'b2', cv: 0.5 },
+    p0: { kind: 'vessel', tag: 'TK-2', role: 'sink', vesselType: 'atmospheric' },
+    p1: { kind: 'vessel', tag: 'TK-3', role: 'sink', vesselType: 'atmospheric' },
+    p2: { kind: 'vessel', tag: 'TK-4', role: 'sink', vesselType: 'atmospheric' },
+  },
+  segments: [
+    { from: 'tank.out', to: 'man.in', bore: 'main' },
+    { from: 'man.b0', to: 'v0.in', bore: 'br' }, { from: 'v0.out', to: 'p0.in', bore: 'br' },
+    { from: 'man.b1', to: 'v1.in', bore: 'br' }, { from: 'v1.out', to: 'p1.in', bore: 'br' },
+    { from: 'man.out', to: 'v2.in', bore: 'main' }, { from: 'v2.out', to: 'p2.in', bore: 'main' },
+  ],
+  frames: { rig: { pxPerInch: 20.28, round: 1, at: {
+    tank: [30, 86], man: [[320, 86], [320, 170], [320, 256], [320, 342]],
+    v0: [480, 170], v1: [480, 256], v2: [480, 342],
+    p0: [812, 170], p1: [812, 256], p2: [812, 342] } } },
+};
+const manNet = LPE.net(MAN);
+check('a manifold netlist is clean', manNet.errors.length === 0,
+      manNet.errors.join('; '));
+
+const manPipe = manNet.toPiping();
+check('it comes out as ONE body, not a row of tees',
+      manPipe.manifolds.length === 1 && manPipe.tees.length === 0,
+      `${manPipe.manifolds.length} manifolds, ${manPipe.tees.length} tees`);
+check('the body spans inlet to outlet',
+      manPipe.manifolds[0].a[1] === 86 && manPipe.manifolds[0].b[1] === 342);
+check('with a port per branch, carrying the bore that lands on it',
+      manPipe.manifolds[0].ports.length === 2 &&
+      manPipe.manifolds[0].ports.every(p => p.r === 10),
+      JSON.stringify(manPipe.manifolds[0].ports));
+
+/* The whole purpose of a manifold is branches narrower than the run,
+   and there is no joint at the port to put a reducer in. The rule that
+   demands one was written when every junction was fabricated. */
+check('feeding a smaller branch needs no reducer -- the bore changes inside the body',
+      !manNet.errors.some(e => /bore change/.test(e)), manNet.errors.join('; '));
+
+/* Branch ports are b0..bN rather than `branch`, and the water has to
+   turn at them just the same. */
+const manWater = manNet.toWater().filter(w => /man\.b\d+->/.test(w.id));
+check('water turns where it leaves the body', manWater.length === 2 &&
+      manWater.every(w => w.segments.some(s => s.arc)),
+      manWater.map(w => w.id + ':' + w.segments.filter(s => s.arc).length).join(' '));
+check('and on the tight radius, as any branch does',
+      manWater.every(w => {
+        const a = w.segments.find(s => s.arc);
+        return a && a.arc.R === LPE.net.teeTurnRadius(w.r);
+      }));
+
+/* Placement is a LIST. Refused by name when it is short or crooked --
+   a manifold placed wrong draws a body across geometry that is not
+   its own. */
+const manBad = (at, re) => {
+  const s = JSON.parse(JSON.stringify(MAN));
+  s.frames.rig.at.man = at;
+  return re.test(LPE.net(s).errors.join(' '));
+};
+check('a manifold placed at a single point is refused by name',
+      manBad([320, 86], /must place it as a LIST of points/));
+check('a manifold with no branch is refused -- that is a length of pipe',
+      manBad([[320, 86], [320, 342]], /needs at least three/));
+check('a manifold whose ports are not in line is refused',
+      manBad([[320, 86], [400, 170], [320, 342]], /not in line/));
+
+/* On a process display it is still a fitting: ISA-5.5's Connectors
+   group is empty because pipe connections are not detailed, and a
+   manifold body is no more a schematic symbol than a tee is. */
+check('a manifold is hideable like any other fitting',
+      manNet.toPiping({ hide: ['fitting'] }).manifolds.length === 0);
+check('and hiding it leaves the LINES alone -- the bore is still there',
+      JSON.stringify(manNet.toPiping({ hide: ['fitting'] }).lines) ===
+      JSON.stringify(manPipe.lines));
+
+console.log('');
+
 /* Fittings are not tagged on a real P&ID -- a tee is part of the line.
    Requiring one would be inventing a convention. */
 check('a fitting needs no tag',

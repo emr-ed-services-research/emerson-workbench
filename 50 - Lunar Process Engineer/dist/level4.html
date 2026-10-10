@@ -1977,6 +1977,55 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
       draws: 'tee',
       cls: CLASS.fitting,
     },
+
+    /* ---- MANIFOLD: one body, several ports -------------------------
+
+       Not two tees that a renderer is told to draw together. A manifold
+       is a different object from an assembly of fittings, and the
+       difference is physical: a fabricated run has a forged tee at each
+       junction, with a socket hub the pipe lands in and a radiused
+       crotch where the branch leaves. A manifold machined or printed as
+       one body has neither. It has PORTS, and passages bored through it.
+
+       Drawing hubs on a part that was never assembled invents a joint
+       that does not exist, so the two cannot share a representation.
+
+       Topology is unchanged either way -- flow branches at the same
+       points whatever the thing is made of -- which is exactly why this
+       belongs in the netlist rather than being inferred downstream.
+       Only whoever specified the rig knows how it was made, and a
+       renderer cannot deduce it from coordinates.
+
+       PLACEMENT is a list of points, the same idea as the reducer's
+       span taken to its conclusion: INLET first, OUTLET last, branch
+       ports in between in declaration order.
+
+           at: { man: [[x,y0], [x,y1], [x,y2], [x,y3]] }
+                        inlet    b0       b1      outlet
+
+       Ports are `in`, `out`, and `b0`..`bN`. On a process display it is
+       still class `fitting`: ISA-5.5's Connectors group is empty
+       because pipe connections are not detailed, and a manifold body is
+       no more a schematic symbol than a tee is. It is a PHYSICAL fact,
+       and phys-view is where physical facts are drawn. */
+    manifold: {
+      ports: c => {
+        const p = c._pts, n = p.length;
+        const vert = p[0][0] === p[n - 1][0];
+        const ports = {
+          in:  { x: p[0][0],     y: p[0][1],     dir: vert ? [0, -1] : [-1, 0] },
+          out: { x: p[n - 1][0], y: p[n - 1][1], dir: vert ? [0, 1]  : [1, 0] },
+        };
+        for (let i = 1; i < n - 1; i++) {
+          ports['b' + (i - 1)] = {
+            x: p[i][0], y: p[i][1], dir: vert ? [1, 0] : [0, 1],
+          };
+        }
+        return ports;
+      },
+      draws: 'manifold',
+      cls: CLASS.fitting,
+    },
     /* A change of bore: taper in, throat, taper out. Horizontal only,
        which is all any level has needed; a vertical reducer would need
        piping() to learn one too. */
@@ -2163,7 +2212,35 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
         errors.push(`${id} has no placement in frame "${frameName}"`);
         continue;
       }
-      if (c.kind === 'reducer') {
+      if (c.kind === 'manifold') {
+        /* A list, not a point: inlet, branches, outlet. Refused by name
+           when it is short or crooked, because a manifold placed wrong
+           draws a body across geometry that is not its own. */
+        if (!Array.isArray(place[0])) {
+          errors.push(`${id} is a manifold, so frame "${frameName}" must ` +
+                      `place it as a LIST of points -- inlet first, outlet ` +
+                      `last, one per branch in between`);
+          continue;
+        }
+        if (place.length < 3) {
+          errors.push(`${id} is a manifold with ${place.length} point(s) in ` +
+                      `frame "${frameName}". It needs at least three: an ` +
+                      `inlet, one branch and an outlet. With no branch it ` +
+                      `is a length of pipe, not a manifold`);
+          continue;
+        }
+        const sameX = place.every(p => p[0] === place[0][0]);
+        const sameY = place.every(p => p[1] === place[0][1]);
+        if (!sameX && !sameY) {
+          errors.push(`${id} is a manifold whose ports in frame ` +
+                      `"${frameName}" are not in line. A manifold body is ` +
+                      `one run of material: every port sits on one axis`);
+          continue;
+        }
+        c._pts = place;
+        c.at = place[0];           // its nominal point, for anything that asks
+        c._axis = sameX ? 'v' : 'h';
+      } else if (c.kind === 'reducer') {
         if (!Array.isArray(place[0]) || !Array.isArray(place[1])) {
           errors.push(`${id} is a reducer, so frame "${frameName}" must ` +
                       `place it as two points [[x0,y],[x1,y]] -- it spans a ` +
@@ -2336,12 +2413,28 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
         }
       }
 
-      // A bore change belongs in a reducer, not at a joint.
-      if (s.from.comp.kind !== 'reducer' && s.to.comp.kind !== 'reducer') {
+      /* A bore change belongs in a reducer, not at a joint -- EXCEPT
+         where a component is built to take one.
+
+         A tee was already exempt: a reducing tee is a stock fitting and
+         the branch outlet is commonly smaller than the run.
+
+         A MANIFOLD is exempt for a stronger reason. Feeding branches
+         narrower than the run is the whole purpose of the thing, and
+         there is no joint at the port to put a reducer in -- the bore
+         changes inside one piece of material. Demanding a fitting there
+         would be demanding a joint the part was specified to avoid.
+
+         This rule was written when every junction was fabricated, which
+         is why it needed widening rather than overriding: the principle
+         is sound, its list of exceptions was just incomplete. */
+      const TAKES_BORE_CHANGE = { tee: true, manifold: true, reducer: true };
+      if (!TAKES_BORE_CHANGE[s.from.comp.kind] &&
+          !TAKES_BORE_CHANGE[s.to.comp.kind]) {
         const other = segs.filter(o => o !== s && o.from && o.to &&
           (o.from.id === s.to.id || o.to.id === s.from.id));
         for (const o of other) {
-          if (o.r !== s.r && s.to.comp.kind !== 'tee' && s.from.comp.kind !== 'tee') {
+          if (o.r !== s.r) {
             errs.push(`segments ${s.index} and ${o.index} meet at a bore ` +
                       `change (${s.r} vs ${o.r}) with no reducer between them`);
           }
@@ -2394,7 +2487,8 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
      was a coincidence maintained by care; here it falls out of the graph. */
   function toPiping(comps, segs, opts) {
     const live = segs.filter(s => s.from && s.to);
-    const out = { lines: [], tees: [], reducers: [], fittings: [], equipment: [] };
+    const out = { lines: [], tees: [], manifolds: [], reducers: [],
+                  fittings: [], equipment: [] };
     const hidden = {};
     (opts.hide || []).forEach(c => { hidden[c] = true; });
     const drawn = c => c._visible && !hidden[c._cls];
@@ -2436,6 +2530,20 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
           x: c.at[0], y: c.at[1],
           r: boreAt(live, id, 'in') || boreAt(live, id, 'out'),
           branch: branch ? branch.r : 0,
+        });
+      } else if (c._kind.draws === 'manifold') {
+        /* One body with ports, so it is emitted as one thing. The bore
+           of each port is whatever line actually lands on it -- a
+           manifold commonly feeds branches smaller than its own run,
+           which is most of why it exists. */
+        const p = c._pts, n = p.length;
+        out.manifolds.push({
+          id, axis: c._axis,
+          a: p[0], b: p[n - 1],
+          run: boreAt(live, id, 'in') || boreAt(live, id, 'out'),
+          ports: p.slice(1, n - 1).map((pt, i) => ({
+            x: pt[0], y: pt[1], r: boreAt(live, id, 'b' + i) || 0,
+          })),
         });
       } else if (c._kind.draws === 'reducer') {
         out.reducers.push({
@@ -2556,8 +2664,11 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
     };
 
     return live.map(s => {
-      const R = s.from.port === 'branch'
-        ? teeTurnRadius(s.r)      // leaving a tee is a tight turn
+      /* A manifold's branch ports are b0..bN; a tee's is `branch`.
+         Both are a branch leaving a run, and both turn tightly. */
+      const isBranch = s.from.port === 'branch' || /^b\d+$/.test(s.from.port);
+      const R = isBranch
+        ? teeTurnRadius(s.r)      // leaving a run sideways is a tight turn
         : bendRadius(s.r);        // a run corner is a long-radius elbow
       const pts = dedupe(s.pts);
       const out = [];
@@ -2567,7 +2678,7 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
          part of the riser -- which is correct: the metal curves there
          too, and the branch's own first leg begins where the bend ends. */
       let turnsAtStart = false;
-      if (s.from.port === 'branch' && pts.length >= 2) {
+      if (isBranch && pts.length >= 2) {
         const from = feedOf(s.from.id);
         const corner = pts[0], next = pts[1];
         if (from) {
@@ -3387,6 +3498,7 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
   function phys(spec) {
     const lines = (spec && spec.lines) || [];
     const tees = (spec && spec.tees) || [];
+    const manifolds = (spec && spec.manifolds) || [];
     const reducers = (spec && spec.reducers) || [];
     const fittings = (spec && spec.fittings) || [];
 
@@ -3424,6 +3536,42 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
       g.closePath(); g.fill();
     };
 
+    /* A MANIFOLD BODY, which is a different object from a row of tees.
+
+       A fabricated junction is drawn as a forged fitting: socket hubs
+       the pipe lands in, a crotch radiused where the branch leaves.
+       Those are features of an ASSEMBLY. A manifold machined or printed
+       as one piece has neither, and drawing them would invent joints the
+       part exists to avoid.
+
+       What it has instead is a BODY -- one slab of material spanning
+       every port -- with passages bored through it. So: a single
+       rectangle with eased corners, port faces where lines land, and the
+       bores cut last like every other bore here.
+
+       The body is drawn wider than the run it carries, because material
+       around a bored passage is the reason the part is stiff enough to
+       hang valves off. BODY_OVER is how much, and it is art -- no
+       standard dimensions a manifold, which is the point: it is a
+       manufactured part, not a catalogue fitting. */
+    const BODY_OVER = 9;
+
+    const manifoldBody = (g, m, pad, col) => {
+      const vert = m.axis === 'v';
+      const half = m.run + WALL + BODY_OVER + pad;
+      const x0 = vert ? m.a[0] - half : Math.min(m.a[0], m.b[0]) - pad;
+      const x1 = vert ? m.a[0] + half : Math.max(m.a[0], m.b[0]) + pad;
+      const y0 = vert ? Math.min(m.a[1], m.b[1]) - pad : m.a[1] - half;
+      const y1 = vert ? Math.max(m.a[1], m.b[1]) + pad : m.a[1] + half;
+      const rad = Math.min(10, (x1 - x0) / 4, (y1 - y0) / 4);
+      g.fillStyle = col;
+      g.beginPath();
+      if (g.roundRect) { g.roundRect(x0, y0, x1 - x0, y1 - y0, rad); }
+      else { g.rect(x0, y0, x1 - x0, y1 - y0); }
+      g.fill();
+      return { x0, y0, x1, y1, vert };
+    };
+
     return {
       draw(g, theme_) {
         const S = theme(theme_ || {});
@@ -3431,6 +3579,29 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
         // --- bodies
         stroke(g, WALL, S.body);
         reducers.forEach(rd => taper(g, rd, WALL, S.body));
+        manifolds.forEach(m => {
+          const box = manifoldBody(g, m, 0, S.body);
+          /* A machined part has EDGES. Without them the body reads as a
+             grey slab with pipes stuck to it rather than a piece of
+             material somebody made -- which is the whole distinction
+             this representation exists to draw. A thin rim at the two
+             ends is the end faces; a boss at each port is the flat the
+             line is sealed against. */
+          g.fillStyle = S.rim;
+          if (box.vert) {
+            g.fillRect(box.x0, box.y0, box.x1 - box.x0, 3);
+            g.fillRect(box.x0, box.y1 - 3, box.x1 - box.x0, 3);
+          } else {
+            g.fillRect(box.x0, box.y0, 3, box.y1 - box.y0);
+            g.fillRect(box.x1 - 3, box.y0, 3, box.y1 - box.y0);
+          }
+          m.ports.forEach(p => {
+            if (!p.r) return;
+            const face = p.r + WALL;
+            if (box.vert) g.fillRect(box.x1 - 3, p.y - face, 3, 2 * face);
+            else          g.fillRect(p.x - face, box.y1 - 3, 2 * face, 3);
+          });
+        });
 
         /* A real tee is a forged body, not two pipes butted together: the
            metal is thicker at the junction, each of the three ends has a
@@ -3471,6 +3642,32 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
         // --- BORES: nothing may close an opening after this
         stroke(g, 0, S.dark);
         reducers.forEach(rd => taper(g, rd, 0, S.dark));
+
+        /* The passages through a manifold. A bored hole has no fillet
+           where it meets a cross-bore -- it is two cylinders
+           intersecting, and the edge is sharp. That is the visible
+           difference from a forged tee, whose crotch is radiused
+           because the metal is formed rather than cut, so it is drawn
+           sharp here deliberately rather than for want of effort. */
+        manifolds.forEach(m => {
+          const vert = m.axis === 'v';
+          g.fillStyle = S.dark;
+          // the run, end to end through the body
+          if (vert) {
+            g.fillRect(m.a[0] - m.run, Math.min(m.a[1], m.b[1]),
+                       2 * m.run, Math.abs(m.b[1] - m.a[1]));
+          } else {
+            g.fillRect(Math.min(m.a[0], m.b[0]), m.a[1] - m.run,
+                       Math.abs(m.b[0] - m.a[0]), 2 * m.run);
+          }
+          // each branch passage, out to the body face it exits through
+          const box = { half: m.run + WALL + BODY_OVER };
+          m.ports.forEach(p => {
+            if (!p.r) return;
+            if (vert) g.fillRect(p.x, p.y - p.r, box.half, 2 * p.r);
+            else      g.fillRect(p.x - p.r, p.y, 2 * p.r, box.half);
+          });
+        });
 
         /* --- crotch fillets, the one thing that goes on top of a bore.
            Where a branch leaves the run the metal is radiused, never a

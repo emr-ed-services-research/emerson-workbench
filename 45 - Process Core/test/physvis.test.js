@@ -43,6 +43,7 @@ function recorder() {
     moveTo: rec('moveTo'), lineTo: rec('lineTo'), arcTo: rec('arcTo'),
     arc: rec('arc'), fill: rec('fill'), fillRect: rec('fillRect'),
     save: rec('save'), restore: rec('restore'),
+    roundRect: rec('roundRect'), rect: rec('rect'),
   };
   /* stroke() and the style setters matter for ORDER, so capture the style
      in force at the moment of each paint rather than just the call. */
@@ -159,6 +160,73 @@ check('a tee gets two crotch fillets, one each side', quarterArcs.length === 2);
 check('each fillet is a QUARTER round, not the long way about',
       quarterArcs.every(a => Math.abs(Math.abs(a[5] - a[4]) - Math.PI / 2) < 1e-9),
       quarterArcs.map(a => (Math.abs(a[5] - a[4]) / Math.PI).toFixed(3) + 'pi').join(' '));
+
+/* ---- a manifold is not a row of tees -------------------------------
+   The difference is physical and it has to be visible. A fabricated
+   junction gets a forged fitting: socket hubs the pipe lands in, a
+   crotch radiused because the metal is formed. A manifold machined or
+   printed as one body has neither -- it has a body, ports, and passages
+   bored through it, and a bored cross-hole meets its run at a SHARP
+   edge because it is cut, not formed.
+
+   So the test is not "does something appear" but "do the assembly
+   features stay away". */
+g = recorder();
+LPE.phys({
+  manifolds: [{ id: 'man', axis: 'v', a: [320, 86], b: [320, 342], run: 12.6,
+                ports: [{ x: 320, y: 170, r: 10 }, { x: 320, y: 256, r: 10 }] }],
+}).draw(g, THEME);
+
+const bodyShapes = g.calls.filter(c => c[0] === 'roundRect' || c[0] === 'rect');
+check('a manifold is drawn as ONE body', bodyShapes.length === 1,
+      `${bodyShapes.length} body shapes`);
+check('with no crotch fillet -- a bored hole is not a forged tee',
+      g.calls.filter(c => c[0] === 'arc').length === 0);
+/* This check used to read "no socket hubs -- nothing was assembled
+   here", and asserted zero rim features. That was too blunt, and the
+   first attempt at drawing a machined edge broke it: a printed manifold
+   DOES have sealing faces where valves land. A face is real.
+
+   The honest distinction is not whether rim features exist but WHERE.
+   A socket hub stands PROUD of the fitting -- it is a collar around a
+   pipe that slid into it, so it sits outside the body. A machined face
+   is FLUSH, because nothing was slid into anything. So: every rim
+   feature on a manifold must lie within the body's own footprint.
+   Nothing sticks out, because nothing was assembled. */
+const BODY = { x0: 320 - (12.6 + LPE.phys.WALL + 9), x1: 320 + (12.6 + LPE.phys.WALL + 9),
+               y0: 86, y1: 342 };
+const proud = g.calls.filter(c => c[0] === 'fillRect' && c[1] === 'RIM')
+  .filter(c => {
+    const [, , x, y, w, h] = c;
+    return x < BODY.x0 - 0.01 || x + w > BODY.x1 + 0.01 ||
+           y < BODY.y0 - 0.01 || y + h > BODY.y1 + 0.01;
+  });
+check('no rim feature stands proud of the body -- a face, not a socket hub',
+      proud.length === 0,
+      proud.map(c => `[${c[2]},${c[3]} ${c[4]}x${c[5]}]`).join(' '));
+
+const manBores = g.calls.filter(c => c[0] === 'fillRect' && c[1] === 'DARK');
+check('the run and both branch passages are bored through it',
+      manBores.length === 3, `${manBores.length} dark passages`);
+
+const bodyAt = g.calls.map((c, i) => (c[0] === 'roundRect' || c[0] === 'rect') ? i : -1)
+                      .filter(i => i >= 0)[0];
+const lastManBore = g.calls.map(c => c[0] === 'fillRect' && c[1] === 'DARK')
+                           .lastIndexOf(true);
+check('the body goes down BEFORE its bores, like every other fitting here',
+      bodyAt < lastManBore, `body ${bodyAt}, last bore ${lastManBore}`);
+
+/* A port with no line on it is not a hole. A manifold cast with a
+   spare port blanked off is a real thing, and drawing an opening
+   where none was drilled would be inventing one. */
+g = recorder();
+LPE.phys({
+  manifolds: [{ id: 'm', axis: 'v', a: [0, 0], b: [0, 200], run: 10,
+                ports: [{ x: 0, y: 100, r: 0 }] }],
+}).draw(g, THEME);
+check('a port carrying no line is not bored open',
+      g.calls.filter(c => c[0] === 'fillRect' && c[1] === 'DARK').length === 1,
+      'the run should be bored; the blank port should not');
 
 /* ---- it draws what the netlist hands it ---------------------------- */
 

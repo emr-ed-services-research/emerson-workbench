@@ -22,6 +22,7 @@ const A=LPE.art, P=LPE.palette, W=900, H=400;
 /* ---------- geometry (verbatim) ---------- */
 const MAIN_Y=86, TRUNK_X=320, POD_X=812;
 const BR_Y=[170,256,342];
+const MAN_TOP=132;        // the manifold body's inlet face, below the elbow
 /* Bore radii ARE the sizing's bores, at the cutaway's own scale, so the
    drawing cannot quietly disagree with the physics. R_BR is the anchor and
    everything else follows from a real bore in inches - see sizing.js.
@@ -182,8 +183,23 @@ const NETLIST=LPE.net({
     reservoir:{kind:'vessel', tag:'TK-1', role:'source', pressure:60},
     union1:   {kind:'union'},
     vMain:    {kind:'valve',  tag:'HV-1', key:'main', valveType:'globe', cv:0.896},
-    tee0:     {kind:'tee',    axis:'v'},
-    tee1:     {kind:'tee',    axis:'v'},
+    /* ONE BODY, NOT TWO TEES. A lunar bay does not run its water
+       through an assembly of forged fittings. Mass is launch cost,
+       every discrete fitting is a part number somebody has to stock,
+       and -- the deciding one -- every joint is a leak path. This
+       level's own brief says why: the water is "some of it mined out
+       of the ice, some of it condensate pulled back out of this very
+       air. None of it is cheap, and all of it is counted."
+       You minimise joints. So the manifold is one printed body with
+       ports, and the valves are the only serviceable interfaces on it.
+
+       Topologically nothing changed -- the flow still branches at the
+       same two points. What changed is what the thing is MADE of, and
+       that is why the netlist has to say it: a renderer cannot deduce
+       fabrication from coordinates. phys-view now draws a body with
+       bored passages instead of forged tees with socket hubs, because
+       drawing a hub invents a joint this part exists to avoid. */
+    manifold: {kind:'manifold'},
     v0:       {kind:'valve',  tag:'HV-2', key:'b0', valveType:'globe', cv:0.513},
     v1:       {kind:'valve',  tag:'HV-3', key:'b1', valveType:'globe', cv:0.513},
     v2:       {kind:'valve',  tag:'HV-4', key:'b2', valveType:'globe', cv:0.513},
@@ -195,14 +211,13 @@ const NETLIST=LPE.net({
   segments:[
     {from:'reservoir.out', to:'union1.in', bore:'main'},
     {from:'union1.out',    to:'vMain.in',  bore:'main'},
-    {from:'vMain.out',     to:'tee0.in',   bore:'main'},
-    {from:'tee0.out',      to:'tee1.in',   bore:'main'},
-    {from:'tee1.out',      to:'v2.in',     bore:'main'},
+    {from:'vMain.out',     to:'manifold.in',  bore:'main'},
+    {from:'manifold.out',  to:'v2.in',     bore:'main'},
     {from:'v2.out',        to:'red.in',    bore:'main'},
     {from:'red.out',       to:'pod2.in',   bore:'main'},
-    {from:'tee0.branch',   to:'v0.in',     bore:'branch'},
+    {from:'manifold.b0',   to:'v0.in',     bore:'branch'},
     {from:'v0.out',        to:'pod0.in',   bore:'branch'},
-    {from:'tee1.branch',   to:'v1.in',     bore:'branch'},
+    {from:'manifold.b1',   to:'v1.in',     bore:'branch'},
     {from:'v1.out',        to:'pod1.in',   bore:'branch'},
   ],
   /* ---- THE RIG FRAME ------------------------------------------------
@@ -223,8 +238,16 @@ const NETLIST=LPE.net({
         reservoir:[30,MAIN_Y],
         union1:   [wheelMainX-54,MAIN_Y],
         vMain:    [wheelMainX,MAIN_Y],
-        tee0:     [TRUNK_X,BR_Y[0]],
-        tee1:     [TRUNK_X,BR_Y[1]],
+        /* A manifold is placed as a LIST: inlet, each branch port,
+           outlet. The body runs from the riser elbow down to where
+           bed 3 leaves it, with beds 1 and 2 ported off on the way. */
+        /* The body is a PART BOLTED INTO THE LINE, not a replacement
+           for the riser. Its inlet sits below the elbow, so the header
+           still turns down into it the way a real one would -- a
+           manifold does not swallow the bend above it. MAN_TOP is far
+           enough up to give the inlet a face and no further. */
+        manifold: [[TRUNK_X,MAN_TOP],[TRUNK_X,BR_Y[0]],
+                   [TRUNK_X,BR_Y[1]],[TRUNK_X,BR_Y[2]]],
         v0:       [VALVE_X,BR_Y[0]],
         v1:       [VALVE_X,BR_Y[1]],
         v2:       [VALVE_X,BR_Y[2]],
@@ -233,9 +256,14 @@ const NETLIST=LPE.net({
         pod1:     [POD_X,BR_Y[1]],
         pod2:     [POD_X,BR_Y[2]],
       },
+      /* Waypoints are keyed by the SEGMENT they belong to. Renaming the
+         two tees to one manifold renamed these segments too, and a
+         waypoint whose key no longer matches is silently orphaned --
+         which sent the header diagonally into the manifold instead of
+         round the elbow. Caught by looking at it. */
       via:{
-        'vMain.out->tee0.in':[[TRUNK_X,MAIN_Y]],
-        'tee1.out->v2.in':   [[TRUNK_X,BR_Y[2]]],
+        'vMain.out->manifold.in':[[TRUNK_X,MAIN_Y]],
+        'manifold.out->v2.in':   [[TRUNK_X,BR_Y[2]]],
       },
     },
   },

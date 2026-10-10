@@ -108,6 +108,7 @@
   function phys(spec) {
     const lines = (spec && spec.lines) || [];
     const tees = (spec && spec.tees) || [];
+    const manifolds = (spec && spec.manifolds) || [];
     const reducers = (spec && spec.reducers) || [];
     const fittings = (spec && spec.fittings) || [];
 
@@ -145,6 +146,42 @@
       g.closePath(); g.fill();
     };
 
+    /* A MANIFOLD BODY, which is a different object from a row of tees.
+
+       A fabricated junction is drawn as a forged fitting: socket hubs
+       the pipe lands in, a crotch radiused where the branch leaves.
+       Those are features of an ASSEMBLY. A manifold machined or printed
+       as one piece has neither, and drawing them would invent joints the
+       part exists to avoid.
+
+       What it has instead is a BODY -- one slab of material spanning
+       every port -- with passages bored through it. So: a single
+       rectangle with eased corners, port faces where lines land, and the
+       bores cut last like every other bore here.
+
+       The body is drawn wider than the run it carries, because material
+       around a bored passage is the reason the part is stiff enough to
+       hang valves off. BODY_OVER is how much, and it is art -- no
+       standard dimensions a manifold, which is the point: it is a
+       manufactured part, not a catalogue fitting. */
+    const BODY_OVER = 9;
+
+    const manifoldBody = (g, m, pad, col) => {
+      const vert = m.axis === 'v';
+      const half = m.run + WALL + BODY_OVER + pad;
+      const x0 = vert ? m.a[0] - half : Math.min(m.a[0], m.b[0]) - pad;
+      const x1 = vert ? m.a[0] + half : Math.max(m.a[0], m.b[0]) + pad;
+      const y0 = vert ? Math.min(m.a[1], m.b[1]) - pad : m.a[1] - half;
+      const y1 = vert ? Math.max(m.a[1], m.b[1]) + pad : m.a[1] + half;
+      const rad = Math.min(10, (x1 - x0) / 4, (y1 - y0) / 4);
+      g.fillStyle = col;
+      g.beginPath();
+      if (g.roundRect) { g.roundRect(x0, y0, x1 - x0, y1 - y0, rad); }
+      else { g.rect(x0, y0, x1 - x0, y1 - y0); }
+      g.fill();
+      return { x0, y0, x1, y1, vert };
+    };
+
     return {
       draw(g, theme_) {
         const S = theme(theme_ || {});
@@ -152,6 +189,29 @@
         // --- bodies
         stroke(g, WALL, S.body);
         reducers.forEach(rd => taper(g, rd, WALL, S.body));
+        manifolds.forEach(m => {
+          const box = manifoldBody(g, m, 0, S.body);
+          /* A machined part has EDGES. Without them the body reads as a
+             grey slab with pipes stuck to it rather than a piece of
+             material somebody made -- which is the whole distinction
+             this representation exists to draw. A thin rim at the two
+             ends is the end faces; a boss at each port is the flat the
+             line is sealed against. */
+          g.fillStyle = S.rim;
+          if (box.vert) {
+            g.fillRect(box.x0, box.y0, box.x1 - box.x0, 3);
+            g.fillRect(box.x0, box.y1 - 3, box.x1 - box.x0, 3);
+          } else {
+            g.fillRect(box.x0, box.y0, 3, box.y1 - box.y0);
+            g.fillRect(box.x1 - 3, box.y0, 3, box.y1 - box.y0);
+          }
+          m.ports.forEach(p => {
+            if (!p.r) return;
+            const face = p.r + WALL;
+            if (box.vert) g.fillRect(box.x1 - 3, p.y - face, 3, 2 * face);
+            else          g.fillRect(p.x - face, box.y1 - 3, 2 * face, 3);
+          });
+        });
 
         /* A real tee is a forged body, not two pipes butted together: the
            metal is thicker at the junction, each of the three ends has a
@@ -192,6 +252,32 @@
         // --- BORES: nothing may close an opening after this
         stroke(g, 0, S.dark);
         reducers.forEach(rd => taper(g, rd, 0, S.dark));
+
+        /* The passages through a manifold. A bored hole has no fillet
+           where it meets a cross-bore -- it is two cylinders
+           intersecting, and the edge is sharp. That is the visible
+           difference from a forged tee, whose crotch is radiused
+           because the metal is formed rather than cut, so it is drawn
+           sharp here deliberately rather than for want of effort. */
+        manifolds.forEach(m => {
+          const vert = m.axis === 'v';
+          g.fillStyle = S.dark;
+          // the run, end to end through the body
+          if (vert) {
+            g.fillRect(m.a[0] - m.run, Math.min(m.a[1], m.b[1]),
+                       2 * m.run, Math.abs(m.b[1] - m.a[1]));
+          } else {
+            g.fillRect(Math.min(m.a[0], m.b[0]), m.a[1] - m.run,
+                       Math.abs(m.b[0] - m.a[0]), 2 * m.run);
+          }
+          // each branch passage, out to the body face it exits through
+          const box = { half: m.run + WALL + BODY_OVER };
+          m.ports.forEach(p => {
+            if (!p.r) return;
+            if (vert) g.fillRect(p.x, p.y - p.r, box.half, 2 * p.r);
+            else      g.fillRect(p.x - p.r, p.y, 2 * p.r, box.half);
+          });
+        });
 
         /* --- crotch fillets, the one thing that goes on top of a bore.
            Where a branch leaves the run the metal is radiused, never a
