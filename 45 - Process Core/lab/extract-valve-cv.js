@@ -114,7 +114,15 @@ const SHEETS = [
   { pages: [203], cage: 'equal-percentage', body: 'EZ', cls: 'CL125-CL600', metric: true },
   { pages: [205], cage: 'equal-percentage', body: 'EZ', cls: 'CL125-CL600', metric: true },
 
-  /* p170, p172 and p204 are set aside. Each lists several valve sizes
+  /* The NPS-16-and-larger EW sheets, with their real column bands: a
+     valve-type cell outside the size, and a size that runs to x=110
+     because "20 x 16" straddles where the old band stopped. */
+  { pages: [170], body: 'EW', cls: 'EW-10 drilled-window, flow down',
+    metric: true, sizeBand: [85, 110], typeBand: [55, 85] },
+  { pages: [172], body: 'EW', cls: 'EW-12 drilled-window, flow down',
+    metric: true, sizeBand: [85, 110], typeBand: [55, 85] },
+
+  /* p204 remains set aside. Each lists several valve sizes
      whose rows sit close together -- p170 is headed "NPS 16 and Larger
      Sizes" and gives NPS 16, 20 and 24 the same port diameters -- and
      the size label is attached by NEAREST LABEL IN Y, which is right for
@@ -278,11 +286,51 @@ function run() {
                      severe: !!(CAGES.find(c => c[1] === found[0]) || [])[2] }];
       }
 
-      /* NPS labels live in the leftmost band, left of the port-diameter
-         column. Words on one row are joined: "1", "&", "1-1/4". */
+      /* TWO SPANNING COLUMNS, not one.
+
+         Most sheets put the valve size alone at the left. The NPS-16-
+         and-larger EW sheets put a VALVE TYPE column outside it:
+
+           x 60-80   "EWD," / "EWT"   or   "EWT-2"     merged over rows
+           x 89-102  "20"  "x"  "16"                   the size itself
+
+         Reading x < 92 as the size therefore did two things wrong at
+         once: it swallowed the type words, and it cut "20 x 16" off at
+         the "x", so every row on the page collapsed onto "20" or "24".
+
+         Both are spanning cells and both are attached by nearest label
+         in y, which is what a cell centred on its group of rows wants.
+         The type is a real distinguishing attribute -- EWD/EWT and
+         EWT-2 are different valves -- so it travels into the row's
+         identity rather than being dropped. */
+      const SB = sheet.sizeBand || [50, 92];
+      const TB = sheet.typeBand || null;
+
+      const types = [];
+      if (TB) for (const r of rows) {
+        const band = r.ws.filter(w => w.x >= TB[0] && w.x < TB[1] && r.y > 160);
+        if (!band.length) continue;
+        const t = band.map(w => w.t).join(' ').replace(/\s+/g, ' ').trim();
+        if (/^[A-Z]/.test(t)) types.push({ y: r.y, t: t.replace(/,$/, '') });
+      }
+      /* Adjacent rows of one cell -- "EWD," then "EWT" -- are one label. */
+      const typeCells = [];
+      for (const t of types.sort((a, b) => a.y - b.y)) {
+        const last = typeCells[typeCells.length - 1];
+        if (last && t.y - last.y < 14) { last.t += ' ' + t.t; last.y = (last.y + t.y) / 2; }
+        else typeCells.push({ y: t.y, t: t.t });
+      }
+      const typeAt = y => {
+        if (!typeCells.length) return null;
+        let best = typeCells[0];
+        for (const c of typeCells)
+          if (Math.abs(c.y - y) < Math.abs(best.y - y)) best = c;
+        return best.t;
+      };
+
       const labels = [];
       for (const r of rows) {
-        const band = r.ws.filter(w => w.x >= 50 && w.x < 92 && r.y > 160);
+        const band = r.ws.filter(w => w.x >= SB[0] && w.x < SB[1] && r.y > 160);
         if (!band.length) continue;
         /* "6(2)" is NPS 6 carrying footnote 2 -- footnote markers are
            typeset into the cell and are not part of the size.
@@ -354,7 +402,7 @@ function run() {
         /* The geometry for this row: port diameter in inches and travel
            in inches sit left of the coefficient column, on this row or
            the one below it (the renderer is inconsistent). */
-        const left = w => w.x < r.ws[i].x - 5;
+        const left = w => w.x < r.ws[i].x - 5 && w.x >= SB[1];
         let geo = r.ws.filter(left).map(w => num(w.t)).filter(v => v !== null);
         if (geo.length < 4) {
           /* The geometry row is shared by the two or three port rows a
@@ -446,10 +494,11 @@ function run() {
                  'carries columns this reader does not model' });
           continue;
         }
+        const vtype = TB ? typeAt(r.y + 10) : null;
         out.valves.push({
-          doc: DOC, page: 'p' + page, body: sheet.body, cls: sheet.cls,
-          cage: band.cage, nps: nps, portIn: portIn, travelIn: travelIn,
-          cv100: cv100, FL: FL,
+          doc: DOC, page: 'p' + page, body: vtype || sheet.body,
+          cls: sheet.cls, cage: band.cage, nps: nps,
+          portIn: portIn, travelIn: travelIn, cv100: cv100, FL: FL,
         });
       }
     }

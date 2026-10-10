@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-10T17:40:41.990Z",
+ "generated": "2026-10-10T17:46:04.047Z",
  "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
  "valves": [
   {
@@ -652,6 +652,258 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWD EWT",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "20 x 16",
+   "portIn": 14.75,
+   "travelIn": 10.88,
+   "cv100": 3040,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWD EWT",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "20 x 16",
+   "portIn": 14.75,
+   "travelIn": 14.88,
+   "cv100": 3660,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWT-2",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "20 x 16",
+   "portIn": 16.25,
+   "travelIn": 10.88,
+   "cv100": 3480,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWT-2",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "20 x 16",
+   "portIn": 16.25,
+   "travelIn": 14.88,
+   "cv100": 4370,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWD EWT",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "24 x 16",
+   "portIn": 14.75,
+   "travelIn": 14.88,
+   "cv100": 3490,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWD EWT",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "24 x 16",
+   "portIn": 14.75,
+   "travelIn": 16.88,
+   "cv100": 3670,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWT-2",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "24 x 16",
+   "portIn": 16.25,
+   "travelIn": 14.88,
+   "cv100": 4150,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWT-2",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "24 x 16",
+   "portIn": 16.25,
+   "travelIn": 16.88,
+   "cv100": 4310,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWD EWT",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "24 x 20",
+   "portIn": 18.25,
+   "travelIn": 14.88,
+   "cv100": 4115,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWD EWT",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "24 x 20",
+   "portIn": 18.25,
+   "travelIn": 16.88,
+   "cv100": 4357,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWT-2",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "24 x 20",
+   "portIn": 19.75,
+   "travelIn": 14.88,
+   "cv100": 5028,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p170",
+   "body": "EWT-2",
+   "cls": "EW-10 drilled-window, flow down",
+   "cage": "linear",
+   "nps": "24 x 20",
+   "portIn": 19.75,
+   "travelIn": 16.88,
+   "cv100": 5210,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p172",
+   "body": "EWD EWT",
+   "cls": "EW-12 drilled-window, flow down",
+   "cage": "equal-percentage",
+   "nps": "20 x 16",
+   "portIn": 14.75,
+   "travelIn": 10.88,
+   "cv100": 2700,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p172",
+   "body": "EWT-2",
+   "cls": "EW-12 drilled-window, flow down",
+   "cage": "equal-percentage",
+   "nps": "20 x 16",
+   "portIn": 16.25,
+   "travelIn": 10.88,
+   "cv100": 3100,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p172",
+   "body": "EWT-2",
+   "cls": "EW-12 drilled-window, flow down",
+   "cage": "equal-percentage",
+   "nps": "20 x 16",
+   "portIn": 16.25,
+   "travelIn": 14.88,
+   "cv100": 3890,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p172",
+   "body": "EWD EWT",
+   "cls": "EW-12 drilled-window, flow down",
+   "cage": "equal-percentage",
+   "nps": "24 x 16",
+   "portIn": 14.75,
+   "travelIn": 14.88,
+   "cv100": 3110,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p172",
+   "body": "EWT-2",
+   "cls": "EW-12 drilled-window, flow down",
+   "cage": "equal-percentage",
+   "nps": "24 x 16",
+   "portIn": 16.25,
+   "travelIn": 14.88,
+   "cv100": 3700,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p172",
+   "body": "EWT-2",
+   "cls": "EW-12 drilled-window, flow down",
+   "cage": "equal-percentage",
+   "nps": "24 x 16",
+   "portIn": 16.25,
+   "travelIn": 16.88,
+   "cv100": 3830,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p172",
+   "body": "EWD EWT",
+   "cls": "EW-12 drilled-window, flow down",
+   "cage": "equal-percentage",
+   "nps": "24 x 20",
+   "portIn": 18.25,
+   "travelIn": 14.88,
+   "cv100": 3839,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p172",
+   "body": "EWT-2",
+   "cls": "EW-12 drilled-window, flow down",
+   "cage": "equal-percentage",
+   "nps": "24 x 20",
+   "portIn": 19.75,
+   "travelIn": 14.88,
+   "cv100": 4608,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p172",
+   "body": "EWT-2",
+   "cls": "EW-12 drilled-window, flow down",
+   "cage": "equal-percentage",
+   "nps": "24 x 20",
+   "portIn": 19.75,
+   "travelIn": 16.88,
+   "cv100": 5034,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
    "page": "p161",
    "body": "EWD",
    "cls": "CL150-600, flow down",
@@ -667,132 +919,12 @@
    "page": "p161",
    "body": "EWD",
    "cls": "CL150-600, flow down",
-   "cage": "quick-opening",
-   "nps": "6 x 4",
-   "portIn": 4.375,
-   "travelIn": 2,
-   "cv100": 340,
-   "FL": 0.88
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "quick-opening",
-   "nps": "8 x 4",
-   "portIn": 4.375,
-   "travelIn": 2,
-   "cv100": 379,
-   "FL": 0.89
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "quick-opening",
-   "nps": "12 x 6",
-   "portIn": 7,
-   "travelIn": 2,
-   "cv100": 817,
-   "FL": 0.82
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "quick-opening",
-   "nps": "10 x 8",
-   "portIn": 8,
-   "travelIn": 3,
-   "cv100": 1040,
-   "FL": 0.88
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "quick-opening",
-   "nps": "12 x 8",
-   "portIn": 8,
-   "travelIn": 3,
-   "cv100": 1260,
-   "FL": 0.79
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
    "cage": "linear",
    "nps": "4 x 2",
    "portIn": 2.3125,
    "travelIn": 1.125,
    "cv100": 107,
    "FL": 0.79
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "linear",
-   "nps": "6 x 4",
-   "portIn": 4.375,
-   "travelIn": 2,
-   "cv100": 320,
-   "FL": 0.86
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "linear",
-   "nps": "8 x 4",
-   "portIn": 4.375,
-   "travelIn": 2,
-   "cv100": 340,
-   "FL": 0.82
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "linear",
-   "nps": "12 x 6",
-   "portIn": 7,
-   "travelIn": 2,
-   "cv100": 729,
-   "FL": 0.81
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "linear",
-   "nps": "10 x 8",
-   "portIn": 8,
-   "travelIn": 3,
-   "cv100": 975,
-   "FL": 0.91
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p161",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "linear",
-   "nps": "12 x 8",
-   "portIn": 8,
-   "travelIn": 3,
-   "cv100": 1160,
-   "FL": 0.8
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
@@ -805,114 +937,6 @@
    "travelIn": 1.125,
    "cv100": 82.2,
    "FL": 0.82
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p162",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "equal-percentage",
-   "nps": "6 x 4",
-   "portIn": 4.375,
-   "travelIn": 2,
-   "cv100": 271,
-   "FL": 0.87
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p162",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "equal-percentage",
-   "nps": "8 x 4",
-   "portIn": 4.375,
-   "travelIn": 2,
-   "cv100": 286,
-   "FL": 0.85
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p162",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "equal-percentage",
-   "nps": "12 x 6",
-   "portIn": 7,
-   "travelIn": 2,
-   "cv100": 565,
-   "FL": 0.79
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p162",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "equal-percentage",
-   "nps": "10 x 8",
-   "portIn": 8,
-   "travelIn": 3,
-   "cv100": 924,
-   "FL": 0.89
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p162",
-   "body": "EWD",
-   "cls": "CL150-600, flow down",
-   "cage": "equal-percentage",
-   "nps": "12 x 8",
-   "portIn": 8,
-   "travelIn": 3,
-   "cv100": 1090,
-   "FL": 0.81
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p169",
-   "body": "EW",
-   "cls": "EW-9, flow down",
-   "cage": "linear",
-   "nps": "20 x 16",
-   "portIn": 14.75,
-   "travelIn": 4,
-   "cv100": 2960,
-   "FL": 0.88
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p169",
-   "body": "EW",
-   "cls": "EW-9, flow down",
-   "cage": "linear",
-   "nps": "20 x 16",
-   "portIn": 14.75,
-   "travelIn": 5,
-   "cv100": 3580,
-   "FL": 0.88
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p169",
-   "body": "EW",
-   "cls": "EW-9, flow down",
-   "cage": "linear",
-   "nps": "24 x 16",
-   "portIn": 14.75,
-   "travelIn": 4,
-   "cv100": 3190,
-   "FL": 0.88
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "p169",
-   "body": "EW",
-   "cls": "EW-9, flow down",
-   "cage": "linear",
-   "nps": "24 x 16",
-   "portIn": 14.75,
-   "travelIn": 5.5,
-   "cv100": 4060,
-   "FL": 0.88
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
@@ -1278,77 +1302,77 @@
   {
    "page": 201,
    "y": 322,
-   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 201,
    "y": 396,
-   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 201,
    "y": 470,
-   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 201,
    "y": 502,
-   "why": "left band gave \"101\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 201,
    "y": 544,
-   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 202,
    "y": 232,
-   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 202,
    "y": 301,
-   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 202,
    "y": 370,
-   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 202,
    "y": 404,
-   "why": "left band gave \"101\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 202,
    "y": 439,
-   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 203,
    "y": 255,
-   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 203,
    "y": 335,
-   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 203,
    "y": 416,
-   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 203,
    "y": 450,
-   "why": "left band gave \"101\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 203,
    "y": 496,
-   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 205,
@@ -1358,7 +1382,7 @@
   {
    "page": 205,
    "y": 197,
-   "why": "could not find two millimetre/inch pairs for port and travel in [2]"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 205,
@@ -1368,22 +1392,97 @@
   {
    "page": 205,
    "y": 360,
-   "why": "could not find two millimetre/inch pairs for port and travel in [2 5]"
+   "why": "could not find two millimetre/inch pairs for port and travel in [5]"
+  },
+  {
+   "page": 161,
+   "y": 228,
+   "why": "could not find two millimetre/inch pairs for port and travel in [4.375 49.3 51 2]"
+  },
+  {
+   "page": 161,
+   "y": 260,
+   "why": "could not find two millimetre/inch pairs for port and travel in [4.375 52.7 51 2]"
   },
   {
    "page": 161,
    "y": 292,
-   "why": "left band gave \"177\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in [7 96.2 51 2]"
+  },
+  {
+   "page": 161,
+   "y": 323,
+   "why": "could not find two millimetre/inch pairs for port and travel in [7 98 51 2]"
+  },
+  {
+   "page": 161,
+   "y": 355,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 161,
+   "y": 387,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 161,
+   "y": 473,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 161,
+   "y": 505,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 161,
    "y": 537,
-   "why": "left band gave \"177\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 161,
+   "y": 568,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 161,
+   "y": 600,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 161,
+   "y": 632,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 162,
+   "y": 197,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 162,
+   "y": 232,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 162,
    "y": 266,
-   "why": "left band gave \"177\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 162,
+   "y": 301,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 162,
+   "y": 335,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 162,
+   "y": 370,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 167,
@@ -1419,6 +1518,26 @@
    "page": 167,
    "y": 439,
    "why": "expected 10 travel points and FL, found 10"
+  },
+  {
+   "page": 169,
+   "y": 175,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 169,
+   "y": 209,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 169,
+   "y": 244,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
+  },
+  {
+   "page": 169,
+   "y": 279,
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 195,
