@@ -92,8 +92,11 @@ const venting=i=>fill[i]>FILL_START+0.001 && fill[i]<1;
    against the seat. */
 /* The run the engine draws, expressed for the water too: straight to the
    first elbow, round it, down the riser, round the second, out to bed 3.
-   BEND is the same long-radius value the piping uses (3 x bore radius). */
-const BEND=3*R_MAIN;
+   BEND is the same long-radius value the piping uses, and it is now ASKED
+   FOR rather than restated: topology.js owns the convention, physvis.js
+   and runSegments() were both reconciled to it, and this was the last
+   copy of `3 x bore radius` in the level. */
+const BEND=LPE.net.bendRadius(R_MAIN);
 const E1={x:TRUNK_X,y:MAIN_Y}, E2={x:TRUNK_X,y:BR_Y[2]};
 const main=new LPE.Line({r:R_MAIN,segments:[
   {ax:30,ay:MAIN_Y,bx:wheelMainX,by:MAIN_Y,fill:1},            // reservoir header
@@ -291,7 +294,12 @@ window.addEventListener('keydown',e=>{
    Each tee gets a short bend off the riser (a tee turn is tight - nothing
    like the long-radius elbows on the main run), and bed 3 picks up from
    the elbow the riser already ends in. */
-const TEE_R=R_BR*1.6;
+/* The tee-turn radius is the netlist's too. toWater() already picks this
+   same value for a branch port -- it just cannot place the arc, because
+   the turn happens BETWEEN two segments and it only fillets corners that
+   fall inside one. Until that gap is closed this level draws the arc by
+   hand, and at least takes the number from the one place that owns it. */
+const TEE_R=LPE.net.teeTurnRadius(R_BR);
 const BR_SEGS=BR_Y.map((y,i)=> i!==2
   ? [{arc:{cx:TRUNK_X+TEE_R,cy:y-TEE_R,R:TEE_R,a0:Math.PI,a1:Math.PI/2},r:R_BR},
      {ax:TRUNK_X+TEE_R,ay:y,bx:POD_X,by:y,r:R_BR}]
