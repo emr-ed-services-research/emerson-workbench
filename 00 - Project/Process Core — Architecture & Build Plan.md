@@ -74,6 +74,12 @@ Honest accounting of what exists today, as of this writing.
 
 | Layer | State | Where it lives |
 |---|---|---|
+> **A component CATALOGUE is drafted and awaiting approval** — see
+> `00 - Project/Process Core — Component Catalogue.md`. It subsumes the
+> pipe-geometry row below: elbow radius, tee turn, wall thickness and the
+> manifold body are all formulas or art constants today, and all become
+> part dimensions traced to ASME B36.10M / B16.11 / B16.9.
+
 | Netlist | Built, sound; **level 1 now DRAWS from it** (2026-10-10) | `45 - Process Core/src/topology.js` — level 1 rig view migrated; levels 2-4 still hand-written |
 | Schematic view | Built, sound | `45 - Process Core/src/schemvis.js` |
 | Physical view | Built; skinnable as of 5a; **extracted 2026-10-10** | `45 - Process Core/src/physvis.js` — LPE keeps a 23-line adapter that supplies the 1990s skin |
