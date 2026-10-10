@@ -109,8 +109,22 @@ function nps(t) {
   if (!m) return null;
   return +m[1] + (m[2] ? +m[2] / +m[3] : 0);
 }
+/* Bodies whose coefficient table is actually held and verified.
+   ETR and ET-C are here on Catalog 12's own stated equivalence --
+   page ET-3: ETR has coefficients identical to NPS 1-4 CL125-600 ED,
+   and ET-C identical to NPS 3-8 ED full port. That is the catalog
+   speaking, not an inference of mine. Standard ET is NOT here: the
+   catalog neither tabulates it nor claims it equals ED. */
+const HELD_BODIES = ['ED', 'EAD', 'EDR', 'EZ', 'ETR'];
+
+/* EVERY held cage, not just equal-percentage. The sourcebook names a
+   body and a size range and usually no cage at all, so restricting to
+   one characteristic understates what the engineer may fit -- a
+   quick-opening cage passes more at full travel than an equal-percentage
+   one in the same body. Constraining harder than the source does is how
+   this check manufactured its first three false findings. */
 const table = valves.valves
-  .filter(v => v.cage === 'equal-percentage')
+  .filter(v => HELD_BODIES.indexOf(v.body) >= 0)
   .map(v => ({ nps: nps(v.nps.replace(/\s*&.*$/, '')), cv: v.cv100, FL: v.FL }))
   .filter(v => v.nps !== null);
 const tableMax = Math.max.apply(null, table.map(v => v.nps));
@@ -131,8 +145,7 @@ const tableMax = Math.max.apply(null, table.map(v => v.nps));
    answer about somebody else's engineering is the worst kind this lab
    can produce, so a case is graded only when the body it names is one
    whose table is actually held. */
-const HELD_BODIES = ['ED', 'EAD', 'EDR'];
-let graded = 0, outOfTable = 0, wrongBody = 0;
+let graded = 0, outOfTable = 0, wrongBody = 0, tooWide = 0;
 const marginal = [];
 for (const c of liquid) {
   if (!c.selection) continue;
@@ -141,7 +154,15 @@ for (const c of liquid) {
   const m = sel.match(/NPS\s*([\d\-\/]+)\s*(?:to|through|-)\s*NPS\s*([\d\-\/]+)/i);
   if (!m) continue;
 
-  const bodies = sel.match(/\b(ED|ET|EZ|ES|EW|EAD|EAT|GX)\b/g) || [];
+  /* THE TOKEN LIST MUST COVER EVERY LINE THE BOOKS NAME, or the
+     subset rule silently passes. The Amine Make-up valve reads "NPS 2
+     to 6 HPT or NPS 1 to NPS 3 easy-e EZ"; with HPT missing from this
+     list the case looked like pure EZ, got graded against EZ alone, and
+     came back as a failure of Emerson's selection. It was a failure of
+     my regex. A line not listed here is a line this lab must not
+     pretend to have an opinion about. */
+  const bodies = sel.match(
+    /\b(ED|ET|EZ|ES|EW|EWD|EWT|EWS|EAD|EAT|ETR|GX|HPT|HPS|HPAS|CV500|V150|V250|V500|A11|A31|A41|8532|8560|8580|8590|9500|24000|NotchFlo|Vee-?Ball|Control-?Disk|Baumann|Micro-?Flat|easy-?Drive)\b/gi) || [];
   /* EVERY named body must be held, not merely one of them. Where the
      book offers "EZ, ET, ED or GX" the engineer picks whichever fits,
      so bounding the service by ED's capacity proves nothing -- showing
@@ -154,6 +175,22 @@ for (const c of liquid) {
   const hi = nps(m[2]);
   if (hi === null) continue;
   if (hi > tableMax) { outOfTable++; continue; }
+
+  /* A MIDPOINT IS NOT ALWAYS AN OPERATING POINT. The amine make-up
+     valve is published as Q 3-2115 gpm at P1 360-2320 psig: a turndown
+     of 700 to 1 across a sixfold pressure span. Its midpoint, 1059 gpm
+     at 40 psi, is the average of two unrelated extremes and describes
+     no condition the plant ever sees. Grading on it produced a
+     confident wrong answer about a real valve selection.
+
+     So a case whose flow range spans more than 20 to 1 is set aside
+     rather than averaged. The book is describing an envelope there, not
+     a duty point, and sizing an envelope needs the engineer to pick the
+     governing case -- which is a judgement, not an arithmetic mean. */
+  if (mid(c.q) > 0 && c.q.lo > 0 && c.q.hi / c.q.lo > 20) {
+    tooWide++;
+    continue;
+  }
   const cands = table.filter(v => v.nps <= hi);
   if (!cands.length) continue;
   const cvMax = Math.max.apply(null, cands.map(v => v.cv));
@@ -167,9 +204,10 @@ for (const c of liquid) {
 }
 
 ok('every easy-e case is graded against its OWN body, or not at all',
-  true, graded + ' graded against the held ED table; ' + wrongBody +
-  ' name only ET, EZ, EW or GX, whose tables are not held; ' + outOfTable +
-  ' reach above NPS ' + tableMax + ', which the ED catalog does not cover');
+  true, graded + ' graded against held tables (' + HELD_BODIES.join(', ') +
+  '); ' + wrongBody + ' name a line whose table is not held; ' + outOfTable +
+  ' reach above NPS ' + tableMax + '; ' + tooWide +
+  ' state a flow range too wide for a midpoint to mean anything');
 if (graded)
   ok('and the specified valve covers its service for any liquid to SG 1.0',
     marginal.length === 0,

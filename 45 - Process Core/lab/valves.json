@@ -1,10 +1,10 @@
 {
- "generated": "2026-10-10T16:59:15.493Z",
- "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
+ "generated": "2026-10-10T17:20:05.610Z",
+ "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
  "valves": [
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-1",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -15,8 +15,8 @@
    "FL": 0.81
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-1",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -27,8 +27,8 @@
    "FL": 0.79
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-1",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -39,8 +39,8 @@
    "FL": 0.88
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-1",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -51,8 +51,8 @@
    "FL": 0.77
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-1",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -63,8 +63,8 @@
    "FL": 0.87
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-1",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -75,8 +75,8 @@
    "FL": 0.81
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-1",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -87,8 +87,8 @@
    "FL": 0.86
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-1",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -99,8 +99,8 @@
    "FL": 0.77
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-1",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -111,8 +111,8 @@
    "FL": 0.86
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-2",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -123,8 +123,8 @@
    "FL": 0.79
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-2",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -135,8 +135,8 @@
    "FL": 0.89
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-2",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -147,8 +147,8 @@
    "FL": 0.82
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-2",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -159,8 +159,8 @@
    "FL": 0.87
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-2",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -171,8 +171,8 @@
    "FL": 0.85
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -183,8 +183,8 @@
    "FL": 0.84
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -195,8 +195,8 @@
    "FL": 0.82
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -207,8 +207,8 @@
    "FL": 0.91
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -219,8 +219,8 @@
    "FL": 0.77
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -231,8 +231,8 @@
    "FL": 0.87
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -243,8 +243,8 @@
    "FL": 0.81
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -255,8 +255,8 @@
    "FL": 0.84
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -267,8 +267,8 @@
    "FL": 0.82
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -279,8 +279,8 @@
    "FL": 0.85
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -291,8 +291,8 @@
    "FL": 0.82
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-3",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -303,8 +303,8 @@
    "FL": 0.84
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-4",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-123",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -315,8 +315,8 @@
    "FL": 0.84
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-4",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-123",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -327,8 +327,8 @@
    "FL": 0.88
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-4",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-123",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -339,8 +339,8 @@
    "FL": 0.87
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-4",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-123",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -351,8 +351,8 @@
    "FL": 0.87
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -363,8 +363,8 @@
    "FL": 0.88
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -375,8 +375,8 @@
    "FL": 0.84
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -387,8 +387,8 @@
    "FL": 0.91
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -399,8 +399,8 @@
    "FL": 0.85
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -411,8 +411,8 @@
    "FL": 0.88
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -423,8 +423,8 @@
    "FL": 0.84
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -435,8 +435,8 @@
    "FL": 0.89
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -447,8 +447,8 @@
    "FL": 0.82
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -459,8 +459,8 @@
    "FL": 0.87
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -471,8 +471,8 @@
    "FL": 0.82
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-5",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -483,8 +483,8 @@
    "FL": 0.89
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-6",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-125",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -495,8 +495,8 @@
    "FL": 0.85
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-6",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-125",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -507,8 +507,8 @@
    "FL": 0.88
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-6",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-125",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -519,8 +519,8 @@
    "FL": 0.85
   },
   {
-   "doc": "Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023",
-   "page": "ED-6",
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-125",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -529,23 +529,430 @@
    "travelIn": 3,
    "cv100": 818,
    "FL": 0.86
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-201",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "1/2",
+   "portIn": 1,
+   "travelIn": 0.75,
+   "cv100": 4.44,
+   "FL": 0.83
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-201",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "3/4",
+   "portIn": 1,
+   "travelIn": 0.75,
+   "cv100": 9.72,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-201",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "1",
+   "portIn": 1,
+   "travelIn": 0.75,
+   "cv100": 16.9,
+   "FL": 0.94
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-201",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "1‐1/2",
+   "portIn": 1.5,
+   "travelIn": 0.75,
+   "cv100": 34.2,
+   "FL": 0.96
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-201",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "2",
+   "portIn": 2,
+   "travelIn": 1.125,
+   "cv100": 58.6,
+   "FL": 0.94
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-201",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "quick-opening",
+   "nps": "3",
+   "portIn": 3,
+   "travelIn": 1.5,
+   "cv100": 129,
+   "FL": 0.91
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-202",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "nps": "1",
+   "portIn": 1,
+   "travelIn": 0.75,
+   "cv100": 13.6,
+   "FL": 0.96
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-202",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "nps": "1‐1/2",
+   "portIn": 1.5,
+   "travelIn": 0.75,
+   "cv100": 31.9,
+   "FL": 0.96
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-202",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "nps": "2",
+   "portIn": 2,
+   "travelIn": 1.125,
+   "cv100": 52.4,
+   "FL": 0.95
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-202",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "linear",
+   "nps": "3",
+   "portIn": 3,
+   "travelIn": 1.5,
+   "cv100": 110.4,
+   "FL": 0.92
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-203",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1",
+   "portIn": 1,
+   "travelIn": 0.75,
+   "cv100": 13.2,
+   "FL": 0.96
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-203",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1‐1/2",
+   "portIn": 1.5,
+   "travelIn": 0.75,
+   "cv100": 28.1,
+   "FL": 0.97
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-203",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "2",
+   "portIn": 2,
+   "travelIn": 1.125,
+   "cv100": 53.8,
+   "FL": 0.95
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-203",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "3",
+   "portIn": 3,
+   "travelIn": 1.5,
+   "cv100": 114,
+   "FL": 0.92
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1/2 ‐ 2",
+   "portIn": 0.25,
+   "travelIn": 0.75,
+   "cv100": 1.52,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1/2",
+   "portIn": 0.375,
+   "travelIn": 0.75,
+   "cv100": 3,
+   "FL": 0.93
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1/2",
+   "portIn": 0.5,
+   "travelIn": 0.75,
+   "cv100": 4.52,
+   "FL": 0.94
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "3/4",
+   "portIn": 0.375,
+   "travelIn": 0.75,
+   "cv100": 3.03,
+   "FL": 0.93
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "3/4",
+   "portIn": 0.5,
+   "travelIn": 0.75,
+   "cv100": 5.06,
+   "FL": 0.94
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "3/4",
+   "portIn": 0.75,
+   "travelIn": 0.75,
+   "cv100": 8.35,
+   "FL": 0.87
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1",
+   "portIn": 0.375,
+   "travelIn": 0.75,
+   "cv100": 3.07,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1",
+   "portIn": 0.5,
+   "travelIn": 0.75,
+   "cv100": 4.91,
+   "FL": 0.93
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1",
+   "portIn": 0.75,
+   "travelIn": 0.75,
+   "cv100": 8.84,
+   "FL": 0.97
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1‐1/2",
+   "portIn": 0.375,
+   "travelIn": 0.75,
+   "cv100": 3.2,
+   "FL": 0.84
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1‐1/2",
+   "portIn": 0.5,
+   "travelIn": 0.75,
+   "cv100": 5.18,
+   "FL": 0.91
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "ED-204",
+   "body": "EZ",
+   "cls": "CL125-CL600",
+   "cage": "equal-percentage",
+   "nps": "1. At 100%",
+   "portIn": 0.75,
+   "travelIn": 0.75,
+   "cv100": 10.2,
+   "FL": 0.92
   }
  ],
  "rejected": [
   {
-   "page": 2,
+   "page": 121,
    "y": 399,
    "why": "expected 10 travel points and FL, found 2"
   },
   {
-   "page": 4,
+   "page": 123,
    "y": 319,
    "why": "expected 10 travel points and FL, found 2"
   },
   {
-   "page": 6,
+   "page": 125,
    "y": 307,
    "why": "expected 10 travel points and FL, found 2"
+  },
+  {
+   "page": 201,
+   "y": 322,
+   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 201,
+   "y": 396,
+   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 201,
+   "y": 470,
+   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 201,
+   "y": 502,
+   "why": "left band gave \"101.6\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 201,
+   "y": 544,
+   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 202,
+   "y": 232,
+   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 202,
+   "y": 301,
+   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 202,
+   "y": 370,
+   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 202,
+   "y": 404,
+   "why": "left band gave \"101.6\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 202,
+   "y": 439,
+   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 203,
+   "y": 255,
+   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 203,
+   "y": 335,
+   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 203,
+   "y": 416,
+   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 203,
+   "y": 450,
+   "why": "left band gave \"101.6\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 203,
+   "y": 496,
+   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 205,
+   "y": 162,
+   "why": "no port/travel geometry found beside or below the row"
+  },
+  {
+   "page": 205,
+   "y": 197,
+   "why": "no port/travel geometry found beside or below the row"
+  },
+  {
+   "page": 205,
+   "y": 326,
+   "why": "no port/travel geometry found beside or below the row"
+  },
+  {
+   "page": 205,
+   "y": 360,
+   "why": "no port/travel geometry found beside or below the row"
   }
  ]
 }

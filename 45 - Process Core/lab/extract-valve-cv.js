@@ -66,58 +66,63 @@ const { execFileSync } = require('child_process');
 const POPPLER = 'C:/Users/E1552882/poppler/poppler-26.02.0/Library/bin/pdftotext.exe';
 const VAULT = path.join(__dirname, '..', '..');
 const PDF = '20 - Source Library/Equipment Manuals/Valve Bodies/' +
-            'fisher-ed-ead-edr-catalog-12-flow-coefficients-dec2023.pdf';
-const DOC = 'Fisher Catalog 12, ED/EAD/EDR flow coefficients, Dec 2023';
+            'fisher-catalog-12-flow-coefficients-complete-d103182x012-apr2022.pdf';
+const DOC = 'Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp';
 
-/* WHICH PAGES, and what this file actually is.
+/* WHICH PAGES, ONE SHEET PER PAGE.
 
-   `Catalog 12` is a multi-section catalog. What the vault holds is its
-   ED/EAD/EDR section -- 19 pages -- NOT the whole thing. Its contents,
-   read rather than assumed:
+   The vault now holds the COMPLETE Catalog 12 -- D103182X012, 398 pages,
+   April 2022, public from emerson.com -- not just its ED section.
 
-     1-6    ED quick-opening, linear, equal-percentage     standard cages
-     7-8    ED-J and ET-J, CL300, linear                   standard cage
-     9-16   ED Whisper Trim I / III, WhisperFlo, EWD       severe service
-     17-18  ET Cavitrol III, ET Dirty Service Trim         severe service
-     19     a pointer: ET-C has coefficients identical to
-            NPS 3 through 8 ED with full-sized port
+   ONE PAGE PER SHEET, and that is a correction. The first pass grouped
+   pages by cage name, so EW-1, EW-7, EW-31 and EW-35 all went in as one
+   "EW quick-opening" sheet. They are not one thing: EW-1 is EWD at
+   CL150/300/600 flowing down, EW-31 flows UP, and the bodies differ.
+   Merging them gave the same (size, port) two capacities and inverted 22
+   of 48 monotonic pairs. Each page is its own table and is declared as
+   its own sheet, which is the only way the invariants can mean anything.
 
-   So the standard ET, EZ and EW cages are genuinely absent, and so is
-   every rotary line. But pages 1-2 and 7-8 ARE standard-cage tables and
-   the first pass through this file skipped them, which understated the
-   coverage we already had.
+   ONLY STANDARD CAGES. Whisper, WhisperFlo, Cavitrol and Dirty Service
+   Trim carry extra columns -- minimum throttling Cv, unbalanced area,
+   Kn -- that mean specific things, and reading them as a standard cage
+   would lose exactly what makes them severe-service trim.
 
-   Severe-service pages are left out deliberately: Cavitrol, Whisper and
-   DST tables carry extra columns -- minimum throttling Cv, unbalanced
-   area, Kn -- that mean specific things, and reading them as if they
-   were a standard cage would lose exactly the information that makes
-   them severe-service trim.
+   ROTARY IS OUT for now. Control-Disk and V500 tables are built around
+   degrees of rotation rather than percent of travel and did not survive
+   the invariants on trial. They need a reader that understands their
+   shape, not this one pointed at more pages.
 
-   `metric: false` marks a sheet whose geometry columns are inches only.
-   Pages 7-8 print no millimetre column, so a parser expecting the
-   four-number mm/inch pairing rejects every row on them. */
+   A NOTE ON ET, which the refinery corpus names more than anything else:
+   Catalog 12's entire ET section is three pages -- Cavitrol III, Dirty
+   Service Trim, and a page of equivalences. Standard ET is NOT tabulated
+   in this catalog and is given no stated equivalence to ED. Page ET-3
+   does state that ET-C equals ED NPS 3-8 full port and ETR equals ED
+   NPS 1-4 CL125-600, and points Large ET/EWT at PS Sheet 51.1:E Series,
+   which the vault does not hold. */
 const SHEETS = [
-  { pages: [1, 2], cage: 'quick-opening', body: 'ED', cls: 'CL125-CL600',
-    metric: true },
-  { pages: [3, 4], cage: 'linear', body: 'ED', cls: 'CL125-CL600',
-    metric: true },
-  { pages: [5, 6], cage: 'equal-percentage', body: 'ED', cls: 'CL125-CL600',
-    metric: true },
-  /* PAGES 7-8 ARE EXCLUDED, and the reason is worth keeping.
+  /* ED -- easy-e globe. pdf = page code + 119. Verified clean. */
+  { pages: [120], cage: 'quick-opening', body: 'ED', cls: 'CL125-CL600', metric: true },
+  { pages: [121], cage: 'quick-opening', body: 'ED', cls: 'CL125-CL600', metric: true },
+  { pages: [122], cage: 'linear', body: 'ED', cls: 'CL125-CL600', metric: true },
+  { pages: [123], cage: 'linear', body: 'ED', cls: 'CL125-CL600', metric: true },
+  { pages: [124], cage: 'equal-percentage', body: 'ED', cls: 'CL125-CL600', metric: true },
+  { pages: [125], cage: 'equal-percentage', body: 'ED', cls: 'CL125-CL600', metric: true },
 
-     They were included on the first attempt as one linear sheet, and
-     both invariant checks fired: NPS 12 port 9.5 came back with two
-     capacities, 938 and 473, and three pairs inverted. Not a parse
-     failure -- a MISLABEL. Page 7 stacks THREE tables (Linear, Equal
-     Percentage, Whisper III Level A1 flow-up) and page 8 is Cavitrol
-     III one- and two-stage. Calling all of it "linear" merged a
-     noise-reducing trim with a standard cage, which is how 938 and 473
-     ended up claiming to be the same valve.
+  /* EZ -- easy-e globe, smaller body, flow up through the port. */
+  { pages: [201], cage: 'quick-opening', body: 'EZ', cls: 'CL125-CL600', metric: true },
+  { pages: [202], cage: 'linear', body: 'EZ', cls: 'CL125-CL600', metric: true },
+  { pages: [203], cage: 'equal-percentage', body: 'EZ', cls: 'CL125-CL600', metric: true },
+  { pages: [204], cage: 'equal-percentage', body: 'EZ', cls: 'CL125-CL600', metric: true },
+  { pages: [205], cage: 'equal-percentage', body: 'EZ', cls: 'CL125-CL600', metric: true },
 
-     Reading them properly means splitting page 7 by the y of each
-     sub-heading and giving Whisper and Cavitrol their own cage names.
-     That is bounded work, not done, and shipping the merge in the
-     meantime would put a wrong Cv in front of a sizing calculation. */
+  /* EW IS OUT, and the reason is specific. Each EW page stacks more
+     than one PRESSURE CLASS -- page EW-1 is headed "EWD CL150, 300, and
+     600" -- so one page holds the same valve size and port three times
+     with three capacities. One-sheet-per-page fixed the body and flow
+     direction merge; it cannot fix a merge that happens inside a page.
+     Separating them means reading the class column, which is another
+     structural element this reader does not yet find. 18 of 42 pairs
+     inverted on trial, which is the invariant doing its job. */
 ];
 
 const WORD = /<word xMin="([0-9.]+)" yMin="([0-9.]+)" xMax="([0-9.]+)" yMax="([0-9.]+)">([^<]*)<\/word>/g;
@@ -268,7 +273,18 @@ function run() {
         /* The geometry row carries the port; the NPS label is centred
            on the group that row belongs to, so measure from the
            geometry's y rather than the Cv row's. */
-        const nps = npsAt(r.y + 10);
+        /* An NPS label that reads 25.4 is a millimetre column being
+           picked up by the left band on a section whose columns sit
+           differently from ED's. Nominal pipe sizes do not run to 25
+           and are never given to one decimal, so such a row is rejected
+           rather than filed under a valve size that does not exist. */
+        let nps = npsAt(r.y + 10);
+        if (nps && /^\d+(\.\d+)?$/.test(nps) && parseFloat(nps) > 24) {
+          out.rejected.push({ page: page, y: Math.round(r.y),
+            why: 'left band gave "' + nps + '" as a valve size, which is a ' +
+                 'millimetre column, not an NPS' });
+          continue;
+        }
         if (!nps) {
           out.rejected.push({ page: page, y: Math.round(r.y),
             why: 'no NPS label found in the left band' });
