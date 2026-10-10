@@ -218,12 +218,23 @@ check('a valve with no cv is not a restriction, and the layer says what that did
         const d = LPE.dyn(LPE.net(s));
         /* v0 stops resisting, so bed 0 is wide open from the manifold to
            a pod sitting at atmosphere -- which pins the manifold and
-           leaves nothing to solve. It stops being a flow path, and the
-           grounding it caused is now named instead of coming back as a
-           board of zeroes. This check used to assert errors.length === 0,
-           which was the silent behaviour and not a correct one. */
-        return d.solve({ main: 1 }).q.b0 === undefined &&
-               /every node in this net is pinned/.test(d.errors.join(' '));
+           leaves nothing to float. It stops being a flow path, and the
+           grounding it caused is still named.
+
+           What changed: the naming moved from `errors` to `warnings`, and
+           the net now SOLVES instead of returning a board of zeroes. A
+           pinned net is determinate, not unsolvable -- every restriction
+           knows the pressure either side of it. The complaint is about
+           MODELLING intent (a manifold the author meant to float), which
+           is a warning, not a refusal. What makes it still a complaint is
+           that a fitting -- the tee -- is sitting on a boundary node, and
+           a fitting is pipe. */
+        const sol = d.solve({ main: 1 });
+        return sol.q.b0 === undefined &&
+               d.determinate === true &&
+               d.errors.length === 0 &&
+               /pinned to a boundary pressure/.test(d.warnings.join(' ')) &&
+               /tee0|tee1/.test(d.warnings.join(' '));
       })());
 
 check('the bed-3 valve and its reducer are combined in series, not summed',
@@ -267,10 +278,96 @@ check('a net with nothing left to solve is named, not silently zero',
           frames: { rig: { at: { src: [0,0], a: [50,0], t: [100,0],
                                  d1: [150,0], b: [100,50], d2: [100,100] } } },
         };
-        const e = LPE.dyn(LPE.net(s)).errors.join(' ');
-        return /every node in this net is pinned/.test(e) &&
-               /put a valve \(shut is fine\)/.test(e);
+        /* The grounded header is still caught, and still names the fix.
+           It is a WARNING now rather than an error, because the net is
+           determinate rather than unsolvable -- and the board no longer
+           reads all zeroes, which is the better outcome: valve `a` now
+           carries real flow from the source to the grounded header while
+           `b` carries none across a zero drop, and the warning says
+           exactly which fitting got grounded.
+
+           The complaint survives the change; only its severity and its
+           accuracy moved. The old text asserted a cause; this one names
+           the component. */
+        const d = LPE.dyn(LPE.net(s));
+        const w = d.warnings.join(' ');
+        const sol = d.solve({ a: 1, b: 1 });
+        return d.determinate === true &&
+               /pinned to a boundary pressure/.test(w) &&
+               /\bt\b/.test(w) &&                       // the tee, by name
+               /valve there \(shut is fine\)/i.test(w) &&
+               sol.q.a > 0 &&                            // source -> header
+               sol.q.b === 0;                            // across no drop
       })());
+
+/* ---- the determinate net: a CONTROL LOOP ---------------------------
+   Supply, a control valve, a load, a sink. The shape every control loop
+   takes, and until 2026-10-10 the solver refused it: series reduction
+   correctly collapses valve-then-load into one equivalent restriction
+   between two boundaries, which leaves no node floating, and "no unknown
+   node" was being treated as unsolvable when it is in fact the easiest
+   case -- every restriction already knows the pressure either side.
+
+   Nothing here floats, so there is nothing to iterate and nothing to
+   lag. The flow is the sizing equation straight out. */
+const LOOP = {
+  bores: { m: 1 }, fluid: { sg: 1 },
+  components: {
+    tank: { kind: 'vessel', tag: 'TK-1', role: 'source', pressure: 60 },
+    fcv:  { kind: 'valve',  tag: 'FCV-1', key: 'fcv', cv: 0.9 },
+    load: { kind: 'valve',  tag: 'RO-1',  key: 'load', cv: 0.9 },
+    pod:  { kind: 'vessel', tag: 'TK-2', role: 'sink' },
+  },
+  segments: [
+    { from: 'tank.out', to: 'fcv.in',  bore: 'm' },
+    { from: 'fcv.out',  to: 'load.in', bore: 'm' },
+    { from: 'load.out', to: 'pod.in',  bore: 'm' },
+  ],
+  frames: { rig: { at: { tank: [0, 0], fcv: [50, 0], load: [100, 0], pod: [150, 0] } } },
+};
+const loop = LPE.dyn(LPE.net(LOOP), { tau: 0.4 });
+
+check('a control loop solves rather than being refused',
+      loop.errors.length === 0, loop.errors.join('; '));
+check('and says it is determinate', loop.determinate === true);
+check('a plain series run draws NO grounded-fitting warning',
+      loop.warnings.length === 0, loop.warnings.join('; '));
+check('supply is still read off the source', loop.supply === 60,
+      String(loop.supply));
+
+const wide = loop.solve({ fcv: 1, load: 1 });
+check('flow is the sizing equation off the series Cv, exactly',
+      Object.is(wide.qTot, seriesCv(0.9, 0.9) * Math.sqrt(60 / 1)),
+      `${wide.qTot} vs ${seriesCv(0.9, 0.9) * Math.sqrt(60 / 1)}`);
+check('a shut control valve stops the loop', loop.solve({ fcv: 0, load: 1 }).qTot === 0);
+check('the flow is reported against the valve\'s key and its tag',
+      wide.q.fcv === wide.qTot && wide.q['FCV-1'] === wide.qTot);
+
+/* The installed characteristic falls out: as the control valve opens,
+   the fixed load takes over as the dominant resistance, so flow bends
+   away from the valve's own linear travel. That is the thing a sizing
+   course is trying to teach, and it is emergent here rather than drawn. */
+const curve = [0.25, 0.5, 0.75, 1].map(p => loop.solve({ fcv: p, load: 1 }).qTot);
+check('flow rises monotonically with travel',
+      curve.every((q, i) => i === 0 || q > curve[i - 1]), JSON.stringify(curve));
+check('and flattens as the fixed load becomes dominant -- the installed '
+      + 'characteristic, not the inherent one',
+      (curve[1] - curve[0]) > (curve[3] - curve[2]),
+      JSON.stringify(curve.map(q => +q.toFixed(3))));
+
+/* pressure/target are NULL, not zero: no node holds a pressure here, and
+   reporting a number for one would be inventing a reading. */
+check('a determinate net reports no held pressure rather than a fake zero',
+      wide.pressure === null && wide.target === null);
+check('stepping a determinate net is just solving it, not NaN',
+      (function () {
+        const s = loop.step(0.1, { fcv: 1, load: 1 });
+        return s.qTot === wide.qTot && s.pressure === null;
+      })());
+check('settling a determinate net is a no-op, not NaN',
+      Number.isFinite(loop.settle({ fcv: 1, load: 1 }).qTot));
+
+console.log('');
 
 /* A net that needs an iterative solve must say so rather than guess.
 

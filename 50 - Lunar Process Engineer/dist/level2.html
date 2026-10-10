@@ -3483,6 +3483,12 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
                 ? net.spec.fluid.sg : 1);
     const tau = o.tau !== undefined ? o.tau : 0.22;
     const errors = [];
+    /* Warnings are things worth saying that are not refusals. The
+       distinction matters: this layer refuses rather than return a
+       plausible wrong flow, so anything it DOES return has to be right,
+       and a note about modelling intent must not be dressed as a fault. */
+    const warnings = [];
+    let determinate = false;
     const comps = net.components;
     const live = net.segments.filter(s => s.from && s.to);
 
@@ -3590,13 +3596,65 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
          blind, a cap or a drain VALVE, and the valve is the thing that
          makes the header a node. Say so, rather than returning silence
          that reads as "shut". */
-      errors.push('every node in this net is pinned to a fixed pressure, ' +
-                  'so nothing can be solved and every flow is zero. Usually ' +
-                  'a run ends directly at a source or sink with no ' +
-                  'restriction in between, which ties the whole header to ' +
-                  'that boundary -- put a valve (shut is fine) between them, ' +
-                  'the way a real header ends in a drain valve rather than ' +
-                  'an open pipe');
+      /* NOT an error. Every node pinned means the net is DETERMINATE:
+         each restriction has a known pressure either side, so its flow
+         follows directly and there is nothing to iterate. This is the
+         easiest case, and it used to be refused as the hardest.
+
+         It is the shape a control loop takes -- supply, a control valve,
+         a load, a sink -- because series reduction correctly collapses
+         valve-then-load into one equivalent restriction between two
+         boundaries, leaving no node floating in the middle. Level 1
+         escapes it only because its manifold has three branches, which
+         is a tee and therefore a real node.
+
+         The old text also misdiagnosed: it asserted a run must have been
+         tied straight to a boundary, which is only one of the ways to
+         get here and was not what happened. Kept as a WARNING because
+         that mistake is still worth catching -- a header you expected to
+         float, grounded to a sink, computes flows that are right for the
+         netlist as written and wrong for the rig you meant. */
+      determinate = true;
+
+      /* Two very different rigs arrive here and they must not be told the
+         same thing.
+
+         A plain series run -- supply, control valve, load, sink -- is
+         determinate because it genuinely has no middle node. Nothing is
+         wrong and nothing should be said.
+
+         A GROUNDED HEADER is the mistake: a tee or union that ought to
+         find its own pressure has been tied straight to a boundary, so
+         the header sits at the drain's pressure and every branch off it
+         is computed against the wrong drop. Found building a twelve-bed
+         density board whose header ran into a drain.
+
+         The discriminator is what is sitting on the pinned node. A
+         boundary belongs there. A restriction's port belongs there. An
+         ordinary fitting does NOT -- it is pipe, and pipe between two
+         restrictions is what a node IS. So name the fittings that got
+         grounded, and say nothing when there are none. */
+      const groundedFittings = ids.filter(id => {
+        const c = comps[id];
+        if (isRestriction(c)) return false;
+        const src = c.kind === 'source' || (c.kind === 'vessel' && c.role === 'source');
+        const snk = c.kind === 'sink' || (c.kind === 'vessel' && c.role === 'sink');
+        if (src || snk) return false;
+        return fixed[find(id)] !== undefined;
+      });
+
+      if (groundedFittings.length) {
+        warnings.push('these are pinned to a boundary pressure and should ' +
+                      'not be: ' + groundedFittings.join(', ') + '. A ' +
+                      'fitting is pipe, and pipe between restrictions is ' +
+                      'what a node IS -- so a run has been tied straight ' +
+                      'to a source or sink with no restriction in ' +
+                      'between, which grounds the whole header to that ' +
+                      'boundary and computes every branch off it against ' +
+                      'the wrong drop. Put a valve there (shut is fine), ' +
+                      'the way a real header ends in a drain valve rather ' +
+                      'than an open pipe');
+      }
     }
     if (unknownNodes.length > 1) {
       errors.push(`this net reduces to ${unknownNodes.length} unsolved ` +
@@ -3611,7 +3669,13 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
        downstream links drain it to a lower one. */
     const sideOf = L => (L.a === node ? L.b : L.a);
     const onNode = links.filter(L => L.a === node || L.b === node);
-    const supplyP = onNode.reduce((m, L) => Math.max(m, fixed[sideOf(L)] || 0), 0);
+    /* With a floating node, supply is the highest pressure feeding IT.
+       With none, there is no "it" -- take the highest fixed pressure in
+       the net, which is the same number for every rig that has one
+       source and is at least honest for a rig that has several. */
+    const supplyP = determinate
+      ? Object.keys(fixed).reduce((m, n) => Math.max(m, fixed[n] || 0), 0)
+      : onNode.reduce((m, L) => Math.max(m, fixed[sideOf(L)] || 0), 0);
     const up   = onNode.filter(L => fixed[sideOf(L)] === supplyP && supplyP > 0);
     const down = onNode.filter(L => up.indexOf(L) < 0);
 
@@ -3625,7 +3689,49 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
       return c;
     }
 
+    /* ---- the determinate case ----------------------------------------
+       No node floats, so every restriction already knows the pressure on
+       both sides. Flow is the sizing equation straight out -- q = Cv x
+       sqrt(dP / sg) -- per link, with no iteration and no held state.
+
+       Signed by direction: a link whose `a` end sits higher carries flow
+       a -> b, and the reverse carries it back. A link with no drop across
+       it carries nothing, which is what a valve between two equal
+       pressures does. */
+    function solveDeterminate(state) {
+      const s = state || {};
+      const q = {};
+      let qTot = 0;
+      const flows = [];
+      let cvTot = 0;
+
+      for (const L of links) {
+        const pa = fixed[L.a] || 0, pb = fixed[L.b] || 0;
+        const cv = cvOf(L, s);
+        cvTot += cv;
+        const dp = pa - pb;
+        const mag = cv * Math.sqrt(Math.abs(dp) / sg);
+        const f = dp >= 0 ? mag : -mag;
+        qTot += f;
+        flows.push({ ids: L.ids, cv, q: f });
+        for (const id of L.ids) {
+          const c = comps[id];
+          if (c.key !== undefined) q[c.key] = f;
+          if (c.tag) q[c.tag] = f;
+          q[id] = f;
+        }
+      }
+
+      /* pressure and target are NULL, not zero. There is no floating node
+         in this net, so reporting a number for one would be inventing a
+         reading -- the same reason the faceplate on the bench refuses to
+         call a commanded setpoint a measured position. */
+      return { cvUp: cvTot, cvDown: cvTot, pressure: null, target: null,
+               q, qTot, flows, determinate: true };
+    }
+
     function solve(state) {
+      if (determinate) return solveDeterminate(state);
       const s = state || {};
       /* Summed in declaration order. See the note on links above. */
       let cvUp = 0;
@@ -3670,14 +3776,26 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
 
     return {
       errors: errors.concat(net.errors),
+      warnings,
+      /* True when no node floats: flows are exact and immediate, and
+         `pressure`/`target` are null because there is nothing holding a
+         pressure to report. */
+      determinate,
       nodes: unknownNodes.length,
       tau, sg, supply: supplyP,
 
       solve,
       /* Walk the held pressure toward the target. The same first-order
-         lag every level had; owned here so no level picks its own. */
+         lag every level had; owned here so no level picks its own.
+
+         A determinate net has nothing to walk -- no node holds a
+         pressure, and the flows are already final -- so stepping it is
+         just solving it. Guarded rather than left to arithmetic: the
+         target is null there, and `held += (null - held) * x` is NaN,
+         which would spread silently through every flow downstream. */
       step(dt, state) {
         const s = solve(state);
+        if (determinate) return s;
         held += (s.target - held) * Math.min(1, dt / tau);
         return s;
       },
@@ -3685,7 +3803,11 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
       set pressure(v) { held = v; },
       /* Settle instantly -- for a calibration pass that wants the steady
          state without running the clock. */
-      settle(state) { held = solve(state).target; return solve(state); },
+      settle(state) {
+        if (determinate) return solve(state);   // already steady, nothing to settle
+        held = solve(state).target;
+        return solve(state);
+      },
     };
   }
 

@@ -133,6 +133,21 @@ A net that reduces to more than one unknown node is **refused by name** — that
 needs an iterative solve which is not built, and a plausible wrong flow is worse than no
 flow.
 
+A net that reduces to **zero** unknown nodes is **determinate**, and solves. Supply →
+control valve → load → sink is exactly this: series reduction correctly collapses
+valve-then-load into one equivalent restriction between two boundaries, so nothing is
+left floating. Every restriction knows the pressure either side, flow is the sizing
+equation straight out, and there is nothing to iterate or to lag. `dyn.determinate` says
+so, and `pressure`/`target` come back **null** rather than a fake zero — no node holds a
+pressure here, and reporting a number for one would be inventing a reading.
+
+> Until 2026-10-10 this was refused as if it were the hard case, with an error that
+> misdiagnosed the cause. It is the easy case; a control loop is the shape that exposed
+> it. The genuine mistake it used to catch — a header tied straight to a boundary, so it
+> sits at the drain's pressure and every branch is computed against the wrong drop — is
+> now a **warning** that names the grounded fitting, because a fitting is pipe and pipe
+> between restrictions is what a node *is*. A plain series run says nothing.
+
 This is 1D network hydraulics, which is what a P&ID means by dynamics. It is not CFD;
 what happens inside one valve body belongs in an offline solve whose result arrives here
 as a Cv curve.
