@@ -30,19 +30,39 @@ Primary citations:
 - Coefficients as **Table 7.3**, Darby & Chhabra, *Chemical Engineering Fluid
   Mechanics*, 3rd ed., CRC Press.
 
-## THE PRIMARY SOURCE for fitting resistance in this vault
+## NOT the primary source. THE CHOICE IS OPEN.
 
-Chosen 2026-10-10 over `Crane TP-410` and `Hooper 2-K`, on three grounds:
+**This entry said "THE PRIMARY SOURCE" for about an hour on 2026-10-10 and it
+was wrong.** The reasoning behind it was sound and the evidence was from the
+wrong place: every number was run at NPS ½ and Re ≈ 10,000, which is Lunar
+Process Engineer's grow bay — a teaching toy at the shallow end of the game,
+not the department's subject. The real domain is power, nuclear, refining and
+severe service: NPS 2 to 24 and beyond, buttweld and flanged, Re in the
+hundreds of thousands to millions.
 
-1. **It is the only one of the three that handles both size and flow regime.**
-   Crane assumes fully-turbulent flow; at the bores and flows this vault works
-   in, Re is about 10,000, which is where that assumption is weakest.
-2. **It agrees with Crane where Crane is valid** — 0.865 against 0.810 for an
-   NPS ½ 90° elbow, inside 7%.
-3. **It is obtainable**, which Crane is not without a purchase.
+Re-run there, **the ordering inverts.** Long-radius buttweld elbow, 10 ft/s:
 
-An independent comparison of the four common methods (Equivalent Length,
-Crane K, Hooper 2-K, Darby 3-K) recommends this one for the same reasons.
+| | Re | Crane | Hooper | Darby | spread |
+|---|---|---|---|---|---|
+| NPS ½ socket-weld, 2 gpm | 10,127 | 0.810 | **1.122** | 0.865 | 39% |
+| NPS 2 buttweld, 105 gpm | 159,343 | 0.304 | 0.302 | **0.237** | 28% |
+| NPS 6 buttweld, 900 gpm | 467,545 | 0.240 | 0.235 | **0.185** | 30% |
+| NPS 24 buttweld, 12,530 gpm | 1,744,064 | 0.192 | 0.209 | **0.142** | 47% |
+
+At small bore Hooper is the outlier. **At every industrial size Darby is**, low
+by 23–47%, while Crane and Hooper agree within 2%. The spread is also *wider*
+in the real domain than in the toy one, so the choice matters more there, not
+less.
+
+Why: at high Re the `K₁/Re` term vanishes from all three and what remains is
+purely each method's size correction — and that is exactly where they disagree.
+The comparison article's general recommendation of Darby rests on its handling
+of size *and regime*; where regime drops out, half the argument goes with it.
+
+**So the choice is reopened and recorded as open.** Settling it properly means
+reading the primary publications rather than secondary coefficient tables, at
+the sizes the department actually serves. That is work for Phase 2 of the flow
+lab, not a call to make from a search.
 
 ## The correlation
 
@@ -92,7 +112,7 @@ decimals as though it were exact is a lie the arithmetic will happily tell.
 
 ## What rests on it
 
-Nothing yet. Registered ahead of Phase 2 of
+Nothing. Registered as one of three candidates for Phase 2 of
 `00 - Project/Process Core — Flow Lab Plan.md`.
 
 ## Copyright

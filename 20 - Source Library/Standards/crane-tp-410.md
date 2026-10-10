@@ -7,7 +7,7 @@ tags:
 standard-id: "Crane TP-410"
 publisher: Crane Co. — a commercial technical paper, not a standards body
 edition: 80th anniversary edition, 2023; earlier US and metric (410M) editions in print
-holding: not-held
+holding: not-held — recommended purchase
 updated: 2026-10-10
 used-by:
   - "00 - Project/Process Core — Flow Lab Plan.md"
@@ -60,12 +60,31 @@ Crane. And published fitting-loss data carries **25–30% uncertainty**
 generally, so the whole spread sits inside the noise of the underlying
 measurements.
 
-Buying TP-410 would buy a cross-check, not an unblocking. `Darby 3-K` is the
-primary source instead.
+**But that comparison was run in the wrong place**, and this entry said so an
+hour later than it should have. NPS ½ at Re ≈ 10,000 is Lunar Process
+Engineer's grow bay, not power, nuclear, refining or severe service. Re-run on
+a long-radius buttweld elbow at industrial size, Crane sits in the middle of
+the pack and **Darby becomes the outlier**:
 
-**This corrects an earlier claim of mine** that the flow lab was blocked on
-obtaining Crane. It is not, and the error was equating "absent from Emerson's
-subscription" with "not sourceable."
+| | Crane | Hooper | Darby |
+|---|---|---|---|
+| NPS 2, Re 159k | 0.304 | 0.302 | 0.237 |
+| NPS 6, Re 468k | 0.240 | 0.235 | 0.185 |
+| NPS 24, Re 1.7M | 0.192 | 0.209 | 0.142 |
+
+Crane and Hooper agree within 2% across that range. So TP-410 is **not** the
+third opinion this entry first called it — at the sizes the department serves
+it is one of the two that agree, and it is the method the industry actually
+uses for them.
+
+**Recommendation: buy it.** About USD 144 for the current edition, against the
+cost of guessing which correlation to trust in power and refining service.
+
+**Two earlier claims of mine corrected here.** First, that the flow lab was
+blocked on obtaining Crane — it is not; the error was equating "absent from
+Emerson's subscription" with "not sourceable." Second, that Crane was not
+needed — that was concluded from grow-bay numbers and does not survive contact
+with industrial ones.
 
 ## What has been read
 

@@ -43,11 +43,13 @@ Coefficients read 2026-10-10:
 | tee, run-through | screwed | 200 | 0.10 |
 | tee, run-through | flanged / welded | 150 | 0.05 |
 
-## Role here: CROSS-CHECK, not primary
+## Role here: CANDIDATE, and the one that agrees with Crane where it counts
 
-`Darby 3-K` is the primary source. Hooper is kept because a second independent
-correlation is how a transcription slip gets caught, and because the gap
-between the two is informative in itself.
+An earlier version of this entry called Hooper the cross-check and `Darby 3-K`
+the primary. That ranking came from numbers run at NPS ½ on a grow bay, which
+is not the domain this department serves, and it inverts at industrial size:
+at NPS 2 through 24 **Hooper and Crane agree within 2% and Darby runs 23–47%
+low.** See the table in the `Darby 3-K` entry.
 
 At NPS ½ and Re ≈ 10,000 Hooper gives **1.122** for a 90° threaded elbow
 against Darby's **0.865** and Crane's **0.810** — it runs 39% high. So Hooper
