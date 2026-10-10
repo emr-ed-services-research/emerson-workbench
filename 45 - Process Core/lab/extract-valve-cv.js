@@ -397,6 +397,13 @@ function run() {
             why: 'expected 10 travel points and FL, found ' + after.length });
           continue;
         }
+        /* THE WHOLE CURVE, not just its endpoint. Cv at 10, 20 ... 100
+           percent of travel IS the valve's inherent characteristic --
+           the difference between a linear cage and an equal-percentage
+           one lives in the shape of these ten numbers, not in the name
+           on the page. Storing only cv100 threw away the one thing
+           Phase 5 needs and kept the one thing it does not. */
+        const curve = pts.slice(0, 10);
         const cv100 = pts[9], FL = pts[10];
 
         /* The geometry for this row: port diameter in inches and travel
@@ -499,6 +506,7 @@ function run() {
           doc: DOC, page: 'p' + page, body: vtype || sheet.body,
           cls: sheet.cls, cage: band.cage, nps: nps,
           portIn: portIn, travelIn: travelIn, cv100: cv100, FL: FL,
+          curve: curve,
         });
       }
     }
