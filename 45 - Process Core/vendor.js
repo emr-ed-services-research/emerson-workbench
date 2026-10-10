@@ -101,6 +101,17 @@ function vendor(consumer) {
     ? fs.readdirSync(skinDir).filter(f => f.endsWith('.js')).sort()
         .map(f => 'skins/' + f)
     : [];
+  /* catalogue/ is DATA, not code -- the parts repository. It ships for the
+     same reason src/ does: a consumer that draws an elbow needs to know how
+     big a real one is, and the whole point of the catalogue is that there is
+     one copy of that answer. It is .json rather than .js because LoopBench
+     is Python and has to read the same rows; a JS table would force a second
+     copy, which is the disease this core exists to cure. */
+  const catDir = path.join(__dirname, 'catalogue');
+  const cat = fs.existsSync(catDir)
+    ? fs.readdirSync(catDir).filter(f => f.endsWith('.json')).sort()
+        .map(f => 'catalogue/' + f)
+    : [];
   for (const f of names) {
     fs.copyFileSync(path.join(SRC, f), path.join(dest, f));
     lock.files[f] = sha256(path.join(dest, f));
@@ -110,11 +121,17 @@ function vendor(consumer) {
     fs.copyFileSync(path.join(__dirname, f), path.join(dest, f));
     lock.files[f] = sha256(path.join(dest, f));
   }
+  if (cat.length) fs.mkdirSync(path.join(dest, 'catalogue'), { recursive: true });
+  for (const f of cat) {
+    fs.copyFileSync(path.join(__dirname, f), path.join(dest, f));
+    lock.files[f] = sha256(path.join(dest, f));
+  }
   names.push.apply(names, skins);
+  names.push.apply(names, cat);
   /* Anything previously vendored and since removed from the core must go,
      or a consumer keeps building against a file the core no longer has. */
   for (const f of fs.readdirSync(dest)) {
-    if (f === LOCK || f === 'skins') continue;
+    if (f === LOCK || f === 'skins' || f === 'catalogue') continue;
     if (names.indexOf(f) < 0) {
       fs.unlinkSync(path.join(dest, f));
       console.log('  removed stale ' + f);

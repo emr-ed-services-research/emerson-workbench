@@ -20,6 +20,7 @@ const { spawnSync } = require('child_process');
 
 const SUITES = [
   ['test/layers.test.js',   'layer guard (tiers, no consumer reach-in)'],
+  ['test/catalogue.test.js','catalogue (parts trace to a document)'],
   ['test/topology.test.js', 'netlist (level 1 reproduction, validation)'],
   ['test/schemvis.test.js', 'schem view (ISA-5.5 symbols, state, line breaks)'],
   ['test/physvis.test.js',  'phys view (elbows, tees, reducers, draw order)'],

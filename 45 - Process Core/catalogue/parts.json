@@ -1,0 +1,169 @@
+{
+  "_readme": [
+    "THE COMPONENT CATALOGUE. Parts, with dimensions, each tracing to a source.",
+    "",
+    "JSON and not JavaScript on purpose: LoopBench is Python and must read these",
+    "same rows. A JS table would force a second copy, which is the disease the",
+    "netlist exists to cure. See 00 - Project/Process Core — Component Catalogue.md.",
+    "",
+    "EVERY dimension carries BOTH the value as printed in its standard AND the",
+    "canonical conversion. test/catalogue.test.js re-derives one from the other and",
+    "fails on a slip, so an arithmetic error cannot enter silently.",
+    "",
+    "Canonical unit is INCHES. No part holds a pixel, a colour or a behaviour.",
+    "",
+    "SEEDED FROM WHAT IS HELD, which is process-industry. It does NOT yet serve",
+    "Lunar Process Engineer level 1, which is an agricultural rig -- microirrigation,",
+    "governed by ASABE or the ISO irrigation series, neither of which is in hand.",
+    "Emerson's enterprise agreement carries no agricultural body at all (checked",
+    "2026-10-10). That errand is open and is not an ASME one."
+  ],
+
+  "units": { "canonical": "in", "note": "as-printed values keep their own unit" },
+
+  "pipe": {
+    "_source": {
+      "std": "ASME B36.10M", "table": "Schedule 40 / STD",
+      "note": "transcribed via 50 - Lunar Process Engineer/sizing.js, which cites the same rows"
+    },
+    "PIPE/NPS0.375/S40": {
+      "class": "pipe", "nps": 0.375, "schedule": 40,
+      "dims": { "od": 0.675, "wall": 0.091, "bore": 0.493 },
+      "asPrinted": { "od": "0.675 in", "wall": "0.091 in", "bore": "0.493 in" }
+    },
+    "PIPE/NPS0.5/S40": {
+      "class": "pipe", "nps": 0.5, "schedule": 40,
+      "dims": { "od": 0.840, "wall": 0.109, "bore": 0.622 },
+      "asPrinted": { "od": "0.840 in", "wall": "0.109 in", "bore": "0.622 in" }
+    },
+    "PIPE/NPS0.75/S40": {
+      "class": "pipe", "nps": 0.75, "schedule": 40,
+      "dims": { "od": 1.050, "wall": 0.113, "bore": 0.824 },
+      "asPrinted": { "od": "1.050 in", "wall": "0.113 in", "bore": "0.824 in" }
+    },
+    "PIPE/NPS1/S40": {
+      "class": "pipe", "nps": 1, "schedule": 40,
+      "dims": { "od": 1.315, "wall": 0.133, "bore": 1.049 },
+      "asPrinted": { "od": "1.315 in", "wall": "0.133 in", "bore": "1.049 in" }
+    },
+    "PIPE/NPS0.375/S80": {
+      "class": "pipe", "nps": 0.375, "schedule": 80,
+      "dims": { "od": 0.675, "wall": 0.126, "bore": 0.423 },
+      "asPrinted": { "od": "0.675 in", "wall": "0.126 in", "bore": "0.423 in" }
+    }
+  },
+
+  "fitting": {
+    "_source": {
+      "std": "ASME B16.11", "edition": "2016", "table": "Table 1",
+      "title": "Socket-Welding Elbows, Tees, and Crosses",
+      "printedUnit": "mm", "read": "2026-10-10",
+      "note": [
+        "A socket-welding 90 degree elbow is a COMPACT FORGED BLOCK, not a sweeping",
+        "curve. The dimension that locates it is centre-to-bottom-of-socket, A --",
+        "how far from the fitting's centre the pipe end lands. There is no long",
+        "radius at this size.",
+        "Tee and cross share the elbow's A at the same NPS and class."
+      ]
+    },
+    "ELBOW90/SW3000/NPS0.375": {
+      "class": "elbow-socketweld", "nps": 0.375, "rating": "Class 3000",
+      "dims": { "centreToSocket": 0.5315, "socketBore": 0.7087,
+                "fittingBore": 0.5236, "socketWall": 0.1579,
+                "bodyWall": 0.1260, "socketDepth": 0.3740 },
+      "asPrinted": { "centreToSocket": "13.5 mm", "socketBore": "18.0 mm",
+                     "fittingBore": "13.3 mm", "socketWall": "4.01 mm",
+                     "bodyWall": "3.20 mm", "socketDepth": "9.5 mm" },
+      "tolerance": { "centreToSocket": "±1.5 mm" }
+    },
+    "ELBOW90/SW3000/NPS0.5": {
+      "class": "elbow-socketweld", "nps": 0.5, "rating": "Class 3000",
+      "dims": { "centreToSocket": 0.6102, "socketBore": 0.8740,
+                "fittingBore": 0.6535, "socketWall": 0.1839,
+                "bodyWall": 0.1469, "socketDepth": 0.3740 },
+      "asPrinted": { "centreToSocket": "15.5 mm", "socketBore": "22.2 mm",
+                     "fittingBore": "16.6 mm", "socketWall": "4.67 mm",
+                     "bodyWall": "3.73 mm", "socketDepth": "9.5 mm" },
+      "tolerance": { "centreToSocket": "±1.5 mm" }
+    },
+    "TEE/SW3000/NPS0.375": {
+      "class": "tee-socketweld", "nps": 0.375, "rating": "Class 3000",
+      "dims": { "centreToSocket": 0.5315, "socketBore": 0.7087,
+                "fittingBore": 0.5236, "bodyWall": 0.1260,
+                "socketDepth": 0.3740 },
+      "asPrinted": { "centreToSocket": "13.5 mm", "socketBore": "18.0 mm",
+                     "fittingBore": "13.3 mm", "bodyWall": "3.20 mm",
+                     "socketDepth": "9.5 mm" },
+      "tolerance": { "centreToSocket": "±1.5 mm" }
+    },
+    "TEE/SW3000/NPS0.5": {
+      "class": "tee-socketweld", "nps": 0.5, "rating": "Class 3000",
+      "dims": { "centreToSocket": 0.6102, "socketBore": 0.8740,
+                "fittingBore": 0.6535, "bodyWall": 0.1469,
+                "socketDepth": 0.3740 },
+      "asPrinted": { "centreToSocket": "15.5 mm", "socketBore": "22.2 mm",
+                     "fittingBore": "16.6 mm", "bodyWall": "3.73 mm",
+                     "socketDepth": "9.5 mm" },
+      "tolerance": { "centreToSocket": "±1.5 mm" }
+    }
+  },
+
+  "fittingButtweld": {
+    "_source": {
+      "std": "ASME B16.9", "edition": "2024", "table": "Table 6.1-1",
+      "title": "Dimensions of Long Radius Elbows",
+      "printedUnit": "mm (in.) -- both columns, and the INCH one is what the standard asserts", "read": "2026-10-10",
+      "note": [
+        "Centre-to-end; for a 90 degree elbow this IS the centreline radius.",
+        "The 1.5 x NPS rule holds only from NPS 1 upward -- below that the",
+        "dimension floors at a flat 1.50 in. The table STARTS at NPS 1/2, so",
+        "there is no buttweld elbow for NPS 3/8 at all.",
+        "Buttwelding is not used at small bore: see ASME B16.11 instead."
+      ]
+    },
+    "ELBOW90/BWLR/NPS0.5": {
+      "class": "elbow-buttweld-lr", "nps": 0.5,
+      "dims": { "centreToEnd": 1.50, "odAtBevel": 0.84 },
+      "asPrinted": { "centreToEnd": "38 mm (1.50 in)", "odAtBevel": "21.3 mm (0.84 in)" }
+    },
+    "ELBOW90/BWLR/NPS1": {
+      "class": "elbow-buttweld-lr", "nps": 1,
+      "dims": { "centreToEnd": 1.50, "odAtBevel": 1.32 },
+      "asPrinted": { "centreToEnd": "38 mm (1.50 in)", "odAtBevel": "33.4 mm (1.32 in)" }
+    },
+    "ELBOW90/BWLR/NPS1.5": {
+      "class": "elbow-buttweld-lr", "nps": 1.5,
+      "dims": { "centreToEnd": 2.25, "odAtBevel": 1.90 },
+      "asPrinted": { "centreToEnd": "57 mm (2.25 in)", "odAtBevel": "48.3 mm (1.90 in)" }
+    },
+    "ELBOW90/BWLR/NPS2": {
+      "class": "elbow-buttweld-lr", "nps": 2,
+      "dims": { "centreToEnd": 3.00, "odAtBevel": 2.38 },
+      "asPrinted": { "centreToEnd": "76 mm (3.00 in)", "odAtBevel": "60.3 mm (2.38 in)" }
+    }
+  },
+
+  "material": {
+    "_note": [
+      "A material is the axis a pressure rating hangs on, not a label.",
+      "These carry NO dimensions yet: ASME B16.34's material-group and",
+      "pressure-temperature tables have not been opened, and the ASTM product",
+      "specs themselves are not in the register at all. What is recorded is",
+      "identity and where the answer lives -- which is honest, and is what lets",
+      "a part say what it is made of before anyone has read the rating tables."
+    ],
+    "CS-A105": {
+      "class": "material", "name": "Forged carbon steel",
+      "spec": "ASTM A105", "specHeld": false,
+      "ratingSource": { "std": "ASME B16.34", "read": false,
+                        "gives": "pressure-temperature by material group" }
+    },
+    "SS-A182-F316": {
+      "class": "material", "name": "Forged austenitic stainless, 316/316L",
+      "spec": "ASTM A182", "specHeld": false,
+      "ratingSource": { "std": "ASME B16.34", "read": false,
+                        "gives": "pressure-temperature by material group" },
+      "sourService": { "std": "NACE MR0175", "read": false }
+    }
+  }
+}

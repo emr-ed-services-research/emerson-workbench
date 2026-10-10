@@ -32,11 +32,21 @@ Every `.js` here opens with an `@layer` header naming its layer and what it may 
 `test/layers.test.js` checks the **code** against that claim, not the comment.
 
 ```
-chrome > scenario > dynamics > schem-view | phys-view > netlist > registration
+chrome > scenario > dynamics > schem-view | phys-view > netlist > catalogue
+  > registration
 ```
 
 The dynamics layer answers *how much flows where*; anything about how that LOOKS is
-above it. The netlist says *what is connected to what*. How it looks — which symbol, what is
+above it. The netlist says *what is connected to what*. The **catalogue** sits below it
+and answers *what a part actually is* — NPS 1/2 pipe is 0.622 in bore because
+`ASME B36.10M` says so. It is the bottom of the stack, it depends on nothing, and its
+data lives in `catalogue/*.json` rather than in JS because LoopBench is Python and must
+read the same rows.
+
+**Every dimension in the catalogue carries the value as printed in its standard beside
+the canonical one, and `load()` re-derives one from the other and refuses the catalogue
+if they disagree.** That is "never invent" made mechanical: you cannot add a number
+without saying what the document said, and a slip in the arithmetic is rejected too. How it looks — which symbol, what is
 hidden, where a line breaks, what colour anything is — is decided **above** it. That
 boundary has already been crossed once by accident: a line-gap caused by an undrawn
 reducer was fixed in the netlist, and the netlist's own test rejected it, because hiding

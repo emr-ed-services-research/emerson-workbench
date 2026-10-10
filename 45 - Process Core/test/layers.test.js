@@ -31,8 +31,8 @@ const path = require('path');
 /* The stack, bottom to top. A file must declare one of these. Tooling
    (test.js, vendor.js) declares `registration` because it belongs to no
    process layer; only files under src/ count as a layer's implementation. */
-const LAYERS = ['registration', 'netlist', 'schem-view', 'phys-view',
-                'dynamics', 'scenario', 'chrome'];
+const LAYERS = ['registration', 'catalogue', 'netlist', 'schem-view',
+                'phys-view', 'dynamics', 'scenario', 'chrome'];
 
 /* Every .js in the core, discovered rather than listed. A list is a thing
    someone forgets to add to, and a file that nobody checks is exactly the
@@ -151,6 +151,25 @@ for (const f of CORE_FILES) {
         '(line, symbol, fill, label, ground, gap) and a consumer says what ' +
         'each looks like. A default here is chrome leaking down a layer, ' +
         'and it is how a view ends up with one skin it can never lose.' : '');
+  }
+
+  /* 4. The catalogue is the BOTTOM of the stack and depends on no layer
+        above it. It is a parts repository; if it ever reaches up to the
+        netlist the dependency is inverted and the thing that is supposed
+        to be reusable by anything becomes reusable by one netlist. */
+  if (layer === 'catalogue') {
+    const up = code.match(/require\s*\(\s*[^)]*(topology|dynamics|schemvis|physvis|scenario)/g);
+    check(f + ' (catalogue) depends on no layer above it', !up,
+      up ? 'requires ' + Array.from(new Set(up)).join(', ') + '. The ' +
+        'catalogue sits under the netlist: parts exist before anything is ' +
+        'connected. A reach upward here makes the repository specific to ' +
+        'the one model that happens to use it.' : '');
+
+    const canvas2 = code.match(/\.(fillRect|strokeRect|beginPath|moveTo|lineTo|arcTo|fillText|strokeText|drawImage)\s*\(/g);
+    check(f + ' (catalogue) draws nothing', !canvas2,
+      canvas2 ? 'calls ' + Array.from(new Set(canvas2)).join(', ') +
+        '. A part is dimensions and provenance. What it LOOKS like is ' +
+        'decided four layers up.' : '');
   }
 
   /* 4. The netlist decides nothing about appearance at all. */
