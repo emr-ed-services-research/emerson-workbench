@@ -112,17 +112,39 @@ const SHEETS = [
   { pages: [201], cage: 'quick-opening', body: 'EZ', cls: 'CL125-CL600', metric: true },
   { pages: [202], cage: 'linear', body: 'EZ', cls: 'CL125-CL600', metric: true },
   { pages: [203], cage: 'equal-percentage', body: 'EZ', cls: 'CL125-CL600', metric: true },
-  { pages: [204], cage: 'equal-percentage', body: 'EZ', cls: 'CL125-CL600', metric: true },
   { pages: [205], cage: 'equal-percentage', body: 'EZ', cls: 'CL125-CL600', metric: true },
 
-  /* EW IS OUT, and the reason is specific. Each EW page stacks more
-     than one PRESSURE CLASS -- page EW-1 is headed "EWD CL150, 300, and
-     600" -- so one page holds the same valve size and port three times
-     with three capacities. One-sheet-per-page fixed the body and flow
-     direction merge; it cannot fix a merge that happens inside a page.
-     Separating them means reading the class column, which is another
-     structural element this reader does not yet find. 18 of 42 pairs
-     inverted on trial, which is the invariant doing its job. */
+  /* p170, p172 and p204 are set aside. Each lists several valve sizes
+     whose rows sit close together -- p170 is headed "NPS 16 and Larger
+     Sizes" and gives NPS 16, 20 and 24 the same port diameters -- and
+     the size label is attached by NEAREST LABEL IN Y, which is right for
+     a merged cell centred on two rows and wrong once the groups pack
+     tightly. The symptom is specific: port 14.75 comes back twice with
+     3490 and 3670, and every size on the page collapses onto one label.
+
+     The fix is each label's merged-cell SPAN rather than its centre,
+     which bbox output does not give directly -- it has word boxes, not
+     cell boxes. Bounded, not done, and three pages of wrong valve sizes
+     do more harm than their coverage is worth. */
+  /* EW / EWD / EWT / EWS -- back in, now that the cage is read off the
+     page rather than declared. These were excluded when one sheet
+     covered a whole page: EW-1 is headed "Quick Opening and Linear
+     Cages" and carries BOTH tables with the full size list in each, so
+     4x2 appeared twice with two capacities and the invariants refused
+     it. That was never a pressure-class problem -- "CL150, 300, and
+     600" means one table valid for all three classes, not three stacked
+     tables, and saying otherwise was a guess I did not check.
+
+     Severe-service pages (the Whisper run EW-3 to EW-29, Cavitrol
+     EW-30/36/37) stay out; their rows are refused by name if reached. */
+  { pages: [161], body: 'EWD', cls: 'CL150-600, flow down', metric: true },
+  { pages: [162], body: 'EWD', cls: 'CL150-600, flow down', metric: true },
+  { pages: [167], body: 'EW',  cls: 'EW-7, flow down',      metric: true },
+  { pages: [169], body: 'EW',  cls: 'EW-9, flow down',      metric: true },
+  { pages: [171], body: 'EW',  cls: 'EW-11, flow down',     metric: true },
+  { pages: [191], body: 'EWT', cls: 'EW-31, flow up',       metric: true },
+  { pages: [192], body: 'EWT', cls: 'EW-32, flow up',       metric: true },
+  { pages: [195], body: 'EWS', cls: 'EW-35, flow up',       metric: true },
 ];
 
 const WORD = /<word xMin="([0-9.]+)" yMin="([0-9.]+)" xMax="([0-9.]+)" yMax="([0-9.]+)">([^<]*)<\/word>/g;
@@ -155,6 +177,66 @@ function rowsOf(words, tol) {
   return rows;
 }
 
+/* ---- WHICH CAGE, READ OFF THE PAGE ---------------------------------
+
+   A catalog page is not one table. Page EW-1 is headed "Quick Opening
+   and Linear Cages" and carries BOTH, each with the full list of valve
+   sizes -- so 4x2 appears twice on it with two different capacities.
+   ED-7 stacks three. Being TOLD a page's cage was wrong in principle and
+   wrong in fact: it merged a quick-opening table with a linear one and
+   the invariants caught it as one valve with two Cv.
+
+   So the cage is detected per row instead. A heading row is one that
+   reduces to NOTHING BUT the cage name once the name and the word
+   "Characteristic" are struck out. That distinguishes the real
+   sub-heading from two things that also contain cage names:
+
+     y=60   "Quick Opening and Linear Cages Page EW-1"    the page title
+     y=129  "Quick Opening Quick Opening"                 the heading
+     y=419  "Linear Linear"                               the heading
+     y=712  "The linear trim coefficients shown on..."    a footnote
+
+   Severe-service cages get a band too, so their rows can be REFUSED by
+   name rather than silently read as a standard cage. Their tables carry
+   columns -- minimum throttling Cv, unbalanced area, Kn -- that mean
+   things this reader does not model. */
+const CAGES = [
+  [/Quick\s*Opening/ig, 'quick-opening', false],
+  [/Equal\s*Percentage/ig, 'equal-percentage', false],
+  [/Modified\s*Parabolic/ig, 'modified-parabolic', false],
+  [/Whisper\s*Flo/ig, 'whisperflo', true],
+  [/Whisper\s*Trim[^\s]*/ig, 'whisper-trim', true],
+  [/Cavitrol[^\s]*/ig, 'cavitrol', true],
+  [/Dirty\s*Service(\s*Trim)?/ig, 'dirty-service', true],
+  [/\bLinear\b/ig, 'linear', false],
+];
+
+function cageBands(rows) {
+  const bands = [];
+  for (const r of rows) {
+    const raw = r.ws.map(w => w.t).join(' ')
+      .replace(/\u2122|\u00ae|\(\d\)/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!raw || raw.length > 90) continue;
+    for (const [re, name, severe] of CAGES) {
+      re.lastIndex = 0;
+      if (!re.test(raw)) continue;
+      re.lastIndex = 0;
+      const left = raw.replace(re, ' ')
+        .replace(/Characteristic|Cage[s]?/ig, ' ')
+        .replace(/[^A-Za-z0-9]+/g, '').trim();
+      if (left === '') bands.push({ y: r.y, cage: name, severe: severe });
+      break;
+    }
+  }
+  return bands.sort((a, b) => a.y - b.y);
+}
+
+const cageAt = (bands, y) => {
+  let hit = null;
+  for (const b of bands) if (b.y <= y + 2) hit = b;
+  return hit;
+};
+
 const num = t => /^[0-9][0-9,.]*$/.test(t) ? +t.replace(/,/g, '') : null;
 
 function run() {
@@ -172,6 +254,29 @@ function run() {
     for (const page of sheet.pages) {
       const words = wordsOf(page);
       const rows = rowsOf(words);
+      let bands = cageBands(rows);
+      /* CONTINUATION PAGES carry no sub-heading. ED-2 and every EZ page
+         name their cage only in the page title -- "EZ Catalog 12 Quick
+         Opening Valve Plug Page EZ-1" -- which the band test correctly
+         refuses, because a title is not a section heading.
+
+         So: if a page has no bands AND mentions exactly one standard
+         cage anywhere on it, that is unambiguously its cage and the
+         whole page takes it. If it mentions two, as EW-1 does with
+         "Quick Opening and Linear Cages", bands are REQUIRED and their
+         absence is a rejection. Ambiguity is never resolved by picking
+         the first one. */
+      if (!bands.length) {
+        const all = rows.map(r => r.ws.map(w => w.t).join(' ')).join(' ');
+        const found = [];
+        for (const [re, name, severe] of CAGES) {
+          re.lastIndex = 0;
+          if (re.test(all) && found.indexOf(name) < 0) found.push(name);
+        }
+        if (found.length === 1)
+          bands = [{ y: -1, cage: found[0],
+                     severe: !!(CAGES.find(c => c[1] === found[0]) || [])[2] }];
+      }
 
       /* NPS labels live in the leftmost band, left of the port-diameter
          column. Words on one row are joined: "1", "&", "1-1/4". */
@@ -179,11 +284,27 @@ function run() {
       for (const r of rows) {
         const band = r.ws.filter(w => w.x >= 50 && w.x < 92 && r.y > 160);
         if (!band.length) continue;
-        /* "6(2)" is NPS 6 carrying footnote 2. Footnote markers are
-           typeset into the cell and are not part of the size. */
-        const txt = band.map(w => w.t).join(' ')
+        /* "6(2)" is NPS 6 carrying footnote 2 -- footnote markers are
+           typeset into the cell and are not part of the size.
+
+           "10 x 8 203.2" is a size whose cell sits close enough to the
+           port-millimetre column that the band swallows it, and
+           "8 x 6 and" is a size followed by a stray word of body text.
+           Both are trimmed to the size itself: a reducer designation is
+           digits, optional fractions, and an x. Anything after that is
+           somebody else's column. */
+        let txt = band.map(w => w.t).join(' ')
           .replace(/&amp;/g, '&').replace(/\(\d\)/g, '')
           .replace(/\s+/g, ' ').trim();
+        /* Sizes come as "2", "1-1/2", "10 x 8" and -- on the EZ sheets --
+           as bare fractions, "1/2" and "3/4". Without the fraction
+           alternative "1/2" matched only its leading "1" and NPS 1/2
+           was filed as NPS 1, colliding with the real NPS 1 and giving
+           one valve two capacities. */
+        const SZ = '\\d+\\/\\d+|\\d+(?:[-\\u2010]\\d+\\/\\d+)?';
+        const sizeM = txt.match(
+          new RegExp('^(?:' + SZ + ')(?:\\s*x\\s*(?:' + SZ + '))?', 'i'));
+        if (sizeM) txt = sizeM[0].replace(/\s*x\s*/i, ' x ').trim();
         if (!/^[0-9]/.test(txt)) continue;      // headings are not sizes
         labels.push({ y: r.y, nps: txt });
       }
@@ -254,19 +375,39 @@ function run() {
            travelIN; the CL300 sheets print inches only. Take the last
            four or the last two accordingly, since a merged valve-size
            number may precede either. */
-        const want = sheet.metric ? 4 : 2;
-        if (geo.length < want) {
-          out.rejected.push({ page: page, y: Math.round(r.y),
-            why: 'no port/travel geometry found beside or below the row' });
-          continue;
+        /* GEOMETRY THAT VALIDATES ITSELF.
+
+           Column order is not the same on every sheet. ED runs port(mm)
+           port(in) travel(mm) travel(in). The EW sheets insert a "Coeffs
+           for 6 mm travel" column BETWEEN port and travel. The EZ sheets
+           put that column after the coefficient label instead. Taking
+           "the last four numbers" gave a 4x2 valve a port of 29.8 in,
+           which is not a port, it is a flow coefficient.
+
+           Rather than calibrate each sheet by hand -- which is a list
+           that goes stale the next time Fisher re-typesets a page --
+           find the pairs that ARE a millimetre and an inch measurement
+           of the same thing: their ratio is 25.4. Two such pairs in
+           order are port and travel. A column that is not a length
+           cannot accidentally satisfy that, so the layout identifies
+           itself and a mis-read is refused instead of recorded. */
+        let portIn = null, travelIn = null;
+        if (!sheet.metric) {
+          if (geo.length >= 2) { portIn = geo[geo.length - 2]; travelIn = geo[geo.length - 1]; }
+        } else {
+          const pairs = [];
+          for (let k = 0; k + 1 < geo.length; k++) {
+            const mm = geo[k], inch = geo[k + 1];
+            if (inch > 0 && Math.abs(mm / inch - 25.4) / 25.4 < 0.015) {
+              pairs.push(inch); k++;
+            }
+          }
+          if (pairs.length >= 2) { portIn = pairs[0]; travelIn = pairs[1]; }
         }
-        const g = geo.slice(-want);
-        const portIn = sheet.metric ? g[1] : g[0];
-        const travelIn = sheet.metric ? g[3] : g[1];
-        if (!(portIn > 0 && portIn < 30) || !(travelIn > 0 && travelIn < 10)) {
+        if (portIn === null || travelIn === null) {
           out.rejected.push({ page: page, y: Math.round(r.y),
-            why: 'geometry out of range: port ' + portIn + ' in, travel ' +
-                 travelIn + ' in' });
+            why: 'could not find two millimetre/inch pairs for port and ' +
+                 'travel in [' + geo.join(' ') + ']' });
           continue;
         }
 
@@ -290,9 +431,24 @@ function run() {
             why: 'no NPS label found in the left band' });
           continue;
         }
+        /* The page says which cage this row is in. A row under no
+           heading, or under a severe-service one, is refused. */
+        const band = cageAt(bands, r.y);
+        if (!band) {
+          out.rejected.push({ page: page, y: Math.round(r.y),
+            why: 'no cage heading above this row, so its characteristic ' +
+                 'is unknown' });
+          continue;
+        }
+        if (band.severe) {
+          out.rejected.push({ page: page, y: Math.round(r.y),
+            why: 'severe-service cage (' + band.cage + '): its table ' +
+                 'carries columns this reader does not model' });
+          continue;
+        }
         out.valves.push({
-          doc: DOC, page: 'ED-' + page, body: sheet.body, cls: sheet.cls,
-          cage: sheet.cage, nps: nps, portIn: portIn, travelIn: travelIn,
+          doc: DOC, page: 'p' + page, body: sheet.body, cls: sheet.cls,
+          cage: band.cage, nps: nps, portIn: portIn, travelIn: travelIn,
           cv100: cv100, FL: FL,
         });
       }
@@ -345,7 +501,14 @@ function run() {
        - within a size and travel, more port passes more
      Both are facts about valves rather than guesses about trends. */
   console.log('');
-  const key = v => [v.cage, v.nps, v.portIn, v.travelIn].join('|');
+  /* THE KEY MUST NAME AN ACTUAL VALVE, body and all. EWD NPS 4x2 with a
+     linear cage passes 107 flowing down; EWT NPS 4x2 with a linear cage
+     passes 96.2 flowing up. Same nominal size, genuinely different
+     valves, genuinely different capacity -- so a key of cage, size, port
+     and travel alone called them a conflict when they are not one.
+     Widening it here is not loosening the check: it is the check finally
+     identifying the thing it is checking. */
+  const key = v => [v.body, v.cls, v.cage, v.nps, v.portIn, v.travelIn].join('|');
   const seen = {};
   let dupes = 0;
   for (const v of out.valves) {
@@ -367,7 +530,7 @@ function run() {
   for (const cage of Object.keys(byCage)) {
     const g = {};
     out.valves.filter(v => v.cage === cage).forEach(v => {
-      const k = v.nps + '|' + v.travelIn;
+      const k = v.body + '|' + v.cls + '|' + v.nps + '|' + v.travelIn;
       (g[k] = g[k] || []).push(v);
     });
     for (const k of Object.keys(g)) {

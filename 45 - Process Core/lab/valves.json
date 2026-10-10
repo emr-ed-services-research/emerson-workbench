@@ -1,14 +1,14 @@
 {
- "generated": "2026-10-10T17:20:05.610Z",
+ "generated": "2026-10-10T17:40:41.990Z",
  "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
  "valves": [
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-120",
+   "page": "p120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
-   "nps": "1 & 1-1/4",
+   "nps": "1",
    "portIn": 1.3125,
    "travelIn": 0.75,
    "cv100": 22.1,
@@ -16,7 +16,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-120",
+   "page": "p120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -28,7 +28,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-120",
+   "page": "p120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -40,7 +40,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-120",
+   "page": "p120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -52,7 +52,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-120",
+   "page": "p120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -64,7 +64,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-120",
+   "page": "p120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -76,7 +76,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-120",
+   "page": "p120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -88,7 +88,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-120",
+   "page": "p120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -100,7 +100,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-120",
+   "page": "p120",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -112,7 +112,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-121",
+   "page": "p121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -124,7 +124,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-121",
+   "page": "p121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -136,7 +136,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-121",
+   "page": "p121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -148,7 +148,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-121",
+   "page": "p121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -160,7 +160,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-121",
+   "page": "p121",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -172,11 +172,11 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
-   "nps": "1 & 1-1/4",
+   "nps": "1",
    "portIn": 1.3125,
    "travelIn": 0.75,
    "cv100": 20.6,
@@ -184,7 +184,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -196,7 +196,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -208,7 +208,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -220,7 +220,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -232,7 +232,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -244,7 +244,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -256,7 +256,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -268,7 +268,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -280,7 +280,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -292,7 +292,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-122",
+   "page": "p122",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -304,59 +304,11 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-123",
-   "body": "ED",
-   "cls": "CL125-CL600",
-   "cage": "linear",
-   "nps": "6",
-   "portIn": 7,
-   "travelIn": 2,
-   "cv100": 433,
-   "FL": 0.84
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-123",
-   "body": "ED",
-   "cls": "CL125-CL600",
-   "cage": "linear",
-   "nps": "6",
-   "portIn": 4.375,
-   "travelIn": 2,
-   "cv100": 322,
-   "FL": 0.88
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-123",
-   "body": "ED",
-   "cls": "CL125-CL600",
-   "cage": "linear",
-   "nps": "8",
-   "portIn": 8,
-   "travelIn": 2,
-   "cv100": 688,
-   "FL": 0.87
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-123",
-   "body": "ED",
-   "cls": "CL125-CL600",
-   "cage": "linear",
-   "nps": "8",
-   "portIn": 8,
-   "travelIn": 3,
-   "cv100": 846,
-   "FL": 0.87
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
-   "nps": "1 & 1-1/4",
+   "nps": "1",
    "portIn": 1.3125,
    "travelIn": 0.75,
    "cv100": 17.2,
@@ -364,7 +316,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -376,7 +328,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -388,7 +340,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -400,7 +352,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -412,7 +364,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -424,7 +376,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -436,7 +388,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -448,7 +400,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -460,7 +412,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -472,7 +424,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-124",
+   "page": "p124",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -484,7 +436,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-125",
+   "page": "p125",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -496,7 +448,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-125",
+   "page": "p125",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -508,7 +460,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-125",
+   "page": "p125",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -520,7 +472,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-125",
+   "page": "p125",
    "body": "ED",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -532,7 +484,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-201",
+   "page": "p201",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -544,7 +496,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-201",
+   "page": "p201",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -556,7 +508,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-201",
+   "page": "p201",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -568,7 +520,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-201",
+   "page": "p201",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -580,7 +532,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-201",
+   "page": "p201",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -592,7 +544,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-201",
+   "page": "p201",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "quick-opening",
@@ -604,7 +556,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-202",
+   "page": "p202",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -616,7 +568,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-202",
+   "page": "p202",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -628,7 +580,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-202",
+   "page": "p202",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -640,7 +592,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-202",
+   "page": "p202",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "linear",
@@ -652,7 +604,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-203",
+   "page": "p203",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -664,7 +616,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-203",
+   "page": "p203",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -676,7 +628,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-203",
+   "page": "p203",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -688,7 +640,7 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-203",
+   "page": "p203",
    "body": "EZ",
    "cls": "CL125-CL600",
    "cage": "equal-percentage",
@@ -700,147 +652,591 @@
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "1/2 ‐ 2",
-   "portIn": 0.25,
-   "travelIn": 0.75,
-   "cv100": 1.52,
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "quick-opening",
+   "nps": "4 x 2",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 124,
+   "FL": 0.82
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "quick-opening",
+   "nps": "6 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 340,
    "FL": 0.88
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "1/2",
-   "portIn": 0.375,
-   "travelIn": 0.75,
-   "cv100": 3,
-   "FL": 0.93
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "1/2",
-   "portIn": 0.5,
-   "travelIn": 0.75,
-   "cv100": 4.52,
-   "FL": 0.94
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "3/4",
-   "portIn": 0.375,
-   "travelIn": 0.75,
-   "cv100": 3.03,
-   "FL": 0.93
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "3/4",
-   "portIn": 0.5,
-   "travelIn": 0.75,
-   "cv100": 5.06,
-   "FL": 0.94
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "3/4",
-   "portIn": 0.75,
-   "travelIn": 0.75,
-   "cv100": 8.35,
-   "FL": 0.87
-  },
-  {
-   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "1",
-   "portIn": 0.375,
-   "travelIn": 0.75,
-   "cv100": 3.07,
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "quick-opening",
+   "nps": "8 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 379,
    "FL": 0.89
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "1",
-   "portIn": 0.5,
-   "travelIn": 0.75,
-   "cv100": 4.91,
-   "FL": 0.93
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "quick-opening",
+   "nps": "12 x 6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 817,
+   "FL": 0.82
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "1",
-   "portIn": 0.75,
-   "travelIn": 0.75,
-   "cv100": 8.84,
-   "FL": 0.97
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "quick-opening",
+   "nps": "10 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 1040,
+   "FL": 0.88
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "1‐1/2",
-   "portIn": 0.375,
-   "travelIn": 0.75,
-   "cv100": 3.2,
-   "FL": 0.84
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "quick-opening",
+   "nps": "12 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 1260,
+   "FL": 0.79
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
-   "cage": "equal-percentage",
-   "nps": "1‐1/2",
-   "portIn": 0.5,
-   "travelIn": 0.75,
-   "cv100": 5.18,
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "linear",
+   "nps": "4 x 2",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 107,
+   "FL": 0.79
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "linear",
+   "nps": "6 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 320,
+   "FL": 0.86
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "linear",
+   "nps": "8 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 340,
+   "FL": 0.82
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "linear",
+   "nps": "12 x 6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 729,
+   "FL": 0.81
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "linear",
+   "nps": "10 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 975,
    "FL": 0.91
   },
   {
    "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
-   "page": "ED-204",
-   "body": "EZ",
-   "cls": "CL125-CL600",
+   "page": "p161",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "linear",
+   "nps": "12 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 1160,
+   "FL": 0.8
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p162",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
    "cage": "equal-percentage",
-   "nps": "1. At 100%",
-   "portIn": 0.75,
-   "travelIn": 0.75,
-   "cv100": 10.2,
+   "nps": "4 x 2",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 82.2,
+   "FL": 0.82
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p162",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "equal-percentage",
+   "nps": "6 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 271,
+   "FL": 0.87
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p162",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "equal-percentage",
+   "nps": "8 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 286,
+   "FL": 0.85
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p162",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "equal-percentage",
+   "nps": "12 x 6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 565,
+   "FL": 0.79
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p162",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "equal-percentage",
+   "nps": "10 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 924,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p162",
+   "body": "EWD",
+   "cls": "CL150-600, flow down",
+   "cage": "equal-percentage",
+   "nps": "12 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 1090,
+   "FL": 0.81
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p169",
+   "body": "EW",
+   "cls": "EW-9, flow down",
+   "cage": "linear",
+   "nps": "20 x 16",
+   "portIn": 14.75,
+   "travelIn": 4,
+   "cv100": 2960,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p169",
+   "body": "EW",
+   "cls": "EW-9, flow down",
+   "cage": "linear",
+   "nps": "20 x 16",
+   "portIn": 14.75,
+   "travelIn": 5,
+   "cv100": 3580,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p169",
+   "body": "EW",
+   "cls": "EW-9, flow down",
+   "cage": "linear",
+   "nps": "24 x 16",
+   "portIn": 14.75,
+   "travelIn": 4,
+   "cv100": 3190,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p169",
+   "body": "EW",
+   "cls": "EW-9, flow down",
+   "cage": "linear",
+   "nps": "24 x 16",
+   "portIn": 14.75,
+   "travelIn": 5.5,
+   "cv100": 4060,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p171",
+   "body": "EW",
+   "cls": "EW-11, flow down",
+   "cage": "equal-percentage",
+   "nps": "20 x 16",
+   "portIn": 14.75,
+   "travelIn": 4,
+   "cv100": 1630,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p171",
+   "body": "EW",
+   "cls": "EW-11, flow down",
+   "cage": "equal-percentage",
+   "nps": "20 x 16",
+   "portIn": 14.75,
+   "travelIn": 5,
+   "cv100": 2460,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p171",
+   "body": "EW",
+   "cls": "EW-11, flow down",
+   "cage": "equal-percentage",
+   "nps": "20 x 16",
+   "portIn": 14.75,
+   "travelIn": 5.5,
+   "cv100": 2830,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p171",
+   "body": "EW",
+   "cls": "EW-11, flow down",
+   "cage": "equal-percentage",
+   "nps": "24 x 16",
+   "portIn": 14.75,
+   "travelIn": 4,
+   "cv100": 1700,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p171",
+   "body": "EW",
+   "cls": "EW-11, flow down",
+   "cage": "equal-percentage",
+   "nps": "24 x 16",
+   "portIn": 14.75,
+   "travelIn": 5,
+   "cv100": 2580,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p171",
+   "body": "EW",
+   "cls": "EW-11, flow down",
+   "cage": "equal-percentage",
+   "nps": "24 x 16",
+   "portIn": 14.75,
+   "travelIn": 5.5,
+   "cv100": 3040,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "quick-opening",
+   "nps": "4 x 2",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 123,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "quick-opening",
+   "nps": "6 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 382,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "quick-opening",
+   "nps": "8 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 450,
+   "FL": 0.85
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "quick-opening",
+   "nps": "8 x 6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 714,
+   "FL": 0.86
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "quick-opening",
+   "nps": "12 x 6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 874,
+   "FL": 0.79
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "quick-opening",
+   "nps": "10 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 1000,
+   "FL": 0.93
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "quick-opening",
+   "nps": "12 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 1110,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "linear",
+   "nps": "4 x 2",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 96.2,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "linear",
+   "nps": "6 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 320,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "linear",
+   "nps": "8 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 328,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "linear",
+   "nps": "8 x 6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 607,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "linear",
+   "nps": "12 x 6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 675,
+   "FL": 0.84
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "linear",
+   "nps": "10 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 958,
    "FL": 0.92
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p191",
+   "body": "EWT",
+   "cls": "EW-31, flow up",
+   "cage": "linear",
+   "nps": "12 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 1050,
+   "FL": 0.89
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p192",
+   "body": "EWT",
+   "cls": "EW-32, flow up",
+   "cage": "equal-percentage",
+   "nps": "4 x 2",
+   "portIn": 2.3125,
+   "travelIn": 1.125,
+   "cv100": 67.5,
+   "FL": 0.9
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p192",
+   "body": "EWT",
+   "cls": "EW-32, flow up",
+   "cage": "equal-percentage",
+   "nps": "6 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 271,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p192",
+   "body": "EWT",
+   "cls": "EW-32, flow up",
+   "cage": "equal-percentage",
+   "nps": "8 x 4",
+   "portIn": 4.375,
+   "travelIn": 2,
+   "cv100": 269,
+   "FL": 0.9
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p192",
+   "body": "EWT",
+   "cls": "EW-32, flow up",
+   "cage": "equal-percentage",
+   "nps": "8 x 6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 478,
+   "FL": 0.92
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p192",
+   "body": "EWT",
+   "cls": "EW-32, flow up",
+   "cage": "equal-percentage",
+   "nps": "12 x 6",
+   "portIn": 7,
+   "travelIn": 2,
+   "cv100": 476,
+   "FL": 0.88
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p192",
+   "body": "EWT",
+   "cls": "EW-32, flow up",
+   "cage": "equal-percentage",
+   "nps": "10 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 932,
+   "FL": 0.9
+  },
+  {
+   "doc": "Fisher Catalog 12 complete (D103182X012), April 2022, 398 pp",
+   "page": "p192",
+   "body": "EWT",
+   "cls": "EW-32, flow up",
+   "cage": "equal-percentage",
+   "nps": "12 x 8",
+   "portIn": 8,
+   "travelIn": 3,
+   "cv100": 1020,
+   "FL": 0.88
   }
  ],
  "rejected": [
@@ -848,6 +1244,26 @@
    "page": 121,
    "y": 399,
    "why": "expected 10 travel points and FL, found 2"
+  },
+  {
+   "page": 123,
+   "y": 139,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 123,
+   "y": 185,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 123,
+   "y": 220,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 123,
+   "y": 254,
+   "why": "no cage heading above this row, so its characteristic is unknown"
   },
   {
    "page": 123,
@@ -862,97 +1278,177 @@
   {
    "page": 201,
    "y": 322,
-   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 201,
    "y": 396,
-   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 201,
    "y": 470,
-   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 201,
    "y": 502,
-   "why": "left band gave \"101.6\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"101\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 201,
    "y": 544,
-   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 202,
    "y": 232,
-   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 202,
    "y": 301,
-   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 202,
    "y": 370,
-   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 202,
    "y": 404,
-   "why": "left band gave \"101.6\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"101\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 202,
    "y": 439,
-   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 203,
    "y": 255,
-   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 203,
    "y": 335,
-   "why": "left band gave \"25.4\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"25\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 203,
    "y": 416,
-   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 203,
    "y": 450,
-   "why": "left band gave \"101.6\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"101\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 203,
    "y": 496,
-   "why": "left band gave \"50.8\" as a valve size, which is a millimetre column, not an NPS"
+   "why": "left band gave \"50\" as a valve size, which is a millimetre column, not an NPS"
   },
   {
    "page": 205,
    "y": 162,
-   "why": "no port/travel geometry found beside or below the row"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 205,
    "y": 197,
-   "why": "no port/travel geometry found beside or below the row"
+   "why": "could not find two millimetre/inch pairs for port and travel in [2]"
   },
   {
    "page": 205,
    "y": 326,
-   "why": "no port/travel geometry found beside or below the row"
+   "why": "could not find two millimetre/inch pairs for port and travel in []"
   },
   {
    "page": 205,
    "y": 360,
-   "why": "no port/travel geometry found beside or below the row"
+   "why": "could not find two millimetre/inch pairs for port and travel in [2 5]"
+  },
+  {
+   "page": 161,
+   "y": 292,
+   "why": "left band gave \"177\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 161,
+   "y": 537,
+   "why": "left band gave \"177\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 162,
+   "y": 266,
+   "why": "left band gave \"177\" as a valve size, which is a millimetre column, not an NPS"
+  },
+  {
+   "page": 167,
+   "y": 162,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 167,
+   "y": 197,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 167,
+   "y": 255,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 167,
+   "y": 289,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 167,
+   "y": 347,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 167,
+   "y": 382,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 167,
+   "y": 439,
+   "why": "expected 10 travel points and FL, found 10"
+  },
+  {
+   "page": 195,
+   "y": 162,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 195,
+   "y": 197,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 195,
+   "y": 255,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 195,
+   "y": 289,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 195,
+   "y": 347,
+   "why": "no cage heading above this row, so its characteristic is unknown"
+  },
+  {
+   "page": 195,
+   "y": 382,
+   "why": "no cage heading above this row, so its characteristic is unknown"
   }
  ]
 }

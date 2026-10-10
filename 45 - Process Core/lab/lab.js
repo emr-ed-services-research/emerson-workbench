@@ -115,7 +115,8 @@ function nps(t) {
    and ET-C identical to NPS 3-8 ED full port. That is the catalog
    speaking, not an inference of mine. Standard ET is NOT here: the
    catalog neither tabulates it nor claims it equals ED. */
-const HELD_BODIES = ['ED', 'EAD', 'EDR', 'EZ', 'ETR'];
+const HELD_BODIES = ['ED', 'EAD', 'EDR', 'EZ', 'ETR',
+                     'EW', 'EWD', 'EWT', 'EWS'];
 
 /* EVERY held cage, not just equal-percentage. The sourcebook names a
    body and a size range and usually no cage at all, so restricting to
