@@ -136,6 +136,107 @@ check('and carries its real wall', near(
   2 * CAT.part('PIPE/NPS0.5/S40').dims.wall, 1e-9),
   'od ' + (pp.extent.y1 - pp.extent.y0));
 
+/* ---- THE FLOW PATH ---------------------------------------------------
+   Shape says where the metal is; this says where the fluid goes. Every
+   station below is recomputed from A and J independently of the layer,
+   the same discipline as the shapes above.                            */
+console.log('');
+const fp = G.flowPath(CAT.part('ELBOW90/SW3000/NPS0.5'));
+
+/* 2e-4, not 1e-4. The catalogue stores A and J rounded to four decimal
+   places; this test recomputes them from the millimetres the standard
+   prints. The path is TWICE (A + J), so it carries twice that rounding.
+   A tolerance that ignores where its own error comes from is a tolerance
+   that will be loosened again next time rather than understood. */
+check('the path runs face to face, so it is 2(A + J) long',
+  near(fp.length, 2 * (A + J), 2e-4),
+  fp.length.toFixed(4) + ' vs ' + (2 * (A + J)).toFixed(4));
+check('it enters at the inlet face and leaves at the outlet face',
+  near(fp.path[0][0], -(A + J), 1e-4) && near(fp.path[0][1], 0) &&
+  near(fp.path[fp.path.length - 1][1], A + J, 1e-4),
+  JSON.stringify([fp.path[0], fp.path[fp.path.length - 1]]));
+
+/* The reaches must tile the path exactly -- no gap, no overlap. A 1D
+   model integrates friction over them, so a gap is lost pipe. */
+let tiled = Math.abs(fp.reaches[0].s0) < 1e-9;
+for (let i = 1; i < fp.reaches.length; i++)
+  tiled = tiled && Math.abs(fp.reaches[i].s0 - fp.reaches[i - 1].s1) < 1e-9;
+tiled = tiled && Math.abs(fp.reaches[fp.reaches.length - 1].s1 - fp.length) < 1e-9;
+check('the reaches tile it with no gap and no overlap', tiled,
+  fp.reaches.map(r => r.s0.toFixed(3) + '-' + r.s1.toFixed(3)).join(' '));
+
+check('the socket reaches carry the socket bore, the middle the fitting bore',
+  near(fp.reaches[0].bore, B, 1e-4) &&
+  near(fp.reaches[1].bore, D, 1e-4) &&
+  near(fp.reaches[2].bore, B, 1e-4),
+  fp.reaches.map(r => r.bore.toFixed(4)).join(' / '));
+/* Against the reach's OWN bore, not the test's millimetre conversion --
+   the claim being checked is that area and bore agree inside the layer,
+   which is exact. Comparing to a separately-converted D would be testing
+   the catalogue's rounding a second time, in a check about geometry. */
+check('and each area is pi r squared on its own bore',
+  fp.reaches.every(r =>
+    near(r.area, Math.PI * (r.bore / 2) * (r.bore / 2), 1e-12)));
+
+/* Stations, each recomputed from the standard's own dimensions. */
+const feat = k => fp.features.find(f => f.kind === k);
+check('the inlet contraction sits one socket depth in',
+  near(feat('contraction').s, J, 1e-4),
+  feat('contraction').s.toFixed(4) + ' vs J = ' + J.toFixed(4));
+check('the bend sits at J + A, where the axes cross',
+  near(feat('bend').s, J + A, 1e-4),
+  feat('bend').s.toFixed(4) + ' vs ' + (J + A).toFixed(4));
+check('the outlet expansion is symmetric with the inlet',
+  near(fp.length - feat('expansion').s, J, 1e-4));
+
+/* THE FINDING, as a standing assertion: the bore inside a socket-weld
+   fitting is substantially tighter than the socket that receives the
+   pipe. That contraction is real and is a loss nobody was modelling. */
+check('the fitting bore is a real contraction, not a detail',
+  fp.reaches[1].area < 0.6 * fp.reaches[0].area,
+  'socket ' + fp.reaches[0].area.toFixed(4) + ' in2 down to ' +
+  fp.reaches[1].area.toFixed(4) + ' in2, a ' +
+  (100 * (1 - fp.reaches[1].area / fp.reaches[0].area)).toFixed(0) +
+  '% area reduction inside the fitting');
+
+check('the bend is marked sharp, because it is',
+  feat('bend').turn === 90 && feat('bend').sharp === true);
+
+/* RESOLUTION. The whole answer to "how do we get flow high-res without
+   smoothing the fitting": sample denser. The part never changes. */
+const coarse = G.samplePath(fp, 0.25), fine = G.samplePath(fp, 0.02);
+/* More than five times, not more than twelve. Spacing falls 12.5x but
+   each of the four segments rounds its own count up, so the totals do
+   not scale with the ratio. The claim worth making is that density is
+   the caller's to choose; an exact multiple was never the claim. */
+check('sampling finer gives more points and the same geometry',
+  fine.length > 5 * coarse.length &&
+  near(coarse[coarse.length - 1].s, fp.length, 1e-9) &&
+  near(fine[fine.length - 1].s, fp.length, 1e-9),
+  coarse.length + ' points at 0.25 in, ' + fine.length + ' at 0.02 in, ' +
+  'both ending at s = ' + fp.length.toFixed(4));
+check('every sample lies on the path, not near it',
+  fine.every(q => Math.abs(q.x) < 1e-9 || Math.abs(q.y) < 1e-9),
+  'the elbow is two axis-aligned legs, so every point has x = 0 or y = 0');
+check('the bore can be read at any station',
+  near(G.boreAtS(fp, 0.1), B, 1e-4) && near(G.boreAtS(fp, 1.0), D, 1e-4) &&
+  G.boreAtS(fp, 99) === null);
+
+/* A tee is two different paths and they cost different amounts. */
+const run = G.flowPath(CAT.part('TEE/SW3000/NPS0.5'), { via: 'run' });
+const br = G.flowPath(CAT.part('TEE/SW3000/NPS0.5'), { via: 'branch' });
+check('a tee run-through is straight, with no bend feature',
+  !run.features.some(f => f.kind === 'bend') &&
+  run.path.every(q => q[1] === 0));
+check('and the branch path turns', br.features.some(f => f.kind === 'bend'));
+check('both are the same length -- same A, same J',
+  near(run.length, br.length, 1e-9), run.length.toFixed(4));
+
+const pipePath = G.flowPath(CAT.part('PIPE/NPS0.5/S40'), { length: 10 });
+check('pipe is one reach of constant bore and no features',
+  pipePath.reaches.length === 1 && pipePath.features.length === 0 &&
+  near(pipePath.length, 10, 1e-9));
+
 /* ---- what it refuses -------------------------------------------------- */
 console.log('');
 const refuses = (label, fn, expect) => {
@@ -157,6 +258,13 @@ refuses('a part missing a dimension is refused, and names which',
                     dims: { centreToSocket: 1 } }), 'has no ');
 refuses('something that is not a catalogue part is refused',
   () => G.shapeOf({ id: 'x' }), 'expected a catalogue part');
+refuses('a tee with no path named is refused -- run and branch differ',
+  () => G.flowPath(CAT.part('TEE/SW3000/NPS0.5'), { via: 'sideways' }),
+  'a tee has two paths');
+refuses('a class with no flow path is refused by name',
+  () => G.flowPath(CAT.part('ELBOW90/BWLR/NPS0.5')), 'no flow path for class');
+refuses('a non-positive sample spacing is refused',
+  () => G.samplePath(fp, 0), 'spacing must be positive');
 
 /* ---- what this layer must NOT contain --------------------------------- */
 console.log('');

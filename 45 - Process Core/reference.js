@@ -123,9 +123,73 @@ items.forEach(it => {
 /* row 2 -- pipe, and the contrast */
 const pipePart = CAT.part('PIPE/NPS0.5/S40');
 const pg = LPE.geometry.shapeOf(pipePart, { length: 2.5 });
-drawPart(pg, 500, 720, 'NPS 1/2 SCH 40 PIPE, 2.5 in',
+drawPart(pg, 380, 720, 'NPS 1/2 SCH 40 PIPE, 2.5 in',
   'bore ' + pipePart.dims.bore + ' in, wall ' + pipePart.dims.wall +
   ' in  |  ASME B36.10M');
+
+/* THE FLOW PATH. Same part, same scale, with where the fluid actually
+   goes drawn over it -- and sampled, because sampling density is the
+   whole answer to "how do we get flow high-res without smoothing the
+   fitting". The part is blocky. The sampling is as fine as you like. */
+put('<g transform="translate(1120,720)">');
+{
+  const el = CAT.part('ELBOW90/SW3000/NPS0.5');
+  const g = LPE.geometry.shapeOf(el);
+  const fp = LPE.geometry.flowPath(el);
+
+  put('<path d="' + g.outline.map(ring).join(' ') + '" fill="' +
+      SKIN.pipe.body + '" stroke="' + SKIN.pipe.rim + '" stroke-width="2"/>');
+  put('<path d="' + g.bore.map(ring).join(' ') + '" fill="' + SKIN.pipe.dark +
+      '" stroke="' + SKIN.pipe.rim + '" stroke-width="1.25"/>');
+
+  /* the centreline */
+  put('<path d="' + fp.path.map((q, i) =>
+      (i ? 'L' : 'M') + inch(q[0]).toFixed(1) + ' ' + inch(q[1]).toFixed(1))
+      .join(' ') + '" fill="none" stroke="' + SKIN.schem.line +
+      '" stroke-width="1.5" stroke-dasharray="5 4"/>');
+
+  /* sampled, fine */
+  LPE.geometry.samplePath(fp, 0.045).forEach(q =>
+    put('<circle cx="' + inch(q.x).toFixed(1) + '" cy="' + inch(q.y).toFixed(1) +
+        '" r="2.2" fill="' + SKIN.schem.symbol + '"/>'));
+
+  /* features, each at its own station */
+  const at = sTarget => {
+    let acc = 0;
+    for (let i = 1; i < fp.path.length; i++) {
+      const a = fp.path[i - 1], b = fp.path[i];
+      const seg = Math.hypot(b[0] - a[0], b[1] - a[1]);
+      if (sTarget <= acc + seg + 1e-9) {
+        const t = (sTarget - acc) / seg;
+        return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+      }
+      acc += seg;
+    }
+    return fp.path[fp.path.length - 1];
+  };
+  fp.features.forEach(f => {
+    const q = at(f.s), X = inch(q[0]), Y = inch(q[1]);
+    put('<circle cx="' + X.toFixed(1) + '" cy="' + Y.toFixed(1) +
+        '" r="7" fill="none" stroke="' + SKIN.schem.line + '" stroke-width="2"/>');
+  });
+
+  const by = inch(g.extent.y1) + 30;
+  const cx = inch((g.extent.x0 + g.extent.x1) / 2);
+  put('<text x="' + cx.toFixed(1) + '" y="' + by + '" text-anchor="middle" ' +
+      'font-family="ui-monospace,monospace" font-size="14" fill="' +
+      SKIN.schem.line + '">THE FLOW PATH, SAMPLED</text>');
+  put('<text x="' + cx.toFixed(1) + '" y="' + (by + 19) + '" text-anchor="middle" ' +
+      'font-family="ui-monospace,monospace" font-size="11.5" fill="' +
+      SKIN.schem.label + '">' + fp.length.toFixed(3) + ' in face to face  /  ' +
+      'rings mark a contraction, a sharp 90, an expansion</text>');
+  put('<text x="' + cx.toFixed(1) + '" y="' + (by + 36) + '" text-anchor="middle" ' +
+      'font-family="ui-monospace,monospace" font-size="11.5" fill="' +
+      SKIN.schem.label + '">bore drops ' + fp.reaches[0].bore.toFixed(3) +
+      ' to ' + fp.reaches[1].bore.toFixed(3) + ' in inside the fitting, ' +
+      (100 * (1 - fp.reaches[1].area / fp.reaches[0].area)).toFixed(0) +
+      '% of area</text>');
+}
+put('</g>');
 
 /* THE CONTRAST. Same fitting, same scale, two drawings. */
 /* ITS OWN ROW. The sweep is 2.18 in of radius at this scale, which is
