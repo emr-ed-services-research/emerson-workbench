@@ -10,6 +10,7 @@ edition: ISA-S5.5-1985
 holding: confirmed
 updated: 2026-10-09
 used-by:
+  - "00 - Project/Open Questions.md"
   - "00 - Project/Process Core — Architecture & Build Plan.md"
   - "45 - Process Core/README.md"
   - "45 - Process Core/TOPOLOGY.md"

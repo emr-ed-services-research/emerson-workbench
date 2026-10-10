@@ -38,12 +38,31 @@
 (function (LPE) {
   'use strict';
 
-  /* Wall thickness, in the same units as bore radius. One number, because
-     every run on a rig this size is the same schedule. */
-  const WALL = 5;
+  /* ---- DRAWING CONSTANTS, AND WHAT BACKS THEM ------------------------
+     Nothing below is sourced. They came from Lunar Process Engineer and
+     they are what a pipe LOOKS like, not what one measures.
 
-  /* Taper length of a reducer's cone. */
-  const TAPER = 16;
+     WALL is the one that should not stay this way. "Every run on a rig
+     this size is the same schedule" was the old justification, and it is
+     wrong in its own terms: wall thickness varies with NOMINAL SIZE as
+     well as schedule, and ASME B36.10M says by how much. We hold that
+     standard, it is in the register, and LPE's own `sizing.js` already
+     carries the table it needs -- NPS, OD, wall, bore, area, cited to
+     B36.10M. So a flat 5 px is a constant standing where a sourced
+     number is already in the building.
+
+     Correcting it is not a one-liner: `r` here is the bore scaled by the
+     frame's pxPerInch, and the relationship between that and a true-scale
+     wall needs settling before a real thickness can be drawn without the
+     pipe changing size. Recorded rather than guessed at.
+
+     TAPER, REINF and the crotch radius below are different: a reducer's
+     cone length and a tee's reinforcement are forging details that vary
+     by manufacturer and are not dimensioned in any standard we hold.
+     Those are legitimately art, and are labelled as such rather than
+     left to look like engineering. */
+  const WALL = 5;        // ART, standing in for ASME B36.10M wall thickness
+  const TAPER = 16;      // ART -- cone length is a forging detail
 
   /* THE BEND RADIUS IS THE NETLIST'S, NOT OURS.
 

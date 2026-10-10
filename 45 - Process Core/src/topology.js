@@ -63,15 +63,38 @@
 (function (LPE) {
   'use strict';
 
-  /* ---- the two radius rules, stated once ----------------------------
-     Both were already in the code, just written out at each use site.
-     BEND is piping()'s own long-radius convention: centreline R = 1.5 x
-     bore diameter = 3 x bore radius, which is how a real long-radius
-     elbow is made. TEE_TURN is tighter because a tee turn IS tight -
-     nothing like a long-radius elbow - and 1.6 is the value level 1
-     settled on after the branches looked wrong at anything larger. */
-  const bendRadius = r => 3 * r;
-  const teeTurnRadius = r => r * 1.6;
+  /* ---- the two radius rules, stated once -- AND NEITHER IS SOURCED ---
+
+     Both came out of Lunar Process Engineer, where they were written at
+     each use site, and collecting them here made them look more
+     authoritative than they are. They are the geometry every drawn corner
+     and every curve the water follows is derived from, so what backs them
+     matters.
+
+     BEND claims a standard it cannot cite. The old comment here read
+     "centreline R = 1.5 x bore diameter ... which is how a real
+     long-radius elbow is made". A long-radius buttwelding elbow is
+     conventionally 1.5 x NPS -- the NOMINAL size, not the bore, which is
+     a different and smaller number. On the levels' own B36.10M bores that
+     is a 24-31 % difference, i.e. every elbow drawn about a quarter again
+     too round. RECALLED, NOT READ: `ASME B16.9` is not held. See
+     `20 - Source Library/Standards/asme-b16.9.md`, which records the
+     doubt and the arithmetic rather than letting the claim stand.
+
+     Note also that applying the real convention needs NOMINAL size, and
+     the netlist carries bore. That gap is in the entry too.
+
+     TEE_TURN claims nothing, and its own history says why: 1.6 is "the
+     value level 1 settled on after the branches looked wrong at anything
+     larger." That is an art decision. It is kept because changing it
+     moves shipped geometry and because no source has been found that
+     specifies a branch turn radius at all -- a tee's crotch is a forging
+     detail rather than a dimensioned feature -- but it is labelled for
+     what it is, not dressed as engineering.
+
+     Do not cite either of these as grounded. */
+  const bendRadius = r => 3 * r;          // UNVERIFIED -- see asme-b16.9.md
+  const teeTurnRadius = r => r * 1.6;     // ART, not a standard
 
   /* ---- display classes ----------------------------------------------
      What a renderer is allowed to suppress.

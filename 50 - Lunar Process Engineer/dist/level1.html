@@ -1840,15 +1840,38 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
 (function (LPE) {
   'use strict';
 
-  /* ---- the two radius rules, stated once ----------------------------
-     Both were already in the code, just written out at each use site.
-     BEND is piping()'s own long-radius convention: centreline R = 1.5 x
-     bore diameter = 3 x bore radius, which is how a real long-radius
-     elbow is made. TEE_TURN is tighter because a tee turn IS tight -
-     nothing like a long-radius elbow - and 1.6 is the value level 1
-     settled on after the branches looked wrong at anything larger. */
-  const bendRadius = r => 3 * r;
-  const teeTurnRadius = r => r * 1.6;
+  /* ---- the two radius rules, stated once -- AND NEITHER IS SOURCED ---
+
+     Both came out of Lunar Process Engineer, where they were written at
+     each use site, and collecting them here made them look more
+     authoritative than they are. They are the geometry every drawn corner
+     and every curve the water follows is derived from, so what backs them
+     matters.
+
+     BEND claims a standard it cannot cite. The old comment here read
+     "centreline R = 1.5 x bore diameter ... which is how a real
+     long-radius elbow is made". A long-radius buttwelding elbow is
+     conventionally 1.5 x NPS -- the NOMINAL size, not the bore, which is
+     a different and smaller number. On the levels' own B36.10M bores that
+     is a 24-31 % difference, i.e. every elbow drawn about a quarter again
+     too round. RECALLED, NOT READ: `ASME B16.9` is not held. See
+     `20 - Source Library/Standards/asme-b16.9.md`, which records the
+     doubt and the arithmetic rather than letting the claim stand.
+
+     Note also that applying the real convention needs NOMINAL size, and
+     the netlist carries bore. That gap is in the entry too.
+
+     TEE_TURN claims nothing, and its own history says why: 1.6 is "the
+     value level 1 settled on after the branches looked wrong at anything
+     larger." That is an art decision. It is kept because changing it
+     moves shipped geometry and because no source has been found that
+     specifies a branch turn radius at all -- a tee's crotch is a forging
+     detail rather than a dimensioned feature -- but it is labelled for
+     what it is, not dressed as engineering.
+
+     Do not cite either of these as grounded. */
+  const bendRadius = r => 3 * r;          // UNVERIFIED -- see asme-b16.9.md
+  const teeTurnRadius = r => r * 1.6;     // ART, not a standard
 
   /* ---- display classes ----------------------------------------------
      What a renderer is allowed to suppress.
@@ -2509,12 +2532,57 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
      so the water goes round the elbow the pipe actually has instead of
      cutting the corner. */
   function toWater(comps, segs) {
-    return segs.filter(s => s.from && s.to).map(s => {
+    const live = segs.filter(s => s.from && s.to);
+
+    /* Where does the run ARRIVE from, at this tee?
+
+       Needed because a branch turns at the tee, and that turn is the one
+       corner in the whole model that does not sit inside a segment: the
+       riser is one segment, the branch is another, and the bend belongs
+       to neither. The loop below only fillets corners it finds in a
+       single `pts` list, so without this a branch came back dead straight
+       and the water cut the corner the drawing had curved -- running
+       outside its own pipe, which is the bug the levels call "nothing
+       curved anywhere".
+
+       The incoming direction is taken from the segment that FEEDS the
+       tee, not from the tee's declared axis: the axis says the run is
+       vertical, it does not say the water is coming down it. */
+    const feedOf = teeId => {
+      const feed = live.find(o => o.to.id === teeId && o.to.port === 'in');
+      if (!feed) return null;
+      const fp = dedupe(feed.pts);
+      return fp.length >= 2 ? fp[fp.length - 2] : null;
+    };
+
+    return live.map(s => {
       const R = s.from.port === 'branch'
         ? teeTurnRadius(s.r)      // leaving a tee is a tight turn
         : bendRadius(s.r);        // a run corner is a long-radius elbow
       const pts = dedupe(s.pts);
       const out = [];
+
+      /* A fillet carrying the water off the run and into the branch. It
+         starts one radius back up the run, so the arc is geometrically
+         part of the riser -- which is correct: the metal curves there
+         too, and the branch's own first leg begins where the bend ends. */
+      let turnsAtStart = false;
+      if (s.from.port === 'branch' && pts.length >= 2) {
+        const from = feedOf(s.from.id);
+        const corner = pts[0], next = pts[1];
+        if (from) {
+          const inHoriz = from[1] === corner[1];
+          const outHoriz = corner[1] === next[1];
+          if (inHoriz !== outHoriz) {            // it genuinely turns
+            const back = inHoriz
+              ? [corner[0] - Math.sign(corner[0] - from[0]) * R, corner[1]]
+              : [corner[0], corner[1] - Math.sign(corner[1] - from[1]) * R];
+            out.push({ arc: cornerArc(back[0], back[1], corner[0], corner[1],
+                                      next[0], next[1], R), r: s.r });
+            turnsAtStart = true;
+          }
+        }
+      }
 
       for (let i = 1; i < pts.length; i++) {
         const [x0, y0] = pts[i - 1], [x1, y1] = pts[i];
@@ -2523,8 +2591,10 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
 
         // Shorten this leg where it runs into a corner, and emit the arc.
         let ax = x0, ay = y0, bx = x1, by = y1;
-        if (i > 1) { if (horiz) ax += Math.sign(x1 - x0) * R;
-                     else       ay += Math.sign(y1 - y0) * R; }
+        if (i > 1 || turnsAtStart) {
+          if (horiz) ax += Math.sign(x1 - x0) * R;
+          else       ay += Math.sign(y1 - y0) * R;
+        }
         if (!isLast) { if (horiz) bx -= Math.sign(x1 - x0) * R;
                        else       by -= Math.sign(y1 - y0) * R; }
 
@@ -2552,10 +2622,20 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
     const ccx = inHoriz ? bx : cx + outDx * R;
     const ccy = inHoriz ? cy + outDy * R : by;
     const a0 = Math.atan2(by - ccy, bx - ccx);
-    const ex = inHoriz ? ccx : cx;
-    const ey = inHoriz ? cy   : ccy;
-    const a1 = Math.atan2((inHoriz ? cy + outDy * R : ey) - ccy,
-                          (inHoriz ? ex : cx + outDx * R) - ccx);
+
+    /* The arc ENDS on the outgoing leg, at its tangent point -- one
+       radius along it from the corner. Stated once, for both
+       orientations, rather than branched.
+
+       The branched version was wrong for a vertical-in corner: it set the
+       end's y to the centre's own y, so both deltas came out zero and
+       atan2(0,0) returned 0 instead of a quarter turn. It happened to be
+       right for horizontal-in, where that same expression lands on the
+       correct answer by coincidence -- which is why it survived. Nothing
+       exercised the other case until a branch leaving a tee needed
+       filleting, because that is the only corner in the model whose
+       incoming leg is vertical. */
+    const a1 = Math.atan2((cy + outDy * R) - ccy, (cx + outDx * R) - ccx);
     return { cx: ccx, cy: ccy, R, a0, a1 };
   }
 
@@ -3237,12 +3317,31 @@ return {palette:P, art, Line, Cutaway, pipeRun, runSegments, runPoly,
 (function (LPE) {
   'use strict';
 
-  /* Wall thickness, in the same units as bore radius. One number, because
-     every run on a rig this size is the same schedule. */
-  const WALL = 5;
+  /* ---- DRAWING CONSTANTS, AND WHAT BACKS THEM ------------------------
+     Nothing below is sourced. They came from Lunar Process Engineer and
+     they are what a pipe LOOKS like, not what one measures.
 
-  /* Taper length of a reducer's cone. */
-  const TAPER = 16;
+     WALL is the one that should not stay this way. "Every run on a rig
+     this size is the same schedule" was the old justification, and it is
+     wrong in its own terms: wall thickness varies with NOMINAL SIZE as
+     well as schedule, and ASME B36.10M says by how much. We hold that
+     standard, it is in the register, and LPE's own `sizing.js` already
+     carries the table it needs -- NPS, OD, wall, bore, area, cited to
+     B36.10M. So a flat 5 px is a constant standing where a sourced
+     number is already in the building.
+
+     Correcting it is not a one-liner: `r` here is the bore scaled by the
+     frame's pxPerInch, and the relationship between that and a true-scale
+     wall needs settling before a real thickness can be drawn without the
+     pipe changing size. Recorded rather than guessed at.
+
+     TAPER, REINF and the crotch radius below are different: a reducer's
+     cone length and a tee's reinforcement are forging details that vary
+     by manufacturer and are not dimensioned in any standard we hold.
+     Those are legitimately art, and are labelled as such rather than
+     left to look like engineering. */
+  const WALL = 5;        // ART, standing in for ASME B36.10M wall thickness
+  const TAPER = 16;      // ART -- cone length is a forging detail
 
   /* THE BEND RADIUS IS THE NETLIST'S, NOT OURS.
 

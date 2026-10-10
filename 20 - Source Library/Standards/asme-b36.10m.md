@@ -10,6 +10,7 @@ edition: unverified
 holding: publisher-licensed
 updated: 2026-10-09
 used-by:
+  - "45 - Process Core/src/physvis.js"
   - "50 - Lunar Process Engineer/PIPELINE.md"
   - "50 - Lunar Process Engineer/level1.html"
   - "50 - Lunar Process Engineer/level2.html"
@@ -18,6 +19,7 @@ used-by:
   - "50 - Lunar Process Engineer/reference/crosscheck.js"
   - "50 - Lunar Process Engineer/sizing.js"
   - "50 - Lunar Process Engineer/trainer.html"
+  - "50 - Lunar Process Engineer/vendor/process-core/physvis.js"
 ---
 
 # ASME B36.10M — Welded and Seamless Wrought Steel Pipe
