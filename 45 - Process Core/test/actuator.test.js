@@ -69,8 +69,17 @@ const span = a => Math.max.apply(null, ys(a.spring ? [a.spring] : [[]])) -
 
   refuses('a figure flattened to one ring per part is refused by name',
     () => LPE.actuator.diaphragm({ part: A30, travelPct: 50, figure: {
-      shapes: { yoke: [[0, 0], [1, 0], [1, 1]] } } }),
+      shapes: {
+        /* a well-formed casing, so the scale can be read, and a yoke
+           flattened the way the first vendoring flattened it */
+        'lower-diaphragm-casing': [[[-3, 9], [3, 9], [3, 10], [-3, 10]]],
+        yoke: [[0, 0], [1, 0], [1, 1]],
+      } } }),
     'LIST OF RINGS');
+  refuses('and a figure with no casing to read the scale off is refused',
+    () => LPE.actuator.diaphragm({ part: A30, travelPct: 50,
+      figure: { shapes: { yoke: [[[0, 0], [1, 0], [1, 1]]] } } }),
+    'read off');
 }
 
 /* ---- the castings are symmetric about the centreline ---------------
@@ -141,6 +150,50 @@ const span = a => Math.max.apply(null, ys(a.spring ? [a.spring] : [[]])) -
   check('and it is declared as constructed, not traced',
         open.built.indexOf('actuator stem') >= 0 &&
         open.built.indexOf('spring') >= 0);
+}
+
+/* ---- one drawing, seven sizes, drawn at seven sizes -----------------
+   Figure 6 covers the 30 through the 60 and is dimensioned to none of
+   them. Drawn at the traced size for every row, a size 45 came out
+   the same size as a size 30 and both came out too small for their
+   published diaphragms -- which is only visible when the actuator is
+   put next to a valve whose dimensions all are published. */
+{
+  const A45 = CAT.part('ACTUATOR/657/SIZE45');
+  const a30 = at(100);
+  const a45 = LPE.actuator.diaphragm(
+    { part: A45, figure: FIG, travelPct: 100 });
+  const across = a => {
+    const v = xs(a.lowerCasing);
+    return Math.max.apply(null, v) - Math.min.apply(null, v);
+  };
+  const dia = A => Math.sqrt(4 * A / Math.PI);
+
+  check('the casing is drawn at the diaphragm its effective area implies',
+        Math.abs(across(a30) - dia(46)) < 1e-6 &&
+        Math.abs(across(a45) - dia(105)) < 1e-6,
+        'size 30 ' + across(a30).toFixed(2) + ' in against ' +
+        dia(46).toFixed(2) + ', size 45 ' + across(a45).toFixed(2) +
+        ' against ' + dia(105).toFixed(2));
+  check('so a bigger row draws a bigger actuator',
+        across(a45) > across(a30) * 1.4);
+  check('and the scale it used is reported rather than hidden',
+        a45.figureScale > a30.figureScale && a30.figureScale > 1);
+
+  /* The dimensions that are published FOR THIS ROW are not scaled --
+     they are drawn at their own size, or the scaling would overwrite
+     the very numbers it is supposed to serve. */
+  check('travel is not scaled with the figure',
+        Math.abs((top(a45.plate) -
+                  top(LPE.actuator.diaphragm({ part: A45, figure: FIG,
+                    travelPct: 0 }).plate)) - A45.dims.maxTravel) < 1e-9);
+  check('nor is the stem, which is drawn at the diameter it accepts',
+        Math.abs((Math.max.apply(null, xs(a45.stem)) -
+                  Math.min.apply(null, xs(a45.stem))) -
+                 A45.dims.stemAccepted) < 1e-9);
+  check('and the mounting face stays at y = 0 whatever the scale',
+        Math.min.apply(null, ys(a45.yoke)) === 0 &&
+        Math.min.apply(null, ys(a30.yoke)) === 0);
 }
 
 /* ---- it still refuses what it always refused ------------------------ */

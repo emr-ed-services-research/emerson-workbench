@@ -55,7 +55,7 @@ const PAGE = `<!doctype html>
 </style>
 <header>
   <h1>FV-101 &mdash; the whole control valve</h1>
-  <div class="sub">A Fisher 657 size 30 on an ED NPS 1-1/2, with the
+  <div class="sub">A Fisher 657 size 45 on an ED NPS 4, with the
     fluid solved underneath it. The two were checked against their
     published mounting numbers before either was drawn &mdash; travel,
     stem diameter and yoke boss &mdash; so this is one machine rather
@@ -95,9 +95,9 @@ const PAGE = `<!doctype html>
   function build() {
     const CAT = LPE.catalogue.load(${PARTS});
     const FIG = ${FIG};
-    const VALVE = CAT.part('VALVE/ED/NPS1.5/P1.875/T0.75/EQPCT');
-    const BODY = CAT.part('BODY/GLOBE/FLANGED/NPS1.5/CL250RF-CL300RF');
-    const ACT = CAT.part('ACTUATOR/657/SIZE30');
+    const VALVE = CAT.part('VALVE/ED/NPS4/P4.375/T2/EQPCT');
+    const BODY = CAT.part('BODY/GLOBE/FLANGED/NPS4/CL250RF-CL300RF');
+    const ACT = CAT.part('ACTUATOR/657/SIZE45');
     const WP = LPE.trim.fromCurve({ curve: VALVE.cv,
       characterisedBy: VALVE.characterisedBy }).widthProfile();
 
@@ -106,14 +106,15 @@ const PAGE = `<!doctype html>
       tag: 'FV-101', catalogue: CAT,
       service: { dP: 15, packingType: 'ptfe' } });
 
-    const SVC = { sg: 1.0, q100: 80 / 0.58 };   /* design 80 gpm at 58% Cv */
-    const CELL = 0.1;
+    const VALVE_BORE = CAT.part('PIPE/NPS4/S40').dims.bore;
+    const SVC = { sg: 1.0, q100: 826.4 };   /* design 560 gpm at 68% Cv */
+    const CELL = 0.14;
     const SLOWMO = 0.02;
     let fluid = null, cache = null, key = '';
 
     function geom() {
       return LPE.geometry.globeValve({ part: VALVE,
-        faceToFace: BODY.dims.faceToFace, lineBore: 2.067,
+        faceToFace: BODY.dims.faceToFace, lineBore: VALVE_BORE,
         flow: 'down', widthProfile: WP.width });
     }
     function field(gv, pct, gpm) {
@@ -178,7 +179,7 @@ const PAGE = `<!doctype html>
       let r = null;
       PC.drawValve(g, pl, { width: c.width, height: c.height, travel: t,
         theme: PC.DARK, ground: null, labels: false,
-        title: 'FV-101  Fisher ED NPS 1-1/2 equal-percentage on a 657 size '
+        title: 'FV-101  Fisher ED NPS 4 equal-percentage on a 657 size '
              + ACT.size,
         onFluid: gg => { r = PC.drawValveFlow(gg, pl, fc.field, fluid,
           { theme: PC.DARK, wetted: fc.wetted }); },

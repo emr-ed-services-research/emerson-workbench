@@ -3,45 +3,71 @@
    Run: node lab/loop-cooling.js                                       */
 /* ---------------- FIC-101, COOLING WATER TO AN EXCHANGER ------------
 
-   A BASIC CONTROL LOOP, SPECIFIED RATHER THAN SKETCHED.
+   A BASIC CONTROL LOOP, SPECIFIED RATHER THAN SKETCHED -- AND SPECIFIED
+   AROUND THE BODY WE CAN ACTUALLY DRAW.
 
-   The FCC loop next door is a real refinery service and far too big
-   for any actuator this core can draw: an EWT NPS 10x8 strokes three
-   inches and needs a 667 or a piston. This loop exists to be the
-   opposite -- small enough that the whole control valve assembly,
-   actuator included, is a real pairing out of two published tables,
-   and ordinary enough that every plant has one.
+   This loop was first built around an ED NPS 1-1/2 on a 657 size 30,
+   picked because that pairing is a real one out of two published
+   tables. Every number in it was right and the PICTURE was wrong, and
+   Franz saw it straight away: the valve looked enormous beside a
+   two-inch line.
+
+   The reason is the body archetype. There is one traced globe body in
+   this core and it came off Figure 24 of D100399X012, an EWT NPS 10x8,
+   scaled to each valve by its published face-to-face. The traced
+   figure's bore is 0.323 of its face-to-face and its port 0.293. An ED
+   NPS 1-1/2 is 0.174 and 0.203 -- so the casting was drawn about half
+   again too fat for its length, a ten-inch valve wearing a
+   one-and-a-half-inch valve's length. Of every valve a 657 can drive,
+   it was the WORST match in the catalogue.
+
+   So the valve was chosen the other way round this time: find the
+   valve whose own proportions the one archetype we have actually fits,
+   and that a 657 can still drive.
+
+       ED NPS 4, 4-3/8 in port, 2 in travel   port/f2f 0.302 vs 0.293
+                                              -- 3%, against 31%
+       ED NPS 3, 3-7/16 in port               6%
+       ED NPS 1-1/2, 1-7/8 in port            31%   <- what this was
 
    THE SERVICE
 
      fluid     water, 60 F
-     flow      80 gpm
+     flow      560 gpm
      pressure  50 psig upstream of the valve, 35 psig downstream
-     line      NPS 2 Sch 40, which puts the water at 7.6 ft/s
+     line      NPS 6 Sch 40, which puts the water at 6.2 ft/s
      duty      cooling water to a heat exchanger, flow controlled
 
    THE ASSEMBLY, and this is the part that had to be checked rather
    than chosen:
 
-     valve      Fisher ED NPS 1-1/2, 1.875 in port, equal-percentage
-                cage, Cv 35.8, FL 0.84 -- Catalog 12
-     actuator   Fisher 657 size 30, 46 in2, 3/4 in travel -- the
+     valve      Fisher ED NPS 4, 4.375 in port, equal-percentage
+                cage, Cv 224, FL 0.82 -- Catalog 12
+     actuator   Fisher 657 size 45, 105 in2, 2 in travel -- the
                 actuator manual's Table 1
-     joint      travel 0.75 = 0.75, stem 3/8 = 3/8, yoke boss
-                2-1/8 = 2-1/8. Three published numbers from two
-                tables, all three agreeing, checked by the assembly
-                layer rather than by eye.
+     joint      travel 2 = 2, stem 1/2 = 1/2, yoke boss 2-13/16 =
+                2-13/16. Three published numbers from two tables, all
+                three agreeing, checked by the assembly layer rather
+                than by eye.
 
-   A REDUCED-SIZE INSTALLATION. The valve is NPS 1-1/2 in an NPS 2
-   line, with concentric reducers, which is the same configuration as
-   the Control Valve Handbook's worked example -- so Fp and FLP are
+   A REDUCED-SIZE INSTALLATION, and not by choice either time. The
+   valve's 4.375 in port is wider than an NPS 4 Sch 40 bore of 4.026,
+   so it is not a line-size installation at all and the sizing layer
+   refuses it as such. NPS 6 it is -- which is the same configuration
+   as the Control Valve Handbook's worked example, so Fp and FLP are
    doing real work here and the sizing layer is already graded against
    a printed answer for exactly this shape of problem.
 
-   WHY NPS 2 AND NOT NPS 1-1/2. Tried the obvious way first and the
-   sizing layer refused it: the valve's 1.875 in port is wider than a
-   1-1/2 inch Sch 40 bore, so it is not a line-size installation at
-   all. The refusal picked the configuration.                        */
+   AND d AND D ARE NOMINAL SIZES. The first version of this loop passed
+   the valve's PORT as d and the line's BORE as D. The sizing layer's
+   own graded example passes nominal sizes for both -- d: 3, d: 4 in an
+   NPS 8 line -- so the reducer geometry was being computed off two
+   numbers that were not the ones the formula wants.
+
+   A 1/2 INCH STEM ALSO REACHES THE STANDARD PACKING TABLE. The 3/8 in
+   stem on the old valve did not: D100399X012 Table 6 starts at 1/2.
+   So this loop can show the torque WINDOW as well as the ENVIRO-SEAL
+   friction force.                                                   */
 'use strict';
 
 const fs = require('fs');
@@ -63,14 +89,15 @@ const CAT = LPE.catalogue.load(JSON.parse(fs.readFileSync(
 const SVC = {
   fluid: 'water, 60 F',
   sg: 1.0, Pv: 0.256, Pc: 3200.0,
-  q: 80,                       /* gpm, design */
+  q: 560,                      /* gpm, design */
   P1: 50 + 14.7, P2: 35 + 14.7,
-  lineNps: 2, lineBore: 2.067, /* NPS 2 Sch 40, ASME B36.10M */
+  lineNps: 6, lineBore: 6.065, /* NPS 6 Sch 40, ASME B36.10M */
+  valveNps: 4,                 /* the valve's own end size */
 };
 const dP = SVC.P1 - SVC.P2;
 
-const VALVE = CAT.part('VALVE/ED/NPS1.5/P1.875/T0.75/EQPCT');
-const ACT = CAT.part('ACTUATOR/657/SIZE30');
+const VALVE = CAT.part('VALVE/ED/NPS4/P4.375/T2/EQPCT');
+const ACT = CAT.part('ACTUATOR/657/SIZE45');
 const RATED = VALVE.cv[VALVE.cv.length - 1];
 
 const out = [];
@@ -97,7 +124,7 @@ const ASM = LPE.assembly.assemble({
 });
 say('');
 say('  ASSEMBLY    FV-101');
-say('              valve     Fisher ED NPS 1-1/2, ' + VALVE.dims.port +
+say('              valve     Fisher ED NPS 4, ' + VALVE.dims.port +
     ' in port, ' + VALVE.cage + ', Cv ' + RATED + ', FL ' + VALVE.FL);
 say('              actuator  Fisher 657 size ' + ACT.size + ', ' +
     ACT.dims.effectiveArea + ' in2, ' + ACT.dims.maxTravel + ' in travel');
@@ -107,9 +134,11 @@ for (const c of ASM.checks)
 say('              ' + ACT.figure);
 
 /* ---- sizing, through ISA-75.01.01 ---------------------------------- */
+/* d and D are NOMINAL sizes, which is what the graded example passes
+   and what the reducer geometry wants. */
 const sized = LPE.sizing.sizeLiquid(
   { q: SVC.q, P1: SVC.P1, P2: SVC.P2, sg: SVC.sg, Pv: SVC.Pv, Pc: SVC.Pc },
-  { Cv: RATED, FL: VALVE.FL, d: VALVE.dims.port }, SVC.lineBore);
+  { Cv: RATED, FL: VALVE.FL, d: SVC.valveNps }, SVC.lineNps);
 
 /* Where that lands on the published curve -- the number a sizing
    review actually argues about. */
@@ -162,7 +191,7 @@ say('              drag ' + PF.frictionLb + ' lb (graphite ULF would be ' +
 say('              ' + PF.source);
 
 /* ---- the loop as a netlist, and drawn ------------------------------ */
-const PIPE = CAT.part('PIPE/NPS2/S40');
+const PIPE = CAT.part('PIPE/NPS6/S40');
 const Y = 190, X0 = 110, XV = 360, XE = 620, X1 = 880;
 
 const spec = {

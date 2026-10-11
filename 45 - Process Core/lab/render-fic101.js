@@ -113,9 +113,9 @@ const PAGE = `<!doctype html>
   function build() {
     const CAT = LPE.catalogue.load(${PARTS});
     const FIG = ${FIG};
-    const VALVE = CAT.part('VALVE/ED/NPS1.5/P1.875/T0.75/EQPCT');
-    const BODY = CAT.part('BODY/GLOBE/FLANGED/NPS1.5/CL250RF-CL300RF');
-    const ACT = CAT.part('ACTUATOR/657/SIZE30');
+    const VALVE = CAT.part('VALVE/ED/NPS4/P4.375/T2/EQPCT');
+    const BODY = CAT.part('BODY/GLOBE/FLANGED/NPS4/CL250RF-CL300RF');
+    const ACT = CAT.part('ACTUATOR/657/SIZE45');
     const WP = LPE.trim.fromCurve({ curve: VALVE.cv,
       characterisedBy: VALVE.characterisedBy }).widthProfile();
     const spec = ${JSON.stringify(LOOP.spec)};
@@ -157,7 +157,13 @@ const PAGE = `<!doctype html>
       'the valve is drawn at the BORE scale so it and the pipe agree, ' +
       'and the to-scale answer is one rung in';
 
-    const Q100 = 80 / 0.58, CELL = 0.1, SLOWMO = 0.02;
+    /* The valve's OWN end bore. This is an NPS 4 valve in an NPS 6
+       line: the flange a reader sees is the valve's, and the
+       reducers make up the difference. Passing the LINE bore drew
+       the valve wearing the next size up's ends. */
+    const VALVE_BORE = CAT.part('PIPE/NPS4/S40').dims.bore;
+    const PIPE = CAT.part('PIPE/NPS6/S40');   /* the run it sits in */
+    const Q100 = 826.4, CELL = 0.14, SLOWMO = 0.02;
     /* ONE BODY OF WATER, AT EVERY RUNG. The population is a property
        of the fluid, so it does not change when the view does -- what
        changes is how big a parcel is DRAWN, and the skin does that
@@ -213,7 +219,7 @@ const PAGE = `<!doctype html>
     }
 
     const geom = () => LPE.geometry.globeValve({ part: VALVE,
-      faceToFace: BODY.dims.faceToFace, lineBore: 2.067,
+      faceToFace: BODY.dims.faceToFace, lineBore: VALVE_BORE,
       flow: 'down', widthProfile: WP.width });
 
     function field(gv, pct, gpm) {
@@ -256,13 +262,12 @@ const PAGE = `<!doctype html>
        page says so under the drawing rather than quietly picking one.
 
        The valve is the real body, not a symbol: this is the rung
-       where a reader should see that an NPS 1-1/2 valve in an NPS 2
+       where a reader should see that an NPS 4 valve in an NPS 6
        line is a SHORTER thing than the run it interrupts. */
     function drawInLine(pp, gv, travel) {
       const L = (pp.lines || [])[0];
       if (!L) return;
-      const sc = L.r / (BODY.dims.lineBore !== undefined
-        ? BODY.dims.lineBore / 2 : 2.067 / 2);
+      const sc = L.r / (PIPE.dims.bore / 2);
       for (const e of (pp.equipment || [])) {
         if (e.kind === 'valve') {
           const pl = Object.freeze({ valve: gv, scale: sc,
@@ -483,7 +488,7 @@ const PAGE = `<!doctype html>
                '; its stem and spring are constructed -- ' +
                LPE.actuator.BUILT.join(', ')]
             : [],
-          title: 'FV-101  Fisher ED NPS 1-1/2 equal-percentage' +
+          title: 'FV-101  Fisher ED NPS 4 equal-percentage' +
                  (at === 'assembly' ? ' on a 657 size ' + ACT.size : ''),
           onFluid: gg => { r = PC.drawValveFlow(gg, pl, fc.field, parts,
             { theme: PC.DARK, wetted: fc.wetted }); },

@@ -66,6 +66,55 @@
         'this before a drawing does.');
 
     const S = spec.figure.shapes;
+
+    /* ---- ONE DRAWING, SEVEN SIZES, AND HOW BIG TO DRAW THIS ONE ------
+
+       Figure 6 covers the size 30 through the 60 and is dimensioned
+       to none of them -- the figure's own note says so, and the
+       arithmetic agrees: the traced casing comes out 6.91 in across,
+       where a size 30's published 46 in2 of effective area needs a
+       diaphragm 7.65 in across and a size 45's 105 in2 needs 11.56.
+       Drawn at the traced size for every row, a 45 comes out the same
+       size as a 30, and both come out too small. Next to a valve
+       whose every dimension is published and sourced, that is the
+       picture telling a lie the catalogue does not.
+
+       So the figure is scaled per row, on the diaphragm diameter its
+       EFFECTIVE AREA implies. That number is published for all seven
+       sizes, it is the dimension the actuator is actually specified
+       by, and it is the one the drawing can be tied to: the casing
+       the figure draws IS the diaphragm chamber.
+
+       NOT THE YOKE BOSS, which the figure's own note suggests and
+       which would be the better anchor if it were in the drawing. It
+       is not: the published yoke boss is a BORE -- the bonnet boss
+       the yoke accepts, 2-1/8 in on a size 30 -- and the traced yoke
+       has no bore at its bottom face at all, because the stem is
+       drawn parametrically and is not in the traced set. The 2.030 in
+       across the bottom of the trace is an outside diameter. Scaling
+       a bore to an OD would be matching two different dimensions
+       because they are near each other in value.
+
+       The residual is reported rather than hidden: `bossWall` is how
+       much yoke is left around the boss this row accepts once the
+       figure is scaled. On the smallest size it is almost nothing,
+       which is the family figure being generically proportioned and
+       not this layer getting it wrong. */
+    const area = part.dims.effectiveArea;
+    if (!(area > 0))
+      throw new Error('actuator.diaphragm: the row has no effective ' +
+        'area, so there is no published dimension to draw it at. Every ' +
+        '657 row in the catalogue carries one.');
+    const impliedDia = Math.sqrt(4 * area / Math.PI);
+    const casing = S['lower-diaphragm-casing'];
+    if (!Array.isArray(casing) || !Array.isArray(casing[0]))
+      throw new Error('actuator.diaphragm: the figure has no traced ' +
+        'lower diaphragm casing, which is what the scale is read off.');
+    let cx0 = Infinity, cx1 = -Infinity;
+    for (const r of casing) for (const q of r) {
+      if (q[0] < cx0) cx0 = q[0]; if (q[0] > cx1) cx1 = q[0];
+    }
+    const FAM = impliedDia / (cx1 - cx0);
     /* EVERY PART IS A LIST OF RINGS. A part with more than one has a
        hole in it -- the yoke's spring housing, the upper casing's two
        travel-stop bosses -- or is a section in two halves, which the
@@ -82,7 +131,7 @@
           'with lab/vendor-657-outlines.js skipped, or by hand -- and a ' +
           'part flattened to one ring loses its holes silently. ' +
           'Regenerate the figure.');
-      return rs.map(r => r.map(q => [q[0], q[1]]));
+      return rs.map(r => r.map(q => [q[0] * FAM, q[1] * FAM]));
     };
     const shift = (rings, dy) =>
       rings.map(r => r.map(q => [q[0], q[1] + dy]));
@@ -200,10 +249,27 @@
          puts this point on the valve's bonnet and the two are
          mounted. */
       mount: Object.freeze({ x: 0, y: 0, yokeBoss: part.dims.yokeBoss }),
+      /* What the family scaling did, in the open. */
+      figureScale: FAM,
+      impliedDiaphragm: impliedDia,
+      bossWall: (function () {
+        let w = -Infinity;
+        for (const q of yoke[0]) if (q[1] < 0.02 && Math.abs(q[0]) > w)
+          w = Math.abs(q[0]);
+        return w === -Infinity ? null
+          : w - part.dims.yokeBoss / 2;
+      })(),
       extent: ext(all),
       built: Object.freeze(BUILT.slice()),
       note:
-        'Castings traced: yoke, both diaphragm casings, the plate, the '
+        'Drawn at ' + FAM.toFixed(3) + 'x the traced figure, so the '
+      + 'casing matches the ' + impliedDia.toFixed(2) + ' in diaphragm '
+      + 'the published ' + area + ' in2 of effective area on this row '
+      + 'implies -- Figure 6 is one drawing for sizes 30 through 60 and '
+      + 'is dimensioned to none of them. Travel, the stem diameter and '
+      + 'the mounting face are NOT scaled: those are published for this '
+      + 'row and are drawn at their own size. '
+      + 'Castings traced: yoke, both diaphragm casings, the plate, the '
       + 'spring seat and the adjustor, from Figure 6 of D100306X012 via '
       + 'the 657 Working Model pipeline. CONSTRUCTED here and listed in '
       + '`built`: the actuator stem, drawn on the centreline at the '
