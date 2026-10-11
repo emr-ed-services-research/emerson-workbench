@@ -63,6 +63,7 @@ const PAGE = `<!doctype html>
   .crumb.on { color:var(--ink); border-color:var(--accent); }
   .crumb[disabled] { opacity:.35; cursor:default; }
   .shows { opacity:.55; font-size:11.5px; margin:0 0 8px; }
+  #sig { white-space:pre-wrap; line-height:1.7; opacity:.8; }
   .prov { opacity:.58; font-size:11px; line-height:1.65; margin:12px 0 0;
           padding:11px 14px; background:var(--panel);
           border:1px solid var(--hair); white-space:pre-wrap; }
@@ -83,14 +84,19 @@ const PAGE = `<!doctype html>
   <div class="shows" id="shows"></div>
   <canvas id="c" width="1120" height="640"></canvas>
   <div class="bar">
-    <label>travel <input id="tv" type="range" min="0" max="100"
-      value="75"></label>
-    <span class="num"><b id="tvv">75</b>%</span>
+    <!-- 8 mA is the design point: a quarter of the signal span, and
+         on an air-to-close valve a quarter of the span is three
+         quarters open, which is where the sizing put it. -->
+    <label>FIC-101 out <input id="ma" type="range" min="3" max="23"
+      step="0.1" value="8"></label>
+    <span class="num"><b id="mav">8.0</b> mA</span>
+    <span class="num">travel <b id="tvv">75</b>%</span>
     <span class="num">passing <b id="q">--</b> gpm</span>
     <span class="num">window <b id="aw">--</b> in&sup2;</span>
     <span class="num">through it <b id="vw">--</b> ft/s</span>
     <span class="num" style="opacity:.55" id="slow"></span>
   </div>
+  <div class="bar" id="sig" style="display:block;font-size:11.5px"></div>
   <div class="prov" id="prov"></div>
 </main>
 <script>${SRC.join('\n')}</script>
@@ -121,7 +127,15 @@ const PAGE = `<!doctype html>
     /* The joint, checked once, before any of this is drawn. */
     const ASM = LPE.assembly.assemble({ valve: VALVE, actuator: ACT,
       tag: 'FV-101', catalogue: CAT,
-      service: { dP: 15, packingType: 'ptfe' } });
+      service: { dP: 15, packingType: 'ptfe' },
+      positioner: 'Fisher DVC6200, HART' });
+    /* WHICH WAY THE AIR MOVES IT, declared rather than assumed. The
+       657 is direct-acting -- air above the diaphragm drives the stem
+       DOWN -- and this plug shuts downward, so pressure closes it and
+       the spring opens it. Twenty milliamps is therefore SHUT, which
+       surprises people and is exactly why the assembly layer refuses
+       to guess the action. */
+    const ACTION = 'air-to-close';
     /* What the PLANT rungs rest on. Three published numbers out of
        two tables, agreeing -- which is the only reason there is an
        assembly to click into at all. */
@@ -280,6 +294,23 @@ const PAGE = `<!doctype html>
       }
     }
 
+    /* What the signal is doing, in words. A fault must read as a
+       fault; the one thing this line must never do is print a
+       plausible percentage when the command is gone. */
+    function signalLine(cmd) {
+      const bits = [cmd.mA.toFixed(1) + ' mA  ' + cmd.status];
+      if (cmd.failed)
+        bits.push('COMMAND LOST -- ' + cmd.why);
+      else if (cmd.why)
+        bits.push(cmd.why);
+      bits.push(ACTION + ': ' + cmd.says);
+      bits.push('travel ' + cmd.travelPct.toFixed(1) + '%  (' +
+                cmd.inches.toFixed(3) + ' in of ' +
+                ASM.travel + ' in rated)');
+      bits.push('positioner ' + cmd.positioner);
+      return bits.join('\\n');
+    }
+
     /* ---- the crumbs ARE the ladder ---- */
     function crumbs() {
       const el = document.getElementById('crumbs');
@@ -330,7 +361,16 @@ const PAGE = `<!doctype html>
     function paint() {
       const now = (window.performance || Date).now();
       const dt = Math.min(0.05, (now - last) / 1000); last = now;
-      const t = +document.getElementById('tv').value;
+      /* ---- THE COMMAND, AND WHERE IT PUTS THE STEM ----
+         The slider is a current now, not a position: the same four to
+         twenty milliamps a TREX would put on the loop. Everything
+         downstream of this line is unchanged, which is the point of
+         the seam -- the model never learns whether the number came
+         from a slider, a LoopBench or a hand terminal. */
+      const mA = +document.getElementById('ma').value;
+      const cmd = LPE.assembly.travelFrom({ assembly: ASM, mA: mA,
+        action: ACTION, onSignalFault: 'fail-safe' });
+      const t = cmd.travelPct;
       const gv = geom();
       const open = gv.openAreaAt(t) / gv.openAreaAt(100);
       const gpm = Q100 * open;
@@ -462,7 +502,9 @@ const PAGE = `<!doctype html>
           PC.markThroat(g, r, { theme: PC.DARK, radius: 9 * here.k / 34 });
       }
 
-      document.getElementById('tvv').textContent = t;
+      document.getElementById('mav').textContent = mA.toFixed(1);
+      document.getElementById('tvv').textContent = t.toFixed(0);
+      document.getElementById('sig').textContent = signalLine(cmd);
       document.getElementById('prov').textContent = prov;
       document.getElementById('q').textContent = Math.round(gpm);
       const aw = gv.openAreaAt(t);

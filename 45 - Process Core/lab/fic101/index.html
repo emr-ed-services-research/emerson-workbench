@@ -29,6 +29,7 @@
   .crumb.on { color:var(--ink); border-color:var(--accent); }
   .crumb[disabled] { opacity:.35; cursor:default; }
   .shows { opacity:.55; font-size:11.5px; margin:0 0 8px; }
+  #sig { white-space:pre-wrap; line-height:1.7; opacity:.8; }
   .prov { opacity:.58; font-size:11px; line-height:1.65; margin:12px 0 0;
           padding:11px 14px; background:var(--panel);
           border:1px solid var(--hair); white-space:pre-wrap; }
@@ -49,14 +50,19 @@
   <div class="shows" id="shows"></div>
   <canvas id="c" width="1120" height="640"></canvas>
   <div class="bar">
-    <label>travel <input id="tv" type="range" min="0" max="100"
-      value="75"></label>
-    <span class="num"><b id="tvv">75</b>%</span>
+    <!-- 8 mA is the design point: a quarter of the signal span, and
+         on an air-to-close valve a quarter of the span is three
+         quarters open, which is where the sizing put it. -->
+    <label>FIC-101 out <input id="ma" type="range" min="3" max="23"
+      step="0.1" value="8"></label>
+    <span class="num"><b id="mav">8.0</b> mA</span>
+    <span class="num">travel <b id="tvv">75</b>%</span>
     <span class="num">passing <b id="q">--</b> gpm</span>
     <span class="num">window <b id="aw">--</b> in&sup2;</span>
     <span class="num">through it <b id="vw">--</b> ft/s</span>
     <span class="num" style="opacity:.55" id="slow"></span>
   </div>
+  <div class="bar" id="sig" style="display:block;font-size:11.5px"></div>
   <div class="prov" id="prov"></div>
 </main>
 <script>/* @layer catalogue
@@ -4240,6 +4246,131 @@
   /* Which actuators in a catalogue will drive a given valve. The
      useful direction in practice: you have the valve, you need the
      actuator. */
+  /* ---- A 4-20 mA COMMAND, AND WHERE THE STEM ENDS UP -----------------
+
+     The seam this core has always declared and never crossed: travel
+     comes in from outside, and OUTSIDE is usually a current. A bench
+     slider, a LoopBench, a TREX on a DVC6200 -- all of them are the
+     same four to twenty milliamps, and the thing that turns that into
+     a stem position is the actuator plus how it is piped, which is a
+     fact about THIS assembly.
+
+     THREE THINGS HAPPEN HERE AND THEY ARE OFTEN RUN TOGETHER:
+
+     1. The current is decoded. That is the instrument layer's, NE43
+        bands and all, and it is called rather than copied -- a
+        current below 3.6 mA is a signalled fault, not a reading of
+        minus five percent.
+
+     2. The action decides which way the stem goes. On an
+        air-to-open valve rising pressure opens it, so 20 mA is wide
+        open. On an air-to-close valve rising pressure SHUTS it, and
+        20 mA is shut -- which surprises people, and is why this is
+        a declared property of the assembly rather than an assumed
+        one. A loop that wants 20 mA to mean open on an ATC valve
+        reverses the CONTROLLER, in the control room, which is not
+        something the valve knows about.
+
+     3. A lost signal goes somewhere. Not to zero. `onSignalFault`
+        says where, and it is required, because the one answer this
+        layer must never give is a plausible number.
+
+     WHAT IS NOT MODELLED, and would be invention if it were: the
+     spring. A real positioner is an inner loop around stem position,
+     so travel follows demand and the bench set does not appear in the
+     answer -- which is lucky, because the 657 table carried here
+     publishes effective area, thrust and travel and no spring range
+     at all. With no positioner the relationship IS the spring, and
+     this function says so rather than pretending otherwise. */
+  const ACTIONS = {
+    'air-to-open': { opensWith: 'pressure', failsTo: 0,
+      says: 'rising pressure opens it, so 20 mA is wide open and a '
+          + 'loss of air shuts it' },
+    'air-to-close': { opensWith: 'spring', failsTo: 100,
+      says: 'rising pressure shuts it, so 20 mA is SHUT and a loss of '
+          + 'air opens it' },
+  };
+
+  function travelFrom(spec) {
+    const asm = spec && spec.assembly;
+    if (!asm || asm.kind !== 'controlValveAssembly')
+      throw new Error('assembly.travelFrom: {assembly} is what assemble() '
+        + 'returned. Which way a current moves a stem depends on the '
+        + 'actuator and how it is piped, so there is no answer without '
+        + 'one.');
+    if (!LPE.instrument || typeof LPE.instrument.fromCurrent !== 'function')
+      throw new Error('assembly.travelFrom: the instrument layer is not '
+        + 'loaded. Decoding 4-20 mA is its job, NE43 bands included, and '
+        + 'this layer will not keep a second copy of those thresholds.');
+
+    const act = ACTIONS[spec.action];
+    if (!act)
+      throw new Error('assembly.travelFrom: {action} must be '
+        + Object.keys(ACTIONS).map(k => '"' + k + '"').join(' or ')
+        + '. It decides which end of the signal is open, and guessing '
+        + 'it gets the valve backwards in exactly the case where being '
+        + 'backwards is dangerous.');
+
+    const fault = spec.onSignalFault;
+    if (fault !== 'fail-safe' && fault !== 'hold' &&
+        !(fault && typeof fault.pct === 'number'))
+      throw new Error('assembly.travelFrom: {onSignalFault} must be '
+        + '"fail-safe", "hold", or {pct}. A lost command has to go '
+        + 'somewhere and this layer will not choose; the one answer it '
+        + 'must never give is a plausible number.');
+    if (fault === 'hold' && typeof spec.wasPct !== 'number')
+      throw new Error('assembly.travelFrom: "hold" needs {wasPct} -- '
+        + 'where it was when the signal went. Holding at a position '
+        + 'nobody recorded is the same as guessing.');
+
+    const dec = LPE.instrument.fromCurrent(spec.mA, { lo: 0, hi: 100 },
+                                           spec.bands);
+    const S = LPE.instrument.STATUS;
+    const failed = dec.status === S.FAIL_LOW || dec.status === S.FAIL_HIGH;
+
+    let openPct, why;
+    if (failed) {
+      openPct = fault === 'fail-safe' ? act.failsTo
+              : fault === 'hold' ? spec.wasPct : fault.pct;
+      why = dec.why + ' -- so the command is gone, and this assembly is '
+          + 'configured to ' + (fault === 'fail-safe'
+              ? 'go to its fail-safe position' : fault === 'hold'
+              ? 'hold where it was' : 'drive to a set position') + '.';
+    } else {
+      /* Under- and over-range are REAL commands a little off the end
+         of the calibrated span, so they are followed and clamped --
+         and they keep their status, because a positioner sitting on
+         its stop is worth knowing about. */
+      const sig = Math.max(0, Math.min(100, dec.value));
+      openPct = spec.action === 'air-to-open' ? sig : 100 - sig;
+      why = dec.why;
+    }
+
+    const travelPct = Math.max(0, Math.min(100, openPct));
+    return Object.freeze({
+      mA: spec.mA,
+      signalPct: dec.value === null ? null
+        : Math.max(0, Math.min(100, dec.value)),
+      travelPct: travelPct,
+      inches: travelPct / 100 * asm.travel,
+      status: dec.status,
+      failed: failed,
+      action: spec.action,
+      says: act.says,
+      why: why,
+      positioner: asm.positioner || null,
+      note: asm.positioner
+        ? 'A positioner closes an inner loop around stem position, so '
+        + 'travel follows demand and the spring range does not enter '
+        + 'the answer.'
+        : 'NO POSITIONER IS DECLARED on this assembly. Without one the '
+        + 'stem settles where diaphragm pressure balances the spring, '
+        + 'and that needs a bench set -- which the 657 table carried '
+        + 'here does not publish. What comes back is therefore the '
+        + 'DEMAND, and it is the demand a positioner would make real.',
+    });
+  }
+
   function actuatorsFor(cat, valve, opts) {
     if (!cat || typeof cat.ids !== 'function')
       throw new Error('assembly.actuatorsFor: expected a loaded catalogue.');
@@ -4257,6 +4388,7 @@
   }
 
   LPE.assembly = { assemble: assemble, actuatorsFor: actuatorsFor,
+                   travelFrom: travelFrom, ACTIONS: ACTIONS,
                    packingTorque: packingTorque,
                    packingFriction: packingFriction,
                    fluidForce: fluidForce };
@@ -18945,7 +19077,15 @@
     /* The joint, checked once, before any of this is drawn. */
     const ASM = LPE.assembly.assemble({ valve: VALVE, actuator: ACT,
       tag: 'FV-101', catalogue: CAT,
-      service: { dP: 15, packingType: 'ptfe' } });
+      service: { dP: 15, packingType: 'ptfe' },
+      positioner: 'Fisher DVC6200, HART' });
+    /* WHICH WAY THE AIR MOVES IT, declared rather than assumed. The
+       657 is direct-acting -- air above the diaphragm drives the stem
+       DOWN -- and this plug shuts downward, so pressure closes it and
+       the spring opens it. Twenty milliamps is therefore SHUT, which
+       surprises people and is exactly why the assembly layer refuses
+       to guess the action. */
+    const ACTION = 'air-to-close';
     /* What the PLANT rungs rest on. Three published numbers out of
        two tables, agreeing -- which is the only reason there is an
        assembly to click into at all. */
@@ -19104,6 +19244,23 @@
       }
     }
 
+    /* What the signal is doing, in words. A fault must read as a
+       fault; the one thing this line must never do is print a
+       plausible percentage when the command is gone. */
+    function signalLine(cmd) {
+      const bits = [cmd.mA.toFixed(1) + ' mA  ' + cmd.status];
+      if (cmd.failed)
+        bits.push('COMMAND LOST -- ' + cmd.why);
+      else if (cmd.why)
+        bits.push(cmd.why);
+      bits.push(ACTION + ': ' + cmd.says);
+      bits.push('travel ' + cmd.travelPct.toFixed(1) + '%  (' +
+                cmd.inches.toFixed(3) + ' in of ' +
+                ASM.travel + ' in rated)');
+      bits.push('positioner ' + cmd.positioner);
+      return bits.join('\n');
+    }
+
     /* ---- the crumbs ARE the ladder ---- */
     function crumbs() {
       const el = document.getElementById('crumbs');
@@ -19154,7 +19311,16 @@
     function paint() {
       const now = (window.performance || Date).now();
       const dt = Math.min(0.05, (now - last) / 1000); last = now;
-      const t = +document.getElementById('tv').value;
+      /* ---- THE COMMAND, AND WHERE IT PUTS THE STEM ----
+         The slider is a current now, not a position: the same four to
+         twenty milliamps a TREX would put on the loop. Everything
+         downstream of this line is unchanged, which is the point of
+         the seam -- the model never learns whether the number came
+         from a slider, a LoopBench or a hand terminal. */
+      const mA = +document.getElementById('ma').value;
+      const cmd = LPE.assembly.travelFrom({ assembly: ASM, mA: mA,
+        action: ACTION, onSignalFault: 'fail-safe' });
+      const t = cmd.travelPct;
       const gv = geom();
       const open = gv.openAreaAt(t) / gv.openAreaAt(100);
       const gpm = Q100 * open;
@@ -19286,7 +19452,9 @@
           PC.markThroat(g, r, { theme: PC.DARK, radius: 9 * here.k / 34 });
       }
 
-      document.getElementById('tvv').textContent = t;
+      document.getElementById('mav').textContent = mA.toFixed(1);
+      document.getElementById('tvv').textContent = t.toFixed(0);
+      document.getElementById('sig').textContent = signalLine(cmd);
       document.getElementById('prov').textContent = prov;
       document.getElementById('q').textContent = Math.round(gpm);
       const aw = gv.openAreaAt(t);

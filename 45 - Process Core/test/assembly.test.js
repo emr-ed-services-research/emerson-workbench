@@ -10,7 +10,7 @@
 const fs = require('fs');
 const path = require('path');
 global.window = {};
-for (const m of ['catalogue', 'assembly'])
+for (const m of ['catalogue', 'instrument', 'assembly'])
   require(path.join(__dirname, '..', 'src', m + '.js'));
 const LPE = global.window.LPE;
 const A = LPE.assembly;
@@ -182,6 +182,75 @@ console.log('');
     () => T({ stem: 0.625 }), 'not one to interpolate');
   refuses('and a packing material with no window is refused',
     () => T({ packingType: 'leather' }), 'graphite');
+}
+
+/* ---- a 4-20 mA command, and where the stem ends up -------------------
+   The seam the layer header has always declared. The two things that
+   must not go wrong: a lost signal must never come back as a
+   plausible number, and an air-to-close valve must not be told that
+   20 mA means open. */
+{
+  const asm = A.assemble({ valve: ED15, actuator: A30, tag: 'FV-101',
+    positioner: 'DVC6200' });
+  const at = (mA, action, onSignalFault, extra) =>
+    A.travelFrom(Object.assign({ assembly: asm, mA: mA, action: action,
+      onSignalFault: onSignalFault || 'fail-safe' }, extra || {}));
+
+  check('4 mA on an air-to-open valve is shut',
+        at(4, 'air-to-open').travelPct === 0);
+  check('20 mA on an air-to-open valve is wide open',
+        at(20, 'air-to-open').travelPct === 100);
+  check('12 mA is half way, and that is half the rated travel in inches',
+        Math.abs(at(12, 'air-to-open').travelPct - 50) < 1e-9 &&
+        Math.abs(at(12, 'air-to-open').inches - 0.375) < 1e-9);
+
+  check('20 mA on an AIR-TO-CLOSE valve is SHUT, not open',
+        at(20, 'air-to-close').travelPct === 0,
+        'rising pressure shuts it; reversing the controller is the ' +
+        'business of the control room, not of the valve');
+  check('and 4 mA on it is wide open',
+        at(4, 'air-to-close').travelPct === 100);
+
+  check('a current below the NE43 failure threshold is a FAULT',
+        at(3.2, 'air-to-open').failed === true &&
+        at(3.2, 'air-to-open').status === LPE.instrument.STATUS.FAIL_LOW);
+  check('and it goes to the fail-safe end, which the ACTION decides',
+        at(3.2, 'air-to-open').travelPct === 0 &&
+        at(3.2, 'air-to-close').travelPct === 100);
+  check('a current above the high threshold is a fault too',
+        at(23, 'air-to-open').failed === true);
+  check('"hold" holds where it was',
+        at(3.2, 'air-to-open', 'hold', { wasPct: 37 }).travelPct === 37);
+  check('and a set position goes there',
+        at(23, 'air-to-open', { pct: 80 }).travelPct === 80);
+
+  check('a command a little under the live zero is followed, not failed',
+        (function () { const r = at(3.8, 'air-to-open');
+          return r.failed === false &&
+                 r.status === LPE.instrument.STATUS.UNDER &&
+                 r.travelPct === 0; })(),
+        'it is a real command on the stop, which is worth knowing about');
+
+  refuses('it refuses an action it was not told',
+    () => A.travelFrom({ assembly: asm, mA: 12,
+      onSignalFault: 'fail-safe' }), 'air-to-open');
+  refuses('and refuses to decide where a lost command goes',
+    () => A.travelFrom({ assembly: asm, mA: 12, action: 'air-to-open' }),
+    'will not choose');
+  refuses('"hold" with nothing recorded is a guess, and is refused',
+    () => A.travelFrom({ assembly: asm, mA: 3.2, action: 'air-to-open',
+      onSignalFault: 'hold' }), 'wasPct');
+  refuses('and it refuses anything that is not an assembly',
+    () => A.travelFrom({ assembly: { kind: 'valve' }, mA: 12,
+      action: 'air-to-open', onSignalFault: 'fail-safe' }),
+    'assemble()');
+
+  check('with no positioner declared it says the answer is a DEMAND',
+        /DEMAND/.test(A.travelFrom({
+          assembly: A.assemble({ valve: ED15, actuator: A30 }),
+          mA: 12, action: 'air-to-open', onSignalFault: 'fail-safe' }).note),
+        'without a positioner the stem settles against the spring, and ' +
+        'the 657 table here publishes no bench set');
 }
 
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');

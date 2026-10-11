@@ -43,6 +43,18 @@ question was got wrong here, with both tables already read: a 657 size 30 was pr
 to drive an EWT NPS 10x8, which fails on all three mounting numbers at once. A model
 that cannot refuse that is not modelling a control valve.
 
+It is also where a **4-20 mA command becomes a travel** -- `travelFrom` -- because
+which way a current moves a stem depends on the actuator and how it is piped. It
+refuses to guess the action (on an air-to-close valve 20 mA is SHUT) and refuses to
+decide where a lost command goes. Travel itself is still an input to this core,
+always; what this adds is the decoding, so a bench slider, a LoopBench and a TREX are
+the same four to twenty milliamps and the model never learns which it is on.
+
+**Depth is one axis, not a pair of sibling views** -- `skins/depth.js`:
+`loop > line > assembly > section > detail`. Pro Cutaway is NOT a rung; it is a way of
+drawing one, the fluid turned on, available from the assembly inward. `lab/fic101` is
+the whole ladder on one screen.
+
 The dynamics layer answers *how much flows where*; anything about how that LOOKS is
 above it. The netlist says *what is connected to what*. The **catalogue** sits below it
 and answers *what a part actually is* — NPS 1/2 pipe is 0.622 in bore because

@@ -351,6 +351,131 @@
   /* Which actuators in a catalogue will drive a given valve. The
      useful direction in practice: you have the valve, you need the
      actuator. */
+  /* ---- A 4-20 mA COMMAND, AND WHERE THE STEM ENDS UP -----------------
+
+     The seam this core has always declared and never crossed: travel
+     comes in from outside, and OUTSIDE is usually a current. A bench
+     slider, a LoopBench, a TREX on a DVC6200 -- all of them are the
+     same four to twenty milliamps, and the thing that turns that into
+     a stem position is the actuator plus how it is piped, which is a
+     fact about THIS assembly.
+
+     THREE THINGS HAPPEN HERE AND THEY ARE OFTEN RUN TOGETHER:
+
+     1. The current is decoded. That is the instrument layer's, NE43
+        bands and all, and it is called rather than copied -- a
+        current below 3.6 mA is a signalled fault, not a reading of
+        minus five percent.
+
+     2. The action decides which way the stem goes. On an
+        air-to-open valve rising pressure opens it, so 20 mA is wide
+        open. On an air-to-close valve rising pressure SHUTS it, and
+        20 mA is shut -- which surprises people, and is why this is
+        a declared property of the assembly rather than an assumed
+        one. A loop that wants 20 mA to mean open on an ATC valve
+        reverses the CONTROLLER, in the control room, which is not
+        something the valve knows about.
+
+     3. A lost signal goes somewhere. Not to zero. `onSignalFault`
+        says where, and it is required, because the one answer this
+        layer must never give is a plausible number.
+
+     WHAT IS NOT MODELLED, and would be invention if it were: the
+     spring. A real positioner is an inner loop around stem position,
+     so travel follows demand and the bench set does not appear in the
+     answer -- which is lucky, because the 657 table carried here
+     publishes effective area, thrust and travel and no spring range
+     at all. With no positioner the relationship IS the spring, and
+     this function says so rather than pretending otherwise. */
+  const ACTIONS = {
+    'air-to-open': { opensWith: 'pressure', failsTo: 0,
+      says: 'rising pressure opens it, so 20 mA is wide open and a '
+          + 'loss of air shuts it' },
+    'air-to-close': { opensWith: 'spring', failsTo: 100,
+      says: 'rising pressure shuts it, so 20 mA is SHUT and a loss of '
+          + 'air opens it' },
+  };
+
+  function travelFrom(spec) {
+    const asm = spec && spec.assembly;
+    if (!asm || asm.kind !== 'controlValveAssembly')
+      throw new Error('assembly.travelFrom: {assembly} is what assemble() '
+        + 'returned. Which way a current moves a stem depends on the '
+        + 'actuator and how it is piped, so there is no answer without '
+        + 'one.');
+    if (!LPE.instrument || typeof LPE.instrument.fromCurrent !== 'function')
+      throw new Error('assembly.travelFrom: the instrument layer is not '
+        + 'loaded. Decoding 4-20 mA is its job, NE43 bands included, and '
+        + 'this layer will not keep a second copy of those thresholds.');
+
+    const act = ACTIONS[spec.action];
+    if (!act)
+      throw new Error('assembly.travelFrom: {action} must be '
+        + Object.keys(ACTIONS).map(k => '"' + k + '"').join(' or ')
+        + '. It decides which end of the signal is open, and guessing '
+        + 'it gets the valve backwards in exactly the case where being '
+        + 'backwards is dangerous.');
+
+    const fault = spec.onSignalFault;
+    if (fault !== 'fail-safe' && fault !== 'hold' &&
+        !(fault && typeof fault.pct === 'number'))
+      throw new Error('assembly.travelFrom: {onSignalFault} must be '
+        + '"fail-safe", "hold", or {pct}. A lost command has to go '
+        + 'somewhere and this layer will not choose; the one answer it '
+        + 'must never give is a plausible number.');
+    if (fault === 'hold' && typeof spec.wasPct !== 'number')
+      throw new Error('assembly.travelFrom: "hold" needs {wasPct} -- '
+        + 'where it was when the signal went. Holding at a position '
+        + 'nobody recorded is the same as guessing.');
+
+    const dec = LPE.instrument.fromCurrent(spec.mA, { lo: 0, hi: 100 },
+                                           spec.bands);
+    const S = LPE.instrument.STATUS;
+    const failed = dec.status === S.FAIL_LOW || dec.status === S.FAIL_HIGH;
+
+    let openPct, why;
+    if (failed) {
+      openPct = fault === 'fail-safe' ? act.failsTo
+              : fault === 'hold' ? spec.wasPct : fault.pct;
+      why = dec.why + ' -- so the command is gone, and this assembly is '
+          + 'configured to ' + (fault === 'fail-safe'
+              ? 'go to its fail-safe position' : fault === 'hold'
+              ? 'hold where it was' : 'drive to a set position') + '.';
+    } else {
+      /* Under- and over-range are REAL commands a little off the end
+         of the calibrated span, so they are followed and clamped --
+         and they keep their status, because a positioner sitting on
+         its stop is worth knowing about. */
+      const sig = Math.max(0, Math.min(100, dec.value));
+      openPct = spec.action === 'air-to-open' ? sig : 100 - sig;
+      why = dec.why;
+    }
+
+    const travelPct = Math.max(0, Math.min(100, openPct));
+    return Object.freeze({
+      mA: spec.mA,
+      signalPct: dec.value === null ? null
+        : Math.max(0, Math.min(100, dec.value)),
+      travelPct: travelPct,
+      inches: travelPct / 100 * asm.travel,
+      status: dec.status,
+      failed: failed,
+      action: spec.action,
+      says: act.says,
+      why: why,
+      positioner: asm.positioner || null,
+      note: asm.positioner
+        ? 'A positioner closes an inner loop around stem position, so '
+        + 'travel follows demand and the spring range does not enter '
+        + 'the answer.'
+        : 'NO POSITIONER IS DECLARED on this assembly. Without one the '
+        + 'stem settles where diaphragm pressure balances the spring, '
+        + 'and that needs a bench set -- which the 657 table carried '
+        + 'here does not publish. What comes back is therefore the '
+        + 'DEMAND, and it is the demand a positioner would make real.',
+    });
+  }
+
   function actuatorsFor(cat, valve, opts) {
     if (!cat || typeof cat.ids !== 'function')
       throw new Error('assembly.actuatorsFor: expected a loaded catalogue.');
@@ -368,6 +493,7 @@
   }
 
   LPE.assembly = { assemble: assemble, actuatorsFor: actuatorsFor,
+                   travelFrom: travelFrom, ACTIONS: ACTIONS,
                    packingTorque: packingTorque,
                    packingFriction: packingFriction,
                    fluidForce: fluidForce };
