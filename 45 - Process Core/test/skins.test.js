@@ -464,5 +464,72 @@ console.log('');
     rU === null, 'an unbalanced plug is not drilled');
 }
 
+/* ---- a parcel of fluid has a SIZE, in inches -------------------------
+   Drawn at a fixed number of pixels it does both of the things that
+   were complained about: it thins out to sparse dots in a close-up
+   and packs into speckle when the view pulls back. So the size is a
+   real one and the view scales it -- down to the floor, below which
+   there is nothing left to shrink and the population thins instead. */
+{
+  const SECTION = 71.9, ASSEMBLY = 26.9, THROAT = 180;
+  check('a parcel is bigger in a close-up than in the section',
+        PC.parcelRadius(THROAT, 0) > PC.parcelRadius(SECTION, 0));
+  check('and smaller when the view pulls back',
+        PC.parcelRadius(ASSEMBLY, 0) < PC.parcelRadius(SECTION, 0));
+  check('fast fluid draws a bigger parcel than still fluid, at one scale',
+        PC.parcelRadius(SECTION, 1) > PC.parcelRadius(SECTION, 0));
+  check('no parcel is ever drawn smaller than a pixel can show',
+        PC.parcelRadius(0.2, 0) >= 0.9 && PC.parcelRadius(1e-6, 1) >= 0.9);
+
+  check('nothing is thinned while the parcels still fit above the floor',
+        PC.parcelThinning(SECTION) === 1 && PC.parcelThinning(THROAT) === 1);
+  check('once they are on the floor, fewer of them are drawn instead',
+        PC.parcelThinning(ASSEMBLY) > 1,
+        'otherwise the body of water packs into speckle as it shrinks');
+  check('and the thinning grows as the area the floor holds open grows',
+        PC.parcelThinning(ASSEMBLY / 2) > PC.parcelThinning(ASSEMBLY));
+  check('thinning is a stride, so it is always a whole number of parcels',
+        [0.2, 5, ASSEMBLY, SECTION].every(
+          q => PC.parcelThinning(q) === Math.round(PC.parcelThinning(q))));
+}
+
+/* ---- ground: null means paint none ---------------------------------
+   The same contract schem-view and phys-view keep. Written as
+   `o.ground || t.panel` it could not be kept -- null is falsy -- and
+   the valve painted the panel colour over the whole canvas when asked
+   for no ground at all, which wiped out the pipe it had been drawn
+   into. */
+{
+  const rect = [];
+  const rec = new Proxy({}, {
+    get: function (_, k) {
+      if (k === 'canvas') return {};
+      if (k === 'measureText') return q => ({ width: String(q).length * 6 });
+      if (k === 'fillRect') return (x, y, w, h) => rect.push([x, y, w, h]);
+      return function () {};
+    },
+    set: function () { return true; },
+  });
+  const CATg = LPE.catalogue.load(JSON.parse(fs.readFileSync(
+    path.join(__dirname, '..', 'catalogue', 'parts.json'), 'utf8')));
+  const Vg = CATg.part('VALVE/EWT/NPS10x8/P8/T3/EQPCT');
+  const WPg = LPE.trim.fromCurve({ curve: Vg.cv,
+    characterisedBy: Vg.characterisedBy }).widthProfile();
+  const gvg = LPE.geometry.globeValve({ part: Vg, faceToFace: 29.62,
+    lineBore: 10.02, flow: 'down', widthProfile: WPg.width });
+  const pl = PC.planValve(gvg, { width: 900, height: 600 });
+  PC.drawValve(rec, pl, { width: 900, height: 600, travel: 50,
+    theme: PC.DARK, ground: null, labels: false, caption: false });
+  const covered = rect.filter(r => r[2] >= 900 && r[3] >= 600);
+  check('ground:null paints no ground at all', covered.length === 0,
+        'filled the whole canvas ' + covered.length + ' time(s)');
+
+  rect.length = 0;
+  PC.drawValve(rec, pl, { width: 900, height: 600, travel: 50,
+    theme: PC.DARK, labels: false, caption: false });
+  check('and leaving it out still paints the panel, as before',
+        rect.some(r => r[2] >= 900 && r[3] >= 600));
+}
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

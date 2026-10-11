@@ -421,8 +421,17 @@
     const plug = gv.plugAt(travel);
 
     g.save();
-    g.fillStyle = o.ground || t.panel;
-    g.fillRect(0, 0, W, H);
+    /* GROUND NULL MEANS PAINT NONE, which is the contract schem-view
+       and phys-view already keep. `o.ground || t.panel` does not keep
+       it: null is falsy, so asking for no ground painted the panel
+       colour over the whole canvas instead -- fine while this was the
+       only thing on it, and it wiped the pipe out from under the
+       valve the first time one was drawn INTO a drawing. The default
+       is still the panel; the way to decline it is to say null. */
+    if (o.ground !== null) {
+      g.fillStyle = o.ground || t.panel;
+      g.fillRect(0, 0, W, H);
+    }
 
     /* The casting, then the bonnet bolted on top of it. Both are
        measured parts now, so they are drawn as parts rather than as one
@@ -539,18 +548,10 @@
       g.font = '600 11px ' + t.face; g.fillStyle = t.ink;
       g.fillText(o.title || '', 20, 24);
       g.font = '400 10.5px ' + t.face; g.fillStyle = t.label;
-      const notes = [
-        'face-to-face ' + gv.faceToFace + ' in, port ' + gv.port +
-          ' in, travel ' + gv.travel + ' in, line bore ' + gv.lineBore +
-          ' in -- all sourced; scale 1 in = ' + pl.scale.toFixed(1) + ' px',
-        'window shape is the derivative of the published Cv curve; the ' +
-          'two differ because the cage alternates window sizes',
-        'casting, chambers, cage, plug and seat MEASURED off Figure 24 of ' +
-          'D100399X012, which is to scale; window placement, balance ' +
-          'holes and seal thickness remain conventions, named in the shape',
-      ];
-      notes.forEach((n, i) =>
-        g.fillText(n, 20, H - 14 - (notes.length - 1 - i) * 14));
+      const notes = provenance(gv, pl.scale, o.notes);
+      if (o.provenance !== false)
+        notes.forEach((n, i) =>
+          g.fillText(n, 20, H - 14 - (notes.length - 1 - i) * 14));
     }
     g.restore();
   }
@@ -979,7 +980,10 @@
         }
       g.globalAlpha = 1;
     }
+    const thin = parcelThinning(pl.scale);
+    let nth = 0;
     for (const p of parts || []) {
+      if (nth++ % thin) continue;
       const sp = Math.hypot(p.vx || 0, p.vy || 0);
       const hot = Math.max(0, Math.min(1, sp / vRef));
       const z = pl.toPage(p.x, p.y);
@@ -992,13 +996,14 @@
         g.globalAlpha = 0.85;
         g.lineWidth = 1;
         g.beginPath();
-        g.arc(z[0], z[1], 1.9 + 1.1 * hot, 0, Math.PI * 2);
+        g.arc(z[0], z[1], parcelRadius(pl.scale, hot) * 1.4, 0,
+              Math.PI * 2);
         g.stroke();
         continue;
       }
       g.fillStyle = mix(t.fluid, t.fluidFast, hot);
       g.globalAlpha = 0.40 + 0.55 * hot;
-      const rad = 1.25 + 1.35 * hot;
+      const rad = parcelRadius(pl.scale, hot);
       g.beginPath();
       g.arc(z[0], z[1], rad, 0, Math.PI * 2);
       g.fill();
@@ -1091,7 +1096,10 @@
       });
       g.fillStyle = t.fluid;
       g.globalAlpha = 0.6;
+      const thin = parcelThinning(pl.scale);
+      let nth = 0;
       for (const q of o.parts) {
+        if (nth++ % thin) continue;
         let hit = false;
         for (const bx of boxes)
           if (q.x >= bx[0] && q.x <= bx[1] && q.y >= bx[2] && q.y <= bx[3]) {
@@ -1100,7 +1108,7 @@
         if (!hit) continue;
         const z = pl.toPage(q.x, q.y);
         g.beginPath();
-        g.arc(z[0], z[1], 1.3, 0, Math.PI * 2);
+        g.arc(z[0], z[1], parcelRadius(pl.scale, 0), 0, Math.PI * 2);
         g.fill();
       }
       g.globalAlpha = 1;
@@ -1157,6 +1165,86 @@
     g.restore();
     return { items: pk.items.length, sealing: pk.sealingParts.length,
              box: pk.box, stack: pk };
+  }
+
+  /* ---- WHERE THIS DRAWING CAME FROM ----------------------------------
+
+     The lines that say which of the shape was measured and which is
+     convention. They are a function rather than three strings inside
+     the paint, because they CAN BE MOVED and must not be droppable:
+     laid along the bottom of the picture they are readable over a
+     casting and illegible over the fluid, which is exactly where
+     they land in a close-up. A caller that passes `provenance:false`
+     to take them out of the drawing can ask for them here and put
+     them somewhere a reader can actually read them.
+
+     `extra` is for whatever ELSE is in the picture. These three lines
+     are the valve body's provenance and the whole of it, so the
+     moment an actuator is drawn standing on it the block is quietly
+     claiming to cover a part it has never heard of. The caller knows
+     what it added. */
+  function provenance(gv, scale, extra) {
+    const out = [
+      'face-to-face ' + gv.faceToFace + ' in, port ' + gv.port +
+        ' in, travel ' + gv.travel + ' in, line bore ' + gv.lineBore +
+        ' in -- all sourced; scale 1 in = ' + scale.toFixed(1) + ' px',
+      'window shape is the derivative of the published Cv curve; the ' +
+        'two differ because the cage alternates window sizes',
+      'casting, chambers, cage, plug and seat MEASURED off Figure 24 of ' +
+        'D100399X012, which is to scale; window placement, balance ' +
+        'holes and seal thickness remain conventions, named in the shape',
+    ];
+    for (const n of (extra || [])) out.push(String(n));
+    return out;
+  }
+
+  /* ---- HOW BIG A PARCEL OF FLUID IS DRAWN ----------------------------
+
+     In INCHES, not in pixels. A particle here is a parcel of the
+     fluid, and a parcel has a size the way everything else in this
+     core has a size -- so it grows when the view moves in and shrinks
+     when it moves out, and the water keeps the same look at every
+     magnification.
+
+     Drawn in pixels instead, it does both of the things that were
+     complained about: zoom in and the fluid thins out into sparse
+     dots over a huge field, zoom out and it packs into speckle. The
+     fix that suggests itself -- more particles when close, fewer when
+     far -- is the wrong one twice over: it reseeds the water every
+     time the view changes, and at the throat it wanted fifty thousand
+     of them.
+
+     PARCEL and PARCEL_FAST are art: no document says how big to draw
+     a notional parcel of water. They are the sizes that read as
+     liquid in the section view, carried to the other views by scale
+     rather than re-chosen there. The floor is not art -- it is the
+     smallest dot a screen can show. */
+  const PARCEL = 0.0174;          /* in, still fluid               */
+  const PARCEL_FAST = 0.0188;     /* in, added at the reference speed */
+  const PARCEL_FLOOR = 0.9;       /* px, below which a dot vanishes */
+
+  function parcelRadius(scale, hot) {
+    return Math.max(PARCEL_FLOOR, scale * (PARCEL + PARCEL_FAST * hot));
+  }
+
+  /* AND WHAT HAPPENS WHEN A PARCEL WOULD BE SMALLER THAN A PIXEL.
+
+     It cannot be, so it is drawn at the floor instead -- which means
+     that from there outward the water stops thinning as the view
+     pulls back, and the whole body of it packs into the bright
+     speckle that got the first attempt rejected. Below the floor the
+     only thing left to reduce is HOW MANY, so that is what gives:
+     one parcel in `n`, where n is exactly the area the floor is
+     holding open. Coverage then stays put in both directions.
+
+     The thinning is a stride over a stable array, not a random
+     sample, so the same parcels are drawn every frame and the fluid
+     does not shimmer. */
+  function parcelThinning(scale) {
+    const want = scale * PARCEL;
+    if (!(want > 0) || want >= PARCEL_FLOOR) return 1;
+    const r = PARCEL_FLOOR / want;
+    return Math.max(1, Math.round(r * r));
   }
 
   /* ---- the actuator, mounted ------------------------------------------
@@ -1285,6 +1373,8 @@
     drawValveFlow: drawValveFlow,
     fluidParticles: fluidParticles, stepFluid: stepFluid,
     markThroat: markThroat, drawBalance: drawBalance,
+    parcelRadius: parcelRadius, parcelThinning: parcelThinning,
+    provenance: provenance,
     drawActuator: drawActuator,
     drawPacking: drawPacking,
   };

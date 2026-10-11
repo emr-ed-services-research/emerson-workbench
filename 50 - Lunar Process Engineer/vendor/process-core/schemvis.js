@@ -704,15 +704,38 @@
       g.fillStyle = t.symbol;
       g.font = t.labelFont;
       g.textAlign = 'center';
+      /* LETTERS OVER NUMBER, ON EVERY BUBBLE. ISA-5.1 sets a tag
+         inside the balloon in two lines, and where the instrument
+         lives has nothing to do with it. This used to stack only the
+         panel-mounted ones, so FIC-101 came out in two lines and
+         FT-101 -- the same shape of tag on the same circle, a hundred
+         pixels away -- came out in one line straddling its own rim.
+         What a panel mount actually changes is the rule across the
+         middle, and on a stacked tag that rule lands exactly where
+         the tag already divides. That is why the convention works,
+         and it is why the two were easy to confuse. */
       const parts = String(op.tag).split('-');
-      if (op.mount === 'panel' && parts.length === 2) {
+      const lines = parts.length === 2 ? parts : [String(op.tag)];
+      /* A tag wider than its bubble is not a tag. The chord across
+         the circle at the height the text sits on is about 1.5r, so
+         the letters are shrunk to it rather than allowed to run out
+         over the rim -- the theme picks the face and the nominal
+         size, the symbol decides what fits inside itself. */
+      let wide = 0;
+      for (const L of lines) {
+        const m = g.measureText && g.measureText(L);
+        if (m && m.width > wide) wide = m.width;
+      }
+      const shrink = wide > 0 ? Math.min(1, 1.5 * r / wide) : 1;
+      g.scale(shrink, shrink);
+      if (lines.length === 2) {
         g.textBaseline = 'bottom';
-        g.fillText(parts[0], 0, -1);
+        g.fillText(lines[0], 0, -1);
         g.textBaseline = 'top';
-        g.fillText(parts[1], 0, 1);
+        g.fillText(lines[1], 0, 1);
       } else {
         g.textBaseline = 'middle';
-        g.fillText(op.tag, 0, 0);
+        g.fillText(lines[0], 0, 0);
       }
       g.restore();
       if (op.reading !== null && op.reading !== undefined) {

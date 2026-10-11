@@ -340,5 +340,54 @@ check('draw() paints without a real canvas', (function () {
   return calls.indexOf('stroke') >= 0 && calls.indexOf('fill') >= 0;
 })());
 
+/* ---- the instrument bubble ----------------------------------------
+   ISA-5.1 sets a tag inside the balloon in two lines, and the line
+   ACROSS the balloon is the separate question of where the instrument
+   lives. Those two were run together here once: only panel bubbles
+   stacked their tags, so a field transmitter beside a panel controller
+   on the same display had its tag written across its own rim while the
+   controller's was set properly. Both halves are checked, because the
+   bug was that one of them was standing in for the other. */
+function paintBubbles(instruments) {
+  const text = [], lines = [];
+  let nx = 0, ny = 0;
+  const rec = new Proxy({}, {
+    get: function (_, k) {
+      if (k === 'canvas') return {};
+      if (k === 'measureText')
+        return q => ({ width: String(q).length * 6 });
+      if (k === 'moveTo') return (x, y) => { nx = x; ny = y; };
+      if (k === 'lineTo') return (x, y) => { lines.push([nx, ny, x, y]); };
+      if (k === 'fillText') return (q, x, y) => { text.push([q, x, y]); };
+      return function () {};
+    },
+    set: function () { return true; },
+  });
+  LPE.schem.draw(rec, LPE.schem.plan(net, { instruments: instruments }),
+                 TEST_SKIN);
+  return { text: text, lines: lines };
+}
+
+const FIELD = paintBubbles([{ tag: 'FT-101', x: 40, y: 40, mount: 'field' }]);
+const PANEL = paintBubbles([{ tag: 'FIC-101', x: 40, y: 40, mount: 'panel' }]);
+const said = r => r.text.map(q => q[0]);
+const rule = r => r.lines.some(
+  L => L[1] === 0 && L[3] === 0 && L[0] < 0 && L[2] > 0);
+
+check('a field bubble sets its tag letters over number, like any other',
+      said(FIELD).indexOf('FT') >= 0 && said(FIELD).indexOf('101') >= 0 &&
+      said(FIELD).indexOf('FT-101') < 0,
+      'drew: ' + JSON.stringify(said(FIELD)));
+check('a panel bubble sets it the same way',
+      said(PANEL).indexOf('FIC') >= 0 && said(PANEL).indexOf('101') >= 0);
+check('the two halves straddle the centre rather than sitting on it',
+      (function () {
+        const a = FIELD.text.filter(q => q[0] === 'FT')[0];
+        const b = FIELD.text.filter(q => q[0] === '101')[0];
+        return !!a && !!b && a[2] < 0 && b[2] > 0;
+      })());
+check('only the panel mount draws the rule across the bubble',
+      rule(PANEL) && !rule(FIELD));
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

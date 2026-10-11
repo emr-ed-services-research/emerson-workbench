@@ -33,6 +33,7 @@ const SUITES = [
   ['test/flowfield.test.js','flow field (profiles, continuity, declared magnification)'],
   ['test/scenario.test.js', 'scenario (a level as data, run headless)'],
   ['test/skins.test.js',    'chrome (the skin survives what the solver returns)'],
+  ['test/depth.test.js',    'chrome (how far in you are looking)'],
 ];
 
 let failed = 0, total = 0;
