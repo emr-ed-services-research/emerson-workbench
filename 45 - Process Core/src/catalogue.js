@@ -86,6 +86,7 @@
     weight: 'mass',
     /* packing, from D100399X012 Table 6 */
     torqueMin: 'torque', torqueMax: 'torque',
+    torqueSpec: 'torque', friction: 'force',
   };
   const kindOf = (name, where) => {
     const k = KIND_OF[name];
@@ -188,10 +189,41 @@
            11.900 in and contains no part of what "8 in" can mean, so it is
            still refused. The rule is the document's own precision rather
            than a number somebody picked. */
+        /* A TRAILING ZERO MAY NOT BE A DIGIT.
+
+           This took half of the last printed decimal either way,
+           which is right for 203.2 and wrong for 1100. Fisher's
+           ENVIRO-SEAL friction table rounds its two columns
+           independently and coarsely: 4800 N is 1078.9 lb and the
+           table prints 1100, 2350 N is 528.3 and it prints 530. Read
+           as four significant figures those are transcription
+           errors. Read the way the document plainly wrote them --
+           newtons to the nearest ten, pounds to the nearest fifty --
+           they agree perfectly.
+
+           So the band is half the place value of the last NON-ZERO
+           digit, which is the ordinary significant-figures
+           convention for a number written without a decimal point.
+           "1100" means somewhere near eleven hundred; "1103" means
+           1103.
+
+           This is a loosening and worth being honest about. It still
+           refuses every transposition the old rule caught -- 302.2 mm
+           against 8 in, 203.2 mm against 3 in -- because those differ
+           by far more than the rounding of their last significant
+           digit. What it stops doing is calling a document wrong for
+           rounding the way documents round. */
         const band = (txt, perInch) => {
           const dot = txt.indexOf('.');
-          const decimals = dot < 0 ? 0 : txt.length - dot - 1;
-          const half = 0.5 * Math.pow(10, -decimals);
+          let half;
+          if (dot >= 0) {
+            half = 0.5 * Math.pow(10, -(txt.length - dot - 1));
+          } else {
+            let zeros = 0;
+            for (let i = txt.length - 1; i >= 0 && txt[i] === '0'; i--)
+              zeros++;
+            half = 0.5 * Math.pow(10, zeros);
+          }
           return { lo: (Number(txt) - half) / perInch,
                    hi: (Number(txt) + half) / perInch };
         };

@@ -399,6 +399,58 @@
                  axis: 'v', gap: o.breakGap });
     }
 
+    /* ---- THE INSTRUMENT LOOP IS A DIFFERENT GRAPH ------------------
+
+       A netlist says what is connected to what by PIPE. A control loop
+       is connected by SIGNAL, and the two graphs share only the
+       component a transmitter happens to be measuring. Forcing
+       instruments into the piping netlist would make a 4-20 mA pair a
+       kind of pipe, which is the sort of tidy lie that is very hard to
+       get back out of later.
+
+       So they are declared, not derived: the caller says which
+       instruments exist, what each is attached to, and which signals
+       run between them. ISA-5.1 symbology:
+
+         field mounted      a plain circle
+         control room       a circle with a horizontal line across it
+         electric signal    a dashed line
+         pneumatic signal   a line with double cross-hatches
+
+       The tag inside is the caller's and follows ISA-5.1's own
+       convention -- first letter the measured variable, the rest the
+       function -- which this layer does not police because the
+       netlist already polices tag FORM and policing meaning here
+       would be two layers with an opinion about the same string. */
+    for (const ins of (o.instruments || [])) {
+      if (!ins || !ins.tag)
+        throw new Error('schem.plan: every instrument needs a tag. ' +
+          'An unlabelled bubble on a loop diagram is not a symbol, it ' +
+          'is a circle.');
+      if (!(typeof ins.x === 'number' && typeof ins.y === 'number'))
+        throw new Error('schem.plan: instrument ' + ins.tag +
+          ' needs {x, y}. Where an instrument sits on a display is a ' +
+          'drawing decision and this layer will not invent one.');
+      ops.push({ op: 'instrument', tag: ins.tag,
+                 x: ins.x, y: ins.y, scale: o.scale,
+                 /* 'field' or 'panel' -- ISA-5.1 draws them
+                    differently and the difference is where the thing
+                    physically is. */
+                 mount: ins.mount === 'panel' ? 'panel' : 'field',
+                 reading: ins.reading === undefined ? null : ins.reading });
+    }
+    for (const sg of (o.signals || [])) {
+      if (!sg || !Array.isArray(sg.pts) || sg.pts.length < 2)
+        throw new Error('schem.plan: a signal needs {pts} with at ' +
+          'least two points.');
+      const type = sg.type || 'electric';
+      if (type !== 'electric' && type !== 'pneumatic')
+        throw new Error('schem.plan: signal type "' + type + '" is not ' +
+          'one ISA-5.1 draws here. Electric is dashed, pneumatic is ' +
+          'cross-hatched, and a third kind would need its own line.');
+      ops.push({ op: 'signal', pts: sg.pts, signal: type });
+    }
+
     /* Then equipment. A valve's fill carries its state, which is the
        standard's own convention rather than a choice made here. */
     for (const e of piping.equipment) {
@@ -591,6 +643,83 @@
       g.moveTo(op.x, op.y - op.gap);
       g.lineTo(op.x, op.y + op.gap);
       g.stroke();
+    }
+
+    /* Signals under the bubbles, over the pipe. A loop diagram reads
+       process-first: the line is the plant, the dashes are what is
+       watching it. */
+    for (const op of p.ops) {
+      if (op.op !== 'signal') continue;
+      g.save();
+      g.strokeStyle = t.symbol;
+      g.lineWidth = Math.max(1, t.lineWidth - 0.5);
+      if (op.signal === 'electric') g.setLineDash([5, 4]);
+      g.beginPath();
+      g.moveTo(op.pts[0][0], op.pts[0][1]);
+      for (let i = 1; i < op.pts.length; i++)
+        g.lineTo(op.pts[i][0], op.pts[i][1]);
+      g.stroke();
+      g.setLineDash([]);
+      if (op.signal === 'pneumatic') {
+        /* Double cross-hatches along the run, which is how ISA-5.1
+           distinguishes air from wire. */
+        for (let i = 1; i < op.pts.length; i++) {
+          const a = op.pts[i - 1], b = op.pts[i];
+          const dx = b[0] - a[0], dy = b[1] - a[1];
+          const len = Math.hypot(dx, dy);
+          if (len < 18) continue;
+          const ux = dx / len, uy = dy / len, nx = -uy, ny = ux;
+          for (const f of [0.42, 0.58]) {
+            const cx = a[0] + dx * f, cy = a[1] + dy * f;
+            g.beginPath();
+            g.moveTo(cx - ux * 3 - nx * 5, cy - uy * 3 - ny * 5);
+            g.lineTo(cx + ux * 3 + nx * 5, cy + uy * 3 + ny * 5);
+            g.stroke();
+          }
+        }
+      }
+      g.restore();
+    }
+
+    for (const op of p.ops) {
+      if (op.op !== 'instrument') continue;
+      const r = 0.95 * op.scale;
+      g.save();
+      g.translate(op.x, op.y);
+      g.fillStyle = t.ground || t.fill;
+      g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.fill();
+      g.strokeStyle = t.symbol; g.lineWidth = t.symbolWidth;
+      g.beginPath(); g.arc(0, 0, r, 0, Math.PI * 2); g.stroke();
+      /* The line across is ISA-5.1's "in the control room". Without
+         it the bubble says "out in the field", and which one it is
+         matters to anybody who has to go and look at it. */
+      if (op.mount === 'panel') {
+        g.beginPath(); g.moveTo(-r, 0); g.lineTo(r, 0); g.stroke();
+      }
+      /* The tag is part of the SYMBOL, not a caption on it -- an
+         instrument bubble without its tag is a circle. Drawn in the
+         symbol colour so it carries the same weight as the circle
+         around it; the label colour is for things written beside a
+         thing, not inside one. */
+      g.fillStyle = t.symbol;
+      g.font = t.labelFont;
+      g.textAlign = 'center';
+      const parts = String(op.tag).split('-');
+      if (op.mount === 'panel' && parts.length === 2) {
+        g.textBaseline = 'bottom';
+        g.fillText(parts[0], 0, -1);
+        g.textBaseline = 'top';
+        g.fillText(parts[1], 0, 1);
+      } else {
+        g.textBaseline = 'middle';
+        g.fillText(op.tag, 0, 0);
+      }
+      g.restore();
+      if (op.reading !== null && op.reading !== undefined) {
+        g.fillStyle = t.label; g.font = t.labelFont;
+        g.textAlign = 'center'; g.textBaseline = 'top';
+        g.fillText(String(op.reading), op.x, op.y + r + 4);
+      }
     }
 
     for (const op of p.ops) {

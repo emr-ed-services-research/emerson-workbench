@@ -137,13 +137,23 @@
           'source the thrust.');
       const fluid = fluidForce({ port: vd.port, dP: svc.dP,
                                  balanced: spec.balanced });
-      /* Packing friction and seat load are the caller's to supply --
-         they are properties of the packing arrangement and the seat
-         construction, both of which are choices, not consequences. */
-      const packing = svc.packingFrictionLb || 0;
+      /* Packing friction: supplied, or looked up when the service
+         names a packing and the catalogue is to hand. Which packing
+         is a choice, so it has to be stated -- but once stated the
+         force is published and there is no reason to make the caller
+         carry it. */
+      let packing = svc.packingFrictionLb || 0;
+      let packingFrom = packing ? 'supplied by the caller' : null;
+      if (!packing && svc.packingType && spec.catalogue) {
+        const pf = packingFriction({ catalogue: spec.catalogue,
+          packingType: svc.packingType, stem: vStem });
+        packing = pf.frictionLb;
+        packingFrom = pf.packingType + ' packing, ' + pf.source;
+      }
       const seat = svc.seatLoadLb || 0;
       const needed = fluid + packing + seat;
       thrust = { fluidLb: fluid, packingLb: packing, seatLb: seat,
+                 packingFrom: packingFrom,
                  neededLb: needed, availableLb: maxThrust,
                  marginLb: maxThrust - needed };
       record('thrust', needed <= maxThrust,
@@ -153,10 +163,14 @@
           ? 'Short on thrust the valve will not shut against the drop.'
           : '');
       if (!packing && !seat)
-        thrust.note = 'Packing friction and seat load were not supplied, ' +
-          'so this is the FLUID force alone and is optimistic. Both are ' +
-          'properties of choices -- which packing, which seat -- and ' +
-          'this layer will not invent either.';
+        thrust.note = 'Neither packing friction nor seat load was given, ' +
+          'so this is the FLUID force alone and is optimistic. Name a ' +
+          'packing in the service -- {packingType} with a catalogue -- ' +
+          'and the friction is looked up, because Fisher publishes it.';
+      else if (!seat)
+        thrust.note = 'Seat load was not given. It is a property of the ' +
+          'seat construction and a shutoff class, so this layer will ' +
+          'not invent it.';
     }
 
     const ok = fail.length === 0;
@@ -203,13 +217,22 @@
      WHAT IS SOURCED: the window. Both ends of it, per stem, per
      class, per material, straight off the table.
 
-     WHAT IS DECLARED: the friction. Turning a nut torque into a drag
-     force on the stem needs a nut factor, a stud count, a packing
-     friction coefficient and a compression model, none of which
-     Fisher publishes here -- so this reports friction as an INDEX
-     against the middle of the window rather than a figure in pounds,
-     and says so. An index is honest about being a comparison; a
-     number in pounds would be a claim. */
+     WHAT THIS FUNCTION DOES NOT GIVE: a friction force. Turning a
+     nut torque into stem drag needs a nut factor, a stud count and a
+     compression model, none of which Table 6 publishes -- so what
+     comes back here is an INDEX against the middle of the window,
+     which is honest about being a comparison.
+
+     A CORRECTION, recorded because the first version of this comment
+     claimed more than it should have. It said a friction figure in
+     pounds "would be a claim rather than a reading". That is wrong:
+     Fisher publishes the force directly for ENVIRO-SEAL packing, in
+     newtons and pounds, by stem diameter and packing type, in Tables
+     4, 5 and 6 of D101642X012. It is a measured number and it is
+     right there. See packingFriction below, which returns it. What
+     is unavailable is the force for a STANDARD arrangement at an
+     arbitrary nut torque -- a narrower and much less interesting
+     gap than the one originally asserted. */
   function packingTorque(spec) {
     if (!spec || !spec.catalogue)
       throw new Error('assembly.packingTorque: needs {catalogue} -- the ' +
@@ -283,6 +306,48 @@
     });
   }
 
+  /* ---- PACKING FRICTION, AS PUBLISHED -------------------------------
+
+     The force the actuator has to overcome just to move the stem,
+     before it does anything about the process. Fisher measured it
+     and printed it: D101642X012 Tables 4 (PTFE), 5 (Duplex, the same
+     figures) and 6 (Graphite ULF), in newtons and pounds, per stem
+     diameter.
+
+     The spread is the reason to care. A 3/4 inch stem drags 250 lb
+     in PTFE and 530 lb in graphite -- more than double, for the same
+     valve -- so the packing choice can decide whether an actuator is
+     big enough. That is a sizing input, not a detail, and until this
+     function existed the assembly layer asked the caller to supply
+     it and then warned that the answer was optimistic without it. */
+  function packingFriction(spec) {
+    if (!spec || !spec.catalogue)
+      throw new Error('assembly.packingFriction: needs {catalogue}.');
+    const cat = spec.catalogue;
+    const want = (spec.packingType || 'ptfe').toLowerCase();
+    const stem = spec.stem;
+    if (!(stem > 0))
+      throw new Error('assembly.packingFriction: {stem} diameter in inches.');
+    for (const id of cat.ids()) {
+      const p = cat.part(id);
+      if (!p || p.class !== 'packing' || p.system !== 'enviro-seal') continue;
+      if (p.packingType !== want) continue;
+      if (Math.abs(p.dims.stem - stem) > 1e-9) continue;
+      return Object.freeze({
+        stem: stem, packingType: want, frictionLb: p.dims.friction,
+        torqueSpecLbfIn: p.dims.torqueSpec === undefined
+          ? null : p.dims.torqueSpec,
+        source: 'D101642X012, ENVIRO-SEAL Sliding-Stem Valves',
+        note: 'A measured force, not a derived one. Graphite ULF drags '
+            + 'roughly twice what PTFE does on the same stem, which can '
+            + 'decide whether an actuator is big enough.',
+      });
+    }
+    throw new Error('assembly.packingFriction: no published friction for ' +
+      'a ' + stem + ' in stem in ' + want + ' packing. D101642X012 covers ' +
+      '3/8, 1/2, 3/4, 1, 1-1/4 and 2 inch stems in ptfe and graphite-ulf.');
+  }
+
   /* Which actuators in a catalogue will drive a given valve. The
      useful direction in practice: you have the valve, you need the
      actuator. */
@@ -304,6 +369,7 @@
 
   LPE.assembly = { assemble: assemble, actuatorsFor: actuatorsFor,
                    packingTorque: packingTorque,
+                   packingFriction: packingFriction,
                    fluidForce: fluidForce };
 
 })(window.LPE = window.LPE || {});

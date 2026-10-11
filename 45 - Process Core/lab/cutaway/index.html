@@ -6481,8 +6481,8 @@
     }
   },
   "packing": {
-    "_source": "Fisher EWD/EWS/EWT instruction manual D100399X012, March 2026, Table 6 \"Recommended Torque for Packing Flange Nuts\". Note 1 of that table: lubricate with anti-seize compound.",
-    "_note": "THE WINDOW IS THE LESSON. Every row is a minimum AND a maximum, and both ends are failures: under the minimum the packing does not seal and the valve leaks to atmosphere; over the maximum the stem binds, friction climbs, and a positioner that could hold position starts sticking and hunting. There is no \"tighter is safer\" here, which is exactly the instinct the figures contradict. Graphite takes roughly twice the torque of PTFE for the same stem and class, because it is a different material doing the same job.",
+    "_source": "Fisher EWD/EWS/EWT instruction manual D100399X012, March 2026, Table 6 \"Recommended Torque for Packing Flange Nuts\". Note 1 of that table: lubricate with anti-seize compound. PLUS Fisher ENVIRO-SEAL Sliding-Stem Valves instruction manual D101642X012, July 2017: Tables 4, 5 and 6 (packing friction, in newtons and pounds force, by stem diameter and packing type) and Table 7 (Graphite ULF packing torque). Table 7 note 1: \"For A, DBQ, easy-e, EH, FB, HP, YD, and YS valves\" -- easy-e is the ED and EW family, so it applies here.",
+    "_note": "THE WINDOW IS THE LESSON. Every row is a minimum AND a maximum, and both ends are failures: under the minimum the packing does not seal and the valve leaks to atmosphere; over the maximum the stem binds, friction climbs, and a positioner that could hold position starts sticking and hunting. There is no \"tighter is safer\" here, which is exactly the instinct the figures contradict. Graphite takes roughly twice the torque of PTFE for the same stem and class, because it is a different material doing the same job. TWO DIFFERENT PACKING SYSTEMS, and they publish different things. STANDARD packing (D100399X012 Table 6) gives a torque WINDOW, minimum and maximum, for 1/2 inch stems and up. ENVIRO-SEAL live-loaded packing (D101642X012) gives a single torque and, more usefully, the FRICTION FORCE IN POUNDS -- which is the number the actuator has to overcome and which the standard arrangement never publishes. It also reaches down to a 3/8 inch stem, which Table 6 does not, because the EW bodies that manual covers do not have one.",
     "PACKING/GRAPHITE/STEM1-2/CL300": {
       "class": "packing",
       "packingType": "graphite",
@@ -6737,6 +6737,184 @@
         "stem": "31.8 mm (1-1/4 in)",
         "torqueMin": "24 N.m (209 lbf.in)",
         "torqueMax": "36 N.m (314 lbf.in)"
+      }
+    },
+    "PACKING/ENVIROSEAL-PTFE/STEM3-8": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "ptfe",
+      "stemLabel": "3/8",
+      "dims": {
+        "stem": 0.375,
+        "friction": 125.0
+      },
+      "asPrinted": {
+        "stem": "9.5 mm (3/8 in)",
+        "friction": "555 N (125 lb)"
+      }
+    },
+    "PACKING/ENVIROSEAL-GRAPHITEULF/STEM3-8": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "graphite-ulf",
+      "stemLabel": "3/8",
+      "dims": {
+        "stem": 0.375,
+        "friction": 210.0,
+        "torqueSpec": 38.0
+      },
+      "asPrinted": {
+        "stem": "9.5 mm (3/8 in)",
+        "friction": "935 N (210 lb)",
+        "torqueSpec": "4.3 N.m (38 lbf.in)"
+      }
+    },
+    "PACKING/ENVIROSEAL-PTFE/STEM1-2": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "ptfe",
+      "stemLabel": "1/2",
+      "dims": {
+        "stem": 0.5,
+        "friction": 170.0
+      },
+      "asPrinted": {
+        "stem": "12.7 mm (1/2 in)",
+        "friction": "755 N (170 lb)"
+      }
+    },
+    "PACKING/ENVIROSEAL-GRAPHITEULF/STEM1-2": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "graphite-ulf",
+      "stemLabel": "1/2",
+      "dims": {
+        "stem": 0.5,
+        "friction": 280.0,
+        "torqueSpec": 76.0
+      },
+      "asPrinted": {
+        "stem": "12.7 mm (1/2 in)",
+        "friction": "1250 N (280 lb)",
+        "torqueSpec": "8.5 N.m (76 lbf.in)"
+      }
+    },
+    "PACKING/ENVIROSEAL-PTFE/STEM3-4": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "ptfe",
+      "stemLabel": "3/4",
+      "dims": {
+        "stem": 0.75,
+        "friction": 250.0
+      },
+      "asPrinted": {
+        "stem": "19.1 mm (3/4 in)",
+        "friction": "1110 N (250 lb)"
+      }
+    },
+    "PACKING/ENVIROSEAL-GRAPHITEULF/STEM3-4": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "graphite-ulf",
+      "stemLabel": "3/4",
+      "dims": {
+        "stem": 0.75,
+        "friction": 530.0,
+        "torqueSpec": 187.0
+      },
+      "asPrinted": {
+        "stem": "19.1 mm (3/4 in)",
+        "friction": "2350 N (530 lb)",
+        "torqueSpec": "21 N.m (187 lbf.in)"
+      }
+    },
+    "PACKING/ENVIROSEAL-PTFE/STEM1": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "ptfe",
+      "stemLabel": "1",
+      "dims": {
+        "stem": 1.0,
+        "friction": 340.0
+      },
+      "asPrinted": {
+        "stem": "25.4 mm (1 in)",
+        "friction": "1515 N (340 lb)"
+      }
+    },
+    "PACKING/ENVIROSEAL-GRAPHITEULF/STEM1": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "graphite-ulf",
+      "stemLabel": "1",
+      "dims": {
+        "stem": 1.0,
+        "friction": 840.0,
+        "torqueSpec": 420.0
+      },
+      "asPrinted": {
+        "stem": "25.4 mm (1 in)",
+        "friction": "3740 N (840 lb)",
+        "torqueSpec": "47 N.m (420 lbf.in)"
+      }
+    },
+    "PACKING/ENVIROSEAL-PTFE/STEM1-1-4": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "ptfe",
+      "stemLabel": "1-1/4",
+      "dims": {
+        "stem": 1.25,
+        "friction": 425.0
+      },
+      "asPrinted": {
+        "stem": "31.8 mm (1-1/4 in)",
+        "friction": "1890 N (425 lb)"
+      }
+    },
+    "PACKING/ENVIROSEAL-GRAPHITEULF/STEM1-1-4": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "graphite-ulf",
+      "stemLabel": "1-1/4",
+      "dims": {
+        "stem": 1.25,
+        "friction": 1100.0,
+        "torqueSpec": 495.0
+      },
+      "asPrinted": {
+        "stem": "31.8 mm (1-1/4 in)",
+        "friction": "4800 N (1100 lb)",
+        "torqueSpec": "56 N.m (495 lbf.in)"
+      }
+    },
+    "PACKING/ENVIROSEAL-PTFE/STEM2": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "ptfe",
+      "stemLabel": "2",
+      "dims": {
+        "stem": 2.0,
+        "friction": 725.0
+      },
+      "asPrinted": {
+        "stem": "50.8 mm (2 in)",
+        "friction": "3220 N (725 lb)"
+      }
+    },
+    "PACKING/ENVIROSEAL-GRAPHITEULF/STEM2": {
+      "class": "packing",
+      "system": "enviro-seal",
+      "packingType": "graphite-ulf",
+      "stemLabel": "2",
+      "dims": {
+        "stem": 2.0,
+        "friction": 1350.0
+      },
+      "asPrinted": {
+        "stem": "50.8 mm (2 in)",
+        "friction": "6000 N (1350 lb)"
       }
     }
   },
@@ -7688,6 +7866,7 @@
     weight: 'mass',
     /* packing, from D100399X012 Table 6 */
     torqueMin: 'torque', torqueMax: 'torque',
+    torqueSpec: 'torque', friction: 'force',
   };
   const kindOf = (name, where) => {
     const k = KIND_OF[name];
@@ -7790,10 +7969,41 @@
            11.900 in and contains no part of what "8 in" can mean, so it is
            still refused. The rule is the document's own precision rather
            than a number somebody picked. */
+        /* A TRAILING ZERO MAY NOT BE A DIGIT.
+
+           This took half of the last printed decimal either way,
+           which is right for 203.2 and wrong for 1100. Fisher's
+           ENVIRO-SEAL friction table rounds its two columns
+           independently and coarsely: 4800 N is 1078.9 lb and the
+           table prints 1100, 2350 N is 528.3 and it prints 530. Read
+           as four significant figures those are transcription
+           errors. Read the way the document plainly wrote them --
+           newtons to the nearest ten, pounds to the nearest fifty --
+           they agree perfectly.
+
+           So the band is half the place value of the last NON-ZERO
+           digit, which is the ordinary significant-figures
+           convention for a number written without a decimal point.
+           "1100" means somewhere near eleven hundred; "1103" means
+           1103.
+
+           This is a loosening and worth being honest about. It still
+           refuses every transposition the old rule caught -- 302.2 mm
+           against 8 in, 203.2 mm against 3 in -- because those differ
+           by far more than the rounding of their last significant
+           digit. What it stops doing is calling a document wrong for
+           rounding the way documents round. */
         const band = (txt, perInch) => {
           const dot = txt.indexOf('.');
-          const decimals = dot < 0 ? 0 : txt.length - dot - 1;
-          const half = 0.5 * Math.pow(10, -decimals);
+          let half;
+          if (dot >= 0) {
+            half = 0.5 * Math.pow(10, -(txt.length - dot - 1));
+          } else {
+            let zeros = 0;
+            for (let i = txt.length - 1; i >= 0 && txt[i] === '0'; i--)
+              zeros++;
+            half = 0.5 * Math.pow(10, zeros);
+          }
           return { lo: (Number(txt) - half) / perInch,
                    hi: (Number(txt) + half) / perInch };
         };
