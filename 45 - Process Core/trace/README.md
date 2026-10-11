@@ -50,6 +50,57 @@ invented.
 
 ## What Franz paints
 
+### Scribble, do not trace
+
+These figures are HATCHED sections, not the shaded art the 657 was
+painted over, so a flood fill would catch one thin stripe between two
+hatch lines and nothing else. Do not fight that.
+
+**Scribble roughly inside each part with the Brush, in the colour from
+the table below. Stay inside it. Ignore the edges entirely.**
+
+The paint says WHICH part a region belongs to; the drawing's own
+linework says where that part ENDS. The pipeline cuts the line art
+into every closed cell it contains — each hatch stripe is its own cell
+— and assigns each cell to whichever colour covers most of it, so the
+boundary comes out pixel-exact off the engineering drawing rather than
+off a brush stroke. Anti-aliasing at the edge of a stroke does not
+matter; a stroke that crosses into the neighbouring part does, because
+then that part's cells vote the wrong way.
+
+Save as PNG, beside the original, as `<name>-painted.png`.
+
+### The colours
+
+MS Paint's default palette, so there is nothing to mix or match. The
+exact values are below only so the table is unambiguous — pick the
+swatch by name, the pipeline discovers the colours by nearest match
+and does not care about drift.
+
+| # | Part | Paint swatch | Hex |
+| --- | --- | --- | --- |
+| 1 | **body casting** — flanges included, both sides | Red | `#ED1C24` |
+| 2 | **bonnet** — the casting above the body joint | Orange | `#FF7F27` |
+| 3 | **cage** — the cylinder the plug slides in | Turquoise | `#00A2E8` |
+| 4 | **plug** — head and skirt | Yellow | `#FFF200` |
+| 5 | **valve stem** — the rod above the plug | Purple | `#A349A4` |
+| 6 | **seat ring** | Green | `#22B14C` |
+| 7 | **packing** — the stack in the bonnet bore | Rose | `#FFAEC9` |
+| 8 | **bolting** — studs, nuts, packing flange | Indigo | `#3F48CC` |
+| 9 | **drain plug** | Brown | `#B97A57` |
+
+Black and white are not on the list on purpose: black is the linework
+and white is everything that is NOT a part. Whatever is inside the
+casting and left white is fluid, which is most of the useful area and
+none of the work.
+
+Grey, dark red, gold, light yellow, lime, light turquoise, blue-grey
+and lavender are unused and free for anything that turns out to need
+its own colour — a gasket, a piston ring, a seal. Say which and it
+gets a row.
+
+### Old notes on the parts
+
 The same method as the 657 Working Model, and for the same reason: a
 person deciding where one part ends and the next begins is the step that
 made that model work. Flood-fill each region below in a **distinct flat
