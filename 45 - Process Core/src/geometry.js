@@ -1775,7 +1775,7 @@
           ? Math.min(seatTop - 0.01, lowerTop - 0.12)
           : seatTop - 0.01;
 
-        const throatRings = [], stillRings = [];
+        const throatRings = [], stillRings = [], coveredWindows = [];
         const rings = [chamberL, chamberR];
 
         /* ONE OPENING, CONTIGUOUS FROM THE WINDOW TO THE SEAT.
@@ -1801,24 +1801,56 @@
         if (lidY > seatTop) rings.push(box(cageInner, seatTop, lidY));
         rings.push(box(d / 2, belowSeat, seatTop));
 
-        /* THE WINDOW IS ONLY OPEN WHERE THE PLUG HAS LEFT IT.
+        /* A WINDOW IS A HOLE IN THE CAGE WALL, AND IT IS ALWAYS FULL.
 
-           The whole rectangle was being handed over as wetted at
-           every travel, so a barely-cracked valve still showed a
-           full-height slot. Flow-down enters below the plug's
-           bottom edge, so that edge is the lid: the open part runs
-           from the bottom of the window up to the plug, and no
-           further. */
+           What the plug moves is not the window and not the water in
+           it. The window is a rectangular void cut through the cage
+           wall, open to the inlet chamber on its outer face at every
+           travel, and therefore flooded at every travel. What the
+           plug's bottom edge decides is how much of that water is
+           GOING anywhere: below the edge the window is open to the
+           cage bore and the flow pours through it, above the edge the
+           plug is across the inner opening and the water sits there.
+
+           This used to hand over only the part below the plug, which
+           was wrong twice. It left the covered part of the window
+           dry -- a void in a flooded casting, drawn as a hole into
+           nothing. And because the only part of the window that
+           existed was the part the plug had uncovered, the WINDOW
+           appeared to grow and shrink and slide with the plug, which
+           is the one thing a cage window never does. A reader
+           watching the stroke learned that the cage moves.
+
+           So: the whole rectangle, every time, split at the plug's
+           edge into the part that flows and the part that does not.
+           Still is not dry -- it is the same instruction the
+           drillings and the cavity over the plug head already
+           follow. */
         for (const w of windows) {
           let wy0 = Infinity, wy1 = -Infinity, wx0 = Infinity, wx1 = -Infinity;
           for (const q of w) {
             if (q[1] < wy0) wy0 = q[1]; if (q[1] > wy1) wy1 = q[1];
             if (q[0] < wx0) wx0 = q[0]; if (q[0] > wx1) wx1 = q[0];
           }
-          const lid = Math.min(wy1, lidY);
-          if (lid <= wy0) continue;                /* the plug covers it */
-          const open = [[wx0, wy0], [wx1, wy0], [wx1, lid], [wx0, lid]];
-          rings.push(open); throatRings.push(open);
+          const lid = Math.max(wy0, Math.min(wy1, lidY));
+          if (lid > wy0) {
+            const open = [[wx0, wy0], [wx1, wy0], [wx1, lid], [wx0, lid]];
+            rings.push(open); throatRings.push(open);
+          }
+          if (wy1 > lid) {
+            const shut = [[wx0, lid], [wx1, lid], [wx1, wy1], [wx0, wy1]];
+            rings.push(shut); stillRings.push(shut);
+            /* Named separately as well as being still, because a
+               consumer has something to SAY about this one that it
+               cannot say about the drillings: the fluid here is
+               standing in a window, pressed up against the plug that
+               is closing it, with cage wall all round the opening.
+               Drawn as plain water it reads as a clear way through;
+               drawn as nothing it reads as a hole into a vacuum. It
+               wants a light wash of the cage over it, and only this
+               layer knows which rings those are. */
+            coveredWindows.push(shut);
+          }
         }
         /* THE PLUG MOVES WITH ITS OWN LID.
 
@@ -1919,8 +1951,14 @@
           stillRings: Object.freeze(
             stillRings.map(r => Object.freeze(r.map(Object.freeze)))),
           openings: Object.freeze(openings.map(Object.freeze)),
-          deadEnds: Object.freeze(['the drillings through the plug',
-                                   'the cavity over the plug head']),
+          /* The part of each window the plug is across: wetted, still,
+             and with cage all round it. A subset of stillRings. */
+          coveredWindows: Object.freeze(
+            coveredWindows.map(r => Object.freeze(r.map(Object.freeze)))),
+          deadEnds: Object.freeze([
+            'the covered part of each cage window',
+            'the drillings through the plug',
+            'the cavity over the plug head']),
           minGap: minGap,
           /* Whether anything is open at all. A consumer that gets
              this back false should not go looking for a flow. */

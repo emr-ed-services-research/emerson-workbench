@@ -506,57 +506,6 @@
       g.strokeStyle = t.ink; g.lineWidth = 0.8; g.stroke();
     }
 
-    /* ---- WHAT IS BEHIND THE PART OF THE WINDOW THE PLUG IS COVERING --
-
-       A cage window is a hole through the cage wall, and a hole shows
-       whatever is behind it. Below the plug's lower edge that is the
-       open cage and the fluid pass fills it. Above that edge it is the
-       PLUG -- the plug is the thing closing the window, which is the
-       whole mechanism this picture exists to show.
-
-       Painted as cavity for the full height of the window, as it was,
-       the covered part reads as an open hole into nothing: a valve at
-       quarter travel looked exactly like a valve at full travel with
-       the lights off, and the one thing a reader should be able to see
-       -- how much of the window is uncovered -- was the only thing not
-       drawn. The remaining two black rectangles in the section were
-       these.
-
-       Taken off the plug's own lower edge, so it is right at every
-       travel without a second opinion about where the plug is: at 0%
-       the plug is below the window entirely and the window is fully
-       covered, which is what shut means. */
-    if (gv.cage.windows && gv.cage.windows.length) {
-      let plugBottom = Infinity;
-      for (const q of plug.head) if (q[1] < plugBottom) plugBottom = q[1];
-      g.save();
-      g.beginPath();
-      for (const w of gv.cage.windows) {
-        w.forEach(function (q, i) {
-          const z = pl.toPage(q[0], q[1]);
-          i ? g.lineTo(z[0], z[1]) : g.moveTo(z[0], z[1]);
-        });
-        g.closePath();
-      }
-      g.clip();
-      /* Bounded to the windows themselves rather than flooded through
-         the clip. A clipped canvas-sized fill draws the same pixels
-         and is indistinguishable, to anything watching the calls,
-         from the unclipped ground fill that once wiped out a pipe. */
-      let px0 = Infinity, px1 = -Infinity, py0 = Infinity;
-      for (const w of gv.cage.windows) for (const q of w) {
-        const z = pl.toPage(q[0], q[1]);
-        if (z[0] < px0) px0 = z[0];
-        if (z[0] > px1) px1 = z[0];
-        if (z[1] < py0) py0 = z[1];
-      }
-      const lip = pl.toPage(0, plugBottom)[1];   /* page y grows downward */
-      if (lip > py0) {
-        g.fillStyle = t.trim;
-        g.fillRect(px0 - 2, py0 - 2, (px1 - px0) + 4, (lip - py0) + 2);
-      }
-      g.restore();
-    }
 
     /* ---- what each thing is, and which parts are invented ---- */
     if (o.labels !== false) {
@@ -994,6 +943,49 @@
     g.clip();
     g.fillStyle = water(t);
     g.fillRect(-1e5, -1e5, 2e5, 2e5);
+    g.restore();
+
+    /* ---- THE PART OF THE WINDOW THE PLUG IS ACROSS --------------------
+
+       Full of water like the rest of it -- the line pushes fluid into
+       the window over its whole height and the plug is what it
+       pushes against -- but it is not a way through, and drawn in the
+       same flat water as the open part it reads as one.
+
+       So a light wash of the cage over the water: there is still cage
+       around this opening, and the fluid is in it rather than past
+       it. A WASH and not a fill, because what is behind the water
+       here is a window, and a reader has to be able to see that it is
+       the same water.
+
+       The alternative tried first was to paint this part the colour
+       of the plug behind it. That is worse than it sounds: the
+       covered part of a window grows and shrinks with travel, so
+       painting it as solid made the WINDOW appear to slide up and
+       down the cage, which is the one thing a cage window never
+       does. */
+    if (wet.coveredWindows && wet.coveredWindows.length) {
+      g.save();
+      g.beginPath();
+      wet.coveredWindows.forEach(addRing);
+      g.clip();
+      g.globalAlpha = 0.34;
+      g.fillStyle = t.trim;
+      let bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity;
+      for (const r of wet.coveredWindows) for (const q of r) {
+        const z = pl.toPage(q[0], q[1]);
+        if (z[0] < bx0) bx0 = z[0]; if (z[0] > bx1) bx1 = z[0];
+        if (z[1] < by0) by0 = z[1]; if (z[1] > by1) by1 = z[1];
+      }
+      g.fillRect(bx0 - 2, by0 - 2, (bx1 - bx0) + 4, (by1 - by0) + 4);
+      g.globalAlpha = 1;
+      g.restore();
+    }
+
+    g.save();
+    g.beginPath();
+    wet.rings.forEach(addRing);
+    g.clip();
 
     /* ---- the fluid itself ---- */
     let vRef = o.reference;
