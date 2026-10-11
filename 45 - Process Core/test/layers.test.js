@@ -32,7 +32,7 @@ const path = require('path');
    (test.js, vendor.js) declares `registration` because it belongs to no
    process layer; only files under src/ count as a layer's implementation. */
 const LAYERS = ['registration', 'catalogue', 'geometry', 'sizing',
-                'instrument', 'trim', 'assembly', 'netlist', 'schem-view',
+                'instrument', 'trim', 'actuator', 'assembly', 'netlist', 'schem-view',
                 'phys-view', 'dynamics', 'flow-field', 'scenario', 'chrome'];
 
 /* ASSEMBLY sits above the part layers and below the netlist, because a

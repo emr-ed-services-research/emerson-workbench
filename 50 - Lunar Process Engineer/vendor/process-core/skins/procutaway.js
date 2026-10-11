@@ -1159,6 +1159,66 @@
              box: pk.box, stack: pk };
   }
 
+  /* ---- the actuator, mounted ------------------------------------------
+
+     Drawn in the VALVE's frame. The actuator's own origin is the
+     bottom of its yoke and the valve's mount point is the top of its
+     bonnet, so putting one on the other is a translation and nothing
+     else -- which is the whole reason both layers were given an
+     origin somebody chose on purpose.
+
+     Order matters and it is the order of assembly: yoke first because
+     everything stands on it, then the spring inside it, then the
+     casings, then the plate and the stem last because they move and
+     must be on top of what they move through. */
+  function drawActuator(g, pl, act, opts) {
+    if (!act || act.kind !== 'diaphragmActuator')
+      throw new Error('procutaway.drawActuator: expected ' +
+        'actuator.diaphragm().');
+    const o = opts || {};
+    const t = theme(o.theme);
+    const at = o.at;
+    if (!at || typeof at.x !== 'number' || typeof at.y !== 'number')
+      throw new Error('procutaway.drawActuator: {at} is where the ' +
+        'yoke lands, in valve inches -- geometry.mountPoint(). This ' +
+        'skin will not guess where an actuator sits.');
+
+    const put = r => r.map(q => [q[0] + at.x, q[1] + at.y]);
+    const solid = (r, fill, rim, w) => {
+      if (!r || r.length < 3) return;
+      ring(g, pl, put(r));
+      g.fillStyle = fill; g.fill();
+      g.strokeStyle = rim; g.lineWidth = w === undefined ? 1 : w;
+      g.stroke();
+    };
+
+    g.save();
+    g.lineJoin = 'round';
+    solid(act.yoke, t.metal, t.rim);
+    /* The spring is a line, not a shape. */
+    if (act.spring && act.spring.length > 1) {
+      const pts = put(act.spring);
+      g.beginPath();
+      pts.forEach(function (q, i) {
+        const z = pl.toPage(q[0], q[1]);
+        i ? g.lineTo(z[0], z[1]) : g.moveTo(z[0], z[1]);
+      });
+      g.strokeStyle = t.trimRim;
+      g.lineWidth = Math.max(1.4, 2.2 * (pl.scale / 14));
+      g.stroke();
+    }
+    solid(act.adjustor, t.trim, t.trimRim);
+    solid(act.springSeat, t.trim, t.trimRim);
+    solid(act.lowerCasing, t.metal, t.rim);
+    solid(act.upperCasing, t.metal, t.rim);
+    solid(act.plate, t.trim, t.trimRim);
+    solid(act.stem, t.trim, t.trimRim);
+    g.restore();
+
+    return { size: act.size, travelPct: act.travelPct, lift: act.lift,
+             built: act.built };
+  }
+
   /* ---- marking the throat --------------------------------------------
 
      Separate from drawValveFlow, and called later, because of the
@@ -1225,6 +1285,7 @@
     drawValveFlow: drawValveFlow,
     fluidParticles: fluidParticles, stepFluid: stepFluid,
     markThroat: markThroat, drawBalance: drawBalance,
+    drawActuator: drawActuator,
     drawPacking: drawPacking,
   };
 

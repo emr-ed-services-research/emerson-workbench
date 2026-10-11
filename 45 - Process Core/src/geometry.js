@@ -1477,6 +1477,39 @@
          is what flow-up means. The lower chamber fills first, the port
          is climbed rather than dropped through, and the fluid leaves
          through the windows into the upper chamber. */
+      /* ---- WHERE AN ACTUATOR BOLTS ON --------------------------------
+
+         The top of the bonnet, on the centreline. An actuator's own
+         datum is the bottom face of its yoke, so mounting one is a
+         single translation: put its origin here.
+
+         Measured off the traced casting like everything else -- the
+         highest point of the bonnet -- rather than declared, because
+         the bonnet is already in this model and asking it is free.
+
+         The yoke boss the actuator needs is NOT checked here. That is
+         the assembly layer's job and it is a specification question,
+         not a drawing one; geometry will happily hand back a point
+         that the wrong actuator would sit on crookedly. */
+      mountPoint: function () {
+        let top = -Infinity;
+        for (const r of bonnetRings)
+          for (const q of r) if (q[1] > top) top = q[1];
+        if (top === -Infinity) return null;
+        return Object.freeze({
+          x: 0, y: top,
+          stemTop: (function () {
+            let t = -Infinity;
+            const st = plugAt(0).stem;
+            for (const q of st) if (q[1] > t) t = q[1];
+            return t;
+          })(),
+          note: 'The top face of the bonnet, on the centreline. An '
+              + 'actuator datum goes here. Whether THIS actuator may '
+              + 'is the assembly layer\'s question.',
+        });
+      },
+
       /* ---- THE BONNET BORE, AND THE PACKING BOX IN IT -----------------
 
          Read off the casting rather than declared. The bonnet was
@@ -2089,6 +2122,36 @@
       leavesVia: flow === 'down' ? 'lower' : 'upper',
       extent: extentOf(rings.concat([inletClipped, outletClipped])),
       conventions: Object.freeze(Object.assign({}, G)),
+      /* WHAT THIS SHAPE IS, said before anything else about it.
+
+         The outline is the CAGE-GUIDED GLOBE ARCHETYPE. It was traced
+         from one valve -- Figure 24 of D100399X012, an EWT NPS 10x8 --
+         and it is drawn for every cage-guided globe in the catalogue,
+         scaled by that valve's own published face-to-face. ED, EAD,
+         EDR, EW, EWD, EWS, EWT: ninety-one of the hundred and five
+         valve rows here share one flow path and one arrangement, and
+         a learner cannot tell an ED from an EWT by looking at a
+         section of it.
+
+         That is a deliberate decision and it is the honest kind only
+         while it is declared. The NUMBERS are each valve's own and
+         every one of them is sourced -- port, travel, stem, face-to-face,
+         line bore, the Cv curve the window profile derives from. The
+         SILHOUETTE is representative of the family. Nobody should read
+         a casting detail off this drawing and expect it to be true of
+         the particular valve in front of them.
+
+         A plug-characterised body -- EZ, with a seat ring retainer and
+         no cage windows -- is a different flow path and will need its
+         own archetype rather than this one relabelled. */
+      archetype: 'cage-guided globe',
+      archetypeNote:
+        'Traced from one valve and drawn for the family. The outline '
+      + 'came off Figure 24 of D100399X012, an EWT NPS 10x8, and is '
+      + 'scaled here by the valve its own published face-to-face. Every '
+      + 'NUMBER belongs to this valve and is sourced; the SILHOUETTE '
+      + 'is the family’s. An EZ is a different flow path and needs '
+      + 'its own archetype, not this one relabelled.',
       conventionNote:
         'MEASURED: the casting, the bonnet, both chambers, the cage walls, '
         + 'the plug and the seat ring all come from Figure 24 of '
