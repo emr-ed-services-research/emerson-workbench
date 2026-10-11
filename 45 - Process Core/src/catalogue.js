@@ -38,9 +38,63 @@
      one to trust: it is what the standard says, not what we computed from
      the other column, and the two do not always agree to the digit
      (38 mm is 1.4961 in, and B16.9 prints 1.50). */
-  const PER_INCH = { in: 1, mm: 25.4, cm: 2.54, m: 0.0254 };
+  /* ---- WHAT KIND OF QUANTITY IS THIS ---------------------------------
 
-  function parsePrinted(text, where) {
+     This layer knew only LENGTHS, which was fine while every part was
+     a pipe or a valve body. An actuator is not: its specification is
+     an effective AREA, a maximum THRUST, a casing PRESSURE and a
+     WEIGHT, and none of those convert like an inch.
+
+     Two things force the kind to be DECLARED rather than sniffed off
+     the unit. Fisher's 657 Table 1 prints both the thrust and the
+     shipping weight as "Lb" -- the same token for a force and a mass
+     -- so the symbol cannot tell you which. And a dimension whose
+     kind nobody stated is a dimension whose dual-printed check
+     silently does nothing, which is the one failure this layer
+     exists to prevent.
+
+     So every dimension name says what it is. Adding a new one without
+     saying is refused, by name, with the list of kinds. */
+  const UNITS = {
+    length:   { in: 1, mm: 25.4, cm: 2.54, m: 0.0254 },
+    area:     { in2: 1, cm2: 6.4516, mm2: 645.16 },
+    force:    { lb: 1, lbf: 1, N: 4.4482216 },
+    /* Gauge and absolute are different readings of the same scale, so
+       the arithmetic is shared; which datum a number uses is the
+       service's business and travels with the service, not here. */
+    pressure: { psi: 1, psig: 1, psia: 1, bar: 0.0689476, kPa: 6.894757 },
+    mass:     { lb: 1, kg: 0.45359237 },
+  };
+  const KIND_OF = {
+    /* pipe, fitting and valve-body geometry -- every name the shipped
+       catalogue actually uses, enumerated rather than pattern-matched,
+       because a pattern would quietly accept the next typo. */
+    bodyWall: 'length', bore: 'length', centreToEnd: 'length',
+    centreToSocket: 'length', faceToFace: 'length', fittingBore: 'length',
+    od: 'length', odAtBevel: 'length', port: 'length',
+    socketBore: 'length', socketDepth: 'length', socketWall: 'length',
+    stem: 'length', travel: 'length', wall: 'length',
+    /* actuator, from 657 IOM D100306X012 Table 1 */
+    yokeBoss: 'length', maxTravel: 'length', stemAccepted: 'length',
+    effectiveArea: 'area', maxThrust: 'force',
+    maxCasingPressure: 'pressure', maxDiaphragmPressure: 'pressure',
+    weight: 'mass',
+  };
+  const kindOf = (name, where) => {
+    const k = KIND_OF[name];
+    if (!k)
+      throw new Error(where + ': dimension "' + name + '" has no declared ' +
+        'kind. Say what sort of quantity it is in KIND_OF -- one of ' +
+        Object.keys(UNITS).join(', ') + ' -- because the unit alone ' +
+        'cannot tell you: Fisher prints a thrust and a shipping weight ' +
+        'both as "Lb", and a dimension with no kind gets no check at all.');
+    return k;
+  };
+
+  function parsePrinted(text, where, kind) {
+    const family = UNITS[kind || 'length'];
+    if (!family)
+      throw new Error(where + ': unknown quantity kind "' + kind + '".');
     if (typeof text !== 'string')
       throw new Error(where + ': as-printed value must be a string, got ' +
                       typeof text);
@@ -84,16 +138,30 @@
       return { v: Number(txt), exact: false };
     };
 
-    const dual = text.match(/\(\s*([0-9]+(?:[-\s][0-9]+\/[0-9]+|\.[0-9]+)?|[0-9]+\/[0-9]+)\s*in\.?\s*\)/);
+    /* The parenthesised half is the one the document is quoting in
+       the unit we canonicalise on -- inches for a length, square
+       inches for an area, pounds for a force or a mass, psi for a
+       pressure. Each family names its own. */
+    const CANON = { length: 'in', area: 'in2', force: 'lb',
+                    pressure: 'psi[ga]?', mass: 'lb' };
+    const canon = CANON[kind || 'length'];
+    const dual = text.match(new RegExp(
+      '\\(\\s*([0-9]+(?:[-\\s][0-9]+\\/[0-9]+|\\.[0-9]+)?|[0-9]+\\/[0-9]+)' +
+      '\\s*' + canon + '\\.?\\s*\\)'));
     if (dual) {
       const inchRead = readInch(dual[1]);
       const inch = inchRead.v;
       const lead = text.match(/^\s*([0-9.]+)\s*([a-z]+)\.?\s*\(/i);
       if (lead) {
-        const unit = lead[2].toLowerCase();
-        if (!(unit in PER_INCH))
-          throw new Error(where + ': unit "' + lead[2] + '" is not one this ' +
-            'layer converts. Known: ' + Object.keys(PER_INCH).join(', '));
+        /* Case-insensitively, but against the family's own spelling:
+           a newton is "N" and a nano-anything is not in this table, so
+           lowercasing the token and then looking it up loses it. */
+        const unit = Object.keys(family).filter(
+          u => u.toLowerCase() === lead[2].toLowerCase())[0];
+        if (!unit)
+          throw new Error(where + ': unit "' + lead[2] + '" is not a ' +
+            (kind || 'length') + '. Known ' + (kind || 'length') +
+            ' units: ' + Object.keys(family).join(', '));
 
         /* COMPARE WHAT EACH HALF CAN MEAN, NOT THEIR BARE RATIO.
 
@@ -119,7 +187,7 @@
           return { lo: (Number(txt) - half) / perInch,
                    hi: (Number(txt) + half) / perInch };
         };
-        const a = band(lead[1], PER_INCH[unit]);
+        const a = band(lead[1], family[unit]);
         const b = inchRead.exact ? { lo: inch, hi: inch } : band(dual[1], 1);
         /* EXACT AGREEMENT IS THE BEST CASE, and it lands on the
            boundary: 19.1 mm is 0.7500 to 0.7539 in and "3/4" is 0.75
@@ -132,31 +200,35 @@
         const EPS = 1e-9;
         if (a.hi < b.lo - EPS || b.hi < a.lo - EPS)
           throw new Error(where + ': the two halves of "' + text + '" ' +
-            'cannot describe the same length. ' + lead[1] + ' ' + unit +
+            'cannot describe the same ' + (kind || 'length') + '. ' +
+            lead[1] + ' ' + unit +
             ' allows ' + a.lo.toFixed(4) + ' to ' + a.hi.toFixed(4) +
-            ' in; the printed ' + dual[1] + ' in allows ' + b.lo.toFixed(4) +
-            ' to ' + b.hi.toFixed(4) + ' in. They do not overlap, so one ' +
+            '; the printed ' + dual[1] + ' allows ' + b.lo.toFixed(4) +
+            ' to ' + b.hi.toFixed(4) + '. They do not overlap, so one ' +
             'was mistyped -- go back to the document rather than deleting ' +
             'whichever half looks wrong.');
       }
       return inch;
     }
 
-    const m = text.match(/^\s*([0-9.]+)\s*([a-z]+)\.?\s*$/i);
+    const m = text.match(/^\s*([0-9.]+)\s*([a-zA-Z0-9]+)\.?\s*$/);
     if (!m)
       throw new Error(where + ': cannot read as-printed value "' + text +
                       '". Expected "<number> <unit>", optionally followed ' +
                       'by "(<number> in)" when the standard prints both. ' +
-                      'Units known: ' + Object.keys(PER_INCH).join(', '));
+                      'Units known for a ' + (kind || 'length') + ': ' +
+                      Object.keys(family).join(', '));
 
-    const unit = m[2].toLowerCase();
-    if (!(unit in PER_INCH))
-      throw new Error(where + ': unit "' + m[2] + '" is not one this layer ' +
-                      'converts. Known: ' + Object.keys(PER_INCH).join(', ') +
-                      '. Add it here rather than pre-converting in the JSON ' +
-                      '-- a pre-converted number has nothing left to check.');
+    const unit = m[2];
+    const key = Object.keys(family).filter(
+      u => u.toLowerCase() === unit.toLowerCase())[0];
+    if (!key)
+      throw new Error(where + ': unit "' + m[2] + '" is not a ' +
+        (kind || 'length') + '. Known: ' + Object.keys(family).join(', ') +
+        '. Add it to the family rather than pre-converting in the JSON ' +
+        '-- a pre-converted number has nothing left to check.');
 
-    return Number(m[1]) / PER_INCH[unit];
+    return Number(m[1]) / family[key];
   }
 
   /* Canonical values are rounded for legibility (4 decimal places is about
@@ -272,7 +344,8 @@
                             'standing between this catalogue and a number ' +
                             'somebody remembered. Add asPrinted.' + k + '.');
 
-          const derived = parsePrinted(printed[k], at + ' asPrinted.' + k);
+          const derived = parsePrinted(printed[k], at + ' asPrinted.' + k,
+                                       kindOf(k, at));
           if (Math.abs(derived - v) > TOL)
             throw new Error(at + ' dimension "' + k + '" does not match ' +
                             'what it says the standard printed: ' + v +
@@ -374,7 +447,11 @@
     });
   }
 
-  LPE.catalogue = { load: load, TOL: TOL, PER_INCH: PER_INCH,
+  LPE.catalogue = { load: load, TOL: TOL, UNITS: UNITS, KIND_OF: KIND_OF,
+                    /* Kept: consumers and tests reach for the length
+                       family by its old name, and renaming it would be
+                       churn for nothing. */
+                    PER_INCH: UNITS.length,
                     parsePrinted: parsePrinted };
 
 })(window.LPE = window.LPE || {});

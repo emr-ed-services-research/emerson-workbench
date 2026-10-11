@@ -241,9 +241,22 @@ refuses('an unreadable as-printed value is refused',
   d => { d.pipe['PIPE/NPS0.5/S40'].asPrinted.bore = 'about half an inch'; },
   'cannot read as-printed value');
 
+/* The refusal now says WHICH KIND of quantity it was expecting, because
+   the layer learned about areas, forces, pressures and masses when the
+   actuator arrived -- so "not a unit I know" became ambiguous and "not
+   a length" is the useful sentence. */
 refuses('a unit this layer does not convert is refused',
   d => { d.pipe['PIPE/NPS0.5/S40'].asPrinted.bore = '15.8 furlongs'; },
-  'is not one this layer');
+  'is not a length');
+
+refuses('and a square inch is not a length either',
+  d => { d.pipe['PIPE/NPS0.5/S40'].asPrinted.bore = '0.62 in2'; },
+  'is not a length');
+
+refuses('a dimension nobody declared the kind of is refused',
+  d => { d.pipe['PIPE/NPS0.5/S40'].dims.squidginess = 3;
+         d.pipe['PIPE/NPS0.5/S40'].asPrinted.squidginess = '3 in'; },
+  'has no declared kind');
 
 /* Not an error case: the loader must do no I/O, so handing it nothing has
    to say so rather than reaching for a file. */

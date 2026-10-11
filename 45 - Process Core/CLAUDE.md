@@ -32,9 +32,16 @@ Every `.js` here opens with an `@layer` header naming its layer and what it may 
 `test/layers.test.js` checks the **code** against that claim, not the comment.
 
 ```
-chrome > scenario > dynamics > schem-view | phys-view > netlist
+chrome > scenario > flow-field > dynamics > schem-view | phys-view
+  > netlist > assembly
   > geometry | sizing | instrument | trim > catalogue > registration
 ```
+
+The **assembly** layer answers *does this bolt together* — travel, stem diameter,
+yoke boss and thrust, checked against the published numbers. It exists because that
+question was got wrong here, with both tables already read: a 657 size 30 was proposed
+to drive an EWT NPS 10x8, which fails on all three mounting numbers at once. A model
+that cannot refuse that is not modelling a control valve.
 
 The dynamics layer answers *how much flows where*; anything about how that LOOKS is
 above it. The netlist says *what is connected to what*. The **catalogue** sits below it
