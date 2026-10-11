@@ -1218,7 +1218,12 @@
     const quiet = o.quiet === undefined ? 0.45 : o.quiet;
     const vIn = field.speedAt(field.originIn[0] + field.cellIn * 1.5, 0) || 0;
     const ref = vIn * 12 * quiet;
-    const biggest = (o.maxShare === undefined ? 0.10 : o.maxShare)
+    /* A pocket is a corner, not a room -- but the dead ends in a
+       valve body are a bigger share of it than a separation bubble
+       is. The drillings alone are a twentieth of the section, and
+       the bonnet bore above them as much again; at a tenth they were
+       rejected for being too big and went back to sitting still. */
+    const biggest = (o.maxShare === undefined ? 0.22 : o.maxShare)
                     * field.cells;
 
     /* The pockets: connected runs of fluid moving far slower than
@@ -1228,11 +1233,28 @@
     const x0 = field.originIn[0], y0 = field.originIn[1];
     const px = i => x0 + (i + 0.5) * cell;
     const py = j => y0 + (j + 0.5) * cell;
+    /* THE STILL SPACES ARE THE POCKETS, not an exception to them.
+
+       This skipped every cell marked still, which is exactly
+       backwards: the drillings through the plug, the space the plug
+       strokes through and the bonnet bore are the blind pockets in
+       this valve, and they are the ones a stream drags round. Left
+       out, they were the only places in the model with no velocity
+       at all -- so the parcels in them did not drift, they sat, and
+       a reader watching several hundred gallons a minute go past
+       could see a pocketful of water ignoring it.
+
+       A dead end is not still water. It has no NET flow, because
+       there is nowhere for it to go, and that is a different claim:
+       the shear across its mouth turns it over. Which is what this
+       function was written to add, and it was declining to add it to
+       the only places that needed it. */
     const slow = new Uint8Array(W * H);
     for (let j = 0; j < H; j++)
       for (let i = 0; i < W; i++) {
         const v = field.at(px(i), py(j));
-        if (!v || (v.still)) continue;
+        if (!v) continue;
+        if (v.still) { slow[j * W + i] = 1; continue; }
         if (Math.hypot(v.vx, v.vy) < ref) slow[j * W + i] = 1;
       }
 
@@ -1295,7 +1317,12 @@
          with a turn added in the slow pockets and nowhere else. */
       at: (x, y) => {
         const v = field.at(x, y);
-        if (!v || v.still) return v;
+        if (!v) return v;
+        /* STILL CELLS GET THE TURN TOO. They were skipped here as
+           well as in the scan, so even once they were allowed to
+           BE pockets they would have come back motionless. A blind
+           pocket has no net flow through it; that is not the same
+           as the water in it being at rest. */
         const pk = pocketAt(x, y);
         if (!pk) return v;
         const dx = x - pk.cx, dy = y - pk.cy;
@@ -1303,7 +1330,9 @@
         if (!(r > 1e-6)) return v;
         const f = Math.min(1, r / Math.max(pk.reach, 1e-6));
         const t = pk.speed * f * pk.sense;
-        return { vx: v.vx - (dy / r) * t, vy: v.vy + (dx / r) * t };
+        const sw = { vx: v.vx - (dy / r) * t, vy: v.vy + (dx / r) * t };
+        if (v.still) sw.still = true;   /* stirred, still no net flow */
+        return sw;
       },
       speedAt: field.speedAt, inside: field.inside, isStill: field.isStill,
       width: W, height: H, cellIn: cell, originIn: field.originIn,

@@ -945,34 +945,33 @@
     g.fillRect(-1e5, -1e5, 2e5, 2e5);
     g.restore();
 
-    /* ---- THE PART OF THE WINDOW THE PLUG IS ACROSS --------------------
+    /* ---- THE WINDOWS, AS CAGE YOU CAN SEE THROUGH ---------------------
 
-       Full of water like the rest of it -- the line pushes fluid into
-       the window over its whole height and the plug is what it
-       pushes against -- but it is not a way through, and drawn in the
-       same flat water as the open part it reads as one.
+       A wash of the cage over the water, across the WHOLE of each
+       window and the same at every travel. Two things it has to say
+       at once: there is cage all round this opening, and the fluid
+       is in it rather than past it.
 
-       So a light wash of the cage over the water: there is still cage
-       around this opening, and the fluid is in it rather than past
-       it. A WASH and not a fill, because what is behind the water
-       here is a window, and a reader has to be able to see that it is
-       the same water.
+       Washing only the covered part -- which is what this did first
+       -- put a moving line across the window, and a window with a
+       boundary that slides with the plug reads as a window that
+       slides with the plug. Nothing about a cage window moves. The
+       plug moves behind it, and what that changes is how much gets
+       through, which the particles already show.
 
-       The alternative tried first was to paint this part the colour
-       of the plug behind it. That is worse than it sounds: the
-       covered part of a window grows and shrinks with travel, so
-       painting it as solid made the WINDOW appear to slide up and
-       down the cage, which is the one thing a cage window never
-       does. */
-    if (wet.coveredWindows && wet.coveredWindows.length) {
+       Taken from the cage's own windows rather than from the wetted
+       set, because this is a fact about the CAGE and it is true
+       whether there is any water in the valve or not. */
+    const wins = (pl.valve && pl.valve.cage && pl.valve.cage.windows) || [];
+    if (wins.length) {
       g.save();
       g.beginPath();
-      wet.coveredWindows.forEach(addRing);
+      wins.forEach(addRing);
       g.clip();
-      g.globalAlpha = 0.34;
+      g.globalAlpha = 0.30;
       g.fillStyle = t.trim;
       let bx0 = Infinity, bx1 = -Infinity, by0 = Infinity, by1 = -Infinity;
-      for (const r of wet.coveredWindows) for (const q of r) {
+      for (const r of wins) for (const q of r) {
         const z = pl.toPage(q[0], q[1]);
         if (z[0] < bx0) bx0 = z[0]; if (z[0] > bx1) bx1 = z[0];
         if (z[1] < by0) by0 = z[1]; if (z[1] > by1) by1 = z[1];

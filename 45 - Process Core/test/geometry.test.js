@@ -703,6 +703,96 @@ console.log('');
     () => g.packingAt({ style: 'graphite' }), 'different stack');
 }
 
+/* ---- NO BLACK INSIDE THE VALVE -------------------------------------
+
+   Every space inside the casting is either metal or water. There is
+   no third thing, and a space that is neither is not a feature -- it
+   is somewhere the model forgot, and it draws as a hole into nothing.
+
+   This is rasterised rather than reasoned because the failures were
+   all of a kind that reads as deliberate: a dark slot in a plug looks
+   like a drilling, a dark band above a plug looks like a shadow. Four
+   of them survived three rounds of looking at the picture. They were
+   the space the plug strokes through, drawn the width of the balance
+   drillings instead of the width of the bore and floored on the
+   LIFTED plug instead of the drawn one, and the stem's own socket,
+   traced into the plug's outline with nothing ever put in it.
+
+   The cage BORE is the part that catches people, this test included:
+   it is not inside any ring -- the cage rings are its walls -- so the
+   cage's bounding box has to stand in for it, and leaving it out is
+   what let this pass while there was a band of black above the plug
+   the width of the whole bore. */
+{
+  const insideRing = (r, x, y) => {
+    let n = 0;
+    for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
+      const a = r[i], b = r[j];
+      if (((a[1] > y) !== (b[1] > y)) &&
+          (x < (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]) + a[0])) n ^= 1;
+    }
+    return !!n;
+  };
+  const inAny = (rs, x, y) => (rs || []).some(
+    r => Array.isArray(r) && r.length > 2 && insideRing(r, x, y));
+
+  /* Both ends of the range the one archetype is stretched across. */
+  const SUBJECTS = [
+    ['EWT 10x8', valveOf(EWT, { flow: 'down' })],
+    ['ED NPS 4', valveOf(CAT.part('VALVE/ED/NPS4/P4.375/T2/EQPCT'),
+       { flow: 'down', faceToFace: 14.5, lineBore: 4.026 })],
+  ];
+  /* A TOLERANCE, NOT A ZERO, and it scales with the valve. The
+     traced plug and the traced cage do not share a centreline to the
+     last thousandth, so a hairline runs down one side of the plug
+     where the other side has none -- and on a valve three times the
+     size it is three times as long. The allowance is that hairline:
+     a tenth of an inch wide, down both sides of the plug. The
+     failures this is here for were an order of magnitude above it --
+     one and a half square inches on the smaller of these two. */
+  const hairline = GVfor => 0.09 * 2 *
+    (Math.max.apply(null, GVfor.plugAt(0).head.map(q => q[1])) -
+     Math.min.apply(null, GVfor.plugAt(0).head.map(q => q[1])));
+  const worst = [];
+  for (const [name, GV] of SUBJECTS)
+  for (const T of [0, 25, 50, 75, 100]) {
+    const pg = GV.plugAt(T), w = GV.wettedAt(T, { minGap: 0.18 });
+    const cage = GV.cage;
+    /* The cage BORE, not the cage's bounding box. The walls are
+       stepped castings and the box swallows the notches outside
+       them, which are neither bore nor metal and are not the
+       model's to paint. The bore is the part that has to be one
+       thing or the other. */
+    let bore = Infinity;
+    for (const r of (cage.rings || [])) for (const q of r)
+      if (Math.abs(q[0]) < bore) bore = Math.abs(q[0]);
+    const cageBox = [[-bore, cage.y0], [bore, cage.y0],
+                     [bore, cage.y1], [-bore, cage.y1]];
+    const inside = [].concat(GV.body, GV.bonnet || [], cage.rings || [],
+      cage.windows || [], [cageBox], [pg.head], [pg.stem]);
+    const metal = [].concat(GV.body, GV.bonnet || [], GV.seatRing || [],
+      cage.rings || [], [pg.head], [pg.stem]);
+    const cut = [].concat(cage.windows || [], pg.balanceHoles || []);
+    const S = 0.05;
+    let black = 0;
+    for (let y = GV.extent.y0; y < GV.extent.y1; y += S)
+      for (let x = GV.extent.x0; x < GV.extent.x1; x += S) {
+        if (!inAny(inside, x, y)) continue;
+        if (inAny(metal, x, y) && !inAny(cut, x, y)) continue;
+        if (inAny(w.rings, x, y)) continue;
+        black += S * S;
+      }
+    worst.push({ T: T, name: name, area: black,
+                 bar: hairline(GV) });
+  }
+  for (const r of worst)
+    check(r.name + ' at ' + r.T +
+          '% travel: nothing inside the valve is unpainted',
+          r.area < r.bar,
+          r.area.toFixed(3) + ' in2 of it, against a hairline allowance ' +
+          'of ' + r.bar.toFixed(2));
+}
+
 console.log('');
 {
   const g = valveOf(EWT);

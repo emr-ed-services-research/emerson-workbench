@@ -1296,7 +1296,25 @@
           'D100017X012 Table 12 maps valve size to stem for ED bodies. ' +
           'Add dims.stem with its asPrinted value rather than guessing.');
       const stemR = part.dims.stem / 2;   /* F, the port and the stem are all inches */
-      const stem = [[-stemR, plugE.y1 + lift], [stemR, plugE.y1 + lift],
+      /* ---- AND IT GOES DOWN INTO ITS SOCKET ------------------------
+
+         The traced plug has a bore in its top for the stem -- a
+         re-entrant notch in the head outline, straight off Figure 24.
+         Drawn with the stem starting at the plug's top FACE, that
+         bore is a hole with nothing in it: a small black slot in the
+         middle of the plug, which is what it looked like.
+
+         The stem is a part, not a cap. It runs down to the bottom of
+         the bore at its own published diameter, which is wider than
+         the scaled trace of the bore and so closes it. Found by
+         asking the outline where it dips in near the centreline
+         rather than by declaring a depth -- a plug with no socket in
+         its trace simply has none, and the stem lands on the face. */
+      let socket = plugE.y1;
+      for (const q of plugBase)
+        if (Math.abs(q[0]) <= stemR * 1.6 && q[1] < socket) socket = q[1];
+      const stemFoot = socket + lift;
+      const stem = [[-stemR, stemFoot], [stemR, stemFoot],
                     [stemR, cageY1 + (cageY1 - cageY0) * 1.1],
                     [-stemR, cageY1 + (cageY1 - cageY0) * 1.1]];
       const out = { lift: lift, liftTrue: travel * travelPct / 100,
@@ -1775,7 +1793,7 @@
           ? Math.min(seatTop - 0.01, lowerTop - 0.12)
           : seatTop - 0.01;
 
-        const throatRings = [], stillRings = [], coveredWindows = [];
+        const throatRings = [], stillRings = [];
         const rings = [chamberL, chamberR];
 
         /* ONE OPENING, CONTIGUOUS FROM THE WINDOW TO THE SEAT.
@@ -1801,56 +1819,39 @@
         if (lidY > seatTop) rings.push(box(cageInner, seatTop, lidY));
         rings.push(box(d / 2, belowSeat, seatTop));
 
-        /* A WINDOW IS A HOLE IN THE CAGE WALL, AND IT IS ALWAYS FULL.
+        /* A WINDOW IS A HOLE IN THE CAGE WALL. IT IS ALWAYS FULL,
+           IT IS ALWAYS IN THE FLOW PATH, AND IT NEVER MOVES.
 
-           What the plug moves is not the window and not the water in
-           it. The window is a rectangular void cut through the cage
-           wall, open to the inlet chamber on its outer face at every
-           travel, and therefore flooded at every travel. What the
-           plug's bottom edge decides is how much of that water is
-           GOING anywhere: below the edge the window is open to the
-           cage bore and the flow pours through it, above the edge the
-           plug is across the inner opening and the water sits there.
+           Three goes at this, and the first two both tried to make
+           the DRAWING carry what only the plug does.
 
-           This used to hand over only the part below the plug, which
-           was wrong twice. It left the covered part of the window
-           dry -- a void in a flooded casting, drawn as a hole into
-           nothing. And because the only part of the window that
-           existed was the part the plug had uncovered, the WINDOW
-           appeared to grow and shrink and slide with the plug, which
-           is the one thing a cage window never does. A reader
-           watching the stroke learned that the cage moves.
+           First it handed over only the part below the plug's bottom
+           edge, so the covered part came out dry -- a void in a
+           flooded casting, drawn as a hole into nothing -- and the
+           window appeared to grow and shrink with the stroke.
 
-           So: the whole rectangle, every time, split at the plug's
-           edge into the part that flows and the part that does not.
-           Still is not dry -- it is the same instruction the
-           drillings and the cavity over the plug head already
-           follow. */
+           Then it handed over the whole rectangle but split it, the
+           part below the plug flowing and the part above it STILL.
+           That is still wrong, and wrong about the physics rather
+           than about the picture: the line pushes fluid into the
+           whole window, the fluid that meets the plug does not stop,
+           it turns and goes down, and the part of the window facing
+           the plug is where it is moving FASTEST on its way to the
+           only way out. Marked still, it sat there as a patch of
+           motionless parcels in the middle of the inrush, and the
+           flow appeared to route around the window rather than
+           through it.
+
+           So: one ring, the whole rectangle, every travel, all of it
+           throat. The area it carries is the one the Cv curve gives
+           and the solver shares it over whatever chord the window
+           has, so the velocity through it is right whether the plug
+           is covering a tenth of it or nine tenths. What the plug
+           changes is how much gets through -- never where the window
+           is, how big it is, or whether it holds water. */
         for (const w of windows) {
-          let wy0 = Infinity, wy1 = -Infinity, wx0 = Infinity, wx1 = -Infinity;
-          for (const q of w) {
-            if (q[1] < wy0) wy0 = q[1]; if (q[1] > wy1) wy1 = q[1];
-            if (q[0] < wx0) wx0 = q[0]; if (q[0] > wx1) wx1 = q[0];
-          }
-          const lid = Math.max(wy0, Math.min(wy1, lidY));
-          if (lid > wy0) {
-            const open = [[wx0, wy0], [wx1, wy0], [wx1, lid], [wx0, lid]];
-            rings.push(open); throatRings.push(open);
-          }
-          if (wy1 > lid) {
-            const shut = [[wx0, lid], [wx1, lid], [wx1, wy1], [wx0, wy1]];
-            rings.push(shut); stillRings.push(shut);
-            /* Named separately as well as being still, because a
-               consumer has something to SAY about this one that it
-               cannot say about the drillings: the fluid here is
-               standing in a window, pressed up against the plug that
-               is closing it, with cage wall all round the opening.
-               Drawn as plain water it reads as a clear way through;
-               drawn as nothing it reads as a hole into a vacuum. It
-               wants a light wash of the cage over it, and only this
-               layer knows which rings those are. */
-            coveredWindows.push(shut);
-          }
+          const full = w.map(q => [q[0], q[1]]);
+          rings.push(full); throatRings.push(full);
         }
         /* THE PLUG MOVES WITH ITS OWN LID.
 
@@ -1907,9 +1908,37 @@
           const hr = lift > 0 ? raise(h) : h;
           rings.push(hr); stillRings.push(hr);
         }
-        const headTop = plugTop + lift;
-        if (cageY1 > headTop) {
-          const over = box(drillR || cageInner, headTop, cageY1);
+        /* ---- THE SPACE THE PLUG STROKES THROUGH ----------------------
+
+           Between the top of the plug and the top of the cage. The
+           plug sweeps up through it and back down, so it is a space
+           fluid lives in, and at any travel the part the plug is not
+           occupying is full of it.
+
+           Two things were wrong with it and both left black.
+
+           IT WAS THE WIDTH OF THE DRILLING CIRCLE, not of the bore.
+           `drillR` is how far out the balance holes reach; the space
+           over the plug is the CAGE BORE, which on this valve is
+           another quarter inch out either side. That quarter inch
+           ran the whole height of the stroke, dry, as a pair of tall
+           slivers against the cage wall.
+
+           AND ITS FLOOR WAS THE LIFTED PLUG, not the drawn one. The
+           lid fudge pretends the plug sits a little higher than it
+           does so the passage under it cannot pinch shut on a coarse
+           grid; the drillings are inside the plug and have to be
+           lifted with it. This space is NOT inside the plug -- it is
+           what the plug is moving through -- and lifting its floor
+           by the same amount opened a band between the plug's real
+           top and the water's bottom edge that belonged to neither.
+           On a shut valve that band was the width of the whole bore.
+
+           So: the real top of the drawn plug, out to the real bore.
+           The lifted drillings poke a little way into it, which is
+           water into water and costs nothing. */
+        if (cageY1 > plugTop) {
+          const over = box(cageInner, plugTop, cageY1);
           rings.push(over); stillRings.push(over);
         }
 
@@ -1951,12 +1980,7 @@
           stillRings: Object.freeze(
             stillRings.map(r => Object.freeze(r.map(Object.freeze)))),
           openings: Object.freeze(openings.map(Object.freeze)),
-          /* The part of each window the plug is across: wetted, still,
-             and with cage all round it. A subset of stillRings. */
-          coveredWindows: Object.freeze(
-            coveredWindows.map(r => Object.freeze(r.map(Object.freeze)))),
           deadEnds: Object.freeze([
-            'the covered part of each cage window',
             'the drillings through the plug',
             'the cavity over the plug head']),
           minGap: minGap,

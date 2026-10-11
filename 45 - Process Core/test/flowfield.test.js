@@ -452,11 +452,40 @@ console.log('');
   {
     const f = solveAt(50, 1099);
     const rf = LPE.flowfield.withRecirculation(f);
-    check('recirculation finds corners, not chambers',
+    /* The bar used to be a tenth of the cavity, from when still
+       spaces were skipped and the only candidates were separation
+       corners. The dead ends ARE the pockets now -- the drillings,
+       the space the plug strokes through, the bonnet bore -- and
+       together they are more of a valve than a corner is. What the
+       check is actually for is that a CHAMBER never qualifies:
+       spinning one of those would not be adding an eddy, it would be
+       stirring the main stream. */
+    check('recirculation finds dead ends, not chambers',
       rf.pockets.length > 0 &&
-      rf.pockets.every(q => q.cells < f.cells * 0.11),
+      rf.pockets.every(q => q.cells < f.cells * 0.23),
       rf.pockets.map(q => q.cells + ' cells').join(', ') +
       ' out of ' + f.cells);
+    check('and the still spaces are among them, rather than skipped',
+      (function () {
+        /* A blind pocket with no net flow is not still water: the
+           shear across its mouth turns it over. Skipping them left
+           the only places in the model with no velocity at all. */
+        let stirred = 0, seen = 0;
+        const W = f.width, H = f.height, c = f.cellIn;
+        for (let j = 0; j < H; j++)
+          for (let i = 0; i < W; i++) {
+            const x = f.originIn[0] + (i + 0.5) * c;
+            const y = f.originIn[1] + (j + 0.5) * c;
+            const a = f.at(x, y);
+            if (!a || !a.still) continue;
+            seen++;
+            const b = rf.at(x, y);
+            if (b && Math.hypot(b.vx, b.vy) > 1e-9) stirred++;
+          }
+        return seen > 0 && stirred > seen * 0.3;
+      })(),
+      'the drillings and the bonnet bore sat motionless beside ' +
+      'several hundred gallons a minute');
     const a = f.at(-4.8, 3.0), b = rf.at(-4.8, 3.0);
     check('and it leaves the stream alone',
       Math.abs(Math.hypot(a.vx, a.vy) - Math.hypot(b.vx, b.vy)) < 1e-9,
