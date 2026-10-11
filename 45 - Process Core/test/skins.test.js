@@ -531,5 +531,74 @@ console.log('');
         rect.some(r => r[2] >= 900 && r[3] >= 600));
 }
 
+/* ---- nothing paints cavity over the water ---------------------------
+   The whole wetted domain is filled by the fluid pass, and anything
+   drawn afterwards in the CAVITY colour is a hole punched back
+   through it. That is how the plug's drillings came out as two black
+   slabs: the geometry layer had always said they hold fluid, the
+   drawing put the fluid in, and then the same holes were re-cut in
+   black a step later so the plug would read as solid.
+
+   Checked by order rather than by eye, because by eye it looks like a
+   feature -- a dark drilling in a light plug is exactly what a
+   drawing of a dry valve should look like. */
+{
+  const CATo = LPE.catalogue.load(JSON.parse(fs.readFileSync(
+    path.join(__dirname, '..', 'catalogue', 'parts.json'), 'utf8')));
+  const Vo = CATo.part('VALVE/EWT/NPS10x8/P8/T3/EQPCT');
+  const WPo = LPE.trim.fromCurve({ curve: Vo.cv,
+    characterisedBy: Vo.characterisedBy }).widthProfile();
+  const gvo = LPE.geometry.globeValve({ part: Vo, faceToFace: 29.62,
+    lineBore: 10.02, flow: 'down', widthProfile: WPo.width });
+  const plo = PC.planValve(gvo, { width: 900, height: 600 });
+
+  function paint(withFluid) {
+    const fills = [];
+    let style = null, mark = -1;
+    const rec = new Proxy({}, {
+      get: function (k2) { return undefined; },
+      set: function () { return true; },
+    });
+    /* a recorder that remembers the fillStyle each fill used */
+    const g2 = {
+      canvas: {}, _n: 0,
+      save(){}, restore(){}, beginPath(){}, closePath(){}, moveTo(){},
+      lineTo(){}, arc(){}, arcTo(){}, stroke(){}, clip(){}, scale(){},
+      translate(){}, setLineDash(){}, fillRect(){},
+      measureText: q => ({ width: String(q).length * 6 }),
+      fill(){ fills.push({ at: g2._n++, style: style }); },
+      fillText(){ g2._n++; },
+    };
+    Object.defineProperty(g2, 'fillStyle',
+      { get: () => style, set: v => { style = v; } });
+    Object.defineProperty(g2, 'strokeStyle', { get(){return 1;}, set(){} });
+    Object.defineProperty(g2, 'lineWidth', { get(){return 1;}, set(){} });
+    Object.defineProperty(g2, 'lineJoin', { get(){return 1;}, set(){} });
+    Object.defineProperty(g2, 'globalAlpha', { get(){return 1;}, set(){} });
+    Object.defineProperty(g2, 'font', { get(){return '';}, set(){} });
+    Object.defineProperty(g2, 'textAlign', { get(){return '';}, set(){} });
+    Object.defineProperty(g2, 'textBaseline', { get(){return '';}, set(){} });
+    const opts = { width: 900, height: 600, travel: 50, theme: PC.DARK,
+      labels: false, caption: false };
+    if (withFluid) opts.onFluid = () => { mark = g2._n; };
+    PC.drawValve(g2, plo, opts);
+    return { fills: fills, mark: mark };
+  }
+
+  const wet = paint(true);
+  const after = wet.fills.filter(f => f.at > wet.mark &&
+                                      f.style === PC.DARK.cavity);
+  check('with the fluid on, nothing is painted cavity over it',
+        wet.mark >= 0 && after.length === 0,
+        after.length + ' fill(s) in the cavity colour after the water ' +
+        'went in -- each one is a hole punched back through it');
+  check('and the drillings are cut in the water colour instead',
+        wet.fills.some(f => f.at > wet.mark && f.style === PC.water(PC.DARK)));
+
+  const dry = paint(false);
+  check('with no fluid pass at all they stay cavity, as a dry drawing',
+        dry.fills.some(f => f.style === PC.DARK.cavity));
+}
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

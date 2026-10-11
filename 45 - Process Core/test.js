@@ -29,6 +29,7 @@ const SUITES = [
   ['test/schemvis.test.js', 'schem view (ISA-5.5 symbols, state, line breaks)'],
   ['test/physvis.test.js',  'phys view (elbows, tees, reducers, draw order)'],
   ['test/dynamics.test.js', 'dynamics (level 1 solver, bit-identical)'],
+  ['test/actuator.test.js','actuator (rings, holes, which way travel goes)'],
   ['test/assembly.test.js','assembly (does it bolt together)'],
   ['test/flowfield.test.js','flow field (profiles, continuity, declared magnification)'],
   ['test/scenario.test.js', 'scenario (a level as data, run headless)'],

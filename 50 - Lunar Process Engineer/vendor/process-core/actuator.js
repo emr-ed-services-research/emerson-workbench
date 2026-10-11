@@ -66,33 +66,61 @@
         'this before a drawing does.');
 
     const S = spec.figure.shapes;
-    const pick = k => (S[k] || []).map(q => [q[0], q[1]]);
-    const lift = (ring, dy) => ring.map(q => [q[0], q[1] + dy]);
+    /* EVERY PART IS A LIST OF RINGS. A part with more than one has a
+       hole in it -- the yoke's spring housing, the upper casing's two
+       travel-stop bosses -- or is a section in two halves, which the
+       spring seat and the adjustor are. The first copy of the figure
+       kept only the outer ring of each, which is why the spring
+       housing had no left wall: there was never a wall, only the left
+       edge of a solid lump. */
+    const pick = k => {
+      const rs = S[k];
+      if (!Array.isArray(rs) || !rs.length || !Array.isArray(rs[0]) ||
+          !Array.isArray(rs[0][0]))
+        throw new Error('actuator.diaphragm: shape "' + k + '" must be a ' +
+          'LIST OF RINGS. A flat ring here means the figure was vendored ' +
+          'with lab/vendor-657-outlines.js skipped, or by hand -- and a ' +
+          'part flattened to one ring loses its holes silently. ' +
+          'Regenerate the figure.');
+      return rs.map(r => r.map(q => [q[0], q[1]]));
+    };
+    const shift = (rings, dy) =>
+      rings.map(r => r.map(q => [q[0], q[1] + dy]));
 
-    /* Direct-acting, push-down-to-close: air above the diaphragm
-       drives the stem DOWN and shuts the valve, the spring returns
-       it. So full travel is the plate at its HIGHEST, and 0% is the
-       plate down on the seat. */
-    const dy = (pct / 100) * rated;
+    /* ---- WHICH WAY TRAVEL GOES, and it is DOWN -----------------------
+
+       The figure is drawn AT THE UPPER STOP. The Working Model's
+       README states it as a physics fact that is also a geometry
+       fact: at rest the diaphragm and plate press against the upper
+       casing. A direct-acting 657 with no air on it has its spring
+       extended and its plate at the top, and air above the diaphragm
+       is what drives the stem DOWN.
+
+       So the traced plate position is 100% -- the valve wide open on
+       a push-down-to-close plug -- and 0% is the plate the rated
+       travel BELOW it. Adding travel to the traced position instead,
+       which is what this did first, drives the plate up through the
+       upper casing it is already touching. */
+    const dy = (pct / 100 - 1) * rated;
 
     const yoke = pick('yoke');
     const lower = pick('lower-diaphragm-casing');
     const upper = pick('upper-diaphragm-casing');
-    const plate = lift(pick('diaphragm-plate'), dy);
+    const plate = shift(pick('diaphragm-plate'), dy);
     /* THE SEAT DOES NOT MOVE. It rides on the adjustor screw, low in
        the yoke, and the adjustor is what sets preload -- so the
        spring is compressed between a FIXED seat and a MOVING plate.
-       Lifting the seat with the plate, which is what this did first,
+       Moving the seat with the plate, which is what this did first,
        keeps the coil exactly 3.85 in long at every travel: a spring
        that never compresses, in a spring-and-diaphragm actuator. The
        traced y values say which is which -- adjustor 4.1-5.8, seat
-       5.7-6.3, plate 10.2-10.8 -- and they were there to be read. */
+       5.7-6.3, plate 10.1-10.8 -- and they were there to be read. */
     const seat = pick('spring-seat');
     const adj = pick('spring-adjustor');
 
-    const ext = rings => {
+    const ext = parts => {
       let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
-      for (const r of rings) for (const q of r) {
+      for (const rings of parts) for (const r of rings) for (const q of r) {
         if (q[0] < x0) x0 = q[0]; if (q[0] > x1) x1 = q[0];
         if (q[1] < y0) y0 = q[1]; if (q[1] > y1) y1 = q[1];
       }
@@ -104,49 +132,62 @@
        set. Built on the centreline at the diameter of the valve stem
        this actuator accepts, which is the only published diameter in
        play, from the plate down through the yoke and out of the
-       bottom to meet the valve. Declared in `built`. */
+       bottom to meet the valve.
+
+       It moves RIGIDLY with the plate. Pinning its bottom end and
+       letting its top follow draws a stem that gets longer as the
+       valve opens; the real one translates, and its bottom end has to
+       translate too or it parts company with the valve stem it is
+       clamped to -- which is moving by exactly the same amount. */
     const rStem = (part.dims.stemAccepted || 0.375) / 2;
     const pe = ext([plate]);
     const below = spec.stemBelow === undefined ? 1.2 : spec.stemBelow;
-    const stem = [[-rStem, -below], [rStem, -below],
-                  [rStem, pe.y0 + 0.02], [-rStem, pe.y0 + 0.02]];
+    const stem = [[[-rStem, -below + dy], [rStem, -below + dy],
+                   [rStem, pe.y0 + 0.02], [-rStem, pe.y0 + 0.02]]];
 
     /* ---- the spring, constructed ----
        From the spring seat UP to the diaphragm plate, which is what
        the traced parts actually say: seat at y 5.7-6.3, plate at
-       10.2-10.8, adjustor BELOW the seat at 4.1-5.8 where it belongs
+       10.1-10.8, adjustor BELOW the seat at 4.1-5.8 where it belongs
        -- it is the screw that sets preload, not a part the spring
        pushes against directly. Written the other way round first and
        the coil came back empty, which is the drawing refusing to
        agree with an assumption about it.
 
        Drawn as a zig-zag, which is what a section through a coil
-       looks like. The turn count is a fact about the spring rather
-       than about this figure, so it is an option with a stated
-       default, and the whole thing is listed in `built`. It also
-       COMPRESSES: the plate moves with travel and the seat does not,
-       so the coil is shorter at full lift, which is the entire
-       mechanism. */
+       looks like, at the MEAN RADIUS OF THE SEAT -- the middle of the
+       annular face the coil stands on. That radius is readable now
+       that the seat is both of its halves rather than one; with only
+       the outer ring there was nothing to take a mean of and the coil
+       was drawn at a fraction of the outer edge instead.
+
+       The turn count is a fact about the spring rather than about
+       this figure, so it is an option with a stated default, and the
+       whole thing is listed in `built`. It COMPRESSES: the plate
+       moves with travel and the seat does not, so the coil is shorter
+       as the valve closes, which is the entire mechanism. */
     const se = ext([seat]);
+    const half = seat[seat.length - 1];
+    const hx = half.map(q => Math.abs(q[0]));
     const coil = [];
     const bot = se.y1, top = pe.y0;
     if (bot < top) {
       const turns = spec.springTurns === undefined ? 8 : spec.springTurns;
-      const r = Math.max(Math.abs(se.x0), se.x1) * 0.82;
+      const r = (Math.min.apply(null, hx) + Math.max.apply(null, hx)) / 2;
       const n = Math.max(4, Math.round(turns * 2));
       for (let i = 0; i <= n; i++)
         coil.push([(i % 2 ? r : -r), bot + (top - bot) * (i / n)]);
     }
 
-    const castings = [yoke, lower, upper].filter(r => r.length > 2);
-    const all = castings.concat([plate, seat, adj, stem]
-      .filter(r => r.length > 2));
+    const castings = [yoke, lower, upper];
+    const all = castings.concat([plate, seat, adj, stem]);
 
     return Object.freeze({
       kind: 'diaphragmActuator',
       units: 'inches, x from the centreline, y up from the mounting face',
       part: part, size: part.size, family: part.family,
       travelPct: pct, ratedTravel: rated, lift: dy,
+      /* Each of these is a LIST OF RINGS, outer first; fill even-odd. */
       yoke: Object.freeze(yoke),
       lowerCasing: Object.freeze(lower),
       upperCasing: Object.freeze(upper),

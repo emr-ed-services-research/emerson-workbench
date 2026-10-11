@@ -488,12 +488,74 @@
     g.fillStyle = t.trim; g.strokeStyle = t.trimRim; g.lineWidth = 1.4;
     ring(g, pl, plug.head); g.fill(); g.stroke();
     ring(g, pl, plug.stem); g.fill(); g.stroke();
-    g.fillStyle = t.cavity;
+    /* THE DRILLINGS ARE FULL OF WATER, and they are cut here because
+       the plug is drawn over them -- a hole has to be re-cut out of
+       the thing it is a hole in. Cut in CAVITY, which is what this
+       did, they came back as two black slabs inside the plug, on top
+       of the water the fluid pass had already put in them and under
+       the few particles drawBalance then sprinkled over the top. The
+       wetted domain has always said they hold fluid; the drawing
+       simply painted over it a step later.
+
+       Dry, they are cavity: no fluid pass means no water to show. */
+    g.fillStyle = typeof o.onFluid === 'function' ? water(t) : t.cavity;
     for (const h of plug.balanceHoles) { ring(g, pl, h); g.fill(); }
     if (plug.seal) {
       g.fillStyle = t.envelope;
       ring(g, pl, plug.seal.ring); g.fill();
       g.strokeStyle = t.ink; g.lineWidth = 0.8; g.stroke();
+    }
+
+    /* ---- WHAT IS BEHIND THE PART OF THE WINDOW THE PLUG IS COVERING --
+
+       A cage window is a hole through the cage wall, and a hole shows
+       whatever is behind it. Below the plug's lower edge that is the
+       open cage and the fluid pass fills it. Above that edge it is the
+       PLUG -- the plug is the thing closing the window, which is the
+       whole mechanism this picture exists to show.
+
+       Painted as cavity for the full height of the window, as it was,
+       the covered part reads as an open hole into nothing: a valve at
+       quarter travel looked exactly like a valve at full travel with
+       the lights off, and the one thing a reader should be able to see
+       -- how much of the window is uncovered -- was the only thing not
+       drawn. The remaining two black rectangles in the section were
+       these.
+
+       Taken off the plug's own lower edge, so it is right at every
+       travel without a second opinion about where the plug is: at 0%
+       the plug is below the window entirely and the window is fully
+       covered, which is what shut means. */
+    if (gv.cage.windows && gv.cage.windows.length) {
+      let plugBottom = Infinity;
+      for (const q of plug.head) if (q[1] < plugBottom) plugBottom = q[1];
+      g.save();
+      g.beginPath();
+      for (const w of gv.cage.windows) {
+        w.forEach(function (q, i) {
+          const z = pl.toPage(q[0], q[1]);
+          i ? g.lineTo(z[0], z[1]) : g.moveTo(z[0], z[1]);
+        });
+        g.closePath();
+      }
+      g.clip();
+      /* Bounded to the windows themselves rather than flooded through
+         the clip. A clipped canvas-sized fill draws the same pixels
+         and is indistinguishable, to anything watching the calls,
+         from the unclipped ground fill that once wiped out a pipe. */
+      let px0 = Infinity, px1 = -Infinity, py0 = Infinity;
+      for (const w of gv.cage.windows) for (const q of w) {
+        const z = pl.toPage(q[0], q[1]);
+        if (z[0] < px0) px0 = z[0];
+        if (z[0] > px1) px1 = z[0];
+        if (z[1] < py0) py0 = z[1];
+      }
+      const lip = pl.toPage(0, plugBottom)[1];   /* page y grows downward */
+      if (lip > py0) {
+        g.fillStyle = t.trim;
+        g.fillRect(px0 - 2, py0 - 2, (px1 - px0) + 4, (lip - py0) + 2);
+      }
+      g.restore();
     }
 
     /* ---- what each thing is, and which parts are invented ---- */
@@ -930,7 +992,7 @@
     g.beginPath();
     wet.rings.forEach(addRing);
     g.clip();
-    g.fillStyle = mix(t.cavity, t.fluid, 0.30);
+    g.fillStyle = water(t);
     g.fillRect(-1e5, -1e5, 2e5, 2e5);
 
     /* ---- the fluid itself ---- */
@@ -1198,6 +1260,15 @@
     return out;
   }
 
+  /* ---- THE COLOUR OF STANDING WATER ---------------------------------
+
+     One function, because two places need the same answer and when
+     they disagreed the valve grew a black slab. The fluid pass fills
+     every wetted region with this; the plug's drillings are cut back
+     out AFTER the plug is drawn, and they are wetted too, so they
+     have to be cut in water rather than in cavity. */
+  function water(t) { return mix(t.cavity, t.fluid, 0.30); }
+
   /* ---- HOW BIG A PARCEL OF FLUID IS DRAWN ----------------------------
 
      In INCHES, not in pixels. A particle here is a parcel of the
@@ -1272,10 +1343,25 @@
         'skin will not guess where an actuator sits.');
 
     const put = r => r.map(q => [q[0] + at.x, q[1] + at.y]);
-    const solid = (r, fill, rim, w) => {
-      if (!r || r.length < 3) return;
-      ring(g, pl, put(r));
-      g.fillStyle = fill; g.fill();
+    /* EVEN-ODD, BECAUSE THESE PARTS HAVE HOLES. The yoke is an outer
+       profile and the spring-housing cavity inside it; the upper
+       casing carries its two travel-stop bosses as their own rings.
+       Filled nonzero -- or, worse, by drawing only the first ring --
+       the cavity fills with metal and the spring ends up embedded in
+       a solid lump. */
+    const solid = (rings, fill, rim, w) => {
+      if (!rings || !rings.length) return;
+      const rs = Array.isArray(rings[0][0]) ? rings : [rings];
+      g.beginPath();
+      for (const r of rs) {
+        if (!r || r.length < 3) continue;
+        put(r).forEach(function (q, i) {
+          const z = pl.toPage(q[0], q[1]);
+          i ? g.lineTo(z[0], z[1]) : g.moveTo(z[0], z[1]);
+        });
+        g.closePath();
+      }
+      g.fillStyle = fill; g.fill('evenodd');
       g.strokeStyle = rim; g.lineWidth = w === undefined ? 1 : w;
       g.stroke();
     };
@@ -1374,6 +1460,7 @@
     fluidParticles: fluidParticles, stepFluid: stepFluid,
     markThroat: markThroat, drawBalance: drawBalance,
     parcelRadius: parcelRadius, parcelThinning: parcelThinning,
+    water: water,
     provenance: provenance,
     drawActuator: drawActuator,
     drawPacking: drawPacking,
