@@ -1812,10 +1812,55 @@
        uncovered is a fact about the cage, not about this view. */
     const winY0 = cageY0 + (cageY1 - cageY0) * 0.08;
     const winH = Math.min(travel, (cageY1 - cageY0) * 0.72);
-    const windows = [
-      [[cL.x0, winY0], [cL.x1, winY0], [cL.x1, winY0 + winH], [cL.x0, winY0 + winH]],
-      [[cR.x0, winY0], [cR.x1, winY0], [cR.x1, winY0 + winH], [cR.x0, winY0 + winH]],
-    ];
+
+    /* AND THE GAP IS THE WALL AT THAT HEIGHT, not the wall's
+       bounding box.
+
+       A cage is a stepped casting -- thicker at the bottom where it
+       bears on the seat, thinner up by the bonnet, with a shoulder
+       between -- and the two walls in this trace step differently
+       from each other. Cut from the BOX, which is what this did, the
+       window overhangs the casting on both sides by whatever the
+       step happens to be: 0.07 in past the outer face on the left
+       here, 0.12 in on the right. Two visible consequences. The
+       windows come out different widths left and right, which is not
+       a fact about the cage. And the overhang on the far side hangs
+       out past the cage into the clearance beyond it, so the window
+       appears to open on nothing.
+
+       Following the wall is also the only definition that stays true
+       if the trace is ever redone: a window is a hole through a wall,
+       and a hole cannot be wider than what it is a hole in. */
+    const facesAt = (ring, y) => {
+      const xs = [];
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const a = ring[i], b2 = ring[j];
+        if ((a[1] > y) !== (b2[1] > y))
+          xs.push(a[0] + (b2[0] - a[0]) * (y - a[1]) / (b2[1] - a[1]));
+      }
+      if (xs.length < 2) return null;
+      xs.sort((u, v) => u - v);
+      return { lo: xs[0], hi: xs[xs.length - 1] };
+    };
+    const windowOf = ring => {
+      const n = 16, near = [], far = [];
+      for (let i = 0; i <= n; i++) {
+        const y = winY0 + winH * (i / n);
+        const f = facesAt(ring, y);
+        if (!f) continue;
+        near.push([f.lo, y]); far.push([f.hi, y]);
+      }
+      if (near.length < 2) return null;
+      return near.concat(far.reverse());
+    };
+    const windows = [windowOf(cageWallL), windowOf(cageWallR)]
+      .filter(w => w && w.length > 2);
+    if (windows.length !== 2)
+      throw new Error('geometry.globeValve: the section should cut two ' +
+        'cage windows and it cut ' + windows.length + '. The window is ' +
+        'the wall at each height, so a wall the horizontal cannot cross ' +
+        'means the traced cage is not a pair of walls either side of a ' +
+        'bore, and nothing below here will be right.');
     const cageRings = [cageWallL, cageWallR];
     const wWide = Math.min(cL.x1 - cL.x0, cR.x1 - cR.x0);
 
@@ -2418,6 +2463,75 @@
           const full = w.map(q => [q[0], q[1]]);
           rings.push(full); throatRings.push(full);
         }
+        /* ---- THE CLEARANCE BETWEEN THE CAGE AND ITS BORE -------------
+
+           The cage is a slip fit in a bore, and a slip fit has a gap.
+           On the inlet side you never see it because the chamber is
+           right there and the two are one space. On the far side the
+           casting comes up close behind the cage and the gap is all
+           there is -- about a third of an inch at the window band in
+           this trace, bounded by cage inside, body outside, closed
+           top and bottom.
+
+           It is IN THE TRACE and it was not in the wetted set, so it
+           drew as a slot of nothing behind the far window: the one
+           remaining black inside the valve, and the thing that made
+           that window look like a hole into the casting.
+
+           It is water. It is NOT a way in: nothing in this plane
+           connects it to the inlet, because the path that feeds it
+           runs round the cage and out of the section. So it is still
+           -- a blind annular slot, stirred by what moves past its
+           mouth and carrying no through-flow of its own. Making the
+           far windows carry their share of the flow is a separate
+           question and a boundary condition, not a shape. */
+        const solidAt = (x, y) => {
+          for (const r of bodyRings) if (inside(r, x, y)) return true;
+          for (const r of bonnetRings) if (inside(r, x, y)) return true;
+          return false;
+        };
+        const MAXGAP = 0.9;
+        for (const wall of [cageWallL, cageWallR]) {
+          const sign = wall === cageWallL ? -1 : 1;
+          /* RUNS, NOT ONE COLUMN. The horizontal misses the wall at
+             the very top and bottom of the cage's own height, and
+             emptying the column on a miss threw away everything
+             gathered below it -- so the slot came out empty and the
+             far window still opened on nothing. Each unbroken run of
+             heights that has both a wall and a casting behind it is
+             its own piece of water. */
+          let near = [], far = [];
+          const flush = () => {
+            if (near.length > 2) {
+              const slot = near.concat(far.reverse());
+              rings.push(slot); stillRings.push(slot);
+            }
+            near = []; far = [];
+          };
+          const steps = 24;
+          for (let i = 0; i <= steps; i++) {
+            const y = cageY0 + (cageY1 - cageY0) * (i / steps);
+            /* the cage's own outer face at this height */
+            const xs = [];
+            for (let a = 0, b2 = wall.length - 1; a < wall.length; b2 = a++) {
+              const p0 = wall[a], p1 = wall[b2];
+              if ((p0[1] > y) !== (p1[1] > y))
+                xs.push(p0[0] + (p1[0] - p0[0]) * (y - p0[1]) /
+                        (p1[1] - p0[1]));
+            }
+            if (xs.length < 2) { flush(); continue; }
+            const outer = sign < 0 ? Math.min.apply(null, xs)
+                                   : Math.max.apply(null, xs);
+            /* march out to the casting */
+            let hit = null;
+            for (let d = 0.02; d <= MAXGAP; d += 0.02)
+              if (solidAt(outer + sign * d, y)) { hit = outer + sign * d; break; }
+            if (hit === null) { flush(); continue; }
+            near.push([outer, y]); far.push([hit, y]);
+          }
+          flush();
+        }
+
         /* THE PLUG MOVES WITH ITS OWN LID.
 
            Holding the way in open to the caller's smallest feature
