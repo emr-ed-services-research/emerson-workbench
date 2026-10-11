@@ -10,7 +10,8 @@
 const fs = require('fs');
 const path = require('path');
 global.window = {};
-for (const m of ['catalogue', 'instrument', 'assembly'])
+for (const m of ['catalogue', 'geometry', 'sizing', 'trim',
+                 'instrument', 'actuator', 'assembly'])
   require(path.join(__dirname, '..', 'src', m + '.js'));
 const LPE = global.window.LPE;
 const A = LPE.assembly;
@@ -251,6 +252,99 @@ console.log('');
           mA: 12, action: 'air-to-open', onSignalFault: 'fail-safe' }).note),
         'without a positioner the stem settles against the spring, and ' +
         'the 657 table here publishes no bench set');
+}
+
+/* ---- THE PLUG AND THE PLATE MOVE TOGETHER --------------------------
+
+   They are clamped by a steel part -- IOM key 26, two connector
+   halves and cap screws round both stems -- so there is no travel at
+   which they can differ. The model let them: the actuator stroked
+   its rated travel and the plug stroked what the drawn cage had room
+   for, and on this valve that is 1.12 in of a rated 2. Dragging the
+   slider pulled the assembly apart on screen, which is what Franz
+   saw and called play.
+
+   Checked at both ends of the stroke and in the middle, because an
+   error that is zero at one end is the easiest kind to miss. */
+{
+  const FIG = JSON.parse(fs.readFileSync(path.join(
+    __dirname, '..', 'catalogue', 'actuator-657-figure6.json'), 'utf8'));
+  const V4 = CAT.part('VALVE/ED/NPS4/P4.375/T2/EQPCT');
+  const A45 = CAT.part('ACTUATOR/657/SIZE45');
+  const WP4 = LPE.trim.fromCurve({ curve: V4.cv,
+    characterisedBy: V4.characterisedBy }).widthProfile();
+  const gv4 = LPE.geometry.globeValve({ part: V4, faceToFace: 14.5,
+    lineBore: 4.026, flow: 'down', widthProfile: WP4.width });
+
+  const plugLift = pct => gv4.plugAt(pct).lift;
+  const plateLift = (pct, opts) => {
+    const a = LPE.actuator.diaphragm(Object.assign({ part: A45,
+      figure: FIG, travelPct: pct, ratedTravel: V4.dims.travel }, opts));
+    const b = LPE.actuator.diaphragm(Object.assign({ part: A45,
+      figure: FIG, travelPct: 0, ratedTravel: V4.dims.travel }, opts));
+    const top = r => Math.max.apply(null,
+      [].concat.apply([], r.map(q => q.map(p2 => p2[1]))));
+    return top(a.plate) - top(b.plate);
+  };
+
+  check('the drawing cannot stroke this valve its full rated travel',
+        gv4.travelDrawnFully === false &&
+        Math.abs(gv4.drawnTravel - 1.122) < 0.01,
+        gv4.drawnTravel.toFixed(3) + ' in of a rated ' + V4.dims.travel);
+  check('and it says so rather than quietly stroking short',
+        /THE DRAWING STROKES/.test(gv4.travelNote));
+
+  for (const pct of [0, 25, 50, 75, 100])
+    check('coupled, plug and plate agree at ' + pct + '% travel',
+          Math.abs(plugLift(pct) -
+                   plateLift(pct, { strokeIn: gv4.drawnTravel })) < 1e-9,
+          'plug ' + plugLift(pct).toFixed(3) + ' vs plate ' +
+          plateLift(pct, { strokeIn: gv4.drawnTravel }).toFixed(3));
+
+  check('and WITHOUT the coupling they come apart, which was the bug',
+        Math.abs(plugLift(100) - plateLift(100, {})) > 0.5,
+        'plug ' + plugLift(100).toFixed(3) + ' vs plate ' +
+        plateLift(100, {}).toFixed(3) + ' -- the connector between them ' +
+        'would have to stretch by the difference');
+
+  refuses('a drawn stroke longer than the rating is refused',
+    () => LPE.actuator.diaphragm({ part: A45, figure: FIG, travelPct: 50,
+      ratedTravel: 2, strokeIn: 3 }), 'cannot exceed the rated travel');
+
+  /* The parts that make it one machine, and the sheet that moves the
+     stem in the first place. */
+  const a45 = LPE.actuator.diaphragm({ part: A45, figure: FIG,
+    travelPct: 50, ratedTravel: 2, strokeIn: gv4.drawnTravel });
+  check('the assembly carries the stem connector, as a real part',
+        a45.connector.length >= 3,
+        'IOM key 26: two halves, cap screws and a spacer -- and two ' +
+        'bolt heads, not one');
+  check('and the travel indicator locked to the valve stem under it',
+        a45.indicator.length >= 3);
+  check('the diaphragm is drawn at all, which it was not',
+        !!a45.sheet && a45.sheet.points.length > 100 && a45.sheet.band > 0,
+        a45.sheet ? a45.sheet.points.length + ' points, band ' +
+          a45.sheet.band.toFixed(3) + ' in' : 'no sheet');
+  check('its clamped rim does not move with the plate -- it is clamped',
+        (function () {
+          const open = LPE.actuator.diaphragm({ part: A45, figure: FIG,
+            travelPct: 100, ratedTravel: 2, strokeIn: gv4.drawnTravel });
+          const shut = LPE.actuator.diaphragm({ part: A45, figure: FIG,
+            travelPct: 0, ratedTravel: 2, strokeIn: gv4.drawnTravel });
+          return Math.abs(open.sheet.points[0][1] -
+                          shut.sheet.points[0][1]) < 1e-9;
+        })());
+  check('while its centre follows the plate exactly',
+        (function () {
+          const mid = Math.round(a45.sheet.points.length / 2);
+          const open = LPE.actuator.diaphragm({ part: A45, figure: FIG,
+            travelPct: 100, ratedTravel: 2, strokeIn: gv4.drawnTravel });
+          const shut = LPE.actuator.diaphragm({ part: A45, figure: FIG,
+            travelPct: 0, ratedTravel: 2, strokeIn: gv4.drawnTravel });
+          return Math.abs((open.sheet.points[mid][1] -
+                           shut.sheet.points[mid][1]) - gv4.drawnTravel)
+                 < 1e-6;
+        })());
 }
 
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');

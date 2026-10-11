@@ -111,6 +111,30 @@
     trim: '#6f777d', trimRim: '#9aa3a9',
   };
 
+  /* ---- THE ACTUATOR'S OWN COLOURS -----------------------------------
+
+     Taken from the published 657 model's dark theme, not invented
+     here and not the body's greys. The castings are blue-toned and
+     differ from each other -- upper, lower, yoke, plate, stem, seat,
+     adjustor and spring all have their own value -- which is what
+     makes that drawing read as an assembly of separate parts rather
+     than one grey lump. Drawn in the body's metal grey the actuator
+     came out flat beside it, which is the complaint.
+
+     Kept apart from the body palette on purpose: the valve is a
+     casting in section and the actuator is a sheet-metal and cast
+     assembly in elevation, and they are allowed to look different.
+     Both sit on the same panel. */
+  const ACT_DARK = {
+    upper: '#5878a8', lower: '#6c8ebc', yoke: '#48628a',
+    plate: '#5b9bdb', stem: '#4a7db0', seat: '#5688bc',
+    adj: '#93abc9', coil: '#6bb8e8', coilBack: '#3e6d94',
+    dia: '#4a7db0', line: '#b8c6d8', hwLine: '#a8b2bc',
+    nut: '#9aa3ae',
+    source: 'the dark theme of the 657 model itself, '
+          + 'D100306X012 Figure 6',
+  };
+
   const ROLES = ['metal', 'rim', 'cavity', 'fluid', 'fluidFast', 'envelope',
                  'ink', 'label', 'hairline', 'panel'];
 
@@ -1241,8 +1265,9 @@
       'face-to-face ' + gv.faceToFace + ' in, port ' + gv.port +
         ' in, travel ' + gv.travel + ' in, line bore ' + gv.lineBore +
         ' in -- all sourced; scale 1 in = ' + scale.toFixed(1) + ' px',
-      'window shape is the derivative of the published Cv curve; the ' +
-        'two differ because the cage alternates window sizes',
+      'the window PROFILE is the derivative of the published Cv curve ' +
+        'and runs round the circumference, so a longitudinal section ' +
+        'shows its height and the wall thickness and none of its shape',
       'casting, chambers, cage, plug and seat MEASURED off Figure 24 of ' +
         'D100399X012, which is to scale; window placement, balance ' +
         'holes and seal thickness remain conventions, named in the shape',
@@ -1357,9 +1382,12 @@
       g.stroke();
     };
 
+    const C = o.palette === null ? null : (o.palette || ACT_DARK);
+    const col = (k, fallback) => (C && C[k]) || fallback;
+
     g.save();
     g.lineJoin = 'round';
-    solid(act.yoke, t.metal, t.rim);
+    solid(act.yoke, col('yoke', t.metal), col('line', t.rim));
     /* The spring is a line, not a shape. */
     if (act.spring && act.spring.length > 1) {
       const pts = put(act.spring);
@@ -1368,16 +1396,46 @@
         const z = pl.toPage(q[0], q[1]);
         i ? g.lineTo(z[0], z[1]) : g.moveTo(z[0], z[1]);
       });
-      g.strokeStyle = t.trimRim;
+      g.strokeStyle = col('coil', t.trimRim);
       g.lineWidth = Math.max(1.4, 2.2 * (pl.scale / 14));
       g.stroke();
     }
-    solid(act.adjustor, t.trim, t.trimRim);
-    solid(act.springSeat, t.trim, t.trimRim);
-    solid(act.lowerCasing, t.metal, t.rim);
-    solid(act.upperCasing, t.metal, t.rim);
-    solid(act.plate, t.trim, t.trimRim);
-    solid(act.stem, t.trim, t.trimRim);
+    solid(act.adjustor, col('adj', t.trim), col('hwLine', t.trimRim));
+    solid(act.springSeat, col('seat', t.trim), col('hwLine', t.trimRim));
+    solid(act.lowerCasing, col('lower', t.metal), col('line', t.rim));
+    solid(act.plate, col('plate', t.trim), col('line', t.trimRim));
+
+    /* ---- THE DIAPHRAGM, between the plate and the upper casing -----
+       Drawn here and not earlier because that is where it is: clamped
+       at its rim between the two casings, lying on the plate, with
+       the upper casing over it. A stroked line and not a filled
+       shape, because it is a sheet -- its thickness is its own
+       measured band. */
+    if (act.sheet && act.sheet.points.length > 1) {
+      const pts = act.sheet.points;
+      g.beginPath();
+      for (let i = 0; i < pts.length; i++) {
+        const z = pl.toPage(pts[i][0] + at.x, pts[i][1] + at.y);
+        i ? g.lineTo(z[0], z[1]) : g.moveTo(z[0], z[1]);
+      }
+      g.strokeStyle = col('dia', t.trim);
+      g.lineWidth = Math.max(1.2, act.sheet.band * pl.scale);
+      g.lineCap = 'round';
+      g.stroke();
+      g.lineCap = 'butt';
+    }
+
+    solid(act.upperCasing, col('upper', t.metal), col('line', t.rim));
+    solid(act.stem, col('stem', t.trim), col('hwLine', t.trimRim));
+
+    /* ---- WHAT MAKES IT ONE MACHINE ---------------------------------
+       The stem connector, clamped round both stems, and the travel
+       indicator locked to the valve stem under it. Drawn last because
+       they are bolted on over everything else. */
+    for (const r of (act.connector || []))
+      solid([r], col('nut', t.trim), col('hwLine', t.trimRim), 1.2);
+    for (const r of (act.indicator || []))
+      solid([r], col('nut', t.trim), col('hwLine', t.trimRim), 1);
     g.restore();
 
     return { size: act.size, travelPct: act.travelPct, lift: act.lift,
@@ -1453,7 +1511,7 @@
     parcelRadius: parcelRadius, parcelThinning: parcelThinning,
     water: water,
     provenance: provenance,
-    drawActuator: drawActuator,
+    drawActuator: drawActuator, ACT_DARK: ACT_DARK,
     drawPacking: drawPacking,
   };
 

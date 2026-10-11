@@ -47,7 +47,16 @@
 const fs = require('fs');
 const path = require('path');
 
-const MODEL = path.join(__dirname, '..', '..', '20 - Source Library',
+/* THE LIVE ARTIFACT, NOT THE VAULT COPY. They are the same asset and
+   they are not the same file: the vault copy was written on 4 October
+   and the artifact was republished on the 5th with the stem
+   connector, the travel indicator and the coupling, which is exactly
+   the work that was missing here. Vendoring from the local file
+   quietly took the day-older version. Read the artifact with the
+   Artifact tool and point MODEL at what it saves; the path is passed
+   in rather than hard-coded so it cannot rot. */
+const MODEL = process.env.MODEL_657 || path.join(
+  __dirname, '..', '..', '20 - Source Library',
   'Interactive Models', 'Fisher 657 Working Model',
   '657-working-model.html');
 const OUT = path.join(__dirname, '..', 'catalogue',
@@ -185,6 +194,79 @@ const toIn = r => r.map(q => [(q[0] - centrelinePx) / PX_PER_IN,
 const shapes = {};
 for (const k of WANT) shapes[k] = raw[k].map(toIn);
 
+/* ---- THE HARDWARE THAT COUPLES IT TO A VALVE, AND THE DIAPHRAGM ----
+
+   Plain rectangles and polygons in the model's own SVG, not traced
+   contours, so they come across as written. The stem connector is IOM
+   key 26 -- "an assembly of two stem connector halves, cap screws and
+   a spacer" -- two halves clamped around BOTH stems, which is why it
+   is the part that makes an actuator and a valve into one machine.
+   Figure 6's half-section draws only the near bolt head; Franz
+   confirmed the real part has two, symmetric, and the model draws
+   both.
+
+   The diaphragm comes across as the model holds it: a measured
+   centreline, the casing's inner floor profile beneath it, and a band
+   width. It is a ROLLING diaphragm -- the moulded fold travels down
+   at half the plate's rate and drapes against the floor rather than
+   passing through it -- so it cannot be a fixed shape that moves, and
+   the warp is done at draw time from these.                        */
+function shapesIn(block) {
+  const out = [];
+  const re = /<rect[^>]*?x="([-\d.]+)"\s+y="([-\d.]+)"\s+width="([-\d.]+)"\s+height="([-\d.]+)"/g;
+  let m;
+  while ((m = re.exec(block))) {
+    const x = +m[1], y = +m[2], w = +m[3], h = +m[4];
+    out.push([[x, y], [x + w, y], [x + w, y + h], [x, y + h]]);
+  }
+  const rp = /<polygon[^>]*?points="([^"]+)"/g;
+  while ((m = rp.exec(block))) {
+    const v = m[1].trim().split(/[ ,]+/).map(Number);
+    const ring = [];
+    for (let k = 0; k + 1 < v.length; k += 2) ring.push([v[k], v[k + 1]]);
+    out.push(ring);
+  }
+  return out;
+}
+const txt = fs.readFileSync(MODEL, 'utf8');
+const between = (a, b) => txt.slice(txt.indexOf(a), txt.indexOf(b));
+const connBlock = between('<g id="g-conn"', '<g id="g-valve-sil"');
+const vgrpBlock = between('<g id="g-vgrp"', '<g id="g-conn"');
+const indBlock = vgrpBlock.slice(vgrpBlock.indexOf('<g id="g-dn">'));
+const connector = shapesIn(connBlock).map(toIn);
+const indicator = shapesIn(indBlock).map(toIn);
+if (!connector.length)
+  throw new Error('vendor-657-outlines: no stem connector in ' + MODEL +
+    '. If this is the vault copy rather than the live artifact it will ' +
+    'not have one -- that is the whole reason this script changed.');
+
+const dia = R._dia;
+if (!dia || !Array.isArray(dia.centerline))
+  throw new Error('vendor-657-outlines: the model carries no diaphragm.');
+const inX = px => (px - centrelinePx) / PX_PER_IN;
+const inY = py => (yokeBottomPx - py) / PX_PER_IN;
+const r4 = v => Math.round(v * 1e4) / 1e4;
+const diaphragm = {
+  _note:
+    'A ROLLING diaphragm. The centreline is the measured shape at rest; '
+  + 'the floor is the inner surface of the casing directly under each '
+  + 'point, or null where the model has none. Under stroke the clamps '
+  + 'stay put, the moulded fold rolls DOWN at half the plate rate, the '
+  + 'centre rides the plate, and every warped point is held above its '
+  + 'own floor so rubber cannot pass metal. Warped at draw time, never '
+  + 're-approximated.',
+  band: r4(dia.band / PX_PER_IN),
+  centerline: dia.centerline.map(q => [r4(inX(q[0])), r4(inY(q[1]))]),
+  floor: dia.floor.map(v => (v === null ? null : r4(inY(v)))),
+  /* The piecewise warp's own breakpoints, in the same inches. */
+  fold: {
+    outerL: r4(inX(215)), foldL0: r4(inX(260)), foldL1: r4(inX(285)),
+    plateL: r4(inX(305)),
+    outerR: r4(inX(1270)), foldR0: r4(inX(1225)), foldR1: r4(inX(1200)),
+    plateR: r4(inX(1180)),
+  },
+};
+
 const doc = {
   _source:
     'Fisher 657 Diaphragm Actuator instruction manual D100306X012, June '
@@ -240,6 +322,9 @@ const doc = {
   + 'stroke and travel runs DOWNWARD from it by the rated travel. Lifting '
   + 'it instead drives the plate up through the upper casing, which is '
   + 'what the first version did.',
+  connector: connector,
+  indicator: indicator,
+  diaphragm: diaphragm,
   pxPerInch: PX_PER_IN,
   centrelinePx: centrelinePx,
   yokeBottomPx: yokeBottomPx,

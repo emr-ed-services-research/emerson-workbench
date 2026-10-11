@@ -1060,12 +1060,10 @@
      from the published Cv curve and the drawn shape is the
      manufacturer's rather than an illustrator's.
 
-     ALTERNATING SIZES ARE REAL and the section must show them. An
-     equal-percentage cage carries large and small windows alternately --
-     visible as two distinct profiles on the one cage in Figure 3.37 --
-     so a longitudinal section cuts a large one on one side and a small
-     one on the other. Drawn symmetric it is wrong in a way anyone who
-     has had one apart will see at once. */
+     NO CLAIM ABOUT ALTERNATING SIZES. There was one here, cited to
+     Figure 3.37 of the Control Valve Handbook, and that figure shows
+     three different cages rather than one cage with two window
+     sizes. Nothing we hold publishes it, so it is not drawn. */
   /* THE PROFILE'S STATIONS ARE BAND MIDPOINTS, and reading them as if
      they were evenly spaced from 0 to 1 shifts the whole window half a
      band toward the bottom. `trim.widthProfile` reports them at 5, 15,
@@ -1131,7 +1129,28 @@
     const balanced = spec.balanced !== false;
     const prof = spec.widthProfile ||
       [0.15, 0.15, 0.18, 0.26, 0.38, 0.54, 0.74, 0.9, 0.85, 0.7];
-    const wins = Object.assign({ count: 6, alternate: 0.55 }, spec.windows);
+    /* NO WINDOW COUNT. It used to say `{count: 6, alternate: 0.55}`
+       and nothing read either one -- declared, documented, dead.
+       Worse, the comment justifying alternating window sizes cited
+       Figure 3.37 of the Control Valve Handbook, and that figure
+       shows THREE DIFFERENT CAGES side by side (quick-opening,
+       linear, equal-percentage), not one cage with two window sizes.
+       The two profiles are two cages. Nothing in the Source Library
+       publishes a count or a spacing for an ED cage; the photographs
+       in that figure show about six on the equal-percentage cage and
+       nearer four on the linear one, which is the real answer -- it
+       is a design variable per style and size, not a constant. And
+       the apparent two widths on the equal-percentage cage is
+       FORESHORTENING: a cylinder photographed from outside shows the
+       window facing the lens at full width and the ones a sixth of a
+       turn away as slits.
+
+       It costs nothing to drop, because the count never entered any
+       answer. What the model does rely on is that the plenum feeds
+       every window about equally -- which is why the far cut of the
+       annulus carries half the flow -- and that is a much smaller
+       claim, stated where it is used. */
+    const wins = Object.assign({}, spec.windows);
     const G = Object.assign({}, GLOBE, spec.conventions);
 
     /* Frame: origin at the centre of the port, x along the line, y up
@@ -1345,6 +1364,11 @@
        measured plug directly -- no second scale, nothing to reconcile. */
     const plugBase = EWT_PLUG.map(place);
     const plugE = extentOfRing(plugBase);
+    /* How much of the rated travel the drawn cage has room for. The
+       same arithmetic plugAt clamps with, lifted out so the valve can
+       publish it without being asked for a plug. */
+    const drawnTravel = Math.min(travel,
+      Math.max((cageY1 - plugE.y1) * 0.92, 0));
 
     function plugAt(travelPct) {
       if (typeof travelPct !== 'number' || travelPct < 0 || travelPct > 100)
@@ -2469,6 +2493,39 @@
          no cage windows -- is a different flow path and will need its
          own archetype rather than this one relabelled. */
       archetype: 'cage-guided globe',
+      /* ---- HOW FAR THE PLUG CAN ACTUALLY BE DRAWN ------------------
+
+         The rated travel is sourced and the drawn cage is traced, and
+         on this archetype they disagree: a shut EWT 10x8 has 2.49 in
+         between the top of its plug and the top of its cage against a
+         rated 3 in of travel, so even its OWN valve cannot be stroked
+         its full rating inside the drawing. Scaled to a valve with a
+         higher travel-to-length ratio it is worse -- an ED NPS 4 gets
+         1.12 in of a rated 2.
+
+         `plugAt` already clamps to what the drawing has room for and
+         reports the true figure as `liftTrue`. This publishes the
+         clamp so that ANYTHING ELSE ATTACHED TO THE PLUG can move by
+         the same amount. An actuator that strokes its rated travel
+         over a plug that strokes 56% of it is not an assembly, it is
+         two pictures with a gap that opens as you drag the slider --
+         which is exactly what it looked like. */
+      /* The same expression plugAt uses, evaluated here rather than
+         by calling plugAt -- building the valve must not need a plug,
+         and a valve with no published stem diameter is refused at
+         plugAt, which is a refusal this would have pre-empted. */
+      drawnTravel: drawnTravel,
+      travelDrawnFully: Math.abs(drawnTravel - travel) < 1e-9,
+      travelNote: Math.abs(drawnTravel - travel) < 1e-9
+        ? 'the drawing has room for the whole rated travel'
+        : 'THE DRAWING STROKES ' + drawnTravel.toFixed(3) +
+          ' IN OF A RATED ' + travel + ' IN. The traced trim column is '
+        + 'shorter than the rated travel needs -- true of this '
+        + 'archetype even for the valve it was traced from -- so the '
+        + 'picture strokes as far as the drawn cage allows. Every '
+        + 'NUMBER still uses the rated travel; only the movement is '
+        + 'short, and anything coupled to the plug must be short by '
+        + 'the same amount or the assembly comes apart on screen.',
       archetypeNote:
         'Traced from one valve and drawn for the family. The outline '
       + 'came off Figure 24 of D100399X012, an EWT NPS 10x8, and is '

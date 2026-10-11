@@ -150,7 +150,25 @@
        travel BELOW it. Adding travel to the traced position instead,
        which is what this did first, drives the plate up through the
        upper casing it is already touching. */
-    const dy = (pct / 100 - 1) * rated;
+    /* ---- HOW FAR IT IS DRAWN TO MOVE, which is not always the
+       rated travel ------------------------------------------------
+
+       `ratedTravel` is what the catalogue says and what every number
+       uses. `strokeIn` is what the PICTURE moves, and a caller hands
+       it in when the valve this actuator is bolted to cannot be drawn
+       stroking its full rating -- geometry publishes that as
+       `drawnTravel`, and on the archetype in this core it is short.
+
+       Without it the plate strokes 2 in over a plug that strokes
+       1.12, the stem connector between them stretches, and the
+       assembly visibly comes apart as the slider moves. The two are
+       clamped together by a steel part; they cannot disagree. */
+    const stroke = spec.strokeIn === undefined ? rated : spec.strokeIn;
+    if (!(stroke >= 0) || stroke > rated + 1e-9)
+      throw new Error('actuator.diaphragm: {strokeIn} is how far the ' +
+        'picture moves and it cannot exceed the rated travel it is a ' +
+        'short version of; got ' + stroke + ' against ' + rated + '.');
+    const dy = (pct / 100 - 1) * stroke;
 
     const yoke = pick('yoke');
     const lower = pick('lower-diaphragm-casing');
@@ -228,6 +246,60 @@
         coil.push([(i % 2 ? r : -r), bot + (top - bot) * (i / n)]);
     }
 
+    /* ---- THE DIAPHRAGM, ROLLED -------------------------------------
+
+       Not a shape that moves: a rolling diaphragm's moulded fold
+       travels DOWN at half the plate's rate while the clamped rims
+       stay where they are, and the rubber drapes onto the casing
+       floor rather than passing through it. The measured centreline
+       is warped piecewise and never re-approximated, which is the
+       model's own discipline carried across with the geometry.
+
+       `press` is how far the plate has come DOWN from the figure's
+       own at-rest position, which is the top of the stroke -- so it
+       is -dy, and it is zero wide open. */
+    const sheet = (function () {
+      const D = spec.figure.diaphragm;
+      if (!D || !Array.isArray(D.centerline)) return null;
+      const f = D.fold, press = -dy / FAM;   /* trace inches */
+      const dyL = x => {
+        if (x <= f.outerL) return 0;
+        if (x < f.foldL0) return press * 0.5 * (x - f.outerL) /
+                                 (f.foldL0 - f.outerL);
+        if (x <= f.foldL1) return press * 0.5;
+        if (x < f.plateL) return press * (0.5 + 0.5 * (x - f.foldL1) /
+                                          (f.plateL - f.foldL1));
+        return press;
+      };
+      const dyR = x => {
+        if (x >= f.outerR) return 0;
+        if (x > f.foldR0) return press * 0.5 * (f.outerR - x) /
+                                 (f.outerR - f.foldR0);
+        if (x >= f.foldR1) return press * 0.5;
+        if (x > f.plateR) return press * (0.5 + 0.5 * (f.foldR1 - x) /
+                                          (f.foldR1 - f.plateR));
+        return press;
+      };
+      const half = D.band / 2;
+      const pts = D.centerline.map(function (q, i) {
+        let y = q[1] - (q[0] < 0 ? dyL(q[0]) : dyR(q[0]));
+        const fl = D.floor[i];
+        /* rubber cannot pass metal: held above its own floor */
+        if (fl !== null && fl !== undefined) y = Math.max(y, fl + half + 0.006);
+        return [q[0] * FAM, y * FAM];
+      });
+      return Object.freeze({ points: Object.freeze(pts),
+        band: D.band * FAM, note: D._note });
+    })();
+
+    /* The stem connector and the travel indicator move with the stem:
+       the connector is clamped to both stems and the indicator disc
+       is locked to the valve stem under it. */
+    const conn = (spec.figure.connector || [])
+      .map(r => r.map(q => [q[0] * FAM, q[1] * FAM + dy]));
+    const indic = (spec.figure.indicator || [])
+      .map(r => r.map(q => [q[0] * FAM, q[1] * FAM + dy]));
+
     const castings = [yoke, lower, upper];
     const all = castings.concat([plate, seat, adj, stem]);
 
@@ -245,6 +317,14 @@
       adjustor: Object.freeze(adj),
       stem: Object.freeze(stem),
       spring: Object.freeze(coil),
+      /* The rolling diaphragm, warped for this travel. */
+      sheet: sheet,
+      /* IOM key 26 -- two halves, cap screws and a spacer, clamped
+         round BOTH stems. The part that makes two parts one machine,
+         and the reason the plug and the plate cannot disagree. */
+      connector: Object.freeze(conn.map(Object.freeze)),
+      indicator: Object.freeze(indic.map(Object.freeze)),
+      stroke: stroke,
       /* Where it bolts on, and how wide that face is. An assembly
          puts this point on the valve's bonnet and the two are
          mounted. */

@@ -413,7 +413,11 @@ const PAGE = `<!doctype html>
         }
       } else {
         const act = LPE.actuator.diaphragm({ part: ACT, figure: FIG,
-          travelPct: t, ratedTravel: VALVE.dims.travel });
+          travelPct: t, ratedTravel: VALVE.dims.travel,
+          /* COUPLED. The plug and the plate are clamped together by a
+             steel connector; they move by the same amount, and that
+             amount is what the drawn cage has room for. */
+          strokeIn: gv.drawnTravel });
         const mp = gv.mountPoint();
 
         /* Every component rung is the same picture at a different
