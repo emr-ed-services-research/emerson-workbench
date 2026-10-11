@@ -64,6 +64,15 @@ const PATTERNS = [
   [/\bCrane[-\s]?TP[-\s]?410\b/g,              () => 'Crane TP-410'],
   [/\bDarby[-\s]?3-?K\b/g,                     () => 'Darby 3-K'],
   [/\bHooper[-\s]?2-?K\b/g,                    () => 'Hooper 2-K'],
+  /* Classical results with no publisher and no edition. They are not
+     standards and there is no document to hold, but the flow-field layer
+     rests on them exactly as the fitting work rests on Darby -- the
+     centreline of a drawn velocity profile is 60/49 of the mean BECAUSE
+     of the 1/7-power law, and a reader has to be able to chase that. An
+     entry saying "classical, not-applicable, here are its limits" is
+     worth more than a constant with no provenance. */
+  [/\bPrandtl(?:'s)?[-\s]?1\/7[-\s]?power\b/gi, () => 'Prandtl 1/7-power'],
+  [/\b(?:Hagen[-\s]?)?Poiseuille\b/gi,         () => 'Hagen-Poiseuille'],
 ];
 
 /* Joint publications: two spellings, one authority, one entry. */

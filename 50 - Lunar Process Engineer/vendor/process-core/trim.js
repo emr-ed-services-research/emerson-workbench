@@ -76,6 +76,11 @@
     if (!(cvMax > 0))
       throw new Error('trim.fromCurve: full-open Cv must be positive.');
 
+    /* Rangeability: the ratio of the largest to the smallest controllable
+       Cv the catalogue actually prints. Not a nameplate claim -- the
+       printed points are what there is evidence for. */
+    const rangeability = curve[0] > 0 ? cvMax / curve[0] : null;
+
     /* Linear interpolation between printed points, and nothing beyond
        them. Below the first point the catalog says nothing -- that is
        the seat region, where leakage class governs rather than Cv --
@@ -100,8 +105,24 @@
       const frac = at.map((t, i) => ({ t: t / 100, y: curve[i] / cvMax }));
       /* linear: y = t.  equal-%: y = R^(t-1) with rangeability R.
          Score both and take the closer, reporting the residual so a
-         poor match cannot masquerade as a confident answer. */
-      const R = 50;
+         poor match cannot masquerade as a confident answer.
+
+         R IS THE CURVE'S OWN RANGEABILITY, NOT A CONSTANT. It used to
+         be a flat 50, which is a number out of nowhere: real cages run
+         anywhere from 20:1 to 40:1 and a reduced-port body lower still.
+         Assuming 50 scored every cage against a curve steeper than the
+         one it actually has, and it mattered -- an EWT 10x8 whose cage
+         is labelled equal-percentage came out LINEAR, because the
+         reference it was being compared against was not its reference.
+
+         Fitting R freely would score better still, and would be wrong:
+         turned loose it settles near 2.5 on quick-opening cages, where
+         R^(t-1) stops being the equal-percentage form and is just a
+         flexible curve that fits anything. The measured rangeability is
+         a fact about this cage, costs no free parameter, and leaves the
+         three candidates comparable. Against Catalog 12's own labels it
+         agrees on 88 of 105 cages where the constant managed 86. */
+      const R = rangeability > 1 ? rangeability : 50;
       let eLin = 0, eEq = 0, eQo = 0;
       for (const p of frac) {
         eLin += Math.pow(p.y - p.t, 2);
@@ -155,16 +176,111 @@
       };
     }
 
-    /* Rangeability: the ratio of the largest to the smallest controllable
-       Cv the catalogue actually prints. Not a nameplate claim -- the
-       printed points are what there is evidence for. */
-    const rangeability = curve[0] > 0 ? cvMax / curve[0] : null;
+    /* ---- WHAT SHAPE PRODUCED THIS CURVE -----------------------------
+
+       A plug uncovers its opening from the bottom up, so the open area
+       at travel t is the INTEGRAL of the opening's width over the height
+       already uncovered:
+
+         Cv(t)  ~  A(t)  =  INTEGRAL from 0 to t of w(h) dh
+         therefore   w(t)  ~  dCv/dt
+
+       So differentiating the manufacturer's published curve recovers the
+       shape of the thing that produced it, which otherwise has to be
+       traced off a photograph or invented. Checked against Control Valve
+       Handbook Figure 3.37 across every cage in Catalog 12: equal
+       percentage comes out narrow at the bottom and flaring hard above
+       half travel -- the trumpet in that photograph -- and agrees to an
+       sd of 0.06 to 0.09 in the early bands over 42 cages of differing
+       size and body. Linear comes out near-flat, which is the
+       near-rectangular window the photograph shows. Two independent
+       routes to the same shape.
+
+       WHAT IT MEANS DEPENDS ON THE ARCHETYPE, which is why this refuses
+       to say unless told:
+
+         cage   the TOTAL window width at that height, summed over every
+                window. A cage with alternating window sizes -- which the
+                equal-percentage cages have -- cannot be separated into
+                individual windows by this method, because the curve only
+                ever saw their sum.
+         plug   the rate the annular opening between plug bevel and seat
+                bore grows, which is a statement about the bevel contour
+                rather than about any window. EZ bodies are these: their
+                own manual names a seat ring retainer and never a cage.
+
+       A BAND IS AN AVERAGE, NOT A POINT. Catalog 12 prints Cv every ten
+       percent, so each difference is the mean width over that band. The
+       stations are reported at band MIDPOINTS for that reason -- putting
+       them at the upper edge would shift the whole profile half a band
+       toward the top and make an equal-percentage cage look later-opening
+       than it is.
+
+       The absolute width is NOT recoverable here. Normalised shape is;
+       scale needs the window count, and A at full travel for a balanced
+       cage-guided plug is the total window area rather than the port
+       area. Those must not be quietly equated, so `width` is normalised
+       and `raw` is left in Cv per percent of travel for a caller that
+       later earns the right to scale it. */
+    function widthProfile() {
+      if (n < 4)
+        throw new Error('trim.widthProfile: ' + n + ' printed points is too ' +
+          'few to differentiate into a shape. Three bands cannot show a ' +
+          'flare from a taper, and a profile drawn from them would be ' +
+          'decoration with a derivation attached.');
+
+      const raw = [], station = [];
+      let prev = 0, prevAt = 0;
+      for (let i = 0; i < n; i++) {
+        const span = at[i] - prevAt;
+        if (!(span > 0))
+          throw new Error('trim.widthProfile: travel points must increase; ' +
+            'got ' + prevAt + ' then ' + at[i] + '.');
+        raw.push((curve[i] - prev) / span);
+        station.push((prevAt + at[i]) / 2);
+        prev = curve[i];
+        prevAt = at[i];
+      }
+
+      const peak = Math.max.apply(null, raw);
+      if (!(peak > 0))
+        throw new Error('trim.widthProfile: the curve never rises, so there ' +
+          'is no opening to describe.');
+
+      const arch = spec.characterisedBy || null;
+      const MEANS = {
+        cage: 'total cage window width at this height, summed over all ' +
+              'windows -- alternating window sizes are not separable from ' +
+              'the curve alone',
+        plug: 'the rate the annular opening between plug bevel and seat ' +
+              'bore grows, which describes the bevel contour',
+      };
+      if (arch !== null && !(arch in MEANS))
+        throw new Error('trim.widthProfile: characterisedBy must be "cage" ' +
+          'or "plug"; got ' + JSON.stringify(arch) + '. They are different ' +
+          'parts and the profile means a different thing for each.');
+
+      return Object.freeze({
+        at: Object.freeze(station),
+        width: Object.freeze(raw.map(x => x / peak)),
+        raw: Object.freeze(raw),
+        units: 'Cv per percent of travel',
+        archetype: arch,
+        means: arch === null ? null : MEANS[arch],
+        note: arch === null
+          ? 'No archetype was declared, so this profile has a shape but no ' +
+            'stated geometric meaning. Pass characterisedBy: "cage" or ' +
+            '"plug" -- the catalogue records it per valve.'
+          : null,
+      });
+    }
 
     return Object.freeze({
       curve: Object.freeze(curve), travelPct: Object.freeze(at),
       cvMax: cvMax, rangeability: rangeability,
       source: spec.source || null, label: spec.label || null,
       cvAt: cvAt, classify: classify, installed: installed,
+      widthProfile: widthProfile,
     });
   }
 

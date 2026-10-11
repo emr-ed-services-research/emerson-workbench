@@ -437,11 +437,26 @@
         const pa = fixed[L.a] || 0, pb = fixed[L.b] || 0;
         const cv = cvOf(L, s);
         cvTot += cv;
+        /* ORIENT BY PRESSURE, NOT BY TRAVERSAL ORDER.
+
+           A link's `a` and `b` ends come from however the graph walk
+           happened to reach it, and that is not a direction -- adding a
+           second fitting to a line was enough to flip one, turning
+           +15712 gpm into -15512. The magnitude was right and the sign
+           was an artifact of which end the walk started from, which is
+           the worst kind of wrong: plausible, and backwards.
+
+           So flow is signed by the PRESSURE GRADIENT, which is a fact
+           about the rig, and the link reports which way it actually
+           runs. qTot then sums throughput rather than a quantity whose
+           sign depended on bookkeeping. */
         const dp = pa - pb;
-        const mag = cv * Math.sqrt(Math.abs(dp) / sg);
-        const f = dp >= 0 ? mag : -mag;
+        const f = cv * Math.sqrt(Math.abs(dp) / sg);
         qTot += f;
-        flows.push({ ids: L.ids, cv, q: f });
+        flows.push({ ids: L.ids, cv, q: f,
+                     from: dp >= 0 ? L.a : L.b,
+                     to:   dp >= 0 ? L.b : L.a,
+                     reversed: dp < 0 });
         for (const id of L.ids) {
           const c = comps[id];
           if (c.key !== undefined) q[c.key] = f;

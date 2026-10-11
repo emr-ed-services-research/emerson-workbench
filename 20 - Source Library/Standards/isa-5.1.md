@@ -23,6 +23,7 @@ used-by:
   - "20 - Source Library/Subject-Matter Index — 14101 ch1-ch2.md"
   - "40 - Engine/Presentation/build/assets/reference.md"
   - "45 - Process Core/TOPOLOGY.md"
+  - "45 - Process Core/lab/render/index.html"
   - "45 - Process Core/src/schemvis.js"
   - "45 - Process Core/src/topology.js"
   - "50 - Lunar Process Engineer/vendor/process-core/schemvis.js"

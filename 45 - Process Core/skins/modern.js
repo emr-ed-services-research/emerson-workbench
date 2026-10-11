@@ -564,7 +564,24 @@
       }
       const src = Object.keys(net.components).map(function (k) { return net.components[k]; })
         .filter(function (c) { return c.kind === 'valve' && c.cv !== undefined; })[0];
-      if (src && src.at && solved.pressure !== undefined) {
+      /* NULL IS A REAL ANSWER HERE, and this guard used to miss it.
+
+         dynamics returns `pressure: null` -- deliberately, and it says
+         so in its own comment -- for a DETERMINATE net: one whose nodes
+         are all pinned by boundary conditions, with no floating node
+         whose pressure has to be found. There is no manifold reading to
+         give, so it declines to invent one.
+
+         This tested `!== undefined`, which null passes, and then called
+         .toFixed on it. A bench rig always has a floating manifold so it
+         never came up; the first refinery service built on this core --
+         a fractionator at 248 psig feeding an absorber at 218 -- is
+         determinate, and the whole surface threw on frame one.
+
+         Omitting the readout is the right answer, not printing 0.0:
+         there is no manifold here to report a pressure for. */
+      if (src && src.at && solved.pressure !== undefined &&
+          solved.pressure !== null) {
         readout(g, src.at[0] - 36, src.at[1] - 42, 'MANIFOLD',
                 solved.pressure.toFixed(1), 'psig',
                 { live: solved.pressure > 0.1,

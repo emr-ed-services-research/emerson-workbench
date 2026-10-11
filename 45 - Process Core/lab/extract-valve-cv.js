@@ -354,6 +354,19 @@ function run() {
           new RegExp('^(?:' + SZ + ')(?:\\s*x\\s*(?:' + SZ + '))?', 'i'));
         if (sizeM) txt = sizeM[0].replace(/\s*x\s*/i, ' x ').trim();
         if (!/^[0-9]/.test(txt)) continue;      // headings are not sizes
+
+        /* NORMALISE THE TYPESETTER'S HYPHEN. The size regex above already
+           tolerates U+2010 because the PDF uses it, but tolerating it and
+           keeping it are different things: it produced "1-1/2" and
+           "1‐1/2" as two separate sizes, three rows filed under a
+           size that looks identical on screen and compares unequal. The
+           vault is ASCII by convention for exactly this reason. */
+        txt = txt.replace(/[‐‑‒–—−]/g, '-');
+        if (/[^ -~]/.test(txt))
+          throw new Error('nps label "' + txt + '" still carries a ' +
+            'non-ASCII character after normalising. Add it to the ' +
+            'replacement above rather than letting it into the data.');
+
         labels.push({ y: r.y, nps: txt });
       }
       const npsAt = y => {
@@ -446,7 +459,16 @@ function run() {
            order are port and travel. A column that is not a length
            cannot accidentally satisfy that, so the layout identifies
            itself and a mis-read is refused instead of recorded. */
-        let portIn = null, travelIn = null;
+        /* KEEP THE MILLIMETRES TOO.
+
+           The pairing above already has to FIND the mm value to trust the
+           inch one -- that is the whole 25.4 test -- and then threw it
+           away. The catalogue layer requires every dimension to carry the
+           value as its document printed it beside the canonical one, and
+           re-derives one from the other at load time. Catalog 12 prints
+           both units, so keeping both is not extra work, it is declining
+           to discard the evidence the reader already used. */
+        let portIn = null, travelIn = null, portMm = null, travelMm = null;
         if (!sheet.metric) {
           if (geo.length >= 2) { portIn = geo[geo.length - 2]; travelIn = geo[geo.length - 1]; }
         } else {
@@ -454,10 +476,13 @@ function run() {
           for (let k = 0; k + 1 < geo.length; k++) {
             const mm = geo[k], inch = geo[k + 1];
             if (inch > 0 && Math.abs(mm / inch - 25.4) / 25.4 < 0.015) {
-              pairs.push(inch); k++;
+              pairs.push({ mm: mm, inch: inch }); k++;
             }
           }
-          if (pairs.length >= 2) { portIn = pairs[0]; travelIn = pairs[1]; }
+          if (pairs.length >= 2) {
+            portIn = pairs[0].inch;   portMm = pairs[0].mm;
+            travelIn = pairs[1].inch; travelMm = pairs[1].mm;
+          }
         }
         if (portIn === null || travelIn === null) {
           out.rejected.push({ page: page, y: Math.round(r.y),
@@ -505,7 +530,8 @@ function run() {
         out.valves.push({
           doc: DOC, page: 'p' + page, body: vtype || sheet.body,
           cls: sheet.cls, cage: band.cage, nps: nps,
-          portIn: portIn, travelIn: travelIn, cv100: cv100, FL: FL,
+          portIn: portIn, travelIn: travelIn,
+          portMm: portMm, travelMm: travelMm, cv100: cv100, FL: FL,
           curve: curve,
         });
       }

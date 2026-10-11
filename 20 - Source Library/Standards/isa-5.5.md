@@ -16,6 +16,7 @@ used-by:
   - "00 - Project/Process Core — Flow Lab Plan.md"
   - "45 - Process Core/README.md"
   - "45 - Process Core/TOPOLOGY.md"
+  - "45 - Process Core/lab/render/index.html"
   - "45 - Process Core/skins/modern.js"
   - "45 - Process Core/src/schemvis.js"
   - "45 - Process Core/src/topology.js"

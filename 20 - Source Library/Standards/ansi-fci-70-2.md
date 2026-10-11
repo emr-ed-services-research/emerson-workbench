@@ -13,6 +13,7 @@ used-by:
   - "00 - Project/Competency Hierarchy — CVE1, CVE2, CVE3 v3.md"
   - "00 - Project/Lunar Process Engineer — Game Design.md"
   - "00 - Project/Process Core — Flow Lab Plan.md"
+  - "00 - Project/Process Core — Pro Chrome Plan.md"
   - "10 - Courses/14101 Valve Trim and Body Maintenance/Curriculum — 14101.md"
   - "10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/build/_engine-snapshots/20260830-021934Z/build/css/TEMPLATES.md"
   - "10 - Courses/14101 Valve Trim and Body Maintenance/Presentation/build/_engine-snapshots/20260903-235320Z/build/css/TEMPLATES.md"
@@ -62,6 +63,11 @@ used-by:
   - "20 - Source Library/Subject-Matter Index — Pulp & Paper Sourcebook ch1.md"
   - "20 - Source Library/Subject-Matter Index — Pulp & Paper Sourcebook ch2.md"
   - "40 - Engine/Presentation/build/css/TEMPLATES.md"
+  - "45 - Process Core/lab/cutaway/index.html"
+  - "45 - Process Core/lab/render/index.html"
+  - "45 - Process Core/src/trim.js"
+  - "45 - Process Core/test/trim.test.js"
+  - "50 - Lunar Process Engineer/vendor/process-core/trim.js"
   - "docs/courses/control-valve-basics/build/css/TEMPLATES.md"
 ---
 

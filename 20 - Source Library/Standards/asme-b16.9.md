@@ -12,6 +12,10 @@ updated: 2026-10-10
 used-by:
   - "00 - Project/Process Core — Component Catalogue.md"
   - "45 - Process Core/catalogue/parts.json"
+  - "45 - Process Core/lab/cutaway/index.html"
+  - "45 - Process Core/lab/extract-sourcebook.js"
+  - "45 - Process Core/lab/render-loop.js"
+  - "45 - Process Core/lab/render/index.html"
   - "45 - Process Core/src/catalogue.js"
   - "50 - Lunar Process Engineer/vendor/process-core/catalogue.js"
   - "50 - Lunar Process Engineer/vendor/process-core/catalogue/parts.json"

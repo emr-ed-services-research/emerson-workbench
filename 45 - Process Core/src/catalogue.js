@@ -45,9 +45,102 @@
       throw new Error(where + ': as-printed value must be a string, got ' +
                       typeof text);
 
-    /* Prefer a parenthesised inch value when the standard prints both. */
-    const dual = text.match(/\(\s*([0-9.]+)\s*in\.?\s*\)/);
-    if (dual) return Number(dual[1]);
+    /* Prefer a parenthesised inch value when the standard prints both --
+       AND CHECK THE OTHER HALF AGAINST IT.
+
+       This used to take the inch and ignore whatever stood in front of
+       it, which meant that for a dual-printed dimension the metric value
+       was decorative: a transposed digit in "203.2 mm" would sit there
+       forever because nothing ever read it. That is the one thing this
+       layer exists to prevent, so it is not acceptable in the layer
+       itself.
+
+       A document that prints both units has already done the conversion
+       once; making the two agree is a free second opinion on the
+       transcription, and the only cost is noticing. */
+    /* FISHER PRINTS INCHES AS FRACTIONS, so this layer has to read them.
+
+       Table 12 of D100017X012 gives stem diameters as 3/8, 1/2, 3/4,
+       1-1/4 and yoke bosses as 2-1/8, 2-13/16, 3-9/16. Not one of those
+       is a decimal, and a parser that only reads decimals leaves the
+       only honest transcription -- the fraction the page actually
+       carries -- unusable. The alternative is converting in the JSON,
+       and a pre-converted number has nothing left to check, which is
+       the one thing this layer exists to prevent.
+
+       A fraction is EXACT where a decimal is rounded: "3/4 in" is
+       0.75 in and not a value rounded to two places, so it gets a
+       zero-width band and the metric half has to contain it. */
+    const FRAC = /^([0-9]+)(?:[-\s]+([0-9]+)\/([0-9]+))?$|^([0-9]+)\/([0-9]+)$/;
+    const readInch = txt => {
+      const f = txt.match(FRAC);
+      if (f) {
+        if (f[4] !== undefined) return { v: Number(f[4]) / Number(f[5]),
+                                         exact: true };
+        if (f[2] !== undefined) return { v: Number(f[1]) +
+                                            Number(f[2]) / Number(f[3]),
+                                         exact: true };
+      }
+      return { v: Number(txt), exact: false };
+    };
+
+    const dual = text.match(/\(\s*([0-9]+(?:[-\s][0-9]+\/[0-9]+|\.[0-9]+)?|[0-9]+\/[0-9]+)\s*in\.?\s*\)/);
+    if (dual) {
+      const inchRead = readInch(dual[1]);
+      const inch = inchRead.v;
+      const lead = text.match(/^\s*([0-9.]+)\s*([a-z]+)\.?\s*\(/i);
+      if (lead) {
+        const unit = lead[2].toLowerCase();
+        if (!(unit in PER_INCH))
+          throw new Error(where + ': unit "' + lead[2] + '" is not one this ' +
+            'layer converts. Known: ' + Object.keys(PER_INCH).join(', '));
+
+        /* COMPARE WHAT EACH HALF CAN MEAN, NOT THEIR BARE RATIO.
+
+           A flat percentage is the wrong test for a document that rounds.
+           Catalog 12 prints "29 mm (1.125 in)" -- 1.125 in is 28.575 mm,
+           so the millimetre half is off by 1.5%, and it is not an error:
+           29 is the nearest whole millimetre and the page prints whole
+           millimetres. A tolerance tight enough to catch a transposition
+           rejects that honest rounding, and one loose enough to accept it
+           catches nothing.
+
+           So each half is read as the INTERVAL its own printed precision
+           allows -- half of its last digit either way -- and the two must
+           overlap. "29 mm" means [28.5, 29.5] and spans 1.122 to 1.161 in,
+           which contains 1.125. A transposed "302.2 mm" spans 11.896 to
+           11.900 in and contains no part of what "8 in" can mean, so it is
+           still refused. The rule is the document's own precision rather
+           than a number somebody picked. */
+        const band = (txt, perInch) => {
+          const dot = txt.indexOf('.');
+          const decimals = dot < 0 ? 0 : txt.length - dot - 1;
+          const half = 0.5 * Math.pow(10, -decimals);
+          return { lo: (Number(txt) - half) / perInch,
+                   hi: (Number(txt) + half) / perInch };
+        };
+        const a = band(lead[1], PER_INCH[unit]);
+        const b = inchRead.exact ? { lo: inch, hi: inch } : band(dual[1], 1);
+        /* EXACT AGREEMENT IS THE BEST CASE, and it lands on the
+           boundary: 19.1 mm is 0.7500 to 0.7539 in and "3/4" is 0.75
+           exactly, so the two intervals touch at a single point and
+           float arithmetic decides whether they overlap. Compared
+           bare, 19.05/25.4 comes back a bit above 0.75 and the check
+           rejects the one transcription that is perfectly right.
+           A nanoinch of slack settles it and is twelve orders of
+           magnitude below anything this check is looking for. */
+        const EPS = 1e-9;
+        if (a.hi < b.lo - EPS || b.hi < a.lo - EPS)
+          throw new Error(where + ': the two halves of "' + text + '" ' +
+            'cannot describe the same length. ' + lead[1] + ' ' + unit +
+            ' allows ' + a.lo.toFixed(4) + ' to ' + a.hi.toFixed(4) +
+            ' in; the printed ' + dual[1] + ' in allows ' + b.lo.toFixed(4) +
+            ' to ' + b.hi.toFixed(4) + ' in. They do not overlap, so one ' +
+            'was mistyped -- go back to the document rather than deleting ' +
+            'whichever half looks wrong.');
+      }
+      return inch;
+    }
 
     const m = text.match(/^\s*([0-9.]+)\s*([a-z]+)\.?\s*$/i);
     if (!m)

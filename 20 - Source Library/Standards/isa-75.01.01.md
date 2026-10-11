@@ -14,6 +14,19 @@ used-by:
   - "00 - Project/Open Questions.md"
   - "00 - Project/Process Core — Component Catalogue.md"
   - "00 - Project/Process Core — Flow Lab Plan.md"
+  - "00 - Project/Process Core — Pro Chrome Plan.md"
+  - "45 - Process Core/CLAUDE.md"
+  - "45 - Process Core/lab/cutaway/index.html"
+  - "45 - Process Core/lab/loop-fcc.js"
+  - "45 - Process Core/lab/render-cutaway.js"
+  - "45 - Process Core/lab/render-loop.js"
+  - "45 - Process Core/lab/render/index.html"
+  - "45 - Process Core/src/flowfield.js"
+  - "45 - Process Core/src/sizing.js"
+  - "45 - Process Core/test.js"
+  - "45 - Process Core/test/sizing.test.js"
+  - "50 - Lunar Process Engineer/vendor/process-core/flowfield.js"
+  - "50 - Lunar Process Engineer/vendor/process-core/sizing.js"
 ---
 
 # ISA-75.01.01 — Flow Equations for Sizing Control Valves

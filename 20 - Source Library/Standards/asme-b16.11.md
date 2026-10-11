@@ -13,12 +13,15 @@ used-by:
   - "00 - Project/Process Core — Component Catalogue.md"
   - "00 - Project/Process Core — Flow Lab Plan.md"
   - "45 - Process Core/catalogue/parts.json"
+  - "45 - Process Core/lab/cutaway/index.html"
+  - "45 - Process Core/lab/render/index.html"
   - "45 - Process Core/reference.js"
   - "45 - Process Core/src/geometry.js"
   - "45 - Process Core/src/topology.js"
   - "45 - Process Core/test/catalogue.test.js"
   - "45 - Process Core/test/geometry.test.js"
   - "50 - Lunar Process Engineer/vendor/process-core/catalogue/parts.json"
+  - "50 - Lunar Process Engineer/vendor/process-core/geometry.js"
   - "50 - Lunar Process Engineer/vendor/process-core/topology.js"
 ---
 

@@ -33,7 +33,7 @@ const path = require('path');
    process layer; only files under src/ count as a layer's implementation. */
 const LAYERS = ['registration', 'catalogue', 'geometry', 'sizing',
                 'instrument', 'trim', 'netlist', 'schem-view', 'phys-view',
-                'dynamics', 'scenario', 'chrome'];
+                'dynamics', 'flow-field', 'scenario', 'chrome'];
 
 /* Every .js in the core, discovered rather than listed. A list is a thing
    someone forgets to add to, and a file that nobody checks is exactly the

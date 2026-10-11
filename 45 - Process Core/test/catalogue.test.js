@@ -296,5 +296,98 @@ if (cat) {
     'entries say so rather than carrying a remembered pressure rating.');
 }
 
+/* ---- THE VALVE CLASS --------------------------------------------------
+
+   A valve is a part. Its port diameter and rated travel are dimensions in
+   the same sense a pipe bore is, and Catalog 12 prints both of them in
+   millimetres AND inches -- which is the pairing this layer exists to
+   check, arriving already paired.                                      */
+console.log('');
+{
+  const valves = cat.where({ class: 'valve' });
+  check('the catalogue carries the Catalog 12 globe valves',
+    valves.length === 105, valves.length + ' valves');
+
+  check('every valve states a port diameter and a rated travel',
+    valves.every(v => v.dims.port > 0 && v.dims.travel > 0));
+
+  check('and every one of those carries BOTH printed units',
+    valves.every(v => /mm \(.*in\)/.test(v.asPrinted.port) &&
+                      /mm \(.*in\)/.test(v.asPrinted.travel)),
+    'the mm half is not decoration -- load() now reads it');
+
+  /* The two archetypes. This is not recoverable from the numbers, so if
+     it is wrong nothing downstream can notice. */
+  const isEZ = v => /(^|\s)EZ(\s|$)/.test(v.body);
+  const ez = valves.filter(isEZ);
+  check('EZ valves are recorded as PLUG-characterised',
+    ez.length > 0 && ez.every(v => v.characterisedBy === 'plug'),
+    ez.length + ' EZ valves -- D100401X012 names a seat ring retainer and ' +
+    'bushing assembly throughout, and never a cage');
+  check('and every other body here is cage-characterised',
+    valves.filter(v => !isEZ(v)).every(v => v.characterisedBy === 'cage'));
+
+  /* Flow direction decides which chamber is the inlet, and on a balanced
+     plug it decides which way the pressure-energised U-seal faces. A
+     guess here is not a small error. */
+  check('flow direction is null wherever the sheet does not state it',
+    valves.some(v => v.flow === null),
+    'stated: ' + valves.filter(v => v.flow).length +
+    ', unstated: ' + valves.filter(v => !v.flow).length);
+  /* A built regex here read 'flow\s*' as the literal "flows*" -- inside a
+     JS string \s is just s -- so it matched nothing and failed all 51
+     rows. A plain substring has no escaping left to get wrong. */
+  check('and where it IS stated it matches the trim designation',
+    valves.filter(v => v.flow).length > 0 &&
+    valves.filter(v => v.flow).every(v =>
+      v.series.toLowerCase().indexOf('flow ' + v.flow) >= 0));
+
+  /* The curve is as much "what this part is" as its bore. */
+  check('every valve carries its measured curve at ten travel points',
+    valves.every(v => Array.isArray(v.cv) && v.cv.length === 10 &&
+                      v.cvAtPct.length === 10 &&
+                      v.cv[9] === Math.max.apply(null, v.cv)));
+
+  const fcc = cat.part('VALVE/EWT/NPS10x8/P8/T3/EQPCT');
+  check('the valve from the FCC refinery loop is addressable by id',
+    !!fcc && fcc.dims.port === 8 && fcc.dims.travel === 3,
+    fcc ? fcc.asPrinted.port + ', ' + fcc.asPrinted.travel : 'missing');
+  check('and its id carries no fraction slash, which would split the id',
+    !!fcc && !/\d\/\d/.test(fcc.id), fcc && fcc.id);
+}
+
+/* ---- the dual-printed check, both ways -------------------------------
+   The millimetre half used to be decoration: parsePrinted preferred the
+   parenthesised inch and never looked at what stood in front of it. */
+console.log('');
+
+refuses('a transposed MILLIMETRE in a dual-printed value is refused',
+  d => { d.valve['VALVE/EWT/NPS10x8/P8/T3/EQPCT'].asPrinted.port =
+           '302.2 mm (8 in)'; },                      // 203.2 -> 302.2
+  'cannot describe the same length');
+
+refuses('and a transposed INCH is refused too',
+  d => { d.valve['VALVE/EWT/NPS10x8/P8/T3/EQPCT'].asPrinted.port =
+           '203.2 mm (3 in)'; },
+  'cannot describe the same length');
+
+/* ...but the tolerance comes from the document's own precision, so a page
+   that rounds to whole millimetres is not called a liar. */
+{
+  const data = JSON.parse(fs.readFileSync(RAW, 'utf8'));
+  const rounded = Object.keys(data.valve)
+    .filter(k => k.charAt(0) !== '_')
+    .map(k => data.valve[k])
+    .filter(v => /^\d+ mm/.test(v.asPrinted.travel));
+  check('Catalog 12 does round millimetres to whole numbers',
+    rounded.length > 0, rounded.length + ' rows, e.g. "' +
+    (rounded[0] && rounded[0].asPrinted.travel) +
+    '" -- 1.125 in is really 28.575 mm, and 29 is not an error');
+  let ok = true, why = '';
+  try { LPE.catalogue.load(data); } catch (e) { ok = false; why = e.message; }
+  check('and the catalogue accepts them rather than rejecting the rounding',
+    ok, why.slice(0, 160));
+}
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

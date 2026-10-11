@@ -11,6 +11,11 @@ holding: publisher-licensed
 updated: 2026-10-10
 used-by:
   - "00 - Project/Open Questions.md"
+  - "00 - Project/Process Core — Pro Chrome Plan.md"
+  - "45 - Process Core/catalogue/parts.json"
+  - "45 - Process Core/lab/cutaway/index.html"
+  - "45 - Process Core/lab/extract-f2f.js"
+  - "50 - Lunar Process Engineer/vendor/process-core/catalogue/parts.json"
 ---
 
 # ISA-75.08 — Face-to-Face Dimensions for Control Valves
@@ -27,7 +32,28 @@ resolve which parts are held. Not opened.
 
 ## What has been read
 
-Nothing.
+Nothing of the standard itself.
+
+## Which parts cover what — from a document we DO hold
+
+The Control Valve Handbook 6th ed. reproduces face-to-face tables and names the
+part each one follows. That resolves the series structure without opening any
+part of it, and is recorded here so the next reader does not have to re-derive
+it:
+
+| CVH section | Body style / end connection | Classes | Part named |
+|---|---|---|---|
+| 5.1.1 | Flanged globe | 125, 150, 250, 300, 600 | `ISA-75.08.01` |
+| 5.1.1 | Flanged globe | 900, 1500, 2500 | `ISA-75.08.06` |
+| 5.1.2 | Butt weld-end globe | 150-2500 | `ISA-75.08.05` |
+| 5.1.3 | Socket weld-end globe | 150, 300, 600 | `ISA-75.08.03` |
+| 5.1.4 | Screwed-end globe | 150, 300, 600 | `ISA-75.08.03` |
+| 5.1.6 | Separable flange globe | 150, 300, 600 | `ISA-75.08.08` |
+| (rotary) | | 150, 300, 600 | `ISA-75.08.07`, `ISA-75.08.02` |
+
+**This is the Handbook's claim about the standard, not the standard.** The
+dimensions in those CVH tables are usable on the Handbook's own authority; the
+part numbers above say which document would have to be opened to verify them.
 
 ## What rests on it
 
