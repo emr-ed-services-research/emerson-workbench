@@ -229,7 +229,8 @@ const PAGE = `<!doctype html>
       const f = LPE.flowfield.solveField2D({ rings: wet.rings,
         throatRings: wet.throatRings, stillRings: wet.stillRings,
         openings: wet.openings,
-        stations: gv.flowPathAt(pct).stations, gpm: gpm, cellIn: CELL });
+        stations: gv.flowPathAt(pct).stations, gpm: gpm, cellIn: CELL,
+        plenum: wet.plenum });
       cache = { field: f, wetted: wet,
                 swirl: LPE.flowfield.withRecirculation(f) };
       key = k;

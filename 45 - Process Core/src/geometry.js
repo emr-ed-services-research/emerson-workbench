@@ -1205,8 +1205,49 @@
 
     /* The cage, as two walls either side of the axis. Measured, so the
        proportions are the valve's rather than a set of multiples. */
-    const cageWallL = EWT_CAGE_L.map(place);
-    const cageWallR = EWT_CAGE_R.map(place);
+    const cageWallL0 = EWT_CAGE_L.map(place);
+    const cageWallR0 = EWT_CAGE_R.map(place);
+
+    /* ---- A BORE IS ONE DIAMETER ---------------------------------------
+
+       The cage is turned on a lathe. Its bore cannot be one radius on
+       the left of the centreline and another on the right, and in the
+       trace it is: 2.141 in one side, 2.199 the other on this valve.
+       Nearly all of the difference is there -- the OUTER faces agree
+       to a few thousandths -- so the two walls came out 0.375 and
+       0.307 thick, an eighteen percent difference in a window width
+       that is a fact about the tracing and not about the cage.
+
+       It was invisible while the windows were cut from each wall's
+       bounding box, which averaged the step heights and hid it at
+       four percent. Cutting the window from the wall showed it.
+
+       So the inner face is made one radius, the mean of the two, and
+       the outer faces are left exactly as traced. That is the
+       smallest claim that fixes it: not "symmetrise the casting",
+       which would have to decide what to do about steps the two
+       sides put at different heights, but "a bore is one diameter",
+       which is not arguable. The Working Model's own shell method
+       does the same thing for the same reason -- fit one profile and
+       mirror it, symmetry by construction. */
+    const boreOf = rings => {
+      let lo = Infinity;
+      for (const q of rings) if (Math.abs(q[0]) < lo) lo = Math.abs(q[0]);
+      return lo;
+    };
+    const boreL = boreOf(cageWallL0), boreR = boreOf(cageWallR0);
+    const bore1 = (boreL + boreR) / 2;
+    const toBore = (ring, own) => ring.map(q => {
+      const r = Math.abs(q[0]);
+      /* 0.07 and not 0.10: the left wall carries a small chamfer at
+         its foot, 0.096 in out from the bore, and a tenth swallowed
+         it while the right wall's equivalent at 0.153 survived --
+         trading one asymmetry for another. */
+      if (r > own + 0.07) return [q[0], q[1]];      /* outer face: as traced */
+      return [Math.sign(q[0]) * bore1, q[1]];
+    });
+    const cageWallL = toBore(cageWallL0, boreL);
+    const cageWallR = toBore(cageWallR0, boreR);
     const extentOfRing = r => {
       let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
       for (const q of r) {
@@ -1925,9 +1966,78 @@
           for (const r of bonnetRings) if (inside(r, x, y)) return true;
           return false;
         };
+        /* WHICH WINDOWS THIS PLANE CAN FEED. Walk outward from the
+           window's outer face and see what you meet first: a
+           chamber, and the drawing feeds it; the casting, and its
+           water comes from out of the plane, round the cage.
+
+           A WALK AND NOT A SINGLE PROBE. One probe a fixed distance
+           out has to guess how far the chamber is, and the gap
+           differs between the traces -- 0.03 in on the ED, more than
+           a tenth on the EWT. At 0.06 in the EWT came back with
+           BOTH windows unfed and nothing to take the transfer from,
+           which is not a statement about that valve, it is the probe
+           landing in the gap. Walking cannot miss. */
+        const windowFed = [];
+        const WALK = 0.9;
+        for (const w of windows) {
+          let wx0 = Infinity, wx1 = -Infinity, wy0 = Infinity, wy1 = -Infinity;
+          for (const q of w) {
+            if (q[0] < wx0) wx0 = q[0]; if (q[0] > wx1) wx1 = q[0];
+            if (q[1] < wy0) wy0 = q[1]; if (q[1] > wy1) wy1 = q[1];
+          }
+          const outer = Math.abs(wx0) > Math.abs(wx1) ? wx0 : wx1;
+          const sgn = outer < 0 ? -1 : 1;
+          const ym = (wy0 + wy1) / 2;
+          let verdict = true;          /* nothing in the way at all */
+          for (let d = 0.02; d <= WALK; d += 0.02) {
+            const x = outer + sgn * d;
+            if (inside(chamberL, x, ym) || inside(chamberR, x, ym))
+              { verdict = true; break; }
+            let hitMetal = false;
+            for (const r of bodyRings) if (inside(r, x, ym)) { hitMetal = true; break; }
+            if (!hitMetal)
+              for (const r of bonnetRings) if (inside(r, x, ym)) { hitMetal = true; break; }
+            if (hitMetal) { verdict = false; break; }
+          }
+          windowFed.push(verdict);
+        }
+        const plenumRings = [], plenumOut = [];
+
+        /* ---- WHERE THE SHARE LEAVES THE PLANE ------------------------
+
+           Putting the far side's flow in as a plain source makes the
+           flange carry only what is left, and the line velocity in
+           the drawing comes out at half of the one the catalogue
+           says -- a headline number wrong in the picture to fix a
+           detail in the cage. So it is a TRANSFER: the same volume
+           leaves the chamber on the near side of the cage and
+           arrives in the slot on the far side. Both flanges keep the
+           whole of Q; the chambers either side of the cage carry
+           their own share, which is what they really do.
+
+           It leaves from a slab in the chamber just outside the near
+           window -- where the fluid in the real valve starts going
+           round rather than straight in. Declared, not drawn: there
+           is nothing to see, because the water does not go anywhere
+           a reader could look. */
+        for (let wi = 0; wi < windows.length; wi++) {
+          if (!windowFed[wi]) continue;
+          let wx0 = Infinity, wx1 = -Infinity, wy0 = Infinity, wy1 = -Infinity;
+          for (const q of windows[wi]) {
+            if (q[0] < wx0) wx0 = q[0]; if (q[0] > wx1) wx1 = q[0];
+            if (q[1] < wy0) wy0 = q[1]; if (q[1] > wy1) wy1 = q[1];
+          }
+          const outer = Math.abs(wx0) > Math.abs(wx1) ? wx0 : wx1;
+          const sgn = outer < 0 ? -1 : 1;
+          const a = outer + sgn * 0.04, b2 = outer + sgn * 0.34;
+          plenumOut.push([[a, wy0], [b2, wy0], [b2, wy1], [a, wy1]]);
+        }
+
         const MAXGAP = 0.9;
         for (const wall of [cageWallL, cageWallR]) {
           const sign = wall === cageWallL ? -1 : 1;
+          const wIdx = wall === cageWallL ? 0 : 1;
           /* RUNS, NOT ONE COLUMN. The horizontal misses the wall at
              the very top and bottom of the cage's own height, and
              emptying the column on a miss threw away everything
@@ -1939,7 +2049,23 @@
           const flush = () => {
             if (near.length > 2) {
               const slot = near.concat(far.reverse());
-              rings.push(slot); stillRings.push(slot);
+              rings.push(slot);
+              if (windowFed[wIdx]) {
+                /* The chamber is already against this side, so this
+                   sliver is just more of it: no through-flow of its
+                   own. */
+                stillRings.push(slot);
+              } else {
+                /* If the window on this side cannot be fed in plane,
+                   THIS is where its flow arrives from: the same
+                   annulus, one quarter-turn away. It is NOT still --
+                   the whole point is that the flow for the far
+                   window passes through it -- and marking it still
+                   put it outside the solved domain altogether, so
+                   the share was delivered to cells the solver was
+                   not looking at. */
+                plenumRings.push(slot);
+              }
             }
             near = []; far = [];
           };
@@ -2094,6 +2220,28 @@
           stillRings: Object.freeze(
             stillRings.map(r => Object.freeze(r.map(Object.freeze)))),
           openings: Object.freeze(openings.map(Object.freeze)),
+          /* ---- WHAT THE SECTION CANNOT SHOW ARRIVING ----------------
+             The plenum round the cage is an annulus and it feeds
+             every window. This plane cuts it twice and only one cut
+             touches the inlet, so the other one has to be TOLD its
+             share -- it arrives along a path that runs round the
+             cage, perpendicular to the picture. Declared here, put
+             in by the flow field, and the share is simply how many
+             of the windows this plane cannot reach. */
+          plenum: Object.freeze({
+            into: Object.freeze(
+              plenumRings.map(r => Object.freeze(r.map(Object.freeze)))),
+            outOf: Object.freeze(
+              plenumOut.map(r => Object.freeze(r.map(Object.freeze)))),
+            share: windowFed.length
+              ? windowFed.filter(f => !f).length / windowFed.length : 0,
+            why: 'the far cut of the plenum annulus -- fed round the '
+               + 'cage, out of the section plane. A TRANSFER and not '
+               + 'an injection: the share leaves the near chamber and '
+               + 'arrives in the far slot, so both flanges still carry '
+               + 'the whole of Q and only the space either side of the '
+               + 'cage carries its own part of it.',
+          }),
           deadEnds: Object.freeze([
             'the drillings through the plug',
             'the cavity over the plug head']),

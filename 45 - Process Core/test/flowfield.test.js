@@ -496,5 +496,105 @@ console.log('');
   }
 }
 
+/* ---- THE HALF OF THE CAGE THIS PLANE CANNOT FEED --------------------
+
+   A longitudinal section cuts the plenum annulus twice and only one
+   cut touches the inlet. Solved as drawn, the far window carries
+   nothing and the picture says half the cage is dead -- which it
+   does, measurably: 0.0 ft/s through the far window against 2.0
+   through the near one.
+
+   The fix is a declared TRANSFER, not an injection. The same volume
+   leaves the chamber on the near side and arrives in the slot on the
+   far side, so both flanges still carry the whole of Q and only the
+   plane through the cage carries half of it -- which is the truth
+   about a section through a round thing, and is worth being able to
+   say out loud rather than quietly getting wrong. */
+{
+  const CATp = LPE.catalogue.load(JSON.parse(fs.readFileSync(
+    path.join(__dirname, '..', 'catalogue', 'parts.json'), 'utf8')));
+  /* THE VALVE THE LOOP ACTUALLY DRAWS, and at the cell it draws it
+     at. The EWT the rest of this suite uses is three times the size
+     and its clearance round the cage is thinner than any cell this
+     suite would solve it at -- a fair thing for the field to decline,
+     and checked at the end, but not the case to prove the mechanism
+     on. */
+  const Vp = CATp.part('VALVE/ED/NPS4/P4.375/T2/EQPCT');
+  const WPp = LPE.trim.fromCurve({ curve: Vp.cv,
+    characterisedBy: Vp.characterisedBy }).widthProfile();
+  const CELL = 0.14, GPM_CFS = 1 / 448.831;
+  const gvp = LPE.geometry.globeValve({ part: Vp, faceToFace: 14.5,
+    lineBore: 4.026, flow: 'down', widthProfile: WPp.width });
+  const pct = 75;
+  const gpmp = 826 * (gvp.openAreaAt(pct) / gvp.openAreaAt(100));
+  const wp = gvp.wettedAt(pct, { minGap: CELL * 1.8 });
+  const common = {
+    rings: wp.rings, throatRings: wp.throatRings,
+    stillRings: wp.stillRings, openings: wp.openings,
+    stations: gvp.flowPathAt(pct).stations, gpm: gpmp, cellIn: CELL,
+  };
+  const bare = LPE.flowfield.solveField2D(common);
+  const fed = LPE.flowfield.solveField2D(
+    Object.assign({}, common, { plenum: wp.plenum }));
+
+  const midOf = ring => {
+    const xs = ring.map(q => q[0]), ys = ring.map(q => q[1]);
+    return [(Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2,
+            (Math.min.apply(null, ys) + Math.max.apply(null, ys)) / 2];
+  };
+  const wins = gvp.cage.windows.map(midOf);
+  const spd = (f, p) => f.speedAt(p[0], p[1]);
+  const near = wins[0], far = wins[1];
+
+  check('the geometry names the far cut of the plenum and its share',
+    wp.plenum && wp.plenum.into.length > 0 && wp.plenum.outOf.length > 0 &&
+    Math.abs(wp.plenum.share - 0.5) < 1e-9,
+    JSON.stringify({ into: wp.plenum && wp.plenum.into.length,
+                     outOf: wp.plenum && wp.plenum.outOf.length,
+                     share: wp.plenum && wp.plenum.share }));
+  check('drawn as it stands, the far window carries nothing',
+    spd(bare, far) < spd(bare, near) * 0.02 && spd(bare, near) > 1,
+    'near ' + (spd(bare, near) / 12).toFixed(2) + ' ft/s, far ' +
+    (spd(bare, far) / 12).toFixed(2));
+  check('with the plenum declared, it carries a great deal',
+    spd(fed, far) > 1,
+    'far ' + (spd(fed, far) / 12).toFixed(2) + ' ft/s');
+
+  const Qp = gpmp * GPM_CFS * 1728;
+  const at = (f, x) => f.fluxThroughX(x) / Qp;
+  check('and BOTH flanges still carry the whole of Q',
+    Math.abs(at(fed, -6.5) - at(bare, -6.5)) < 0.02 &&
+    Math.abs(at(fed, 6.5) - at(bare, 6.5)) < 0.02,
+    'in ' + at(fed, -6.5).toFixed(2) + ' out ' + at(fed, 6.5).toFixed(2) +
+    ' against ' + at(bare, -6.5).toFixed(2) + ' / ' +
+    at(bare, 6.5).toFixed(2) + ' without it -- an injection rather than ' +
+    'a transfer halves the velocity in the line, which is a headline ' +
+    'number wrong in the picture to fix a detail in the cage');
+  check('while the plane through the cage carries half, as it should',
+    at(fed, 0) < 0.6 * at(bare, 0),
+    at(fed, 0).toFixed(2) + ' of Q against ' + at(bare, 0).toFixed(2) +
+    ' -- the rest of it is round the back, out of the section');
+
+  check('and it says, on the field, that it carried it',
+    fed.plenumCarried === true && /out of \d+ cells/.test(fed.plenumNote),
+    String(fed.plenumNote));
+
+  /* A grid too coarse to hold a third of an inch of clearance cannot
+     carry the transfer. Half a transfer would unbalance the problem
+     and a silent one would leave a reader of the far window none the
+     wiser, so it is skipped whole and declared. */
+  const nowhere = LPE.flowfield.solveField2D(Object.assign({}, common, {
+    plenum: { into: [[[90, 90], [91, 90], [91, 91], [90, 91]]],
+              outOf: wp.plenum.outOf, share: 0.5 } }));
+  check('a share with nowhere to land is skipped whole and SAID, not ' +
+        'half-done',
+    nowhere.plenumCarried === false &&
+    /DECLARED AND NOT CARRIED/.test(nowhere.plenumNote),
+    String(nowhere.plenumNote));
+  check('and skipping it leaves the flow exactly where it was',
+    Math.abs(at(nowhere, 0) - at(bare, 0)) < 1e-6,
+    'half a transfer would unbalance the problem');
+}
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

@@ -1770,8 +1770,49 @@
 
     /* The cage, as two walls either side of the axis. Measured, so the
        proportions are the valve's rather than a set of multiples. */
-    const cageWallL = EWT_CAGE_L.map(place);
-    const cageWallR = EWT_CAGE_R.map(place);
+    const cageWallL0 = EWT_CAGE_L.map(place);
+    const cageWallR0 = EWT_CAGE_R.map(place);
+
+    /* ---- A BORE IS ONE DIAMETER ---------------------------------------
+
+       The cage is turned on a lathe. Its bore cannot be one radius on
+       the left of the centreline and another on the right, and in the
+       trace it is: 2.141 in one side, 2.199 the other on this valve.
+       Nearly all of the difference is there -- the OUTER faces agree
+       to a few thousandths -- so the two walls came out 0.375 and
+       0.307 thick, an eighteen percent difference in a window width
+       that is a fact about the tracing and not about the cage.
+
+       It was invisible while the windows were cut from each wall's
+       bounding box, which averaged the step heights and hid it at
+       four percent. Cutting the window from the wall showed it.
+
+       So the inner face is made one radius, the mean of the two, and
+       the outer faces are left exactly as traced. That is the
+       smallest claim that fixes it: not "symmetrise the casting",
+       which would have to decide what to do about steps the two
+       sides put at different heights, but "a bore is one diameter",
+       which is not arguable. The Working Model's own shell method
+       does the same thing for the same reason -- fit one profile and
+       mirror it, symmetry by construction. */
+    const boreOf = rings => {
+      let lo = Infinity;
+      for (const q of rings) if (Math.abs(q[0]) < lo) lo = Math.abs(q[0]);
+      return lo;
+    };
+    const boreL = boreOf(cageWallL0), boreR = boreOf(cageWallR0);
+    const bore1 = (boreL + boreR) / 2;
+    const toBore = (ring, own) => ring.map(q => {
+      const r = Math.abs(q[0]);
+      /* 0.07 and not 0.10: the left wall carries a small chamfer at
+         its foot, 0.096 in out from the bore, and a tenth swallowed
+         it while the right wall's equivalent at 0.153 survived --
+         trading one asymmetry for another. */
+      if (r > own + 0.07) return [q[0], q[1]];      /* outer face: as traced */
+      return [Math.sign(q[0]) * bore1, q[1]];
+    });
+    const cageWallL = toBore(cageWallL0, boreL);
+    const cageWallR = toBore(cageWallR0, boreR);
     const extentOfRing = r => {
       let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
       for (const q of r) {
@@ -2490,9 +2531,78 @@
           for (const r of bonnetRings) if (inside(r, x, y)) return true;
           return false;
         };
+        /* WHICH WINDOWS THIS PLANE CAN FEED. Walk outward from the
+           window's outer face and see what you meet first: a
+           chamber, and the drawing feeds it; the casting, and its
+           water comes from out of the plane, round the cage.
+
+           A WALK AND NOT A SINGLE PROBE. One probe a fixed distance
+           out has to guess how far the chamber is, and the gap
+           differs between the traces -- 0.03 in on the ED, more than
+           a tenth on the EWT. At 0.06 in the EWT came back with
+           BOTH windows unfed and nothing to take the transfer from,
+           which is not a statement about that valve, it is the probe
+           landing in the gap. Walking cannot miss. */
+        const windowFed = [];
+        const WALK = 0.9;
+        for (const w of windows) {
+          let wx0 = Infinity, wx1 = -Infinity, wy0 = Infinity, wy1 = -Infinity;
+          for (const q of w) {
+            if (q[0] < wx0) wx0 = q[0]; if (q[0] > wx1) wx1 = q[0];
+            if (q[1] < wy0) wy0 = q[1]; if (q[1] > wy1) wy1 = q[1];
+          }
+          const outer = Math.abs(wx0) > Math.abs(wx1) ? wx0 : wx1;
+          const sgn = outer < 0 ? -1 : 1;
+          const ym = (wy0 + wy1) / 2;
+          let verdict = true;          /* nothing in the way at all */
+          for (let d = 0.02; d <= WALK; d += 0.02) {
+            const x = outer + sgn * d;
+            if (inside(chamberL, x, ym) || inside(chamberR, x, ym))
+              { verdict = true; break; }
+            let hitMetal = false;
+            for (const r of bodyRings) if (inside(r, x, ym)) { hitMetal = true; break; }
+            if (!hitMetal)
+              for (const r of bonnetRings) if (inside(r, x, ym)) { hitMetal = true; break; }
+            if (hitMetal) { verdict = false; break; }
+          }
+          windowFed.push(verdict);
+        }
+        const plenumRings = [], plenumOut = [];
+
+        /* ---- WHERE THE SHARE LEAVES THE PLANE ------------------------
+
+           Putting the far side's flow in as a plain source makes the
+           flange carry only what is left, and the line velocity in
+           the drawing comes out at half of the one the catalogue
+           says -- a headline number wrong in the picture to fix a
+           detail in the cage. So it is a TRANSFER: the same volume
+           leaves the chamber on the near side of the cage and
+           arrives in the slot on the far side. Both flanges keep the
+           whole of Q; the chambers either side of the cage carry
+           their own share, which is what they really do.
+
+           It leaves from a slab in the chamber just outside the near
+           window -- where the fluid in the real valve starts going
+           round rather than straight in. Declared, not drawn: there
+           is nothing to see, because the water does not go anywhere
+           a reader could look. */
+        for (let wi = 0; wi < windows.length; wi++) {
+          if (!windowFed[wi]) continue;
+          let wx0 = Infinity, wx1 = -Infinity, wy0 = Infinity, wy1 = -Infinity;
+          for (const q of windows[wi]) {
+            if (q[0] < wx0) wx0 = q[0]; if (q[0] > wx1) wx1 = q[0];
+            if (q[1] < wy0) wy0 = q[1]; if (q[1] > wy1) wy1 = q[1];
+          }
+          const outer = Math.abs(wx0) > Math.abs(wx1) ? wx0 : wx1;
+          const sgn = outer < 0 ? -1 : 1;
+          const a = outer + sgn * 0.04, b2 = outer + sgn * 0.34;
+          plenumOut.push([[a, wy0], [b2, wy0], [b2, wy1], [a, wy1]]);
+        }
+
         const MAXGAP = 0.9;
         for (const wall of [cageWallL, cageWallR]) {
           const sign = wall === cageWallL ? -1 : 1;
+          const wIdx = wall === cageWallL ? 0 : 1;
           /* RUNS, NOT ONE COLUMN. The horizontal misses the wall at
              the very top and bottom of the cage's own height, and
              emptying the column on a miss threw away everything
@@ -2504,7 +2614,23 @@
           const flush = () => {
             if (near.length > 2) {
               const slot = near.concat(far.reverse());
-              rings.push(slot); stillRings.push(slot);
+              rings.push(slot);
+              if (windowFed[wIdx]) {
+                /* The chamber is already against this side, so this
+                   sliver is just more of it: no through-flow of its
+                   own. */
+                stillRings.push(slot);
+              } else {
+                /* If the window on this side cannot be fed in plane,
+                   THIS is where its flow arrives from: the same
+                   annulus, one quarter-turn away. It is NOT still --
+                   the whole point is that the flow for the far
+                   window passes through it -- and marking it still
+                   put it outside the solved domain altogether, so
+                   the share was delivered to cells the solver was
+                   not looking at. */
+                plenumRings.push(slot);
+              }
             }
             near = []; far = [];
           };
@@ -2659,6 +2785,28 @@
           stillRings: Object.freeze(
             stillRings.map(r => Object.freeze(r.map(Object.freeze)))),
           openings: Object.freeze(openings.map(Object.freeze)),
+          /* ---- WHAT THE SECTION CANNOT SHOW ARRIVING ----------------
+             The plenum round the cage is an annulus and it feeds
+             every window. This plane cuts it twice and only one cut
+             touches the inlet, so the other one has to be TOLD its
+             share -- it arrives along a path that runs round the
+             cage, perpendicular to the picture. Declared here, put
+             in by the flow field, and the share is simply how many
+             of the windows this plane cannot reach. */
+          plenum: Object.freeze({
+            into: Object.freeze(
+              plenumRings.map(r => Object.freeze(r.map(Object.freeze)))),
+            outOf: Object.freeze(
+              plenumOut.map(r => Object.freeze(r.map(Object.freeze)))),
+            share: windowFed.length
+              ? windowFed.filter(f => !f).length / windowFed.length : 0,
+            why: 'the far cut of the plenum annulus -- fed round the '
+               + 'cage, out of the section plane. A TRANSFER and not '
+               + 'an injection: the share leaves the near chamber and '
+               + 'arrives in the far slot, so both flanges still carry '
+               + 'the whole of Q and only the space either side of the '
+               + 'cage carries its own part of it.',
+          }),
           deadEnds: Object.freeze([
             'the drillings through the plug',
             'the cavity over the plug head']),
@@ -8170,6 +8318,34 @@
     const Q = gpm * GPM_TO_CFS;
     const flux = new Float64Array(W * H);     /* inward velocity, in/s */
     const atOpening = new Int8Array(W * H);
+    /* ---- THE SHARE THAT ARRIVES FROM OUT OF THE PLANE ----------------
+
+       A longitudinal section cuts the plenum annulus twice and only
+       one cut touches the inlet. The other one is a closed slot in
+       this plane -- it has no boundary to the outside at all, so
+       there is nowhere to put an opening on it -- and in the real
+       valve its water arrives round the cage, perpendicular to the
+       picture.
+
+       So it is a SOURCE in the interior, not a boundary flux. The
+       flange gives up that share and the slot receives it, which
+       keeps what goes in equal to what comes out and puts the inrush
+       through the far window where it belongs. The first attempt put
+       a velocity on the window's outer face over a made-up circular
+       bore, on cells whose depth is near zero at low travel; the
+       boundary condition and the depth map disagreed and the solve
+       ran away to a residual of 1e18.
+
+       It is DECLARED, not solved. The model cannot see that path. */
+    const plenum = o.plenum || null;
+    const pShare = plenum && plenum.into && plenum.into.length &&
+                   plenum.outOf && plenum.outOf.length
+      ? (plenum.share || 0) : 0;
+    if (!(pShare >= 0 && pShare < 1))
+      throw new Error('flowfield.solveField2D: the plenum share is the ' +
+        'fraction of the flow that reaches the far side of the cage ' +
+        'round the back, so it is at least 0 and less than 1; got ' +
+        pShare + '. At 1 the flange would carry nothing.');
     for (const op of openings) {
       const area = Math.PI * op.halfW * op.halfW;        /* in2 */
       const v = area > 0 ? (Q * 1728) / area : 0;        /* in/s */
@@ -8199,6 +8375,68 @@
       if (atOpening[k] > 0) fin += flux[k] * depth[k];
       else if (atOpening[k] < 0) fout -= flux[k] * depth[k];
     }
+
+    /* The cells the out-of-plane share arrives in, and how much each
+       of them gets. Spread evenly over the slot: the real inflow is
+       spread round a quarter-turn of annulus, and nothing in this
+       plane says which end of the slot it reaches first. */
+    /* THE SLOT CAN BE NARROWER THAN A CELL, and on the bigger valve
+       at a coarse grid it is: a third of an inch of clearance and a
+       third of an inch of cell, and not one cell CENTRE lands inside
+       it. Containment alone then finds nothing and the transfer has
+       nowhere to go. So a cell also counts if its own square reaches
+       the region -- the cell is partly that slot, which is as true
+       as a grid this coarse can be about a feature this thin. */
+    const cellsIn = rs => {
+      const strict = [], loose = [];
+      const boxes = rs.map(r => {
+        let a = Infinity, b2 = -Infinity, c2 = Infinity, d2 = -Infinity;
+        for (const q of r) {
+          if (q[0] < a) a = q[0]; if (q[0] > b2) b2 = q[0];
+          if (q[1] < c2) c2 = q[1]; if (q[1] > d2) d2 = q[1];
+        }
+        return [a, b2, c2, d2];
+      });
+      const h = cell / 2;
+      for (let j = 0; j < H; j++)
+        for (let i = 0; i < W; i++) {
+          const k = j * W + i;
+          if (!mark[k] || atOpening[k]) continue;
+          const px = cx(i), py = cy(j);
+          let hit = false;
+          for (const r of rs) if (inRing(r, px, py)) { hit = true; break; }
+          if (hit) { strict.push(k); continue; }
+          for (const bx of boxes)
+            if (px + h > bx[0] && px - h < bx[1] &&
+                py + h > bx[2] && py - h < bx[3]) { loose.push(k); break; }
+        }
+      return strict.length ? strict : loose;
+    };
+    const pInto = pShare > 0 ? cellsIn(plenum.into) : [];
+    const pOut = pShare > 0 ? cellsIn(plenum.outOf) : [];
+    /* A GRID TOO COARSE TO HOLD THE SLOT SAYS SO. The clearance round
+       the cage is a third of an inch; a grid whose cells are a third
+       of an inch cannot resolve it, and on such a grid the transfer
+       has nowhere to land. Doing it half -- out of the chamber and
+       nowhere in -- would unbalance the problem, and doing it
+       silently would leave a reader of the far window none the
+       wiser. So it is skipped, together, and the field reports that
+       it was skipped. The drawing runs at a cell that resolves it. */
+    const plenumResolved = pShare > 0 && pInto.length > 0 && pOut.length > 0;
+    const plenumNote = pShare <= 0 ? null
+      : plenumResolved
+        ? 'the share that runs round the cage is carried: out of ' +
+          pOut.length + ' cells in the near chamber, into ' +
+          pInto.length + ' in the far slot'
+        : 'DECLARED AND NOT CARRIED: ' + pOut.length + ' cells to ' +
+          'take it from and ' + pInto.length + ' to put it in. Either ' +
+          'the slot is thinner than this grid can hold (' +
+          cell.toFixed(2) + ' in cells) or the region given is not in ' +
+          'the solved domain. The far side of the cage carries nothing ' +
+          'on this solve.';
+    /* The transfer, in the same currency as the boundary flux. */
+    const fplen = plenumResolved ? fin * pShare : 0;
+
     if (fin > 0 && fout > 0) {
       const adj = fin / fout;
       for (let k = 0; k < flux.length; k++) if (atOpening[k] < 0) flux[k] *= adj;
@@ -8247,6 +8485,14 @@
         diag[k] = dsum;
         bvec[k] = -depth[k] * flux[k] * cell;
       }
+    /* The share that goes round the back: out of the near chamber,
+       into the far slot, in equal and opposite amounts so the sum
+       over the domain is unchanged and the problem stays solvable. */
+    if (plenumResolved) {
+      const each = fplen * cell;
+      for (const k of pOut) bvec[k] += each / pOut.length;
+      for (const k of pInto) bvec[k] -= each / pInto.length;
+    }
 
     const applyA = (v, out) => {
       for (let j = 0; j < H; j++)
@@ -8424,6 +8670,9 @@
       width: W, height: H, cellIn: cell,
       originIn: [x0, y0],
       cells: cells, residual: residual, sweeps: sweeps,
+      /* Whether the share that runs round the cage was carried,
+         and if not, why not. */
+      plenumCarried: plenumResolved, plenumNote: plenumNote,
       depthAt: (x, y) => { const k = idxOf(x, y);
                            return k >= 0 && mark[k] ? depth[k] : null; },
       units: { v: 'in/s', x: 'in' },
@@ -28989,7 +29238,8 @@
       const f = LPE.flowfield.solveField2D({ rings: wet.rings,
         throatRings: wet.throatRings, stillRings: wet.stillRings,
         openings: wet.openings,
-        stations: gv.flowPathAt(pct).stations, gpm: gpm, cellIn: CELL });
+        stations: gv.flowPathAt(pct).stations, gpm: gpm, cellIn: CELL,
+        plenum: wet.plenum });
       cache = { field: f, wetted: wet,
                 swirl: LPE.flowfield.withRecirculation(f) };
       key = k;

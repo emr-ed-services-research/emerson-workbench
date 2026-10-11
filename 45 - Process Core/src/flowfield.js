@@ -700,6 +700,34 @@
     const Q = gpm * GPM_TO_CFS;
     const flux = new Float64Array(W * H);     /* inward velocity, in/s */
     const atOpening = new Int8Array(W * H);
+    /* ---- THE SHARE THAT ARRIVES FROM OUT OF THE PLANE ----------------
+
+       A longitudinal section cuts the plenum annulus twice and only
+       one cut touches the inlet. The other one is a closed slot in
+       this plane -- it has no boundary to the outside at all, so
+       there is nowhere to put an opening on it -- and in the real
+       valve its water arrives round the cage, perpendicular to the
+       picture.
+
+       So it is a SOURCE in the interior, not a boundary flux. The
+       flange gives up that share and the slot receives it, which
+       keeps what goes in equal to what comes out and puts the inrush
+       through the far window where it belongs. The first attempt put
+       a velocity on the window's outer face over a made-up circular
+       bore, on cells whose depth is near zero at low travel; the
+       boundary condition and the depth map disagreed and the solve
+       ran away to a residual of 1e18.
+
+       It is DECLARED, not solved. The model cannot see that path. */
+    const plenum = o.plenum || null;
+    const pShare = plenum && plenum.into && plenum.into.length &&
+                   plenum.outOf && plenum.outOf.length
+      ? (plenum.share || 0) : 0;
+    if (!(pShare >= 0 && pShare < 1))
+      throw new Error('flowfield.solveField2D: the plenum share is the ' +
+        'fraction of the flow that reaches the far side of the cage ' +
+        'round the back, so it is at least 0 and less than 1; got ' +
+        pShare + '. At 1 the flange would carry nothing.');
     for (const op of openings) {
       const area = Math.PI * op.halfW * op.halfW;        /* in2 */
       const v = area > 0 ? (Q * 1728) / area : 0;        /* in/s */
@@ -729,6 +757,68 @@
       if (atOpening[k] > 0) fin += flux[k] * depth[k];
       else if (atOpening[k] < 0) fout -= flux[k] * depth[k];
     }
+
+    /* The cells the out-of-plane share arrives in, and how much each
+       of them gets. Spread evenly over the slot: the real inflow is
+       spread round a quarter-turn of annulus, and nothing in this
+       plane says which end of the slot it reaches first. */
+    /* THE SLOT CAN BE NARROWER THAN A CELL, and on the bigger valve
+       at a coarse grid it is: a third of an inch of clearance and a
+       third of an inch of cell, and not one cell CENTRE lands inside
+       it. Containment alone then finds nothing and the transfer has
+       nowhere to go. So a cell also counts if its own square reaches
+       the region -- the cell is partly that slot, which is as true
+       as a grid this coarse can be about a feature this thin. */
+    const cellsIn = rs => {
+      const strict = [], loose = [];
+      const boxes = rs.map(r => {
+        let a = Infinity, b2 = -Infinity, c2 = Infinity, d2 = -Infinity;
+        for (const q of r) {
+          if (q[0] < a) a = q[0]; if (q[0] > b2) b2 = q[0];
+          if (q[1] < c2) c2 = q[1]; if (q[1] > d2) d2 = q[1];
+        }
+        return [a, b2, c2, d2];
+      });
+      const h = cell / 2;
+      for (let j = 0; j < H; j++)
+        for (let i = 0; i < W; i++) {
+          const k = j * W + i;
+          if (!mark[k] || atOpening[k]) continue;
+          const px = cx(i), py = cy(j);
+          let hit = false;
+          for (const r of rs) if (inRing(r, px, py)) { hit = true; break; }
+          if (hit) { strict.push(k); continue; }
+          for (const bx of boxes)
+            if (px + h > bx[0] && px - h < bx[1] &&
+                py + h > bx[2] && py - h < bx[3]) { loose.push(k); break; }
+        }
+      return strict.length ? strict : loose;
+    };
+    const pInto = pShare > 0 ? cellsIn(plenum.into) : [];
+    const pOut = pShare > 0 ? cellsIn(plenum.outOf) : [];
+    /* A GRID TOO COARSE TO HOLD THE SLOT SAYS SO. The clearance round
+       the cage is a third of an inch; a grid whose cells are a third
+       of an inch cannot resolve it, and on such a grid the transfer
+       has nowhere to land. Doing it half -- out of the chamber and
+       nowhere in -- would unbalance the problem, and doing it
+       silently would leave a reader of the far window none the
+       wiser. So it is skipped, together, and the field reports that
+       it was skipped. The drawing runs at a cell that resolves it. */
+    const plenumResolved = pShare > 0 && pInto.length > 0 && pOut.length > 0;
+    const plenumNote = pShare <= 0 ? null
+      : plenumResolved
+        ? 'the share that runs round the cage is carried: out of ' +
+          pOut.length + ' cells in the near chamber, into ' +
+          pInto.length + ' in the far slot'
+        : 'DECLARED AND NOT CARRIED: ' + pOut.length + ' cells to ' +
+          'take it from and ' + pInto.length + ' to put it in. Either ' +
+          'the slot is thinner than this grid can hold (' +
+          cell.toFixed(2) + ' in cells) or the region given is not in ' +
+          'the solved domain. The far side of the cage carries nothing ' +
+          'on this solve.';
+    /* The transfer, in the same currency as the boundary flux. */
+    const fplen = plenumResolved ? fin * pShare : 0;
+
     if (fin > 0 && fout > 0) {
       const adj = fin / fout;
       for (let k = 0; k < flux.length; k++) if (atOpening[k] < 0) flux[k] *= adj;
@@ -777,6 +867,14 @@
         diag[k] = dsum;
         bvec[k] = -depth[k] * flux[k] * cell;
       }
+    /* The share that goes round the back: out of the near chamber,
+       into the far slot, in equal and opposite amounts so the sum
+       over the domain is unchanged and the problem stays solvable. */
+    if (plenumResolved) {
+      const each = fplen * cell;
+      for (const k of pOut) bvec[k] += each / pOut.length;
+      for (const k of pInto) bvec[k] -= each / pInto.length;
+    }
 
     const applyA = (v, out) => {
       for (let j = 0; j < H; j++)
@@ -954,6 +1052,9 @@
       width: W, height: H, cellIn: cell,
       originIn: [x0, y0],
       cells: cells, residual: residual, sweeps: sweeps,
+      /* Whether the share that runs round the cage was carried,
+         and if not, why not. */
+      plenumCarried: plenumResolved, plenumNote: plenumNote,
       depthAt: (x, y) => { const k = idxOf(x, y);
                            return k >= 0 && mark[k] ? depth[k] : null; },
       units: { v: 'in/s', x: 'in' },
