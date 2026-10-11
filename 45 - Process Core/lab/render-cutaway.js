@@ -191,6 +191,7 @@ const PAGE = `<!doctype html>
           <option value="valve">whole valve</option>
           <option value="trim" selected>the trim</option>
           <option value="window">the window</option>
+          <option value="packing">the packing</option>
         </select></label>
       <span class="num">window <b id="athroat">--</b> in&sup2;</span>
       <span class="num">through it <b id="vthroat">--</b> ft/s
@@ -328,6 +329,15 @@ ${SCRIPTS}
     switch (zoomLevel()) {
       case 'valve':  return gv.faceToFace * 1.04;
       case 'window': return Math.max(gv.travel * 3.0, gv.port * 1.1);
+      /* The packing box plus the bore under it, so the flooded column
+         the packing is sealing is in frame with the thing sealing it.
+         Showing the stack alone would be showing a part without its
+         reason. */
+      case 'packing': {
+        var pb = gv.packingBox && gv.packingBox();
+        if (!pb) return gv.cage.outerR * 2;
+        return (pb.to - gv.cage.y1) * 1.5;
+      }
       /* The trim means ALL of it. At 2.9 cage radii the frame cut
          the port off the bottom, so the one view meant for teaching
          was missing the hole the fluid actually leaves through. Wide
@@ -339,6 +349,10 @@ ${SCRIPTS}
   function zoomCentre(gv, r, pl) {
     var t = +document.getElementById('tv').value;
     if (zoomLevel() === 'valve') return [0, gv.cage.y1 * 0.26];
+    if (zoomLevel() === 'packing') {
+      var pbx = gv.packingBox && gv.packingBox();
+      return [0, pbx ? (pbx.to + gv.cage.y1) / 2 : gv.cage.y1];
+    }
     if (zoomLevel() === 'window') {
       var fp = gv.flowPathAt(t);
       var th = fp.stations[fp.throat];
@@ -458,6 +472,10 @@ ${SCRIPTS}
     });
     PC.drawBalance(ctx('c4'), pl, t, { theme: dark ? PC.DARK : undefined,
                                        parts: fluid });
+    /* The packing, in the bore it sits in. After the trim because it
+       is above it, and after the fluid because the entire point of
+       the part is that the fluid stops here. */
+    PC.drawPacking(ctx('c4'), pl, { theme: dark ? PC.DARK : undefined });
     if (r && r.fastestAt && !r.shut)
       PC.markThroat(ctx('c4'), r, { theme: dark ? PC.DARK : undefined });
 
@@ -533,6 +551,7 @@ ${SCRIPTS}
       });
       PC.drawBalance(zg, zpl, t, { theme: dark ? PC.DARK : undefined,
                                    parts: fluid });
+      PC.drawPacking(zg, zpl, { theme: dark ? PC.DARK : undefined });
       if (zr && zr.fastestAt && !zr.shut)
         PC.markThroat(zg, zr, { theme: dark ? PC.DARK : undefined,
                                 radius: 9 * (zpl.scale / pl.scale) * 0.4 });

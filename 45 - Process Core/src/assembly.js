@@ -184,6 +184,105 @@
       'is what a teaching screen showing a WRONG assembly would do.');
   }
 
+  /* ---- PACKING TORQUE, AND WHY IT IS A WINDOW ------------------------
+
+     Tighten the packing flange nuts too little and the valve leaks to
+     atmosphere. Tighten them too much and the stem binds: friction
+     climbs, the positioner starts hunting, and a valve that could
+     hold position begins to stick. There is no "tighter is safer"
+     here, and that instinct is precisely what the published figures
+     contradict.
+
+     Fisher prints both ends. D100399X012 Table 6 gives a minimum AND
+     a maximum for every stem diameter, pressure class and packing
+     type, and the two differ by about half as much again -- 133 to
+     199 lbf.in for a 3/4 inch stem in CL300 graphite, 64 to 95 for
+     the same stem in PTFE. Graphite takes roughly twice what PTFE
+     does, because it is a different material doing the same job.
+
+     WHAT IS SOURCED: the window. Both ends of it, per stem, per
+     class, per material, straight off the table.
+
+     WHAT IS DECLARED: the friction. Turning a nut torque into a drag
+     force on the stem needs a nut factor, a stud count, a packing
+     friction coefficient and a compression model, none of which
+     Fisher publishes here -- so this reports friction as an INDEX
+     against the middle of the window rather than a figure in pounds,
+     and says so. An index is honest about being a comparison; a
+     number in pounds would be a claim. */
+  function packingTorque(spec) {
+    if (!spec || !spec.catalogue)
+      throw new Error('assembly.packingTorque: needs {catalogue} -- the ' +
+        'window comes out of it, not out of this function.');
+    const cat = spec.catalogue;
+    const type = (spec.packingType || '').toUpperCase();
+    if (type !== 'GRAPHITE' && type !== 'PTFE')
+      throw new Error('assembly.packingTorque: {packingType} must be ' +
+        '"graphite" or "ptfe". They are different materials with ' +
+        'different windows -- graphite takes about twice the torque -- ' +
+        'so there is no default that is not a guess about the valve.');
+    const cls = spec.pressureClass;
+    if (!cls)
+      throw new Error('assembly.packingTorque: {pressureClass} -- CL300 ' +
+        'and CL600 have different windows for the same stem.');
+    const stem = spec.stem;
+    if (!(stem > 0))
+      throw new Error('assembly.packingTorque: {stem} diameter in inches.');
+
+    let row = null;
+    for (const id of cat.ids()) {
+      const p = cat.part(id);
+      if (!p || p.class !== 'packing') continue;
+      if (p.packingType.toUpperCase() !== type) continue;
+      if (p.pressureClass !== cls) continue;
+      if (Math.abs(p.dims.stem - stem) > 1e-9) continue;
+      row = p; break;
+    }
+    if (!row)
+      throw new Error('assembly.packingTorque: no published window for a ' +
+        stem + ' in stem, ' + cls + ', ' + type.toLowerCase() + ' packing. ' +
+        'Table 6 covers 1/2, 3/4, 1 and 1-1/4 inch stems in CL300 and ' +
+        'CL600. A window nobody published is not one to interpolate: the ' +
+        'numbers are test results, not a curve.');
+
+    const min = row.dims.torqueMin, max = row.dims.torqueMax;
+    const mid = (min + max) / 2;
+    const applied = spec.applied === undefined ? mid : spec.applied;
+    if (!(applied >= 0))
+      throw new Error('assembly.packingTorque: {applied} torque must be ' +
+        'a non-negative number of lbf.in.');
+
+    const state = applied < min ? 'leaks'
+                : applied > max ? 'binding' : 'sealed';
+    return Object.freeze({
+      packingType: type.toLowerCase(), pressureClass: cls, stem: stem,
+      minLbfIn: min, maxLbfIn: max, midLbfIn: mid, appliedLbfIn: applied,
+      state: state,
+      /* Friction as a multiple of what the middle of the window
+         gives. Declared, not calculated: see the note. */
+      frictionIndex: applied / mid,
+      says: state === 'leaks'
+        ? 'Under the published minimum. The packing is not compressed '
+        + 'enough to seal and the valve leaks to atmosphere -- which on '
+        + 'a hydrocarbon is a fugitive emission, not a drip.'
+        : state === 'binding'
+        ? 'Over the published maximum. It seals, and it costs: the stem '
+        + 'is being squeezed harder than the manual allows, friction '
+        + 'climbs, and the positioner starts fighting it. A valve that '
+        + 'sticks and hunts is usually a valve somebody over-tightened.'
+        : 'Inside the published window. Sealed, and the stem can still '
+        + 'move.',
+      source: 'D100399X012 Table 6, lubricated with anti-seize per its '
+            + 'note 1',
+      frictionNote:
+        'frictionIndex is a RATIO against the middle of the window, not '
+      + 'a force. Turning nut torque into stem drag needs a nut factor, '
+      + 'a stud count and a packing friction coefficient, none of which '
+      + 'this table publishes -- so the comparison is honest and a '
+      + 'number in pounds would not be.',
+    });
+  }
+
   /* Which actuators in a catalogue will drive a given valve. The
      useful direction in practice: you have the valve, you need the
      actuator. */
@@ -204,6 +303,7 @@
   }
 
   LPE.assembly = { assemble: assemble, actuatorsFor: actuatorsFor,
+                   packingTorque: packingTorque,
                    fluidForce: fluidForce };
 
 })(window.LPE = window.LPE || {});

@@ -64,6 +64,11 @@
        service's business and travels with the service, not here. */
     pressure: { psi: 1, psig: 1, psia: 1, bar: 0.0689476, kPa: 6.894757 },
     mass:     { lb: 1, kg: 0.45359237 },
+    /* Torque canonicalises on pound-force inches, which is how every
+       Fisher tightening table prints the number a technician actually
+       sets on a wrench. One newton metre is 8.8507 lbf.in, so there
+       are 0.11298 N.m to the lbf.in. */
+    torque:   { 'lbf.in': 1, 'N.m': 0.1129848, 'lbf.ft': 0.0833333 },
   };
   const KIND_OF = {
     /* pipe, fitting and valve-body geometry -- every name the shipped
@@ -79,6 +84,8 @@
     effectiveArea: 'area', maxThrust: 'force',
     maxCasingPressure: 'pressure', maxDiaphragmPressure: 'pressure',
     weight: 'mass',
+    /* packing, from D100399X012 Table 6 */
+    torqueMin: 'torque', torqueMax: 'torque',
   };
   const kindOf = (name, where) => {
     const k = KIND_OF[name];
@@ -143,7 +150,8 @@
        inches for an area, pounds for a force or a mass, psi for a
        pressure. Each family names its own. */
     const CANON = { length: 'in', area: 'in2', force: 'lb',
-                    pressure: 'psi[ga]?', mass: 'lb' };
+                    pressure: 'psi[ga]?', mass: 'lb',
+                    torque: 'lbf\.in' };
     const canon = CANON[kind || 'length'];
     const dual = text.match(new RegExp(
       '\\(\\s*([0-9]+(?:[-\\s][0-9]+\\/[0-9]+|\\.[0-9]+)?|[0-9]+\\/[0-9]+)' +
@@ -151,7 +159,7 @@
     if (dual) {
       const inchRead = readInch(dual[1]);
       const inch = inchRead.v;
-      const lead = text.match(/^\s*([0-9.]+)\s*([a-z]+)\.?\s*\(/i);
+      const lead = text.match(/^\s*([0-9]+(?:\.[0-9]+)?)\s*([a-zA-Z][a-zA-Z0-9.]*?)\s*\(/);
       if (lead) {
         /* Case-insensitively, but against the family's own spelling:
            a newton is "N" and a nano-anything is not in this table, so
@@ -211,7 +219,7 @@
       return inch;
     }
 
-    const m = text.match(/^\s*([0-9.]+)\s*([a-zA-Z0-9]+)\.?\s*$/);
+    const m = text.match(/^\s*([0-9]+(?:\.[0-9]+)?)\s*([a-zA-Z][a-zA-Z0-9.]*?)\.?\s*$/);
     if (!m)
       throw new Error(where + ': cannot read as-printed value "' + text +
                       '". Expected "<number> <unit>", optionally followed ' +

@@ -82,6 +82,13 @@
      blue. Reading cavitation as "the water went light blue" is how
      a picture teaches the wrong lesson. */
   const VAPOUR = '#f2f6f8';
+  /* PACKING IS NOT METAL AND IT IS NOT FLUID. It is a soft,
+     consumable, compressed thing, and drawn in the trim's grey it
+     reads as another machined part -- which is close to the
+     misconception that makes people over-tighten it. Warm and matte
+     and clearly not steel. */
+  const PACKING = '#b08968';
+  const PACKING_RIM = '#6f5844';
   const ENVELOPE = '#F79428';
   const LABEL    = '#959797';
   const FACE = '"Arial", "Helvetica Neue", Helvetica, ' +
@@ -111,6 +118,7 @@
     metal: METAL, rim: METAL_RIM, cavity: CAVITY, fluid: FLUID,
     fluidFast: FLUID_FAST, envelope: ENVELOPE, ink: INK, label: LABEL,
     hairline: HAIRLINE, panel: PANEL, face: FACE, vapour: VAPOUR,
+    packing: PACKING, packingRim: PACKING_RIM,
     trim: TRIM_FILL, trimRim: TRIM_RIM,
   };
 
@@ -1105,6 +1113,52 @@
     return { holes: plug.balanceHoles.length };
   }
 
+  /* ---- the packing ---------------------------------------------------
+
+     The one part of a control valve standing between the process and
+     the room, and this skin did not draw it at all. The box read as
+     solid bonnet -- a stem passing through metal, which is the
+     opposite of what is happening there.
+
+     Drawn as nine separate parts rather than one brown block,
+     because the stack IS the lesson. A reader should be able to see
+     that only two of the nine actually seal, that there is a spring
+     underneath keeping load on them, and that the follower on top is
+     what the flange nuts push against. Figure 4 of D100399X012 names
+     every one of them.
+
+     The two sealing rings are drawn at full strength and the rest a
+     little back. That is the answer to "which of these is doing the
+     work", given without a label. */
+  function drawPacking(g, pl, opts) {
+    const o = opts || {};
+    const t = theme(o.theme);
+    const gv = pl.valve;
+    if (!gv.packingAt) return null;
+    const pk = gv.packingAt(o.style ? { style: o.style } : undefined);
+    if (!pk) return null;
+
+    const pc = t.packing || PACKING;
+    const rim = t.packingRim || PACKING_RIM;
+    g.save();
+    g.lineJoin = 'round';
+    for (const item of pk.items) {
+      for (const side of [item.left, item.right]) {
+        ring(g, pl, side);
+        g.fillStyle = pc;
+        g.globalAlpha = item.seals ? 1 : 0.72;
+        g.fill();
+        g.globalAlpha = 1;
+        g.strokeStyle = rim;
+        g.lineWidth = item.spring ? 1.4 : 0.9;
+        g.stroke();
+      }
+    }
+    g.restore();
+    return { items: pk.items.length, sealing: pk.sealingParts.length,
+             box: pk.box, stack: pk };
+  }
+
   /* ---- marking the throat --------------------------------------------
 
      Separate from drawValveFlow, and called later, because of the
@@ -1171,6 +1225,7 @@
     drawValveFlow: drawValveFlow,
     fluidParticles: fluidParticles, stepFluid: stepFluid,
     markThroat: markThroat, drawBalance: drawBalance,
+    drawPacking: drawPacking,
   };
 
 })(typeof window !== 'undefined'

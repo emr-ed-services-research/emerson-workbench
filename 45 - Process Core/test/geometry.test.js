@@ -638,6 +638,71 @@ refuses('a valve with no published stem diameter is refused, not guessed',
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 
 /* ---- the flow path -------------------------------------------------- */
+/* ---- the bonnet bore and the packing box ---------------------------- */
+console.log('');
+{
+  const g = valveOf(EWT);
+  const box = g.packingBox();
+
+  check('the packing box is found in the casting, not declared',
+    box !== null && box.bore > 0 && box.to > box.from,
+    box ? 'bore ' + box.bore.toFixed(2) + ' in, ' +
+          (box.to - box.from).toFixed(2) + ' in tall, from y ' +
+          box.from.toFixed(2) : 'not found');
+  /* A packing box is a bore round a stem with room for rings in
+     between. If the annulus came out negative or enormous, something
+     other than the packing box was found. */
+  check('and it leaves a sensible annulus around the published stem',
+    box.annulus > 0.1 && box.annulus < 1.0,
+    box.annulus.toFixed(3) + ' in each side of a ' + EWT.dims.stem +
+    ' in stem');
+  check('the neck is narrower than the box above it',
+    box.neckBore < box.bore,
+    'neck ' + box.neckBore.toFixed(2) + ', box ' + box.bore.toFixed(2));
+
+  /* THE COLUMN UNDER THE PACKING IS FULL OF PROCESS FLUID, and this
+     model drew it as solid metal until the packing arrived. It is the
+     single fact that makes the next part along necessary. */
+  {
+    const w = g.wettedAt(50, { minGap: 0.6 });
+    let top = -Infinity;
+    for (const r of w.rings) for (const q of r) if (q[1] > top) top = q[1];
+    check('the wetted volume now reaches the underside of the packing',
+      Math.abs(top - box.from) < 0.2,
+      'wetted to y ' + top.toFixed(2) + ', packing starts at ' +
+      box.from.toFixed(2));
+    check('and that column is STILL -- it is a dead end at line pressure',
+      w.stillRings.length >= 3,
+      'nowhere for it to go, and the packing is all that holds it in');
+  }
+
+  /* ---- the stack ---- */
+  {
+    const pk = g.packingAt();
+    check('the stack is the nine parts Figure 4 names',
+      pk.items.length === 9 &&
+      pk.items[0].part === 'packing box ring' &&
+      pk.items[pk.items.length - 1].part === 'upper wiper');
+    check('and only the packing rings are marked as sealing',
+      pk.sealingParts.length === 2 &&
+      pk.sealingParts.every(n => n === 'packing ring'),
+      'which of the nine does the work is the question a reader has');
+    check('the stack fills the box exactly, bottom to top',
+      Math.abs(pk.items[0].y0 - pk.box.from) < 1e-9 &&
+      Math.abs(pk.items[pk.items.length - 1].y1 - pk.box.to) < 1e-9);
+    check('no part of it crosses the stem',
+      pk.items.every(i => i.left.every(q => q[0] <= 0) &&
+                          i.right.every(q => q[0] >= 0)),
+      'the stem is the reason the rings are there');
+    check('and it says the box is measured and the shares are not',
+      /MEASURED/.test(pk.conventionNote) &&
+      /CONVENTION/.test(pk.conventionNote));
+  }
+
+  refuses('a packing arrangement this model does not draw is refused',
+    () => g.packingAt({ style: 'graphite' }), 'different stack');
+}
+
 console.log('');
 {
   const g = valveOf(EWT);

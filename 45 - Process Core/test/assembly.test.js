@@ -139,5 +139,50 @@ refuses('a service with no pressure drop is refused',
 refuses('an assembly of one part is refused',
   () => A.assemble({ valve: ED15 }), 'needs {valve, actuator}');
 
+/* ---- the packing torque window -------------------------------------- */
+console.log('');
+{
+  const T = o => A.packingTorque(Object.assign(
+    { catalogue: CAT, packingType: 'graphite', pressureClass: 'CL300',
+      stem: 0.75 }, o));
+
+  const w = T({});
+  check('the window comes off Table 6, both ends',
+    w.minLbfIn === 133 && w.maxLbfIn === 199,
+    w.minLbfIn + ' to ' + w.maxLbfIn + ' lbf.in');
+
+  /* BOTH ENDS ARE FAILURES. That is the lesson, and the reason the
+     table prints two numbers instead of one. */
+  check('under the minimum it leaks to atmosphere',
+    T({ applied: 100 }).state === 'leaks');
+  check('inside the window it seals and still moves',
+    T({ applied: 166 }).state === 'sealed');
+  check('over the maximum the stem binds',
+    T({ applied: 260 }).state === 'binding',
+    'a valve that sticks and hunts is usually one somebody ' +
+    'over-tightened');
+
+  /* The material is not a setting on one window, it is a different
+     window. Torquing PTFE to a graphite figure is the specific
+     mistake this guards. */
+  const ptfe = T({ packingType: 'ptfe', applied: 166 });
+  check('the same torque that suits graphite destroys PTFE',
+    ptfe.state === 'binding' && ptfe.maxLbfIn === 95,
+    'graphite 133-199, PTFE 64-95, same stem and class');
+  check('and the class changes it too',
+    T({ pressureClass: 'CL600' }).minLbfIn === 182);
+
+  check('friction is reported as an index, and says why',
+    Math.abs(T({ applied: 166 }).frictionIndex - 1) < 0.01 &&
+    /not a force/.test(T({}).frictionNote),
+    'nut factor, stud count and friction coefficient are unpublished, ' +
+    'so a figure in pounds would be a claim rather than a reading');
+
+  refuses('a stem Table 6 does not cover is refused, not interpolated',
+    () => T({ stem: 0.625 }), 'not one to interpolate');
+  refuses('and a packing material with no window is refused',
+    () => T({ packingType: 'leather' }), 'graphite');
+}
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

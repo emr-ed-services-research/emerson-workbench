@@ -1477,6 +1477,202 @@
          is what flow-up means. The lower chamber fills first, the port
          is climbed rather than dropped through, and the fluid leaves
          through the windows into the upper chamber. */
+      /* ---- THE BONNET BORE, AND THE PACKING BOX IN IT -----------------
+
+         Read off the casting rather than declared. The bonnet was
+         traced from Figure 24 like everything else, so its inside
+         profile is already here; nobody had asked it for one.
+
+         Asked, it describes itself completely. Above the cage the
+         bore is wide -- eight and a half inches on this valve -- then
+         it necks to about an inch around the stem, then it opens
+         again to a constant bore and holds it for three and a half
+         inches before flaring at the top. That constant run IS the
+         packing box: a uniform bore around a 3/4 inch stem leaving a
+         four-tenths annulus, which is a packing ring in section.
+
+         Two things follow and both matter.
+
+         THE COLUMN BELOW THE PACKING IS FULL OF PROCESS FLUID. It is
+         a dead end -- there is nowhere for it to go -- but it is
+         liquid, at line pressure, and the packing is the only thing
+         between it and the room. Drawn as solid metal, which is what
+         this model did until now, it hides the entire reason packing
+         exists.
+
+         AND THE BOX IS WHERE THE PACKING GOES, at a size the casting
+         dictates rather than one anybody chose. */
+      bonnetBoreAt: function (y) {
+        let left = -Infinity, right = Infinity;
+        for (const ring of bonnetRings)
+          for (let i = 0; i < ring.length; i++) {
+            const a = ring[i], b = ring[(i + 1) % ring.length];
+            if ((a[1] - y) * (b[1] - y) > 0 || a[1] === b[1]) continue;
+            const x = a[0] + (b[0] - a[0]) * (y - a[1]) / (b[1] - a[1]);
+            if (x < 0 && x > left) left = x;
+            if (x > 0 && x < right) right = x;
+          }
+        return (left > -Infinity && right < Infinity)
+          ? { left: left, right: right, bore: right - left } : null;
+      },
+
+      /* The packing box, found as the longest run of near-constant
+         bore above the neck. Found, not stated: a number typed in
+         here would be a number nobody could check, and the casting
+         already knows. */
+      packingBox: function (opts) {
+        const o = opts || {};
+        const step = o.step === undefined ? 0.1 : o.step;
+        const tol = o.tol === undefined ? 0.06 : o.tol;
+        const self = this;
+        let yTop = -Infinity;
+        for (const r of bonnetRings)
+          for (const q of r) if (q[1] > yTop) yTop = q[1];
+
+        /* The neck: the narrowest bore above the cage. Everything
+           below it is flooded; everything above it is the box. */
+        let neckY = null, neckBore = Infinity;
+        for (let y = cageY1; y <= yTop; y += step) {
+          const b = self.bonnetBoreAt(y);
+          if (b && b.bore < neckBore) { neckBore = b.bore; neckY = y; }
+        }
+        if (neckY === null) return null;
+
+        let best = null, run = null;
+        for (let y = neckY; y <= yTop; y += step) {
+          const b = self.bonnetBoreAt(y);
+          if (!b) { run = null; continue; }
+          if (run && Math.abs(b.bore - run.bore) <= tol) {
+            run.to = y;
+            run.bore = (run.bore * run.n + b.bore) / (run.n + 1);
+            run.n++;
+          } else {
+            run = { from: y, to: y, bore: b.bore, n: 1 };
+          }
+          if (!best || (run.to - run.from) > (best.to - best.from))
+            best = { from: run.from, to: run.to, bore: run.bore };
+        }
+        if (!best || best.to - best.from < step * 3) return null;
+        return Object.freeze({
+          neckY: neckY, neckBore: neckBore,
+          from: best.from, to: best.to, bore: best.bore,
+          annulus: (best.bore - (part.dims.stem || 0)) / 2,
+          note:
+            'Measured off the traced bonnet, not declared: the packing '
+          + 'box is the longest run of constant bore above the neck. '
+          + 'The annulus it leaves around the published stem is the '
+          + 'room the packing has.',
+        });
+      },
+
+      /* ---- THE PACKING ------------------------------------------------
+
+         The one part of a control valve that stands between the
+         process and the room, and this model did not draw it at all.
+         The packing box read as solid bonnet, which says the stem
+         passes through metal, which is the opposite of true.
+
+         WHAT IS SOURCED. The box is measured off the traced casting
+         (see packingBox). The STACK -- which parts, in what order --
+         is Figure 4 of D100399X012, "PTFE V-Ring Packing
+         Arrangements", read bottom to top:
+
+             packing box ring   (key 11)
+             spring             (key 8)   single arrangements
+             washer             (key 10)
+             female adaptor
+             packing ring(s)    (key 6)
+             male adaptor
+             packing follower   (key 13)
+             upper wiper        (key 12)
+
+         and the stem diameter is published. The tightening torque is
+         published too, per stem diameter, pressure class and packing
+         type, in Table 6 of the same manual -- and it is a WINDOW,
+         minimum and maximum, which is the whole lesson and is
+         returned here rather than drawn.
+
+         WHAT IS CONVENTION, and it is one thing: how the box height
+         divides between the parts. The manual draws the arrangement
+         without dimensioning each ring, so the proportions below are
+         declared, named, and sum to one. Everything else about this
+         part is read off a document.
+
+         GRAPHITE is a different stack -- rings and anti-extrusion
+         washers, no V-rings, no spring -- so it is a different
+         arrangement, not this one with different numbers. */
+      packingAt: function (opts) {
+        const o = opts || {};
+        const box = this.packingBox();
+        if (!box) return null;
+        const style = o.style || 'ptfe-v-ring';
+        if (style !== 'ptfe-v-ring')
+          throw new Error('geometry.globeValve.packingAt: only the PTFE ' +
+            'V-ring arrangement is drawn, which is Figure 4 of ' +
+            'D100399X012. Graphite is a different stack -- rings and ' +
+            'anti-extrusion washers, no spring -- and drawing it as this ' +
+            'one relabelled would be inventing a part.');
+
+        /* Bottom to top, with the share of the box each takes. The
+           SHARES are the convention; the list and its order are the
+           figure's. */
+        const STACK = [
+          { part: 'packing box ring', key: 11, share: 0.13 },
+          { part: 'spring',           key: 8,  share: 0.16, spring: true },
+          { part: 'washer',           key: 10, share: 0.05 },
+          { part: 'female adaptor',   key: null, share: 0.09 },
+          { part: 'packing ring',     key: 6,  share: 0.13, seals: true },
+          { part: 'packing ring',     key: 6,  share: 0.13, seals: true },
+          { part: 'male adaptor',     key: null, share: 0.09 },
+          { part: 'packing follower', key: 13, share: 0.16 },
+          { part: 'upper wiper',      key: 12, share: 0.06 },
+        ];
+        let total = 0;
+        for (const q of STACK) total += q.share;
+
+        const rStem = (part.dims.stem || 0) / 2;
+        const rBox = box.bore / 2;
+        const height = box.to - box.from;
+        let y = box.from;
+        const items = [];
+        for (const q of STACK) {
+          const h = height * (q.share / total);
+          /* Each part is an annulus in section: two rectangles, one
+             either side of the stem. A packing ring does not cross
+             the stem -- the stem is why it is there. */
+          const ring = side => [
+            [side * rStem, y], [side * rBox, y],
+            [side * rBox, y + h], [side * rStem, y + h]];
+          items.push(Object.freeze({
+            part: q.part, key: q.key,
+            seals: !!q.seals, spring: !!q.spring,
+            y0: y, y1: y + h,
+            left: Object.freeze(ring(-1)), right: Object.freeze(ring(1)),
+          }));
+          y += h;
+        }
+
+        return Object.freeze({
+          style: style,
+          box: box,
+          stemDia: part.dims.stem,
+          annulus: box.annulus,
+          items: Object.freeze(items),
+          /* The parts that actually seal, named, because that is the
+             question a reader has: which of these nine is the one
+             doing the work. */
+          sealingParts: Object.freeze(items.filter(q => q.seals)
+                                           .map(q => q.part)),
+          source: 'D100399X012 Figure 4, PTFE V-ring packing arrangements',
+          conventionNote:
+            'The box is MEASURED off the traced casting and the stem is '
+          + 'published. The stack -- which parts and in what order -- is '
+          + 'Figure 4 of D100399X012. CONVENTION, and the only one: how '
+          + 'the box height divides between the nine parts. The manual '
+          + 'draws the arrangement without dimensioning each ring.',
+        });
+      },
+
       /* ---- THE WETTED VOLUME ------------------------------------------
 
          Every space inside this valve that has fluid in it, as one
@@ -1605,6 +1801,41 @@
            the only way on, and the cavity split in two again. Three
            hundredths of an inch of model inconsistency, and the
            valve read as shut at a tenth of travel. */
+        /* ---- THE BONNET BORE IS FULL OF PROCESS FLUID -----------------
+
+           From the top of the cage up to the underside of the packing
+           the bonnet is bored, and that bore is flooded at line
+           pressure. It carries no through-flow -- there is nowhere
+           for it to go -- so it is still, and it is liquid, and the
+           packing above it is the only thing between it and the room.
+
+           Drawn as solid metal, which is what this model did until
+           now, it hid the single most important fact about a bonnet.
+           Two and a quarter inches of it on this valve, and the whole
+           reason the next part along exists.
+
+           Sampled off the traced casting rather than boxed, because
+           the bore is a funnel: eight and a half inches wide where it
+           meets the cage and one inch at the neck. A box would have
+           been a lie about the shape of the one space the packing is
+           sealing. */
+        const pb = this.packingBox ? this.packingBox() : null;
+        if (pb && pb.from > cageY1) {
+          const left = [], right = [];
+          const steps = 18;
+          for (let i = 0; i <= steps; i++) {
+            const y = cageY1 + (pb.from - cageY1) * (i / steps);
+            const b = this.bonnetBoreAt(y);
+            if (!b) continue;
+            left.push([b.left, y]);
+            right.push([b.right, y]);
+          }
+          if (left.length > 2) {
+            const col = left.concat(right.reverse());
+            rings.push(col); stillRings.push(col);
+          }
+        }
+
         const lift = Math.max(0, lidY - plugLow);
         const raise = r => r.map(q => [q[0], q[1] + lift]);
         for (const h of pg.balanceHoles) {

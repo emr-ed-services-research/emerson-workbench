@@ -6308,6 +6308,266 @@
       }
     }
   },
+  "packing": {
+    "_source": "Fisher EWD/EWS/EWT instruction manual D100399X012, March 2026, Table 6 \"Recommended Torque for Packing Flange Nuts\". Note 1 of that table: lubricate with anti-seize compound.",
+    "_note": "THE WINDOW IS THE LESSON. Every row is a minimum AND a maximum, and both ends are failures: under the minimum the packing does not seal and the valve leaks to atmosphere; over the maximum the stem binds, friction climbs, and a positioner that could hold position starts sticking and hunting. There is no \"tighter is safer\" here, which is exactly the instinct the figures contradict. Graphite takes roughly twice the torque of PTFE for the same stem and class, because it is a different material doing the same job.",
+    "PACKING/GRAPHITE/STEM1-2/CL300": {
+      "class": "packing",
+      "packingType": "graphite",
+      "pressureClass": "CL300",
+      "stemLabel": "1/2",
+      "dims": {
+        "stem": 0.5,
+        "torqueMin": 59.0,
+        "torqueMax": 88.0
+      },
+      "asPrinted": {
+        "stem": "12.7 mm (1/2 in)",
+        "torqueMin": "7 N.m (59 lbf.in)",
+        "torqueMax": "10 N.m (88 lbf.in)"
+      }
+    },
+    "PACKING/PTFE/STEM1-2/CL300": {
+      "class": "packing",
+      "packingType": "ptfe",
+      "pressureClass": "CL300",
+      "stemLabel": "1/2",
+      "dims": {
+        "stem": 0.5,
+        "torqueMin": 28.0,
+        "torqueMax": 42.0
+      },
+      "asPrinted": {
+        "stem": "12.7 mm (1/2 in)",
+        "torqueMin": "3 N.m (28 lbf.in)",
+        "torqueMax": "5 N.m (42 lbf.in)"
+      }
+    },
+    "PACKING/GRAPHITE/STEM1-2/CL600": {
+      "class": "packing",
+      "packingType": "graphite",
+      "pressureClass": "CL600",
+      "stemLabel": "1/2",
+      "dims": {
+        "stem": 0.5,
+        "torqueMin": 81.0,
+        "torqueMax": 122.0
+      },
+      "asPrinted": {
+        "stem": "12.7 mm (1/2 in)",
+        "torqueMin": "9 N.m (81 lbf.in)",
+        "torqueMax": "14 N.m (122 lbf.in)"
+      }
+    },
+    "PACKING/PTFE/STEM1-2/CL600": {
+      "class": "packing",
+      "packingType": "ptfe",
+      "pressureClass": "CL600",
+      "stemLabel": "1/2",
+      "dims": {
+        "stem": 0.5,
+        "torqueMin": 39.0,
+        "torqueMax": 58.0
+      },
+      "asPrinted": {
+        "stem": "12.7 mm (1/2 in)",
+        "torqueMin": "4 N.m (39 lbf.in)",
+        "torqueMax": "7 N.m (58 lbf.in)"
+      }
+    },
+    "PACKING/GRAPHITE/STEM3-4/CL300": {
+      "class": "packing",
+      "packingType": "graphite",
+      "pressureClass": "CL300",
+      "stemLabel": "3/4",
+      "dims": {
+        "stem": 0.75,
+        "torqueMin": 133.0,
+        "torqueMax": 199.0
+      },
+      "asPrinted": {
+        "stem": "19.1 mm (3/4 in)",
+        "torqueMin": "15 N.m (133 lbf.in)",
+        "torqueMax": "23 N.m (199 lbf.in)"
+      }
+    },
+    "PACKING/PTFE/STEM3-4/CL300": {
+      "class": "packing",
+      "packingType": "ptfe",
+      "pressureClass": "CL300",
+      "stemLabel": "3/4",
+      "dims": {
+        "stem": 0.75,
+        "torqueMin": 64.0,
+        "torqueMax": 95.0
+      },
+      "asPrinted": {
+        "stem": "19.1 mm (3/4 in)",
+        "torqueMin": "7 N.m (64 lbf.in)",
+        "torqueMax": "11 N.m (95 lbf.in)"
+      }
+    },
+    "PACKING/GRAPHITE/STEM3-4/CL600": {
+      "class": "packing",
+      "packingType": "graphite",
+      "pressureClass": "CL600",
+      "stemLabel": "3/4",
+      "dims": {
+        "stem": 0.75,
+        "torqueMin": 182.0,
+        "torqueMax": 274.0
+      },
+      "asPrinted": {
+        "stem": "19.1 mm (3/4 in)",
+        "torqueMin": "21 N.m (182 lbf.in)",
+        "torqueMax": "31 N.m (274 lbf.in)"
+      }
+    },
+    "PACKING/PTFE/STEM3-4/CL600": {
+      "class": "packing",
+      "packingType": "ptfe",
+      "pressureClass": "CL600",
+      "stemLabel": "3/4",
+      "dims": {
+        "stem": 0.75,
+        "torqueMin": 87.0,
+        "torqueMax": 131.0
+      },
+      "asPrinted": {
+        "stem": "19.1 mm (3/4 in)",
+        "torqueMin": "10 N.m (87 lbf.in)",
+        "torqueMax": "15 N.m (131 lbf.in)"
+      }
+    },
+    "PACKING/GRAPHITE/STEM1/CL300": {
+      "class": "packing",
+      "packingType": "graphite",
+      "pressureClass": "CL300",
+      "stemLabel": "1",
+      "dims": {
+        "stem": 1.0,
+        "torqueMin": 226.0,
+        "torqueMax": 339.0
+      },
+      "asPrinted": {
+        "stem": "25.4 mm (1 in)",
+        "torqueMin": "26 N.m (226 lbf.in)",
+        "torqueMax": "38 N.m (339 lbf.in)"
+      }
+    },
+    "PACKING/PTFE/STEM1/CL300": {
+      "class": "packing",
+      "packingType": "ptfe",
+      "pressureClass": "CL300",
+      "stemLabel": "1",
+      "dims": {
+        "stem": 1.0,
+        "torqueMin": 108.0,
+        "torqueMax": 162.0
+      },
+      "asPrinted": {
+        "stem": "25.4 mm (1 in)",
+        "torqueMin": "12 N.m (108 lbf.in)",
+        "torqueMax": "18 N.m (162 lbf.in)"
+      }
+    },
+    "PACKING/GRAPHITE/STEM1/CL600": {
+      "class": "packing",
+      "packingType": "graphite",
+      "pressureClass": "CL600",
+      "stemLabel": "1",
+      "dims": {
+        "stem": 1.0,
+        "torqueMin": 310.0,
+        "torqueMax": 466.0
+      },
+      "asPrinted": {
+        "stem": "25.4 mm (1 in)",
+        "torqueMin": "35 N.m (310 lbf.in)",
+        "torqueMax": "53 N.m (466 lbf.in)"
+      }
+    },
+    "PACKING/PTFE/STEM1/CL600": {
+      "class": "packing",
+      "packingType": "ptfe",
+      "pressureClass": "CL600",
+      "stemLabel": "1",
+      "dims": {
+        "stem": 1.0,
+        "torqueMin": 149.0,
+        "torqueMax": 223.0
+      },
+      "asPrinted": {
+        "stem": "25.4 mm (1 in)",
+        "torqueMin": "17 N.m (149 lbf.in)",
+        "torqueMax": "25 N.m (223 lbf.in)"
+      }
+    },
+    "PACKING/GRAPHITE/STEM1-1-4/CL300": {
+      "class": "packing",
+      "packingType": "graphite",
+      "pressureClass": "CL300",
+      "stemLabel": "1-1/4",
+      "dims": {
+        "stem": 1.25,
+        "torqueMin": 318.0,
+        "torqueMax": 477.0
+      },
+      "asPrinted": {
+        "stem": "31.8 mm (1-1/4 in)",
+        "torqueMin": "36 N.m (318 lbf.in)",
+        "torqueMax": "54 N.m (477 lbf.in)"
+      }
+    },
+    "PACKING/PTFE/STEM1-1-4/CL300": {
+      "class": "packing",
+      "packingType": "ptfe",
+      "pressureClass": "CL300",
+      "stemLabel": "1-1/4",
+      "dims": {
+        "stem": 1.25,
+        "torqueMin": 152.0,
+        "torqueMax": 228.0
+      },
+      "asPrinted": {
+        "stem": "31.8 mm (1-1/4 in)",
+        "torqueMin": "17 N.m (152 lbf.in)",
+        "torqueMax": "26 N.m (228 lbf.in)"
+      }
+    },
+    "PACKING/GRAPHITE/STEM1-1-4/CL600": {
+      "class": "packing",
+      "packingType": "graphite",
+      "pressureClass": "CL600",
+      "stemLabel": "1-1/4",
+      "dims": {
+        "stem": 1.25,
+        "torqueMin": 437.0,
+        "torqueMax": 655.0
+      },
+      "asPrinted": {
+        "stem": "31.8 mm (1-1/4 in)",
+        "torqueMin": "49 N.m (437 lbf.in)",
+        "torqueMax": "74 N.m (655 lbf.in)"
+      }
+    },
+    "PACKING/PTFE/STEM1-1-4/CL600": {
+      "class": "packing",
+      "packingType": "ptfe",
+      "pressureClass": "CL600",
+      "stemLabel": "1-1/4",
+      "dims": {
+        "stem": 1.25,
+        "torqueMin": 209.0,
+        "torqueMax": 314.0
+      },
+      "asPrinted": {
+        "stem": "31.8 mm (1-1/4 in)",
+        "torqueMin": "24 N.m (209 lbf.in)",
+        "torqueMax": "36 N.m (314 lbf.in)"
+      }
+    }
+  },
   "resistance": {
     "_note": [
       "WHAT A FITTING COSTS. Not a number -- a correlation, evaluated at the",
