@@ -1414,9 +1414,59 @@
        cage bore grew by a wall thickness. Taking the extreme distance
        from the axis over every cage point cannot care which way the
        valve is facing. */
+    const facesAt = (ring, y) => {
+      const xs = [];
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const a = ring[i], b2 = ring[j];
+        if ((a[1] > y) !== (b2[1] > y))
+          xs.push(a[0] + (b2[0] - a[0]) * (y - a[1]) / (b2[1] - a[1]));
+      }
+      if (xs.length < 2) return null;
+      xs.sort((u, v) => u - v);
+      return { lo: xs[0], hi: xs[xs.length - 1] };
+    };
     const cageXs = cageWallL.concat(cageWallR).map(q => Math.abs(q[0]));
     const cageR = Math.max.apply(null, cageXs);
-    const cageInnerR = Math.min.apply(null, cageXs);
+
+    /* THE BORE IS THE WIDEST THE CAGE IS OPEN, measured, not the point
+       of the cage nearest the axis.
+
+       Those are the same thing only while a cage wall is a bar, and the
+       EWT outline was two bars, so `min |x|` was right for as long as
+       that lasted. The registered ED cage is a BRACKET: two walls plus
+       the top band that ties them together and carries the bonnet load.
+       The band reaches in to the stem, so the nearest cage point to the
+       axis is the STEM bore -- 0.61 in on a valve whose plug is 8.07 in
+       across. Every question of the form "how wide is the cage open"
+       then got an answer two orders of magnitude out, in silence: the
+       plug's own hollow stopped counting as part of the valve, and five
+       square inches of it drew as nothing.
+
+       So: walk the height, take the clear gap between the two walls at
+       each station, keep the largest. A lid narrows the gap and
+       therefore cannot win; the walls define it and therefore do.
+
+       Not an average -- a statistic here would be a way of not knowing
+       which stations are wall. And not a number typed in: these
+       outlines are fractions of face-to-face so that one archetype
+       serves every size, so a 4.06 would be an ED-NPS-8-at-24-inches
+       constant hidden inside a function that draws whatever it is
+       handed. There is no sourced cage bore to reach for either --
+       Catalog 12 publishes the PORT, which is a different diameter. */
+    let cageInnerR = 0;
+    for (let i = 1; i < 60; i++) {
+      const y = cL.y0 + (Math.max(cL.y1, cR.y1) - cL.y0) * (i / 60);
+      const fl = facesAt(cageWallL, y), fr = facesAt(cageWallR, y);
+      if (!fl || !fr) continue;
+      const gap = Math.min(Math.abs(fl.lo), Math.abs(fl.hi),
+                           Math.abs(fr.lo), Math.abs(fr.hi));
+      if (gap > cageInnerR) cageInnerR = gap;
+    }
+    if (!(cageInnerR > 0))
+      throw new Error('geometry.globeValve: the cage never opens -- no ' +
+        'horizontal crosses both walls at any height. The traced cage ' +
+        'is not a pair of walls about an axis, and nothing below here ' +
+        'is right.');
     const cageY0 = Math.min(cL.y0, cR.y0), cageY1 = Math.max(cL.y1, cR.y1);
     const seatE = extentOfRing(seat[0]);
     const seatTop = seatE.y1;
@@ -1455,17 +1505,6 @@
        Following the wall is also the only definition that stays true
        if the trace is ever redone: a window is a hole through a wall,
        and a hole cannot be wider than what it is a hole in. */
-    const facesAt = (ring, y) => {
-      const xs = [];
-      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
-        const a = ring[i], b2 = ring[j];
-        if ((a[1] > y) !== (b2[1] > y))
-          xs.push(a[0] + (b2[0] - a[0]) * (y - a[1]) / (b2[1] - a[1]));
-      }
-      if (xs.length < 2) return null;
-      xs.sort((u, v) => u - v);
-      return { lo: xs[0], hi: xs[xs.length - 1] };
-    };
     const windowOf = ring => {
       const n = 16, near = [], far = [];
       for (let i = 0; i <= n; i++) {
