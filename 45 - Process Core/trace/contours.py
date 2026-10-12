@@ -51,6 +51,40 @@ def parts():
     return mod.PARTS, getattr(mod, 'NOT_METAL', set())
 
 
+def smooth(ring):
+    """One Chaikin pass, with the measured faces pinned.
+
+    A traced contour is a pixel staircase, and simplification leaves
+    the steps rather than removing them -- which is why the outlet
+    chamber's roof reads as a flight of stairs where the casting
+    sweeps. Chaikin rounds a corner by replacing each vertex with two
+    points a quarter in from its neighbours, which is exactly right for
+    a cast sweep and exactly wrong for a flange face.
+
+    So the extremes are PINNED: any vertex sitting on the part's own
+    minimum or maximum x or y is left where it is. Those are the faces
+    the registration is anchored on -- face-to-face, the bottom the
+    casting stands on -- and a smoothing pass must not move them by a
+    third of a pixel or by anything at all.
+    """
+    n = len(ring)
+    if n < 6:
+        return ring
+    xs, ys = ring[:, 0], ring[:, 1]
+    x0, x1, y0, y1 = xs.min(), xs.max(), ys.min(), ys.max()
+    pinned = ((xs == x0) | (xs == x1) | (ys == y0) | (ys == y1))
+    out = []
+    for i in range(n):
+        p, q = ring[i], ring[(i + 1) % n]
+        if pinned[i]:
+            out.append(p)
+        else:
+            out.append(0.75 * p + 0.25 * q)
+        if not pinned[i] and not pinned[(i + 1) % n]:
+            out.append(0.25 * p + 0.75 * q)
+    return np.array(out).round().astype(np.int32)
+
+
 def signed_area(ring):
     x = ring[:, 0].astype(np.float64)
     y = ring[:, 1].astype(np.float64)
@@ -158,14 +192,14 @@ def main():
                 continue
             if cv2.contourArea(c) < MIN_RING:
                 continue
-            outer = cv2.approxPolyDP(c, TOL, True).reshape(-1, 2)
+            outer = smooth(cv2.approxPolyDP(c, TOL, True).reshape(-1, 2))
             if len(outer) < 3:
                 continue
             holes = []
             j = hier[i][2]                  # first child
             while j != -1:
                 if cv2.contourArea(cs[j]) >= MIN_RING:
-                    h = cv2.approxPolyDP(cs[j], TOL, True).reshape(-1, 2)
+                    h = smooth(cv2.approxPolyDP(cs[j], TOL, True).reshape(-1, 2))
                     if len(h) >= 3:
                         holes.append(orient(h, ccw=False).tolist())
                 j = hier[j][0]              # next sibling

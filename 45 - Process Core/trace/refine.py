@@ -324,6 +324,12 @@ def _level_bottom(m):
         top = max(np.nonzero(m[:, left])[0].max(),
                   np.nonzero(m[:, right])[0].max())
         out[top:floor + 1, i] = 1
+    # AND CLOSE THE SEAM. Filling the hole column by column leaves the
+    # two sides meeting along a one-pixel join that survives
+    # simplification and draws as a crack up the middle of a casting
+    # that is supposed to be solid there. A close across it welds the
+    # fill to both neighbours.
+    out = cv2.morphologyEx(out, cv2.MORPH_CLOSE, np.ones((5, 9), np.uint8))
     return out
 
 
