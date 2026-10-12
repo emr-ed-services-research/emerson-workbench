@@ -268,6 +268,69 @@ def _scale_x(m, axis, k):
     return cv2.warpAffine(m, M, (W, H), flags=cv2.INTER_NEAREST)
 
 
+def _level_bottom(m):
+    """Give the casting one bottom line, and close the drain boss.
+
+    Figure 20 is captioned "with Graphite Piston Ring and OPTIONAL Drain
+    Plug", and the boss for that option is a notch in the underside with
+    a tapped hole through it. Traced as-is it came back as a step: the
+    casting's left side sitting lower than its right by a visible
+    amount, with a slot of nothing between them where the plug screws
+    in. A body whose two feet are at different heights is not a casting
+    anybody made.
+
+    The option is not being modelled -- there is no drain plug part --
+    so the underside is closed and levelled to the line the casting
+    actually sits on, which is the lower of the two. Nothing is invented:
+    the bottom edge already exists on the left, and this carries it
+    across.
+    """
+    H, W = m.shape
+    cols = np.nonzero(m.any(axis=0))[0]
+    if not len(cols):
+        return m
+    bottoms = []
+    for i in cols:
+        r = np.nonzero(m[:, i])[0]
+        if len(r):
+            bottoms.append(r.max())
+    if not bottoms:
+        return m
+    floor = int(np.percentile(bottoms, 85))
+    out = m.copy()
+    for i in cols:
+        r = np.nonzero(m[:, i])[0]
+        if not len(r):
+            continue
+        # fill from this column's own metal down to the common floor
+        out[r.max():floor + 1, i] = 1
+        out[floor + 1:, i] = 0
+    return out
+
+
+def _square_off(m):
+    """One bottom face across the whole seat ring.
+
+    The traced seat came back thin at its left and right ends, because
+    the region under those ends is not hatched in the drawing and was
+    painted as open space. A seat ring with a knife edge either side of
+    its bore is not a seat ring -- it is the part most exposed to
+    cavitation damage, and thinning it there is the one place the model
+    should not be optimistic. Carried down to the deepest face the ring
+    already has.
+    """
+    H, W = m.shape
+    cols = np.nonzero(m.any(axis=0))[0]
+    if not len(cols):
+        return m
+    deepest = max(np.nonzero(m[:, i])[0].max() for i in cols)
+    out = m.copy()
+    for i in cols:
+        r = np.nonzero(m[:, i])[0]
+        out[r.max():deepest + 1, i] = 1
+    return out
+
+
 def refine(mask, name, axis, bore_radius=None):
     """Clean one part's mask. `mask` is uint8 0/1."""
     m = mask.astype(np.uint8)
@@ -300,6 +363,10 @@ def refine(mask, name, axis, bore_radius=None):
         after_half = _half_width(m, axis)
         if raw_half > 0 and after_half > raw_half:
             m = _scale_x(m, axis, raw_half / after_half)
+    if name == 'body':
+        m = _level_bottom(m)
+    if name == 'seatRing':
+        m = _square_off(m)
     if name in TUBE and axis is not None and bore_radius:
         m = clear_inside(m, axis, bore_radius)
     return m

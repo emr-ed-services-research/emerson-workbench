@@ -714,6 +714,111 @@
      rather than inferred from where the metal happens not to be.
      Chosen by POSITION, not size -- the largest fluid region of all is
      the cage bore, which straddles the axis and is not a chamber. */
+  /* EVERY OTHER SPACE THE TRACE FOUND FLUID IN. The two chambers
+     are named separately because the solver treats them as inlet and
+     outlet; these are the rest -- the clearance round the cage, the
+     bore above the plug, the bonnet bore. They were being left out,
+     and the right-hand clearance in particular drew as nothing: a
+     white slot exactly where fluid gets round the cage on its way to
+     the windows. The trace knows where the water is; there is no
+     reason for this layer to work it out again. */
+  /* THE GASKETS AT THE CAGE TOP, which are what makes the valve a
+     closed vessel. The bonnet bolts down onto them and they bear on
+     the cage; that stack is the seal between the process and the
+     room, and it is also the reason the fluid outboard of the cage
+     stops where it does rather than continuing up to the bonnet
+     flange. Drawn as the small rings they are -- spiral-wound and
+     wire-mesh, both painted brown on the trace. */
+  const ED_GASKET = [
+    [
+      [-0.19126, 0.39196], [-0.19126, 0.37727], [-0.18427, 0.37517],
+      [-0.18287, 0.36329], [-0.18007, 0.36049], [-0.1528, 0.36049],
+      [-0.1521, 0.36189], [-0.1472, 0.36189], [-0.1465, 0.36049],
+      [-0.03112, 0.36049], [-0.03042, 0.36189], [-0.02133, 0.36259],
+      [-0.02203, 0.37517], [-0.13322, 0.37517], [-0.13462, 0.37937],
+      [-0.1479, 0.38077], [-0.15, 0.38287], [-0.15, 0.39196],
+      [-0.15699, 0.39615], [-0.18706, 0.39615]
+    ],
+    [
+      [0.18986, 0.39336], [0.18776, 0.39336], [0.18566, 0.39755],
+      [0.14301, 0.39755], [0.14161, 0.38287], [0.13462, 0.38077],
+      [0.13042, 0.37517], [0.01713, 0.37517], [0.01713, 0.36259],
+      [0.01853, 0.36049], [0.17867, 0.36189], [0.18287, 0.36608],
+      [0.18287, 0.37657], [0.18986, 0.38007]
+    ]
+  ];
+  const ED_VOIDS = [
+    [
+      [0.20455, 0.3465], [0.19895, 0.3458], [0.19895, 0.34231],
+      [0.19615, 0.34021], [0.19196, 0.33182], [0.19196, 0.22273],
+      [0.19056, 0.21993], [0.19056, 0.21084], [0.19266, 0.20594],
+      [0.19336, 0.04161], [0.19056, 0.03951], [0.18986, 0.03252],
+      [0.19476, 0.03252], [0.19965, 0.03601], [0.20245, 0.03601],
+      [0.21503, 0.0514], [0.23462, 0.08776], [0.25699, 0.12413],
+      [0.25839, 0.12972], [0.26469, 0.13601], [0.26958, 0.1479],
+      [0.27168, 0.15979], [0.27098, 0.17797], [0.26958, 0.17867],
+      [0.26958, 0.18357], [0.26678, 0.19056], [0.2486, 0.21713],
+      [0.22203, 0.2451], [0.21364, 0.26119], [0.21084, 0.27587],
+      [0.21084, 0.33182]
+    ],
+    [
+      [0.03182, 0.60175], [0.01294, 0.60175], [0.00944, 0.59965],
+      [-0.01364, 0.59755], [-0.03462, 0.59755], [-0.03741, 0.59476],
+      [-0.03741, 0.58566], [-0.03601, 0.58427], [-0.02622, 0.58357],
+      [-0.02483, 0.42902], [-0.03462, 0.42832], [-0.03881, 0.42552],
+      [-0.06538, 0.42133], [-0.08776, 0.41154], [-0.10804, 0.39406],
+      [-0.11783, 0.37867], [-0.11713, 0.37308], [-0.02483, 0.37308],
+      [-0.02343, 0.37168], [-0.02343, 0.36538], [-0.02483, 0.36399],
+      [-0.02343, 0.3528], [-0.02483, 0.3514], [-0.16818, 0.3507],
+      [-0.16888, 0.28497], [-0.16748, 0.22343], [-0.16259, 0.22343],
+      [-0.16119, 0.22483], [-0.08916, 0.22483], [-0.08776, 0.22343],
+      [-0.0486, 0.22483], [-0.0472, 0.22343], [-0.03811, 0.22343],
+      [-0.03392, 0.22622], [-0.03182, 0.22063], [-0.02902, 0.21853],
+      [-0.02832, 0.21154], [-0.02552, 0.20594], [-0.02133, 0.20315],
+      [-0.01993, 0.19615], [-0.00734, 0.17657], [-0.01154, 0.17238],
+      [-0.01154, 0.16678], [-0.00664, 0.15909], [-0.02203, 0.15699],
+      [-0.02343, 0.15559], [-0.02343, 0.1493], [-0.02133, 0.1493],
+      [-0.02133, 0.1472], [-0.03182, 0.1472], [-0.03462, 0.1458],
+      [-0.13112, 0.1458], [-0.1451, 0.14441], [-0.1479, 0.14161],
+      [-0.1479, 0.03392], [-0.1493, 0.01783], [-0.1465, 0.01643],
+      [0.01224, 0.01643], [0.1472, 0.01853], [0.1465, 0.14161],
+      [0.14301, 0.1465], [0.01783, 0.1458], [0.01503, 0.1472],
+      [0.00175, 0.1472], [0.00175, 0.1549], [0.01364, 0.1549],
+      [0.01643, 0.15909], [0.01643, 0.17238], [0.01503, 0.17657],
+      [0.01014, 0.17797], [0.00105, 0.18706], [0.00105, 0.21154],
+      [0.00245, 0.21224], [0.00105, 0.22133], [-0.00245, 0.22133],
+      [-0.01993, 0.23881], [-0.01923, 0.24301], [-0.01014, 0.24301],
+      [-0.00035, 0.2472], [0.01643, 0.24371], [0.01713, 0.22552],
+      [0.12552, 0.22483], [0.13462, 0.22622], [0.16678, 0.22413],
+      [0.16888, 0.22902], [0.16748, 0.25629], [0.16818, 0.3493],
+      [0.16678, 0.3521], [0.02762, 0.3514], [0.01923, 0.3528],
+      [0.02063, 0.36399], [0.01923, 0.36538], [0.01993, 0.37308],
+      [0.11364, 0.37378], [0.11294, 0.38217], [0.10664, 0.39126],
+      [0.08916, 0.40874], [0.06678, 0.41993], [0.0493, 0.42273],
+      [0.0486, 0.42413], [0.02902, 0.42552], [0.02063, 0.42902],
+      [0.02063, 0.5458], [0.01923, 0.5465], [0.01923, 0.58357],
+      [0.03182, 0.58427], [0.03182, 0.59056], [0.03322, 0.59126],
+      [0.03322, 0.60035]
+    ],
+    [
+      [-0.02063, 0.94021], [-0.02622, 0.93462], [-0.02622, 0.80804],
+      [-0.03252, 0.80385], [-0.03252, 0.79895], [-0.02692, 0.79825],
+      [-0.02483, 0.79126], [-0.02483, 0.73601], [-0.02692, 0.73322],
+      [-0.04091, 0.73252], [-0.04091, 0.72063], [-0.03881, 0.71923],
+      [-0.03881, 0.71713], [-0.02622, 0.71783], [-0.02622, 0.69895],
+      [-0.03741, 0.69965], [-0.03881, 0.69825], [-0.04091, 0.68007],
+      [-0.03601, 0.67867], [-0.03741, 0.67587], [-0.03741, 0.66538],
+      [-0.03601, 0.66399], [-0.02692, 0.66399], [-0.02622, 0.65979],
+      [0.01503, 0.66119], [0.01573, 0.66678], [0.02902, 0.66678],
+      [0.03322, 0.67098], [0.03322, 0.68007], [0.01853, 0.68077],
+      [0.01923, 0.69406], [0.02203, 0.69476], [0.02692, 0.70175],
+      [0.03322, 0.70455], [0.03322, 0.71224], [0.03042, 0.71783],
+      [0.01923, 0.71713], [0.01923, 0.7458], [0.01783, 0.7486],
+      [0.01923, 0.91503], [0.01783, 0.91573], [0.01783, 0.92902],
+      [0.01643, 0.92972], [0.01643, 0.93601], [0.01224, 0.93881],
+      [-0.00105, 0.93881], [-0.00245, 0.93741], [-0.00594, 0.94021]
+    ]
+  ];
   const ED_CHAMBER_L = [
     [-0.20105, 0.34231], [-0.20664, 0.34161], [-0.21364, 0.32622],
     [-0.21294, 0.27937], [-0.21643, 0.26189], [-0.22343, 0.2493],
@@ -1296,6 +1401,17 @@
     const bodyRings = ED_BODY.map(r => r.map(place).map(toFace));
     const body = bodyRings[0];
     const bonnetRings = ED_BONNET.map(r => r.map(place).map(toFace));
+    const gasket = ED_GASKET.map(r => r.map(place).map(toFace));
+
+    /* THE SEAT RING'S UNDERSIDE was squared off in the refinement
+       stage rather than here: the region beneath the ring is not
+       hatched in Figure 20 -- it is the back of the seat, seen rather
+       than cut -- so it painted as open space and traced thin at each
+       end. A seat ring with a knife edge either side of its bore is
+       wrong in the one place it matters, because those ends are what
+       the flow accelerates past and where cavitation takes a ring
+       apart. `_square_off` in trace/refine.py carries the underside
+       down to the ring's own deepest face. */
     const seat = [ED_SEAT.map(place)];
 
     /* Flow decides which measured chamber meets the fluid first, and
@@ -1703,6 +1819,9 @@
               y0: cageY0, y1: cageY1, outerR: cageR,
               windowY0: winY0, windowH: winH },
       seatRing: seat,
+      /* the bonnet-to-cage seal stack, drawn because it is the reason
+         the process stays inside the valve */
+      gasket: gasket,
       bonnet: bonnetRings,
       silhouette: [silhouette],
       plugAt: plugAt, openAreaAt: openAreaAt,
@@ -2438,6 +2557,24 @@
                          [b2, plugTop], [a, plugTop]];
             rings.push(gap); stillRings.push(gap);
           }
+        }
+
+        /* ---- AND EVERY OTHER SPACE THE TRACE FOUND FLUID IN ----------
+
+           The clearance round the cage is the one that shows: fluid
+           reaches the windows by going round the annulus, and on the
+           right of the section that path drew as a white slot between
+           the cage and the casting -- nothing, where the water that
+           feeds the far window actually is. The left side happened to
+           be covered by the chamber and the right did not, so the
+           drawing was asymmetric about a valve that is not.
+
+           Clipped to the casting, because a traced region carries the
+           linework it was grown through and would otherwise sit a
+           pixel or two proud of the bore it lives in. */
+        for (const v of ED_VOIDS) {
+          const ring = v.map(place).map(toFace);
+          rings.push(ring); stillRings.push(ring);
         }
 
         /* The openings. A solver needs to know where fluid crosses
