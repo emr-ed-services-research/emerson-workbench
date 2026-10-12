@@ -2162,7 +2162,23 @@
           const outer = Math.abs(wx0) > Math.abs(wx1) ? wx0 : wx1;
           const sgn = outer < 0 ? -1 : 1;
           const ym = (wy0 + wy1) / 2;
-          let verdict = true;          /* nothing in the way at all */
+          /* FED MEANS A CHAMBER WAS FOUND, not that nothing stopped
+             you. This started as `true` -- "nothing in the way at
+             all" -- which is safe only while the chamber is always
+             close, as it is on the EWT casting. On the registered ED
+             the far window opens into the cage-to-bore clearance: a
+             blind annular slot, no chamber within reach and no metal
+             either, so the walk ran its length and found nothing and
+             the window was called FED on the strength of it. Both
+             windows then counted as fed, the share came out zero, the
+             plenum never engaged, and the far window carried whatever
+             the section happened to leak it.
+             
+             Not finding a chamber is not evidence of being fed. It is
+             the question coming back unanswered, and for this question
+             unanswered and no is the same thing: the water in that
+             slot arrives round the cage, out of the plane. */
+          let verdict = false;
           for (let d = 0.02; d <= WALK; d += 0.02) {
             const x = outer + sgn * d;
             if (inside(chamberL, x, ym) || inside(chamberR, x, ym))
