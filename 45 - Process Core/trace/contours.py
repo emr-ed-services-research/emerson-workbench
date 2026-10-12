@@ -78,6 +78,21 @@ def main():
     line = np.array(Image.open(line_path).convert('L'))
     H, W = line.shape
 
+    # THE REFINEMENT STAGE, which this pipeline went without until
+    # 2026-10-12 while the 657 Working Model's `refine2.py` had been
+    # doing it since September. See trace/refine.py for what each step
+    # answers; the short of it is that a mask traced off paint is not
+    # ready to be a polygon.
+    import importlib.util as _ilu
+    _sp = _ilu.spec_from_file_location('refine', os.path.join(HERE, 'refine.py'))
+    REF = _ilu.module_from_spec(_sp)
+    _sp.loader.exec_module(REF)
+    _cf = os.path.join(masksdir, 'cage.png')
+    AXIS = (REF.axis_of(np.array(Image.open(_cf).convert('L')) > 127)
+            if os.path.exists(_cf) else None)
+    print('\nREFINED before contouring (axis x=%s)'
+          % ('%.1f' % AXIS if AXIS is not None else 'unknown'))
+
     doc = {'source': os.path.basename(line_path),
            'size': [int(W), int(H)],
            'units': 'image pixels, y down',
@@ -93,7 +108,9 @@ def main():
         f = os.path.join(masksdir, name + '.png')
         if not os.path.exists(f):
             continue
-        mask = (np.array(Image.open(f).convert('L')) > 127).astype(np.uint8)
+        raw = (np.array(Image.open(f).convert('L')) > 127).astype(np.uint8)
+        mask = REF.refine(raw, name, AXIS)
+        print('  ' + REF.report(raw, mask, name))
         # GROWN BY ONE PIXEL, so neighbours SHARE their boundary rather
         # than each stopping short of it. Every boundary in the drawing
         # is a line of ink, and that line is assigned to exactly one of
