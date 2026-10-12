@@ -83,12 +83,13 @@
     const maxTravel = need(ad, 'maxTravel', 'the actuator',
       'Maximum travel is in the actuator manual\'s specification table.');
     const vStem = need(vd, 'stem', 'the valve',
-      'Stem diameter is in Table 12 of D100017X012 for ED bodies. ' +
+      'Stem diameter is in Table 12 of D100390X012 Table 11 for ED bodies. ' +
       'Without it nothing can say whether the stem connector fits.');
     const aStem = need(ad, 'stemAccepted', 'the actuator',
       'The accepted valve stem diameter is in the actuator table.');
     const vYoke = need(vd, 'yokeBoss', 'the valve',
-      'Yoke boss is in Table 12 of D100017X012. A guessed yoke boss is ' +
+      'Yoke boss is paired with the stem in D100390X012. A guessed ' +
+      'yoke boss is ' +
       'an assembly that does not bolt together, so it is never assumed.');
     const aYoke = need(ad, 'yokeBoss', 'the actuator',
       'Yoke boss diameter is in the actuator table.');
@@ -192,7 +193,7 @@
 
     throw new Error(at + ' will not go together. ' + fail.join(' ') +
       ' These are published numbers -- the valve\'s from Catalog 12 and ' +
-      'Table 12 of D100017X012, the actuator\'s from its own manual -- ' +
+      'D100390X012, the actuator\'s from its own manual -- ' +
       'so this is a specification error rather than a modelling one. ' +
       'Pass {lenient: true} to build it anyway and read `fits`, which ' +
       'is what a teaching screen showing a WRONG assembly would do.');
@@ -207,7 +208,7 @@
      here, and that instinct is precisely what the published figures
      contradict.
 
-     Fisher prints both ends. D100399X012 Table 6 gives a minimum AND
+     Fisher prints both ends. D100390X012 Table 4 gives a minimum AND
      a maximum for every stem diameter, pressure class and packing
      type, and the two differ by about half as much again -- 133 to
      199 lbf.in for a 3/4 inch stem in CL300 graphite, 64 to 95 for
@@ -295,7 +296,7 @@
         + 'sticks and hunts is usually a valve somebody over-tightened.'
         : 'Inside the published window. Sealed, and the stem can still '
         + 'move.',
-      source: 'D100399X012 Table 6, lubricated with anti-seize per its '
+      source: 'D100390X012 Table 4, lubricated with anti-seize per its '
             + 'note 1',
       frictionNote:
         'frictionIndex is a RATIO against the middle of the window, not '

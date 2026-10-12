@@ -1209,7 +1209,7 @@
      because the stack IS the lesson. A reader should be able to see
      that only two of the nine actually seal, that there is a spring
      underneath keeping load on them, and that the follower on top is
-     what the flange nuts push against. Figure 4 of D100399X012 names
+     what the flange nuts push against. Figure 3 of D100390X012 names
      every one of them.
 
      The two sealing rings are drawn at full strength and the rest a
@@ -1268,8 +1268,9 @@
       'the window PROFILE is the derivative of the published Cv curve ' +
         'and runs round the circumference, so a longitudinal section ' +
         'shows its height and the wall thickness and none of its shape',
-      'casting, chambers, cage, plug and seat MEASURED off Figure 24 of ' +
-        'D100399X012, which is to scale; window placement, balance ' +
+      'casting, chambers, cage, plug and seat MEASURED off Figure 11-5 ' +
+        'of the Oil & Gas sourcebook (W6022-2), ' +
+        'the Oil & Gas sourcebook Figure 11-5; window placement, balance ' +
         'holes and seal thickness remain conventions, named in the shape',
     ];
     for (const n of (extra || [])) out.push(String(n));

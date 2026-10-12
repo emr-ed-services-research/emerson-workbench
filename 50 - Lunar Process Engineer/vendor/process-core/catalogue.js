@@ -84,7 +84,7 @@
     effectiveArea: 'area', maxThrust: 'force',
     maxCasingPressure: 'pressure', maxDiaphragmPressure: 'pressure',
     weight: 'mass',
-    /* packing, from D100399X012 Table 6 */
+    /* packing, from D100390X012 Table 4 */
     torqueMin: 'torque', torqueMax: 'torque',
     torqueSpec: 'torque', friction: 'force',
   };
@@ -122,7 +122,7 @@
        transcription, and the only cost is noticing. */
     /* FISHER PRINTS INCHES AS FRACTIONS, so this layer has to read them.
 
-       Table 12 of D100017X012 gives stem diameters as 3/8, 1/2, 3/4,
+       D100390X012 gives stem diameters as 3/8, 1/2, 3/4,
        1-1/4 and yoke bosses as 2-1/8, 2-13/16, 3-9/16. Not one of those
        is a decimal, and a parser that only reads decimals leaves the
        only honest transcription -- the fraction the page actually

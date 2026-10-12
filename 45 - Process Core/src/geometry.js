@@ -378,10 +378,16 @@
 
   /* ---- THE EWT SECTION, DENOISED ----------------------------------
 
-     Every part read off Figure 24 of the Fisher EWT instruction manual,
-     D100399X012 -- the family the FCC service in this core actually
-     uses. Franz colour-coded the section part by part, so the
+     Every part read off Figure 11-5 of the Fisher Control Valve Sourcebook -- Oil & Gas (drawing W6022-2, "NPS 10-24 EWT or EWD"),
+     a cutaway of the family the FCC service in this core uses.
+     Franz colour-coded the section part by part, so the
      segmentation is exact rather than inferred.
+
+     CORRECTED 2026-10-11. This said "Figure 24 of the Fisher EWT
+     instruction manual, D100399X012" in twenty-six places. There is
+     no such document in the vault and there never was -- see
+     check-techpubs.js, which exists because of this. The shape
+     matches the sourcebook figure above, which IS held.
 
      AND THIS SOURCE IS TO SCALE, which the ED parts sheet was not: its
      bore is 0.323 of face-to-face and its port 0.293, against 0.359 and
@@ -1166,10 +1172,18 @@
     const half = F / 2;
     /* ---- ONE SCALE, AND FOR THE FIRST TIME THAT IS ENOUGH -----------
 
-       Figure 24 of D100399X012 is to scale: its bore is 0.323 of its
+       The source figure is near enough to scale to place everything
+       off ONE published dimension: its bore is 0.323 of its
        face-to-face and its port 0.293, against 0.359 and 0.287 for a
-       real EWT 10x8. So the casting, the chambers and the trim all
-       place off ONE published dimension and agree with the catalogue.
+       real EWT 10x8.
+
+       BUT IT IS A RENDERED CUTAWAY, NOT A DRAFTED SECTION, and that
+       shows. Illustration art is drawn to look right rather than to
+       be measured, and this one's trim column is short: a shut plug
+       has 2.49 in above it against a rated travel of 3, so the
+       archetype cannot stroke even its own valve. See `drawnTravel`
+       and trace/README.md -- the replacement comes off drafting
+       sections in D100390X012, which carry drawing numbers.
 
        Every earlier attempt had to pick which of two true numbers to
        honour, because the source then was a parts-identification sheet
@@ -1395,15 +1409,15 @@
          1.8-in stem. The real one is 3/4 in -- the drawn stem in Figure
          24 measures 0.83 in, Table 7 of that same manual publishes 1/2,
          3/4, 1 and 1-1/4 as this family's stem diameters, and Table 12
-         of D100017X012 gives 3/4 as standard for an 8-in port. Two
+         of D100390X012 gives 3/4 as standard at NPS 6 and up. Two
          documents and the drawing agree; the convention was 2.4x out
          and read as a column rather than a stem. */
       if (typeof part.dims.stem !== 'number')
         throw new Error('geometry.globeValve: ' + (spec.id || 'this valve') +
           ' carries no stem diameter, and there is no honest way to ' +
           'infer one -- it does not scale with the port. Source it: the ' +
-          'EW manual D100399X012 Table 7 enumerates the diameters, and ' +
-          'D100017X012 Table 12 maps valve size to stem for ED bodies. ' +
+          'ED manual D100390X012 enumerates the diameters, and ' +
+          'D100390X012 Table 11 maps valve size to stem for ED bodies. ' +
           'Add dims.stem with its asPrinted value rather than guessing.');
       const stemR = part.dims.stem / 2;   /* F, the port and the stem are all inches */
       /* ---- AND IT GOES DOWN INTO ITS SOCKET ------------------------
@@ -1735,7 +1749,7 @@
 
          WHAT IS SOURCED. The box is measured off the traced casting
          (see packingBox). The STACK -- which parts, in what order --
-         is Figure 4 of D100399X012, "PTFE V-Ring Packing
+         is Figure 3 of D100390X012, "PTFE V-Ring Packing
          Arrangements", read bottom to top:
 
              packing box ring   (key 11)
@@ -1770,7 +1784,7 @@
         if (style !== 'ptfe-v-ring')
           throw new Error('geometry.globeValve.packingAt: only the PTFE ' +
             'V-ring arrangement is drawn, which is Figure 4 of ' +
-            'D100399X012. Graphite is a different stack -- rings and ' +
+            'D100390X012. Graphite is a different stack -- rings and ' +
             'anti-extrusion washers, no spring -- and drawing it as this ' +
             'one relabelled would be inventing a part.');
 
@@ -1824,11 +1838,11 @@
              doing the work. */
           sealingParts: Object.freeze(items.filter(q => q.seals)
                                            .map(q => q.part)),
-          source: 'D100399X012 Figure 4, PTFE V-ring packing arrangements',
+          source: 'D100390X012 Figure 3, PTFE V-ring packing arrangements',
           conventionNote:
             'The box is MEASURED off the traced casting and the stem is '
           + 'published. The stack -- which parts and in what order -- is '
-          + 'Figure 4 of D100399X012. CONVENTION, and the only one: how '
+          + 'Figure 3 of D100390X012. CONVENTION, and the only one: how '
           + 'the box height divides between the nine parts. The manual '
           + 'draws the arrangement without dimensioning each ring.',
         });
@@ -2473,7 +2487,7 @@
       /* WHAT THIS SHAPE IS, said before anything else about it.
 
          The outline is the CAGE-GUIDED GLOBE ARCHETYPE. It was traced
-         from one valve -- Figure 24 of D100399X012, an EWT NPS 10x8 --
+         from one valve -- Figure 11-5 of the Fisher Control Valve Sourcebook -- Oil & Gas (drawing W6022-2, "NPS 10-24 EWT or EWD") --
          and it is drawn for every cage-guided globe in the catalogue,
          scaled by that valve's own published face-to-face. ED, EAD,
          EDR, EW, EWD, EWS, EWT: ninety-one of the hundred and five
@@ -2528,15 +2542,15 @@
         + 'the same amount or the assembly comes apart on screen.',
       archetypeNote:
         'Traced from one valve and drawn for the family. The outline '
-      + 'came off Figure 24 of D100399X012, an EWT NPS 10x8, and is '
+      + 'came off Figure 11-5 of the Fisher Control Valve Sourcebook -- Oil & Gas (drawing W6022-2, "NPS 10-24 EWT or EWD") and is '
       + 'scaled here by the valve its own published face-to-face. Every '
       + 'NUMBER belongs to this valve and is sourced; the SILHOUETTE '
       + 'is the family’s. An EZ is a different flow path and needs '
       + 'its own archetype, not this one relabelled.',
       conventionNote:
         'MEASURED: the casting, the bonnet, both chambers, the cage walls, '
-        + 'the plug and the seat ring all come from Figure 24 of '
-        + 'D100399X012, the Fisher EW instruction manual -- segmented part '
+        + 'the plug and the seat ring all come from '
+        + 'Figure 11-5 of the Fisher Control Valve Sourcebook -- Oil & Gas (drawing W6022-2, "NPS 10-24 EWT or EWD") -- segmented part '
         + 'by part off a hand colour-coded print, so the boundaries are '
         + 'read rather than inferred, then denoised by the 657 Working '
         + 'Model method (contour trace, approxPolyDP, orthogonal snap, and '
@@ -2545,10 +2559,16 @@
         + '0.323 of its face-to-face and its port 0.293, against 0.359 and '
         + '0.287 for a real EWT 10x8. One published dimension therefore '
         + 'places the casting, the chambers and the trim together, and they '
-        + 'agree with the catalogue. The earlier source, Figure 19 of the '
-        + 'ED manual, was a parts-identification sheet at no particular '
-        + 'scale -- bore 0.148 of face-to-face -- and every attempt built '
-        + 'on it had to choose which of two true numbers to honour. '
+        + 'agree with the catalogue. A NOTE ON THE SOURCE THIS PASSED '
+        + 'OVER: Figure 19 of the ED manual was rejected as "at no '
+        + 'particular scale -- bore 0.148 of face-to-face". That '
+        + 'measurement is right and the conclusion does not follow. '
+        + '0.148 is about what an NPS 1 to 1-1/4 valve HAS; the figure '
+        + 'is captioned for NPS 1 through 6 and is drafted at the small '
+        + 'end of it. It was judged against a ten-inch valve and found '
+        + 'wanting for not being one. It is a drafting section with a '
+        + 'drawing number, 30A9542-F, and it is the small-end archetype '
+        + 'this core is missing -- see trace/README.md. '
         + 'SOURCED: face-to-face, port diameter, rated travel, stem '
         + 'diameter, line bore, and the cage window profile, which is the '
         + 'derivative of the published Cv curve. STILL CONVENTION, and '

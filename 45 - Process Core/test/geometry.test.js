@@ -616,17 +616,24 @@ refuses('a valve with no published stem diameter is refused, not guessed',
      cast shape was invented, after the casting had been measured --
      telling a reader to distrust the best-sourced part. Then it kept
      citing drawing 30A9542-F and "NOT TO SCALE" after the source had
-     moved to Figure 24 of D100399X012, which IS to scale. Both times
-     the note outlived the thing it described, so it is pinned to the
-     current source by name here. */
+     moved. Then the source it had moved TO turned out to be a document
+     number the vault does not hold at all, and this check is what
+     caught the correction going in: it was pinned to D100399X012 by
+     name and fired the moment the note stopped saying it.
+
+     So it is pinned to the real source instead -- the Oil & Gas
+     sourcebook's Figure 11-5, which we can produce. Three times now
+     the note has outlived the thing it described, which is the whole
+     argument for pinning it to something. */
   check('the shape says which parts are measured, sourced, and convention',
     /MEASURED/.test(g.conventionNote) &&
-    /D100399X012/.test(g.conventionNote) &&
+    /Figure 11-5/.test(g.conventionNote) &&
     /SOURCED/.test(g.conventionNote) &&
     /STILL CONVENTION/.test(g.conventionNote));
-  check('and it does not still cite the superseded drawing as its source',
-    !/30A9542-F/.test(g.conventionNote),
-    'the casting came off Figure 24 of D100399X012, not the ED parts sheet');
+  check('and it cites no document the vault cannot produce',
+    !/D100399X012|D100017X012/.test(g.conventionNote),
+    'check-techpubs.js is the general form of this; here it is pinned ' +
+    'to the one note that got it wrong for longest');
   check('it says the figure is to scale, which is why one dimension places all',
     /TO SCALE/.test(g.conventionNote) &&
     !/NOT TO SCALE/.test(g.conventionNote));

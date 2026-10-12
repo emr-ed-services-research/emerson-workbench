@@ -13,7 +13,8 @@
    two-inch line.
 
    The reason is the body archetype. There is one traced globe body in
-   this core and it came off Figure 24 of D100399X012, an EWT NPS 10x8,
+   this core and it came off Figure 11-5 of the Oil & Gas sourcebook
+   (drawing W6022-2), an EWT or EWD,
    scaled to each valve by its published face-to-face. The traced
    figure's bore is 0.323 of its face-to-face and its port 0.293. An ED
    NPS 1-1/2 is 0.174 and 0.203 -- so the casting was drawn about half
@@ -65,7 +66,10 @@
    numbers that were not the ones the formula wants.
 
    A 1/2 INCH STEM ALSO REACHES THE STANDARD PACKING TABLE. The 3/8 in
-   stem on the old valve did not: D100399X012 Table 6 starts at 1/2.
+   stem on the old valve did not -- or so the note here claimed. It
+   does: Table 4 of D100390X012 starts at 3/8, and the four rows for
+   it are in the catalogue now. The old claim rested on a table in a
+   document the vault does not hold.
    So this loop can show the torque WINDOW as well as the ENVIRO-SEAL
    friction force.                                                   */
 'use strict';
@@ -174,11 +178,12 @@ say('              and that is worth seeing before the cutaway shows ' +
     'one that does not.');
 
 /* ---- packing ---------------------------------------------------------
-   This valve has a 3/8 inch stem, and the STANDARD packing torque
-   window (D100399X012 Table 6) starts at 1/2 -- the EW bodies that
-   manual covers have no 3/8 stem. The ENVIRO-SEAL manual does reach
-   down here, and publishes the thing that matters more anyway: the
-   friction force the actuator has to overcome. */
+   This valve has a 1/2 inch stem, so BOTH packing systems have
+   something to say about it. The standard arrangement publishes a
+   torque WINDOW -- D100390X012 Table 4, 28 to 42 lbf.in in PTFE at
+   CL300 -- and ENVIRO-SEAL publishes the friction FORCE, which is the
+   number the actuator has to overcome and the one the standard
+   arrangement never gives. */
 const PF = LPE.assembly.packingFriction({
   catalogue: CAT, packingType: PACKING, stem: VALVE.dims.stem });
 const PFG = LPE.assembly.packingFriction({

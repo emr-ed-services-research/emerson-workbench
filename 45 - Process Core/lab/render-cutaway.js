@@ -145,7 +145,7 @@ const PAGE = `<!doctype html>
       is two chambers, stacked and offset, with the port as the only opening
       between them &mdash; which is measured, not assumed: the two chambers
       come back as two components that never touch. Every outline is read
-      off <em>Figure 24 of D100399X012</em>, and that figure is to scale, so
+      off <em>Figure 11-5 of the Oil &amp; Gas sourcebook</em>, and that figure is near enough to scale, so
       the casting, the chambers and the trim all place off one published
       dimension.
       <br><br>
