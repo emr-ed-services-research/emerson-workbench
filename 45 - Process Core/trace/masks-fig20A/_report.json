@@ -41,18 +41,18 @@
   2158
  ],
  "cells": 427,
- "absorbed": 39,
+ "absorbed": 107,
  "parts": {
-  "body": 403125,
-  "bonnet": 178818,
-  "cage": 41607,
-  "plug": 36838,
-  "stem": 33476,
-  "seatRing": 19952,
-  "packing": 4496,
-  "bolting": 30588,
-  "hardware": 9655,
-  "fluid": 629845
+  "body": 405725,
+  "bonnet": 180738,
+  "cage": 43012,
+  "plug": 38082,
+  "stem": 41378,
+  "seatRing": 20467,
+  "packing": 5150,
+  "bolting": 37619,
+  "hardware": 11601,
+  "fluid": 630484
  },
  "missing": [],
  "ambiguous": 4

@@ -129,6 +129,15 @@ MIN_CELL = 12      # px; smaller cells are noise between hatch lines
 THIN_CLAIM = 0.05  # report, do not refuse, a cell won on less than this
 SLIVER_FILL = 0.42 # a cell filling less of its bounding box is a hatch stripe
 SMALL = 400        # px; below this a blob is not worth reporting either way
+REACH = 3          # px; how far across the linework two cells count as
+                   # neighbours. It was 2, and 2 cannot cross a heavy
+                   # outline: a 36 168 px slab of Figure 20-B's body
+                   # had NO neighbours at all at that reach, because
+                   # the line bounding it is 5 to 6 px wide. Hatch
+                   # lines are thin and part outlines are not, and the
+                   # rule has to see across both.
+CONTACT_MIN = 0.20 # a neighbour must hold this share of the longest
+                   # contact to count as an answer; less is a corner
 
 # MIN_VOTE IS ABSOLUTE AND THAT IS THE POINT. It used to be MIN_PAINT, a
 # fraction: a cell had to be 25% covered before its paint counted for
@@ -384,12 +393,15 @@ def main():
     ys, xs = np.nonzero(ink)
     H, W = cells.shape
     for y, x in zip(ys, xs):
-        y0, y1 = max(0, y - 2), min(H, y + 3)
-        x0, x1 = max(0, x - 2), min(W, x + 3)
+        y0, y1 = max(0, y - REACH), min(H, y + REACH + 1)
+        x0, x1 = max(0, x - REACH), min(W, x + REACH + 1)
         near = np.unique(cells[y0:y1, x0:x1])
         near = [int(v) for v in near if v > 0]
         for a in near:
-            adj.setdefault(a, set()).update(v for v in near if v != a)
+            d = adj.setdefault(a, {})
+            for v in near:
+                if v != a:
+                    d[v] = d.get(v, 0) + 1
 
     # ONE PASS, AGAINST THE PAINT AND NOT AGAINST ITSELF. Iterating this
     # cascades: an unpainted cell absorbed into the bonnet makes ITS
@@ -401,10 +413,40 @@ def main():
     # is a thing to report rather than to infer.
     seed = assign.copy()
     absorbed = 0
-    for lbl in range(1, ncells):
+    # ITERATED, BUT ONLY EVER OVER SLIVERS, and that is what makes it
+    # safe where the original cascade was not. The bug that forced this
+    # to one pass was an unpainted BLOB being absorbed and then acting
+    # as a seed for the next one, which walked a part across the
+    # drawing. A sliver is a stripe between two hatch lines; a chain of
+    # them is one hatched region, and a hatched region is one part by
+    # construction. The chain cannot leave it, because the first stripe
+    # that touches a second part has two answers and is refused.
+    #
+    # One pass was not enough in practice: Figure 20-B had 36 168 px of
+    # lower-left body -- a stripe chain two and three hops from the
+    # nearest painted stripe -- come back unclaimed, and that is the
+    # white gap that made the traced valve look like it was falling
+    # apart.
+    for _round in range(24):
+      grew = 0
+      for lbl in range(1, ncells):
         if seed[lbl] >= 0 or sizes[lbl] < MIN_CELL or lbl in border:
             continue
-        touching = {int(seed[n]) for n in adj.get(lbl, ()) if seed[n] >= 0}
+        # CONTACT, NOT CONTACT-OR-NOT. Two parts "touching" one cell
+        # used to mean two answers and a refusal, however slight the
+        # second one was -- and a 36 168 px slab of Figure 20-B's body
+        # was refused because one corner of it kissed the drain plug
+        # across 139 pixels while sharing 2 474 with the body. That is
+        # not an ambiguity, it is a corner. A neighbour has to hold a
+        # real share of the boundary to count as an answer.
+        share = {}
+        for nb, contact in adj.get(lbl, {}).items():
+            if seed[nb] >= 0:
+                share[int(seed[nb])] = share.get(int(seed[nb]), 0) + contact
+        if not share:
+            continue
+        best = max(share.values())
+        touching = {k for k, v in share.items() if v >= CONTACT_MIN * best}
         if len(touching) != 1:
             continue
         p = touching.pop()
@@ -436,6 +478,14 @@ def main():
             continue
         assign[lbl] = p
         absorbed += 1
+        # only a SLIVER may seed the next round; a blob absorbed on the
+        # "it touches one thing" rule must stay a leaf, which is the
+        # whole of the cascade guard
+        if sliver:
+            grew += 1
+      if not grew:
+        break
+      seed = assign.copy()
 
     # ---- the linework itself belongs to what it bounds -----------------
     lab = np.zeros(cells.shape, dtype=np.int16)

@@ -94,7 +94,20 @@ def main():
         if not os.path.exists(f):
             continue
         mask = (np.array(Image.open(f).convert('L')) > 127).astype(np.uint8)
-        cs, hier = cv2.findContours(mask, cv2.RETR_CCOMP,
+        # GROWN BY ONE PIXEL, so neighbours SHARE their boundary rather
+        # than each stopping short of it. Every boundary in the drawing
+        # is a line of ink, and that line is assigned to exactly one of
+        # the two parts it separates -- so the other one ends a pixel or
+        # two early, and after simplification the pair leaves a visible
+        # white seam between them. The traced valve looked like it was
+        # coming apart along every joint. A one-pixel overlap is
+        # invisible, because one part is simply drawn over the other; a
+        # one-pixel gap is not. It is a RENDER remedy and it is applied
+        # to the outline only -- `maskAreaPx` below is still the mask as
+        # assigned, so the disagreement figure keeps measuring what it
+        # always measured.
+        grown = cv2.dilate(mask, np.ones((5, 5), np.uint8), iterations=1)
+        cs, hier = cv2.findContours(grown, cv2.RETR_CCOMP,
                                     cv2.CHAIN_APPROX_SIMPLE)
         if hier is None:
             continue
