@@ -510,7 +510,8 @@
 
     /* The plug, its balance holes and its seal. */
     g.fillStyle = t.trim; g.strokeStyle = t.trimRim; g.lineWidth = 1.4;
-    ring(g, pl, plug.head); g.fill(); g.stroke();
+    /* several rings now: head plus the two skirt walls in section */
+    for (const r of plug.head) { ring(g, pl, r); g.fill(); g.stroke(); }
     ring(g, pl, plug.stem); g.fill(); g.stroke();
     /* THE DRILLINGS ARE FULL OF WATER, and they are cut here because
        the plug is drawn over them -- a hole has to be re-cut out of

@@ -281,8 +281,17 @@ console.log('');
       f.speedAt(-3.3, 5.5) === 0);
     check('and so does the cavity over the plug head',
       f.inside(0, 8.7) && f.isStill(0, 8.7) && f.speedAt(0, 8.7) === 0);
+    /* SAMPLED IN THE CASTING, not up the bonnet bore. The point used
+       to be (0, 20), which was solid while the bonnet bore was drawn
+       as metal. It is not any more, and should not be: the check two
+       lines above requires the wetted volume to reach the underside
+       of the packing at 20.78, so (0, 20) is now a sample of the
+       water this suite just asserted is there. Two checks were
+       disagreeing about the same cubic inch. The casting wall is
+       unambiguous and makes the point the check is actually for. */
     check('while solid metal is outside the cavity altogether',
-      f.speedAt(0, 20) === null && !f.inside(0, 20),
+      f.speedAt(-13, 6) === null && !f.inside(-13, 6) &&
+      f.speedAt(7, 14) === null && !f.inside(7, 14),
       'null is a different answer from zero, and means a different thing');
     /* A corner of the chamber is neither: fluid, flowing, but
        slowly. This is what the route model could not express at all

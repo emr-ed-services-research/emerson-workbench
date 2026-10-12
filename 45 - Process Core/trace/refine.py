@@ -297,14 +297,33 @@ def _level_bottom(m):
     if not bottoms:
         return m
     floor = int(np.percentile(bottoms, 85))
+    lo, hi = int(cols.min()), int(cols.max())
     out = m.copy()
-    for i in cols:
+    # one pass to carry every column down to the common floor
+    for i in range(lo, hi + 1):
         r = np.nonzero(m[:, i])[0]
-        if not len(r):
-            continue
-        # fill from this column's own metal down to the common floor
-        out[r.max():floor + 1, i] = 1
+        if len(r):
+            out[r.max():floor + 1, i] = 1
         out[floor + 1:, i] = 0
+    # AND THE TAPPED HOLE ITSELF. The drain plug screws into a through
+    # hole, so its own columns carry no metal at all and the pass above
+    # skips them -- leaving a slot of nothing up the middle of a casting
+    # that is supposed to be closed. A column with metal either side of
+    # it and none of its own is the hole; it is filled from the lowest
+    # of its two neighbours.
+    for i in range(lo + 1, hi):
+        if m[:, i].any():
+            continue
+        left = right = None
+        for j in range(i - 1, lo - 1, -1):
+            if m[:, j].any(): left = j; break
+        for j in range(i + 1, hi + 1):
+            if m[:, j].any(): right = j; break
+        if left is None or right is None:
+            continue
+        top = max(np.nonzero(m[:, left])[0].max(),
+                  np.nonzero(m[:, right])[0].max())
+        out[top:floor + 1, i] = 1
     return out
 
 

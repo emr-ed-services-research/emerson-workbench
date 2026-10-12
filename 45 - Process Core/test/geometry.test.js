@@ -320,10 +320,27 @@ function valveOf(part, over) {
 {
   const g = valveOf(EWT);
 
+  /* THE SEAT IS TWO HALVES AGAIN, and this time because a seat ring
+     has a bore. It was one ring while the trace gave one: Figure 20
+     draws the ring's section as a single solid band, because the two
+     cut halves and the opening between them are one shape to a paint
+     bucket. A seat with no hole in it is a blank, and the model said
+     so -- at a tenth of travel the only way through was round the ends
+     of the bar and the field reported a shut valve. The bore is cut at
+     the PORT, which is a Catalog 12 dimension and not a guess. */
   check('a globe valve is drawn as two chambers and a port between them',
     g.inletCavity.length === 1 && g.outletCavity.length === 1 &&
-    g.cage.rings.length === 2 && g.seatRing.length === 1,
-    'the seat is one measured ring now, not two mirrored rectangles');
+    g.cage.rings.length === 2 && g.seatRing.length === 2,
+    'two chambers, two cage walls, and a seat ring cut by its own bore');
+  check('and the seat ring opens exactly at the port',
+    (function () {
+      let inner = Infinity;
+      for (const r of g.seatRing)
+        for (const q of r) inner = Math.min(inner, Math.abs(q[0]));
+      return Math.abs(inner - EWT.dims.port / 2) < 1e-9;
+    })(),
+    'the hole in a seat ring IS the port, so it is cut at the published ' +
+    'diameter rather than wherever the paint happened to stop');
 
   /* A CAVITY IS INSIDE THE CASTING. Obvious, and it was not true: the
      inlet roof rose above the body between the shoulder and the flange
