@@ -38,7 +38,7 @@ import sys
 import numpy as np
 from PIL import Image
 
-PARTS = ['body', 'bonnet', 'cage', 'plug', 'seatRing', 'packing', 'bolting',
+PARTS = ['body', 'bonnet', 'cage', 'plug', 'seatRing', 'fluid', 'packing', 'bolting',
          'hardware']
 
 
