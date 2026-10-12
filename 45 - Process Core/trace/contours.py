@@ -88,8 +88,30 @@ def main():
     REF = _ilu.module_from_spec(_sp)
     _sp.loader.exec_module(REF)
     _cf = os.path.join(masksdir, 'cage.png')
-    AXIS = (REF.axis_of(np.array(Image.open(_cf).convert('L')) > 127)
-            if os.path.exists(_cf) else None)
+    AXIS = REF.axis_of(
+        (np.array(Image.open(_cf).convert('L')) > 127)
+        if os.path.exists(_cf) else None, line)
+    # the plug's own half-width: the cage's bore cannot be smaller, and
+    # it is measured rather than inferred
+    _pf = os.path.join(masksdir, 'plug.png')
+    BORE_R = None
+    if os.path.exists(_pf) and AXIS is not None:
+        # measured on the REFINED plug, not the raw one: the cage is
+        # clipped to clear the plug that will actually be drawn, and the
+        # plug moves a little in its own refinement
+        _pm = REF.refine(
+            (np.array(Image.open(_pf).convert('L')) > 127).astype(np.uint8),
+            'plug', AXIS)
+        _ys, _xs = np.nonzero(_pm)
+        if len(_xs):
+            BORE_R = float(max(abs(_xs.max() - AXIS), abs(AXIS - _xs.min())))
+            # plus the boundary-sharing grow below, which would otherwise
+            # put the cage straight back into the clearance it was just
+            # cleared out of -- 2 px, and the running clearance is 4
+            # 2 px for the cage's own grow, 2 more for the plug's: both
+            # outlines are grown to share boundaries, and they grow
+            # toward each other across the one gap that must survive
+            BORE_R += 4.0
     print('\nREFINED before contouring (axis x=%s)'
           % ('%.1f' % AXIS if AXIS is not None else 'unknown'))
 
@@ -109,7 +131,7 @@ def main():
         if not os.path.exists(f):
             continue
         raw = (np.array(Image.open(f).convert('L')) > 127).astype(np.uint8)
-        mask = REF.refine(raw, name, AXIS)
+        mask = REF.refine(raw, name, AXIS, BORE_R)
         print('  ' + REF.report(raw, mask, name))
         # GROWN BY ONE PIXEL, so neighbours SHARE their boundary rather
         # than each stopping short of it. Every boundary in the drawing

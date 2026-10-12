@@ -36,6 +36,8 @@ import os
 import sys
 
 import numpy as np
+
+HERE = os.path.dirname(os.path.abspath(__file__))
 from PIL import Image
 
 PARTS = ['body', 'bonnet', 'cage', 'plug', 'seatRing', 'fluid', 'packing', 'bolting',
@@ -65,8 +67,12 @@ def main():
     if body is None or cage is None or seat is None:
         raise SystemExit('need body, cage and seatRing masks to register.')
 
-    cy, cx = np.nonzero(cage)
-    axis = float(cx.mean())
+    import importlib.util as _ilu
+    _sp = _ilu.spec_from_file_location('refine', os.path.join(HERE, 'refine.py'))
+    _R = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_R)
+    # the SAME measured axis the refinement uses -- a datum that differs
+    # between the two stages is two datums
+    axis = float(_R.axis_of(cage, np.array(Image.open(line_path).convert('L'))))
     sy, sx = np.nonzero(seat)
     portY = float((sy.min() + sy.max()) / 2.0)
     by, bx = np.nonzero(body)

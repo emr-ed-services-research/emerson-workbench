@@ -60,10 +60,11 @@ import numpy as np
 # accuracy, not its tidiness. Making the trim symmetric is worth doing
 # properly off a better-centred trace, not by nudging a kernel until
 # the picture looks right.
-AXISYMMETRIC = {'bonnet', 'packing', 'stem'}
+AXISYMMETRIC = {'bonnet', 'packing', 'stem',
+                'cage', 'plug', 'seatRing'}
 MEASURED = {'cage', 'plug', 'seatRing'}   # shape refined, size untouched
 # Parts that are tubes: nothing of them crosses their own bore.
-TUBE = set()      # DISABLED, and the reason is worth keeping.
+TUBE = {'cage'}   # cleared against the plug's own radius; see clear_inside
 #
 # The cage's top rim should not be in the mask: the drawing shows it
 # THROUGH the bore and a visible edge is not cut metal. Four rules were
@@ -96,18 +97,45 @@ CLOSE_PX = 3
 OPEN_PX = 3
 
 
-def axis_of(cage_mask):
-    """The stem axis, from the cage's CENTRE OF AREA.
+def axis_of(cage_mask, line=None):
+    """The stem axis, MEASURED off the linework by mirror correlation.
 
-    The midpoint of its outer faces was tried and is worse: the cage's
-    extremes are two single pixels and whichever one the trace happens
-    to run a little further takes the axis with it, which came back
-    0.45 in off and made both the cage and the plug asymmetric. Centre
-    of area averages over every wall pixel and is not moved by one.
+    Every earlier version estimated it from a mask -- centre of area,
+    then midpoint of the outer faces -- and both were wrong by enough to
+    matter. The cage mask's centre of area put it 8.3 px off, which is
+    0.14 in on this figure: TWICE the plug-to-cage running clearance.
+    Symmetrizing about an axis that far out is what made the plug come
+    back wider than its own bore, and no amount of choosing between
+    union and average could fix an axis that was not the axis.
 
-    It matters more than it looks, because symmetrize unions a mask
-    with its mirror: reflect about an axis a few pixels out and the
-    union is WIDER than the part."""
+    The drawing itself is the better instrument. A valve section is a
+    body of revolution about the stem, so the linework matches its own
+    mirror -- and only at one place. Slide the mirror in half-pixel
+    steps and take the overlap maximum. It is a measurement of the
+    drawing rather than an inference from the paint, and the paint is
+    the part that was in doubt.
+
+    The band sampled is the TRIM, not the whole figure: the body is
+    asymmetric by design, and including it drags the maximum toward a
+    casting that was never symmetric in the first place.
+    """
+    if line is not None:
+        ink = line < 128
+        H = ink.shape[0]
+        band = ink[int(H * 0.60):int(H * 0.78), :]
+        best, bestax = -1, None
+        W = ink.shape[1]
+        for ax2 in range(int(W * 0.40) * 2, int(W * 0.60) * 2):
+            ax = ax2 / 2.0
+            i = int(round(ax))
+            w = min(i, W - i) - 2
+            if w < W // 6:
+                continue
+            ov = int((band[:, i - w:i] & band[:, i + 1:i + 1 + w][:, ::-1]).sum())
+            if ov > best:
+                best, bestax = ov, ax
+        if bestax is not None:
+            return bestax
     ys, xs = np.nonzero(cage_mask)
     if not len(xs):
         return None
@@ -176,6 +204,27 @@ def symmetrize(m, axis):
     return out
 
 
+def clear_inside(m, axis, radius):
+    """Remove everything within `radius` of the axis.
+
+    For the cage this is the rim the drawing shows THROUGH the bore --
+    a visible edge, not cut metal, and a tube has nothing on its own
+    centreline. Four earlier rules tried to find it from the cage alone
+    and each was a guess: outermost-run keeps it where it is contiguous
+    with the walls, "inside the bore" needs a bore and two ways of
+    measuring one disagreed by 1.2 in, and "crosses the axis" catches
+    nothing because the stem splits the rim first.
+
+    The radius comes from the PLUG instead, and that is not a guess:
+    the plug runs in the cage bore, so every point the plug occupies is
+    bore by definition and no cage metal can be there. One part
+    measuring another is exactly what an assembly is.
+    """
+    H, W = m.shape
+    xs = np.abs(np.arange(W) - axis)
+    return (m & (xs >= radius)[None, :]).astype(np.uint8)
+
+
 def clear_bore(m, axis):
     """Drop any run that crosses the axis: a tube never does.
 
@@ -219,7 +268,7 @@ def _scale_x(m, axis, k):
     return cv2.warpAffine(m, M, (W, H), flags=cv2.INTER_NEAREST)
 
 
-def refine(mask, name, axis):
+def refine(mask, name, axis, bore_radius=None):
     """Clean one part's mask. `mask` is uint8 0/1."""
     m = mask.astype(np.uint8)
     # measured on the RAW mask, before any morphology touches it: this
@@ -251,8 +300,8 @@ def refine(mask, name, axis):
         after_half = _half_width(m, axis)
         if raw_half > 0 and after_half > raw_half:
             m = _scale_x(m, axis, raw_half / after_half)
-    if name in TUBE and axis is not None:
-        m = clear_bore(m, axis)
+    if name in TUBE and axis is not None and bore_radius:
+        m = clear_inside(m, axis, bore_radius)
     return m
 
 
