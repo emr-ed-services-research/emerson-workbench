@@ -145,12 +145,61 @@ other**, so the cutaway must be left-right asymmetric.
 | Stem diameter | ED IOM Table 5 | **sourced** |
 | Seat leakage class | ANSI/FCI 70-2 | already in the trim layer |
 | Window **count** and alternation | Fig 3.37 (observation); Fd per ISA-75.01.01 | **NOT sourced** |
-| Body envelope — width, height | nothing held | **NOT sourced — convention** |
-| Cast chamber contours | nothing held | **NOT sourced — convention** |
+| Body envelope — width, height | D100390X012 Fig 19/20, traced and registered | **sourced — 2026-10-11**, see below |
+| Cast chamber contours | D100390X012 Fig 19/20, traced and registered | **sourced — 2026-10-11**, see below |
 
 The valve-body IOMs give almost nothing: every one in the vault (ED/EAD,
 ET/EAT, EZ, ES/EAS, 9500, Vee-Ball, 8580, V500) is an install/maintain/parts
 manual. **There is no dimensioned cross-section in the vault.**
+
+### The two convention rows closed, 2026-10-11
+
+There is still no *dimensioned* cross-section. There is now a *registered*
+one, which is enough, and the difference is worth stating: nobody printed a
+number on these drawings, but the drawings turn out to be to scale, and a
+drawing to scale plus one sourced length is a dimensioned drawing.
+
+Figure 19 and both panels of Figure 20 of D100390X012 have been painted
+part by part and segmented into per-part masks and polygons
+(`45 - Process Core/trace/`, and its README for the method). Figure 20's
+two panels are the same NPS 8 valve drawn twice, at different sizes on the
+page, painted independently. **Every ratio of two dimensions agrees between
+them**: plug outside diameter to face-to-face, 0.0%; cage outer, 0.4%; body
+height, 0.7%; cage bore, 1.2%. Independent paintings of one valve cannot
+agree to a fraction of a percent unless both drawings are to scale, so they
+are.
+
+**The class is determined by exclusion, not by matching.** The figure
+caption states no pressure class, and an NPS 8 globe's face-to-face runs
+21.38 in at CL150 to 24.12 at CL600 — a 12% spread that would otherwise sit
+underneath everything built on top. But the port is 8.00 in for an ED NPS 8
+in every class Catalog 12 lists, and the port has to fit inside the cage.
+Scale the drawing to CL150 and the cage bore comes out 7.16 in; to CL300 and
+it is 7.50. Both put an 8.00 in port inside a cage narrower than itself.
+Only CL600 survives.
+
+Anchored on face-to-face = 24.00 in, the two panels then read:
+
+| | Fig 20-A | Fig 20-B | against |
+| --- | --- | --- | --- |
+| cage bore | 8.02 in | 8.12 in | 8.00 in port, sourced |
+| plug outside diameter | 8.09 in | 8.09 in | — |
+| **body height** | **18.04 in** | **17.92 in** | nothing — this is the new quantity |
+| cage outer | 9.74 in | 9.70 in | — |
+
+The port lands inside the cage in both, within about 1%, which is the check
+the anchor was chosen to allow rather than to guarantee. One honest
+blemish: on panel A the plug reads 8.09 in against a cage bore of 8.02, a
+0.07 in inversion a real plug could not have. That is 4 px of tracing
+error, it is within the spread of every other feature, and it is recorded
+rather than averaged away.
+
+**So `geometry.globeBody()` is no longer writing a convention.** Body
+envelope and cast contours come off a registered drawing of the real
+casting. What remains a convention is anything the figures do not show, and
+that has to keep saying so.
+
+`trace/register.py` recomputes all of the above from the masks.
 
 ---
 

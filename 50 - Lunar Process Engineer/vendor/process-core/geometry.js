@@ -1039,6 +1039,44 @@
     stemDia:       0.22,   // x port dia. The ED IOM tabulates stem by
                            // valve-stem-connection size, not by port, so
                            // this is a proportion and NOT that table.
+    /* ---- WINDOW COUNT AND CLOCKING: CONVENTIONS, DECLARED -------
+       Nothing in the Source Library publishes how many windows an ED
+       cage has. Catalog 12 gives Cv at every 10% of travel, and the
+       derivative of that curve gives the TOTAL window width at each
+       height summed over all of them -- `trim.widthProfile`, whose own
+       `means` string says exactly that. One number it cannot give is
+       how that total is divided up. Six narrow windows and four wide
+       ones integrate to the same curve and flow the same.
+
+       The count was once declared here as 6 and then removed, rightly,
+       because nothing read it: a convention nobody consumes is not a
+       convention, it is a comment. It comes back only because it now
+       has work to do -- `cageWindows()` divides the sourced total area
+       by it to get ONE window's width, and decides from the clocking
+       which azimuths a longitudinal section actually cuts through.
+
+       WHERE 6 COMES FROM, and what it is not. Figure 3.37 of the
+       Control Valve Handbook photographs three cages side by side;
+       the equal-percentage one shows about six windows and the linear
+       one nearer four. That is an observation off a photograph of a
+       different valve, not a published figure for an ED, and it is a
+       design variable per style and size rather than a constant. It
+       is recorded as a convention and it must be overridable, which
+       is why it is a spec input and not a literal.
+
+       NO ALTERNATING SIZES. There was a claim here once that cage
+       windows alternate large and small, cited to that same Figure
+       3.37 -- and that figure shows three DIFFERENT cages, not one
+       cage with two window sizes. The apparent two widths on a single
+       cage in that photograph is foreshortening: a cylinder shot from
+       outside shows the window facing the lens at full width and the
+       ones a sixth of a turn away as slits. Equal windows until
+       something we hold says otherwise. */
+    windowCount:   6,      // CONVENTION. Not published for an ED.
+    windowClockDeg: 0,     // CONVENTION. Rotational phase of window 0
+                           // about the stem axis, measured from the
+                           // section plane. 0 puts a window centre
+                           // dead on the near cut.
     balanceHoles:  4,      // through the plug head, balanced trim only
     balanceDia:    0.13,   // x port dia
     throatFlare:   0.55,   // how far the flange bore flares into the dish
@@ -1086,6 +1124,126 @@
     if (j >= n - 1) return prof[n - 1];
     const lo = Math.floor(j);
     return prof[lo] + (j - lo) * (prof[lo + 1] - prof[lo]);
+  }
+
+  /* ---- how one cage's windows sit around it, and what a cut sees ---
+
+     Takes the SOURCED total open area and the CONVENTION count, and
+     answers two questions the section drawing cannot answer for
+     itself.
+
+     ONE WINDOW'S WIDTH. The area is real: Cv over 37.97 Cd, and the
+     profile says how it is distributed up the band. Divided by the
+     count it gives the circumferential width of a single window,
+     which is the quantity that decides whether a cage is six slots or
+     four ports -- visibly different objects that the Cv curve alone
+     cannot tell apart.
+
+     WHAT THE SECTION CUTS. A longitudinal section through the stem
+     axis cuts the cage wall at exactly two azimuths, 0 and 180. With
+     N windows evenly spaced at 360/N apart, whether each of those two
+     cuts lands in a window or in solid metal depends on N and on the
+     clocking -- and FOR ODD N THE TWO SIDES CANNOT MATCH, because
+     opposite azimuths are half a turn apart and half a turn is never
+     a whole number of window pitches. That is the left-right
+     asymmetry the Pro Chrome plan calls for, and it is a consequence
+     of the count rather than a drawing flourish.
+
+     Windows the cut misses are still visible in a cutaway, on the far
+     wall, and they are foreshortened: a window at azimuth theta
+     presents cos(theta) of its width to the viewer. That factor is
+     returned per window rather than applied, because whether a
+     renderer wants it is a chrome decision.                        */
+  function cageWindows(spec) {
+    const count = spec.count === undefined ? GLOBE.windowCount : spec.count;
+    if (!(Number.isInteger(count) && count >= 1))
+      throw new Error('geometry.cageWindows: count must be a whole number ' +
+        'of windows, at least one; got ' + JSON.stringify(spec.count) +
+        '. It is a CONVENTION -- nothing held publishes it for an ED -- ' +
+        'but it is still a count of real openings.');
+    if (!(spec.openAreaIn2 > 0))
+      throw new Error('geometry.cageWindows: openAreaIn2 must be the ' +
+        'positive total flow area of ALL windows, from the Cv curve. ' +
+        'The count divides a sourced area; it does not invent one.');
+    if (!(spec.bandHeightIn > 0))
+      throw new Error('geometry.cageWindows: bandHeightIn must be the ' +
+        'height of the window band, positive.');
+    const prof = spec.widthProfile;
+    if (!Array.isArray(prof) || prof.length < 2)
+      throw new Error('geometry.cageWindows: widthProfile must be the ' +
+        'normalised total-width profile, at least two stations.');
+
+    const clock = spec.clockDeg === undefined
+      ? GLOBE.windowClockDeg : spec.clockDeg;
+    const pitch = 360 / count;
+
+    /* Mean of the profile over the band, honouring that its stations
+       are band midpoints -- the same reading `widthAt` uses, because a
+       window measured by one rule and drawn by another is two objects. */
+    let mean = 0;
+    for (let i = 0; i < prof.length; i++) mean += prof[i];
+    mean /= prof.length;
+
+    /* area = count * widest * mean * bandHeight  ->  widest */
+    const widest = spec.openAreaIn2 / (count * mean * spec.bandHeightIn);
+
+    const half = (a) => {
+      let d = ((a % 360) + 360) % 360;
+      return d > 180 ? 360 - d : d;               /* 0..180 from azimuth 0 */
+    };
+    const wins = [];
+    for (let i = 0; i < count; i++) {
+      const az = ((clock + i * pitch) % 360 + 360) % 360;
+      const th = az * Math.PI / 180;
+      wins.push(Object.freeze({
+        index: i, azimuthDeg: az,
+        offNearCutDeg: half(az), offFarCutDeg: half(az - 180),
+        foreshorten: Math.abs(Math.cos(th)),
+      }));
+    }
+
+    /* Does a cut at this azimuth land inside a window? The window
+       subtends widest/(pi*D) of a turn about the axis. */
+    const circumference = Math.PI * spec.cageBoreIn;
+    const subtendDeg = circumference > 0
+      ? 360 * widest / circumference : 0;
+    const cutAt = (azimuth) => {
+      let best = null;
+      for (const w of wins) {
+        let d = Math.abs(((w.azimuthDeg - azimuth) % 360 + 360) % 360);
+        if (d > 180) d = 360 - d;
+        if (best === null || d < best.offDeg)
+          best = { index: w.index, offDeg: d };
+      }
+      const open = best.offDeg <= subtendDeg / 2;
+      return Object.freeze({
+        through: open, window: open ? best.index : null,
+        offCentreDeg: best.offDeg,
+        /* how far across the window the cut passes, -1..1, 0 dead centre */
+        acrossWindow: subtendDeg > 0
+          ? Math.max(-1, Math.min(1, best.offDeg / (subtendDeg / 2))) : 1,
+      });
+    };
+
+    const near = cutAt(0), far = cutAt(180);
+    return Object.freeze({
+      count: count, clockDeg: clock, pitchDeg: pitch,
+      widestWidthIn: widest, subtendDeg: subtendDeg,
+      windows: Object.freeze(wins),
+      nearCut: near, farCut: far,
+      symmetric: near.through === far.through,
+      declared:
+        'Window COUNT and CLOCKING are conventions. Nothing in the Source '
+      + 'Library publishes either for an ED cage; the count is an '
+      + 'observation off a photograph of a different valve (Control Valve '
+      + 'Handbook Fig 3.37, about six on the equal-percentage cage) and it '
+      + 'is a design variable per style and size. The total open area is '
+      + 'NOT a convention -- it is the published Cv curve over 37.97 Cd -- '
+      + 'so the count changes how the area is divided and never how much '
+      + 'there is. Windows are equal in size: the alternating-size claim '
+      + 'that used to sit here misread a photograph of three different '
+      + 'cages as one cage, and the two apparent widths are foreshortening.',
+    });
   }
 
   function cageWindow(prof, halfWidth, y0, h, xFace, sign) {
@@ -2608,6 +2766,7 @@
   LPE.geometry = {
     shapeOf: shapeOf, pipe: pipe, elbow90: elbow90, tee: tee,
     globeValve: globeValve, GLOBE_CONVENTIONS: Object.freeze(GLOBE),
+    cageWindows: cageWindows,
     flowPath: flowPath, samplePath: samplePath, boreAtS: boreAtS,
     classes: () => Object.keys(RULES).sort(),
   };

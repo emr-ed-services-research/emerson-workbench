@@ -888,4 +888,100 @@ console.log('');
   }
 }
 
+/* ---- cage windows: a convention that has to earn the name ------------
+
+   The count was declared here once before and removed, because nothing
+   read it. These checks exist to make that impossible a second time: if
+   the count stops changing an answer, they go red.                    */
+{
+  const G = LPE.geometry;
+  /* ED NPS 8 equal-percentage, Catalog 12 p125: Cv 567, travel 2 in,
+     port 8 in. Cage bore measured off the registered Figure 20 trace. */
+  const AREA = 567 / (37.97 * 0.85);
+  const PROF = [0.14, 0.12, 0.16, 0.26, 0.38, 0.54, 0.74, 0.88, 0.81, 0.67];
+  const cage = (o) => G.cageWindows(Object.assign({
+    openAreaIn2: AREA, bandHeightIn: 2, widthProfile: PROF,
+    cageBoreIn: 8.09,
+  }, o));
+
+  const six = cage({ count: 6 });
+
+  check('the count divides the sourced area rather than changing it',
+    (() => {
+      let mean = 0;
+      for (const w of PROF) mean += w;
+      mean /= PROF.length;
+      const back = six.count * six.widestWidthIn * mean * 2;
+      return Math.abs(back - AREA) < 1e-9;
+    })(),
+    'six windows ' + six.widestWidthIn.toFixed(2) + ' in at their widest ' +
+    'integrate back to the ' + AREA.toFixed(2) + ' in2 the Cv curve gives');
+
+  check('more windows means narrower ones, in exact proportion',
+    Math.abs(cage({ count: 4 }).widestWidthIn /
+             cage({ count: 8 }).widestWidthIn - 2) < 1e-9,
+    'which is the whole reason the count is needed: the Cv curve gives ' +
+    'the TOTAL width at each height and cannot say how it is split');
+
+  check('and the total area is identical whichever count is chosen',
+    (() => {
+      const a = n => {
+        const c = cage({ count: n });
+        let mean = 0;
+        for (const w of PROF) mean += w;
+        return c.count * c.widestWidthIn * (mean / PROF.length) * 2;
+      };
+      return Math.abs(a(4) - a(9)) < 1e-9;
+    })(),
+    'the convention moves how the area is divided, never how much ' +
+    'there is -- that part is the published curve');
+
+  /* ---- the left-right asymmetry, and where it comes from ---- */
+  check('an even count puts a window on both cuts, so the section is ' +
+        'symmetric',
+    cage({ count: 6 }).symmetric && cage({ count: 8 }).symmetric);
+  check('an ODD count cannot, and the section comes out asymmetric',
+    !cage({ count: 5 }).symmetric,
+    'opposite azimuths are half a turn apart and half a turn is never a ' +
+    'whole number of pitches when the count is odd -- so one side cuts a ' +
+    'window and the other cuts metal. The asymmetry is a consequence of ' +
+    'the count, not a drawing flourish');
+  check('the far cut on an odd cage misses by half a pitch',
+    Math.abs(cage({ count: 5 }).farCut.offCentreDeg - 36) < 1e-9,
+    'five windows, 72 degree pitch, so 180 falls 36 degrees off the ' +
+    'nearest one');
+
+  check('clocking moves what the section sees, with the cage unchanged',
+    cage({ count: 6, clockDeg: 0 }).nearCut.through &&
+    !cage({ count: 6, clockDeg: 30 }).nearCut.through,
+    'half a pitch of rotation takes the near cut off the window and into ' +
+    'the post between two');
+
+  check('windows the cut misses are foreshortened, not hidden',
+    (() => {
+      const w = cage({ count: 6 }).windows;
+      return Math.abs(w[0].foreshorten - 1) < 1e-9 &&
+             Math.abs(w[3].foreshorten - 1) < 1e-9 &&
+             w[1].foreshorten < 0.6;
+    })(),
+    'a window a sixth of a turn away presents half its width -- which is ' +
+    'what made a photograph of one cage look like it had two window sizes');
+
+  check('and it says, in its own answer, which parts of it are conventions',
+    /COUNT and CLOCKING are conventions/.test(six.declared) &&
+    /NOT a convention/.test(six.declared) &&
+    /foreshortening/.test(six.declared));
+
+  refuses('a count that is not a whole number of openings',
+    () => cage({ count: 5.5 }), 'whole number');
+  refuses('a count of zero -- a cage with no windows is not a cage',
+    () => cage({ count: 0 }), 'at least one');
+  refuses('an area it was not given, because the count divides a sourced ' +
+          'area and does not invent one',
+    () => G.cageWindows({ count: 6, bandHeightIn: 2, widthProfile: PROF,
+                          cageBoreIn: 8.09 }), 'does not invent one');
+  refuses('a profile too short to be a profile',
+    () => cage({ count: 6, widthProfile: [1] }), 'at least two stations');
+}
+
 process.exit(failures ? 1 : 0);
