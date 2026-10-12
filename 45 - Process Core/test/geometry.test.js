@@ -332,15 +332,24 @@ function valveOf(part, over) {
     g.inletCavity.length === 1 && g.outletCavity.length === 1 &&
     g.cage.rings.length === 2 && g.seatRing.length === 2,
     'two chambers, two cage walls, and a seat ring cut by its own bore');
-  check('and the seat ring opens exactly at the port',
+  /* NEAR THE PORT, NOT EXACTLY ON IT. This asked for the seat's bore
+     to equal the published port to the last decimal, which was fair
+     while the bore was CUT at that diameter by this layer. It is not
+     any more -- the ring is painted with its bore already in it, and
+     the paint is the geometry. What is still worth checking, and is a
+     real check rather than a tautology, is that the painted bore
+     AGREES with the published port: a traced ring whose hole is a long
+     way from the Catalog 12 figure means the trace is of something
+     else, or is registered wrong, and that is worth hearing about. */
+  check('and the seat ring's own bore agrees with the published port',
     (function () {
       let inner = Infinity;
       for (const r of g.seatRing)
         for (const q of r) inner = Math.min(inner, Math.abs(q[0]));
-      return Math.abs(inner - EWT.dims.port / 2) < 1e-9;
+      return Math.abs(inner * 2 - EWT.dims.port) < EWT.dims.port * 0.03;
     })(),
-    'the hole in a seat ring IS the port, so it is cut at the published ' +
-    'diameter rather than wherever the paint happened to stop');
+    'painted, not cut -- so it is checked against the catalogue rather ' +
+    'than derived from it');
 
   /* A CAVITY IS INSIDE THE CASTING. Obvious, and it was not true: the
      inlet roof rose above the body between the shoulder and the flange

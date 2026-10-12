@@ -1,0 +1,7 @@
+{
+  "note": "The two greys are swapped on this figure. Grey-50 #7F7F7F is the FLUID and light grey #C3C3C3 is the packing flange, where the table has it the other way round. They sit next to each other on MS Paint's palette and the void is the colour you reach for most often, so this is the obvious slip to make. Nothing downstream cares which hue a part is, only that one colour means one part, so the map moves rather than the painting. No packing flange appears to be painted here -- light grey has no pixels in the file -- which is fine: a part with a colour and no paint is simply absent from the figure.",
+  "colours": {
+    "#7F7F7F": "fluid",
+    "#C3C3C3": "packingFlange"
+  }
+}

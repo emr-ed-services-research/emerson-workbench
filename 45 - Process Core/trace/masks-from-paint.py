@@ -78,9 +78,41 @@ PARTS = [
     ('plug',      [(0xFF, 0xF2, 0x00)], 'yellow'),
     ('stem',      [(0xA3, 0x49, 0xA4)], 'purple'),
     ('seatRing',  [(0x22, 0xB1, 0x4C)], 'green'),
-    ('packing',   [(0xFF, 0xAE, 0xC9)], 'rose'),
+    # PACKING IS OUT, 2026-10-12, at Franz's call: "you just made a
+    # huge mess of it every time". It did -- the stack is nine parts in
+    # a bore an inch across, and at the scale this figure is drawn they
+    # landed as a smear. The BORE stays, painted as the void it is
+    # until there is packing in it, and the STEM stays, so the column
+    # the packing seals is still there to seal. Rose is unassigned and
+    # free for it when the time comes.
     ('bolting',   [(0x3F, 0x48, 0xCC)], 'indigo'),
-    ('hardware',  [(0xB9, 0x7A, 0x57)], 'brown'),
+    # The packing flange: the part the packing studs pull down onto the
+    # stack. It is kept, with packing itself out, because it MARKS THE
+    # TOP OF THE PACKING BOX -- the shoulder in the bonnet bore marks
+    # the bottom, and between them the packing's space is bracketed by
+    # two things the draughtsman drew rather than by anything inferred.
+    # Grey-50 is the last swatch on the default palette that is safely
+    # clear of everything already in use.
+    ('packingFlange', [(0x7F, 0x7F, 0x7F)], 'grey-50'),
+    ('gasket',    [(0xB9, 0x7A, 0x57)], 'brown'),
+    # Two added 2026-10-12, both because the model had been INFERRING
+    # them, and inference is what this trace keeps getting wrong.
+    #
+    #   cageWindow -- the opening in the cage wall. `windowOf` works it
+    #   out from the traced wall's faces across an assumed band.
+    #   Painted, it is just a region, and the thing the whole Cv curve
+    #   is about stops being a guess.
+    #
+    #   plugSeal -- the piston ring / U-seal in the plug head, which had
+    #   been drawn from a proportion of the plug's height: a convention
+    #   standing in for a part that is right there in the drawing.
+    #
+    # Both swatches are free on MS Paint's default palette and checked
+    # against every colour already in use -- nearest neighbour 80 and
+    # 90 units away, where gold, light yellow and lavender all came in
+    # under 60 of the plug, the fluid and the fluid again.
+    ('cageWindow', [(0x70, 0x92, 0xBE)], 'blue-grey'),
+    ('plugSeal',   [(0xB5, 0xE6, 0x1D)], 'lime'),
     ('fluid',     [(0xC3, 0xC3, 0xC3)], 'grey'),
 ]
 # `fluid` IS NOT A PART AND IT IS STILL WORTH PAINTING. Leaving the
@@ -136,6 +168,9 @@ REACH = 3          # px; how far across the linework two cells count as
                    # the line bounding it is 5 to 6 px wide. Hatch
                    # lines are thin and part outlines are not, and the
                    # rule has to see across both.
+SPLIT_MIN = 150    # px of EACH colour before a contested cell is split
+                   # between them rather than refused -- the painter
+                   # drawing a boundary the drawing does not have
 CONTACT_MIN = 0.20 # a neighbour must hold this share of the longest
                    # contact to count as an answer; less is a corner
 
@@ -359,6 +394,7 @@ def main():
     assign = np.full(ncells, -1, dtype=np.int32)   # cell -> part index
     sizes = np.bincount(cells.ravel(), minlength=ncells)
     ambiguous, unpainted_big, thin_claims = [], [], []
+    split_cells = []
     # background: the cell touching the frame is not inside the valve
     border = set(np.unique(np.concatenate([
         cells[0, :], cells[-1, :], cells[:, 0], cells[:, -1]])).tolist())
@@ -378,7 +414,26 @@ def main():
             continue
         share = counts[win] / painted.size
         if share < MIN_SHARE:
+            # TWO COLOURS IN ONE CELL IS A BOUNDARY THE DRAWING DOES
+            # NOT HAVE. Normally that is a slip of the brush and the
+            # cell is refused. But a bucket fill cannot put an edge
+            # where the draughtsman drew none, and three parts of this
+            # figure need exactly that: a seat ring whose two halves
+            # and bore are one closed shape, a gasket the same, and a
+            # cage rim continuous with its walls. One click floods the
+            # lot.
+            #
+            # So when a cell is genuinely contested -- both colours
+            # present in real quantity, not one stray stroke -- the
+            # cell is SPLIT between them rather than refused, each
+            # pixel going to whichever colour is nearer. The painter
+            # has said where the boundary is by putting two colours on
+            # either side of it; this reads that rather than making
+            # them draw a line first.
             order = counts.argsort()[::-1]
+            if counts[order[0]] >= SPLIT_MIN and counts[order[1]] >= SPLIT_MIN:
+                split_cells.append(lbl)
+                continue
             ambiguous.append((lbl, int(sizes[lbl]),
                               PARTS[order[0]][0], int(counts[order[0]]),
                               PARTS[order[1]][0], int(counts[order[1]])))
@@ -486,6 +541,20 @@ def main():
       if not grew:
         break
       seed = assign.copy()
+
+    # ---- cells the painter split, resolved pixel by nearest paint -------
+    for lbl in split_cells:
+        sel = cells == lbl
+        ys, xs = np.nonzero(sel)
+        votes = part_of_px[sel]
+        have = np.nonzero(votes >= 0)[0]
+        if not len(have):
+            continue
+        px_, py_ = xs[have], ys[have]
+        lab_ = votes[have]
+        for k in range(len(xs)):
+            d2 = (px_ - xs[k]) ** 2 + (py_ - ys[k]) ** 2
+            part_of_px[ys[k], xs[k]] = lab_[int(d2.argmin())]
 
     # ---- the linework itself belongs to what it bounds -----------------
     lab = np.zeros(cells.shape, dtype=np.int16)

@@ -40,8 +40,8 @@ import numpy as np
 HERE = os.path.dirname(os.path.abspath(__file__))
 from PIL import Image
 
-PARTS = ['body', 'bonnet', 'cage', 'plug', 'seatRing', 'fluid', 'packing', 'bolting',
-         'hardware']
+PARTS = ['body', 'bonnet', 'cage', 'plug', 'seatRing', 'fluid', 'bolting',
+         'gasket', 'cageWindow', 'plugSeal', 'packingFlange']
 
 
 def mask(d, n):
