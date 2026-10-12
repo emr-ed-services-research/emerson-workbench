@@ -12,7 +12,10 @@ updated: 2026-10-10
 used-by:
   - "00 - Project/Process Core — Flow Lab Plan.md"
   - "45 - Process Core/catalogue/parts.json"
+  - "45 - Process Core/lab/assembly/index.html"
   - "45 - Process Core/lab/cutaway/index.html"
+  - "45 - Process Core/lab/fic101/index.html"
+  - "45 - Process Core/lab/loop/index.html"
   - "45 - Process Core/lab/render/index.html"
   - "45 - Process Core/src/sizing.js"
   - "45 - Process Core/test/sizing.test.js"

@@ -14,7 +14,10 @@ used-by:
   - "20 - Source Library/Subject-Matter Index — Control Valve Handbook ch6.md"
   - "20 - Source Library/Subject-Matter Index — Oil & Gas Sourcebook ch7.md"
   - "45 - Process Core/catalogue/parts.json"
+  - "45 - Process Core/lab/assembly/index.html"
   - "45 - Process Core/lab/cutaway/index.html"
+  - "45 - Process Core/lab/fic101/index.html"
+  - "45 - Process Core/lab/loop/index.html"
   - "45 - Process Core/lab/render/index.html"
   - "50 - Lunar Process Engineer/vendor/process-core/catalogue/parts.json"
 ---

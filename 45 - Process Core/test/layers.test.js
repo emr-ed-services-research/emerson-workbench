@@ -32,8 +32,16 @@ const path = require('path');
    (test.js, vendor.js) declares `registration` because it belongs to no
    process layer; only files under src/ count as a layer's implementation. */
 const LAYERS = ['registration', 'catalogue', 'geometry', 'sizing',
-                'instrument', 'trim', 'actuator', 'assembly', 'netlist', 'schem-view',
+                'thermal', 'instrument', 'trim', 'actuator', 'assembly',
+                'netlist', 'schem-view',
                 'phys-view', 'dynamics', 'flow-field', 'scenario', 'chrome'];
+
+/* THERMAL sits beside SIZING, not above DYNAMICS. Sizing is the flow
+   physics of one part and this is the heat physics of one part -- an
+   exchanger, given two streams, says what comes out. Dynamics answers
+   how much flows where and has no notion of heat; putting temperature
+   in there would have made the layer that is deliberately "q = Cv root
+   dP over SG" into something else. */
 
 /* ASSEMBLY sits above the part layers and below the netlist, because a
    control valve assembly is a composition of parts and a netlist places

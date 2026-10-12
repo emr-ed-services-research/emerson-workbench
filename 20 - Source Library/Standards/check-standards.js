@@ -73,6 +73,7 @@ const PATTERNS = [
      worth more than a constant with no provenance. */
   [/\bPrandtl(?:'s)?[-\s]?1\/7[-\s]?power\b/gi, () => 'Prandtl 1/7-power'],
   [/\b(?:Hagen[-\s]?)?Poiseuille\b/gi,         () => 'Hagen-Poiseuille'],
+  [/\bEffectiveness[-\s]?NTU\b/gi,            () => 'Effectiveness-NTU'],
 ];
 
 /* Joint publications: two spellings, one authority, one entry. */

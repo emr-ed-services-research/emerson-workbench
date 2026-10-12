@@ -23,6 +23,7 @@ const SUITES = [
   ['test/catalogue.test.js','catalogue (parts trace to a document)'],
   ['test/geometry.test.js', 'geometry (real shape, in inches, from the table)'],
   ['test/sizing.test.js',   'sizing (ISA-75.01.01, vs a printed answer)'],
+  ['test/thermal.test.js', 'thermal (what the exchanger does, and the stake)'],
   ['test/instrument.test.js','instrument (a reading is not a number)'],
   ['test/trim.test.js',     'trim (characteristic, installed, leakage)'],
   ['test/topology.test.js', 'netlist (level 1 reproduction, validation)'],

@@ -13,8 +13,11 @@ used-by:
   - "00 - Project/Open Questions.md"
   - "00 - Project/Process Core — Pro Chrome Plan.md"
   - "45 - Process Core/catalogue/parts.json"
+  - "45 - Process Core/lab/assembly/index.html"
   - "45 - Process Core/lab/cutaway/index.html"
   - "45 - Process Core/lab/extract-f2f.js"
+  - "45 - Process Core/lab/fic101/index.html"
+  - "45 - Process Core/lab/loop/index.html"
   - "50 - Lunar Process Engineer/vendor/process-core/catalogue/parts.json"
 ---
 

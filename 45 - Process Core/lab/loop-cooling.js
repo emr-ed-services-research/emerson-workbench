@@ -78,7 +78,8 @@ const fs = require('fs');
 const path = require('path');
 global.window = {};
 for (const m of ['catalogue', 'geometry', 'sizing', 'trim', 'instrument',
-                 'assembly', 'topology', 'schemvis', 'dynamics'])
+                 'thermal', 'assembly', 'topology', 'schemvis',
+                 'dynamics'])
   require(path.join(__dirname, '..', 'src', m + '.js'));
 const LPE = global.window.LPE;
 
@@ -195,6 +196,97 @@ say('              drag ' + PF.frictionLb + ' lb (graphite ULF would be ' +
     PFG.frictionLb + ' lb on the same stem)');
 say('              ' + PF.source);
 
+/* ---- WHAT THE WATER IS FOR, AND WHAT IT COSTS TO LOSE IT ----------
+
+   Until now this loop ended at HX-101, because the netlist treats a
+   vessel as terminal and said so: what happens past the tubes is a
+   different loop's problem. The consequence was that FV-101 sticking
+   shut meant the water stopped, and nothing else -- no one worse off,
+   nothing to do, nothing at stake. A control loop with no served
+   process is half a drawing.
+
+   So: the thing being cooled. Product rundown off the unit, on its way
+   to tank, and it has a number it has to meet when it gets there.
+
+   THE TWO SIDES BALANCE AT THE FLOW THE VALVE IS SIZED FOR, which is
+   the part worth checking rather than asserting. 560 gpm of water
+   warming 30 degF absorbs 8.4 MMBtu/hr; cooling 545 gpm of a 0.55
+   specific-heat hydrocarbon by 70 degF needs 8.4. The design flow was
+   picked for the valve and the duty agrees with it, rather than a
+   duty being invented to suit a picture.                            */
+const HOT = {
+  gpm: 545, cp: 0.55, lbPerGal: 6.68, inletF: 180,
+  fluid: 'product rundown',
+  what: 'product rundown to tank',
+  specF: 120,
+  spec: 'above 120 F at the tank it is off specification and goes to slops',
+};
+const EX = LPE.thermal.uaForDuty({
+  hot: HOT, cold: LPE.thermal.waterStream(SVC.q, SVC.P1 && 60),
+  hotOutletF: 110 });
+const atFlow = gpm => LPE.thermal.exchange({
+  hot: HOT, cold: LPE.thermal.waterStream(gpm, 60), UA: EX.UA });
+const design = atFlow(SVC.q);
+
+say('');
+say('  EXCHANGER   HX-101, product rundown cooled by the water above');
+say('              hot   ' + HOT.gpm + ' gpm at ' + HOT.inletF + ' F in, ' +
+    design.hotOutletF.toFixed(0) + ' F out  (' + HOT.fluid + ')');
+say('              cold  ' + SVC.q + ' gpm at 60 F in, ' +
+    design.coldOutletF.toFixed(0) + ' F out  (cooling water)');
+say('              duty  ' + (design.dutyBtuHr / 1e6).toFixed(2) +
+    ' MMBtu/hr   UA ' + EX.UA.toFixed(0) + ' Btu/hr.F   NTU ' +
+    EX.NTU.toFixed(2) + '   effectiveness ' +
+    design.effectiveness.toFixed(2));
+say('              counter-flow Effectiveness-NTU; UA is back-calculated ' +
+    'from this duty,');
+say('              not published -- there is no catalogue UA for a ' +
+    'notional exchanger.');
+
+/* ---- the stake, in travel and in milliamps ------------------------
+   The number that makes this a loop rather than a diagram: how far
+   the valve can fall before the product stops meeting its spec. */
+const cvAt = pct => {
+  for (let i = 0; i < VALVE.cvAtPct.length; i++)
+    if (pct <= VALVE.cvAtPct[i]) {
+      const lo = i ? VALVE.cvAtPct[i - 1] : 0;
+      const c0 = i ? VALVE.cv[i - 1] : 0;
+      return c0 + (VALVE.cv[i] - c0) * (pct - lo) / (VALVE.cvAtPct[i] - lo);
+    }
+  return RATED;
+};
+const perCv = SVC.q / cvAt(travelPct);
+let offSpec = null;
+for (let p = travelPct; p >= 0; p -= 0.25) {
+  const r = atFlow(perCv * cvAt(p));
+  if (r.hotOutletF > HOT.specF) { offSpec = { pct: p, r: r,
+    gpm: perCv * cvAt(p) }; break; }
+}
+/* air-to-close, so the signal runs the other way from the travel */
+const mAat = pct => 4 + 16 * (100 - pct) / 100;
+say('');
+say('  AT STAKE    ' + HOT.spec);
+if (offSpec) {
+  say('              design    ' + travelPct.toFixed(0) + '% travel, ' +
+      mAat(travelPct).toFixed(1) + ' mA, ' + SVC.q + ' gpm  ->  ' +
+      design.hotOutletF.toFixed(0) + ' F');
+  say('              off spec  ' + offSpec.pct.toFixed(0) + '% travel, ' +
+      mAat(offSpec.pct).toFixed(1) + ' mA, ' + offSpec.gpm.toFixed(0) +
+      ' gpm  ->  ' + offSpec.r.hotOutletF.toFixed(0) + ' F');
+  say('              so the valve has ' +
+      (travelPct - offSpec.pct).toFixed(0) + ' points of travel in hand, ' +
+      'and loses the product');
+  say('              at about ' +
+      (100 * offSpec.gpm / SVC.q).toFixed(0) +
+      '% of design flow -- a margin, not a cliff, which is the ' +
+      'thing worth');
+  say('              teaching about a loop that looks fine until it is ' +
+      'not.');
+} else {
+  say('              the product stays in specification at every travel ' +
+      '-- no stake here.');
+}
+
 /* ---- the loop as a netlist, and drawn ------------------------------ */
 const PIPE = CAT.part('PIPE/NPS6/S40');
 const Y = 190, X0 = 110, XV = 360, XE = 620, X1 = 880;
@@ -266,6 +358,7 @@ say('              anyone argues about plug unbalance.');
 if (ASM.thrust.note) say('              ' + ASM.thrust.note);
 
 module.exports = { SVC, VALVE, ACT, ASM, sized, travelPct, PF,
+                   HOT, EX, design, offSpec, atFlow,
                    net, spec, INSTR, SIGNALS, report: out };
 
 if (require.main === module) {
