@@ -1369,11 +1369,13 @@
       const id = pockets.length;
       const stack = [k0];
       let sx = 0, sy = 0, n = 0, bestV = 0, bvx = 0, bvy = 0, bx = 0, by = 0;
+      let nStill = 0;
       lab[k0] = id;
       while (stack.length) {
         const k = stack.pop();
         const i = k % W, j = (k - i) / W;
         sx += px(i); sy += py(j); n++;
+        { const vk = field.at(px(i), py(j)); if (vk && vk.still) nStill++; }
         const nb = [[i - 1, j], [i + 1, j], [i, j - 1], [i, j + 1]];
         for (const [ii, jj] of nb) {
           if (ii < 0 || jj < 0 || ii >= W || jj >= H) continue;
@@ -1388,7 +1390,27 @@
           }
         }
       }
-      if (n < 6 || n > biggest || bestV <= 0) continue;
+      /* THE SIZE CAP IS FOR POCKETS THIS FUNCTION GUESSED AT, NOT FOR
+         SPACES THE GEOMETRY DECLARED. A pocket found by velocity alone
+         might be a chamber, and spinning a chamber would be stirring
+         the main stream rather than adding an eddy -- hence the cap.
+         A cell marked `still` is a different kind of claim: the
+         geometry layer has already said that space is blind, and no
+         amount of it being large makes it less blind.
+         
+         The registered ED body is where this started to matter. Its
+         dead ends -- the plug's own hollow, the bonnet bore above it,
+         the cage-to-bore clearance -- are CONNECTED to one another,
+         because they are connected in the valve: that is what the
+         balance holes are for. One blind volume of 798 cells in a
+         2 299-cell section, 35%, over a 22% cap, so the whole of it
+         was rejected and every one of those 798 cells sat perfectly
+         motionless beside several hundred gallons a minute. The EWT
+         outline happened to break the same water into separate
+         pockets that each squeaked under the cap. */
+      const declared = nStill > n * 0.5;
+      if (n < 6 || bestV <= 0) continue;
+      if (!declared && n > biggest) continue;
       pockets.push({ id: id, cx: sx / n, cy: sy / n, cells: n,
                      speed: bestV * share,
                      /* Which way round: the eddy turns so that its

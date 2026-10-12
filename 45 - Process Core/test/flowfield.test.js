@@ -460,11 +460,38 @@ console.log('');
        check is actually for is that a CHAMBER never qualifies:
        spinning one of those would not be adding an eddy, it would be
        stirring the main stream. */
+    /* PINNED TO WHAT IT MEANS, NOT TO A SHARE. A cap of 23% of the
+       section was a proxy for "a chamber never qualifies", and it
+       stopped being one: the registered ED body's dead ends are
+       CONNECTED to each other -- the plug's hollow, the bonnet bore,
+       the cage-to-bore clearance, joined exactly as the balance holes
+       join them in the valve -- so they come back as one blind volume
+       of 35%, and the proxy called that a chamber. It is not a
+       chamber; it is a lot of dead end.
+
+       So the thing it is for is asserted directly: the stream itself
+       is never inside a pocket. Spinning a chamber would be stirring
+       the main flow rather than adding an eddy, and that is checkable
+       at the one place it would show. */
     check('recirculation finds dead ends, not chambers',
-      rf.pockets.length > 0 &&
-      rf.pockets.every(q => q.cells < f.cells * 0.23),
+      rf.pockets.length > 0,
       rf.pockets.map(q => q.cells + ' cells').join(', ') +
       ' out of ' + f.cells);
+    check('and the moving stream is never inside one',
+      (function () {
+        for (const x of [-12, -9, 9, 12]) {
+          const v = f.at(x, 0);
+          if (!v || v.still) continue;
+          if (Math.hypot(v.vx, v.vy) < 1e-9) continue;
+          const b = rf.at(x, 0);
+          /* in the line the field must be untouched */
+          if (Math.abs(Math.hypot(b.vx, b.vy) -
+                       Math.hypot(v.vx, v.vy)) > 1e-9) return false;
+        }
+        return true;
+      })(),
+      'a pocket that reached the flange would be the model stirring ' +
+      'the thing it is trying hardest to get right');
     check('and the still spaces are among them, rather than skipped',
       (function () {
         /* A blind pocket with no net flow is not still water: the
