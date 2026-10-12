@@ -606,10 +606,22 @@ refuses('a valve with no published stem diameter is refused, not guessed',
 
 {
   const g = valveOf(EWT);
-  check('every convention is returned by name, not buried',
-    g.conventions.cageWall > 0 && g.conventions.windowBand > 0 &&
-    Object.keys(g.conventions).length >= 12,
-    Object.keys(g.conventions).length + ' named proportions');
+  /* PINNED TO THE DECLARATION, NOT TO A LIST. This asked for
+     `cageWall`, `windowBand` and at least twelve keys -- and so it was
+     holding twelve retired conventions in place, failing the moment
+     the dead ones were removed. A check that enforces the presence of
+     numbers nothing reads is worse than no check: it makes the
+     clean-up look like the regression. What it actually means to say
+     is that the valve hides none of what the layer declares, and that
+     survives every retirement. */
+  check('every convention the layer declares is returned by name',
+    (() => {
+      const want = Object.keys(LPE.geometry.GLOBE_CONVENTIONS);
+      return want.length > 0 &&
+             want.every(k => g.conventions[k] !== undefined);
+    })(),
+    Object.keys(g.conventions).length + ' returned against ' +
+    Object.keys(LPE.geometry.GLOBE_CONVENTIONS).length + ' declared');
   /* A STALE ADMISSION IS AS BAD AS A MISSING ONE.
 
      This note has now been wrong in both directions. It once said the
@@ -982,6 +994,75 @@ console.log('');
                           cageBoreIn: 8.09 }), 'does not invent one');
   refuses('a profile too short to be a profile',
     () => cage({ count: 6, widthProfile: [1] }), 'at least two stations');
+}
+
+/* ---- every declared convention must be read by something ------------
+
+   THE BUG THIS EXISTS TO PREVENT HAS NOW HAPPENED SIX TIMES. A number
+   is written into GLOBE with a careful comment explaining what it
+   governs; later the thing it governed is replaced by a traced outline
+   or a catalogue dimension; the number stays. `windowCount` was deleted
+   for exactly this and the deletion comment called it "declared,
+   documented, dead". Then `plugHead`, `sealThk`, `seatThk`,
+   `balanceDia` and `stemDia` were all found in the same state in the
+   same block, and `stemDia` was the dangerous one -- a proportion of
+   the port sitting next to `part.dims.stem`, which is sourced and which
+   the catalogue refuses to load unless it matches its document. Two
+   answers to one question, one of them worse, waiting to be picked up.
+
+   A comment cannot enforce this and a reviewer evidently does not. So
+   the source is read and every key in the conventions block has to
+   appear somewhere else in the file. The cost of a convention is that
+   something consumes it; this is that cost, collected.               */
+{
+  const fs = require('fs');
+  const src = fs.readFileSync(
+    require('path').join(__dirname, '..', 'src', 'geometry.js'), 'utf8');
+  const open = src.indexOf('const GLOBE = {');
+  let depth = 0, end = -1;
+  for (let i = src.indexOf('{', open); i < src.length; i++) {
+    if (src[i] === '{') depth++;
+    else if (src[i] === '}') { depth--; if (!depth) { end = i; break; } }
+  }
+  const block = src.slice(open, end);
+  const body = src.slice(0, open) + src.slice(end);
+
+  /* keys at the top level of the block, skipping anything inside a
+     comment -- the block is more comment than code and deliberately so */
+  const stripped = block
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\/\/[^\n]*/g, '');
+  const keys = [];
+  const re = /(^|[\n{,])\s*([A-Za-z_$][\w$]*)\s*:/g;
+  let m;
+  while ((m = re.exec(stripped))) keys.push(m[2]);
+
+  /* A count would drift every time one is retired, which is what the
+     block is for. Anchor on a key that cannot leave: the discharge
+     coefficient is the one number standing between a published Cv and
+     a real area, and nothing can source it away. */
+  check('the conventions block was found and parsed',
+    keys.length >= 3 && keys.indexOf('dischargeCoef') >= 0,
+    keys.length + ' conventions: ' + keys.join(', '));
+
+  const dead = keys.filter(k =>
+    !new RegExp('\\b(?:G|GLOBE)\\.' + k + '\\b').test(body));
+  check('every declared convention is read by something',
+    dead.length === 0,
+    dead.length
+      ? 'declared and read by nothing: ' + dead.join(', ') +
+        '. Either wire it up or delete it -- a convention nobody ' +
+        'consumes is a comment, and one sitting beside a sourced value ' +
+        'is a second answer waiting to be picked up by mistake.'
+      : keys.length + ' conventions, all consumed');
+
+  check('and none of them shadows a sourced catalogue dimension',
+    !keys.some(k => /^(stem|port|travel|faceToFace)$/.test(k)) &&
+    !keys.includes('stemDia'),
+    'stem diameter, port, travel and face-to-face are catalogue ' +
+    'dimensions checked against their own documents; a proportion of ' +
+    'the port standing in for one of them is how the wrong number gets ' +
+    'used');
 }
 
 process.exit(failures ? 1 : 0);

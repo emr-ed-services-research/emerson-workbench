@@ -1011,34 +1011,41 @@
        SHAPE of the characteristic, only how open the valve is said to
        be at a given travel. */
     dischargeCoef: 0.85,
-    bodyRise:      1.15,   // chamber roof above the port, x port dia
-    bodyDrop:      0.95,   // chamber floor below the port
     wallThk:       0.16,   // casting wall, x port dia
-    cageWall:      0.18,   // cage wall thickness, x port dia
-    cageBottom:    0.22,   // solid rim below the windows: bears on the
-                           // seat ring, part of the bonnet load path
-    cageTopBand:   0.55,   // solid band above the windows, x TRAVEL --
-                           // takes the bonnet load and carries the seal
-    windowBand:    1.00,   // window height, x travel -- the plug uncovers
-                           // the whole window over its whole stroke.
-                           //
-                           // This was 0.88, on the reasoning that the
-                           // droop in the last band of every measured
-                           // width profile meant the window FINISHED
-                           // before the plug did. That is the wrong
-                           // reading, and the closed-loop test caught it
-                           // at 13.9 points out: the droop means the
-                           // window gets NARROWER at the top, not that it
-                           // stops. A real cage still needs solid metal
-                           // above its window to carry the bonnet load --
-                           // that is `cageTopBand`, which sits above this
-                           // band rather than eating into it.
-    plugHead:      0.80,   // plug head height, x port dia
-    sealThk:       0.16,   // piston-ring / U-seal height, x port dia
-    seatThk:       0.30,   // seat ring thickness, x port dia
-    stemDia:       0.22,   // x port dia. The ED IOM tabulates stem by
-                           // valve-stem-connection size, not by port, so
-                           // this is a proportion and NOT that table.
+    /* ---- SEVEN MORE RETIRED, 2026-10-12, same cause --------------
+       `bodyRise`, `bodyDrop`, `cageWall`, `cageBottom`, `cageTopBand`,
+       `windowBand` and `throatFlare` described a globe valve as
+       proportions of its port, back when that was the only way to
+       draw one. The chambers, the cage walls and the window band now
+       come off traced outlines, so none of them has decided anything
+       for some time -- and the test below, which reads this block and
+       checks each key is consumed, found all seven at once.
+
+       Twelve dead conventions in one block is not twelve oversights.
+       It is what happens when a layer is rebuilt from measurement
+       underneath a vocabulary that was invented for estimation, and
+       the vocabulary is left in place because deleting comments feels
+       like losing something. What was actually lost is the ability to
+       tell, at a glance, which numbers in this block still matter. */
+    /* ---- FIVE CONVENTIONS RETIRED HERE, 2026-10-12 ---------------
+       `plugHead`, `sealThk`, `seatThk`, `balanceDia` and `stemDia` all
+       sat in this block, declared, commented, and read by nothing --
+       checked: zero occurrences of `G.<name>` in this file. They are
+       the same failure the window count was deleted for, and the
+       reason is the same: each was SUPERSEDED and nobody removed it.
+
+       The plug, the seal and the seat ring come off a traced outline,
+       so three proportions of the port no longer decide their shape.
+       The stem is better than that -- `part.dims.stem`, a catalogue
+       dimension that the catalogue refuses to load unless it matches
+       what its document printed. A convention sitting beside a sourced
+       value is worse than clutter: it is a second answer to a question
+       that already has a sourced one, waiting for somebody to reach
+       for the wrong one.
+
+       What WAS live here was unnamed, which is the same problem from
+       the other end -- `0.26` and `0.14` hardcoded inside the plug.
+       Those are conventions, so they are named below and read. */
     /* ---- WINDOW COUNT AND CLOCKING: CONVENTIONS, DECLARED -------
        Nothing in the Source Library publishes how many windows an ED
        cage has. Catalog 12 gives Cv at every 10% of travel, and the
@@ -1078,8 +1085,16 @@
                            // section plane. 0 puts a window centre
                            // dead on the near cut.
     balanceHoles:  4,      // through the plug head, balanced trim only
-    balanceDia:    0.13,   // x port dia
-    throatFlare:   0.55,   // how far the flange bore flares into the dish
+    balanceBore:   0.26,   // CONVENTION, x plug RADIUS. Was hardcoded in
+                           // plugAt as 0.26 while a dead `balanceDia` of
+                           // 0.13 x port sat in this block claiming to
+                           // be the one. Same number by a different
+                           // route on a plug that fills its port; the
+                           // point is that the one being used is the one
+                           // written down. Nothing held dimensions a
+                           // balance hole.
+    sealBand:      0.14,   // CONVENTION, x plug HEIGHT. The piston-ring
+                           // / U-seal groove. Also previously hardcoded.
   };
 
   /* A cubic Bezier, sampled. The cast sweeps are curves and four points
@@ -1117,6 +1132,16 @@
      One function, used by BOTH the outline and the area, because a
      window drawn from one rule and measured by another is a window whose
      picture and whose number are about different objects. */
+  /* AND THE DROOP AT THE TOP IS NOT THE END OF THE WINDOW. Every
+     measured width profile sags in its last band, and that was once
+     read as the window FINISHING before the plug did -- a `windowBand`
+     of 0.88 rather than 1.00. It is the wrong reading and the
+     closed-loop test caught it 13.9 points out: the droop means the
+     window gets NARROWER toward the top, not that it stops. A real
+     cage does need solid metal above its window to carry the bonnet
+     load, but that band sits ABOVE the window rather than eating into
+     it. Recorded here, where the profile is read, because the
+     convention that used to carry this note has been retired. */
   function widthAt(prof, h) {
     const n = prof.length;
     const j = h * n - 0.5;                 /* station i sits at (i+0.5)/n */
@@ -1605,7 +1630,7 @@
       if (!balanced) return out;
 
       const r = (plugE.x1 - plugE.x0) / 2;
-      const bd = r * 0.26;
+      const bd = r * G.balanceBore;
       for (let i = 0; i < G.balanceHoles; i++) {
         const cx = -r + ((i + 0.5) / G.balanceHoles) * 2 * r;
         if (Math.abs(cx) < stemR + bd) continue;
@@ -1614,7 +1639,7 @@
                                [cx + bd / 2, plugE.y1 + lift],
                                [cx - bd / 2, plugE.y1 + lift]]);
       }
-      const st = (plugE.y1 - plugE.y0) * 0.14;
+      const st = (plugE.y1 - plugE.y0) * G.sealBand;
       const sy = plugE.y1 + lift - st * 1.4;
       out.seal = {
         ring: [[-r, sy], [r, sy], [r, sy + st], [-r, sy + st]],
