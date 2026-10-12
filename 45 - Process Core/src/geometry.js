@@ -1353,42 +1353,8 @@
     const bodyRings = ED_BODY.map(r => r.map(place).map(toFace));
     const body = bodyRings[0];
     const bonnetRings = ED_BONNET.map(r => r.map(place).map(toFace));
-    /* A GASKET IS A RING, so its section is two pieces either side of
-       the bore -- the same thing the cage needed, for the same reason.
-       It traced as one band across because the paint could not tell the
-       ring's two cut halves from the opening between them, and drawn
-       that way it reads as a disc capping the valve rather than a seal
-       round a bore. Cut at the CAGE's own bore, because that is the
-       hole it seals around and the cage is what it bears on. */
-    const gasket = (function () {
-      let bore = Infinity;
-      for (const r of [ED_CAGE_L, ED_CAGE_R])
-        for (const q of r) bore = Math.min(bore, Math.abs(q[0]));
-      const rB = bore * F;
-      const cut = (ring, keepLeft, at) => {
-        const out = [];
-        const ins = q => keepLeft ? q[0] <= at : q[0] >= at;
-        for (let i = 0; i < ring.length; i++) {
-          const a = ring[i], b2 = ring[(i + 1) % ring.length];
-          const ia = ins(a), ib = ins(b2);
-          if (ia) out.push(a);
-          if (ia !== ib) {
-            const t = (at - a[0]) / (b2[0] - a[0]);
-            out.push([at, a[1] + t * (b2[1] - a[1])]);
-          }
-        }
-        return out;
-      };
-      const out = [];
-      for (const raw of ED_GASKET.map(r => r.map(place).map(toFace))) {
-        let x0 = Infinity, x1 = -Infinity;
-        for (const q of raw) { if (q[0] < x0) x0 = q[0]; if (q[0] > x1) x1 = q[0]; }
-        if (x1 - x0 <= 2 * rB) { out.push(raw); continue; }
-        for (const h of [cut(raw, true, -rB), cut(raw, false, rB)])
-          if (h.length >= 3) out.push(h);
-      }
-      return out;
-    })();
+    /* TAKEN AS PAINTED, for the same reason as the seat. */
+    const gasket = ED_GASKET.map(r => r.map(place).map(toFace));
 
     /* THE SEAT RING'S UNDERSIDE was squared off in the refinement
        stage rather than here: the region beneath the ring is not
@@ -1399,63 +1365,14 @@
        the flow accelerates past and where cavitation takes a ring
        apart. `_square_off` in trace/refine.py carries the underside
        down to the ring's own deepest face. */
-    /* THE SEAT RING HAS A BORE, AND THE BORE IS THE PORT.
-       Figure 20 draws the seat's section as one solid band across the
-       valve -- the ring's two cut halves and the opening between them
-       read as a single shape to a paint bucket, and that is how it
-       traced. A seat ring with no hole in it is a blank, and the model
-       behaved accordingly: at a tenth of travel the only way through
-       was round the ends of the bar, squaring those ends off closed
-       it, and the field reported a shut valve.
-       
-       The hole is not a guess. `d` is the port diameter, a Catalog 12
-       dimension the catalogue refuses to load unless it matches what
-       its document printed, and the seat bore is the port by
-       definition. So the traced band is cut in two at that diameter,
-       which is what the draughtsman drew and the painter could not
-       separate. */
-    const seat = (function () {
-      const raw = ED_SEAT.map(place);
-      const rPort = d / 2;
-      let ex0 = Infinity, ex1 = -Infinity;
-      for (const q of raw) {
-        if (q[0] < ex0) ex0 = q[0];
-        if (q[0] > ex1) ex1 = q[0];
-      }
-      if (ex1 - ex0 <= 2 * rPort) return [raw];       // already a half
-      /* SUTHERLAND-HODGMAN, not a clamp. Clamping every x into the
-         half-plane collapses the whole bore-side of the ring onto the
-         clip line, so the outline doubles back along it and draws as a
-         black bar from the seat's edge to the middle of its own bore.
-         A real clip walks the edges and inserts the crossing points,
-         which is the difference between a polygon cut in two and a
-         polygon folded flat. */
-      const clipHalf = (ring, keepLeftOf, at) => {
-        const out = [];
-        const inside = q => keepLeftOf ? q[0] <= at : q[0] >= at;
-        for (let i = 0; i < ring.length; i++) {
-          const a = ring[i], b2 = ring[(i + 1) % ring.length];
-          const ia = inside(a), ib = inside(b2);
-          if (ia) out.push(a);
-          if (ia !== ib) {
-            const t = (at - a[0]) / (b2[0] - a[0]);
-            out.push([at, a[1] + t * (b2[1] - a[1])]);
-          }
-        }
-        return out;
-      };
-      const halves = [clipHalf(raw, true, -rPort), clipHalf(raw, false, rPort)]
-        .filter(r => r.length >= 3);
-      if (halves.length !== 2) return [raw];
-      /* ORDERED WITH THE MIRROR. The halves are always built negative-x
-         first, so turning the casting round swaps which half is which
-         and a point-for-point comparison against the mirrored flow-down
-         valve fails on ordering alone. Reversing them when the section
-         is mirrored keeps "the same casting turned round" literally
-         true, which is the check that stops a second shape creeping in
-         for flow-up. */
-      return mx < 0 ? halves.reverse() : halves;
-    })();
+    /* TAKEN AS PAINTED. This used to cut the traced band in two at
+       the port, because the ring's two cut halves and the opening
+       between them had painted as one shape. That is a thing to fix in
+       the paint, not here: the bore belongs to whoever knows where it
+       is, and every version of me inferring it produced something
+       worse -- including a clamp that drew a black bar clean across
+       the opening. */
+    const seat = [ED_SEAT.map(place)];
 
     /* Flow decides which measured chamber meets the fluid first, and
        the mirror above has already put that one on the left. The

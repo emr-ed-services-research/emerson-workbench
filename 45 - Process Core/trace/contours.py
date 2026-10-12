@@ -51,49 +51,6 @@ def parts():
     return mod.PARTS, getattr(mod, 'NOT_METAL', set())
 
 
-def smooth(ring):
-    """Round the pixel staircase; leave the machined faces alone.
-
-    A traced contour mixes two kinds of edge. A cast sweep arrives as a
-    flight of short steps and wants rounding -- that is the outlet
-    chamber's roof. A machined face arrives as one long straight
-    segment and wants nothing done to it at all: the bonnet's bolt
-    flange is square in the valve and must stay square in the drawing.
-
-    Chaikin applied to every vertex does both and ruins the second. It
-    rounded the bonnet's shoulders into a blob, which is what a
-    smoothing pass that cannot tell a casting from a machining will
-    always do. So a vertex is smoothed only when BOTH of its edges are
-    short -- short being a fraction of the part's own size, which is
-    what a staircase step is and what a flange face never is.
-
-    The part's extreme x and y stay pinned on top of that: those are
-    the faces registration is anchored on, and nothing may move them.
-    """
-    n = len(ring)
-    if n < 6:
-        return ring
-    xs, ys = ring[:, 0], ring[:, 1]
-    span = max(xs.max() - xs.min(), ys.max() - ys.min())
-    short = max(3.0, span * 0.012)
-    pinned = ((xs == xs.min()) | (xs == xs.max()) |
-              (ys == ys.min()) | (ys == ys.max()))
-    seg = np.hypot(np.roll(xs, -1) - xs, np.roll(ys, -1) - ys)
-    # vertex i sits between segment i-1 and segment i
-    stair = (seg < short) & (np.roll(seg, 1) < short)
-    out = []
-    for i in range(n):
-        p, q = ring[i], ring[(i + 1) % n]
-        if pinned[i] or not stair[i]:
-            out.append(p)
-        else:
-            out.append(0.75 * p + 0.25 * q)
-        j = (i + 1) % n
-        if (not pinned[i] and not pinned[j] and stair[i] and stair[j]):
-            out.append(0.25 * p + 0.75 * q)
-    return np.array(out).round().astype(np.int32)
-
-
 def signed_area(ring):
     x = ring[:, 0].astype(np.float64)
     y = ring[:, 1].astype(np.float64)
@@ -155,7 +112,7 @@ def main():
             # outlines are grown to share boundaries, and they grow
             # toward each other across the one gap that must survive
             BORE_R += 4.0
-    print('\nREFINED before contouring (axis x=%s)'
+    print('\nTAKEN AS PAINTED (axis x=%s)'
           % ('%.1f' % AXIS if AXIS is not None else 'unknown'))
 
     doc = {'source': os.path.basename(line_path),
@@ -188,7 +145,7 @@ def main():
         # to the outline only -- `maskAreaPx` below is still the mask as
         # assigned, so the disagreement figure keeps measuring what it
         # always measured.
-        grown = cv2.dilate(mask, np.ones((5, 5), np.uint8), iterations=1)
+        grown = mask   # taken as painted; no grow
         cs, hier = cv2.findContours(grown, cv2.RETR_CCOMP,
                                     cv2.CHAIN_APPROX_SIMPLE)
         if hier is None:
@@ -201,14 +158,14 @@ def main():
                 continue
             if cv2.contourArea(c) < MIN_RING:
                 continue
-            outer = smooth(cv2.approxPolyDP(c, TOL, True).reshape(-1, 2))
+            outer = cv2.approxPolyDP(c, TOL, True).reshape(-1, 2)
             if len(outer) < 3:
                 continue
             holes = []
             j = hier[i][2]                  # first child
             while j != -1:
                 if cv2.contourArea(cs[j]) >= MIN_RING:
-                    h = smooth(cv2.approxPolyDP(cs[j], TOL, True).reshape(-1, 2))
+                    h = cv2.approxPolyDP(cs[j], TOL, True).reshape(-1, 2)
                     if len(h) >= 3:
                         holes.append(orient(h, ccw=False).tolist())
                 j = hier[j][0]              # next sibling
