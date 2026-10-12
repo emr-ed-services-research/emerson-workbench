@@ -287,12 +287,27 @@ console.log('');
     return top(a.plate) - top(b.plate);
   };
 
-  check('the drawing cannot stroke this valve its full rated travel',
-        gv4.travelDrawnFully === false &&
-        Math.abs(gv4.drawnTravel - 1.122) < 0.01,
-        gv4.drawnTravel.toFixed(3) + ' in of a rated ' + V4.dims.travel);
-  check('and it says so rather than quietly stroking short',
-        /THE DRAWING STROKES/.test(gv4.travelNote));
+  /* THIS USED TO ASSERT THE OPPOSITE, AND THAT WAS RIGHT AT THE TIME.
+     The archetype was an EWT 10x8 lifted off a rendered cutaway --
+     illustration art, drawn to look right rather than to be measured --
+     and its trim column was short enough that the drawing could stroke
+     only 1.122 in of a rated 2. The check pinned that number so nobody
+     could pretend otherwise.
+
+     The outlines are now traced from a drafting section of the right
+     family (D100390X012 Figure 20, registered), and the room is there:
+     the valve strokes its full rating. So the check flips -- but the
+     MACHINERY has to stay under test, because the next archetype may be
+     short again and must say so rather than quietly stroking short. */
+  check('the drawing has room for this valve\'s full rated travel',
+        gv4.travelDrawnFully === true &&
+        Math.abs(gv4.drawnTravel - V4.dims.travel) < 1e-9,
+        gv4.drawnTravel.toFixed(3) + ' in of a rated ' + V4.dims.travel +
+        ' -- the EWT art managed 1.122');
+  check('and it still reports which of the two it is',
+        typeof gv4.travelNote === 'string' && gv4.travelNote.length > 0 &&
+        !/THE DRAWING STROKES/.test(gv4.travelNote),
+        gv4.travelNote);
 
   for (const pct of [0, 25, 50, 75, 100])
     check('coupled, plug and plate agree at ' + pct + '% travel',
@@ -301,11 +316,26 @@ console.log('');
           'plug ' + plugLift(pct).toFixed(3) + ' vs plate ' +
           plateLift(pct, { strokeIn: gv4.drawnTravel }).toFixed(3));
 
-  check('and WITHOUT the coupling they come apart, which was the bug',
-        Math.abs(plugLift(100) - plateLift(100, {})) > 0.5,
-        'plug ' + plugLift(100).toFixed(3) + ' vs plate ' +
-        plateLift(100, {}).toFixed(3) + ' -- the connector between them ' +
-        'would have to stretch by the difference');
+  /* AND THE COUPLING IS STILL WHAT HOLDS THEM TOGETHER. This used to be
+     shown by omitting `strokeIn` entirely: the actuator then stroked the
+     full rating while the plug stroked the short drawn travel, and the
+     two came apart by the difference. On an archetype that now strokes
+     fully there is no difference to show, which makes the old form prove
+     nothing -- it would pass on a build where the coupling had been
+     deleted. So it is shown the way that does not depend on the drawing
+     being deficient: tell the actuator a stroke that is not the plug's
+     and they separate by exactly that much. */
+  {
+    const wrong = gv4.drawnTravel * 0.6;
+    const gap = Math.abs(plugLift(100) - plateLift(100, { strokeIn: wrong }));
+    check('and the coupling is what holds them together: a plate told a ' +
+          'different stroke separates by exactly the difference',
+          Math.abs(gap - (gv4.drawnTravel - wrong)) < 1e-9,
+          'plug ' + plugLift(100).toFixed(3) + ' vs plate ' +
+          plateLift(100, { strokeIn: wrong }).toFixed(3) + ' -- the stem ' +
+          'connector between them would have to stretch by ' +
+          gap.toFixed(3) + ' in');
+  }
 
   refuses('a drawn stroke longer than the rating is refused',
     () => LPE.actuator.diaphragm({ part: A45, figure: FIG, travelPct: 50,

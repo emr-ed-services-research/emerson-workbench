@@ -557,11 +557,23 @@ console.log('');
   check('and the TRUE lift at full travel is the catalogue travel',
     g.plugAt(100).liftTrue === EWT.dims.travel &&
     g.plugAt(50).liftTrue === EWT.dims.travel / 2);
-  check('the drawn lift is smaller, because the drawn cage is shallower',
-    g.plugAt(100).lift < g.plugAt(100).liftTrue,
+  /* THE TWO ARE NOW EQUAL, AND KEEPING THEM SEPARATE STILL MATTERS.
+     This asserted drawn < true, because the archetype was illustration
+     art whose trim column was too short to stroke its own valve. The
+     outlines are a registered drafting section now and the room is
+     there, so the drawn lift reaches the true one. The distinction is
+     not retired with the deficiency: a drawing is still a drawing, the
+     next archetype may be short again, and the model must keep saying
+     which quantity it is handing you. */
+  check('the drawn lift now reaches the true one, and is never past it',
+    g.plugAt(100).lift <= g.plugAt(100).liftTrue + 1e-9 &&
+    Math.abs(g.plugAt(100).lift - g.plugAt(100).liftTrue) < 1e-9,
     'drawn ' + g.plugAt(100).lift.toFixed(3) + ' in against a real ' +
-    g.plugAt(100).liftTrue + ' in -- the picture is in the drawing of ' +
-    'the valve, not in the valve');
+    g.plugAt(100).liftTrue + ' -- the EWT art reached 0.83 of it');
+  check('and the drawn lift is still reported separately from the true one',
+    'lift' in g.plugAt(50) && 'liftTrue' in g.plugAt(50),
+    'a picture and a valve do not have to share a scale, and the day ' +
+    'they stop sharing one the model has to be able to say so');
   check('a balanced plug carries balance holes and a seal',
     g.plugAt(50).balanceHoles.length > 0 && g.plugAt(50).seal !== null);
   const un = valveOf(EWT, { balanced: false });
@@ -769,9 +781,15 @@ console.log('');
      a tenth of an inch wide, down both sides of the plug. The
      failures this is here for were an order of magnitude above it --
      one and a half square inches on the smaller of these two. */
+  /* `head` is RINGS now, not one ring -- a cage-guided plug in section
+     is a head and two skirt walls, not a single closed loop. Flattened
+     here; reading it as a flat point list silently gave NaN for the
+     allowance, which fails every comparison no matter what the geometry
+     does. The measured area was 0.000 in2 throughout. */
+  const headPts = GVfor => [].concat.apply([], GVfor.plugAt(0).head);
   const hairline = GVfor => 0.09 * 2 *
-    (Math.max.apply(null, GVfor.plugAt(0).head.map(q => q[1])) -
-     Math.min.apply(null, GVfor.plugAt(0).head.map(q => q[1])));
+    (Math.max.apply(null, headPts(GVfor).map(q => q[1])) -
+     Math.min.apply(null, headPts(GVfor).map(q => q[1])));
   const worst = [];
   for (const [name, GV] of SUBJECTS)
   for (const T of [0, 25, 50, 75, 100]) {
@@ -788,9 +806,9 @@ console.log('');
     const cageBox = [[-bore, cage.y0], [bore, cage.y0],
                      [bore, cage.y1], [-bore, cage.y1]];
     const inside = [].concat(GV.body, GV.bonnet || [], cage.rings || [],
-      cage.windows || [], [cageBox], [pg.head], [pg.stem]);
+      cage.windows || [], [cageBox]).concat(pg.head, [pg.stem]);
     const metal = [].concat(GV.body, GV.bonnet || [], GV.seatRing || [],
-      cage.rings || [], [pg.head], [pg.stem]);
+      cage.rings || []).concat(pg.head, [pg.stem]);
     const cut = [].concat(cage.windows || [], pg.balanceHoles || []);
     const S = 0.05;
     let black = 0;
