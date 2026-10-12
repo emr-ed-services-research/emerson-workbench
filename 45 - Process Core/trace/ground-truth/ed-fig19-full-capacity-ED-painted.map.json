@@ -1,0 +1,7 @@
+{
+  "note": "seat and plug came out swapped on this figure -- Franz, on handing it over: \"Accidently did the seat yellow and the plug green\". Figure 20 uses the table as written, so this is a per-figure override and not a change to the table.",
+  "colours": {
+    "#FFF200": "seatRing",
+    "#22B14C": "plug"
+  }
+}

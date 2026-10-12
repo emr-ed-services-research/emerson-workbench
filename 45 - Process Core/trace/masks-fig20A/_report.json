@@ -1,0 +1,59 @@
+{
+ "source": "ed-fig20-nps8-A.png",
+ "painted": "ed-fig20-nps8-A-painted.png",
+ "map": {
+  "body": [
+   "#ED1C24",
+   "#880015"
+  ],
+  "bonnet": [
+   "#FF7F27"
+  ],
+  "cage": [
+   "#99D9EA",
+   "#00A2E8"
+  ],
+  "plug": [
+   "#FFF200"
+  ],
+  "stem": [
+   "#A349A4"
+  ],
+  "seatRing": [
+   "#22B14C"
+  ],
+  "packing": [
+   "#FFAEC9"
+  ],
+  "bolting": [
+   "#3F48CC"
+  ],
+  "hardware": [
+   "#B97A57"
+  ],
+  "fluid": [
+   "#C3C3C3"
+  ]
+ },
+ "mapNote": null,
+ "size": [
+  1978,
+  2158
+ ],
+ "cells": 427,
+ "absorbed": 39,
+ "parts": {
+  "body": 403125,
+  "bonnet": 178818,
+  "cage": 41607,
+  "plug": 36838,
+  "stem": 33476,
+  "seatRing": 19952,
+  "packing": 4496,
+  "bolting": 30588,
+  "hardware": 9655,
+  "fluid": 629845
+ },
+ "missing": [],
+ "ambiguous": 4
+}

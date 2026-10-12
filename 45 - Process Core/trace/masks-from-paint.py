@@ -37,37 +37,236 @@ import cv2
 import numpy as np
 from PIL import Image
 
-# MS Paint's default palette, which is what the painter was asked for.
-# Matched by nearest colour, so drift between editors does not matter;
-# the names are what the report prints.
+# MS Paint's default palette. EXACT HEXES, TAKEN OFF THE PAINTED FILE,
+# because nearest-colour matching is not safe here and quietly lost a
+# part the first time it was tried: light turquoise #99D9EA is nearer
+# to WHITE than it is to turquoise #00A2E8, so the cage came back
+# unpainted rather than wrong, which is the worse of the two. Any
+# swatch in the file that no entry claims is now an error by hex and
+# count -- see unknown_swatches below.
+# THIS IS THE DEFAULT MAP, AND A PAINTING MAY OVERRIDE IT. Two figures
+# came back painted by the same hand with yellow and green meaning
+# opposite things: on Figure 20 yellow is the plug and green the seat,
+# as asked for; on Figure 19 they came out the other way round. Both
+# paintings are perfectly clear -- they just do not agree with each
+# other, and no amount of staring at one file reveals what the other
+# meant.
+#
+# So the map is a property of the PAINTING. A painted figure may sit
+# beside a `<painted>.map.json` naming what its colours meant, and that
+# wins over this table for that figure alone. Nothing is guessed: with
+# no sidecar, this table is what the painter is held to, and a colour
+# no row claims still stops the run.
+#
+# `hardware` is named for what it holds rather than for what was asked.
+# Brown was requested for the drain plug and used for the drain plug,
+# the yoke locknut and both gaskets -- all small sealing and fastening
+# hardware, none of them on the list. They sit in different places, so
+# they come back as separate pieces of one mask and can be split by
+# position later if any needs to be its own part.
+# A PART MAY ANSWER TO MORE THAN ONE SWATCH. Figure 19 came back with
+# the body in dark red #880015 and Figure 20 with the body in red
+# #ED1C24 -- the same hand, the same palette, the same part, two
+# adjacent squares. Rejecting the second for that would be rejecting a
+# difference that means nothing. So each row carries every swatch that
+# has actually been used for it, and the FIRST is the canonical one the
+# preview draws with.
 PARTS = [
-    ('body',      (0xED, 0x1C, 0x24), 'red'),
-    ('bonnet',    (0xFF, 0x7F, 0x27), 'orange'),
-    ('cage',      (0x00, 0xA2, 0xE8), 'turquoise'),
-    ('plug',      (0xFF, 0xF2, 0x00), 'yellow'),
-    ('stem',      (0xA3, 0x49, 0xA4), 'purple'),
-    ('seatRing',  (0x22, 0xB1, 0x4C), 'green'),
-    ('packing',   (0xFF, 0xAE, 0xC9), 'rose'),
-    ('bolting',   (0x3F, 0x48, 0xCC), 'indigo'),
-    ('drainPlug', (0xB9, 0x7A, 0x57), 'brown'),
+    ('body',      [(0xED, 0x1C, 0x24), (0x88, 0x00, 0x15)], 'red'),
+    ('bonnet',    [(0xFF, 0x7F, 0x27)], 'orange'),
+    ('cage',      [(0x99, 0xD9, 0xEA), (0x00, 0xA2, 0xE8)], 'turquoise'),
+    ('plug',      [(0xFF, 0xF2, 0x00)], 'yellow'),
+    ('stem',      [(0xA3, 0x49, 0xA4)], 'purple'),
+    ('seatRing',  [(0x22, 0xB1, 0x4C)], 'green'),
+    ('packing',   [(0xFF, 0xAE, 0xC9)], 'rose'),
+    ('bolting',   [(0x3F, 0x48, 0xCC)], 'indigo'),
+    ('hardware',  [(0xB9, 0x7A, 0x57)], 'brown'),
+    ('fluid',     [(0xC3, 0xC3, 0xC3)], 'grey'),
 ]
+# `fluid` IS NOT A PART AND IT IS STILL WORTH PAINTING. Leaving the
+# passages white was meant to be free -- white is "not a part" and most
+# of the drawing is passage. It is not free, because white is also what
+# an unpainted cell looks like, so the void had no voice and anything
+# that wandered into it won by default.
+#
+# That is not hypothetical either. Figure 19 was painted as one long
+# continuous squiggle per part, and the body's squiggle loops down
+# through the open bore between the upper and lower walls on its way
+# from one to the other. Nothing contradicted it, so 60 000 px of
+# flowing water came back as cast iron.
+#
+# A grey stroke in each passage fixes it from the other side: the cell
+# now has paint of its own, and MIN_SHARE decides -- grey wins, or the
+# two are close and the cell is reported as ambiguous. Neither outcome
+# is a silent wrong answer, which is the only outcome that matters.
+# It costs one stroke per passage and it hands the flow-field layer a
+# sourced fluid domain for free.
+NOT_METAL = {'fluid'}
 NEUTRAL = [(0xFF, 0xFF, 0xFF), (0x00, 0x00, 0x00)]   # not parts
+TOL = 40           # px distance; further off is a blend or UNKNOWN
+UNKNOWN_MIN = 200  # px of one undeclared colour before it is worth stopping
+FRINGE = 2         # px around the linework whose colour is not trusted
+
+# The two shades of a hue must not both be in the table for DIFFERENT
+# parts, or a slip of one square silently relabels a part instead of
+# stopping. Checked here rather than trusted, because the whole reason
+# aliases exist is that adjacent squares get confused.
+def no_swatch_serves_two_parts(parts, where):
+    seen = {}
+    for name, cols, _ in parts:
+        for c in cols:
+            if seen.setdefault(c, name) != name:
+                raise SystemExit(
+                    '%s: #%02X%02X%02X is listed for both %s and %s. One '
+                    'colour has to mean one part.'
+                    % (where, c[0], c[1], c[2], seen[c], name))
+no_swatch_serves_two_parts(PARTS, 'trace/masks-from-paint.py')
 
 INK = 128          # line art: below this is a line
-MIN_PAINT = 0.25   # a cell must be at least this painted to vote at all
-MIN_SHARE = 0.70   # and its winner must hold this much of the paint
+MIN_VOTE = 80      # px of one colour in a cell before it counts as a stroke
+MIN_SHARE = 0.70   # and that colour must hold this much of the cell's paint
 MIN_CELL = 12      # px; smaller cells are noise between hatch lines
+THIN_CLAIM = 0.05  # report, do not refuse, a cell won on less than this
+SLIVER_FILL = 0.42 # a cell filling less of its bounding box is a hatch stripe
+SMALL = 400        # px; below this a blob is not worth reporting either way
+
+# MIN_VOTE IS ABSOLUTE AND THAT IS THE POINT. It used to be MIN_PAINT, a
+# fraction: a cell had to be 25% covered before its paint counted for
+# anything. That is the wrong measure and it threw away almost an entire
+# painting before anyone noticed, because a brush stroke is a fixed size
+# and a cell is not.
+#
+# It survived the first figure by luck. Figure 19 is densely hatched, so
+# its cells are thin stripes and a stroke across one covers most of it.
+# Figure 20 has the same parts drawn with large open cells -- one body
+# cell is 255 592 px -- and the same stroke is 2% of it. Every colour in
+# that figure lost 70-98% of its paint to this rule, and NOTHING was
+# lost to ambiguity: the painter had been perfectly clear and the step
+# refused to listen.
+#
+# What a painter means by a stroke does not scale with how big the
+# region happens to be, so neither does the threshold. Eighty pixels is
+# a deliberate mark and a handful is a slipped hand. MIN_SHARE still
+# does the job MIN_PAINT was wrongly asked to help with -- two colours
+# fighting over one cell is still ambiguous and still refused.
+
+
+def load_map(paint_path):
+    """PARTS, with any per-figure override from `<painted>.map.json`.
+
+    The sidecar is a flat object of hex -> part name:
+
+        {"note": "seat and plug came out swapped",
+         "colours": {"#FFF200": "seatRing", "#22B14C": "plug"}}
+
+    Only the rows it names move. Every name must already be a part --
+    a sidecar cannot invent one, because a part nothing downstream
+    knows about is a typo far more often than it is a new part.
+    """
+    side = os.path.splitext(paint_path)[0] + '.map.json'
+    parts = [(n, list(c), s) for n, c, s in PARTS]
+    if not os.path.exists(side):
+        return parts, None
+    doc = json.load(open(side))
+    cols = doc.get('colours') or {}
+    known = {n for n, _, _ in parts}
+    for hexs, name in cols.items():
+        if name not in known:
+            raise SystemExit(
+                '%s names part "%s", which is not in PARTS. The sidecar '
+                'can move a colour between parts; it cannot invent one.'
+                % (os.path.basename(side), name))
+        rgb = tuple(int(hexs.lstrip('#')[i:i + 2], 16) for i in (0, 2, 4))
+        for i, (n, c, sw) in enumerate(parts):          # take it off its old row
+            parts[i] = (n, [x for x in c if x != rgb], sw)
+        for i, (n, c, sw) in enumerate(parts):
+            if n == name:
+                parts[i] = (n, c + [rgb], sw)
+    empty = [n for n, c, _ in parts if not c]
+    if empty:
+        raise SystemExit(
+            '%s leaves %s with no colour at all. Every part needs one, or '
+            'it cannot be painted in this figure -- if it genuinely is not '
+            'in the figure, say so in "note" and give it a colour anyway.'
+            % (os.path.basename(side), ', '.join(empty)))
+    return parts, doc.get('note')
 
 
 def nearest_part(rgb):
-    """Index into PARTS, or -1 for neutral/unknown. Whole-image, vectorised."""
+    """Index into PARTS, -1 for neutral or a blend, -2 for undeclared.
+
+    NEAREST WITHIN A TOLERANCE, not nearest outright. Nearest outright
+    has no way to say "I do not recognise this", so a swatch the table
+    does not know goes to whichever entry happens to be least far away
+    -- or to white, which is worse, because then the part is not wrong,
+    it is ABSENT, and absent is indistinguishable from never painted.
+
+    AND A BLEND IS NOT AN UNKNOWN COLOUR. An antialiased brush puts a
+    halo of intermediate colours along every stroke edge: paint grey
+    beside dark red and the boundary runs through #A5616B, which is no
+    swatch at all. Figure 19 came back with 238 colours for nine parts
+    and almost all of the extra was halo. Erroring on those would make
+    an antialiased editor unusable for no reason, and widening TOL far
+    enough to swallow them would start merging real swatches.
+
+    So a colour off every swatch is asked one more question: does it
+    lie on the LINE between two declared colours? If it does, it is a
+    mixture of them and the honest answer is "I cannot tell which",
+    which is -1 -- it votes for nobody and costs nothing, because the
+    pixels either side of it are unambiguous. Only a colour that is
+    near no swatch and on no blend line is -2, and -2 still stops the
+    run. Computed over the image's unique colours, of which there are
+    a few hundred, rather than over four million pixels.
+    """
     h, w, _ = rgb.shape
     flat = rgb.reshape(-1, 3).astype(np.int32)
-    swatches = np.array([c for _, c, _ in PARTS] + NEUTRAL, dtype=np.int32)
-    d = ((flat[:, None, :] - swatches[None, :, :]) ** 2).sum(axis=2)
-    idx = d.argmin(axis=1)
-    idx[idx >= len(PARTS)] = -1          # white and black are not parts
-    return idx.reshape(h, w)
+    swatches, owner = [], []
+    for i, (_, cols, _) in enumerate(PARTS):
+        for c in cols:
+            swatches.append(c)
+            owner.append(i)
+    for c in NEUTRAL:
+        swatches.append(c)
+        owner.append(-1)
+    owner = np.array(owner, dtype=np.int32)
+    S = np.array(swatches, dtype=np.float64)
+
+    uniq, inv = np.unique(flat, axis=0, return_inverse=True)
+    u = uniq.astype(np.float64)
+    d = ((u[:, None, :] - S[None, :, :]) ** 2).sum(axis=2)
+    j = d.argmin(axis=1)
+    out = owner[j].copy()
+    far = d[np.arange(len(u)), j] > TOL * TOL
+
+    if far.any():
+        q = u[far]
+        best = np.full(len(q), np.inf)
+        for a in range(len(S)):
+            for b in range(a + 1, len(S)):
+                p0, p1 = S[a], S[b]
+                seg = p1 - p0
+                L2 = float(seg @ seg)
+                if L2 == 0:
+                    continue
+                t = (((q - p0) @ seg) / L2).clip(0.0, 1.0)
+                proj = p0 + t[:, None] * seg
+                best = np.minimum(best, ((q - proj) ** 2).sum(axis=1))
+        blend = best <= TOL * TOL
+        r = np.where(blend, -1, -2).astype(np.int32)
+        out[far] = r
+
+    return out[inv].reshape(h, w)
+
+
+def unknown_swatches(paint, part_of_px):
+    """Every colour in the paint that no entry in PARTS accounts for."""
+    ys, xs = np.nonzero(part_of_px == -2)
+    if not len(ys):
+        return []
+    cols, cnt = np.unique(paint[ys, xs].reshape(-1, 3), axis=0,
+                          return_counts=True)
+    return [(tuple(int(v) for v in cols[i]), int(cnt[i]))
+            for i in np.argsort(cnt)[::-1] if cnt[i] >= UNKNOWN_MIN]
 
 
 def main():
@@ -77,6 +276,16 @@ def main():
     line_path, paint_path = sys.argv[1], sys.argv[2]
     outdir = sys.argv[3] if len(sys.argv) > 3 else os.path.join(
         os.path.dirname(line_path) or '.', 'masks')
+
+    # THE MAP IS A PROPERTY OF THE PAINTING. Rebound before anything
+    # reads it, so every step below -- the swatch list, the preview, the
+    # mask filenames -- works from the map this figure was painted to.
+    global PARTS
+    PARTS, map_note = load_map(paint_path)
+    no_swatch_serves_two_parts(
+        PARTS, os.path.basename(paint_path) + '.map.json')
+    if map_note:
+        print('\nmap override for this figure: ' + map_note)
 
     line = np.array(Image.open(line_path).convert('L'))
     paint = np.array(Image.open(paint_path).convert('RGB'))
@@ -92,13 +301,55 @@ def main():
     ncells, cells = cv2.connectedComponents(open_px, connectivity=4)
     part_of_px = nearest_part(paint)
 
+    # GREY HUGGING A LINE IS NOT A VOTE FOR FLUID. The line art here is
+    # clean two-colour, but the painted copy is not: saving through an
+    # antialiasing editor puts a grey fringe along every black line, and
+    # grey is also the colour that means FLUID. The two are not
+    # distinguishable by colour at all -- a black-to-white ramp passes
+    # exactly through #C3C3C3. Cells are cut from the clean art, so the
+    # fringe sitting ON the ink is already out; the one- or two-pixel
+    # skirt just OUTSIDE it is not, and in a hatched region, where every
+    # cell is a thin stripe with line down both sides, that skirt is a
+    # large share of the cell. Antialiasing would outvote the painter.
+    #
+    # ONLY GREY IS DISTRUSTED, AND ONLY NEXT TO A LINE. The first
+    # version of this threw away EVERY colour within two pixels of ink,
+    # which is a different and much more expensive claim: it erodes
+    # every part by two pixels all round, and a part that is only a few
+    # pixels wide is mostly edge. It took the valve stem from 51 832 px
+    # to 2 564. No other colour has the ambiguity that motivated the
+    # rule -- an antialiased red fringe is still obviously red, and a
+    # genuine mixture of two swatches is already neutral -- so no other
+    # colour needs to pay for it.
+    skirt = cv2.dilate(ink.astype(np.uint8),
+                       np.ones((2 * FRINGE + 1,) * 2, np.uint8),
+                       iterations=1) > 0
+    greyish = np.zeros(len(PARTS), dtype=bool)
+    for i, (name, _, _) in enumerate(PARTS):
+        greyish[i] = name in NOT_METAL
+    suspect = skirt & (part_of_px >= 0) & greyish[part_of_px.clip(0)]
+    part_of_px = np.where(suspect, -1, part_of_px).astype(np.int32)
+
     print('\nline art %dx%d   %d closed cells in it' %
           (line.shape[1], line.shape[0], ncells - 1))
+
+    # ---- a colour nobody declared stops the run ------------------------
+    undeclared = unknown_swatches(paint, part_of_px)
+    if undeclared:
+        print('\nUNDECLARED PAINT -- in the file, claimed by no part:')
+        for (r, g, b), n in undeclared:
+            print('   #%02X%02X%02X  %8d px' % (r, g, b, n))
+        print('\n  Each is either a part missing from PARTS or a '
+              'neighbouring\n  swatch picked by mistake. Add it or correct '
+              'it. Do not let it\n  run: the part it was meant to be would '
+              'come back EMPTY, which\n  reads as never painted rather '
+              'than as painted wrong.\n')
+        return 1
 
     # ---- which part owns each cell -------------------------------------
     assign = np.full(ncells, -1, dtype=np.int32)   # cell -> part index
     sizes = np.bincount(cells.ravel(), minlength=ncells)
-    ambiguous, unpainted_big = [], []
+    ambiguous, unpainted_big, thin_claims = [], [], []
     # background: the cell touching the frame is not inside the valve
     border = set(np.unique(np.concatenate([
         cells[0, :], cells[-1, :], cells[:, 0], cells[:, -1]])).tolist())
@@ -109,12 +360,13 @@ def main():
         sel = cells == lbl
         votes = part_of_px[sel]
         painted = votes[votes >= 0]
-        if painted.size < MIN_PAINT * sizes[lbl]:
+        counts = (np.bincount(painted, minlength=len(PARTS))
+                  if painted.size else np.zeros(len(PARTS), dtype=np.int64))
+        win = int(counts.argmax())
+        if counts[win] < MIN_VOTE:
             if sizes[lbl] > 400 and lbl not in border:
                 unpainted_big.append((lbl, int(sizes[lbl])))
             continue
-        counts = np.bincount(painted, minlength=len(PARTS))
-        win = int(counts.argmax())
         share = counts[win] / painted.size
         if share < MIN_SHARE:
             order = counts.argsort()[::-1]
@@ -123,6 +375,9 @@ def main():
                               PARTS[order[1]][0], int(counts[order[1]])))
             continue
         assign[lbl] = win
+        if counts[win] < THIN_CLAIM * sizes[lbl]:
+            thin_claims.append((lbl, int(sizes[lbl]), int(counts[win]),
+                                PARTS[win][0]))
 
     # ---- cells the brush did not reach, where there is only one answer --
     adj = {}
@@ -145,10 +400,6 @@ def main():
     # that needs two hops is not that, it is unpainted, and unpainted
     # is a thing to report rather than to infer.
     seed = assign.copy()
-    painted_area = np.zeros(len(PARTS), dtype=np.int64)
-    for lbl in range(1, ncells):
-        if seed[lbl] >= 0:
-            painted_area[seed[lbl]] += sizes[lbl]
     absorbed = 0
     for lbl in range(1, ncells):
         if seed[lbl] >= 0 or sizes[lbl] < MIN_CELL or lbl in border:
@@ -157,13 +408,31 @@ def main():
         if len(touching) != 1:
             continue
         p = touching.pop()
-        # AND IT HAS TO BE A SLIVER. A cell half the size of everything
-        # that WAS painted for that part is not an edge the brush
-        # missed, it is a region nobody painted -- which is a thing to
-        # report, not to hand to whatever happens to border it.
-        if sizes[lbl] > 0.5 * painted_area[p]:
-            if sizes[lbl] > 400:
-                unpainted_big.append((lbl, int(sizes[lbl])))
+        # AND IT HAS TO BE SHAPED LIKE A MISSED EDGE, which is a thing
+        # the cell itself can be asked about.
+        #
+        # This guard used to be a fraction of the part's own painted
+        # area, and that was measuring the wrong object. Once the
+        # painter's strokes were being counted properly the body's
+        # painted area went up eightfold, the guard went up with it,
+        # and whole FLOW PASSAGES -- 90 632 px of water, bounded on
+        # every side by body and therefore touching exactly one part --
+        # were absorbed into the casting. The valve came back solid.
+        # How big a part is tells you nothing about whether the cell
+        # beside it is a sliver the brush skipped or a void that is
+        # supposed to be empty.
+        #
+        # The cell's own shape does tell you. A stripe between two
+        # hatch lines fills well under half the box around it, because
+        # the box is the diagonal's extent. A passage is a blob and
+        # fills most of its box. So: absorb a sliver of any size, or
+        # anything small enough not to be worth reporting, and leave
+        # every large blob alone no matter what it borders.
+        ys, xs = np.nonzero(cells == lbl)
+        box = ((ys.max() - ys.min() + 1) * (xs.max() - xs.min() + 1))
+        sliver = sizes[lbl] < SLIVER_FILL * box
+        if not sliver and sizes[lbl] > SMALL:
+            unpainted_big.append((lbl, int(sizes[lbl])))
             continue
         assign[lbl] = p
         absorbed += 1
@@ -202,14 +471,21 @@ def main():
 
     prev = np.zeros(paint.shape, dtype=np.uint8)
     prev[:] = 255
-    for p, (_, col, _) in enumerate(PARTS):
-        prev[lab == p] = col
+    for p, (_, cols, _) in enumerate(PARTS):
+        prev[lab == p] = cols[0]      # the canonical swatch, not the alias
     prev[ink & (lab < 0)] = (40, 40, 40)
     Image.fromarray(prev).save(os.path.join(outdir, '_preview.png'))
 
     print('\nassigned:')
     for name, n in found:
-        print('   %-10s %8d px' % (name, n))
+        print('   %-10s %8d px%s' %
+              (name, n, '   (not metal -- the declared void)'
+               if name in NOT_METAL else ''))
+    if not any(name in NOT_METAL for name, _ in found):
+        print('\n   no fluid was declared. Everything left white is '
+              'treated as unpainted,\n   so any stroke that strays into a '
+              'passage claims it unopposed. One grey\n   stroke per '
+              'passage removes the whole class of error.')
     if absorbed:
         print('\n%d cell(s) the brush did not reach were absorbed into the '
               'one part they touch' % absorbed)
@@ -225,13 +501,27 @@ def main():
                   (lbl, n, a, na, b, nb))
         if len(ambiguous) > 20:
             print('   ... and %d more' % (len(ambiguous) - 20))
+    if thin_claims:
+        big = sorted(thin_claims, key=lambda t: -t[1])[:10]
+        print('\nWON ON A THIN STROKE -- correct for a deliberate mark in a '
+              'big open\ncell, wrong if a stroke slipped over an edge. '
+              'Check these in the preview:')
+        for lbl, n, got, name in big:
+            print('   %-10s claims %7d px on %5d px of paint  (%.1f%%)'
+                  % (name, n, got, 100.0 * got / n))
     if unpainted_big:
         print('\nUNPAINTED and large -- fluid, or a part that was missed:')
-        for lbl, n in sorted(unpainted_big, key=lambda t: -t[1])[:12]:
+        seen = set()
+        uniq = [t for t in unpainted_big
+                if not (t[0] in seen or seen.add(t[0]))]
+        for lbl, n in sorted(uniq, key=lambda t: -t[1])[:12]:
             print('   cell %-6d %6d px' % (lbl, n))
 
     meta = {'source': os.path.basename(line_path),
             'painted': os.path.basename(paint_path),
+            'map': {n: ['#%02X%02X%02X' % c for c in cols]
+                    for n, cols, _ in PARTS},
+            'mapNote': map_note,
             'size': [int(line.shape[1]), int(line.shape[0])],
             'cells': int(ncells - 1), 'absorbed': int(absorbed),
             'parts': {n: px for n, px in found},

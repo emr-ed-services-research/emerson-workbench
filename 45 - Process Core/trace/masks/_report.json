@@ -1,0 +1,59 @@
+{
+ "source": "ed-fig19-full-capacity-ED.png",
+ "painted": "ed-fig19-full-capacity-ED-painted.png",
+ "map": {
+  "body": [
+   "#ED1C24",
+   "#880015"
+  ],
+  "bonnet": [
+   "#FF7F27"
+  ],
+  "cage": [
+   "#99D9EA",
+   "#00A2E8"
+  ],
+  "plug": [
+   "#22B14C"
+  ],
+  "stem": [
+   "#A349A4"
+  ],
+  "seatRing": [
+   "#FFF200"
+  ],
+  "packing": [
+   "#FFAEC9"
+  ],
+  "bolting": [
+   "#3F48CC"
+  ],
+  "hardware": [
+   "#B97A57"
+  ],
+  "fluid": [
+   "#C3C3C3"
+  ]
+ },
+ "mapNote": "seat and plug came out swapped on this figure -- Franz, on handing it over: \"Accidently did the seat yellow and the plug green\". Figure 20 uses the table as written, so this is a per-figure override and not a change to the table.",
+ "size": [
+  2128,
+  1840
+ ],
+ "cells": 491,
+ "absorbed": 42,
+ "parts": {
+  "body": 511183,
+  "bonnet": 195953,
+  "cage": 60410,
+  "plug": 33749,
+  "stem": 16788,
+  "seatRing": 34336,
+  "packing": 14901,
+  "bolting": 59557,
+  "hardware": 32133,
+  "fluid": 274518
+ },
+ "missing": [],
+ "ambiguous": 10
+}

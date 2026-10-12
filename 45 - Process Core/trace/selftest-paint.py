@@ -26,11 +26,26 @@ import numpy as np
 from PIL import Image
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-COLS = [(0xED, 0x1C, 0x24), (0xFF, 0x7F, 0x27), (0x00, 0xA2, 0xE8),
-        (0xFF, 0xF2, 0x00), (0xA3, 0x49, 0xA4), (0x22, 0xB1, 0x4C),
-        (0xFF, 0xAE, 0xC9), (0x3F, 0x48, 0xCC), (0xB9, 0x7A, 0x57)]
-NAMES = ['body', 'bonnet', 'cage', 'plug', 'stem', 'seatRing',
-         'packing', 'bolting', 'drainPlug']
+def _parts():
+    """The colour table out of masks-from-paint itself, never restated.
+
+    This file used to carry its own copy of the nine hexes, and the
+    moment the real paint came back with two of them on a neighbouring
+    swatch the copy was stale and the selftest went red for a reason
+    that had nothing to do with the mechanism it tests. The test must
+    paint with whatever the step is currently looking for.
+    """
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        'masks_from_paint', os.path.join(HERE, 'masks-from-paint.py'))
+    mod = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mod)
+    return mod.PARTS
+
+
+PARTS = _parts()
+COLS = [cols[0] for _, cols, _ in PARTS]   # the canonical swatch of each
+NAMES = [n for n, _, _ in PARTS]
 
 
 def main():

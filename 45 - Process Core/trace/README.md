@@ -31,7 +31,7 @@ Two full sections in it, at opposite ends of the size range:
 | --- | --- | --- |
 | `ground-truth/ed-fig19-full-capacity-ED.png` | Figure 19, printed p.43 (PDF p.45), drawing 30A9542-F | Standard NPS 1 through 6, full-capacity ED with optional drain plug. Bore is about 0.146 of face-to-face — the SMALL end |
 | `ground-truth/ed-fig20-nps8-A.png` | Figure 20, printed p.44 (PDF p.46) | NPS 8 ED with graphite piston ring. The LARGE end, and the clearer drawing of the two |
-| `ground-truth/ed-fig20-nps8-B.png` | Figure 20, second panel | typical multiple piston-ring assembly |
+| `ground-truth/ed-fig20-nps8-B.png` | Figure 20, second panel, drawing 43X2895-A | Typical multiple piston-ring assembly. **Rotated 180° after extraction — see below** |
 
 They are **not** page rasterisations. The PDF carries each figure as its
 own embedded 1-bit CCITT stencil at 320–351 ppi, so they came out as
@@ -39,6 +39,30 @@ clean black-on-white line art with no anti-aliasing and no JPEG mush —
 pdfimages, not pdftoppm. Extracted at native resolution and doubled with
 nearest-neighbour so the strokes stay crisp to paint over. Nothing has
 been resampled or smoothed.
+
+### Panel B came out upside down, and that is an extraction artifact
+
+`pdfimages` pulls the stored bitmap and ignores the placement matrix the
+page draws it with. Panel B's stencil is *stored* rotated 180° and the
+PDF rotates it back when it prints, so the manual is right and the
+extraction was not: the valve sat bonnet-down with every callout bubble
+inverted.
+
+The giveaway is the callouts. No manual prints its own part numbers
+upside down, so an inverted drawing is never the drawing — it is always
+the handling. And a flow-up ED is the same body entered from the other
+flange, never a vertically mirrored one; the actuator is on top in every
+real orientation.
+
+Checked rather than assumed, three ways: the page rendered with
+`pdftoppm` shows both panels upright; our A matches raw stencil 000 and
+our B matches raw stencil 001 at an ink IoU of 1.000, so both files are
+exactly what was embedded; and only 001 is stored inverted. The file
+here has been rotated 180°, which for a 1-bit image is a pure
+permutation of pixels — the ink count is identical before and after and
+it round-trips exactly, so nothing was resampled.
+
+Figure 19 and Figure 20-A were unaffected and are untouched.
 
 TWO SIZES OF THE SAME FAMILY IS THE POINT. One trace can only ever be
 stretched. Two, at opposite ends, is the minimum needed to tell what
@@ -59,6 +83,20 @@ hatch lines and nothing else. Do not fight that.
 **Scribble roughly inside each part with the Brush, in the colour from
 the table below. Stay inside it. Ignore the edges entirely.**
 
+**The Brush, not the Fill bucket, and this is the whole trick.** One
+fill click lands in one closed cell, and in a hatched section one
+closed cell is one stripe between two hatch lines. The body of
+Figure 19 is something like a hundred of them. One brush stroke
+dragged ACROSS the hatching crosses every stripe it passes through and
+does all hundred at once, which is why the instruction is to scribble
+rather than to click. Drag across the hatch lines, not along them.
+
+A part the figure draws in exterior view rather than in section — the
+cage and the plug, in Figure 19 — carries no hatching at all and is
+one single open cell. Those take one stroke, but they still take one:
+being unhatched does not make them fluid, and nothing can tell the
+difference for you.
+
 The paint says WHICH part a region belongs to; the drawing's own
 linework says where that part ENDS. The pipeline cuts the line art
 into every closed cell it contains — each hatch stripe is its own cell
@@ -68,36 +106,149 @@ off a brush stroke. Anti-aliasing at the edge of a stroke does not
 matter; a stroke that crosses into the neighbouring part does, because
 then that part's cells vote the wrong way.
 
-Save as PNG, beside the original, as `<name>-painted.png`.
+**Save as a NEW file** beside the original, as `<name>-painted.png`.
+Do not save over the file in `ground-truth/` — that one is the
+linework and it is the half of the input the paint cannot replace. The
+first real paint came back saved in place, and 5.6% of the ink had
+been painted over; it only cost nothing because the clean copy was
+still in git. The step takes two files for exactly this reason.
 
 ### The colours
 
-MS Paint's default palette, so there is nothing to mix or match. The
-exact values are below only so the table is unambiguous — pick the
-swatch by name, the pipeline discovers the colours by nearest match
-and does not care about drift.
+MS Paint's default palette, so there is nothing to mix or match.
+**These hexes are exact and are checked.** An earlier version of this
+table said the pipeline matched by nearest colour and so did not care
+about drift; that was wrong and it cost a part. Light turquoise
+`#99D9EA` is nearer to *white* than it is to turquoise `#00A2E8`, so a
+cage painted with the neighbouring swatch came back not wrong but
+**absent**, which reads exactly like having forgotten to paint it.
+The step now matches within a tolerance and stops on any colour no row
+claims, naming the hex and the pixel count.
+
+This table is the live one — the hexes below are the ones in
+`masks-from-paint.py`.
 
 | # | Part | Paint swatch | Hex |
 | --- | --- | --- | --- |
-| 1 | **body casting** — flanges included, both sides | Red | `#ED1C24` |
+| 1 | **body casting** — flanges included, both sides | Red *or* dark red | `#ED1C24` / `#880015` |
 | 2 | **bonnet** — the casting above the body joint | Orange | `#FF7F27` |
-| 3 | **cage** — the cylinder the plug slides in | Turquoise | `#00A2E8` |
+| 3 | **cage** — the cylinder the plug slides in | Turquoise *or* light turquoise | `#00A2E8` / `#99D9EA` |
 | 4 | **plug** — head and skirt | Yellow | `#FFF200` |
 | 5 | **valve stem** — the rod above the plug | Purple | `#A349A4` |
 | 6 | **seat ring** | Green | `#22B14C` |
 | 7 | **packing** — the stack in the bonnet bore | Rose | `#FFAEC9` |
 | 8 | **bolting** — studs, nuts, packing flange | Indigo | `#3F48CC` |
-| 9 | **drain plug** | Brown | `#B97A57` |
+| 9 | **small hardware** — drain plug, yoke locknut, spiral-wound and wire-mesh gaskets | Brown | `#B97A57` |
+| 10 | **fluid** — every passage, bore and open chamber | Grey | `#C3C3C3` |
 
-Black and white are not on the list on purpose: black is the linework
-and white is everything that is NOT a part. Whatever is inside the
-casting and left white is fluid, which is most of the useful area and
-none of the work.
+**Rows 1 and 3 accept either of two adjacent squares**, because both
+have been used for the same part on different figures and the
+difference means nothing. Everything else is one square exactly, and
+a colour no row claims now stops the run by design, naming the hex and
+the pixel count — see *If you grab the wrong square* below.
 
-Grey, dark red, gold, light yellow, lime, light turquoise, blue-grey
-and lavender are unused and free for anything that turns out to need
-its own colour — a gasket, a piston ring, a seal. Say which and it
-gets a row.
+Row 9 is named for what it holds rather than for what was asked. Brown
+was requested for the drain plug and used for the drain plug, the yoke
+locknut and both gaskets — all small sealing and fastening hardware,
+none of it on the list. They sit in different places, so they come
+back as separate pieces of one mask and can be split by position later.
+
+**Row 10 is new and it is not optional.** See *Paint the fluid* below.
+
+Black and white stay off the list: black is the linework, white is
+"nobody has said".
+
+### Paint the fluid
+
+Leaving the passages white was supposed to be free, since white means
+"not a part" and the passages are most of the drawing. It is not free.
+White is also what an **unpainted** cell looks like, so the void has no
+voice, and anything that wanders into it wins by default.
+
+Figure 19 was painted as one long continuous squiggle per part, and the
+body's squiggle loops down through the open bore on its way from the
+upper wall to the lower one. Nothing contradicted it, so 60 000 px of
+flowing water came back as cast iron.
+
+So: **one grey stroke down each passage, bore and open chamber.** It
+costs almost nothing, it makes the void argue its own case, and it
+hands the flow-field layer a fluid domain that was traced rather than
+assumed.
+
+And the rule the squiggle broke: **lift the brush when you cross a
+void.** A stroke is a claim, and it claims everything it touches.
+
+### If you grab the wrong square
+
+Nothing bad happens and nothing is silently wrong — the run stops and
+tells you which hex it did not recognise. Two ways to resolve it:
+change the paint, or, if a whole figure was painted to a different
+convention, declare that convention beside it.
+
+### Declaring a different convention
+
+A painted figure may sit beside `<painted>.map.json`:
+
+```json
+{
+  "note": "seat and plug came out swapped on this figure",
+  "colours": { "#FFF200": "seatRing", "#22B14C": "plug" }
+}
+```
+
+Only the colours it names move, and only for that figure. This exists
+because Figure 19 and Figure 20 came back with yellow and green meaning
+opposite things — both paintings perfectly clear, neither agreeing with
+the other, and no way to tell from one file what the other meant. The
+map that was actually used is recorded in each mask set's
+`_report.json`, so a mask can always be traced back to what its colours
+were taken to mean.
+
+## Where the three traces stand
+
+All three figures are painted and segmented. Each mask set carries ten
+masks — nine parts and the declared fluid — plus `_preview.png`,
+`_whats-left.png` and `_paint-grey-here.png` for inspection.
+
+| Figure | Masks | Hatched metal still unpainted | Notes |
+| --- | --- | --- | --- |
+| Fig 19 (`trace/masks`) | 10 | 1 456 px | Seat/plug colours swapped — declared in its `.map.json`. Upper stem cell refused: purple and grey both landed in it at 66/34, under the 70% share rule |
+| Fig 20-A (`trace/masks-fig20A`) | 10 | 1 684 px | Two large cells refused as fluid-vs-body ties |
+| Fig 20-B (`trace/masks-fig20B`) | 10 | 37 092 px | Grey ran the length of the stem, so B has no usable stem. 19 and A both do |
+
+The refusals are the design working. A tie between two colours in one
+cell is reported and left unassigned rather than settled by taking the
+larger, and an unassigned cell is a hole somebody can see. A cell
+silently handed to the wrong part is not.
+
+## From masks to polygons
+
+```
+node/python trace/contours.py <lineart.png> <masksdir> [outdir]
+   ->  contours.json, _contours.svg
+```
+
+One part, one or more rings, in the figure's own pixels with y down.
+Outer rings counter-clockwise, holes clockwise, so even-odd and
+non-zero fills agree and nothing downstream has to be told which
+convention is in force. A part that genuinely appears as several
+pieces — the two halves of a flange in section, the four pieces of
+`hardware` — comes back as several rings rather than being merged.
+
+**Simplification is measured.** Douglas-Peucker at 1.5 px, and then
+the simplified rings are rasterised back and compared against the mask
+they came from. The report prints the worst disagreement per part:
+0.45–2.29% on Figure 19, with the structural parts (body, bonnet,
+fluid) all under 0.7%. A tolerance that quietly ate a chamfer would
+show up there as a number instead of being discovered much later in a
+drawing nobody can account for.
+
+**These are not dimensions.** There is no scale here, no inches, no
+registration to a flange face — only the figure's own pixel grid, and
+`contours.json` says so in its own `declared` field. Turning a traced
+outline into real geometry is a separate step with its own sources,
+and running the two together is exactly how a picture becomes a
+measurement without anyone deciding that it should.
 
 ### Old notes on the parts
 
