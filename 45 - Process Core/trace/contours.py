@@ -52,35 +52,44 @@ def parts():
 
 
 def smooth(ring):
-    """One Chaikin pass, with the measured faces pinned.
+    """Round the pixel staircase; leave the machined faces alone.
 
-    A traced contour is a pixel staircase, and simplification leaves
-    the steps rather than removing them -- which is why the outlet
-    chamber's roof reads as a flight of stairs where the casting
-    sweeps. Chaikin rounds a corner by replacing each vertex with two
-    points a quarter in from its neighbours, which is exactly right for
-    a cast sweep and exactly wrong for a flange face.
+    A traced contour mixes two kinds of edge. A cast sweep arrives as a
+    flight of short steps and wants rounding -- that is the outlet
+    chamber's roof. A machined face arrives as one long straight
+    segment and wants nothing done to it at all: the bonnet's bolt
+    flange is square in the valve and must stay square in the drawing.
 
-    So the extremes are PINNED: any vertex sitting on the part's own
-    minimum or maximum x or y is left where it is. Those are the faces
-    the registration is anchored on -- face-to-face, the bottom the
-    casting stands on -- and a smoothing pass must not move them by a
-    third of a pixel or by anything at all.
+    Chaikin applied to every vertex does both and ruins the second. It
+    rounded the bonnet's shoulders into a blob, which is what a
+    smoothing pass that cannot tell a casting from a machining will
+    always do. So a vertex is smoothed only when BOTH of its edges are
+    short -- short being a fraction of the part's own size, which is
+    what a staircase step is and what a flange face never is.
+
+    The part's extreme x and y stay pinned on top of that: those are
+    the faces registration is anchored on, and nothing may move them.
     """
     n = len(ring)
     if n < 6:
         return ring
     xs, ys = ring[:, 0], ring[:, 1]
-    x0, x1, y0, y1 = xs.min(), xs.max(), ys.min(), ys.max()
-    pinned = ((xs == x0) | (xs == x1) | (ys == y0) | (ys == y1))
+    span = max(xs.max() - xs.min(), ys.max() - ys.min())
+    short = max(3.0, span * 0.012)
+    pinned = ((xs == xs.min()) | (xs == xs.max()) |
+              (ys == ys.min()) | (ys == ys.max()))
+    seg = np.hypot(np.roll(xs, -1) - xs, np.roll(ys, -1) - ys)
+    # vertex i sits between segment i-1 and segment i
+    stair = (seg < short) & (np.roll(seg, 1) < short)
     out = []
     for i in range(n):
         p, q = ring[i], ring[(i + 1) % n]
-        if pinned[i]:
+        if pinned[i] or not stair[i]:
             out.append(p)
         else:
             out.append(0.75 * p + 0.25 * q)
-        if not pinned[i] and not pinned[(i + 1) % n]:
+        j = (i + 1) % n
+        if (not pinned[i] and not pinned[j] and stair[i] and stair[j]):
             out.append(0.25 * p + 0.75 * q)
     return np.array(out).round().astype(np.int32)
 

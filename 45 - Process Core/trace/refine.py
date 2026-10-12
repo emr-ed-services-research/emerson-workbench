@@ -268,49 +268,30 @@ def _scale_x(m, axis, k):
     return cv2.warpAffine(m, M, (W, H), flags=cv2.INTER_NEAREST)
 
 
-def _level_bottom(m):
-    """Give the casting one bottom line, and close the drain boss.
+def _close_drain(m):
+    """Close the tapped hole, and NOTHING else.
 
-    Figure 20 is captioned "with Graphite Piston Ring and OPTIONAL Drain
-    Plug", and the boss for that option is a notch in the underside with
-    a tapped hole through it. Traced as-is it came back as a step: the
-    casting's left side sitting lower than its right by a visible
-    amount, with a slot of nothing between them where the plug screws
-    in. A body whose two feet are at different heights is not a casting
-    anybody made.
+    This replaces `_level_bottom`, which was a mistake and a bad one.
+    That version walked every column of the casting down to a common
+    floor to make the two feet sit at one height -- and in doing so it
+    FABRICATED metal across the whole underside, welding the inlet and
+    outlet flanges into one slab and deleting the real bottom of the
+    valve. The complaint it answered was real; the answer invented a
+    casting, which is the one thing this vault does not permit. The
+    trace has the true underside and it stays.
 
-    The option is not being modelled -- there is no drain plug part --
-    so the underside is closed and levelled to the line the casting
-    actually sits on, which is the lower of the two. Nothing is invented:
-    the bottom edge already exists on the left, and this carries it
-    across.
+    What is still worth doing is the through hole: the drain plug screws
+    into it, we are not modelling that option, and its columns carry no
+    metal at all so they draw as a slot up the middle. Only those
+    columns are touched -- a column with metal on both sides of it and
+    none of its own -- and only between its neighbours' own faces.
     """
     H, W = m.shape
     cols = np.nonzero(m.any(axis=0))[0]
     if not len(cols):
         return m
-    bottoms = []
-    for i in cols:
-        r = np.nonzero(m[:, i])[0]
-        if len(r):
-            bottoms.append(r.max())
-    if not bottoms:
-        return m
-    floor = int(np.percentile(bottoms, 85))
     lo, hi = int(cols.min()), int(cols.max())
     out = m.copy()
-    # one pass to carry every column down to the common floor
-    for i in range(lo, hi + 1):
-        r = np.nonzero(m[:, i])[0]
-        if len(r):
-            out[r.max():floor + 1, i] = 1
-        out[floor + 1:, i] = 0
-    # AND THE TAPPED HOLE ITSELF. The drain plug screws into a through
-    # hole, so its own columns carry no metal at all and the pass above
-    # skips them -- leaving a slot of nothing up the middle of a casting
-    # that is supposed to be closed. A column with metal either side of
-    # it and none of its own is the hole; it is filled from the lowest
-    # of its two neighbours.
     for i in range(lo + 1, hi):
         if m[:, i].any():
             continue
@@ -321,16 +302,12 @@ def _level_bottom(m):
             if m[:, j].any(): right = j; break
         if left is None or right is None:
             continue
-        top = max(np.nonzero(m[:, left])[0].max(),
-                  np.nonzero(m[:, right])[0].max())
-        out[top:floor + 1, i] = 1
-    # AND CLOSE THE SEAM. Filling the hole column by column leaves the
-    # two sides meeting along a one-pixel join that survives
-    # simplification and draws as a crack up the middle of a casting
-    # that is supposed to be solid there. A close across it welds the
-    # fill to both neighbours.
-    out = cv2.morphologyEx(out, cv2.MORPH_CLOSE, np.ones((5, 9), np.uint8))
-    return out
+        lr, rr = np.nonzero(m[:, left])[0], np.nonzero(m[:, right])[0]
+        top = max(lr.max(), rr.max())
+        bot = min(lr.max(), rr.max())
+        out[min(top, bot):max(top, bot) + 1, i] = 1
+        out[bot:top + 1, i] = 1
+    return cv2.morphologyEx(out, cv2.MORPH_CLOSE, np.ones((3, 7), np.uint8))
 
 
 def _square_off(m):
@@ -389,7 +366,7 @@ def refine(mask, name, axis, bore_radius=None):
         if raw_half > 0 and after_half > raw_half:
             m = _scale_x(m, axis, raw_half / after_half)
     if name == 'body':
-        m = _level_bottom(m)
+        m = _close_drain(m)
     if name == 'seatRing':
         m = _square_off(m)
     if name in TUBE and axis is not None and bore_radius:
