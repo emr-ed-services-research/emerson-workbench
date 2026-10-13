@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Emerson Workbench</title>
+<!--
+  THE FRONT DOOR. Not an application.
+
+  Every token below comes from `00 - Project/Instrument Style.md`, which
+  lifted them from the Fisher 657 Working Model rather than inventing a
+  sixth look for a vault that already had five.
+
+  TYPE IS DELIBERATELY NOT DECIDED HERE. Instrument Style records type as
+  open: the 657's faces have never been audited against Style Guide 2.1,
+  so there is no house answer to apply and inventing one on a home page
+  is exactly how a house answer gets set by accident. A system stack
+  stands in until somebody does that properly.
+
+  This page is a list of what exists and where it is. The moment it grows
+  a search box, a dashboard or a build button it has become the Pipeline
+  Console, which is a different thing with its own plan.
+-->
+<style>
+:root{
+  --bg:#eef2f6; --panel:#ffffff; --border:#cdd7e1; --border-strong:#b9c7d6;
+  --ink:#1c2530; --sub:#44525f; --muted:#6a7784;
+  --accent:#2f6fb2; --accent-alt:#c25016; --good:#2f9e6e; --highlight:#ffdd66;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12181f; --panel:#1a222c; --border:#2c3846; --border-strong:#3a4a5c;
+    --ink:#e7edf3; --sub:#9fb0c0; --muted:#7e8ea0;
+    --accent:#5b9bdb; --accent-alt:#ff8a4a; --good:#3ecb92; --highlight:#ffdd66;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12181f; --panel:#1a222c; --border:#2c3846; --border-strong:#3a4a5c;
+  --ink:#e7edf3; --sub:#9fb0c0; --muted:#7e8ea0;
+  --accent:#5b9bdb; --accent-alt:#ff8a4a; --good:#3ecb92; --highlight:#ffdd66;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--bg); color:var(--ink);
+  font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:40px 28px 72px}
+header{display:flex;align-items:flex-start;gap:24px;margin-bottom:8px}
+header .who{flex:1}
+.eyebrow{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);margin:0 0 10px;
+}
+h1{font-size:34px;line-height:1.1;margin:0 0 10px;letter-spacing:-.015em}
+.lede{color:var(--sub);margin:0;max-width:62ch}
+#theme{
+  flex:none;background:var(--panel);color:var(--sub);
+  border:1px solid var(--border);border-radius:4px;
+  padding:7px 13px;cursor:pointer;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+}
+#theme:hover{border-color:var(--border-strong);color:var(--ink)}
+#theme:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section{margin-top:42px}
+h2{
+  font-size:13px;margin:0 0 4px;color:var(--ink);
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  letter-spacing:.12em;text-transform:uppercase;font-weight:600;
+}
+.note{color:var(--muted);font-size:14px;margin:0 0 16px;max-width:66ch}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.card{
+  display:block;text-decoration:none;color:inherit;
+  background:var(--panel);border:1px solid var(--border);border-radius:5px;
+  padding:15px 17px;transition:border-color .12s,transform .12s;
+}
+a.card:hover{border-color:var(--accent);transform:translateY(-1px)}
+a.card:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.card.flat{opacity:.72}
+.card .t{display:flex;align-items:baseline;gap:9px;margin-bottom:5px}
+.card .t b{font-weight:600;font-size:15.5px}
+.card p{margin:0;color:var(--sub);font-size:13.5px;line-height:1.45}
+.chip{
+  flex:none;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  padding:2px 6px;border-radius:3px;border:1px solid currentColor;
+}
+.chip.built{color:var(--good)}
+.chip.wip{color:var(--accent-alt)}
+.chip.plan{color:var(--muted)}
+.chip.n{border:none;color:var(--muted);padding:2px 0;
+  font-variant-numeric:tabular-nums}
+.docs{
+  background:var(--panel);border:1px solid var(--border);border-radius:5px;
+  padding:4px 18px;
+}
+.docs div{
+  display:flex;gap:14px;align-items:baseline;
+  padding:11px 0;border-bottom:1px solid var(--border);
+}
+.docs div:last-child{border-bottom:none}
+.docs b{font-weight:600;font-size:14.5px;flex:none;min-width:190px}
+.docs span{color:var(--sub);font-size:13.5px}
+.docs code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;color:var(--muted);
+}
+footer{
+  margin-top:56px;padding-top:18px;border-top:1px solid var(--border);
+  color:var(--muted);font-size:13px;
+}
+footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;color:var(--sub)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="who">
+    <p class="eyebrow">Emerson Educational Services</p>
+    <h1>Workbench</h1>
+    <p class="lede">Everything built here, and where it is. Courseware, the
+      process model underneath it, the models you operate, and the game.</p>
+  </div>
+  <button id="theme" type="button">Light</button>
+</header>
+
+<section>
+  <h2>Courseware</h2>
+  <p class="note">The course system &mdash; conversion pipeline, shell, packages,
+    orchestrator. Each link opens that course's built presentation.</p>
+  <div class="grid">
+    <a class="card" href="../10%20-%20Courses/14101%20Valve%20Trim%20and%20Body%20Maintenance/Presentation/build/index.html">
+      <div class="t"><b>14101</b><span class="chip n">418 slides</span></div>
+      <p>Valve Trim and Body Maintenance. The pilot conversion, and the course
+        every pipeline rule was learned on.</p>
+    </a>
+    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Engineering%201/Presentation/build/index.html">
+      <div class="t"><b>CVE 1</b><span class="chip n">190 slides</span></div>
+      <p>Control Valve Engineering 1. Sizing and selection, built through the
+        Vitruvius pipeline.</p>
+    </a>
+    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Basics/Presentation/build/index.html">
+      <div class="t"><b>Control Valve Basics</b><span class="chip n">64 slides</span></div>
+      <p>The entry course.</p>
+    </a>
+    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Engineering%202/Presentation/build/index.html">
+      <div class="t"><b>CVE 2</b><span class="chip n">55 slides</span></div>
+      <p>Control Valve Engineering 2.</p>
+    </a>
+    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Engineering%20%E2%80%94%20Industry%20(Oil%20%26%20Gas)/Presentation/build/index.html">
+      <div class="t"><b>CVE &mdash; Industry</b><span class="chip n">34 slides</span></div>
+      <p>Oil &amp; Gas. The industry tier of the CVE sequence.</p>
+    </a>
+    <a class="card" href="../10%20-%20Courses/IfE%20-%20Instructing%20for%20Emerson/Presentation/build/index.html">
+      <div class="t"><b>IfE</b><span class="chip n">14 slides</span></div>
+      <p>Instructing for Emerson.</p>
+    </a>
+  </div>
+</section>
+
+<section>
+  <h2>Process Core</h2>
+  <p class="note">The shared process model &mdash; netlist, geometry, sizing,
+    trim, thermal, flow field. A library, not an application; these are its
+    own diagnostic pages, which is how we check it is telling the truth.</p>
+  <div class="grid">
+    <a class="card" href="../45%20-%20Process%20Core/lab/fic101/index.html">
+      <div class="t"><b>FIC-101 &mdash; the ladder</b><span class="chip built">built</span></div>
+      <p>One model, five depths: loop, line, assembly, section, detail. Click the
+        valve to go further in. Everything at every depth is the same netlist and
+        the same solved field.</p>
+    </a>
+    <a class="card" href="../45%20-%20Process%20Core/lab/loop/index.html">
+      <div class="t"><b>The loop, specified</b><span class="chip built">built</span></div>
+      <p>Cooling water to an exchanger. Every number on the page came out of a
+        layer &mdash; service, assembly, sizing, cavitation, packing, thrust, and
+        what is at stake when the valve will not open.</p>
+    </a>
+    <a class="card" href="../45%20-%20Process%20Core/lab/cutaway/index.html">
+      <div class="t"><b>Pro Cutaway</b><span class="chip built">built</span></div>
+      <p>The inside of a bore, magnified until it can be looked at. Not a depth
+        of its own &mdash; a way of drawing one, with the fluid turned on.</p>
+    </a>
+    <a class="card" href="../45%20-%20Process%20Core/lab/assembly/index.html">
+      <div class="t"><b>Assembly</b><span class="chip built">built</span></div>
+      <p>The actuator standing on the valve, travel live off the milliamp
+        signal. Checked against two published tables before it was drawn.</p>
+    </a>
+    <a class="card" href="../45%20-%20Process%20Core/lab/render/index.html">
+      <div class="t"><b>The flow lab</b><span class="chip built">built</span></div>
+      <p>Ten layers inlined on one page, graded against numbers somebody else
+        published.</p>
+    </a>
+    <a class="card" href="../45%20-%20Process%20Core/reference/index.html">
+      <div class="t"><b>Parts, to scale</b><span class="chip built">built</span></div>
+      <p>Every catalogue part drawn at its real size, in inches, from its
+        published dimensions.</p>
+    </a>
+  </div>
+</section>
+
+<section>
+  <h2>Interactive models</h2>
+  <p class="note">Exact-geometry equipment you operate rather than read. Traced
+    from the manuals, part by part.</p>
+  <div class="grid">
+    <a class="card" href="../55%20-%20Interactive%20Models/Fisher%20657%20Working%20Model/657-working-model.html">
+      <div class="t"><b>Fisher 657</b><span class="chip built">built</span></div>
+      <p>Calibration and setup. Bench set, spring adjustment, travel
+        verification &mdash; narrated, with the geometry built from hand-painted
+        masks over the IOM's Figure 6.</p>
+    </a>
+  </div>
+</section>
+
+<section>
+  <h2>Lunar Process Engineer</h2>
+  <p class="note">The process-simulation game. Built on the Process Core, which
+    it vendors rather than reaches into.</p>
+  <div class="grid">
+    <a class="card" href="../50%20-%20Lunar%20Process%20Engineer/dist/game.html">
+      <div class="t"><b>Play</b><span class="chip built">built</span></div>
+      <p>Sizing, selection and diagnostics on a flow loop. Rebuild with
+        <code>node build.js</code> if this is stale.</p>
+    </a>
+  </div>
+</section>
+
+<section>
+  <h2>Not yet built</h2>
+  <p class="note">Named here so the gaps are visible rather than remembered.</p>
+  <div class="grid">
+    <div class="card flat">
+      <div class="t"><b>Pipeline Console</b><span class="chip plan">planned</span></div>
+      <p>Courseware's orchestrator &mdash; conversion, cutting, grading, review
+        gates. Scoped in <code>00 - Project/Pipeline Console.md</code>.</p>
+    </div>
+    <div class="card flat">
+      <div class="t"><b>LoopBench</b><span class="chip wip">elsewhere</span></div>
+      <p>The Python simulator. Has the time domain the Process Core does not;
+        the Core has the network it does not. Deliberately not unified yet.</p>
+    </div>
+    <div class="card flat">
+      <div class="t"><b>HART bench</b><span class="chip wip">hardware</span></div>
+      <p>A real DVC driven from Python, doubling as a troubleshooting platform.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Documents</h2>
+  <p class="note">These live in the vault and are read in Obsidian, not here.
+    Listed so you know what exists and what governs what.</p>
+  <div class="docs">
+    <div><b>Source Library</b><span>Handbooks, IOMs, the Component Index and the
+      Standards Register. <code>20 - Source Library</code></span></div>
+    <div><b>Vitruvius</b><span>The expert-engineer persona the CVE pipeline
+      reasons through, and its findings ledger. <code>25 - Vitruvius</code></span></div>
+    <div><b>Style Guide</b><span>Governs <em>slides</em> &mdash; typography,
+      colour, diagrams, callouts, tone.
+      <code>00 - Project/Style Guide.md</code></span></div>
+    <div><b>Instrument Style</b><span>Governs surfaces you <em>operate</em>
+      &mdash; models, the lab, the benches, this page.
+      <code>00 - Project/Instrument Style.md</code></span></div>
+    <div><b>Teaching philosophy</b><span>Hands-First, and how it becomes
+      structure. <code>00 - Project/teaching-philosophy.md</code></span></div>
+    <div><b>System architecture</b><span>Courseware's four layers, and the note
+      recording that Workbench outgrew them.
+      <code>00 - Project/System Architecture.md</code></span></div>
+  </div>
+</section>
+
+<footer>
+  Served from the vault root. Start it with <code>Workbench.cmd</code>;
+  <code>file://</code> will not load several of these pages.
+</footer>
+
+</div>
+<script>
+(function(){
+  var root = document.documentElement, btn = document.getElementById('theme');
+  var KEY = 'workbench-theme';
+  try {
+    var saved = localStorage.getItem(KEY);
+    if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+  } catch (e) { /* private window, blocked storage: the default stands */ }
+  function label(){
+    var dark = root.getAttribute('data-theme') === 'dark';
+    btn.textContent = dark ? 'Light' : 'Dark';
+  }
+  label();
+  btn.addEventListener('click', function(){
+    var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    try { localStorage.setItem(KEY, next); } catch (e) {}
+    label();
+  });
+})();
+</script>
+</body>
+</html>
