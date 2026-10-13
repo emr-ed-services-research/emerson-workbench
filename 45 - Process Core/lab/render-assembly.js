@@ -125,7 +125,7 @@ const PAGE = `<!doctype html>
         rings: wet.rings, throatRings: wet.throatRings,
         stillRings: wet.stillRings, openings: wet.openings,
         stations: gv.flowPathAt(pct).stations, gpm: gpm, cellIn: CELL,
-        plenum: wet.plenum });
+        plenum: wet.plenum, circuits: [wet.balance] });
       cache = { field: f, wetted: wet,
                 swirl: LPE.flowfield.withRecirculation(f) };
       key = k;

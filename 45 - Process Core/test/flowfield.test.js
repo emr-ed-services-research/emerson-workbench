@@ -276,9 +276,37 @@ console.log('');
      not. */
   {
     const f = solve(gv, 50, flowAt(50));
+    /* SAMPLED AT THE FEATURE, NOT AT A COORDINATE. This was the point
+       (-3.3, 5.5), which sat in a drilling until the trim went onto
+       its published port -- then the plug narrowed, the lid lifted it
+       by a different amount, and the point was left standing in open
+       bore reading two hundred and sixty feet a second. A check that
+       drifts off the thing it is checking reports on whatever has
+       moved in underneath it. The drilling says where it is. */
+    const drill = (function () {
+      const h = gv.plugAt(50).balanceHoles[0];
+      const w2 = gv.wettedAt(50, { minGap: 0.612 });
+      let best = null;
+      for (const r of w2.stillRings) {
+        let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+        for (const q of r) {
+          if (q[0] < x0) x0 = q[0]; if (q[0] > x1) x1 = q[0];
+          if (q[1] < y0) y0 = q[1]; if (q[1] > y1) y1 = q[1];
+        }
+        /* the drilling, raised with its plug: the still ring whose
+           width is the hole and whose x straddles the hole */
+        if (x0 >= Math.min.apply(null, h.map(q => q[0])) - 0.01 &&
+            x1 <= Math.max.apply(null, h.map(q => q[0])) + 0.01)
+          best = [(x0 + x1) / 2, (y0 + y1) / 2];
+      }
+      return best;
+    })();
     check('the drillings hold fluid and carry none of the flow',
-      f.inside(-3.3, 5.5) && f.isStill(-3.3, 5.5) &&
-      f.speedAt(-3.3, 5.5) === 0);
+      drill !== null && f.inside(drill[0], drill[1]) &&
+      f.isStill(drill[0], drill[1]) &&
+      f.speedAt(drill[0], drill[1]) === 0,
+      drill ? 'at ' + drill[0].toFixed(2) + ', ' + drill[1].toFixed(2)
+            : 'no drilling found among the still spaces');
     check('and so does the cavity over the plug head',
       f.inside(0, 8.7) && f.isStill(0, 8.7) && f.speedAt(0, 8.7) === 0);
     /* SAMPLED IN THE CASTING, not up the bonnet bore. The point used
@@ -316,9 +344,22 @@ console.log('');
   /* THE THROAT IS THE WINDOW, in the field as in the path. */
   {
     const f = solve(gv, 50, flowAt(50));
-    const win = f.speedAt(-4.8, 3.0), bore = f.speedAt(-14, 0);
+    /* The window's own centre, for the same reason as the drilling
+       above: (-4.8, 3.0) was inside the cage window while the cage
+       was drawn at the size it was traced, and outside the valve
+       altogether once the cage came in to its published port. */
+    const wr = gv.cage.windows[0];
+    let wx0 = Infinity, wx1 = -Infinity, wy0 = Infinity, wy1 = -Infinity;
+    for (const q of wr) {
+      if (q[0] < wx0) wx0 = q[0]; if (q[0] > wx1) wx1 = q[0];
+      if (q[1] < wy0) wy0 = q[1]; if (q[1] > wy1) wy1 = q[1];
+    }
+    const win = f.speedAt((wx0 + wx1) / 2, (wy0 + wy1) / 2);
+    const bore = f.speedAt(-14, 0);
     check('the window runs many times the speed of the line',
-      win > 6 * bore, win.toFixed(1) + ' against ' + bore.toFixed(2));
+      win !== null && win > 6 * bore,
+      (win === null ? 'the window centre is not in the cavity'
+                    : win.toFixed(1)) + ' against ' + bore.toFixed(2));
   }
 
   /* FLOW-UP IS THE SAME VALVE TURNED ROUND, and the field has to
@@ -522,13 +563,64 @@ console.log('');
       })(),
       'the drillings and the bonnet bore sat motionless beside ' +
       'several hundred gallons a minute');
-    const a = f.at(-4.8, 3.0), b = rf.at(-4.8, 3.0);
+    /* The window's own centre, not a coordinate that happened to be
+       in it -- see the same fix above. */
+    const jet = (function () {
+      const r = gv3.cage.windows[0];
+      let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+      for (const q of r) {
+        if (q[0] < x0) x0 = q[0]; if (q[0] > x1) x1 = q[0];
+        if (q[1] < y0) y0 = q[1]; if (q[1] > y1) y1 = q[1];
+      }
+      return [(x0 + x1) / 2, (y0 + y1) / 2];
+    })();
+    const a = f.at(jet[0], jet[1]), b = rf.at(jet[0], jet[1]);
     check('and it leaves the stream alone',
       Math.abs(Math.hypot(a.vx, a.vy) - Math.hypot(b.vx, b.vy)) < 1e-9,
       'a swirl added to the jet would be an invention in the one place ' +
       'the model is trying hardest to be right');
     check('it declares itself as added rather than solved',
       /added/i.test(rf.declared) && /irrotational/i.test(rf.declared));
+
+    /* ---- A DECLARED CIRCUIT BEATS AN INFERRED ONE ------------------
+
+       The sense of a pocket is read off the shear against the nearest
+       moving cell. That is the right rule when nothing better is
+       known, and it is a coin flip when the pocket is symmetric about
+       the stream -- which the water inside a plug is. The geometry
+       layer knows which side the inlet is on and therefore which way
+       that water goes round, so it says so, and this honours it.
+
+       Looked up by the circuit's PROBE and not its centre: the centre
+       of a turn through a plug head is inside the plug head, the
+       lookup there finds metal, and the declaration was silently
+       dropped while the inferred sense happened to agree. */
+    {
+      const wc = gv3.wettedAt(50, { minGap: 0.612 });
+      const common = { rings: wc.rings, throatRings: wc.throatRings,
+        stillRings: wc.stillRings, openings: wc.openings,
+        stations: gv3.flowPathAt(50).stations, gpm: 1099, cellIn: 0.34 };
+      const plain = LPE.flowfield.withRecirculation(
+        LPE.flowfield.solveField2D(common));
+      const told = LPE.flowfield.withRecirculation(
+        LPE.flowfield.solveField2D(
+          Object.assign({}, common, { circuits: [wc.balance] })));
+      check('the declared balance circuit is the one that gets honoured',
+        told.declaredCircuits.length === 1 &&
+        plain.declaredCircuits.length === 0,
+        'told ' + JSON.stringify(told.declaredCircuits) +
+        ', untold ' + JSON.stringify(plain.declaredCircuits));
+      const c = wc.balance.centre;
+      const L = told.at(c[0] - 1, c[1]), R = told.at(c[0] + 1, c[1]);
+      check('and the water in the plug goes up the inlet side',
+        L && R && L.vy > 0 && R.vy < 0,
+        L && R ? 'left vy ' + L.vy.toFixed(1) + ', right vy ' +
+                 R.vy.toFixed(1) : 'the circuit centre is not in the cavity');
+      check('and it is still stirred rather than flowing',
+        L.still === true && R.still === true,
+        'nothing passes through a balance hole on balance; the liquid ' +
+        'in it is not therefore at rest');
+    }
   }
 }
 
@@ -588,8 +680,18 @@ console.log('');
     JSON.stringify({ into: wp.plenum && wp.plenum.into.length,
                      outOf: wp.plenum && wp.plenum.outOf.length,
                      share: wp.plenum && wp.plenum.share }));
+  /* A THIRTIETH, not a fiftieth. The bar was 2% of the near window
+     and it was measuring the geometry as much as the artefact: the
+     cage windows used to be placed by convention, high in the cage and
+     far from the chamber, and almost nothing reached the far one. They
+     are traced now and they sit lower, just clear of the seat, so the
+     far window picks up a little more by diffusion round the annulus
+     -- 0.18 ft/s against 5.87 through the near one. Thirty-two times
+     is still "carries nothing" in any sense that matters, and 5% still
+     fails the moment the far window starts carrying real flow in
+     plane, which is the regression this exists to catch. */
   check('drawn as it stands, the far window carries nothing',
-    spd(bare, far) < spd(bare, near) * 0.02 && spd(bare, near) > 1,
+    spd(bare, far) < spd(bare, near) * 0.05 && spd(bare, near) > 1,
     'near ' + (spd(bare, near) / 12).toFixed(2) + ' ft/s, far ' +
     (spd(bare, far) / 12).toFixed(2));
   check('with the plenum declared, it carries a great deal',

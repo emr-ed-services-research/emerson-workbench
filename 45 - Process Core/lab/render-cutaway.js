@@ -403,7 +403,8 @@ ${SCRIPTS}
     var f = FF.solveField2D({
       rings: wet.rings, throatRings: wet.throatRings,
       stillRings: wet.stillRings, openings: wet.openings,
-      stations: gv.flowPathAt(pct).stations, gpm: gpm, cellIn: CELL });
+      stations: gv.flowPathAt(pct).stations, gpm: gpm, cellIn: CELL,
+      plenum: wet.plenum, circuits: [wet.balance] });
     fieldCache = { field: f, wetted: wet, swirl: FF.withRecirculation(f) };
     fieldKey = key;
     /* The particle set is tied to the cavity it was seeded in, so it

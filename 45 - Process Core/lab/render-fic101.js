@@ -230,7 +230,10 @@ const PAGE = `<!doctype html>
         throatRings: wet.throatRings, stillRings: wet.stillRings,
         openings: wet.openings,
         stations: gv.flowPathAt(pct).stations, gpm: gpm, cellIn: CELL,
-        plenum: wet.plenum });
+        plenum: wet.plenum,
+        /* the water inside the plug turns; which way is a fact
+           about where the inlet is, and the geometry says it */
+        circuits: [wet.balance] });
       cache = { field: f, wetted: wet,
                 swirl: LPE.flowfield.withRecirculation(f) };
       key = k;

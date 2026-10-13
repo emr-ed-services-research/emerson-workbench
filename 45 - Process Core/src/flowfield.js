@@ -556,6 +556,7 @@
       const zero = () => ({ vx: 0, vy: 0, still: true });
       return Object.freeze({
         kind: 'potential2d', shut: true,
+        circuits: Object.freeze((o.circuits || []).slice()),
         width: W, height: H, cellIn: cell, originIn: [x0, y0],
         cells: cells, residual: 0, sweeps: 0, gpm: gpm, maxSpeedIps: 0,
         units: { v: 'in/s', x: 'in' },
@@ -1049,6 +1050,12 @@
 
     return Object.freeze({
       kind: 'potential2d',
+      /* Declared blind circuits, carried through untouched. The solve
+         has no use for them -- they move nothing -- but
+         `withRecirculation` does, and this is how a caller hands a
+         fact about the hardware to it without this layer having to
+         know what a plug is. */
+      circuits: Object.freeze((o.circuits || []).slice()),
       width: W, height: H, cellIn: cell,
       originIn: [x0, y0],
       cells: cells, residual: residual, sweeps: sweeps,
@@ -1425,6 +1432,39 @@
        lookup is by id and a miss means "slow, but not an eddy". */
     const byId = {};
     for (const pk of pockets) byId[pk.id] = pk;
+
+    /* ---- A DECLARED CIRCUIT OVERRULES THE INFERRED SENSE ------------
+
+       The sense above is read off the shear against the nearest moving
+       cell, which is the right rule when nothing better is known. For
+       the balance circuit through a plug something better IS known:
+       which side the inlet is on decides which way that water turns,
+       and the geometry layer says so rather than leaving it to which
+       cell the scan happened to sample -- a tie it can lose either way,
+       and did, so the plug's water turned one way on the flow-down
+       valve and the same way on its mirror.
+
+       Only the SENSE and the CENTRE move. Speed is still a share of the
+       neighbouring stream, and nothing here touches a pressure, a flow
+       figure or a verdict. */
+    const declaredCircuits = [];
+    for (const c of (field.circuits || [])) {
+      if (!c || !c.centre) continue;
+      /* looked up where the circuit HOLDS WATER, turned about where it
+         turns -- the middle of a turn through a plug head is inside the
+         plug head, and a lookup there finds metal */
+      const at = c.probe || c.centre;
+      const i = Math.round((at[0] - x0) / cell - 0.5);
+      const j = Math.round((at[1] - y0) / cell - 0.5);
+      if (i < 0 || j < 0 || i >= W || j >= H) continue;
+      const pk = byId[lab[j * W + i]];
+      if (!pk) continue;
+      pk.sense = Math.sign(c.spin) || pk.sense;
+      pk.cx = c.centre[0]; pk.cy = c.centre[1];
+      pk.declaredAs = c.of || 'a declared circuit';
+      declaredCircuits.push(pk.id);
+    }
+
     const pocketAt = (x, y) => {
       const i = Math.round((x - x0) / cell - 0.5);
       const j = Math.round((y - y0) / cell - 0.5);
@@ -1435,6 +1475,7 @@
 
     return Object.freeze({
       base: field, pockets: Object.freeze(pockets), share: share,
+      declaredCircuits: Object.freeze(declaredCircuits),
       kind: 'potential2d+declared-swirl',
       /* Everything the base field answers, answered the same way,
          with a turn added in the slow pockets and nowhere else. */

@@ -1,7 +1,15 @@
 {
-  "note": "The two greys are swapped on this figure. Grey-50 #7F7F7F is the FLUID and light grey #C3C3C3 is the packing flange, where the table has it the other way round. They sit next to each other on MS Paint's palette and the void is the colour you reach for most often, so this is the obvious slip to make. Nothing downstream cares which hue a part is, only that one colour means one part, so the map moves rather than the painting. No packing flange appears to be painted here -- light grey has no pixels in the file -- which is fine: a part with a colour and no paint is simply absent from the figure.",
+  "note": "The two greys are swapped on this figure. Grey-50 #7F7F7F is the FLUID and light grey #C3C3C3 is the packing flange, where the table has it the other way round. They sit next to each other on MS Paint's palette and the void is the colour you reach for most often, so this is the obvious slip to make. Nothing downstream cares which hue a part is, only that one colour means one part, so the map moves rather than the painting.",
   "colours": {
     "#7F7F7F": "fluid",
     "#C3C3C3": "packingFlange"
-  }
+  },
+  "regions": [
+    {
+      "part": "packingFlange",
+      "colour": "#7F7F7F",
+      "at": [[888, 500], [955, 500], [1055, 500], [1123, 500]],
+      "why": "The flange got the same grey as the void, so it arrived merged into the fluid. It needs no redrawing: Franz's own linework already closes it off, at y 517-521, from the packing bore below. These four points are the four runs of flange the section cuts -- outer and inner on each side of the two studs and the stem passing through it. All four span y 484..516, which is the flange's full height at the far left and the far right and therefore its height across the middle."
+    }
+  ]
 }

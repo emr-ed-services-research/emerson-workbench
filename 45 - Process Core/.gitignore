@@ -1,0 +1,4 @@
+# Staging for published artifacts. The publish tool reads its sources
+# from inside the working directory, so the page and its images are
+# assembled here; none of it is part of the core.
+artifact-files/

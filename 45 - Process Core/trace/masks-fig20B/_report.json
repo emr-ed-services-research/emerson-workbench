@@ -1,68 +1,25 @@
 {
- "source": "ed-fig20-nps8-B.png",
  "painted": "ed-fig20-nps8-B-painted.png",
- "map": {
-  "body": [
-   "#ED1C24",
-   "#880015"
-  ],
-  "bonnet": [
-   "#FF7F27"
-  ],
-  "cage": [
-   "#99D9EA",
-   "#00A2E8"
-  ],
-  "plug": [
-   "#FFF200"
-  ],
-  "stem": [
-   "#A349A4"
-  ],
-  "seatRing": [
-   "#22B14C"
-  ],
-  "bolting": [
-   "#3F48CC"
-  ],
-  "packingFlange": [
-   "#C3C3C3"
-  ],
-  "gasket": [
-   "#B97A57"
-  ],
-  "cageWindow": [
-   "#7092BE"
-  ],
-  "plugSeal": [
-   "#B5E61D"
-  ],
-  "fluid": [
-   "#7F7F7F"
-  ]
- },
- "mapNote": "The two greys are swapped on this figure. Grey-50 #7F7F7F is the FLUID and light grey #C3C3C3 is the packing flange, where the table has it the other way round. They sit next to each other on MS Paint's palette and the void is the colour you reach for most often, so this is the obvious slip to make. Nothing downstream cares which hue a part is, only that one colour means one part, so the map moves rather than the painting. No packing flange appears to be painted here -- light grey has no pixels in the file -- which is fine: a part with a colour and no paint is simply absent from the figure.",
  "size": [
   2016,
   2180
  ],
- "cells": 467,
- "absorbed": 64,
+ "mode": "regions -- the paint is the mask, nothing inferred",
  "parts": {
-  "body": 440375,
-  "bonnet": 193323,
-  "cage": 23799,
-  "plug": 41768,
-  "stem": 72698,
-  "seatRing": 2629,
-  "bolting": 59242,
-  "gasket": 6099,
-  "cageWindow": 15475,
-  "plugSeal": 1490,
-  "fluid": 815294
+  "body": 400475,
+  "bonnet": 191326,
+  "cage": 24144,
+  "plug": 41472,
+  "stem": 64820,
+  "seatRing": 3172,
+  "bolting": 55251,
+  "packingFlange": 4752,
+  "gasket": 7029,
+  "cageWindow": 15993,
+  "plugSeal": 1859,
+  "fluid": 828472
  },
- "missing": [
-  "packingFlange"
- ],
- "ambiguous": 1
+ "missing": [],
+ "blendPx": 0,
+ "leftoverPx": 2882208
 }

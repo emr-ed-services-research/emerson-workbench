@@ -328,10 +328,16 @@ function valveOf(part, over) {
      so -- at a tenth of travel the only way through was round the ends
      of the bar and the field reported a shut valve. The bore is cut at
      the PORT, which is a Catalog 12 dimension and not a guess. */
+  /* FOUR PIECES OF CAGE, not two. A section through a windowed cage
+     cuts the wall above the window and the FOOT below it, either side
+     of the axis, and the foot is not optional: it is the land the cage
+     bears on the seat ring with. This read two for as long as the
+     window band was mistaken for the whole lower cage. */
   check('a globe valve is drawn as two chambers and a port between them',
     g.inletCavity.length === 1 && g.outletCavity.length === 1 &&
-    g.cage.rings.length === 2 && g.seatRing.length === 2,
-    'two chambers, two cage walls, and a seat ring cut by its own bore');
+    g.cage.rings.length === 4 && g.seatRing.length === 2,
+    'two chambers, two cage walls over two cage feet, and a seat ring ' +
+    'cut by its own bore -- got ' + g.cage.rings.length + ' cage pieces');
   /* NEAR THE PORT, NOT EXACTLY ON IT. This asked for the seat's bore
      to equal the published port to the last decimal, which was fair
      while the bore was CUT at that diameter by this layer. It is not
@@ -341,7 +347,7 @@ function valveOf(part, over) {
      AGREES with the published port: a traced ring whose hole is a long
      way from the Catalog 12 figure means the trace is of something
      else, or is registered wrong, and that is worth hearing about. */
-  check('and the seat ring's own bore agrees with the published port',
+  check('and the painted seat bore agrees with the published port',
     (function () {
       let inner = Infinity;
       for (const r of g.seatRing)
@@ -602,6 +608,85 @@ console.log('');
     'they stop sharing one the model has to be able to say so');
   check('a balanced plug carries balance holes and a seal',
     g.plugAt(50).balanceHoles.length > 0 && g.plugAt(50).seal !== null);
+
+  /* ---- THE BALANCE CIRCUIT IS ONE SPACE, AND IT TURNS -------------
+
+     The bores through the head and the cavity over it were three dead
+     ends as far as anything downstream could tell, and the plug's
+     water came back either motionless or turning whichever way a
+     solver's scan happened to sample. Both are wrong in the same
+     place: nothing passes through a balance hole on balance -- that is
+     what balanced means -- but shear at the mouths turns the liquid
+     over, up the inlet side and down the other. Which side is up is a
+     fact about the hardware, so the hardware says it. */
+  {
+    const w = g.wettedAt(50, { minGap: 0.6 });
+    check('the balance bores and the cavity over the head are one circuit',
+      w.balance !== null && w.balance.rings.length >= 3,
+      w.balance ? w.balance.rings.length + ' pieces of one space'
+                : 'no circuit declared');
+    check('and it turns up the side the inlet is on',
+      w.balance.spin === -1 && w.balance.upAt === 'left',
+      'the casting turns round for flow-up, the inlet does not, so ' +
+      'neither does this');
+    /* A consumer looks the circuit up by a point. The centre of a turn
+       through a plug head is INSIDE the plug head, so a centre-only
+       declaration is one a lookup quietly misses -- which it did. */
+    check('and it names a point that actually holds water',
+      (function () {
+        const p = w.balance.probe;
+        if (!p) return false;
+        for (const r of w.balance.rings) {
+          let hit = false;
+          for (let a = 0, b = r.length - 1; a < r.length; b = a++)
+            if ((r[a][1] > p[1]) !== (r[b][1] > p[1]) &&
+                p[0] < (r[b][0] - r[a][0]) * (p[1] - r[a][1]) /
+                       (r[b][1] - r[a][1]) + r[a][0]) hit = !hit;
+          if (hit) return true;
+        }
+        return false;
+      })(),
+      'the probe is in a bore, not in the metal between them');
+    /* ---- FOUR PORTS, TWO OF THEM DRAWN ---------------------------
+
+       The section cuts two and there are four: the generator places
+       four across the head and drops the pair that would run into the
+       stem. Everything about the picture uses the two it can see;
+       everything about the arithmetic has to use all four, and getting
+       that backwards halves an area in a place nothing else would
+       catch. Four is a convention -- no ED document we hold prints a
+       count -- and it says so in its own words. */
+    check('four balance ports, of which the section cuts two',
+      w.balance.ports === 4 && w.balance.portsDrawn === 2,
+      w.balance.ports + ' declared, ' + w.balance.portsDrawn + ' in section');
+    check('and the count declares itself a convention',
+      /CONVENTION/.test(w.balance.countIs),
+      'nothing we hold prints a balance-hole count for an ED');
+    check('the port area is all four, not the two in the picture',
+      Math.abs(w.balance.areaIn2 -
+               4 * Math.PI * Math.pow(w.balance.boreIn, 2) / 4) < 1e-9,
+      w.balance.areaIn2.toFixed(3) + ' in2 across ' + w.balance.ports +
+      ' ports of ' + w.balance.boreIn.toFixed(3) + ' in');
+    /* The one flow these ports really carry. A balanced plug passes
+       nothing through them in steady state; a MOVING one has to push
+       the liquid standing over its head out through them, and the hole
+       count is what decides how fast it goes. */
+    check('and a stroking plug drives its own displacement through them',
+      (function () {
+        const v1 = w.balance.velocityForStroke(1);
+        const v2 = w.balance.velocityForStroke(2);
+        return v1 > 0 && Math.abs(v2 - 2 * v1) < 1e-9 &&
+               Math.abs(v1 - w.balance.sweptAreaIn2 /
+                             w.balance.areaIn2) < 1e-9 &&
+               w.balance.velocityForStroke(0) === 0;
+      })(),
+      w.balance.velocityForStroke(1).toFixed(2) + ' in/s through the ' +
+      'ports per in/s of travel');
+    check('and it is given as a function of stroke, never as a number',
+      typeof w.balance.velocityForStroke === 'function' &&
+      !('gpm' in w.balance),
+      'a displacement is not a process flow and must not read as one');
+  }
   const un = valveOf(EWT, { balanced: false });
   check('an unbalanced plug carries neither',
     un.plugAt(50).balanceHoles.length === 0 && un.plugAt(50).seal === null,
