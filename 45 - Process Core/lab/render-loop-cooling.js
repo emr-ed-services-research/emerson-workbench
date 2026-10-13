@@ -62,7 +62,7 @@ const PAGE = `<!doctype html>
     Every number below came out of a layer, and the control valve
     assembly was checked against two published tables before it was
     drawn: travel, stem diameter and yoke boss all agree, which is what
-    makes a 657 size 30 on an ED NPS 1-1/2 a real valve rather than two
+    makes a 657 size 45 on an ED NPS 4 a real valve rather than two
     Fisher parts in the same picture.</div>
 </header>
 <div id="err" hidden></div>

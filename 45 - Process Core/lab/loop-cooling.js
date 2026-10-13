@@ -12,24 +12,45 @@
    Franz saw it straight away: the valve looked enormous beside a
    two-inch line.
 
-   The reason is the body archetype. There is one traced globe body in
-   this core and it came off Figure 11-5 of the Oil & Gas sourcebook
-   (drawing W6022-2), an EWT or EWD,
-   scaled to each valve by its published face-to-face. The traced
-   figure's bore is 0.323 of its face-to-face and its port 0.293. An ED
-   NPS 1-1/2 is 0.174 and 0.203 -- so the casting was drawn about half
-   again too fat for its length, a ten-inch valve wearing a
-   one-and-a-half-inch valve's length. Of every valve a 657 can drive,
-   it was the WORST match in the catalogue.
+   The reason was the body archetype. There was one traced globe body
+   in this core, off Figure 11-5 of the Oil & Gas sourcebook (drawing
+   W6022-2), an EWT or EWD, scaled to each valve by its published
+   face-to-face alone. The traced figure's bore is 0.323 of its
+   face-to-face and its port 0.293. An ED NPS 1-1/2 is 0.174 and 0.203
+   -- so the casting was drawn about half again too fat for its length,
+   a ten-inch valve wearing a one-and-a-half-inch valve's length. Of
+   every valve a 657 can drive, it was the WORST match in the
+   catalogue.
 
-   So the valve was chosen the other way round this time: find the
-   valve whose own proportions the one archetype we have actually fits,
-   and that a 657 can still drive.
+   So the valve was chosen the other way round: find the valve whose
+   own proportions the one archetype we had actually fitted, and that a
+   657 can still drive. That gave the ED NPS 4 this loop now runs on.
 
-       ED NPS 4, 4-3/8 in port, 2 in travel   port/f2f 0.302 vs 0.293
-                                              -- 3%, against 31%
-       ED NPS 3, 3-7/16 in port               6%
-       ED NPS 1-1/2, 1-7/8 in port            31%   <- what this was
+   THAT CONSTRAINT IS GONE, AND THIS NOTE IS KEPT ONLY TO SAY SO.
+
+   The archetype is an ED now, traced from Figure 20 of D100390X012,
+   and -- the part that matters here -- a valve has TWO published
+   lengths and they are independent. The casting scales by its
+   face-to-face and the trim by its PORT, with the casting bored to
+   take whatever trim goes in it, the way one body takes several port
+   sizes. The port stopped being a proportion of the length:
+
+       valve                     port/f2f   trim pulled in   seat bore
+       ED NPS 1-1/2, 1-7/8 port     0.208        37%           1.875
+       ED NPS 3, 3-7/16 port        0.286        14%           3.4375
+       ED NPS 4, 4-3/8 port         0.302         9%           4.375
+       ED NPS 8, 8 port             0.333         0%           8.000
+
+   Every one of those seat bores is the published port to the last
+   digit, every one strokes its full rated travel, and the field solves
+   open on all four. The NPS 1-1/2 that this loop ran away from draws
+   correctly today.
+
+   So the choice of valve here is now FREE and this loop keeps the
+   NPS 4 by inertia rather than by constraint. Moving it back to the
+   NPS 1-1/2 on a 657 size 30 is a decision about what the example
+   should teach, not about what the model can draw -- and it belongs to
+   whoever is writing the example, not to this comment.
 
    THE SERVICE
 
