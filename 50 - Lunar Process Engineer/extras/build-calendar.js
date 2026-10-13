@@ -3,12 +3,12 @@
    from its blue study palette to Fisher green.
 
    The section is a real, reviewed vault asset (20 - Source Library /
-   Interactive Models / Fisher 657 Working Model), which is why the
+   55 - Interactive Models / Fisher 657 Working Model), which is why the
    centerfold can show internals rather than a silhouette drawn from a
    photograph. */
 const fs = require('fs'), path = require('path');
 const HERE = __dirname;
-const VAULT = path.resolve(HERE, '../../20 - Source Library/Interactive Models/Fisher 657 Working Model/657-cross-section.svg');
+const VAULT = path.resolve(HERE, '../../55 - Interactive Models/Fisher 657 Working Model/657-cross-section.svg');
 
 const read = f => fs.readFileSync(path.join(HERE, f), 'utf8');
 let out = read('calendar-shell.html')

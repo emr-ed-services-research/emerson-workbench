@@ -24,7 +24,7 @@
         "errant points and strange straight lines" that show up in the
         middle of the upper casing.
 
-   WHERE THE AUTHORITY IS. `20 - Source Library/Interactive Models/
+   WHERE THE AUTHORITY IS. `55 - Interactive Models/
    Fisher 657 Working Model/657-working-model.html`, in the
    `window.REFINED2` object. That is the published model's own geometry
    and it is downstream of the pipeline's declared-geometry finish --
@@ -56,9 +56,8 @@ const path = require('path');
    Artifact tool and point MODEL at what it saves; the path is passed
    in rather than hard-coded so it cannot rot. */
 const MODEL = process.env.MODEL_657 || path.join(
-  __dirname, '..', '..', '20 - Source Library',
-  'Interactive Models', 'Fisher 657 Working Model',
-  '657-working-model.html');
+  __dirname, '..', '..', '55 - Interactive Models',
+  'Fisher 657 Working Model', '657-working-model.html');
 const OUT = path.join(__dirname, '..', 'catalogue',
   'actuator-657-figure6.json');
 
@@ -272,7 +271,7 @@ const doc = {
     'Fisher 657 Diaphragm Actuator instruction manual D100306X012, June '
   + '2018, page 24, Figure 6 -- which the manual states "shows the size 30 '
   + 'through 60". Taken from window.REFINED2 in the published 657 Working '
-  + 'Model (20 - Source Library/Interactive Models/Fisher 657 Working '
+  + 'Model (55 - Interactive Models/Fisher 657 Working '
   + 'Model/657-working-model.html), which is that pipeline\'s OWN geometry '
   + 'and is downstream of its declared-geometry shell finish -- Franz '
   + 'hand-painted the masks over a 600-DPI crop, masks-from-paint.py '

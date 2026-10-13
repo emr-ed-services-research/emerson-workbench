@@ -10,6 +10,7 @@ holding: not-applicable
 updated: 2026-10-11
 used-by:
   - "45 - Process Core/lab/loop-cooling.js"
+  - "45 - Process Core/lab/loop/index.html"
   - "45 - Process Core/src/thermal.js"
   - "45 - Process Core/test/thermal.test.js"
   - "50 - Lunar Process Engineer/vendor/process-core/thermal.js"

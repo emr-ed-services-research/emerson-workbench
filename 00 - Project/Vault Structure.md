@@ -17,7 +17,7 @@ How this Obsidian vault is organized and how to work in it.
 | --- | --- |
 | `00 - Project` | Charter, roadmap, open questions, glossary, this note |
 | `10 - Courses` | One folder per course; [[Courses]] is the map of content |
-| `20 - Source Library` | Handbooks and technical publications; [[Source Library]] is the MOC. Also hosts `Interactive Models/` — course-independent, exact-geometry equipment models derived from the manuals (first: `Fisher 657 Working Model`, built 2026-09-25 from Franz's hand-painted part masks over the 657 IOM's Figure 6; see its README for the hard-geometry rules and rebuild pipeline). Like the Component Index, these are derived teaching components that live in the library because courses reference them rather than own them. |
+| `20 - Source Library` | Handbooks and technical publications; [[Source Library]] is the MOC. **Interactive Models moved out 2026-10-12** — see `55 - Interactive Models`. The reasoning that put them here was that courses reference them rather than own them, which is true and is also true of the Process Core; what settled it is that a library holds documents, and a model with its own ground truth, its own build pipeline and its own narration is a product. |
 | `25 - Vitruvius` | The expert-engineer persona the CVE pipeline reasons through, plus its findings ledger. Scoped to CVE1→CVE2→CVE-Industry, not department-wide. |
 | `30 - Templates` | Obsidian **note** templates (configured as the Templates plugin folder) — `Bench Book Module`, `Bench Notes Module`, `Course Home`, `Source Document` |
 | `40 - Engine` | The shared **course runtime** — the presentation engine every course is assembled from. See [[Engine]]. |

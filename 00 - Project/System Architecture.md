@@ -22,6 +22,22 @@ updated: 2026-09-04
 > definitions and the pipeline-gap-first working principle are unchanged and
 > remain in force.
 
+> [!important] Scope correction, 2026-10-12 — Workbench is the umbrella now
+> When this document was written, **Emerson Workbench** meant the course
+> system, and the four layers below are that system. It has since become the
+> name for the whole body of Educational Services work: the courses, the
+> Process Core, the interactive models, Lunar Process Engineer, LoopBench and
+> the HART bench.
+>
+> So the four layers below are unchanged and still correct — they are now the
+> architecture of **Courseware**, which is Workbench's course system and one
+> thing Workbench contains, rather than the whole of it.
+>
+> One consequence worth stating, because it is the thing that prompted this:
+> **Layer 1 "Home" as defined below houses every Educational Services COURSE.**
+> A front door to everything Workbench contains is a different and larger
+> surface, and it is not specified here.
+
 ## Why this document exists
 
 Today's session revealed a recurring confusion: process gaps discovered while polishing the pilot course (layer 2) were being treated as one-off slide fixes, when they were actually **pipeline specification gaps** (layer 3/4). Every fix should be asked: *does this belong in the pipeline's rules, or is it a one-time correction to this specific course's content?* This document exists so that question has a clear frame to be answered against, and so the next phase of work is explicit rather than assumed.

@@ -18,6 +18,7 @@ used-by:
   - "45 - Process Core/lab/extract-f2f.js"
   - "45 - Process Core/lab/fic101/index.html"
   - "45 - Process Core/lab/loop/index.html"
+  - "45 - Process Core/lab/render/index.html"
   - "50 - Lunar Process Engineer/vendor/process-core/catalogue/parts.json"
 ---
 

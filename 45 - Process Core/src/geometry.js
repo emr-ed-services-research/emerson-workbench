@@ -397,7 +397,7 @@
      numbers to honour.
 
      DENOISED BY THE 657 METHOD, which is the vault's own authority for
-     this job -- `20 - Source Library/Interactive Models/Fisher 657
+     this job -- `55 - Interactive Models/Fisher 657
      Working Model/pipeline/`. That pipeline is rasterize, vectorize,
      DENOISE, animate, and the first pass here stopped after vectorize:
      per-column min/max of a pixel mask, which cannot express a concave

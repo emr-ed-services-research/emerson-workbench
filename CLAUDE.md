@@ -10,9 +10,23 @@ you do not have.
 
 ---
 
+## Workbench is the umbrella. Courseware is the course system inside it.
+
+Changed 2026-10-12. "Emerson Workbench" started as the name of the course-conversion
+project and has become the name for **everything** here: the courses, the Process Core,
+the interactive models, Lunar Process Engineer, LoopBench and the HART bench.
+
+**Courseware** is the course system — the conversion pipeline, the shell, the packages
+and the orchestrator. The four layers below are Courseware's architecture, not
+Workbench's. They are unchanged; only what contains them has a bigger name now.
+
+`00 - Project/System Architecture.md` carries the correction and one consequence:
+**Layer 1 "Home" as specified there houses every Educational Services COURSE.** A front
+door to everything Workbench contains is a larger surface and is not yet specified.
+
 ## "Layer" means two different things here. Do not mix them.
 
-**Workbench layers** (`00 - Project/System Architecture.md`) — how a course reaches a
+**Courseware layers** (`00 - Project/System Architecture.md`) — how a course reaches a
 learner:
 
 | | |
@@ -41,12 +55,13 @@ chrome  >  scenario  >  flow-field  >  dynamics  >  schem-view | phys-view
 |---|---|
 | `00 - Project` | Charter, architecture, pipeline, style guide, philosophy. **Start here.** |
 | `10 - Courses` | One folder per course |
-| `20 - Source Library` | Handbooks, IOMs, the Component Index, Interactive Models, and the **Standards Register** |
+| `20 - Source Library` | Handbooks, IOMs, the Component Index, and the **Standards Register** |
 | `25 - Vitruvius` | The expert-engineer persona the CVE pipeline reasons through, plus its findings ledger. Scoped to CVE1→CVE2→CVE-Industry, **not** department-wide |
 | `30 - Templates` | Obsidian note templates (not code) |
 | `40 - Engine` | The shared course runtime. Courses **vendor** a built copy + lock file |
 | `45 - Process Core` | The shared process model — netlist, schematic view, later dynamics. Consumers vendor a copy + lock. **Not part of the game** |
 | `50 - Lunar Process Engineer` | The process-simulation game |
+| `55 - Interactive Models` | Exact-geometry equipment models people operate. First: the Fisher 657 Working Model. Moved out of the Source Library 2026-10-12 — a library holds documents, and these are products with their own pipelines |
 | `99 - Attachments` | PDFs, images, exports |
 
 `45 - Process Core` has its own `CLAUDE.md` and `README.md`. Read them before touching
@@ -115,7 +130,8 @@ These exist because each one has already gone wrong.
 | Why does the system look like this? | `00 - Project/System Architecture.md` |
 | What is the Process Core, and what is being built? | `00 - Project/Process Core — Architecture & Build Plan.md` |
 | How is a course made? | `00 - Project/Course Porting Pipeline.md` |
-| How should it look? | `00 - Project/Style Guide.md` |
+| How should a SLIDE look? | `00 - Project/Style Guide.md` |
+| How should a TOOL look? | `00 - Project/Instrument Style.md` — models, the lab, the benches, home |
 | How should it teach? | `00 - Project/teaching-philosophy.md` |
 | What is the engine? | `40 - Engine/README.md` |
 | What is the Process Core? | `45 - Process Core/README.md` |

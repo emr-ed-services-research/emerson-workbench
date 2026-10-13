@@ -38,7 +38,14 @@ const VAULT = path.resolve(HERE, '..', '..');
    signal: dependencies, virtual environments, build output, and this
    directory itself (an entry citing its own id is not a usage). */
 const SKIP_DIR = new Set(['node_modules', '.git', '.venv', '__pycache__',
-                          'dist', '_generator', 'Standards']);
+                          'dist', '_generator', 'Standards',
+                          /* Staging for published artifacts -- a scratch copy
+                             of a page that already exists somewhere real. It
+                             is gitignored, and left in the scan it put a
+                             throwaway path into the used-by index of two
+                             standards entries, which is a register recording
+                             a file nobody can find. */
+                          'artifact-files']);
 const EXT = new Set(['.js', '.md', '.html', '.json', '.mjs', '.ps1']);
 
 /* ---- the citation vocabulary ---------------------------------------

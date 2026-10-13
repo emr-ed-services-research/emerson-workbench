@@ -88,6 +88,12 @@ It does **not** govern:
   is built from. That is the **Subject-Matter Index** and the Source Library.
 - **Course and module structure** — `Roadmap.md`, `Vault Structure.md`, the
   per-course status notes.
+- **Instrument surfaces** — tools, interactive models, the flow lab, the
+  benches, and the Workbench home. A slide is read; an instrument is operated,
+  and the answers differ. That is `Instrument Style.md`, added 2026-10-12. It
+  does not correct anything here: §3.3 already anticipated a Workbench-home
+  surface needing its own answers, and this is where those live. The bare
+  phrase "the Style Guide" still means this document and only this one.
 
 ### 1.2 Who it is for
 
