@@ -269,3 +269,45 @@ Verification and Stem Connector sections until Franz's own rewrite lands.
 **Modern skin, still open** (not blocked, just unfinished): a licensed
 DTL Argo T file if the display face is wanted, and what a board does past
 ~30 tags where it needs a real layout engine rather than two columns.
+
+---
+
+## The valve body does not open out to its line bore (found 2026-10-14)
+
+`plant` was built to compose a line with what is in it, and the first thing
+it did was make the core contradict itself out loud.
+
+At the valve face, `flowPathAt` reports a **6.065 in** opening and
+`wettedAt` draws **4.820 in**. An inch and a quarter, between two functions
+describing the same water at the same point.
+
+**`flowPathAt` is the one that is right.** `geometry.globeValve` says so in
+its own words at the point it demands `lineBore`: *the flange bore is the
+LINE, not the port -- a reduced-port valve has a port smaller than the pipe
+it sits in.* So a valve end connection is line size by design, and the flow
+path ending at 6.065 is correct.
+
+**The body is the one that is wrong.** The traced archetype is scaled to the
+PORT by `bored()`, and its end connection scales with it -- so the drawn
+opening comes out at port size rather than opening back out to the line. The
+drawing has been showing a step that the model says is not there.
+
+That is the whole of the cascade seam. Weeks of fixes were applied to a
+drawing because nothing in the model could say whether the step was real,
+and the answer is that it is not: it is an artifact of scaling the body by
+the port.
+
+**What was tried and reverted.** Making `flowPathAt` end at the measured
+body face instead. It is backwards -- it breaks the independent cross-check
+in `flowfield.test.js` that the solved line velocity equals Q over the
+declared bore, which is the one assertion tying the solve to a real pipe.
+Reverted; 1040 checks green.
+
+**The fix belongs in the body**: the end connections should open out to
+`lineBore` rather than following the port scale. That is a change to traced
+geometry at the faces and wants Franz on it, under the trace-against-source
+overlay method, not a guess from here.
+
+**Until then:** `plant` composes the real stations cleanly and needs no
+reducer, because the stations are line size at both ends. The residual
+visual step at the face is this defect and not a new one.
