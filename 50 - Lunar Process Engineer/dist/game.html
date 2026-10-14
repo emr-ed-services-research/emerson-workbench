@@ -10386,11 +10386,67 @@ window.LPE.catalogueData={
        at          {componentId: [x,y]}, or [[x0,y],[x1,y]] for a reducer
        via         {segmentId: [[x,y],...]} waypoints, keyed by the same
                    "from.port->to.port" id the segments already carry
+       runPxPerInch  OPTIONAL, and purely declarative -- see below
+
+     ---- AND A FRAME MAY NOW SAY WHAT ITS LENGTHS MEAN ----
+
+     `pxPerInch` scales BORES. Positions in `at` are raw pixels and always
+     have been, so a frame has no length scale and the bore is exaggerated
+     against the run by whatever the author's pixels happened to imply.
+     That is what a schematic IS and it is not an error.
+
+     What IS an error is being unable to say by how much. A reader looking
+     at a drawn bore beside a drawn run has no way to know whether the
+     proportion is real, and neither does the drawing.
+
+     `runPxPerInch` fixes that without moving anything. It declares how
+     many pixels of `at` make one inch of RUN. Nothing reads it to place a
+     component -- positions stay exactly where they were authored -- and
+     omitting it leaves a frame behaving as it always did. What it buys is
+     that `net.exaggeration` can then state the factor, and a view can
+     print "bore x8 against length" instead of leaving a reader to guess.
+
+     Declared rather than derived, because only the author of a frame
+     knows what their pixels were supposed to mean.
 
      Transposing a new physical structure over an existing netlist is then
      exactly one thing: another frame. That is the whole of registration.  */
 
   const DEFAULT_FRAME = { pxPerInch: 1, at: {}, via: {} };
+
+  /* How far the bore is stretched against the run, when the frame has said
+     enough to work it out. Null when it has not -- never a guess, because
+     a made-up exaggeration factor is worse than an unstated one: the first
+     is believed. */
+  function exaggerationOf(frame) {
+    const run = frame.runPxPerInch;
+    if (typeof run !== 'number' || !(run > 0)) return null;
+
+    /* FROM WHAT IS DRAWN, NOT FROM WHAT IS DECLARED, and the two are not
+       the same thing. `scaleBore` multiplies the bore -- a DIAMETER, in
+       inches -- by pxPerInch, and the result is carried as `r` and used
+       as a RADIUS: phys-view draws the run at `lineWidth = 2 * r`. So a
+       6.065 in bore at pxPerInch 1.6 comes out 19.5 px across, not 9.7,
+       and the effective bore scale is twice pxPerInch.
+       
+       Reported as drawn, because the number this exists to print is what
+       a reader is looking at. Left as pxPerInch it would understate the
+       exaggeration by exactly half, on a page whose entire purpose is
+       stating it correctly. */
+    const declared = frame.pxPerInch === undefined ? 1 : frame.pxPerInch;
+    const drawn = declared * 2;
+    return Object.freeze({
+      factor: drawn / run,
+      borePxPerInch: drawn,
+      declaredPxPerInch: declared,
+      runPxPerInch: run,
+      note: 'Bore is drawn ' + (drawn / run).toFixed(1) + ' times larger '
+          + 'against length than it is. Positions are unchanged; this is '
+          + 'what the frame declares its own pixels to mean. The bore '
+          + 'scale is twice `pxPerInch` because the scaled bore is '
+          + 'carried as a radius.',
+    });
+  }
 
   function scaleBore(inches, frame) {
     const px = inches * (frame.pxPerInch === undefined ? 1 : frame.pxPerInch);
@@ -10618,6 +10674,10 @@ window.LPE.catalogueData={
         .filter(id => comps[id].tag === tag)[0]],
       byKey: key => comps[Object.keys(comps)
         .filter(id => comps[id].key === key)[0]],
+
+      /* What this frame stretched, if it said. Null when the frame has
+         not declared a run scale, which is most of them. */
+      exaggeration: exaggerationOf(frame),
 
       /* The same graph, placed somewhere else. This is registration in
          one call -- and the proof that nothing above the netlist has
