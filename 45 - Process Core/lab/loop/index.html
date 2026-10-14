@@ -1236,6 +1236,46 @@
     [0.19069, 0.02029], [0.19069, 0.03709], [0.19419, 0.04129]
   ];
 
+  /* THE BALANCE PORTS THROUGH THE PLUG HEAD, traced rather than generated.
+
+     They were generated: four across the plug on a convention, each running
+     the FULL HEIGHT of it. That is not a drilling, it is the hollow -- a
+     cage-guided plug is a cup, and Figure 20 draws a line straight across at
+     the head's underside with nothing but skirt below it. Generated that way
+     the plug read as three loose pieces with channels punched through it top
+     to bottom, and the water in it turned over in a space that does not
+     exist.
+
+     The figure has them: two pockets of fluid lying wholly inside the plug
+     outline, at head level, which is the only place a hole through a plug
+     can be. Picked by containment in `trace/to-geometry.py` -- no count, no
+     diameter, no bolt circle typed in anywhere. */
+  /* THE PISTON-RING GROOVE, both halves, as painted -- on the SKIRTS.
+     It was a bar spanning the plug's whole half-width, which put the seal
+     further out than the head was wide and made a one-piece plug read as
+     three loose parts with a lid over them. A piston ring runs round the
+     outside of a plug; in section you see it twice, on the two skirt walls,
+     and nowhere in between. */
+  const ED_SEAL_L = [
+    [-0.1662, 0.21693], [-0.1662, 0.19524], [-0.14591, 0.19524],
+    [-0.14591, 0.21693]
+  ];
+
+  const ED_SEAL_R = [
+    [0.14731, 0.21693], [0.14591, 0.20854], [0.14661, 0.19734],
+    [0.1669, 0.19664], [0.1669, 0.21693]
+  ];
+
+  const ED_PORT_L = [
+    [-0.13891, 0.22533], [-0.13891, 0.14696], [-0.08782, 0.14696],
+    [-0.08782, 0.22533]
+  ];
+
+  const ED_PORT_R = [
+    [0.08572, 0.22603], [0.08572, 0.14696], [0.13821, 0.14696],
+    [0.13821, 0.22603]
+  ];
+
   /* THE CHAMBERS, MISSED BY THE FIRST SWAP. The valve ran for a while
      with an ED cage in an EWT casting's chambers -- the hybrid the
      swap existed to avoid -- and it showed as both cage windows
@@ -1281,14 +1321,6 @@
     ]
   ];
   const ED_VOIDS = [
-    [
-      [0.08572, 0.22603], [0.08572, 0.14696], [0.13821, 0.14696],
-      [0.13821, 0.22603]
-    ],
-    [
-      [-0.13891, 0.22533], [-0.13891, 0.14696], [-0.08782, 0.14696],
-      [-0.08782, 0.22533]
-    ],
     [
       [0.20259, 0.3471], [0.20049, 0.3457], [0.20049, 0.3422],
       [0.19769, 0.3401], [0.19349, 0.3317], [0.19489, 0.04129],
@@ -1555,16 +1587,15 @@
                            // section plane. 0 puts a window centre
                            // dead on the near cut.
     balanceHoles:  4,      // through the plug head, balanced trim only
-    balanceBore:   0.26,   // CONVENTION, x plug RADIUS. Was hardcoded in
-                           // plugAt as 0.26 while a dead `balanceDia` of
-                           // 0.13 x port sat in this block claiming to
-                           // be the one. Same number by a different
-                           // route on a plug that fills its port; the
-                           // point is that the one being used is the one
-                           // written down. Nothing held dimensions a
-                           // balance hole.
-    sealBand:      0.14,   // CONVENTION, x plug HEIGHT. The piston-ring
-                           // / U-seal groove. Also previously hardcoded.
+    /* `balanceBore` is gone, not merely unused. It generated a hole
+       diameter; the ports are traced now, so nothing generates one, and a
+       convention that governs nothing is precisely what the convention
+       check exists to catch. Nothing we hold dimensions a balance hole,
+       which is why it was a convention in the first place. */
+    /* `sealBand` is gone with it. It generated the groove's height for a
+       bar that is no longer drawn; the groove is traced on both skirts
+       now. Two conventions retired in one change, which is what happens
+       when a trace replaces a guess. */
   };
 
   /* A cubic Bezier, sampled. The cast sweeps are curves and four points
@@ -2393,20 +2424,22 @@
                     balanceHoles: [], seal: null };
       if (!balanced) return out;
 
-      const r = (plugE.x1 - plugE.x0) / 2;
-      const bd = r * G.balanceBore;
-      for (let i = 0; i < G.balanceHoles; i++) {
-        const cx = -r + ((i + 0.5) / G.balanceHoles) * 2 * r;
-        if (Math.abs(cx) < stemR + bd) continue;
-        out.balanceHoles.push([[cx - bd / 2, plugE.y0 + lift],
-                               [cx + bd / 2, plugE.y0 + lift],
-                               [cx + bd / 2, plugE.y1 + lift],
-                               [cx - bd / 2, plugE.y1 + lift]]);
+      /* TRACED, AND THEY STOP WHERE THE HEAD STOPS. The pair the section
+         cuts, lifted with the plug they are drilled through. Nothing is
+         generated here any more: the port's width, its radius and -- the
+         one that was wrong and visibly so -- its HEIGHT all come off the
+         figure. A drilling that ran the full height of the plug was
+         drawing the hollow, and a cup is not a hole. */
+      for (const ring of [ED_PORT_L, ED_PORT_R]) {
+        const placed = ring.map(placeTrim);
+        out.balanceHoles.push(
+          lift > 0 ? placed.map(q => [q[0], q[1] + lift]) : placed);
       }
-      const st = (plugE.y1 - plugE.y0) * G.sealBand;
-      const sy = plugE.y1 + lift - st * 1.4;
       out.seal = {
-        ring: [[-r, sy], [r, sy], [r, sy + st], [-r, sy + st]],
+        rings: [ED_SEAL_L, ED_SEAL_R].map(ring => {
+          const placed = ring.map(placeTrim);
+          return lift > 0 ? placed.map(q => [q[0], q[1] + lift]) : placed;
+        }),
         opens: flow === 'down' ? 'up' : 'down',
         why: flow === 'down'
           ? 'flow-down fills the chamber around the cage, so the high ' +
@@ -3516,6 +3549,53 @@
               return [(ax0 + ax1) / 2, (ay0 + ay1) / 2];
             })()),
             spin: Math.sign(inX) || -1,
+            /* ---- AND IT IS NOT A VORTEX ------------------------------
+
+               A spin about a centre gives a rigid-body swirl: diagonal
+               velocities everywhere, including inside the ports. Inside a
+               drilling that is impossible. The walls are vertical, so the
+               water in there goes UP or it goes DOWN, and nothing else is
+               available to it.
+
+               What this circuit really is: two vertical legs through the
+               ports, joined across the cavity above the head. Up the inlet
+               side, across, down the other. A circulation round a circuit,
+               not a vortex in a pocket -- and the difference shows,
+               because a smooth circle drawn through a narrow hole is the
+               one part of the picture a reader can tell is wrong.
+
+               Each leg carries the direction its own walls allow. That is
+               a fact about the channel, not a choice: a hole through a
+               plug head is drilled parallel to the stem. The cavity leg is
+               horizontal because it is what joins the two port tops, and
+               its sense follows the ports either side of it.
+
+               `spin` is kept for a consumer that only wants the sense of
+               the turn, and because the legs must agree with it. */
+            legs: Object.freeze((function () {
+              const up = Math.sign(inX) || -1;   // the inlet side goes up
+              const out = [];
+              for (const r of balanceRings) {
+                let rx0 = Infinity, rx1 = -Infinity,
+                    ry0 = Infinity, ry1 = -Infinity;
+                for (const q of r) {
+                  if (q[0] < rx0) rx0 = q[0]; if (q[0] > rx1) rx1 = q[0];
+                  if (q[1] < ry0) ry0 = q[1]; if (q[1] > ry1) ry1 = q[1];
+                }
+                const tall = (ry1 - ry0) > (rx1 - rx0);
+                const side = Math.sign((rx0 + rx1) / 2) || 1;
+                out.push(Object.freeze({
+                  ring: Object.freeze(r.map(Object.freeze)),
+                  /* a port runs with its drilling; the cavity runs across,
+                     from the rising port toward the falling one */
+                  dir: Object.freeze(tall ? [0, side === up ? 1 : -1]
+                                          : [-up, 0]),
+                  of: tall ? 'a port through the head'
+                           : 'the cavity over the head',
+                }));
+              }
+              return out.map(Object.freeze);
+            })()),
             upAt: inX < 0 ? 'left' : 'right',
             of: 'the drillings through the plug and the cavity over its head',
             /* ---- HOW MANY, AND HOW BIG --------------------------------
@@ -8403,10 +8483,16 @@
        Dry, they are cavity: no fluid pass means no water to show. */
     g.fillStyle = typeof o.onFluid === 'function' ? water(t) : t.cavity;
     for (const h of plug.balanceHoles) { ring(g, pl, h); g.fill(); }
+    /* The groove is on both skirts and nowhere in between -- a piston ring
+       runs round the outside of a plug, so a section cuts it twice. It used
+       to be one bar across the whole plug, which drew the seal wider than
+       the head. */
     if (plug.seal) {
-      g.fillStyle = t.envelope;
-      ring(g, pl, plug.seal.ring); g.fill();
-      g.strokeStyle = t.ink; g.lineWidth = 0.8; g.stroke();
+      for (const r of plug.seal.rings) {
+        g.fillStyle = t.envelope;
+        ring(g, pl, r); g.fill();
+        g.strokeStyle = t.ink; g.lineWidth = 0.8; g.stroke();
+      }
     }
 
 

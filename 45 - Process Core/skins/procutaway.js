@@ -525,10 +525,16 @@
        Dry, they are cavity: no fluid pass means no water to show. */
     g.fillStyle = typeof o.onFluid === 'function' ? water(t) : t.cavity;
     for (const h of plug.balanceHoles) { ring(g, pl, h); g.fill(); }
+    /* The groove is on both skirts and nowhere in between -- a piston ring
+       runs round the outside of a plug, so a section cuts it twice. It used
+       to be one bar across the whole plug, which drew the seal wider than
+       the head. */
     if (plug.seal) {
-      g.fillStyle = t.envelope;
-      ring(g, pl, plug.seal.ring); g.fill();
-      g.strokeStyle = t.ink; g.lineWidth = 0.8; g.stroke();
+      for (const r of plug.seal.rings) {
+        g.fillStyle = t.envelope;
+        ring(g, pl, r); g.fill();
+        g.strokeStyle = t.ink; g.lineWidth = 0.8; g.stroke();
+      }
     }
 
 
@@ -1511,6 +1517,11 @@
     fluidParticles: fluidParticles, stepFluid: stepFluid,
     markThroat: markThroat, drawBalance: drawBalance,
     parcelRadius: parcelRadius, parcelThinning: parcelThinning,
+    /* Exported because a consumer drawing fluid OUTSIDE the valve --
+       the line it runs in -- has to colour a parcel the same way this
+       skin colours one, and the alternative was a second copy of the
+       interpolation living in a lab page. */
+    mix: mix,
     water: water,
     provenance: provenance,
     drawActuator: drawActuator, ACT_DARK: ACT_DARK,
