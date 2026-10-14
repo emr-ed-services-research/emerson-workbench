@@ -1,0 +1,371 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>The piping rig, cross-checked</title>
+<style>
+  :root { --ground:#15181c; --panel:#1b1f24; --hair:#2a2e33;
+          --ink:#e6e8ea; --label:#8d9399; --accent:#7fe3ff;
+          /* There is no "warn" role in this skin and this file must not
+             invent one -- the layer guard caught exactly that, and was
+             right: a hex here is chrome leaking down a layer. A
+             disagreement is marked with the TRIM colour, which the skin
+             does define and which nothing else on this page uses. */
+          --warn:#9aa3a9; }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);
+    font:14px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+  .wrap{max-width:1180px;margin:0 auto;padding:30px 24px 60px}
+  h1{font-size:26px;margin:0 0 8px;letter-spacing:-.01em}
+  h2{font-size:12px;letter-spacing:.12em;text-transform:uppercase;
+     color:var(--label);margin:40px 0 6px;
+     font-family:ui-monospace,Consolas,monospace}
+  p{color:var(--label);max-width:76ch;margin:0 0 14px}
+  p.lede{color:var(--ink)}
+  table{width:100%;border-collapse:collapse;background:var(--panel);
+    border:1px solid var(--hair);border-radius:3px;overflow:hidden;
+    margin:0 0 6px}
+  th{font:11px ui-monospace,Consolas,monospace;letter-spacing:.07em;
+    text-transform:uppercase;color:var(--label);text-align:left;
+    padding:9px 11px;border-bottom:1px solid var(--hair)}
+  td{padding:8px 11px;border-bottom:1px solid var(--hair);font-size:13.5px}
+  tr:last-child td{border-bottom:none}
+  td.num{font-family:ui-monospace,Consolas,monospace;
+    font-variant-numeric:tabular-nums;text-align:right}
+  td.src{color:var(--label);font-size:12px}
+  tr.bad td,td.bad{color:var(--warn)}
+  .verdict{border:1px solid var(--hair);border-left:3px solid var(--accent);
+    background:var(--panel);border-radius:3px;padding:14px 16px;margin:0 0 18px}
+  .verdict.bad{border-left-color:var(--warn)}
+  .verdict b{color:var(--ink)}
+  .gap{border:1px solid var(--hair);border-left:3px solid var(--warn);
+    background:var(--panel);border-radius:3px;padding:14px 16px;margin:14px 0 0}
+  code{font-family:ui-monospace,Consolas,monospace;font-size:12.5px;
+    color:var(--accent)}
+</style>
+<div class="wrap">
+
+<h1>The piping rig, cross-checked</h1>
+<p class="lede">Lunar Process Engineer has a reference rig, and its README
+  says it exists <em>&ldquo;precisely to settle&rdquo;</em> the piping so two
+  levels cannot drift into different rigs. This is the same rig computed from
+  the Process Core. Two rigs answering one question from different stacks are
+  only worth having if somebody compares them &mdash; so that is the first
+  thing here, and it fails loudly.</p>
+
+<h2>1 &middot; the shared case</h2>
+<p><b>36 gpm, 40 ft of Schedule 40,
+  60 psig available at the manifold.</b>
+  Taken verbatim from <code>reference/friction.js</code>: Darcy-Weisbach with
+  the Swamee-Jain explicit friction factor, commercial-steel roughness
+  &epsilon;&nbsp;=&nbsp;0.00015&nbsp;ft. The bores come from
+  <em>this</em> repository&rsquo;s catalogue, which will not load unless each
+  dimension matches what ASME&nbsp;B36.10M printed. Two independent
+  transcriptions of one table.</p>
+
+<div class="verdict ">
+  <b>All 8 bores agree</b> to better than half a thousandth
+       of an inch. The game&rsquo;s rig and this one rest on the same table,
+       and the velocities, Reynolds numbers and losses below follow from it.
+</div>
+
+<table>
+  <tr><th>NPS</th><th>LPE bore</th><th>Core bore</th><th></th>
+      <th>v ft/s</th><th>Re</th><th>f</th><th>regime</th><th>loss psi</th>
+      <th>left at Bay 4</th></tr>
+  
+  <tr class="">
+    <td>1/2</td>
+    <td class="num">0.622</td>
+    <td class="num">0.622</td>
+    <td class="num">agree</td>
+    <td class="num">38.01</td>
+    <td class="num">182,430</td>
+    <td class="num">0.0268</td>
+    <td class="src">turbulent</td>
+    <td class="num">201.7</td>
+    <td class="num bad">starved</td>
+  </tr>
+  <tr class="">
+    <td>3/4</td>
+    <td class="num">0.824</td>
+    <td class="num">0.824</td>
+    <td class="num">agree</td>
+    <td class="num">21.66</td>
+    <td class="num">137,708</td>
+    <td class="num">0.0254</td>
+    <td class="src">turbulent</td>
+    <td class="num">46.7</td>
+    <td class="num ">13.3 psig</td>
+  </tr>
+  <tr class="">
+    <td>1</td>
+    <td class="num">1.049</td>
+    <td class="num">1.049</td>
+    <td class="num">agree</td>
+    <td class="num">13.36</td>
+    <td class="num">108,171</td>
+    <td class="num">0.0244</td>
+    <td class="src">turbulent</td>
+    <td class="num">13.5</td>
+    <td class="num ">46.5 psig</td>
+  </tr>
+  <tr class="">
+    <td>1-1/4</td>
+    <td class="num">1.380</td>
+    <td class="num">1.380</td>
+    <td class="num">agree</td>
+    <td class="num">7.72</td>
+    <td class="num">82,226</td>
+    <td class="num">0.0237</td>
+    <td class="src">turbulent</td>
+    <td class="num">3.3</td>
+    <td class="num ">56.7 psig</td>
+  </tr>
+  <tr class="">
+    <td>1-1/2</td>
+    <td class="num">1.610</td>
+    <td class="num">1.610</td>
+    <td class="num">agree</td>
+    <td class="num">5.67</td>
+    <td class="num">70,479</td>
+    <td class="num">0.0235</td>
+    <td class="src">turbulent</td>
+    <td class="num">1.5</td>
+    <td class="num ">58.5 psig</td>
+  </tr>
+  <tr class="">
+    <td>2</td>
+    <td class="num">2.067</td>
+    <td class="num">2.067</td>
+    <td class="num">agree</td>
+    <td class="num">3.44</td>
+    <td class="num">54,897</td>
+    <td class="num">0.0235</td>
+    <td class="src">turbulent</td>
+    <td class="num">0.4</td>
+    <td class="num ">59.6 psig</td>
+  </tr>
+  <tr class="">
+    <td>2-1/2</td>
+    <td class="num">2.469</td>
+    <td class="num">2.469</td>
+    <td class="num">agree</td>
+    <td class="num">2.41</td>
+    <td class="num">45,959</td>
+    <td class="num">0.0237</td>
+    <td class="src">turbulent</td>
+    <td class="num">0.2</td>
+    <td class="num ">59.8 psig</td>
+  </tr>
+  <tr class="">
+    <td>3</td>
+    <td class="num">3.068</td>
+    <td class="num">3.068</td>
+    <td class="num">agree</td>
+    <td class="num">1.56</td>
+    <td class="num">36,986</td>
+    <td class="num">0.0241</td>
+    <td class="src">turbulent</td>
+    <td class="num">0.1</td>
+    <td class="num ">59.9 psig</td>
+  </tr>
+</table>
+<p>Everything from <code>v</code> rightward is computed here from the Core
+  bore. The exercise this case comes from turns on the last column: pick the
+  pipe before you run the bay and the bay is starved.</p>
+
+<div class="gap">
+  <b>And the honest gap: pipe friction is not in the Process Core.</b>
+  There is no Darcy-Weisbach anywhere in <code>src/</code>. This page computes
+  it, and a lab page computing something does not put it in the stack. The
+  Core holds the bores; the friction above is the rig&rsquo;s arithmetic, not
+  a layer&rsquo;s answer. A rig that quietly implements the thing it is
+  testing is not a test.
+</div>
+
+<h2>1b &middot; temperature, and where laminar would be</h2>
+<p>Every friction number above is a function of viscosity, and viscosity is a
+  function of <b>temperature</b>. Neither rig says what temperature its
+  &nu;&nbsp;=&nbsp;0.0000108&nbsp;ft&sup2;/s belongs to. The Core is stricter than
+  both of them: <code>flowfield.js</code> refuses to default a viscosity at
+  all &mdash; <em>&ldquo;No default: water at one temperature&rdquo;</em>
+  &mdash; and throws rather than guess.</p>
+<p>So this does not invent a viscosity-temperature table. We hold no source
+  for one, and a plausible table is exactly what this page exists to refuse.
+  Here is the sensitivity instead: the same case either side of the assumed
+  viscosity, so you can see how much the answer moves and whether anything
+  changes regime.</p>
+<table>
+  <tr><th>&nu;</th><th>vs assumed</th><th>1/2</th><th>3/4</th><th>1</th><th>1-1/4</th><th>1-1/2</th><th>2</th><th>2-1/2</th><th>3</th></tr>
+  <tr>
+    <td class="num">5.40e-6</td>
+    <td class="src">thinner &mdash; hotter &times;0.5</td>
+    <td class="num">198.4</td><td class="num">45.6</td><td class="num">13.0</td><td class="num">3.2</td><td class="num">1.4</td><td class="num">0.4</td><td class="num">0.2</td><td class="num">0.1</td>
+  </tr><tr>
+    <td class="num">1.08e-5</td>
+    <td class="src">as assumed</td>
+    <td class="num">201.7</td><td class="num">46.7</td><td class="num">13.5</td><td class="num">3.3</td><td class="num">1.5</td><td class="num">0.4</td><td class="num">0.2</td><td class="num">0.1</td>
+  </tr><tr>
+    <td class="num">2.16e-5</td>
+    <td class="src">thicker &mdash; colder &times;2</td>
+    <td class="num">207.4</td><td class="num">48.7</td><td class="num">14.2</td><td class="num">3.6</td><td class="num">1.7</td><td class="num">0.5</td><td class="num">0.2</td><td class="num">0.1</td>
+  </tr>
+</table>
+<p>Loss in psi over the 40&nbsp;ft run. Doubling the viscosity
+  moves the small bores by a few per cent and the large ones hardly at all
+  &mdash; which is what fully rough turbulent flow does, and is worth seeing
+  rather than being told.</p>
+<div class="gap">
+  <b>Nothing here is anywhere near laminar, and that is a finding rather than
+  a relief.</b> The gentlest row is the 3&nbsp;at
+  Re&nbsp;36,986. To bring it below
+  Re&nbsp;2300 the fluid would need
+  &nu;&nbsp;&asymp;&nbsp;1.74e-4&nbsp;ft&sup2;/s
+  &mdash; 16 times thicker than the water
+  assumed. Water does not get there; a heavy oil would. The rig applies
+  Swamee-Jain, which describes <em>turbulent</em> flow in a rough pipe, and
+  the first version of this page applied it to every row without asking. It
+  was right &mdash; by luck. A rig cannot be right by luck about the thing it
+  is checking, so the regime is now classified per row, laminar takes
+  64/Re exactly, and the band between Re&nbsp;2300 and
+  4000 returns <em>no answer at all</em> rather than a guess
+  wearing four decimal places.
+</div>
+
+<h2>2 &middot; what this stack adds &mdash; fittings that are real parts</h2>
+<p>The game&rsquo;s rig has pipe and nothing in it. A run is elbows, tees and
+  reducers, and here each one is a catalogue row with its dimension carried
+  <em>as the standard printed it</em> beside the canonical value &mdash; the
+  loader re-derives one from the other and refuses the catalogue if they
+  disagree. That is what makes a geometry claim checkable rather than
+  asserted.</p>
+<table>
+  <tr><th>part</th><th>centre to end</th><th>as printed</th>
+      <th>resistance K</th></tr>
+  
+  <tr><td>ELBOW90/BWLR/NPS0.5</td>
+      <td class="num">1.500 in</td>
+      <td class="src">38 mm (1.50 in)</td>
+      <td class="num">none</td></tr>
+  <tr><td>ELBOW90/BWLR/NPS1</td>
+      <td class="num">1.500 in</td>
+      <td class="src">38 mm (1.50 in)</td>
+      <td class="num">none</td></tr>
+  <tr><td>ELBOW90/BWLR/NPS1.5</td>
+      <td class="num">2.250 in</td>
+      <td class="src">57 mm (2.25 in)</td>
+      <td class="num">none</td></tr>
+  <tr><td>ELBOW90/BWLR/NPS2</td>
+      <td class="num">3.000 in</td>
+      <td class="src">76 mm (3.00 in)</td>
+      <td class="num">none</td></tr>
+  <tr><td>ELBOW90/SW3000/NPS0.375</td>
+      <td class="num">&mdash;</td>
+      <td class="src">&mdash;</td>
+      <td class="num">none</td></tr>
+  <tr><td>ELBOW90/SW3000/NPS0.5</td>
+      <td class="num">&mdash;</td>
+      <td class="src">&mdash;</td>
+      <td class="num">none</td></tr>
+  <tr><td>TEE/SW3000/NPS0.375</td>
+      <td class="num">&mdash;</td>
+      <td class="src">&mdash;</td>
+      <td class="num">none</td></tr>
+  <tr><td>TEE/SW3000/NPS0.5</td>
+      <td class="num">&mdash;</td>
+      <td class="src">&mdash;</td>
+      <td class="num">none</td></tr>
+</table>
+<div class="gap">
+  <b>None of them declares a resistance.</b> 8 fittings, no
+  K values. The dynamics layer will use a sourced resistance when a component
+  declares one &mdash; that machinery exists and is opt-in &mdash; but nothing
+  we hold publishes K for these, so nothing does. The loss through a fitting
+  is therefore <em>not</em> in the Core&rsquo;s answer for this rig, and this
+  page would rather say so than carry a plausible number into a cross-check
+  whose whole purpose is catching plausible numbers.
+</div>
+
+<h2>3 &middot; sizing, which is not a square root</h2>
+
+<p>The same 36&nbsp;gpm of water through an
+  <code>VALVE/ED/NPS1.5/P1.875/T0.75/EQPCT</code>, by <b>ISA-75.01.01</b>: the piping geometry
+  factor for a valve smaller than its line, and a check on whether the drop
+  is choked. <code>q = Cv&radic;(&Delta;P/SG)</code> has neither, and is
+  honest only well away from both.</p>
+<table>
+  <tr><th>quantity</th><th>value</th><th>what it is</th></tr>
+  <tr><td>required Cv</td><td class="num">9.33</td>
+      <td class="src">at the service drop</td></tr>
+  <tr><td>F<sub>P</sub></td><td class="num">0.996</td>
+      <td class="src">piping geometry factor &mdash; reduced-size installation</td></tr>
+  <tr><td>choked drop</td><td class="num">50.3 psi</td>
+      <td class="src">above this the flow stops responding to more drop</td></tr>
+  <tr><td>choked?</td><td class="num">no</td>
+      <td class="src">the service drop is below the choked figure</td></tr>
+</table>
+
+<h2>4 &middot; and what the trim actually does</h2>
+<p>An equal-percentage cage is not linear and is not close to it. This is the
+  published curve from Fisher Catalog&nbsp;12, read at every quarter of
+  travel &mdash; the difference between the two columns is the whole reason
+  characterisation exists.</p>
+<table>
+  <tr><th>travel</th><th>Cv</th><th>share of rated flow</th>
+      <th>what a linear assumption would say</th></tr>
+  
+  <tr><td class="num">10%</td>
+      <td class="num">1.5</td>
+      <td class="num">4.2%</td>
+      <td class="num">10%</td></tr>
+  <tr><td class="num">25%</td>
+      <td class="num">3.3</td>
+      <td class="num">9.1%</td>
+      <td class="num">25%</td></tr>
+  <tr><td class="num">50%</td>
+      <td class="num">7.5</td>
+      <td class="num">20.8%</td>
+      <td class="num">50%</td></tr>
+  <tr><td class="num">75%</td>
+      <td class="num">20.9</td>
+      <td class="num">58.5%</td>
+      <td class="num">75%</td></tr>
+  <tr><td class="num">100%</td>
+      <td class="num">35.8</td>
+      <td class="num">100.0%</td>
+      <td class="num">100%</td></tr>
+</table>
+
+<h2>5 &middot; what this rig does NOT answer</h2>
+<p>Written down because the useful half of a rig is the half that says where
+  it stops.</p>
+<table>
+  <tr><th>question</th><th>where it stands</th></tr>
+  <tr><td>pipe friction</td>
+      <td class="src">computed on this page, <b>not in the Core</b>. No
+        Darcy-Weisbach in <code>src/</code>.</td></tr>
+  <tr><td>fitting resistance</td>
+      <td class="src">the layer is there and is opt-in; no fitting we hold
+        publishes a K, so none declares one.</td></tr>
+  <tr><td>viscosity vs temperature</td>
+      <td class="src">no source held. Sensitivity shown above; no table
+        invented.</td></tr>
+  <tr><td>gas and compressible flow</td>
+      <td class="src"><b>not in this stack at all.</b> The sizing layer is
+        <code>sizeLiquid</code> and nothing else &mdash; no expansion factor,
+        no critical pressure ratio. LPE&rsquo;s rig has a GAS SERVICE &mdash;
+        AIR section; this one cannot answer it and does not pretend to.</td></tr>
+  <tr><td>two-phase, flashing downstream</td>
+      <td class="src">the sizing layer reports the choked drop and the
+        cavitation margin; what happens after the vena contracta is not
+        modelled.</td></tr>
+</table>
+
+<h2>6 &middot; where to look next</h2>
+<p>The game&rsquo;s rig is at
+  <code>50 - Lunar Process Engineer/reference/cve-reference-rig.html</code>
+  and carries what this one does not: the turbulent velocity profile drawn
+  rather than tabulated, the reducer / throat / expander behaviour, the gas
+  service, and the cavitation-versus-flashing distinction. The two are meant
+  to be read together, which is why the first section here exists.</p>
+
+</div>
