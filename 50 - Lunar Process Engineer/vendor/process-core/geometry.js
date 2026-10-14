@@ -1525,6 +1525,45 @@
        face-to-face. */
     const chamberL = bored(ED_CHAMBER_L.map(place)).map(toFace);
     const chamberR = bored(ED_CHAMBER_R.map(place)).map(toFace);
+
+    /* ---- WHAT THIS BODY ACTUALLY PRESENTS TO THE LINE ----------------
+
+       lineBore is demanded here in strong terms and then handed to
+       flowPathAt and to the openings. What this layer never did was DRAW
+       with it: the body comes from the trace scaled by face-to-face
+       alone, so the same valve draws the same opening whether it is told
+       the line is 4.026 in or 7.981.
+
+       Two descriptions of one face therefore existed and agreed only by
+       luck. The cascade declared 6.065 against a body that draws 4.820,
+       and the inch and a quarter between them surfaced as a step at the
+       joint which no amount of work on the drawing could remove, because
+       the drawing was not the thing that was wrong.
+
+       Measured and REPORTED, not refused. Several suites legitimately
+       build a body and declare a line that differs from it, which is a
+       real arrangement -- a valve smaller than its line, with a reducer
+       between. Deciding whether that is acceptable means looking at both
+       the valve and the line at once, and this layer only has the valve.
+       The layer that has both is plant, and it already refuses.
+
+       The fuller fix -- the body HONOURING lineBore at its faces, as
+       bored() already puts the trim on its published port -- changes what
+       the valve looks like and is not done quietly. */
+    const faceSpanAt = (ring, xf) => {
+      let lo = Infinity, hi = -Infinity;
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const p1 = ring[i], p2 = ring[j];
+        if ((p1[0] > xf) !== (p2[0] > xf)) {
+          const y = p1[1] + (p2[1] - p1[1]) * (xf - p1[0]) / (p2[0] - p1[0]);
+          if (y < lo) lo = y;
+          if (y > hi) hi = y;
+        }
+      }
+      return isFinite(lo) ? +(hi - lo).toFixed(4) : null;
+    };
+    const drawnFaceIn = faceSpanAt(chamberL, inX + 0.01 * F);
+    const drawnFaceOut = faceSpanAt(chamberR, outX - 0.01 * F);
     const silhouette = EWT_SILHOUETTE.map(place).map(toFace);
     const inlet = flow === 'down' ? chamberL : chamberR;
     const outlet = flow === 'down' ? chamberR : chamberL;
@@ -2005,6 +2044,18 @@
     return {
       part: part.id, kind: 'globeValve', units: 'in',
       faceToFace: F, port: d, travel: travel, lineBore: b, flow: flow,
+
+      /* What the LINE is said to be, beside what this body DRAWS.
+         If `agrees` is false there is a reducer between the two, and
+         plant.run will say so rather than butt them together. */
+      faces: Object.freeze({
+        lineBore: b,
+        inlet: drawnFaceIn,
+        outlet: drawnFaceOut,
+        agrees: drawnFaceIn !== null && drawnFaceOut !== null &&
+          Math.abs(drawnFaceIn - b) <= Math.max(0.05, 0.02 * b) &&
+          Math.abs(drawnFaceOut - b) <= Math.max(0.05, 0.02 * b),
+      }),
 
       balanced: balanced,
       body: bodyRings,

@@ -777,6 +777,47 @@ refuses('a valve with no published stem diameter is refused, not guessed',
 }
 
 
+/* ---- the face this body draws, beside the line it was told about -------
+
+   lineBore is demanded by globeValve and then used by flowPathAt and the
+   openings -- but never by the body, which comes from the trace scaled by
+   face-to-face alone. So the same valve drew the same opening whatever it
+   was told the line was, and nothing said so.
+
+   These pin the reporting, not the geometry. The body still ignores
+   lineBore; what has changed is that it now admits to it. */
+(function () {
+  const V = CAT.part('VALVE/ED/NPS4/P4.375/T2/EQPCT');
+  const wp = window.LPE.trim.fromCurve(
+    { curve: V.cv, characterisedBy: V.characterisedBy }).widthProfile();
+  const build = (lineBore, F) => window.LPE.geometry.globeValve(
+    { part: V, faceToFace: F === undefined ? 14.5 : F, lineBore: lineBore,
+      flow: 'down', widthProfile: wp.width });
+
+  const wide = build(6.065);
+  check('a body reports the face it actually draws',
+    wide.faces.inlet > 4.7 && wide.faces.inlet < 4.9,
+    'inlet ' + wide.faces.inlet);
+  check('and says plainly when that is not the line it was given',
+    wide.faces.agrees === false);
+
+  /* The evidence that the body ignores lineBore entirely: change the claim
+     and the drawing does not move. */
+  const narrow = build(4.026);
+  check('declaring a different line does not change what is drawn',
+    Math.abs(narrow.faces.inlet - wide.faces.inlet) < 1e-6,
+    narrow.faces.inlet + ' vs ' + wide.faces.inlet);
+
+  /* And it scales with face-to-face, which is what it does follow. */
+  const half = build(6.065, 7.25);
+  check('the face follows face-to-face, which is the thing it tracks',
+    Math.abs(half.faces.inlet / wide.faces.inlet - 0.5) < 0.02,
+    half.faces.inlet + ' vs ' + wide.faces.inlet);
+
+  check('a body whose line matches what it draws agrees',
+    build(4.82).faces.agrees === true);
+})();
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 
 /* ---- the flow path -------------------------------------------------- */
