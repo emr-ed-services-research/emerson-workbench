@@ -9,6 +9,7 @@ publisher: classical heat transfer — no publisher, no edition
 holding: not-applicable
 updated: 2026-10-11
 used-by:
+  - "45 - Process Core/lab/cascade/index.html"
   - "45 - Process Core/lab/loop-cooling.js"
   - "45 - Process Core/lab/loop/index.html"
   - "45 - Process Core/src/thermal.js"

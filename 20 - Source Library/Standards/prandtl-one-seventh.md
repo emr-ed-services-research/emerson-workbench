@@ -12,6 +12,7 @@ used-by:
   - "00 - Project/Lunar Process Engineer — Game Design.md"
   - "00 - Project/Process Core — Pro Chrome Plan.md"
   - "45 - Process Core/lab/assembly/index.html"
+  - "45 - Process Core/lab/cascade/index.html"
   - "45 - Process Core/lab/cutaway/index.html"
   - "45 - Process Core/lab/fic101/index.html"
   - "45 - Process Core/src/flowfield.js"
