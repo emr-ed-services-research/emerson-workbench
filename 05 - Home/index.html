@@ -127,6 +127,17 @@ footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     <h1>Workbench</h1>
     <p class="lede">Everything built here, and where it is. Courseware, the
       process model underneath it, the models you operate, and the game.</p>
+    <p class="lede" style="margin-top:10px;color:var(--ink-2)"><b>To show
+      someone:</b>
+      <a href="../45%20-%20Process%20Core/lab/physical/index.html">the physical
+      layer</a>,
+      <a href="../45%20-%20Process%20Core/lab/fic101/index.html">one loop at
+      five depths</a>,
+      <a href="../55%20-%20Interactive%20Models/Fisher%20657%20Working%20Model/657-working-model.html">the
+      657 working model</a>, or
+      <a href="../45%20-%20Process%20Core/lab/cascade/index.html">the cascade
+      as a plant</a>, or <a href="http://127.0.0.1:8787/">the cascade
+      running</a> after double-clicking <code>LoopBench.cmd</code>.</p>
   </div>
   <button id="theme" type="button">Light</button>
 </header>
@@ -134,31 +145,34 @@ footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
 <section>
   <h2>Courseware</h2>
   <p class="note">The course system &mdash; conversion pipeline, shell, packages,
-    orchestrator. Each link opens that course's built presentation.</p>
+    orchestrator. Each link opens the course in its <b>Workshop</b>
+    (<code>Presentation/course/</code>), which is the shell a learner sees. The
+    standalone deck runner beside it, <code>Presentation/build/</code>, is a
+    viewer for checking slides and is not linked from here.</p>
   <div class="grid">
-    <a class="card" href="../10%20-%20Courses/14101%20Valve%20Trim%20and%20Body%20Maintenance/Presentation/build/index.html">
+    <a class="card" href="../10%20-%20Courses/14101%20Valve%20Trim%20and%20Body%20Maintenance/Presentation/course/index.html">
       <div class="t"><b>14101</b><span class="chip n">418 slides</span></div>
       <p>Valve Trim and Body Maintenance. The pilot conversion, and the course
         every pipeline rule was learned on.</p>
     </a>
-    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Engineering%201/Presentation/build/index.html">
+    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Engineering%201/Presentation/course/index.html">
       <div class="t"><b>CVE 1</b><span class="chip n">190 slides</span></div>
       <p>Control Valve Engineering 1. Sizing and selection, built through the
         Vitruvius pipeline.</p>
     </a>
-    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Basics/Presentation/build/index.html">
+    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Basics/Presentation/course/index.html">
       <div class="t"><b>Control Valve Basics</b><span class="chip n">64 slides</span></div>
       <p>The entry course.</p>
     </a>
-    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Engineering%202/Presentation/build/index.html">
+    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Engineering%202/Presentation/course/index.html">
       <div class="t"><b>CVE 2</b><span class="chip n">55 slides</span></div>
       <p>Control Valve Engineering 2.</p>
     </a>
-    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Engineering%20%E2%80%94%20Industry%20(Oil%20%26%20Gas)/Presentation/build/index.html">
+    <a class="card" href="../10%20-%20Courses/Control%20Valve%20Engineering%20%E2%80%94%20Industry%20(Oil%20%26%20Gas)/Presentation/course/index.html">
       <div class="t"><b>CVE &mdash; Industry</b><span class="chip n">34 slides</span></div>
       <p>Oil &amp; Gas. The industry tier of the CVE sequence.</p>
     </a>
-    <a class="card" href="../10%20-%20Courses/IfE%20-%20Instructing%20for%20Emerson/Presentation/build/index.html">
+    <a class="card" href="../10%20-%20Courses/IfE%20-%20Instructing%20for%20Emerson/Presentation/course/index.html">
       <div class="t"><b>IfE</b><span class="chip n">14 slides</span></div>
       <p>Instructing for Emerson.</p>
     </a>
@@ -171,22 +185,36 @@ footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     trim, thermal, flow field. A library, not an application; these are its
     own diagnostic pages, which is how we check it is telling the truth.</p>
   <div class="grid">
+    <a class="card" href="../45%20-%20Process%20Core/lab/physical/index.html">
+      <div class="t"><b>The physical layer</b><span class="chip built">built</span></div>
+      <p>For showing a room. The loop at true scale, then stretched until it
+        can be seen &mdash; with the drawing printing its own exaggeration.
+        Then every dimension on it, sorted into measured, convention and
+        art. A drawing that tells you which of its own lines are real.</p>
+    </a>
     <a class="card" href="../45%20-%20Process%20Core/lab/fic101/index.html">
       <div class="t"><b>FIC-101 &mdash; the ladder</b><span class="chip built">built</span></div>
       <p>One model, five depths: loop, line, assembly, section, detail. Click the
         valve to go further in. Everything at every depth is the same netlist and
         the same solved field.</p>
     </a>
-    <a class="card" href="../45%20-%20Process%20Core/lab/loop/index.html">
-      <div class="t"><b>The loop, specified</b><span class="chip built">built</span></div>
-      <p>Cooling water to an exchanger. Every number on the page came out of a
-        layer &mdash; service, assembly, sizing, cavitation, packing, thrust, and
-        what is at stake when the valve will not open.</p>
+    <a class="card" href="../45%20-%20Process%20Core/lab/rig/index.html">
+      <div class="t"><b>The piping rig, cross-checked</b><span class="chip built">built</span></div>
+      <p>The same case the game&rsquo;s rig settles &mdash; 36&nbsp;gpm down
+        40&nbsp;ft &mdash; computed from this stack instead, so the two can
+        disagree in public. Then carried further: fittings as catalogue rows,
+        ISA sizing, and what an equal-percentage cage really passes.</p>
     </a>
     <a class="card" href="../45%20-%20Process%20Core/lab/cutaway/index.html">
       <div class="t"><b>Pro Cutaway</b><span class="chip built">built</span></div>
       <p>The inside of a bore, magnified until it can be looked at. Not a depth
         of its own &mdash; a way of drawing one, with the fluid turned on.</p>
+    </a>
+    <a class="card" href="../45%20-%20Process%20Core/lab/loop/index.html">
+      <div class="t"><b>The loop, specified</b><span class="chip built">built</span></div>
+      <p>Cooling water to an exchanger. Every number on the page came out of a
+        layer &mdash; service, assembly, sizing, cavitation, packing, thrust, and
+        what is at stake when the valve will not open.</p>
     </a>
     <a class="card" href="../45%20-%20Process%20Core/lab/assembly/index.html">
       <div class="t"><b>Assembly</b><span class="chip built">built</span></div>
@@ -230,6 +258,48 @@ footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
       <p>Sizing, selection and diagnostics on a flow loop. Rebuild with
         <code>node build.js</code> if this is stale.</p>
     </a>
+    <a class="card" href="../50%20-%20Lunar%20Process%20Engineer/reference/cve-reference-rig.html">
+      <div class="t"><b>Piping reference rig</b><span class="chip built">built</span></div>
+      <p>The rig the game's piping is settled against &mdash; arrangements,
+        friction, applicability. It exists precisely to stop two levels
+        drifting into different rigs, and everything that draws pipe takes
+        its answers from here.</p>
+    </a>
+  </div>
+</section>
+
+<section>
+  <h2>The cascade, and the bench</h2>
+  <p class="note">A PID loop you can drive, with a second loop inside it. The
+    same faceplate runs against a simulated process or, with a COM port,
+    against a real Fisher DVC6200 over HART &mdash; which is why there is one
+    entry here and not two.</p>
+  <div class="grid">
+    <a class="card" href="../45%20-%20Process%20Core/lab/cascade/index.html">
+      <div class="t"><b>The cascade, as a plant</b><span class="chip built">built</span></div>
+      <p>The pipe the water is actually in, the tank it comes from, the
+        exchanger it goes to, and both loops over the top &mdash; with the
+        cascade link drawn as what it is: a setpoint, not a valve signal.
+        <b>The valve is cut open in the line</b> &mdash; the traced body with a
+        657 on it and the solved field running through its trim &mdash; and
+        clicking it goes further in. Opens with no launcher.</p>
+    </a>
+    <a class="card" id="lb" href="http://127.0.0.1:8787/">
+      <div class="t"><b>The cascade</b><span class="chip plan" id="lb-chip">start it</span></div>
+      <p><b>Double-click <code>LoopBench.cmd</code></b>, then this opens it.
+        TIC-101 holding temperature with FIC-101 holding flow inside it, and a
+        supply sag on the fault pane: trip it and the flow loop has the valve
+        open before the temperature moves. The one thing a single loop cannot
+        be made to show.</p>
+    </a>
+    <div class="card flat">
+      <div class="t"><b>The same faceplate, other ways</b><span class="chip plan">arguments</span></div>
+      <p><code>LoopBench.cmd single</code> &mdash; one temperature loop, no
+        inner loop, for the before-and-after.
+        <code>LoopBench.cmd positioner</code> &mdash; a valve and nothing else,
+        as the real bench is. <code>LoopBench.cmd COM4</code> &mdash; real
+        hardware on that port.</p>
+    </div>
   </div>
 </section>
 
@@ -243,13 +313,10 @@ footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
         gates. Scoped in <code>00 - Project/Pipeline Console.md</code>.</p>
     </div>
     <div class="card flat">
-      <div class="t"><b>LoopBench</b><span class="chip wip">elsewhere</span></div>
-      <p>The Python simulator. Has the time domain the Process Core does not;
-        the Core has the network it does not. Deliberately not unified yet.</p>
-    </div>
-    <div class="card flat">
-      <div class="t"><b>HART bench</b><span class="chip wip">hardware</span></div>
-      <p>A real DVC driven from Python, doubling as a troubleshooting platform.</p>
+      <div class="t"><b>One model, two halves</b><span class="chip wip">open</span></div>
+      <p>LoopBench has the time domain the Process Core lacks; the Core has the
+        network LoopBench lacks. Different languages, deliberately not unified
+        &mdash; and a cascade lesson would be the first thing that needs both.</p>
     </div>
   </div>
 </section>
@@ -295,6 +362,26 @@ footer code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
     var dark = root.getAttribute('data-theme') === 'dark';
     btn.textContent = dark ? 'Light' : 'Dark';
   }
+  /* IS THE BENCH UP? One fetch, one chip, nothing else. A link to a
+     server that may not be running is a trap, and the honest fix is the
+     page saying so rather than the page starting things. `no-cors`
+     because LoopBench sets no CORS headers and none are wanted: the
+     response is opaque, which is fine, since the only question is
+     whether anything answered at all. */
+  var chip = document.getElementById('lb-chip');
+  if (chip && window.fetch) {
+    var done = false;
+    var up = function(){
+      if (done) return; done = true;
+      chip.textContent = 'running'; chip.className = 'chip built';
+    };
+    try {
+      fetch('http://127.0.0.1:8787/', { mode:'no-cors', cache:'no-store' })
+        .then(up).catch(function(){});
+      setTimeout(function(){ done = done || false; }, 2000);
+    } catch (e) { /* leave it reading "start it", which is the safe answer */ }
+  }
+
   label();
   btn.addEventListener('click', function(){
     var next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
