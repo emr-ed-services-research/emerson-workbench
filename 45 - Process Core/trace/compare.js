@@ -1,5 +1,14 @@
-/* @layer registration
+/* @layer chrome
    @core Process Core -- trace tooling, not a process layer.
+
+   DECLARED CHROME, AND IT HAD BEEN HIDING. This said "registration"
+   while naming eight colours, which the layer guard forbids anywhere
+   but chrome -- and it got away with it because the guard's list of
+   places to look never included trace/. It does now.
+
+   chrome is the honest declaration rather than the convenient one:
+   this file writes a PAGE for a person to look at and decides what
+   everything on it looks like. That is the definition.
 
    THE TRACE AGAINST ITS SOURCE, IN OVERLAY.
 

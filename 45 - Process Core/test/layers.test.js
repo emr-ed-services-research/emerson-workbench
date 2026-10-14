@@ -55,17 +55,22 @@ const LAYERS = ['registration', 'catalogue', 'geometry', 'sizing',
    file that grows a consumer dependency. Discovery means a new core file is
    held to the rules the moment it exists. */
 const ROOT = path.join(__dirname, '..');
+/* DISCOVERED, NOT LISTED. This named src, test, lab and skins one by
+   one, which meant a whole DIRECTORY could escape the rules by being
+   new -- and two had. trace/ was never scanned at all, and moving the
+   extraction tools out of lab/ into extract/ silently took 21 checks
+   off the run while the suite still reported green. A list of places
+   to look is a list of places that will go stale.
+
+   Every immediate subdirectory holding .js is scanned. Adding a
+   directory now adds its files to the rules; it cannot opt out by
+   existing. */
+const SKIP = new Set(['node_modules', 'vendor', '.git']);
 const CORE_FILES = fs.readdirSync(ROOT).filter(f => f.endsWith('.js'))
-  .concat(fs.readdirSync(path.join(ROOT, 'src'))
-            .filter(f => f.endsWith('.js')).map(f => 'src/' + f))
-  .concat(fs.readdirSync(path.join(ROOT, 'test'))
-            .filter(f => f.endsWith('.js')).map(f => 'test/' + f))
-  .concat(fs.existsSync(path.join(ROOT, 'lab'))
-    ? fs.readdirSync(path.join(ROOT, 'lab'))
-        .filter(f => f.endsWith('.js')).map(f => 'lab/' + f) : [])
-  .concat(fs.existsSync(path.join(ROOT, 'skins'))
-    ? fs.readdirSync(path.join(ROOT, 'skins'))
-        .filter(f => f.endsWith('.js')).map(f => 'skins/' + f) : [])
+  .concat(...fs.readdirSync(ROOT, { withFileTypes: true })
+    .filter(d => d.isDirectory() && !SKIP.has(d.name) && !d.name.startsWith('.'))
+    .map(d => fs.readdirSync(path.join(ROOT, d.name))
+      .filter(f => f.endsWith('.js')).map(f => d.name + '/' + f)))
   .filter(f => fs.existsSync(path.join(ROOT, f)));
 
 let failures = 0;
