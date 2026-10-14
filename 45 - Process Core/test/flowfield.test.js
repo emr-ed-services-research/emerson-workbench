@@ -766,5 +766,40 @@ console.log('');
     'half a transfer would unbalance the problem');
 }
 
+/* ---- phase, which the solve has always assumed quietly -------------------
+
+   This file's own notes have said "incompressible, irrotational, no flow
+   through walls" from the start. A note is not a guard.
+
+   A gas would not fail here; it would succeed and be wrong. Density falls
+   with pressure, so the fluid keeps accelerating past the throat and
+   streamlines stop conserving area -- and the picture that came back would
+   look like a perfectly good valve with its fastest water in the wrong
+   place. That is the worst kind of wrong a drawing can be. */
+(function () {
+  const refusedFor = (phase) => {
+    try {
+      F.solveField2D({ phase: phase, rings: [], openings: [] });
+      return false;
+    } catch (e) {
+      return e.message.indexOf('incompressible') >= 0;
+    }
+  };
+  check('a gas is refused before the solve, not drawn convincingly',
+    refusedFor('gas'), 'refused for the stated reason');
+  check('a vapour likewise', refusedFor('vapour'),
+    'refused for the stated reason');
+  const unstatedStillComplainsAboutRings = (() => {
+    try {
+      F.solveField2D({ rings: [], openings: [] });
+      return false;
+    } catch (e) {
+      return e.message.indexOf('rings') >= 0;
+    }
+  })();
+  check('saying nothing leaves the old complaint first, not the new one',
+    unstatedStillComplainsAboutRings, 'phase guard did not displace it');
+})();
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

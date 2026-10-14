@@ -1517,6 +1517,11 @@
     fluidParticles: fluidParticles, stepFluid: stepFluid,
     markThroat: markThroat, drawBalance: drawBalance,
     parcelRadius: parcelRadius, parcelThinning: parcelThinning,
+    /* Exported because a consumer drawing fluid OUTSIDE the valve --
+       the line it runs in -- has to colour a parcel the same way this
+       skin colours one, and the alternative was a second copy of the
+       interpolation living in a lab page. */
+    mix: mix,
     water: water,
     provenance: provenance,
     drawActuator: drawActuator, ACT_DARK: ACT_DARK,

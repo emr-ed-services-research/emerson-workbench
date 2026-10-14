@@ -243,6 +243,33 @@ refuses('a basis missing a coefficient is refused, and names which',
   () => S.resistance({ method: 'darby-3k', K1: 800 }, RE, BORE), 'Ki, Kd');
 refuses('Reynolds number is required, not optional',
   () => S.resistance(DARBY, 0, BORE), 'Reynolds number must be positive');
+
+/* ---- phase, which used to be an assumption in a comment ------------------
+
+   The header has said "liquid flow" since this file was written. A header
+   does not refuse anything, so a gas service got a confident, plausible,
+   wrong number and nothing downstream could have known.
+
+   Stating the phase now gets you refused. NOT stating it leaves the
+   behaviour exactly as it was -- which is why the third check matters as
+   much as the first: this guard must not have quietly broken every
+   existing caller. */
+refuses('a gas service is refused by name, not approximated',
+  () => S.sizeLiquid({ q: 800, P1: 314.7, P2: 289.7, sg: 1, phase: 'gas' },
+    NPS4, LINE), 'LIQUID sizing');
+refuses('and so is a vapour, for the same reason',
+  () => S.sizeLiquid({ q: 800, P1: 314.7, P2: 289.7, sg: 1, phase: 'vapour' },
+    NPS4, LINE), 'NOT implemented');
+check('saying phase:"liquid" out loud changes nothing',
+  (() => { try {
+    S.sizeLiquid({ q: 800, P1: 314.7, P2: 289.7, sg: 0.96, phase: 'liquid' },
+      NPS4, LINE); return true;
+  } catch (e) { return false; } })(), 'sizes as before');
+check('and saying nothing changes nothing either',
+  (() => { try {
+    S.sizeLiquid({ q: 800, P1: 314.7, P2: 289.7, sg: 0.96 }, NPS4, LINE);
+    return true;
+  } catch (e) { return false; } })(), 'the behaviour it always had');
 refuses('and so is the bore, in inches',
   () => S.resistance(DARBY, RE, 0), 'positive number of');
 refuses('an empty line is refused, because it is not the same as no loss',

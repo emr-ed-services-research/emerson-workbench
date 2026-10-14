@@ -108,6 +108,31 @@
      vlv: {Cv, FL, d}              the assumed valve
      line: D                       line bore, inches; omit for no fittings */
   function sizeLiquid(svc, vlv, D) {
+    /* ---- PHASE IS REFUSED, NOT ASSUMED -------------------------------
+
+       This file's header has said "liquid flow" since it was written, and
+       a header is not a guard. Hand a gas service to this function and it
+       returns a confident number that is wrong, which is the one failure
+       mode this core refuses everywhere else: dynamics will not size
+       without a Reynolds number, assembly will not guess an actuator's
+       action, flowfield.magnified() will not magnify without a reason.
+       Phase was the assumption documented in a comment instead.
+
+       Nothing here degrades gracefully to gas. The expansion factor Y,
+       the specific heat ratio factor and the terminal pressure drop ratio
+       xT have no liquid equivalent, and choking is a different test
+       entirely -- x >= Fg*xT rather than a choked pressure drop. A wrong
+       answer would look exactly like a right one.
+
+       Say phase and be refused; say nothing and you get the behaviour
+       this function has always had. */
+    if (svc && svc.phase !== undefined && svc.phase !== 'liquid')
+      throw new Error('sizeLiquid: the service states phase "' + svc.phase +
+        '". This is ISA-75.01.01 LIQUID sizing. Gas and vapour are the ' +
+        'other branch of that standard -- expansion factor Y, Fg, x and ' +
+        'xT -- which is NOT implemented here. It is refused rather than ' +
+        'approximated because the liquid equations return a ' +
+        'plausible number for a gas and nothing downstream could tell.');
     need(svc, ['q', 'P1', 'P2', 'sg'], 'sizeLiquid service');
     need(vlv, ['Cv', 'FL', 'd'], 'sizeLiquid valve');
     if (svc.P2 > svc.P1)

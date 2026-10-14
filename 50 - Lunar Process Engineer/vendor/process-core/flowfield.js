@@ -407,6 +407,28 @@
      this one and has to say so. */
   function solveField2D(opts) {
     const o = opts || {};
+    /* ---- INCOMPRESSIBLE, AND NOW IT SAYS SO OUT LOUD --------------
+
+       This solver has always declared itself incompressible and
+       irrotational in its own notes. It cannot model a gas: density
+       falls as the pressure does, so the fluid keeps accelerating
+       through and past the restriction, and streamlines do not
+       conserve area the way this solve assumes.
+
+       What makes that dangerous is that it would not LOOK wrong. The
+       field would come back smooth, the particles would flow, the
+       picture would read as a working valve -- and the fastest point
+       would be in the wrong place. A drawing that is wrong and
+       plausible is worse than no drawing.
+
+       Say the phase and be refused. Say nothing and nothing changes. */
+    if (o.phase !== undefined && o.phase !== 'liquid')
+      throw new Error('flowfield.solveField2D: {phase} is "' + o.phase +
+        '". This solve is incompressible -- a liquid. A gas expands as\n' +
+        'it loses pressure and goes on accelerating downstream of the\n' +
+        'throat, which this field cannot represent. It is refused\n' +
+        'rather than drawn, because the drawing would look entirely\n' +
+        'convincing and put the fastest water in the wrong place.');
     const rings = o.rings;
     if (!Array.isArray(rings) || !rings.length)
       throw new Error('flowfield.solveField2D: {rings} is the wetted ' +
