@@ -725,5 +725,58 @@ try { nP.fittingFor('main', 'flange'); } catch (e) { unknownKind = e.message; }
 check('asking for a fitting class the catalogue lacks throws, and says so',
       /do not know what a "flange" is/.test(unknownKind), unknownKind);
 
+/* ---- what a frame says its own pixels mean -------------------------- */
+{
+  const base = {
+    bores: { main: 6.065 },
+    components: { a: { kind: 'vessel', role: 'source', pressure: 50 },
+                  b: { kind: 'vessel', role: 'sink', pressure: 35 } },
+    segments: [{ from: 'a.out', to: 'b.in', bore: 'main' }],
+  };
+  const quiet = LPE.net(Object.assign({}, base, {
+    frames: { rig: { pxPerInch: 2.4, at: { a: [0, 0], b: [770, 0] } } },
+  }), { frame: 'rig' });
+
+  /* A FRAME THAT HAS NOT SAID GETS NO ANSWER. The bore is exaggerated
+     against the run in every one of these frames -- positions are raw
+     pixels, which is what a schematic is -- but by how much is a fact
+     about what the author meant. Inventing one would be worse than
+     leaving it unstated, because an invented factor is believed. */
+  check('a frame that declares no run scale reports no exaggeration',
+    quiet.exaggeration === null,
+    'positions are raw pixels; only the author knows what they meant');
+
+  const told = LPE.net(Object.assign({}, base, {
+    frames: { rig: { pxPerInch: 2.4, runPxPerInch: 0.3,
+                     at: { a: [0, 0], b: [770, 0] } } },
+  }), { frame: 'rig' });
+
+  /* REPORTED AS DRAWN. `scaleBore` scales a DIAMETER and the result is
+     used as a RADIUS, so the bore on screen is twice pxPerInch. A factor
+     computed from the declared number would understate it by half, on
+     exactly the figure that exists to be stated correctly. */
+  check('and one that declares it reports the factor as DRAWN',
+    told.exaggeration !== null &&
+    Math.abs(told.exaggeration.factor - 16) < 1e-9,
+    told.exaggeration ? 'bore x' + told.exaggeration.factor.toFixed(1) +
+      ' from pxPerInch ' + told.exaggeration.declaredPxPerInch
+      : 'nothing reported');
+  check('and the drawn bore scale is twice the declared one',
+    told.exaggeration.borePxPerInch ===
+      told.exaggeration.declaredPxPerInch * 2,
+    'the scaled bore is carried as a radius');
+  check('and says so in words a drawing can print',
+    /times larger/.test(told.exaggeration.note) &&
+    /Positions are unchanged/.test(told.exaggeration.note));
+
+  /* The declaration must not MOVE anything. It exists so a view can
+     annotate itself; a registration change dressed as an annotation would
+     be the worst possible version of this. */
+  check('and declaring it moves nothing',
+    JSON.stringify(quiet.toPiping().lines) ===
+    JSON.stringify(told.toPiping().lines),
+    'positions and bores are identical either way');
+}
+
 console.log(`\n${failures ? failures + ' FAILED' : 'all passed'}\n`);
 process.exit(failures ? 1 : 0);

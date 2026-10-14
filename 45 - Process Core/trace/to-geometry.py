@@ -52,6 +52,18 @@ PLAN = [
     ('ED_GASKET',    'gasket',        'rings'),
     ('ED_PLUG',      'plug',          'rings'),
     ('ED_SEAT',      'seatRing',      'rings'),
+    # The balance ports through the plug head. Painted, not generated: the
+    # convention put four across the whole plug and ran them the full height
+    # of it, which is the hollow, not a drilling. The figure draws them at
+    # head level and nowhere else -- there is a line straight across the plug
+    # at the head's underside and below it the plug is open.
+    # The piston-ring groove, both halves, where Franz painted it: on the
+    # SKIRTS. It was drawn as a bar spanning the whole plug half-width,
+    # which made it wider than the head and the plug read as loose parts.
+    ('ED_SEAL_L',    'plugSeal',      'left'),
+    ('ED_SEAL_R',    'plugSeal',      'right'),
+    ('ED_PORT_L',    'fluid:portL',   'ring'),
+    ('ED_PORT_R',    'fluid:portR',   'ring'),
     ('ED_CHAMBER_L', 'fluid:chamL',   'ring'),
     ('ED_CHAMBER_R', 'fluid:chamR',   'ring'),
     ('ED_VOIDS',     'fluid:rest',    'rings'),
@@ -119,8 +131,41 @@ def main():
         raise SystemExit('fluid: nothing outside the port pocket. The left '
                          'chamber is missing from the paint.')
     chamL = min(rest, key=centre)
-    voids = [r for r in rest if r is not chamL]
+    rest2 = [r for r in rest if r is not chamL]
+
+    # ---- the balance ports, by containment -------------------------------
+    #
+    # A fluid pocket that lies wholly INSIDE the plug outline is a hole
+    # through the plug: there is nowhere else for it to be. That is the whole
+    # rule, and it is a fact about where the paint is rather than a count or
+    # a diameter typed in here.
+    #
+    # The plug's own hollow is not one of these. It opens downward into the
+    # space under the plug and comes back as part of that pocket, which is
+    # exactly right -- a cup is open at the bottom.
+    plug_rings = parts['plug']
+    px0 = min(q[0] for r in plug_rings for q in r)
+    px1 = max(q[0] for r in plug_rings for q in r)
+    py0 = min(q[1] for r in plug_rings for q in r)
+    py1 = max(q[1] for r in plug_rings for q in r)
+
+    def inside_plug(ring):
+        return (min(q[0] for q in ring) > px0 and
+                max(q[0] for q in ring) < px1 and
+                min(q[1] for q in ring) > py0 and
+                max(q[1] for q in ring) < py1)
+
+    ports = [r for r in rest2 if inside_plug(r)]
+    if len(ports) != 2:
+        raise SystemExit(
+            'expected 2 balance ports inside the plug outline, found %d. The '
+            'section cuts two of them; if the paint has changed, look at '
+            '_preview.png before changing this rule.' % len(ports))
+    portL = min(ports, key=centre)
+    portR = max(ports, key=centre)
+    voids = [r for r in rest2 if r not in ports]
     pick = {'fluid:chamL': [chamL], 'fluid:chamR': [chamR],
+            'fluid:portL': [portL], 'fluid:portR': [portR],
             'fluid:rest': voids}
 
     src = open(target, encoding='utf-8').read()

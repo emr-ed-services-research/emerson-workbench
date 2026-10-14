@@ -610,12 +610,44 @@ console.log('');
         plain.declaredCircuits.length === 0,
         'told ' + JSON.stringify(told.declaredCircuits) +
         ', untold ' + JSON.stringify(plain.declaredCircuits));
-      const c = wc.balance.centre;
-      const L = told.at(c[0] - 1, c[1]), R = told.at(c[0] + 1, c[1]);
+      /* SAMPLED IN THE PORTS, not a guessed offset from the centre. The
+         middle of this circuit is solid plug head -- that is what makes it
+         a circuit rather than a pocket -- so a probe a fixed distance
+         either side of the centre reads metal and tells you nothing. */
+      const mid = (ring) => {
+        let x0 = Infinity, x1 = -Infinity, y0 = Infinity, y1 = -Infinity;
+        for (const q of ring) {
+          if (q[0] < x0) x0 = q[0]; if (q[0] > x1) x1 = q[0];
+          if (q[1] < y0) y0 = q[1]; if (q[1] > y1) y1 = q[1];
+        }
+        return [(x0 + x1) / 2, (y0 + y1) / 2];
+      };
+      const ports = wc.balance.legs.filter(l => l.dir[1] !== 0);
+      const left = ports.find(l => mid(l.ring)[0] < 0);
+      const right = ports.find(l => mid(l.ring)[0] > 0);
+      const L = told.at.apply(null, mid(left.ring));
+      const R = told.at.apply(null, mid(right.ring));
       check('and the water in the plug goes up the inlet side',
         L && R && L.vy > 0 && R.vy < 0,
         L && R ? 'left vy ' + L.vy.toFixed(1) + ', right vy ' +
-                 R.vy.toFixed(1) : 'the circuit centre is not in the cavity');
+                 R.vy.toFixed(1) : 'a port centre is not in the cavity');
+
+      /* THE PART THAT WAS WRONG AND LOOKED WRONG. A rigid-body swirl puts
+         a diagonal velocity inside a vertical drilling, which the walls
+         forbid. Up or down, nothing else. */
+      check('and it goes straight up and down inside the ports',
+        Math.abs(L.vx) < Math.abs(L.vy) * 0.05 &&
+        Math.abs(R.vx) < Math.abs(R.vy) * 0.05,
+        'left ' + L.vx.toFixed(2) + ' across against ' + L.vy.toFixed(1) +
+        ' along; a drilling has vertical walls');
+
+      const cav = wc.balance.legs.find(l => l.dir[0] !== 0);
+      const C = told.at.apply(null, mid(cav.ring));
+      check('and across the cavity, from the rising port to the falling one',
+        C && Math.sign(C.vx) === Math.sign(cav.dir[0]) &&
+        Math.abs(C.vy) < Math.abs(C.vx) * 0.05,
+        C ? 'vx ' + C.vx.toFixed(1) + ', vy ' + C.vy.toFixed(2)
+          : 'the cavity centre is not in the cavity');
       check('and it is still stirred rather than flowing',
         L.still === true && R.still === true,
         'nothing passes through a balance hole on balance; the liquid ' +

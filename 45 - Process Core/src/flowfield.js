@@ -1430,6 +1430,20 @@
 
     /* Rejected pockets keep their label but have no entry, so the
        lookup is by id and a miss means "slow, but not an eddy". */
+    /* Point in ring, for the declared legs. The solve has its own copy of
+       this; duplicating six lines is cheaper than hoisting a helper out of
+       a function that is deliberately self-contained. */
+    const inside = (ring, px, py) => {
+      let hit = false;
+      for (let a = 0, b = ring.length - 1; a < ring.length; b = a++) {
+        const p1 = ring[a], p2 = ring[b];
+        if ((p1[1] > py) !== (p2[1] > py) &&
+            px < (p2[0] - p1[0]) * (py - p1[1]) / (p2[1] - p1[1]) + p1[0])
+          hit = !hit;
+      }
+      return hit;
+    };
+
     const byId = {};
     for (const pk of pockets) byId[pk.id] = pk;
 
@@ -1462,6 +1476,14 @@
       pk.sense = Math.sign(c.spin) || pk.sense;
       pk.cx = c.centre[0]; pk.cy = c.centre[1];
       pk.declaredAs = c.of || 'a declared circuit';
+      /* LEGS BEAT A SWIRL WHEREVER THEY REACH. A rigid-body rotation is
+         the right dress for an open pocket -- a chamber corner, where the
+         water really can turn any way it likes. It is the wrong one for a
+         circuit made of CHANNELS: inside a drilling the walls are
+         vertical, so a diagonal velocity is not slow or approximate, it
+         is impossible. Where the caller has declared which way a leg
+         runs, that wins, and the swirl is left to the cells between. */
+      if (c.legs && c.legs.length) pk.legs = c.legs;
       declaredCircuits.push(pk.id);
     }
 
@@ -1489,6 +1511,47 @@
            as the water in it being at rest. */
         const pk = pocketAt(x, y);
         if (!pk) return v;
+
+        if (pk.legs) {
+          for (const leg of pk.legs) {
+            if (!inside(leg.ring, x, y)) continue;
+            /* TAPERED AT THE MOUTHS, so the circuit joins the flow instead
+               of butting against it.
+
+               A leg at one speed from end to end stops dead where its ring
+               stops, and the water in the plug reads as a separate
+               mechanism bolted beside the stream rather than part of it.
+               It is not separate: the bottom of each port opens into the
+               hollow, and the hollow is live process. What happens there
+               is an exchange, not a wall.
+
+               So the leg's push falls to nothing over the last fifth at
+               each end, and because it is ADDED to the solved field a
+               particle leaving a port simply finds itself in whatever the
+               stream is doing. Nothing is invented by this: the direction
+               is still the channel's, the speed is still a share of the
+               neighbouring flow, and only the abruptness goes. */
+            let lo = Infinity, hi = -Infinity;
+            const ax = Math.abs(leg.dir[0]) > Math.abs(leg.dir[1]) ? 0 : 1;
+            for (const q of leg.ring) {
+              if (q[ax] < lo) lo = q[ax];
+              if (q[ax] > hi) hi = q[ax];
+            }
+            const span = hi - lo;
+            const here = (ax === 0 ? x : y);
+            let taper = 1;
+            if (span > 1e-9) {
+              const edge = Math.min(here - lo, hi - here) / span;
+              taper = Math.min(1, Math.max(0, edge / 0.2));
+            }
+            const t = pk.speed * taper;
+            const lv = { vx: v.vx + leg.dir[0] * t,
+                         vy: v.vy + leg.dir[1] * t };
+            if (v.still) lv.still = true;
+            return lv;
+          }
+        }
+
         const dx = x - pk.cx, dy = y - pk.cy;
         const r = Math.hypot(dx, dy);
         if (!(r > 1e-6)) return v;
