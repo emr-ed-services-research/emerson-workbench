@@ -7,7 +7,7 @@
    reproduces the effect every valve course teaches -- that equal
    percentage trim in a resistive line behaves roughly linear.
 
-   The curves come from lab/valves.json, read out of Fisher Catalog 12,
+   The curves come from extract/valves.json, read out of Fisher Catalog 12,
    so this test grades the layer against the manufacturer's own measured
    coefficients rather than against a definition.                     */
 'use strict';
@@ -27,7 +27,7 @@ const near = (a, b, t) => Math.abs(a - b) <= t;
 console.log('\ntrim -- travel is not position\n');
 
 const VALVES = JSON.parse(fs.readFileSync(
-  path.join(__dirname, '..', 'lab', 'valves.json'), 'utf8')).valves;
+  path.join(__dirname, '..', 'extract', 'valves.json'), 'utf8')).valves;
 const pick = cage => VALVES.find(v =>
   v.cage === cage && v.body === 'ED' && v.curve && v.cv100 > 90);
 
@@ -166,7 +166,7 @@ refuses('and an untabulated Class VI port is not interpolated',
    the failure that matters, not a disagreement.                       */
 console.log('');
 const CORPUS = JSON.parse(fs.readFileSync(
-  path.join(__dirname, '..', 'lab', 'valves.json'), 'utf8')).valves;
+  path.join(__dirname, '..', 'extract', 'valves.json'), 'utf8')).valves;
 check('the graded corpus is the whole of Catalog 12 as read',
       CORPUS.length === 105, CORPUS.length + ' curves');
 

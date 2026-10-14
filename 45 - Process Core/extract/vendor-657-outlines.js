@@ -41,7 +41,7 @@
    across as printed. The only transformation is the frame: crop pixels
    to inches, origin on the yoke's bottom face.
 
-       node lab/vendor-657-outlines.js                                */
+       node extract/vendor-657-outlines.js                                */
 'use strict';
 
 const fs = require('fs');
@@ -285,7 +285,7 @@ const doc = {
   + 'THE POINTS. That lost the yoke\'s spring-housing cavity, the upper '
   + 'casing\'s two travel-stop bosses, and the second half of the spring '
   + 'seat and adjustor, and it put chords across every cast curve. '
-  + 'Regenerate with lab/vendor-657-outlines.js; never hand-edit this '
+  + 'Regenerate with extract/vendor-657-outlines.js; never hand-edit this '
   + 'file.',
   _frame:
     'Inches. x from the actuator centreline, y UP from the bottom face of '

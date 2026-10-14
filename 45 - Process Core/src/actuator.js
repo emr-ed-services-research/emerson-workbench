@@ -128,7 +128,7 @@
           !Array.isArray(rs[0][0]))
         throw new Error('actuator.diaphragm: shape "' + k + '" must be a ' +
           'LIST OF RINGS. A flat ring here means the figure was vendored ' +
-          'with lab/vendor-657-outlines.js skipped, or by hand -- and a ' +
+          'with extract/vendor-657-outlines.js skipped, or by hand -- and a ' +
           'part flattened to one ring loses its holes silently. ' +
           'Regenerate the figure.');
       return rs.map(r => r.map(q => [q[0] * FAM, q[1] * FAM]));

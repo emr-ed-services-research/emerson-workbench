@@ -34,7 +34,7 @@
    The nominal size is then keyed off the outside diameter, which is
    unique per NPS and is itself read from the same table.
 
-   Run: node lab/extract-pipe.js                                      */
+   Run: node extract/extract-pipe.js                                      */
 'use strict';
 
 const fs = require('fs');

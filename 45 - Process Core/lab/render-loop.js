@@ -57,7 +57,7 @@ src.push({ name: 'skins/modern',
 const parts = fs.readFileSync(path.join(CORE, 'catalogue', 'parts.json'), 'utf8');
 
 /* Only the one valve. The page is about a service, not a catalogue. */
-const valves = JSON.parse(fs.readFileSync(path.join(HERE, 'valves.json'), 'utf8'));
+const valves = JSON.parse(fs.readFileSync(path.join(HERE, '..', 'extract', 'valves.json'), 'utf8'));
 const VALVE = valves.valves.find(v => v.body === 'EWT' &&
   v.cage === 'equal-percentage' && String(v.nps) === '10 x 8');
 if (!VALVE) { console.error('EWT 10x8 equal-% missing from valves.json'); process.exit(1); }

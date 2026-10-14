@@ -52,7 +52,7 @@ const LPE = global.window.LPE;
 const CAT = LPE.catalogue.load(JSON.parse(fs.readFileSync(
   path.join(__dirname, '..', 'catalogue', 'parts.json'), 'utf8')));
 const VALVES = JSON.parse(fs.readFileSync(
-  path.join(__dirname, 'valves.json'), 'utf8')).valves;
+  path.join(__dirname, '..', 'extract', 'valves.json'), 'utf8')).valves;
 
 /* ---- the service, as published ------------------------------------- */
 const SVC = {

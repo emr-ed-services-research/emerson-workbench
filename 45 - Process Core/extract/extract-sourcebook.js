@@ -48,7 +48,7 @@
    Rejects are listed, not dropped quietly -- they are work, and the
    corpus states how much of it is outstanding.
 
-   Run: node lab/extract-sourcebook.js                                 */
+   Run: node extract/extract-sourcebook.js                                 */
 'use strict';
 
 const fs = require('fs');

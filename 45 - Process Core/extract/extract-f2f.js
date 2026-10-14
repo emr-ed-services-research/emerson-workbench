@@ -1,7 +1,7 @@
 /* @layer registration
    @core Process Core -- flow-lab tooling, not a process layer.
    Reads the Control Valve Handbook's flanged globe face-to-face table
-   into the catalogue. Run: node lab/extract-f2f.js                   */
+   into the catalogue. Run: node extract/extract-f2f.js                   */
 /* ---------------- FACE-TO-FACE, FLANGED GLOBE ------------------------
 
    WHY THIS DIMENSION. A cutaway of a globe valve needs a length before

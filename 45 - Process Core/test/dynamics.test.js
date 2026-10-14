@@ -439,7 +439,7 @@ require(path.join(__dirname, '..', 'src', 'trim.js'));
 require(path.join(__dirname, '..', 'src', 'sizing.js'));
 
 const VALVES = JSON.parse(fs.readFileSync(
-  path.join(__dirname, '..', 'lab', 'valves.json'), 'utf8')).valves;
+  path.join(__dirname, '..', 'extract', 'valves.json'), 'utf8')).valves;
 const EQPCT = VALVES.find(v => v.cage === 'equal-percentage' &&
                                v.body === 'ED' && v.cv100 > 90);
 

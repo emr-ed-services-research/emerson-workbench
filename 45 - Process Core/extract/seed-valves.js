@@ -1,7 +1,7 @@
 /* @layer registration
    @core Process Core -- pipeline tooling, not a process layer.
    Promotes the extracted Catalog 12 valves into the catalogue as a real
-   part class. Run: node lab/seed-valves.js                            */
+   part class. Run: node extract/seed-valves.js                            */
 /* ---------------- SEEDING THE VALVE CLASS ----------------------------
 
    WHAT CHANGES. Until now a valve existed in `lab/valves.json`, which is

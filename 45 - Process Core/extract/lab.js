@@ -2,7 +2,7 @@
    @core Process Core -- the flow lab. Tooling, not a process layer.
    Grades the core against published answers. Slower than test.js and
    every expected value carries a document reference.
-   Run: node lab/lab.js                                                */
+   Run: node extract/lab.js                                                */
 /* ---------------- THE FLOW LAB ---------------------------------------
 
    `test.js` asks whether the core does what it says. This asks whether

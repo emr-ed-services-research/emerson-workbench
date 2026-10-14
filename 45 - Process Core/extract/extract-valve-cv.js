@@ -56,7 +56,7 @@
    label than to a neighbouring group's. Checked against the rendered
    page before being relied on.
 
-   Run: node lab/extract-valve-cv.js                                   */
+   Run: node extract/extract-valve-cv.js                                   */
 'use strict';
 
 const fs = require('fs');
