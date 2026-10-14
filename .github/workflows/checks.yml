@@ -1,0 +1,45 @@
+# The vault's own checks, run on every push.
+#
+# These suites existed long before this file and were run by hand, which
+# meant "the checks pass" asserted only that somebody remembered. It is
+# not a theoretical gap: moving the extraction tools out of lab/ took 21
+# checks off the run and the suite still reported green, because the
+# layer guard discovered its files from a hardcoded list of directories.
+# Nothing would have caught that but a person noticing the number fell.
+#
+# Verified to pass in a clean clone before this file was written: no
+# Poppler, no local PDFs, nothing from one machine.
+
+name: checks
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Each step is named for the question it answers, so a red X on a
+      # commit says WHICH claim stopped being true.
+
+      - name: Process Core -- the model, layer by layer
+        run: node test.js
+        working-directory: '45 - Process Core'
+
+      # Builds dist/ and verifies the vendored core against its lock, so
+      # this is also what catches a change to src/ that was never
+      # re-vendored -- the one failure the two repos cannot see alone.
+      - name: Lunar Process Engineer -- build, and the vendor lock
+        run: node build.js
+        working-directory: '50 - Lunar Process Engineer'
+
+      - name: Standards -- every citation resolves to an entry
+        run: node "20 - Source Library/Standards/check-standards.js"
