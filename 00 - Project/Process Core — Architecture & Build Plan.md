@@ -1042,3 +1042,18 @@ tag. One line in `schemvis.js` once somebody wants it.
 **Follow-ups from Phase 0 — now done in Phase 1:** `Vault Structure.md` has been
 reconciled; `25 - Vitruvius`, `45 - Process Core` and `50 - Lunar Process Engineer` are in
 its folder table, and the root `CLAUDE.md` no longer has to flag it as stale.
+
+## Roadmap — an electrical attribute
+
+Noted 2026-10-13, not scoped and not started. Alongside the process side there
+is to be an **electrical** attribute: the wiring, supplies and signal paths that
+sit beside the piping rather than inside it. Recorded here so it is a known
+direction rather than a surprise, and so nobody designs the instrument overlay
+in a way that assumes a 4-20 mA pair is the only thing that will ever be drawn
+over a plant.
+
+The cascade plant page (`lab/cascade/`) already separates *signal* from *pipe* —
+instruments are declared over the netlist rather than inside it, because a
+signal is not a pipe. That separation is the hook an electrical layer would
+hang on.
+
