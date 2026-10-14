@@ -33,7 +33,7 @@ const path = require('path');
    process layer; only files under src/ count as a layer's implementation. */
 const LAYERS = ['registration', 'catalogue', 'geometry', 'sizing',
                 'thermal', 'instrument', 'trim', 'actuator', 'assembly',
-                'netlist', 'schem-view',
+                'netlist', 'plant', 'schem-view',
                 'phys-view', 'dynamics', 'flow-field', 'scenario', 'chrome'];
 
 /* THERMAL sits beside SIZING, not above DYNAMICS. Sizing is the flow

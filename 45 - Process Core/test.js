@@ -15,6 +15,7 @@
    See `00 - Project/Process Core -- Architecture & Build Plan.md`.        */
 
 'use strict';
+const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 
@@ -27,6 +28,7 @@ const SUITES = [
   ['test/instrument.test.js','instrument (a reading is not a number)'],
   ['test/trim.test.js',     'trim (characteristic, installed, leakage)'],
   ['test/topology.test.js', 'netlist (level 1 reproduction, validation)'],
+  ['test/plant.test.js',    'plant (one path through a line and its parts)'],
   ['test/schemvis.test.js', 'schem view (ISA-5.5 symbols, state, line breaks)'],
   ['test/physvis.test.js',  'phys view (elbows, tees, reducers, draw order)'],
   ['test/dynamics.test.js', 'dynamics (level 1 solver, bit-identical)'],
@@ -38,10 +40,37 @@ const SUITES = [
   ['test/depth.test.js',    'chrome (how far in you are looking)'],
 ];
 
+/* ---- DISCOVERED, NOT LISTED ----------------------------------------
+
+   SUITES above is a list of labels, not the list of what runs. It used
+   to be both, and that meant a new suite was silently never run: adding
+   test/plant.test.js put eighteen checks in the repository and zero of
+   them in the result, while the run still reported green.
+
+   This is the second time the same shape of bug has been found in a
+   week -- the layer guard discovered its files from a hardcoded list of
+   directories too, and quietly stopped checking twenty-one things when
+   a folder was renamed. A list of what to check is a list that goes
+   stale, and it goes stale silently, which is the worst way.
+
+   Every test/*.test.js runs. The table only decides what each one is
+   CALLED. A suite with no label still runs, and says so. */
+const LABELS = new Map(SUITES);
+const DISCOVERED = fs.readdirSync(path.join(__dirname, 'test'))
+  .filter(f => f.endsWith('.test.js'))
+  .map(f => 'test/' + f)
+  .sort((a, b) => {
+    const ia = SUITES.findIndex(x => x[0] === a);
+    const ib = SUITES.findIndex(x => x[0] === b);
+    return (ia < 0 ? 1e9 : ia) - (ib < 0 ? 1e9 : ib);
+  });
+
 let failed = 0, total = 0;
 const lines = [];
 
-for (const [file, label] of SUITES) {
+for (const file of DISCOVERED) {
+  const label = LABELS.get(file) || path.basename(file, '.test.js') +
+    ' (no label in SUITES -- running anyway)';
   const r = spawnSync(process.execPath, [path.join(__dirname, file)],
                       { encoding: 'utf8', cwd: __dirname });
   const ok = r.status === 0;
@@ -61,6 +90,6 @@ console.log('\nPROCESS CORE\n');
 lines.forEach(l => console.log(l));
 console.log('\n  ' + (failed
   ? failed + ' SUITE(S) FAILED'
-  : total + ' checks passed across ' + SUITES.length + ' layers') + '\n');
+  : total + ' checks passed across ' + DISCOVERED.length + ' layers') + '\n');
 
 process.exit(failed ? 1 : 0);
