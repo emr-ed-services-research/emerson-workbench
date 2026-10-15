@@ -703,39 +703,17 @@ ${SRC.map(m => m.code).join('\n')}
                y: VALVE_CY + lane, lane: lane, ips: 0 };
     })());
 
-  /* ---- THE WATER THAT DOES NOT GO ANYWHERE -------------------------
+  /* NOTHING IS SEEDED INSIDE THE VALVE. There was a set placed
+     directly into the balance chamber to stop it looking empty, and it
+     was the same cheat in another costume: markers that exist only in
+     the valve, put there rather than arriving. Every marker on this
+     page enters at the tank and leaves at the exchanger.
 
-     Above the plug the valve was empty of markers, and it read as empty
-     of water. It is not. That is the balance chamber: equal pressure
-     above and below the plug is the whole point of a balanced trim, and
-     the cavity is full of liquid that simply has nowhere to be going.
-
-     No streamline reaches it, so markers carried by the flow never will
-     either -- which is why deleting the second population left a hole
-     where the second population had been covering.
-
-     Seeded directly instead, in the same list as everything else. They
-     are not a separate system and they are not stirred: the field says
-     the velocity there is nothing, so they sit, which is what that water
-     does. And because they sit, they cannot drain the flow or be drained
-     by it -- the trap that closed eddies set is not set here. */
-  (function(){
-    const E = VG.extent;
-    let placed = 0;
-    for(let tries=0; tries<40000 && placed<260; tries++){
-      const ux = E.x0 + Math.random()*(E.x1 - E.x0);
-      const uy = E.y0 + Math.random()*(E.y1 - E.y0);
-      const v = FLD.at(ux, uy);
-      if(!v) continue;
-      /* only where the flow is not: the still cells, and anywhere the
-         solve left moving slower than a hundredth of the line */
-      const slow = Math.hypot(v.vx, v.vy) < IPS_LINE*0.01;
-      if(!FLD.isStill(ux, uy) && !slow) continue;
-      P.push({ x: VALVE_CX + ux*VPPI, y: VALVE_CY - uy*VPPI,
-               lane: 0, ips: 0, still: true });
-      placed++;
-    }
-  })();
+     The water above the plug is shown by the FILL, which is what a
+     fill is for. Markers show motion, and there is none there -- equal
+     pressure above and below the plug is the whole point of a balanced
+     trim, and the bores through the plug carry the same water at the
+     same pressure rather than a circuit of their own. */
 
   const HOTREF = FLD.maxSpeedIps * 0.40;
   function parcel(px, py, ips){
