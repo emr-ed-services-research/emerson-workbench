@@ -126,5 +126,88 @@ check('it draws nothing', !/\.(beginPath|moveTo|lineTo|fillText|fillRect)\s*\(/.
 check('it names no colour', !/#[0-9a-fA-F]{3,8}\b/.test(code));
 check('it chooses no magnification', !/pxPerInch|scale\s*[:=]/.test(code));
 
+/* ---- the whole run as ONE wetted domain --------------------------------
+
+   The seams this core produced at a pipe-to-valve joint all came from the
+   same shape: a solved field inside the valve, a straight run outside it,
+   and arithmetic in between to reconcile the two. Lane, sign, scale,
+   recovery rate, paint order -- fixing one moved the inconsistency
+   somewhere else.
+
+   These guard the absence of that boundary. If a future change puts the
+   pipe back outside the solve, the first two fail. */
+(function () {
+  global.window = global.window || {};
+  require('../src/geometry.js');
+  require('../src/trim.js');
+  require('../src/catalogue.js');
+  require('../src/flowfield.js');
+
+  /* A component stub that answers the two questions plant.wetted asks,
+     so this suite does not need the whole catalogue to make its point. */
+  const hw = 3.0, A = Math.PI * hw * hw;
+  const fake = {
+    extent: { x0: -7, x1: 7, y0: -4, y1: 6 },
+    wettedAt: () => ({ rings: [[[-7,-hw],[7,-hw],[7,hw],[-7,hw]]],
+                       throatRings: [], stillRings: [], plenum: {},
+                       balance: { rings: [] } }),
+    flowPathAt: () => ({ stations: [
+      { x: -7, y: 0, area: A, halfW: hw, what: 'end connection' },
+      { x: 0, y: 0, area: A * 0.2, halfW: hw * 0.45, what: 'throat' },
+      { x: 7, y: 0, area: A, halfW: hw, what: 'end connection' } ] }),
+  };
+
+  const d = P.wetted({ geometry: fake, travelPct: 70, stub: 10,
+                       lineBore: hw * 2 });
+
+  check('the line either side is part of the domain, not outside it',
+    d.extent.x0 === -17 && d.extent.x1 === 17,
+    d.extent.x0 + ' .. ' + d.extent.x1);
+
+  check('and it arrives as rings, so the solver sees one wetted region',
+    d.rings.length === 3, d.rings.length + ' rings');
+
+  check('the openings are at the ends of the LINE, not at the valve faces',
+    d.openings[0].x < -16 && d.openings[1].x > 16,
+    JSON.stringify(d.openings.map(o => o.x)));
+
+  check('the stations run line, component, line',
+    d.stations[0].what === 'line' &&
+    d.stations[d.stations.length - 1].what === 'line' &&
+    d.stations.length === 5, d.stations.map(q => q.what).join(' / '));
+
+  check('the stub is bored to meet the body, so nothing steps at the face',
+    Math.abs(d.stubBore - hw * 2) < 1e-9, d.stubBore);
+
+  check('and what the line really is, is reported rather than assumed',
+    d.lineBore === hw * 2);
+
+  /* It has to actually solve, and the answer has to be right somewhere
+     this suite can check independently: Q over the bore, at the far end,
+     which the solve was never told. */
+  const gpm = 560;
+  const f = window.LPE.flowfield.solveField2D(
+    Object.assign({ gpm: gpm, cellIn: 0.25 }, d));
+  check('the composed domain solves', !f.shut && f.residual < 1e-6,
+    'residual ' + f.residual.toExponential(2));
+
+  const want = 0.3208 * gpm / A;
+  const got = (() => { const v = f.at(d.extent.x0 + 1, 0);
+    return v ? Math.hypot(v.vx, v.vy) / 12 : null; })();
+  check('and the line velocity is Q over the bore, which it was not told',
+    got !== null && Math.abs(got - want) / want < 0.12,
+    'got ' + (got === null ? 'nothing' : got.toFixed(2)) +
+    ', wanted ' + want.toFixed(2));
+
+  check('the fastest water is at the throat, by continuity alone',
+    f.maxSpeedIps / 12 > want * 2, (f.maxSpeedIps / 12).toFixed(1));
+
+  refuses('a geometry that cannot say where its water is is refused',
+    () => P.wetted({ geometry: {}, travelPct: 70 }), 'wettedAt');
+  refuses('a run with no line either side is refused',
+    () => P.wetted({ geometry: fake, travelPct: 70, stub: 0 }),
+    'valve on its own');
+})();
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

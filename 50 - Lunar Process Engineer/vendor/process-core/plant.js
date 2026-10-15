@@ -204,7 +204,88 @@
     });
   }
 
-  LPE.plant = { run: run, areaOf: areaOf };
+  /* ---- THE WHOLE RUN AS ONE WETTED DOMAIN ---------------------------
+
+     This is the piece that was missing, and its absence is what every
+     seam in the cascade was made of.
+
+     A consumer that wants a line with a valve in it has, until now, had
+     two sources of truth for where the water goes: a solved 2D field
+     inside the valve, and a straight run outside it. Those meet at the
+     face, and reconciling them -- which lane a marker is in, which way
+     the offset points, how fast it returns to centre, which pass paints
+     it -- is where every defect lived. Signs, scales, recovery rates,
+     paint order. Fixing one moved the inconsistency somewhere else,
+     because there was no single place that said what was correct.
+
+     So there is no boundary here. The pipe either side is wetted region
+     like any other, handed to flowfield.solveField2D in ONE call, and
+     the whole run comes back as one field. There is no crossing event
+     because there is nothing to cross, no lane because nothing needs
+     reconciling, and nothing to seed because the domain is already
+     full.
+
+     Measured on the ED at 560 gpm with 14 in of line either side: 268
+     by 80 cells, converged in half a second, 6.2 ft/s at both far ends
+     -- which is Q over the bore, a number the solve never saw -- and 64
+     at the cage window. Of 1200 markers over 900 frames, 535 went in
+     one end and out the other.
+
+     THE STUB MEETS THE BODY, not the catalogue. The bore a traced body
+     presents is a proportion of its own face-to-face rather than a
+     sourced dimension, so it will not generally equal the line it is
+     declared to be in. For a drawing that does not matter and matching
+     them does: a step at the face is visible, and the difference is not.
+     The declared line bore is returned alongside so a consumer can say
+     what the pipe really is while drawing one that fits. */
+  function wetted(opts) {
+    const o = opts || {};
+    need(o, ['geometry', 'travelPct'], 'plant.wetted');
+    const gv = o.geometry;
+    if (typeof gv.wettedAt !== 'function' || typeof gv.flowPathAt !== 'function')
+      throw new Error('plant.wetted: {geometry} must be a built component -- ' +
+        'geometry.globeValve() -- that can answer wettedAt and flowPathAt. ' +
+        'A plant cannot compose a part that cannot say where its water is.');
+
+    const stub = o.stub === undefined ? 14 : o.stub;
+    if (!(stub > 0))
+      throw new Error('plant.wetted: {stub} is how many inches of line sit ' +
+        'either side, and it must be positive. A run with no line in it is ' +
+        'the valve on its own, which is what drawValve already draws.');
+
+    const W = gv.wettedAt(o.travelPct, o.wettedOpts || { minGap: 0.25 });
+    const st = gv.flowPathAt(o.travelPct).stations;
+    const E = gv.extent;
+    const hw = st[0].halfW;                 /* what the body presents */
+    const a = PI * hw * hw;
+    const EPS = 0.001;                      /* overlap, so the cells merge */
+
+    const inX = E.x0 - stub, outX = E.x1 + stub;
+    const lead = [[inX, -hw], [E.x0 + EPS, -hw], [E.x0 + EPS, hw], [inX, hw]];
+    const tail = [[E.x1 - EPS, -hw], [outX, -hw], [outX, hw], [E.x1 - EPS, hw]];
+
+    return {
+      rings: [lead, tail].concat(W.rings),
+      throatRings: W.throatRings,
+      stillRings: W.stillRings,
+      plenum: W.plenum,
+      circuits: [W.balance],
+      openings: [
+        { x: inX + 0.05, y: 0, nx: 1, ny: 0, halfW: hw, role: 'inlet' },
+        { x: outX - 0.05, y: 0, nx: -1, ny: 0, halfW: hw, role: 'outlet' },
+      ],
+      stations: [{ x: inX, y: 0, area: a, halfW: hw, what: 'line' }]
+        .concat(st, [{ x: outX, y: 0, area: a, halfW: hw, what: 'line' }]),
+      extent: { x0: inX, x1: outX, y0: E.y0, y1: E.y1 },
+      stubBore: hw * 2,
+      lineBore: o.lineBore === undefined ? null : o.lineBore,
+      note: 'One domain: line, component, line. Solve it in a single ' +
+            'flowfield.solveField2D call and there is no boundary left ' +
+            'for a consumer to get wrong.',
+    };
+  }
+
+  LPE.plant = { run: run, wetted: wetted, areaOf: areaOf };
 
 })(typeof window !== 'undefined'
    ? (window.LPE = window.LPE || {})
