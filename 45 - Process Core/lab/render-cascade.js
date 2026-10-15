@@ -1111,7 +1111,23 @@ ${SRC.map(m => m.code).join('\n')}
        water ran across the face of the tank -- so nothing was feeding
        anything, it was all just stacked. Equipment last means a vessel
        covers the joint, which is what a vessel does. */
-    g.save(); g.translate(X(0),Y2(0)); g.scale(k,k);
+    /* ---- THE PIPE STOPS AT THE FLANGES ----------------------------
+
+       phys-view draws the run end to end, which means it drew the
+       line's water STRAIGHT THROUGH the valve -- a flat band crossing
+       the chambers, underneath the valve's own cavity. Two bodies of
+       water in the same place, one of them a pipe that does not exist
+       there. The valve body hid most of it and the rest read as an
+       overlay, which is exactly what it was.
+
+       Clipped to either side of the faces. Between them the valve is
+       the pipe, and draws its own water. */
+    g.save();
+    g.beginPath();
+    g.rect(0, 0, X(FLANGE_IN), cv.height);
+    g.rect(X(FLANGE_OUT), 0, cv.width - X(FLANGE_OUT), cv.height);
+    g.clip();
+    g.translate(X(0),Y2(0)); g.scale(k,k);
     LPE.phys(pp).draw(g, T);
     g.restore();
 
