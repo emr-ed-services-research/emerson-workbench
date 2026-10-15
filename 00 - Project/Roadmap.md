@@ -8,6 +8,12 @@ updated: 2026-08-31
 
 # Roadmap
 
+> [!warning] Behind the work as of 2026-10-14
+> Last substantively updated 2026-09-06, while the work carried on. For where
+> things actually stand today see [[Current State]]; this page is accurate
+> about *structure*, not about *status*. Bringing it back in sync is
+> outstanding — it is meant to be maintained, not regenerated.
+
 Three stages, sequenced so each one delivers something usable before the next
 begins. Stage 1 is the pilot and the current focus.
 

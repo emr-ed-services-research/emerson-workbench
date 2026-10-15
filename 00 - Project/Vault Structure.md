@@ -16,6 +16,7 @@ How this Obsidian vault is organized and how to work in it.
 | Folder | Holds |
 | --- | --- |
 | `00 - Project` | Charter, roadmap, open questions, glossary, this note |
+| `05 - Home` | **Layer 1.** The landing page that hosts the courses, with its icon, launcher and local server |
 | `10 - Courses` | One folder per course; [[Courses]] is the map of content |
 | `20 - Source Library` | Handbooks and technical publications; [[Source Library]] is the MOC. **Interactive Models moved out 2026-10-12** — see `55 - Interactive Models`. The reasoning that put them here was that courses reference them rather than own them, which is true and is also true of the Process Core; what settled it is that a library holds documents, and a model with its own ground truth, its own build pipeline and its own narration is a product. |
 | `25 - Vitruvius` | The expert-engineer persona the CVE pipeline reasons through, plus its findings ledger. Scoped to CVE1→CVE2→CVE-Industry, not department-wide. |
@@ -24,6 +25,9 @@ How this Obsidian vault is organized and how to work in it.
 | `45 - Process Core` | The shared **process model** — netlist, schematic view, and later dynamics. Consumers (LPE, eventually LoopBench) **vendor** a copy plus a SHA-256 lock, the same way a course vendors the engine. See its `README.md`. |
 | `50 - Lunar Process Engineer` | The process-simulation game. First consumer of `45 - Process Core`. |
 | `99 - Attachments` | PDFs, images, exported decks — the default attachment folder |
+| `docs` | What GitHub Pages publishes, built from **`main`** — so it lags any work branch |
+| `narration` | Chatterbox TTS pipeline: script → voiced audio + per-line timing. Own venv |
+| `voice` | Voice experiments |
 
 `Emerson Workbench.md` at the vault root is the home note.
 

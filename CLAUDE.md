@@ -54,8 +54,9 @@ chrome  >  scenario  >  flow-field  >  dynamics  >  schem-view | phys-view
 | Folder | Holds |
 |---|---|
 | `00 - Project` | Charter, architecture, pipeline, style guide, philosophy. **Start here.** |
-| `10 - Courses` | One folder per course |
-| `20 - Source Library` | Handbooks, IOMs, the Component Index, and the **Standards Register** |
+| `05 - Home` | **Layer 1.** The landing page that hosts the courses, with its icon, launcher and local server |
+| `10 - Courses` | One folder per course. `Courses.md` is the index note |
+| `20 - Source Library` | Handbooks, IOMs, the **Subject-Matter Index** and the **Standards Register**. `Source Library.md` is the index note |
 | `25 - Vitruvius` | The expert-engineer persona the CVE pipeline reasons through, plus its findings ledger. Scoped to CVE1→CVE2→CVE-Industry, **not** department-wide |
 | `30 - Templates` | Obsidian note templates (not code) |
 | `40 - Engine` | The shared course runtime. Courses **vendor** a built copy + lock file |
@@ -63,12 +64,29 @@ chrome  >  scenario  >  flow-field  >  dynamics  >  schem-view | phys-view
 | `50 - Lunar Process Engineer` | The process-simulation game |
 | `55 - Interactive Models` | Exact-geometry equipment models people operate. First: the Fisher 657 Working Model. Moved out of the Source Library 2026-10-12 — a library holds documents, and these are products with their own pipelines |
 | `99 - Attachments` | PDFs, images, exports |
+| `docs` | What GitHub Pages serves, from **`main`** - so it lags any work branch |
+| `narration` | The Chatterbox TTS pipeline: script to voiced audio plus per-line timing. Has its own venv |
+| `voice` | Voice experiments |
 
 `45 - Process Core` has its own `CLAUDE.md` and `README.md`. Read them before touching
 anything in it — in particular, never hand-edit a consumer's
 `vendor/process-core/` copy. Edit the core, run `node test.js`, re-vendor.
 
-> `00 - Project/Vault Structure.md` is reconciled with this table as of 2026-10-08.
+> `00 - Project/Vault Structure.md` carries the same table in more detail. Both were
+> reconciled against the real folder list on 2026-10-14. Add a top-level folder to
+> both - one missing from this table is one the next assistant will not know exists.
+
+---
+
+## Before you start
+
+Read `00 - Project/Working Agreements.md` next. It carries what this repo
+cannot: who Franz is, how he wants to be worked with, and the rules this
+project earned by getting them wrong first. None of that lived in the vault
+until 2026-10-14.
+
+`00 - Project/Current State.md` is what is happening *now*, as opposed to how
+things are built.
 
 ---
 
@@ -117,9 +135,13 @@ These exist because each one has already gone wrong.
 | Process Core | `cd "45 - Process Core" && node test.js`; `node vendor.js "../50 - Lunar Process Engineer"` after a change |
 | A course | `40 - Engine/build-course.ps1`, then `40 - Engine/verify.ps1` |
 | Standards Register | `node "20 - Source Library/Standards/check-standards.js"` — add `--list` for the inventory, `--write` to refresh `used-by` |
+| Home (Layer 1) | `cd "05 - Home" && node serve.js` |
 | Source PDFs | Poppler at `C:\Users\E1552882\poppler\poppler-26.02.0\Library\bin\` |
+| Narration | `narration/.venv\Scripts\python generate_narration.py` |
 
 `file://` will not load the LPE build — serve `dist/` over HTTP.
+`50 - Lunar Process Engineer/extras/desktop/play.js` does that and opens a
+browser; there is a desktop shortcut for it.
 
 ---
 

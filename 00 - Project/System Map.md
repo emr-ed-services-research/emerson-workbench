@@ -10,6 +10,12 @@ updated: 2026-09-11
 
 # System Map
 
+> [!warning] Behind the work as of 2026-10-14
+> Last substantively updated 2026-09-18, while the work carried on. For where
+> things actually stand today see [[Current State]]; this page is accurate
+> about *structure*, not about *status*. Bringing it back in sync is
+> outstanding — it is meant to be maintained, not regenerated.
+
 **A living, visual snapshot of what the Emerson Workbench is, what has been
 built, and where the current course stands.** Two audiences: a grounding
 reference for mid-session ("which layer / stage does this belong to?"), and a

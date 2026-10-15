@@ -388,3 +388,45 @@ for real — a session-end hook, a pre-commit check, something that actually
 enforces the habit rather than asking nicely — that is real, unscoped work
 of its own, not something this paragraph should be mistaken for having
 already done.
+
+---
+
+## 2026-10-14 — onboarding pass for the move to Enterprise Claude
+
+Franz is migrating the work to a new assistant. Audit found that the biggest
+loss would be invisible: ~81 session-memory files holding who he is, how he
+wants to be worked with, and about forty corrections this project earned the
+hard way. None of it lived in the vault. Memory does not travel between
+assistants.
+
+What was done:
+
+- **`Working Agreements.md`** — created. The curated memory export: the person,
+  the review gate, the standing rules, operational facts, decisions not worth
+  re-litigating. The WC/RC two-session protocol is recorded as history, since
+  that arrangement ends with the migration.
+- **`Current State.md`** — created. Where the work actually is, rebuilt from the
+  commit record because Roadmap, System Map and this log had all drifted about
+  a month behind.
+- **`CLAUDE.md` and `Vault Structure.md`** — four real folders were missing from
+  both tables, Layer 1 (`05 - Home`) among them, so a new assistant would not
+  have known Home existed. Added `05 - Home`, `docs`, `narration`, `voice`.
+  CLAUDE.md's claim to be reconciled "as of 2026-10-08" was no longer true and
+  now carries a real date plus the instruction to update both together.
+- **READMEs** written for `00 - Project`, `05 - Home`, `25 - Vitruvius`,
+  `30 - Templates`, `50 - Lunar Process Engineer`, `55 - Interactive Models`,
+  `narration`, `voice`. The LPE one was the largest gap — a whole game with a
+  build system and 168 checks and no front door.
+- **System Map, Roadmap, Project Charter** — banners added naming how far
+  behind each is and pointing at `Current State.md`. Their substance was *not*
+  rewritten: the System Map has a published HTML twin and should be brought
+  back in sync deliberately, not guessed at.
+
+### Still outstanding
+
+- Bring the System Map genuinely back in sync, and re-publish its HTML.
+- Roadmap and Project Charter are still 2026-09-06 in substance.
+- `05 - Home` and `50 - Lunar Process Engineer/extras/desktop/` independently
+  grew icon + server + shortcut tooling. They should converge.
+- Frontmatter `updated:` fields across `00 - Project` drift from real edit
+  dates. Either maintain them or drop them in favour of `git log`.
