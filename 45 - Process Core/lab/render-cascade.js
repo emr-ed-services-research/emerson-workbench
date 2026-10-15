@@ -610,7 +610,11 @@ ${SRC.map(m => m.code).join('\n')}
     stations: GV.flowPathAt(${V_PCT}).stations,
     plenum: WET.plenum, circuits: [WET.balance],
     gpm: ${GPM}, cellIn: 0.16 });
-  const SWIRL = LPE.flowfield.withRecirculation(FLD);
+  /* NO RECIRCULATION. withRecirculation adds closed eddies to the solve,
+     and they were a fudge here twice over: a marker on its way THROUGH
+     that wandered into one orbited for ever, which is what silently
+     filled the valve and starved the outlet; and what they drew looked
+     like stirring rather than flow. The water goes through. */
   /* TWO POPULATIONS, BECAUSE THE VALVE HOLDS TWO KINDS OF WATER.
 
      The balance circuit is sealed -- equal pressure above and below the
@@ -629,14 +633,22 @@ ${SRC.map(m => m.code).join('\n')}
      forty feet of pipe against fourteen inches of valve means only a
      handful are inside at any instant, which is true and which would
      leave the trim empty in a drawing that exists to show the trim. */
-  const BODY = PC.fluidParticles(FLD, 420);
-  BODY.reseed = PC.fluidParticles(FLD, 1).reseed;
-  const STILL = PC.fluidParticles(FLD, 900).filter(q => FLD.isStill(q.x, q.y));
-  STILL.reseed = () => { for(let k=0;k<300;k++){ const q=SEED();
-      if(q && FLD.isStill(q.x,q.y)) return q; } return null; };
-  const THRU = PC.fluidParticles(FLD, 120).filter(q => !FLD.isStill(q.x, q.y));
-  THRU.reseed = () => null;
-  for(const q of THRU) q.life = Infinity;
+  /* ---- ONE BODY OF WATER, AND THIS TIME ACTUALLY ONE --------------
+
+     There were four populations here. P, the line's markers, which are
+     steered by the solved field once they are inside the valve and so
+     already go through it. BODY and STILL, a second set of procutaway
+     particles living only inside the valve. And THRU, left from an
+     abandoned handoff, stepped every frame and never drawn at all.
+
+     Drawn together, with the body painted over the line, that reads as
+     one flow and is not one: the line's water passes underneath while
+     the valve's own water turns over on top of it. It looked right,
+     which is the only reason it survived.
+
+     P is the one that was always honest -- it enters at the tank, the
+     field carries it through the trim, and it leaves at the exchanger.
+     The others are gone. */
 
   /* THE LINE RUNS AT THE SPEED THE FIELD SAYS THE LINE RUNS.
      Taken off the solved field at the inlet face rather than set here,
@@ -891,10 +903,6 @@ ${SRC.map(m => m.code).join('\n')}
       const pl = { valve: GV, scale: vk, ox: vx0, oy: vy0,
                    toPage: (ux,uy) => [vx0 + ux*vk, vy0 - uy*vk] };
       PC.drawValveFlow(g, pl, FLD, [], { theme: PC.DARK, wetted: WET });
-      for(const q of BODY){ const v=SWIRL.at(q.x,q.y); if(!v) continue;
-        parcel(VX(q.x), VY(q.y), Math.hypot(v.vx,v.vy)*QSCALE); }
-      for(const q of STILL){ const v=SWIRL.at(q.x,q.y); if(!v) continue;
-        parcel(VX(q.x), VY(q.y), Math.hypot(v.vx,v.vy)*QSCALE); }
       /* EVERY MARKER, IN ONE PASS.
 
          They were drawn in two -- those outside the body with the
@@ -906,7 +914,8 @@ ${SRC.map(m => m.code).join('\n')}
          so the trim still covers what the trim should cover. */
       for(const p of P) parcel(X(p.x), Y2(p.y), p.ips * QSCALE);
       g.globalAlpha=1;
-      PC.drawBalance(g, pl, ${V_PCT}, { theme: PC.DARK, parts: STILL });
+      /* drawBalance took its particles from STILL, which is gone.
+         The balance circuit is in the field, so P shows it. */
       g.globalAlpha=1;
 
       paint(VG.body,   T.body, C.ink);
@@ -1023,9 +1032,7 @@ ${SRC.map(m => m.code).join('\n')}
     g.clearRect(0,0,cv.width,cv.height);
 
     if(running){ stepTank(dt); stepWater(dt);
-      PC.stepFluid(BODY,  SWIRL, dt, { timeScale: SLOWMO*QSCALE });
-      PC.stepFluid(STILL, SWIRL, dt, { timeScale: SLOWMO*QSCALE });
-      PC.stepFluid(THRU,  SWIRL, dt, { timeScale: SLOWMO*QSCALE }); }
+      }
 
     /* THE PIPE FIRST, THEN ITS WATER, THEN THE THINGS IT RUNS BETWEEN.
        Drawn the other way round the pipe lay over the valve and the
