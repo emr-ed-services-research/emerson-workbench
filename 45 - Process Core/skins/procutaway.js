@@ -606,29 +606,69 @@
     const marks = o.markers || [];
 
     g.save();
-    g.fillStyle = o.ground === null ? t.panel : (o.ground || GROUND);
-    g.fillRect(0, 0, W, H);
+    /* GROUND FALSE MEANS PAINT NONE, so this can be drawn OVER
+       something that is already on the canvas -- a run with a valve in
+       it paints the valve first and the line through it second. Null
+       still means the panel colour, which is what every existing
+       caller relies on; the two are different answers to different
+       questions and conflating them wiped a valve off a drawing. */
+    if (o.ground !== false) {
+      g.fillStyle = o.ground === null ? t.panel : (o.ground || GROUND);
+      g.fillRect(0, 0, W, H);
+    }
 
-    const wall = sgn => {
-      const path = [];
-      for (const p of plan.pts) {
-        if (!(p.bore > 0)) continue;
-        const h = p.bore / 2;
-        path.push(plan.toPage(p.x + sgn * p.nx * h, p.y + sgn * p.ny * h));
+    const wallOf = (list, sgn) => list.map((p) => {
+      const h = p.bore / 2;
+      return plan.toPage(p.x + sgn * p.nx * h, p.y + sgn * p.ny * h);
+    });
+    const live = plan.pts.filter((p) => p.bore > 0);
+    const upper = wallOf(live, 1), lower = wallOf(live, -1);
+
+    /* ---- A SPAN THIS DRAWING DOES NOT OWN ---------------------------
+
+       A run with a component in it has a stretch where the pipe is not
+       what the fluid is inside -- the valve's own casting is, and the
+       valve's own cutaway draws it. Painting a pipe wall across that
+       stretch puts a straight tube over the top of a real cavity, and
+       the markers then travel a passage that is not the one drawn
+       underneath them.
+
+       So the wall and the cavity stop at the faces and pick up again
+       on the other side. The CLIP does not: it is built from the whole
+       route, because the fluid is still in there -- it is just inside
+       somebody else's drawing for a while. */
+    const open = o.openSpan;
+    const runs = [];
+    let cur = [];
+    for (const p of live) {
+      if (open && p.s > open.s0 && p.s < open.s1) {
+        if (cur.length > 1) runs.push(cur);
+        cur = [];
+        continue;
       }
-      return path;
-    };
-    const upper = wall(1), lower = wall(-1);
+      cur.push(p);
+    }
+    if (cur.length > 1) runs.push(cur);
+    const pieces = runs.map((r) => ({ upper: wallOf(r, 1),
+                                      lower: wallOf(r, -1) }));
 
     /* The cavity: everything inside the two walls. Drawn before the
        fluid so the fluid sits in it rather than on it. */
+    g.fillStyle = t.cavity;
+    for (const pc of pieces) {
+      g.beginPath();
+      pc.upper.forEach((q, i) => i ? g.lineTo(q[0], q[1])
+                                   : g.moveTo(q[0], q[1]));
+      for (let i = pc.lower.length - 1; i >= 0; i--)
+        g.lineTo(pc.lower[i][0], pc.lower[i][1]);
+      g.closePath();
+      g.fill();
+    }
+    g.save();
     g.beginPath();
     upper.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]));
     for (let i = lower.length - 1; i >= 0; i--) g.lineTo(lower[i][0], lower[i][1]);
     g.closePath();
-    g.fillStyle = t.cavity;
-    g.fill();
-    g.save();
     g.clip();
 
     /* ---- the fluid ---- */
@@ -734,7 +774,7 @@
     g.strokeStyle = t.rim;
     g.lineWidth = o.wallWidth || 2.2;
     g.lineJoin = 'miter';
-    for (const side of [upper, lower]) {
+    for (const pc of pieces) for (const side of [pc.upper, pc.lower]) {
       g.beginPath();
       side.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]));
       g.stroke();

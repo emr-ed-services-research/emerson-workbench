@@ -209,5 +209,175 @@ check('it chooses no magnification', !/pxPerInch|scale\s*[:=]/.test(code));
     'valve on its own');
 })();
 
+/* ---- THE RUN AS A FLOW PATH -------------------------------------------
+
+   The straight-run panel is built on a geometry flow path, not on the 2D
+   solve: one path, one field, one population of markers. A valve in that
+   line had no way to be ON the path, so it was always drawn as a second
+   system beside it -- which is where every flange seam came from.
+
+   What these guard is that route() is INDISTINGUISHABLE from a pipe flow
+   path to everything downstream. If geometry or flowfield has to learn
+   that a path might have a valve in it, the composition failed. */
+(function () {
+  global.window = global.window || {};
+  require('../src/geometry.js');
+  require('../src/flowfield.js');
+  const Gm = window.LPE.geometry, FF = window.LPE.flowfield;
+
+  const BORE = 6.065, GPM = 560;
+  const lineA = Math.PI * BORE * BORE / 4;
+
+  /* ---- a bare line, which must come out as plain pipe ---- */
+  const bare = P.route({ bore: BORE, upstream: 75, downstream: 75,
+                         gpm: GPM, samples: 200 });
+
+  check('a bare line routes to a path of its own length',
+    Math.abs(bare.length - 150) < 1e-9, bare.length);
+  check('geometry reads a bore at every station of it',
+    (() => { for (let s = 0; s <= bare.length; s += 1.5)
+      if (!(Gm.boreAtS(bare, s) > 0)) return false; return true; })());
+  check('and that bore is the line bore, everywhere, to a thousandth',
+    (() => { for (let s = 0; s <= bare.length; s += 1.5)
+      if (Math.abs(Gm.boreAtS(bare, s) - BORE) > 0.001) return false;
+      return true; })());
+  check('a bare line has no features, because nothing happens on it',
+    bare.features.length === 0 && bare.component === null);
+
+  /* ---- the same line with a component in it ---- */
+  const hw = BORE / 2, endA = Math.PI * hw * hw;
+  const thA = endA * 0.18;
+  const part = { stations: [
+    { x: 0, y: 0, area: endA, halfW: hw, what: 'end connection' },
+    { x: 7, y: 0, area: thA, halfW: Math.sqrt(thA / Math.PI), what: 'throat' },
+    { x: 14, y: 0, area: endA, halfW: hw, what: 'end connection' } ] };
+
+  const fp = P.route({ bore: BORE, upstream: 75, downstream: 75,
+                       component: part, gpm: GPM, samples: 400 });
+
+  check('the composed path is the line plus the component, end to end',
+    Math.abs(fp.length - 164) < 1e-9, fp.length);
+  check('the component span is named, so artwork can be clipped to it',
+    fp.component && Math.abs(fp.component.s0 - 75) < 1e-9 &&
+    Math.abs(fp.component.s1 - 89) < 1e-9,
+    JSON.stringify(fp.component));
+
+  check('the line either side is still exactly the line bore',
+    Math.abs(Gm.boreAtS(fp, 20) - BORE) < 0.001 &&
+    Math.abs(Gm.boreAtS(fp, 150) - BORE) < 0.001,
+    Gm.boreAtS(fp, 20) + ' / ' + Gm.boreAtS(fp, 150));
+
+  check('and it narrows inside the component, which is the whole point',
+    Gm.boreAtS(fp, 82) < BORE * 0.6, Gm.boreAtS(fp, 82));
+
+  /* The equivalent bore has to give the REAL area back, or continuity
+     downstream is quietly wrong in the one place it matters most.
+
+     Checked on a reach rather than at a chosen station, because that is
+     where the claim actually lives: a reach says "this bore, over this
+     span", and the conversion either round-trips its own area or it
+     does not. Reading at s = 82 instead tests the SAMPLING -- the
+     narrowest reach centre sits a fifth of an inch downstream of a
+     throat that is a single point -- which is the second check. */
+  const narrow = fp.reaches.reduce((a, b) => (b.area < a.area ? b : a));
+  check('a reach bore is exactly the circle of that reach own area',
+    Math.abs(Math.PI * narrow.bore * narrow.bore / 4 - narrow.area)
+      < narrow.area * 1e-12,
+    narrow.bore + ' vs ' + narrow.area);
+
+  /* And cut finely enough, the narrowest reach finds the real throat.
+     A point minimum under linear interpolation is approached, not hit,
+     so what is guarded is that it converges -- not that 400 reaches
+     happen to land on it. */
+  const fine = P.route({ bore: BORE, upstream: 75, downstream: 75,
+                         component: part, gpm: GPM, samples: 4000 });
+  const fineMin = fine.reaches.reduce((a, b) => (b.area < a.area ? b : a));
+  check('cut finely, the narrowest reach is the real throat area',
+    Math.abs(fineMin.area - thA) / thA < 0.02,
+    fineMin.area.toFixed(3) + ' vs ' + thA.toFixed(3));
+  check('and cutting finer only ever gets closer, never further',
+    Math.abs(fineMin.area - thA) <= Math.abs(narrow.area - thA) + 1e-12);
+
+  check('the faces and the throat arrive as features, named',
+    fp.features.length === 3 &&
+    fp.features[0].what === 'component inlet' &&
+    fp.features[1].kind === 'throat' &&
+    fp.features[2].what === 'component outlet',
+    fp.features.map(f => f.kind).join(' / '));
+
+  /* No step anywhere. A marker walks this path by arc length, so an
+     abrupt change of bore between adjacent reaches is exactly the
+     discontinuity that used to be visible at a flange. */
+  let worst = 0;
+  for (let i = 1; i < fp.reaches.length; i++)
+    worst = Math.max(worst,
+      Math.abs(fp.reaches[i].bore - fp.reaches[i - 1].bore));
+  check('no reach steps hard against the next one',
+    worst < BORE * 0.1, 'biggest step ' + worst.toFixed(3) + ' in');
+
+  /* ---- and flowfield takes it as ordinary pipe ---- */
+  const f = FF.field(fp, GPM, { nu: 1.27e-5 });
+  const want = 0.3208 * GPM / lineA;
+  check('the line velocity is Q over the line bore, at both ends',
+    Math.abs(f.mean(20) - want) / want < 0.02 &&
+    Math.abs(f.mean(150) - want) / want < 0.02,
+    f.mean(20).toFixed(2) + ' / ' + f.mean(150).toFixed(2) +
+    ', wanted ' + want.toFixed(2));
+
+  check('the fluid accelerates through the component by continuity alone',
+    f.mean(82) / f.mean(20) > 4,
+    (f.mean(82) / f.mean(20)).toFixed(1) + 'x');
+
+  check('and it comes back DOWN to line speed after it',
+    Math.abs(f.mean(150) - f.mean(20)) / f.mean(20) < 0.02);
+
+  check('every station has a velocity -- no gap for a marker to fall into',
+    f.stations.every((st) => st.v !== null && st.bore !== null));
+
+  check('the profile across the bore survives, so the wall still drags',
+    f.at(20, 0) > f.at(20, 0.95),
+    f.at(20, 0).toFixed(2) + ' vs ' + f.at(20, 0.95).toFixed(2));
+
+  /* ---- the axial projection, which is why the wall can be drawn ---- */
+  const bent = { stations: [
+    { x: 0, y: 0, area: endA, halfW: hw, what: 'end connection' },
+    { x: 7, y: 9, area: thA, halfW: Math.sqrt(thA / Math.PI), what: 'throat' },
+    { x: 14, y: 0, area: endA, halfW: hw, what: 'end connection' } ] };
+
+  const flat = P.route({ bore: BORE, upstream: 10, downstream: 10,
+                         component: bent, gpm: GPM, samples: 200 });
+  check('a component route is projected onto the axis by default',
+    flat.projected === true);
+  check('so the run is exactly line plus face-to-face, not the longer route',
+    Math.abs(flat.length - 34) < 1e-9, flat.length);
+  check('and the centreline is straight, so a wall can be offset from it',
+    flat.path.every((pt) => pt[1] === 0),
+    JSON.stringify(flat.path));
+  /* Exactly, not approximately: a component whose route rises nine
+     inches and one that is already flat present the SAME area at every
+     axial station, so they must compose to the same path. Comparing
+     against the real throat area instead would be testing the sampling
+     -- a point minimum under linear interpolation is approached, never
+     landed on -- which is checked separately above. */
+  const same = P.route({ bore: BORE, upstream: 10, downstream: 10,
+                         component: part, gpm: GPM, samples: 200 });
+  check('the projection changes the route, never the area presented',
+    flat.reaches.length === same.reaches.length &&
+    flat.reaches.every((r, i) =>
+      Math.abs(r.area - same.reaches[i].area) < 1e-12 &&
+      Math.abs(r.bore - same.reaches[i].bore) < 1e-12));
+
+  const trueRoute = P.route({ bore: BORE, upstream: 10, downstream: 10,
+                              component: bent, gpm: GPM, samples: 200,
+                              straight: false });
+  check('the true route is still available, and is longer than the axis',
+    trueRoute.projected === false && trueRoute.length > flat.length,
+    trueRoute.length + ' vs ' + flat.length);
+
+  refuses('a path cut into too few reaches is refused',
+    () => P.route({ bore: BORE, upstream: 1, downstream: 1, samples: 1 }),
+    'at least two');
+})();
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

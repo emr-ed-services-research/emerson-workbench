@@ -20,6 +20,23 @@ looks like that; this tells you where the work actually is today.
 
 ---
 
+## STOP — one thing in the vault is knowingly broken
+
+**Pro Cutaway panel 5** (the straight run through a valve, in
+`45 - Process Core/lab/render-cutaway.js`) was rejected by Franz on 2026-10-14
+and the session was stopped. It **passes every automated check and is still
+wrong**, so the suite is not evidence about it.
+
+Read `BROKEN — Pro Cutaway panel 5 (the run through a valve).md` in this folder
+before touching that file, the Pro Cutaway lab, the cascade, or the plant view.
+It carries what was asked for, what is on disk, the six approaches already tried
+and rejected, and two real bugs found on the way that are worth keeping.
+
+The cascade and the plant view are **on hold behind this** by Franz's explicit
+instruction.
+
+---
+
 ## Where the work is
 
 Commit volume over the 30 days to 2026-10-14, which is a fair proxy for

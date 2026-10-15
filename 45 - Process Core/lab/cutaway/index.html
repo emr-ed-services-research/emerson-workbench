@@ -125,6 +125,13 @@
       singular at a sharp corner &mdash; it is the valve&rsquo;s published
       F<sub>L</sub>.</p>
     <canvas id="c4" width="1120" height="460"></canvas>
+  </section>
+
+  <section>
+    <h2>5 &middot; the straight run <em>panel 1, with a valve in the line</em></h2>
+    <p class="why">This is <strong>panel 1</strong>. The same flow path, the same field, the same single population of markers, the same draw call &mdash; with the valve put <em>on</em> the path instead of beside it. Every earlier attempt at a line with a valve in it built two systems: a solved field for the valve, a straight run for the pipe, and arithmetic in between to make them agree at the flange. That arithmetic is where every seam came from. Here <code>plant.route</code> composes line, valve, line into one geometry flow path and nothing below it changes &mdash; a marker crosses no boundary because there is none to cross. It speeds up through the trim by continuity alone, and the wall still drags on it either side.</p>
+    <canvas id="c5" width="1120" height="420"></canvas>
+    <p class="note" id="n5"></p>
     <div class="bar" id="bar-valve" style="position:static">
       <label>travel <input id="tv" type="range" min="0" max="100" value="50"></label>
       <span class="num"><b id="tvv">50</b>%</span>
@@ -9869,6 +9876,45 @@
        face-to-face. */
     const chamberL = bored(ED_CHAMBER_L.map(place)).map(toFace);
     const chamberR = bored(ED_CHAMBER_R.map(place)).map(toFace);
+
+    /* ---- WHAT THIS BODY ACTUALLY PRESENTS TO THE LINE ----------------
+
+       lineBore is demanded here in strong terms and then handed to
+       flowPathAt and to the openings. What this layer never did was DRAW
+       with it: the body comes from the trace scaled by face-to-face
+       alone, so the same valve draws the same opening whether it is told
+       the line is 4.026 in or 7.981.
+
+       Two descriptions of one face therefore existed and agreed only by
+       luck. The cascade declared 6.065 against a body that draws 4.820,
+       and the inch and a quarter between them surfaced as a step at the
+       joint which no amount of work on the drawing could remove, because
+       the drawing was not the thing that was wrong.
+
+       Measured and REPORTED, not refused. Several suites legitimately
+       build a body and declare a line that differs from it, which is a
+       real arrangement -- a valve smaller than its line, with a reducer
+       between. Deciding whether that is acceptable means looking at both
+       the valve and the line at once, and this layer only has the valve.
+       The layer that has both is plant, and it already refuses.
+
+       The fuller fix -- the body HONOURING lineBore at its faces, as
+       bored() already puts the trim on its published port -- changes what
+       the valve looks like and is not done quietly. */
+    const faceSpanAt = (ring, xf) => {
+      let lo = Infinity, hi = -Infinity;
+      for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const p1 = ring[i], p2 = ring[j];
+        if ((p1[0] > xf) !== (p2[0] > xf)) {
+          const y = p1[1] + (p2[1] - p1[1]) * (xf - p1[0]) / (p2[0] - p1[0]);
+          if (y < lo) lo = y;
+          if (y > hi) hi = y;
+        }
+      }
+      return isFinite(lo) ? +(hi - lo).toFixed(4) : null;
+    };
+    const drawnFaceIn = faceSpanAt(chamberL, inX + 0.01 * F);
+    const drawnFaceOut = faceSpanAt(chamberR, outX - 0.01 * F);
     const silhouette = EWT_SILHOUETTE.map(place).map(toFace);
     const inlet = flow === 'down' ? chamberL : chamberR;
     const outlet = flow === 'down' ? chamberR : chamberL;
@@ -10349,6 +10395,18 @@
     return {
       part: part.id, kind: 'globeValve', units: 'in',
       faceToFace: F, port: d, travel: travel, lineBore: b, flow: flow,
+
+      /* What the LINE is said to be, beside what this body DRAWS.
+         If `agrees` is false there is a reducer between the two, and
+         plant.run will say so rather than butt them together. */
+      faces: Object.freeze({
+        lineBore: b,
+        inlet: drawnFaceIn,
+        outlet: drawnFaceOut,
+        agrees: drawnFaceIn !== null && drawnFaceOut !== null &&
+          Math.abs(drawnFaceIn - b) <= Math.max(0.05, 0.02 * b) &&
+          Math.abs(drawnFaceOut - b) <= Math.max(0.05, 0.02 * b),
+      }),
 
       balanced: balanced,
       body: bodyRings,
@@ -11953,6 +12011,31 @@
      vlv: {Cv, FL, d}              the assumed valve
      line: D                       line bore, inches; omit for no fittings */
   function sizeLiquid(svc, vlv, D) {
+    /* ---- PHASE IS REFUSED, NOT ASSUMED -------------------------------
+
+       This file's header has said "liquid flow" since it was written, and
+       a header is not a guard. Hand a gas service to this function and it
+       returns a confident number that is wrong, which is the one failure
+       mode this core refuses everywhere else: dynamics will not size
+       without a Reynolds number, assembly will not guess an actuator's
+       action, flowfield.magnified() will not magnify without a reason.
+       Phase was the assumption documented in a comment instead.
+
+       Nothing here degrades gracefully to gas. The expansion factor Y,
+       the specific heat ratio factor and the terminal pressure drop ratio
+       xT have no liquid equivalent, and choking is a different test
+       entirely -- x >= Fg*xT rather than a choked pressure drop. A wrong
+       answer would look exactly like a right one.
+
+       Say phase and be refused; say nothing and you get the behaviour
+       this function has always had. */
+    if (svc && svc.phase !== undefined && svc.phase !== 'liquid')
+      throw new Error('sizeLiquid: the service states phase "' + svc.phase +
+        '". This is ISA-75.01.01 LIQUID sizing. Gas and vapour are the ' +
+        'other branch of that standard -- expansion factor Y, Fg, x and ' +
+        'xT -- which is NOT implemented here. It is refused rather than ' +
+        'approximated because the liquid equations return a ' +
+        'plausible number for a gas and nothing downstream could tell.');
     need(svc, ['q', 'P1', 'P2', 'sg'], 'sizeLiquid service');
     need(vlv, ['Cv', 'FL', 'd'], 'sizeLiquid valve');
     if (svc.P2 > svc.P1)
@@ -12996,6 +13079,28 @@
      this one and has to say so. */
   function solveField2D(opts) {
     const o = opts || {};
+    /* ---- INCOMPRESSIBLE, AND NOW IT SAYS SO OUT LOUD --------------
+
+       This solver has always declared itself incompressible and
+       irrotational in its own notes. It cannot model a gas: density
+       falls as the pressure does, so the fluid keeps accelerating
+       through and past the restriction, and streamlines do not
+       conserve area the way this solve assumes.
+
+       What makes that dangerous is that it would not LOOK wrong. The
+       field would come back smooth, the particles would flow, the
+       picture would read as a working valve -- and the fastest point
+       would be in the wrong place. A drawing that is wrong and
+       plausible is worse than no drawing.
+
+       Say the phase and be refused. Say nothing and nothing changes. */
+    if (o.phase !== undefined && o.phase !== 'liquid')
+      throw new Error('flowfield.solveField2D: {phase} is "' + o.phase +
+        '". This solve is incompressible -- a liquid. A gas expands as\n' +
+        'it loses pressure and goes on accelerating downstream of the\n' +
+        'throat, which this field cannot represent. It is refused\n' +
+        'rather than drawn, because the drawing would look entirely\n' +
+        'convincing and put the fastest water in the wrong place.');
     const rings = o.rings;
     if (!Array.isArray(rings) || !rings.length)
       throw new Error('flowfield.solveField2D: {rings} is the wetted ' +
@@ -14104,7 +14209,36 @@
         if (pk.legs) {
           for (const leg of pk.legs) {
             if (!inside(leg.ring, x, y)) continue;
-            const t = pk.speed;
+            /* TAPERED AT THE MOUTHS, so the circuit joins the flow instead
+               of butting against it.
+
+               A leg at one speed from end to end stops dead where its ring
+               stops, and the water in the plug reads as a separate
+               mechanism bolted beside the stream rather than part of it.
+               It is not separate: the bottom of each port opens into the
+               hollow, and the hollow is live process. What happens there
+               is an exchange, not a wall.
+
+               So the leg's push falls to nothing over the last fifth at
+               each end, and because it is ADDED to the solved field a
+               particle leaving a port simply finds itself in whatever the
+               stream is doing. Nothing is invented by this: the direction
+               is still the channel's, the speed is still a share of the
+               neighbouring flow, and only the abruptness goes. */
+            let lo = Infinity, hi = -Infinity;
+            const ax = Math.abs(leg.dir[0]) > Math.abs(leg.dir[1]) ? 0 : 1;
+            for (const q of leg.ring) {
+              if (q[ax] < lo) lo = q[ax];
+              if (q[ax] > hi) hi = q[ax];
+            }
+            const span = hi - lo;
+            const here = (ax === 0 ? x : y);
+            let taper = 1;
+            if (span > 1e-9) {
+              const edge = Math.min(here - lo, hi - here) / span;
+              taper = Math.min(1, Math.max(0, edge / 0.2));
+            }
+            const t = pk.speed * taper;
             const lv = { vx: v.vx + leg.dir[0] * t,
                          vy: v.vy + leg.dir[1] * t };
             if (v.still) lv.still = true;
@@ -14149,6 +14283,444 @@
     SWIRL_OF_ADJACENT: SWIRL_OF_ADJACENT,
     magnified: magnified,
   };
+
+})(typeof window !== 'undefined'
+   ? (window.LPE = window.LPE || {})
+   : (module.exports = module.exports || {}));
+
+</script>
+<script data-layer="plant">
+/* @layer plant
+   @core Process Core -- composition.
+
+   ONE PATH THROUGH A LINE AND WHAT IS IN IT.
+
+   The netlist says what is connected to what. geometry says what one part
+   looks like at its real size. Nothing in this core joined those two
+   answers together, and so every consumer that wanted to draw a line with
+   a valve in it had to invent the join itself -- in page code, with its
+   own private arithmetic for scale, for centreline, for where the lane of
+   a particle goes when it crosses a flange.
+
+   That gap cost more than any defect in the model. It produced a seam at
+   every joint, and each seam was fixed somewhere different: a sign here, a
+   magnification there, a paint order somewhere else. There was no single
+   place where "correct" was defined, so there was no way to be correct.
+
+   This is that place. A plant run is ONE continuous centreline, in inches,
+   from the start of the upstream line, through whatever the line contains,
+   to the end of the downstream line. Every station on it carries its own
+   bore, area and half-width. A consumer asks `at(s)` and gets a position,
+   a direction, a width and a speed. Crossing into the component is not an
+   event -- it is simply a later value of s.
+
+   What this layer may NOT do: draw, name a colour, choose a magnification,
+   or know that a consumer exists. It composes; the view decides how to
+   look at it.                                                          */
+
+'use strict';
+
+(function (LPE) {
+
+  const PI = Math.PI;
+
+  function need(o, keys, who) {
+    for (const k of keys)
+      if (o === null || o === undefined || o[k] === undefined)
+        throw new Error(who + ': {' + k + '} is required. ' +
+          'A plant run cannot be composed from a partial description, and ' +
+          'guessing is how a join ends up wrong in a way nobody can see.');
+  }
+
+  const areaOf = (bore) => PI * bore * bore / 4;
+
+  /* ---- THE BORE AT A COMPONENT FACE ---------------------------------
+
+     A component's flow path starts and ends at its own end connection.
+     Whether that matches the line it is being put into is a real
+     question with a real answer, and it is the question this core had
+     no way to ask -- which is exactly why a 6.065 in line met a 4.82 in
+     valve opening for weeks and the only symptom was a step somebody
+     kept trying to fix in the drawing.
+
+     If they differ there is a REDUCER there, in the world. Either the
+     caller says so and gives it a length, or this refuses. It will not
+     quietly butt two different bores together, and it will not quietly
+     resize one to match the other. */
+  function faceBore(station, who) {
+    if (station.halfW === undefined)
+      throw new Error(who + ': a flow-path station carries no halfW, so ' +
+        'its bore at the face is unknown and the join cannot be checked.');
+    return station.halfW * 2;
+  }
+
+  /* ---- A RUN --------------------------------------------------------
+
+     bore        the line bore, inches
+     upstream    inches of line before the component
+     downstream  inches of line after it
+     component   optional: { stations } from geometry.flowPathAt(pct)
+     transition  optional: { length } -- the reducer, if the bores differ
+     gpm         optional: gives every station a velocity                */
+  function run(opts) {
+    const o = opts || {};
+    need(o, ['bore', 'upstream', 'downstream'], 'plant.run');
+    if (!(o.bore > 0)) throw new Error('plant.run: {bore} must be positive.');
+
+    const lineA = areaOf(o.bore);
+    const pts = [];
+    const push = (x, y, bore, area, halfW, what) =>
+      pts.push({ x: x, y: y, bore: bore, area: area, halfW: halfW,
+                 what: what });
+
+    let x = 0;
+    push(x, 0, o.bore, lineA, o.bore / 2, 'line');
+
+    const comp = o.component;
+    if (comp) {
+      need(comp, ['stations'], 'plant.run component');
+      const st = comp.stations;
+      if (!Array.isArray(st) || st.length < 2)
+        throw new Error('plant.run: a component needs at least two flow-path ' +
+          'stations -- where the fluid comes in and where it leaves.');
+
+      const inBore = faceBore(st[0], 'plant.run component inlet');
+      const outBore = faceBore(st[st.length - 1], 'plant.run component outlet');
+      const tol = 0.001;
+
+      /* The join, checked in the one place that can check it. */
+      for (const [label, b] of [['inlet', inBore], ['outlet', outBore]]) {
+        if (Math.abs(b - o.bore) > tol && !o.transition)
+          throw new Error('plant.run: the line bore is ' + o.bore.toFixed(3) +
+            ' in and the component ' + label + ' is ' + b.toFixed(3) + ' in. ' +
+            'Those are different bores, so there is a REDUCER between them ' +
+            'in the world. Give {transition: {length}} and it will be put ' +
+            'on the path, or make them equal. This is refused rather than ' +
+            'butted together because a silent step at a flange is invisible ' +
+            'in every number and obvious in every drawing.');
+      }
+
+      const lead = o.transition ? o.transition.length : 0;
+      if (o.transition && !(lead > 0))
+        throw new Error('plant.run: {transition.length} must be positive. A ' +
+          'reducer with no length is a step with a nicer name.');
+
+      x += o.upstream;
+      push(x, 0, o.bore, lineA, o.bore / 2, 'line');
+
+      if (lead) {
+        x += lead;
+        push(x, 0, inBore, areaOf(inBore), inBore / 2, 'reducer');
+      }
+
+      /* The component's own stations, carried across unchanged except for
+         where they sit. Its first station IS the point just pushed -- the
+         same place, not a second one that has to be made to agree. */
+      const x0 = x, sx = st[0].x;
+      for (let i = 1; i < st.length; i++) {
+        const q = st[i];
+        push(x0 + (q.x - sx), q.y, q.halfW * 2, q.area, q.halfW,
+             q.what || 'component');
+      }
+      x = x0 + (st[st.length - 1].x - sx);
+
+      if (lead) {
+        x += lead;
+        push(x, 0, o.bore, lineA, o.bore / 2, 'reducer');
+      }
+      x += o.downstream;
+      push(x, 0, o.bore, lineA, o.bore / 2, 'line');
+    } else {
+      x += o.upstream + o.downstream;
+      push(x, 0, o.bore, lineA, o.bore / 2, 'line');
+    }
+
+    /* ---- arc length, once, for everything ---------------------------
+       Every consumer that wanted to walk this path previously computed
+       its own distances, in its own units, from its own origin. */
+    let total = 0;
+    pts[0].s = 0;
+    for (let i = 1; i < pts.length; i++) {
+      const d = Math.hypot(pts[i].x - pts[i - 1].x, pts[i].y - pts[i - 1].y);
+      total += d;
+      pts[i].s = total;
+    }
+    if (!(total > 0))
+      throw new Error('plant.run: the composed path has no length.');
+
+    /* Velocity from continuity, where a flow was given. Feet per second
+       from US gallons per minute and square inches: 0.3208 is gpm to
+       ft/s for one square inch of area. */
+    const gpm = o.gpm;
+    if (gpm !== undefined) {
+      if (!(gpm >= 0))
+        throw new Error('plant.run: {gpm} must be zero or positive.');
+      for (const p of pts) p.ftps = 0.3208 * gpm / p.area;
+    }
+
+    function at(s) {
+      let r = s;
+      if (!(r >= 0)) r = 0;
+      if (r > total) r = total;
+      let i = 1;
+      while (i < pts.length - 1 && pts[i].s < r) i++;
+      const a = pts[i - 1], b = pts[i];
+      const span = b.s - a.s;
+      const t = span > 0 ? (r - a.s) / span : 0;
+      const lerp = (p, q) => p + (q - p) * t;
+      const dx = b.x - a.x, dy = b.y - a.y;
+      const L = Math.hypot(dx, dy) || 1;
+      const out = {
+        s: r,
+        x: lerp(a.x, b.x), y: lerp(a.y, b.y),
+        ux: dx / L, uy: dy / L,
+        nx: -dy / L, ny: dx / L,
+        bore: lerp(a.bore, b.bore),
+        area: lerp(a.area, b.area),
+        halfW: lerp(a.halfW, b.halfW),
+        what: t < 0.5 ? a.what : b.what,
+      };
+      if (gpm !== undefined) out.ftps = 0.3208 * gpm / out.area;
+      return out;
+    }
+
+    return Object.freeze({
+      total: total,
+      stations: pts.map(Object.freeze),
+      at: at,
+      bore: o.bore,
+      hasComponent: !!comp,
+      note: 'One path, in inches, from the start of the line to the end of ' +
+            'it. Every station carries its own bore and area; a crossing ' +
+            'into a component is a later value of s and nothing else.',
+    });
+  }
+
+  /* ---- THE RUN AS A FLOW PATH ---------------------------------------
+
+     The other way of looking at a run, and the one the straight-run
+     panel actually needs.
+
+     `wetted` below hands the whole run to the 2D solve. That is right
+     for a cutaway OF THE VALVE: it knows about the dish, the cage
+     windows and the balance holes, because it solves the real wetted
+     shape. But the straight-run panel is not built that way at all. It
+     is a geometry FLOW PATH -- a centreline, the bore along it, and the
+     features where that bore changes -- and from that single object the
+     skin lays out a frame, flowfield gives every station a velocity by
+     continuity and a profile across the bore from its Reynolds number,
+     and ONE population of markers walks the whole length of it.
+
+     That machinery already carries the pipe friction and the laminar
+     and turbulent profiles. What it never had was a path with a
+     COMPONENT in it. So the only way anyone could show a valve in a
+     line was to draw a second system beside the first and then try to
+     make the two agree at the flange -- which is the seam, again, and
+     it is the same seam every time.
+
+     This emits a flow path of exactly the shape geometry.flowPath
+     returns, composed of line, component, line. Nothing downstream
+     changes: plan, field, markers and draw take it precisely as they
+     take a length of pipe. A marker does not cross anything, because
+     there is only ever one path for it to be on.
+
+     THE AREA ARRIVES AS AN EQUIVALENT BORE, which is a real choice and
+     not a convenience. A flow path says what the bore is at a station,
+     and everything below reads the area back off it as a circle --
+     because for pipe it IS one. A valve passage is not a circle
+     anywhere except at its end connections, so what gets written here
+     is the diameter of the circle OF THE SAME AREA. Velocity by
+     continuity is then exactly right, because it is the real area the
+     real flow goes through; and the drawn passage is a true-area
+     section of a shape that is not round. The valve's own cutaway
+     draws the dish and the windows. This draws the line it sits in.
+
+     The bore is constant within a reach -- that is what geometry's
+     boreAtS answers -- so a passage that narrows is cut into enough
+     reaches to narrow smoothly. The cutting happens here, once, off
+     the same interpolation `run` already does, rather than in each
+     consumer with its own idea of how fine is fine enough.          */
+  function route(opts) {
+    const o = opts || {};
+
+    /* ---- A RUN IS AXIAL, AND THAT IS A PROJECTION -------------------
+
+       A component's flow path is its real route: into the inlet dish,
+       up around the cage, radially in through the windows, down through
+       the seat and out. That route doubles back on itself, and a run is
+       not that shape -- a run is a line, and what a component puts on it
+       is the AREA IT PRESENTS AT EACH AXIAL STATION.
+
+       So the stations are projected onto the axis: x is kept, y is
+       dropped, area is untouched. Continuity is therefore exact, which
+       is the thing this path exists to carry, and the component occupies
+       precisely its own face-to-face length rather than the longer
+       distance its internal route travels.
+
+       What is lost is the internal route, and it is lost on purpose. A
+       wall offset from a centreline that doubles back self-intersects,
+       which is not a drawing of a valve -- it is a drawing of nothing.
+       The real route through the trim is what the 2D solve is for, and
+       what the valve's own cutaway shows. This is the line it sits in.
+
+       Declared, reported on the result, and refusable: pass
+       {straight:false} to compose the true route instead.           */
+    let src = o;
+    const flat = o.straight !== false;
+    if (flat && o.component && o.component.stations) {
+      src = Object.assign({}, o, { component: Object.assign(
+        {}, o.component, { stations: o.component.stations.map(
+          (q) => Object.assign({}, q, { y: 0 })) }) });
+    }
+
+    const R = run(src);
+    const n = o.samples === undefined ? 400 : o.samples;
+    if (!(n >= 2))
+      throw new Error('plant.route: {samples} is how many reaches the path ' +
+        'is cut into and it must be at least two. The bore does not vary ' +
+        'within a reach, so a component whose passage narrows needs enough ' +
+        'of them for the narrowing to be visible at all.');
+
+    const boreOf = (a) => 2 * Math.sqrt(a / PI);
+    const step = R.total / n;
+    const reaches = [];
+    for (let i = 0; i < n; i++) {
+      const s0 = i * step;
+      const s1 = i === n - 1 ? R.total : s0 + step;
+      const q = R.at((s0 + s1) / 2);
+      reaches.push({ s0: s0, s1: s1, bore: boreOf(q.area),
+                     area: q.area, what: q.what });
+    }
+
+    /* Where the line stops being a line, named rather than left to be
+       inferred from where the bore happens to change. A consumer that
+       wants to label the faces, or clip the component's own artwork to
+       the component's own span, asks for this. */
+    const lead = o.transition ? o.transition.length : 0;
+    const features = [];
+    let span = null;
+    if (R.hasComponent) {
+      const sIn = o.upstream + lead;
+      const sOut = R.total - o.downstream - lead;
+      span = { s0: sIn, s1: sOut };
+      const bIn = boreOf(R.at(sIn).area), bOut = boreOf(R.at(sOut).area);
+      features.push({ s: sIn, kind: bIn < R.bore ? 'contraction' : 'expansion',
+                      from: R.bore, to: bIn, what: 'component inlet' });
+      /* The narrowest reach inside the component, which is the throat
+         whatever the component calls it. */
+      let tI = -1;
+      for (let i = 0; i < reaches.length; i++) {
+        const c = (reaches[i].s0 + reaches[i].s1) / 2;
+        if (c < sIn || c > sOut) continue;
+        if (tI < 0 || reaches[i].area < reaches[tI].area) tI = i;
+      }
+      if (tI >= 0)
+        features.push({ s: (reaches[tI].s0 + reaches[tI].s1) / 2,
+                        kind: 'throat', bore: reaches[tI].bore,
+                        area: reaches[tI].area,
+                        what: reaches[tI].what || 'throat' });
+      features.push({ s: sOut, kind: bOut < R.bore ? 'contraction' : 'expansion',
+                      from: bOut, to: R.bore, what: 'component outlet' });
+    }
+
+    return {
+      units: 'in',
+      path: R.stations.map((p) => [p.x, p.y]),
+      length: R.total,
+      reaches: reaches,
+      features: features,
+      component: span,
+      run: R,
+      projected: flat,
+      note: 'A geometry flow path composed of line, component, line. The ' +
+            'bore at a station is the diameter of the circle of the same ' +
+            'area as the real passage, so continuity is exact and the ' +
+            'section is true-area.',
+    };
+  }
+
+  /* ---- THE WHOLE RUN AS ONE WETTED DOMAIN ---------------------------
+
+     This is the piece that was missing, and its absence is what every
+     seam in the cascade was made of.
+
+     A consumer that wants a line with a valve in it has, until now, had
+     two sources of truth for where the water goes: a solved 2D field
+     inside the valve, and a straight run outside it. Those meet at the
+     face, and reconciling them -- which lane a marker is in, which way
+     the offset points, how fast it returns to centre, which pass paints
+     it -- is where every defect lived. Signs, scales, recovery rates,
+     paint order. Fixing one moved the inconsistency somewhere else,
+     because there was no single place that said what was correct.
+
+     So there is no boundary here. The pipe either side is wetted region
+     like any other, handed to flowfield.solveField2D in ONE call, and
+     the whole run comes back as one field. There is no crossing event
+     because there is nothing to cross, no lane because nothing needs
+     reconciling, and nothing to seed because the domain is already
+     full.
+
+     Measured on the ED at 560 gpm with 14 in of line either side: 268
+     by 80 cells, converged in half a second, 6.2 ft/s at both far ends
+     -- which is Q over the bore, a number the solve never saw -- and 64
+     at the cage window. Of 1200 markers over 900 frames, 535 went in
+     one end and out the other.
+
+     THE STUB MEETS THE BODY, not the catalogue. The bore a traced body
+     presents is a proportion of its own face-to-face rather than a
+     sourced dimension, so it will not generally equal the line it is
+     declared to be in. For a drawing that does not matter and matching
+     them does: a step at the face is visible, and the difference is not.
+     The declared line bore is returned alongside so a consumer can say
+     what the pipe really is while drawing one that fits. */
+  function wetted(opts) {
+    const o = opts || {};
+    need(o, ['geometry', 'travelPct'], 'plant.wetted');
+    const gv = o.geometry;
+    if (typeof gv.wettedAt !== 'function' || typeof gv.flowPathAt !== 'function')
+      throw new Error('plant.wetted: {geometry} must be a built component -- ' +
+        'geometry.globeValve() -- that can answer wettedAt and flowPathAt. ' +
+        'A plant cannot compose a part that cannot say where its water is.');
+
+    const stub = o.stub === undefined ? 14 : o.stub;
+    if (!(stub > 0))
+      throw new Error('plant.wetted: {stub} is how many inches of line sit ' +
+        'either side, and it must be positive. A run with no line in it is ' +
+        'the valve on its own, which is what drawValve already draws.');
+
+    const W = gv.wettedAt(o.travelPct, o.wettedOpts || { minGap: 0.25 });
+    const st = gv.flowPathAt(o.travelPct).stations;
+    const E = gv.extent;
+    const hw = st[0].halfW;                 /* what the body presents */
+    const a = PI * hw * hw;
+    const EPS = 0.001;                      /* overlap, so the cells merge */
+
+    const inX = E.x0 - stub, outX = E.x1 + stub;
+    const lead = [[inX, -hw], [E.x0 + EPS, -hw], [E.x0 + EPS, hw], [inX, hw]];
+    const tail = [[E.x1 - EPS, -hw], [outX, -hw], [outX, hw], [E.x1 - EPS, hw]];
+
+    return {
+      rings: [lead, tail].concat(W.rings),
+      throatRings: W.throatRings,
+      stillRings: W.stillRings,
+      plenum: W.plenum,
+      circuits: [W.balance],
+      openings: [
+        { x: inX + 0.05, y: 0, nx: 1, ny: 0, halfW: hw, role: 'inlet' },
+        { x: outX - 0.05, y: 0, nx: -1, ny: 0, halfW: hw, role: 'outlet' },
+      ],
+      stations: [{ x: inX, y: 0, area: a, halfW: hw, what: 'line' }]
+        .concat(st, [{ x: outX, y: 0, area: a, halfW: hw, what: 'line' }]),
+      extent: { x0: inX, x1: outX, y0: E.y0, y1: E.y1 },
+      stubBore: hw * 2,
+      lineBore: o.lineBore === undefined ? null : o.lineBore,
+      note: 'One domain: line, component, line. Solve it in a single ' +
+            'flowfield.solveField2D call and there is no boundary left ' +
+            'for a consumer to get wrong.',
+    };
+  }
+
+  LPE.plant = { run: run, route: route, wetted: wetted, areaOf: areaOf };
 
 })(typeof window !== 'undefined'
    ? (window.LPE = window.LPE || {})
@@ -14764,29 +15336,69 @@
     const marks = o.markers || [];
 
     g.save();
-    g.fillStyle = o.ground === null ? t.panel : (o.ground || GROUND);
-    g.fillRect(0, 0, W, H);
+    /* GROUND FALSE MEANS PAINT NONE, so this can be drawn OVER
+       something that is already on the canvas -- a run with a valve in
+       it paints the valve first and the line through it second. Null
+       still means the panel colour, which is what every existing
+       caller relies on; the two are different answers to different
+       questions and conflating them wiped a valve off a drawing. */
+    if (o.ground !== false) {
+      g.fillStyle = o.ground === null ? t.panel : (o.ground || GROUND);
+      g.fillRect(0, 0, W, H);
+    }
 
-    const wall = sgn => {
-      const path = [];
-      for (const p of plan.pts) {
-        if (!(p.bore > 0)) continue;
-        const h = p.bore / 2;
-        path.push(plan.toPage(p.x + sgn * p.nx * h, p.y + sgn * p.ny * h));
+    const wallOf = (list, sgn) => list.map((p) => {
+      const h = p.bore / 2;
+      return plan.toPage(p.x + sgn * p.nx * h, p.y + sgn * p.ny * h);
+    });
+    const live = plan.pts.filter((p) => p.bore > 0);
+    const upper = wallOf(live, 1), lower = wallOf(live, -1);
+
+    /* ---- A SPAN THIS DRAWING DOES NOT OWN ---------------------------
+
+       A run with a component in it has a stretch where the pipe is not
+       what the fluid is inside -- the valve's own casting is, and the
+       valve's own cutaway draws it. Painting a pipe wall across that
+       stretch puts a straight tube over the top of a real cavity, and
+       the markers then travel a passage that is not the one drawn
+       underneath them.
+
+       So the wall and the cavity stop at the faces and pick up again
+       on the other side. The CLIP does not: it is built from the whole
+       route, because the fluid is still in there -- it is just inside
+       somebody else's drawing for a while. */
+    const open = o.openSpan;
+    const runs = [];
+    let cur = [];
+    for (const p of live) {
+      if (open && p.s > open.s0 && p.s < open.s1) {
+        if (cur.length > 1) runs.push(cur);
+        cur = [];
+        continue;
       }
-      return path;
-    };
-    const upper = wall(1), lower = wall(-1);
+      cur.push(p);
+    }
+    if (cur.length > 1) runs.push(cur);
+    const pieces = runs.map((r) => ({ upper: wallOf(r, 1),
+                                      lower: wallOf(r, -1) }));
 
     /* The cavity: everything inside the two walls. Drawn before the
        fluid so the fluid sits in it rather than on it. */
+    g.fillStyle = t.cavity;
+    for (const pc of pieces) {
+      g.beginPath();
+      pc.upper.forEach((q, i) => i ? g.lineTo(q[0], q[1])
+                                   : g.moveTo(q[0], q[1]));
+      for (let i = pc.lower.length - 1; i >= 0; i--)
+        g.lineTo(pc.lower[i][0], pc.lower[i][1]);
+      g.closePath();
+      g.fill();
+    }
+    g.save();
     g.beginPath();
     upper.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]));
     for (let i = lower.length - 1; i >= 0; i--) g.lineTo(lower[i][0], lower[i][1]);
     g.closePath();
-    g.fillStyle = t.cavity;
-    g.fill();
-    g.save();
     g.clip();
 
     /* ---- the fluid ---- */
@@ -14892,7 +15504,7 @@
     g.strokeStyle = t.rim;
     g.lineWidth = o.wallWidth || 2.2;
     g.lineJoin = 'miter';
-    for (const side of [upper, lower]) {
+    for (const pc of pieces) for (const side of [pc.upper, pc.lower]) {
       g.beginPath();
       side.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1]));
       g.stroke();
@@ -15476,8 +16088,36 @@
   const PARCEL_FAST = 0.0188;     /* in, added at the reference speed */
   const PARCEL_FLOOR = 0.9;       /* px, below which a dot vanishes */
 
+  /* ---- THE SAME WATER, SEEN FROM FURTHER AWAY -----------------------
+
+     A parcel has a size in inches, so zooming out shrinks it, and below
+     the floor it would stop being a dot at all. The answer was to clamp
+     it there -- which kept it visible and threw away the thing the size
+     was carrying. `hot` stopped reaching the radius, so slow water and
+     throat water drew identically, and a view at plant magnification
+     lost the speed cue entirely. Measured: the fast-to-slow ratio holds
+     at 2.08 down to about 52 px/in and then collapses to 1.00.
+
+     The whole range lifts instead of the bottom of it clamping. One
+     factor, `k`, takes the SLOW parcel up to the floor and the fast one
+     with it, so the ratio between them is the same at every scale and a
+     fast parcel is still visibly fast when the valve is an inch wide on
+     a plant drawing.
+
+     A parcel then stands for more fluid than it used to, which is a
+     real claim and is paid for honestly: parcelThinning draws k squared
+     fewer of them, so the painted area -- and with it the apparent
+     wetness -- is unchanged. Both functions ask the same question of
+     the scale, so they cannot drift apart. */
+  function parcelLift(scale) {
+    const want = scale * PARCEL;
+    if (!(want > 0)) return 1;
+    return Math.max(1, PARCEL_FLOOR / want);
+  }
+
   function parcelRadius(scale, hot) {
-    return Math.max(PARCEL_FLOOR, scale * (PARCEL + PARCEL_FAST * hot));
+    const h = Math.max(0, Math.min(1, hot || 0));
+    return scale * (PARCEL + PARCEL_FAST * h) * parcelLift(scale);
   }
 
   /* AND WHAT HAPPENS WHEN A PARCEL WOULD BE SMALLER THAN A PIXEL.
@@ -15494,10 +16134,8 @@
      sample, so the same parcels are drawn every frame and the fluid
      does not shimmer. */
   function parcelThinning(scale) {
-    const want = scale * PARCEL;
-    if (!(want > 0) || want >= PARCEL_FLOOR) return 1;
-    const r = PARCEL_FLOOR / want;
-    return Math.max(1, Math.round(r * r));
+    const k = parcelLift(scale);
+    return Math.max(1, Math.round(k * k));
   }
 
   /* ---- the actuator, mounted ------------------------------------------
@@ -15675,6 +16313,12 @@
     fluidParticles: fluidParticles, stepFluid: stepFluid,
     markThroat: markThroat, drawBalance: drawBalance,
     parcelRadius: parcelRadius, parcelThinning: parcelThinning,
+    parcelLift: parcelLift,
+    /* Exported because a consumer drawing fluid OUTSIDE the valve --
+       the line it runs in -- has to colour a parcel the same way this
+       skin colours one, and the alternative was a second copy of the
+       interpolation living in a lab page. */
+    mix: mix,
     water: water,
     provenance: provenance,
     drawActuator: drawActuator, ACT_DARK: ACT_DARK,
@@ -15745,8 +16389,18 @@
   var WHY = 'at the low end of the flow range a 10-inch line creeps, and ' +
             'the profile is easier to read with the fluid moving';
 
-  function fieldFor(fp, gpm, re) {
+  function fieldFor(fp, gpm, re, spacing) {
     var o = re === undefined ? { nu: NU } : { reynolds: re };
+    /* HOW FINELY THE FIELD IS SAMPLED IS A REAL DECISION, not a
+       default to inherit. A length of pipe has one bore, so two
+       hundred stations over it is two hundred copies of the same
+       answer. A run with a valve in it has a cage window that is a
+       third of an inch wide on a nine-foot path: sampled every half
+       inch, the field steps straight over the narrowest point in the
+       whole system and reports the trim as passing line velocity.
+       That is not a small error -- it is the entire subject of the
+       panel, missed. */
+    if (spacing !== undefined) o.spacing = spacing;
     var f = FF.field(fp, gpm, o);
     return document.getElementById('mag').checked
       ? FF.magnified(f, 8, WHY) : f;
@@ -15879,6 +16533,179 @@
     fluid.reseed = PC.fluidParticles(f, 1).reseed;
     return fieldCache;
   }
+
+  /* ---- 5 - THE RUN: PANEL 1, WITH A VALVE IN THE LINE ----------------
+
+     THIS IS PANEL 1. The same flow path, the same field, the same one
+     population of markers, the same draw -- with the valve put ON the
+     path instead of beside it.
+
+     That distinction is the whole panel. Every previous attempt at a
+     line with a valve in it built a second system: a solved field for
+     the valve, a straight run for the pipe, and arithmetic in between
+     to make the two agree at the flange. Which lane a marker is in,
+     which way the offset points, how fast it returns to centre, which
+     pass paints it. Fixing one moved the inconsistency somewhere else,
+     because nothing said what correct WAS.
+
+     So there is no second system here. plant.route composes line,
+     valve, line into ONE geometry flow path, and everything below it
+     is untouched: procutaway.plan frames it, flowfield.field gives
+     every station a velocity by continuity and a profile across the
+     bore from Reynolds, procutaway.step walks the markers along it and
+     procutaway.draw paints them. A marker does not cross a boundary,
+     because there is no boundary -- there is one path and it is on it.
+
+     Compare the two calls at the bottom of this function with the two
+     that draw panel 1. They are the same calls. That is the claim. */
+  var runPath = null, runPlan = null, runKey = '';
+  var mRun = PC.markers(700);
+
+  /* THE LINE IS BORED TO MEET THE BODY, which is the same decision
+     plant.wetted records and for the same reason. The bore a traced
+     body presents at its face is a proportion of its own face-to-face,
+     not a sourced dimension, so it does not generally equal the NPS 10
+     line this valve is declared to sit in. Composed against the
+     catalogue bore, plant.route REFUSES -- correctly, because two
+     different bores butted together is a reducer that nobody drew.
+
+     Rather than invent that reducer, the panel draws the line at the
+     bore the body actually presents and says so underneath. The
+     catalogue bore is still printed beside it, so the gap is visible
+     instead of hidden. A step at a flange is obvious in a drawing and
+     invisible in every number, which is exactly backwards. */
+  function routeFor(gv, t) {
+    var key = t.toFixed(2);
+    if (key === runKey && runPath) return runPath;
+    var fpv = gv.flowPathAt(t);
+    /* THE TRUE ROUTE, not the axis. The valve's own cutaway is drawn
+       on this panel, and it shows the real cavity: in at the
+       centreline, up around the cage, in through the windows, down
+       through the seat and out below. Markers running a straight tube
+       through the middle of that would be travelling a passage that is
+       not the one drawn under them. The wall is what could not be
+       offset from a route that doubles back -- so the wall stops at
+       the faces instead, and the casting owns that span. */
+    runPath = LPE.plant.route({
+      bore: fpv.stations[0].halfW * 2,
+      upstream: 40, downstream: 40,
+      component: fpv,
+      straight: false,
+      samples: 900,
+    });
+    runPlan = PC.plan(runPath, { width: 1120, height: 420 });
+    runKey = key;
+    return runPath;
+  }
+
+  function drawRun(dt, gpmFull) {
+    var gv = valveGeom();
+    var t = +document.getElementById('tv').value;
+    var dark = document.getElementById('dark').checked;
+    var openFrac = gv.openAreaAt(t) / gv.openAreaAt(100);
+    var cv = VALVE.cv[VALVE.cv.length - 1] * openFrac;
+    var dP = +document.getElementById('dp').value;
+    var gpm = Math.max(1, cv * Math.sqrt(dP / SERVICE.sg));
+
+    var fp = routeFor(gv, t);
+    /* Sampled as finely as the path is cut, so the field resolves the
+       same narrowing the reaches do. */
+    var fTrue = FF.field(fp, gpm,
+      { nu: NU, spacing: fp.length / fp.reaches.length });
+
+    /* ---- SLOWED, AND SAID SO ---------------------------------------
+
+       Panel 1 is a pipe, and a pipe at true speed is watchable: nine
+       feet of NPS 10 at eight feet per second takes a second and a bit
+       to cross. Put a valve on the same path and the trim runs nine
+       times line speed through a passage a foot long -- a marker is
+       through the whole valve inside one or two frames. The panel then
+       shows a blur between two pipes, which is the one thing it exists
+       not to show.
+
+       So the field is SLOWED, through the same declared mechanism that
+       magnifies one: a stated factor with a stated reason, and the true
+       field kept underneath it. Every number printed on this panel is
+       read from the true field, and the skin says the factor out loud
+       in its own caption. Slowing a flow to be seen is a reading aid;
+       slowing it quietly is a wrong number. */
+    var SLOW = 0.15;
+    var f = FF.magnified(fTrue,
+      SLOW * (document.getElementById('mag').checked ? 8 : 1),
+      'at true speed a marker is through the trim inside one frame, so ' +
+      'the run is slowed to be watched; the printed velocities are the ' +
+      'true field');
+
+    /* Referenced to the LINE, not to the fastest water on the path.
+       The throat runs tens of times line speed, so against the maximum
+       the pipe comes out at a couple of percent -- drawn, and
+       invisible. A panel that shows a pipe as empty is lying about the
+       easiest fact on it. Referenced to the line, the line reads as
+       moving water and the trim saturates, and the contrast between
+       them is still the thing the eye goes to. */
+    var vLine = f.mean(4) || 1;
+
+    /* ---- THE VALVE FIRST, THE LINE THROUGH IT SECOND ---------------
+
+       The valve is drawn on the run's OWN frame: same inches per
+       pixel, same centreline, shifted by where the component sits on
+       the path. Nothing is fitted by eye -- the shift is the distance
+       between the component's first station in its own coordinates and
+       the arc length at which the run puts it, and both numbers come
+       from the same compose.
+
+       The line is then painted over it with no ground of its own, so
+       the passage and the markers in it read as the flow THROUGH the
+       casting rather than as a second drawing beside it. The casting
+       shows above and below the passage, which is what a section of a
+       valve in a line looks like. */
+    var g5 = ctx('c5');
+    var shift = fp.component.s0 - gv.flowPathAt(t).stations[0].x;
+    var plV = {
+      valve: gv, scale: runPlan.scale,
+      ox: runPlan.ox + shift * runPlan.scale, oy: runPlan.oy,
+      toPage: function (x, y) {
+        return [runPlan.ox + (x + shift) * runPlan.scale,
+                runPlan.oy - y * runPlan.scale];
+      },
+    };
+    PC.drawValve(g5, plV, {
+      width: 1120, height: 420, travel: t,
+      theme: dark ? PC.DARK : undefined,
+      ground: dark ? PC.DARK.ground : PC.GROUND,
+      notes: false, caption: false,
+    });
+
+    PC.step(mRun, f, runPlan, dt, { mix: 0.5 });
+    PC.draw(g5, runPlan, f, {
+      width: 1120, height: 420, markers: mRun,
+      fullSpeed: Math.max(1, vLine * 1.6),
+      theme: dark ? PC.DARK : undefined,
+      ground: false,
+      openSpan: fp.component,
+      streak: 0.004,
+      title: 'NPS 10 line through the EWT at ' + t + '% travel, '
+             + Math.round(gpm) + ' gpm',
+    });
+
+    var th = null;
+    for (var i = 0; i < fp.features.length; i++)
+      if (fp.features[i].kind === 'throat') th = fp.features[i];
+    var el = document.getElementById('n5');
+    if (el) el.textContent =
+      'One path, ' + fp.length.toFixed(1) + ' in long, '
+      + fp.reaches.length + ' reaches, one field, one set of markers. '
+      + 'Line ' + fTrue.mean(4).toFixed(1) + ' ft/s; '
+      + (th ? 'narrowest ' + th.bore.toFixed(2) + ' in bore at '
+              + fTrue.mean(th.s).toFixed(0) + ' ft/s, '
+              + (fTrue.mean(th.s) / fTrue.mean(4)).toFixed(0)
+              + 'x the line. '
+            : '')
+      + 'Line drawn to the ' + fp.run.bore.toFixed(2)
+      + ' in the body presents at its face; the catalogue bore for NPS 10 '
+      + 'Sch 40 is ' + PIPE.dims.bore + ' in.';
+  }
+
 
   function drawValve(dt, gpmFull) {
     var gv = valveGeom();
@@ -16086,6 +16913,7 @@
       });
 
       drawValve(dt, gpm);
+      drawRun(dt, gpm);
 
       TRIO.forEach(function (t, i) {
         var f = fieldFor(fpShort, gpm, t.re);
