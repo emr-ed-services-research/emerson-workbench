@@ -600,5 +600,50 @@ console.log('');
         dry.fills.some(f => f.style === PC.DARK.cavity));
 }
 
+/* ---- a parcel at every magnification ------------------------------------
+
+   The section rung draws a valve at about 83 px/in; a plant view draws the
+   same valve at about 19. The fluid has to read at both, and what it says
+   about speed has to survive the journey.
+
+   It did not. parcelRadius clamped at the floor, so below roughly 52 px/in
+   every parcel came out the same size whatever it was doing, and a view
+   zoomed out far enough lost the speed cue entirely while still claiming
+   to show flow. */
+(function () {
+  const PC = window.LPE.skins.procutaway;
+  const SCALES = [120, 83, 52, 40, 18.7, 10];
+
+  const ratio = (s) => PC.parcelRadius(s, 1) / PC.parcelRadius(s, 0);
+  const spread = SCALES.map(ratio);
+  const worst = Math.max(...spread) - Math.min(...spread);
+  check('a fast parcel is the same multiple of a slow one at every scale',
+    worst < 0.01, 'ratios ' + spread.map(v => v.toFixed(2)).join(', '));
+
+  check('and that multiple is the one the section rung has always drawn',
+    Math.abs(ratio(83) - 2.08) < 0.02, ratio(83).toFixed(3));
+
+  check('no parcel is ever drawn below the floor a screen can show',
+    SCALES.every(s => PC.parcelRadius(s, 0) >= 0.9 - 1e-9));
+
+  check('zooming out never makes a parcel bigger on screen',
+    (() => { let last = Infinity;
+      for (const s of SCALES) { const r = PC.parcelRadius(s, 1);
+        if (r > last + 1e-9) return false; last = r; } return true; })());
+
+  /* Thinning and radius must answer the same question, or the water gets
+     thicker or thinner purely by moving the camera. */
+  check('thinning pays for the lift, so coverage holds as the view moves',
+    (() => {
+      const cover = s => Math.PI * Math.pow(PC.parcelRadius(s, 0), 2)
+        / PC.parcelThinning(s) / (s * s);
+      const a = cover(83), b = cover(18.7);
+      return Math.abs(a / b - 1) < 0.12;
+    })(), 'coverage drifts with scale');
+
+  check('the section rung is untouched -- nothing thinned at 83 px/in',
+    PC.parcelThinning(83) === 1);
+})();
+
 console.log('\n' + (failures ? failures + ' FAILED' : 'all passed') + '\n');
 process.exit(failures ? 1 : 0);

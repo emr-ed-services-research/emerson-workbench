@@ -1318,8 +1318,36 @@
   const PARCEL_FAST = 0.0188;     /* in, added at the reference speed */
   const PARCEL_FLOOR = 0.9;       /* px, below which a dot vanishes */
 
+  /* ---- THE SAME WATER, SEEN FROM FURTHER AWAY -----------------------
+
+     A parcel has a size in inches, so zooming out shrinks it, and below
+     the floor it would stop being a dot at all. The answer was to clamp
+     it there -- which kept it visible and threw away the thing the size
+     was carrying. `hot` stopped reaching the radius, so slow water and
+     throat water drew identically, and a view at plant magnification
+     lost the speed cue entirely. Measured: the fast-to-slow ratio holds
+     at 2.08 down to about 52 px/in and then collapses to 1.00.
+
+     The whole range lifts instead of the bottom of it clamping. One
+     factor, `k`, takes the SLOW parcel up to the floor and the fast one
+     with it, so the ratio between them is the same at every scale and a
+     fast parcel is still visibly fast when the valve is an inch wide on
+     a plant drawing.
+
+     A parcel then stands for more fluid than it used to, which is a
+     real claim and is paid for honestly: parcelThinning draws k squared
+     fewer of them, so the painted area -- and with it the apparent
+     wetness -- is unchanged. Both functions ask the same question of
+     the scale, so they cannot drift apart. */
+  function parcelLift(scale) {
+    const want = scale * PARCEL;
+    if (!(want > 0)) return 1;
+    return Math.max(1, PARCEL_FLOOR / want);
+  }
+
   function parcelRadius(scale, hot) {
-    return Math.max(PARCEL_FLOOR, scale * (PARCEL + PARCEL_FAST * hot));
+    const h = Math.max(0, Math.min(1, hot || 0));
+    return scale * (PARCEL + PARCEL_FAST * h) * parcelLift(scale);
   }
 
   /* AND WHAT HAPPENS WHEN A PARCEL WOULD BE SMALLER THAN A PIXEL.
@@ -1336,10 +1364,8 @@
      sample, so the same parcels are drawn every frame and the fluid
      does not shimmer. */
   function parcelThinning(scale) {
-    const want = scale * PARCEL;
-    if (!(want > 0) || want >= PARCEL_FLOOR) return 1;
-    const r = PARCEL_FLOOR / want;
-    return Math.max(1, Math.round(r * r));
+    const k = parcelLift(scale);
+    return Math.max(1, Math.round(k * k));
   }
 
   /* ---- the actuator, mounted ------------------------------------------
@@ -1517,6 +1543,7 @@
     fluidParticles: fluidParticles, stepFluid: stepFluid,
     markThroat: markThroat, drawBalance: drawBalance,
     parcelRadius: parcelRadius, parcelThinning: parcelThinning,
+    parcelLift: parcelLift,
     /* Exported because a consumer drawing fluid OUTSIDE the valve --
        the line it runs in -- has to colour a parcel the same way this
        skin colours one, and the alternative was a second copy of the
