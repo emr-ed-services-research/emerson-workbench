@@ -153,10 +153,10 @@ const RUN_PX_PER_INCH = (X_HX - X_TANK) / (RUN_FT * 12);
    valve's end connections were 112. A butt weld between two different
    sizes, on a page whose whole argument is that it states its own
    distortions. Bore and valve now share one factor. Lengths stay true. */
-const BORE_X = 10;
+const BORE_X = 8;
 
 const spec = {
-  bores: { main: END_BORE },   /* drawn bore: see END_BORE */
+  bores: { main: PIPE.dims.bore },   /* the real one: NPS 6 Sch 40 */
   components: {
     tk: { kind: 'vessel', tag: 'TK-1', role: 'source', pressure: 50 },
     fv: { kind: 'valve', tag: 'FV-101', valveType: 'globe',
@@ -235,7 +235,23 @@ const ACT = LPE.actuator.diaphragm({
 
 /* How much bigger than the run the valve is drawn. Stated, like the
    bore, because a reader comparing it to the pipe deserves to know. */
-const VALVE_X = BORE_X;   /* the same, and it has to be */
+/* ---- THE VALVE IS SCALED SO ITS PORTS ARE THE PIPE -----------------
+
+   The body draws an opening of exactly 0.3324 of its own face-to-face,
+   at every size -- change the face-to-face and the opening changes with
+   it, which no real valve does. So the drawn opening is not a bore at
+   all. It is a proportion of the picture, and there is no pipe size that
+   can match it.
+
+   Which makes it free to move. The valve is already a magnified drawing;
+   magnifying it by a little more so its ports come out at the line bore
+   costs nothing and settles the joint by construction. The pipe is then
+   plainly what it is -- NPS 6 Schedule 40, 6.065 in from ASME B36.10M --
+   and the service numbers that rest on it stay true.
+
+   Declared, like the bore exaggeration it sits beside: the body is drawn
+   larger than the run by this much, and says so under the drawing. */
+const VALVE_X = BORE_X * (PIPE.dims.bore / FACE.bore);
 
 /* WHERE THE YOKE LANDS. The actuator's own mount is its origin -- y = 0
    -- and the valve's bonnet top is 11.36 in above the port. Drawn with
@@ -248,6 +264,40 @@ const BONNET_TOP = (function () {
   let t = -Infinity;
   for (const r of VGEO.bonnet) for (const q of r) if (q[1] > t) t = q[1];
   return t;
+})();
+
+/* ---- HOW MUCH ROOM THE VALVE ACTUALLY TAKES -------------------------
+
+   This was two hand-written numbers, 250 by 420, and they were right
+   for the magnification the valve happened to be drawn at when they
+   were typed. Scaling the body so its ports meet the pipe made it a
+   quarter larger and the actuator went off the top of the frame,
+   because the box the layout reserves had no idea the drawing had
+   moved.
+
+   Derived now. The body's own extent, the actuator standing on the
+   bonnet, and the magnification -- all three already exist, and the
+   box is just what they come to. */
+const VALVE_BOX = (function () {
+  const vk = RUN_PX_PER_INCH * VALVE_X;
+  const top = BONNET_TOP + (ACT.extent.y1 - ACT.extent.y0);
+  const bot = VGEO.extent.y0;
+  /* Centred on the LINE, because that is where the valve is drawn: the
+     box says how much room to reserve, not where to put it. Moving the
+     box moved the valve off the pipe, which is a different mistake and
+     a more obvious one. Reserved symmetrically about the centreline, so
+     the taller half -- the actuator -- sets the height. */
+  /* ASYMMETRIC, because a valve is. Nearly all of it is above the line
+     -- bonnet, yoke, actuator -- and almost none below. Reserving the
+     same room both ways put an empty half-frame under the pipe and
+     shrank the whole drawing to fit it. The box carries how far it
+     reaches each way instead of one height. */
+  return {
+    w: (VGEO.extent.x1 - VGEO.extent.x0) * vk,
+    h: (top - bot) * vk,
+    up: top * vk,
+    down: -bot * vk,
+  };
 })();
 
 /* ---- the two loops, declared over the netlist ----------------------- */
@@ -292,7 +342,9 @@ const EQUIP = [
      here and it is a door -- clicking it goes inside, to the rung of the
      ladder that cuts it open. */
   { kind: 'valve', tag: 'FV-101', x: X_FV, y: Y,
-    w: 250, h: 420, note: 'ED NPS 4 on a 657 size 45 — click to go inside',
+    w: VALVE_BOX.w, h: VALVE_BOX.h,
+    up: VALVE_BOX.up, down: VALVE_BOX.down,
+    note: 'ED NPS 4 on a 657 size 45 — click to go inside',
     href: '../fic101/index.html' },
   { kind: 'exchanger', tag: 'HX-101', x: X_HX, y: Y,
     w: 170, h: 170, note: 'product rundown' },
@@ -471,7 +523,10 @@ ${SRC.map(m => m.code).join('\n')}
   /* fit the authored pixels in, one k for both axes */
   let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;
   for (const e of EQUIP){ x0=Math.min(x0,e.x-e.w/2); x1=Math.max(x1,e.x+e.w/2);
-    y0=Math.min(y0,e.y-e.h/2); y1=Math.max(y1,e.y+e.h/2); }
+    /* up and down where a thing is lopsided -- see VALVE_BOX */
+    const up = e.up === undefined ? e.h/2 : e.up;
+    const dn = e.down === undefined ? e.h/2 : e.down;
+    y0=Math.min(y0,e.y-up); y1=Math.max(y1,e.y+dn); }
   for (const s of SIGNALS) for (const p of s.pts){
     x0=Math.min(x0,p[0]); x1=Math.max(x1,p[0]);
     y0=Math.min(y0,p[1]); y1=Math.max(y1,p[1]); }
